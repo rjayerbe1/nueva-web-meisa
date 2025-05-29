@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: meisa-postgres
+    environment:
+      POSTGRES_USER: meisa_user
+      POSTGRES_PASSWORD: meisa_password_2024
+      POSTGRES_DB: meisa_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - meisa-network
+    restart: unless-stopped
+
+  # Redis para caché
+  redis:
+    image: redis:7-alpine
+    container_name: meisa-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - meisa-network
+    restart: unless-stopped
+
+  # Aplicación Next.js
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meisa-app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://meisa_user:meisa_password_2024@postgres:5432/meisa_db
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=your-secret-key-here
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - meisa-network
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+
+  # Nginx como proxy reverso
+  nginx:
+    image: nginx:alpine
+    container_name: meisa-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - meisa-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  meisa-network:
+    driver: bridge

@@ -1,0 +1,349 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ======= AUTHENTICATION & USERS =======
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String?
+  name          String?
+  role          UserRole  @default(VIEWER)
+  avatar        String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  projects      Proyecto[]
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+// ======= PROYECTOS CORE =======
+model Proyecto {
+  id          String           @id @default(cuid())
+  titulo      String
+  descripcion String           @db.Text
+  categoria   CategoriaEnum
+  estado      EstadoProyecto   @default(PLANIFICACION)
+  prioridad   PrioridadEnum    @default(MEDIA)
+  
+  // Fechas
+  fechaInicio DateTime
+  fechaFin    DateTime?
+  fechaEstimada DateTime?
+  
+  // Financiero
+  presupuesto Decimal?         @db.Decimal(15, 2)
+  costoReal   Decimal?         @db.Decimal(15, 2)
+  moneda      String           @default("COP")
+  
+  // Cliente y ubicación
+  cliente     String
+  contactoCliente String?
+  telefono    String?
+  email       String?
+  ubicacion   String
+  coordenadas String?
+  
+  // Metadata
+  tags        String[]
+  destacado   Boolean          @default(false)
+  visible     Boolean          @default(true)
+  ordenFrontend Int?
+  
+  // SEO
+  slug        String           @unique
+  metaTitle   String?
+  metaDescription String?
+  
+  // Relaciones
+  imagenes    ImagenProyecto[]
+  documentos  DocumentoProyecto[]
+  progreso    ProgresoProyecto[]
+  timeline    TimelineEntry[]
+  comentarios ComentarioProyecto[]
+  
+  // Auditoría
+  createdBy   String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  
+  user        User             @relation(fields: [createdBy], references: [id])
+
+  @@map("proyectos")
+}
+
+model ImagenProyecto {
+  id          String   @id @default(cuid())
+  url         String
+  urlOptimized String?
+  alt         String
+  titulo      String?
+  descripcion String?
+  orden       Int      @default(0)
+  tipo        TipoImagen @default(GALERIA)
+  size        Int?
+  width       Int?
+  height      Int?
+  format      String?
+  
+  proyectoId  String
+  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("imagenes_proyecto")
+}
+
+model DocumentoProyecto {
+  id          String   @id @default(cuid())
+  nombre      String
+  descripcion String?
+  url         String
+  tipo        TipoDocumento
+  size        Int?
+  formato     String?
+  
+  proyectoId  String
+  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("documentos_proyecto")
+}
+
+model ProgresoProyecto {
+  id          String   @id @default(cuid())
+  fase        String
+  descripcion String?
+  porcentaje  Int      @default(0) // 0-100
+  fechaInicio DateTime?
+  fechaFin    DateTime?
+  completado  Boolean  @default(false)
+  orden       Int      @default(0)
+  
+  proyectoId  String
+  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("progreso_proyecto")
+}
+
+model TimelineEntry {
+  id          String   @id @default(cuid())
+  titulo      String
+  descripcion String?
+  fecha       DateTime
+  tipo        TipoTimeline @default(HITO)
+  importante  Boolean  @default(false)
+  
+  proyectoId  String
+  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+
+  @@map("timeline_proyecto")
+}
+
+model ComentarioProyecto {
+  id          String   @id @default(cuid())
+  contenido   String   @db.Text
+  interno     Boolean  @default(true) // Si es visible solo para admin
+  
+  proyectoId  String
+  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("comentarios_proyecto")
+}
+
+// ======= SERVICIOS =======
+model Servicio {
+  id          String   @id @default(cuid())
+  nombre      String
+  descripcion String   @db.Text
+  icono       String?
+  imagen      String?
+  orden       Int      @default(0)
+  destacado   Boolean  @default(false)
+  activo      Boolean  @default(true)
+  
+  // SEO
+  slug        String   @unique
+  metaTitle   String?
+  metaDescription String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("servicios")
+}
+
+// ======= EQUIPO =======
+model MiembroEquipo {
+  id          String   @id @default(cuid())
+  nombre      String
+  apellido    String
+  cargo       String
+  departamento String?
+  bio         String?  @db.Text
+  imagen      String?
+  email       String?
+  linkedin    String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("miembros_equipo")
+}
+
+// ======= CONTACTO =======
+model ContactForm {
+  id          String   @id @default(cuid())
+  nombre      String
+  email       String
+  telefono    String?
+  empresa     String?
+  asunto      String
+  mensaje     String   @db.Text
+  origen      String?  // De qué página vino
+  leido       Boolean  @default(false)
+  respondido  Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+
+  @@map("formularios_contacto")
+}
+
+// ======= CONFIGURACIÓN =======
+model ConfiguracionSitio {
+  id          String   @id @default(cuid())
+  clave       String   @unique
+  valor       String   @db.Text
+  descripcion String?
+  tipo        TipoConfig @default(TEXTO)
+  categoria   String?
+  
+  updatedAt   DateTime @updatedAt
+
+  @@map("configuracion_sitio")
+}
+
+// ======= ENUMS =======
+enum CategoriaEnum {
+  CENTROS_COMERCIALES
+  EDIFICIOS
+  PUENTES
+  OIL_GAS
+  INDUSTRIAL
+  RESIDENCIAL
+  INFRAESTRUCTURA
+  OTRO
+}
+
+enum EstadoProyecto {
+  PLANIFICACION
+  EN_PROGRESO
+  PAUSADO
+  COMPLETADO
+  CANCELADO
+}
+
+enum PrioridadEnum {
+  BAJA
+  MEDIA
+  ALTA
+  URGENTE
+}
+
+enum TipoImagen {
+  PORTADA
+  GALERIA
+  PROCESO
+  ANTES_DESPUES
+  PLANOS
+}
+
+enum TipoDocumento {
+  CONTRATO
+  PLANOS
+  ESPECIFICACIONES
+  REPORTES
+  CERTIFICADOS
+  FACTURACION
+  OTRO
+}
+
+enum TipoTimeline {
+  INICIO
+  HITO
+  ENTREGA
+  PROBLEMA
+  SOLUCION
+  FINALIZACION
+}
+
+enum TipoConfig {
+  TEXTO
+  NUMERO
+  BOOLEAN
+  JSON
+  URL
+  EMAIL
+}
