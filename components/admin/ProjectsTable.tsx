@@ -1,20 +1,27 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Building2, Eye, Edit, Trash2, MapPin, Calendar, DollarSign } from "lucide-react"
 
 interface Project {
   id: string
   titulo: string
+  codigoInterno: string | null
   categoria: string
   estado: string
   cliente: string
   ubicacion: string
-  fechaInicio: Date
-  presupuesto: any
+  fechaInicio: string
+  fechaFin: string | null
+  presupuesto: number | null
   destacado: boolean
   visible: boolean
-  createdAt: Date
+  createdAt: string
+  imagenPortada: {
+    url: string
+    alt: string
+  } | null
 }
 
 interface ProjectsTableProps {
@@ -102,29 +109,32 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
   }
 
   return (
-    <div className="overflow-hidden">
-      <table className="min-w-full">
+    <div className="overflow-x-auto">
+      <table className="min-w-full border-collapse">
         <thead className="bg-gray-50 border-b border-gray-200">
           <tr>
-            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[200px]">
               Proyecto
             </th>
-            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <th className="px-2 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[80px]">
+              Código
+            </th>
+            <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[180px]">
               Cliente / Ubicación
             </th>
-            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <th className="px-2 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[100px]">
               Categoría
             </th>
-            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <th className="px-2 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[90px]">
               Estado
             </th>
-            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <th className="px-3 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[120px]">
               Presupuesto
             </th>
-            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Fecha Inicio
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[70px]">
+              Inicio
             </th>
-            <th className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[80px]">
               Acciones
             </th>
           </tr>
@@ -132,33 +142,56 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
         <tbody className="bg-white divide-y divide-gray-200">
           {projects.map((project) => (
             <tr key={project.id} className="hover:bg-gray-50 transition-colors">
-              <td className="px-6 py-5">
+              <td className="px-3 py-3">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0 h-12 w-12">
-                    <div className={`h-12 w-12 rounded-xl flex items-center justify-center shadow-sm ${
-                      project.destacado ? 'bg-gradient-to-br from-yellow-100 to-amber-200' : 'bg-gradient-to-br from-gray-100 to-gray-200'
-                    }`}>
-                      <Building2 className={`h-6 w-6 ${
-                        project.destacado ? 'text-yellow-700' : 'text-gray-600'
-                      }`} />
-                    </div>
+                  <div className="flex-shrink-0 h-8 w-8">
+                    {project.imagenPortada ? (
+                      <div className="h-8 w-8 rounded-lg overflow-hidden shadow-sm">
+                        <Image
+                          src={project.imagenPortada.url}
+                          alt={project.imagenPortada.alt}
+                          width={32}
+                          height={32}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center shadow-sm ${
+                        project.destacado ? 'bg-gradient-to-br from-yellow-100 to-amber-200' : 'bg-gradient-to-br from-gray-100 to-gray-200'
+                      }`}>
+                        <Building2 className={`h-4 w-4 ${
+                          project.destacado ? 'text-yellow-700' : 'text-gray-600'
+                        }`} />
+                      </div>
+                    )}
                   </div>
-                  <div className="ml-4">
+                  <div className="ml-2">
                     <div className="flex items-center">
-                      <div className="text-sm font-semibold text-gray-900">
+                      <div className="text-sm font-semibold text-gray-900 truncate">
                         {project.titulo}
                       </div>
                       {project.destacado && (
-                        <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                          ⭐ Destacado
+                        <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                          ⭐
                         </span>
                       )}
                     </div>
-                    <div className="text-sm text-gray-500 mt-1">ID: {project.id.slice(0, 8)}</div>
+                    <div className="text-xs text-gray-400 mt-1">ID: {project.id.slice(0, 6)}</div>
                   </div>
                 </div>
               </td>
-              <td className="px-6 py-5">
+              <td className="px-2 py-3">
+                <div className="text-center">
+                  {project.codigoInterno ? (
+                    <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-md">
+                      {project.codigoInterno}
+                    </span>
+                  ) : (
+                    <span className="text-gray-400 text-xs">Sin código</span>
+                  )}
+                </div>
+              </td>
+              <td className="px-3 py-3">
                 <div>
                   <div className="text-sm font-medium text-gray-900">{project.cliente}</div>
                   <div className="text-sm text-gray-500 flex items-center mt-1">
@@ -167,13 +200,13 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                   </div>
                 </div>
               </td>
-              <td className="px-6 py-5">
-                <span className={`inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg border ${getCategoryColor(project.categoria)}`}>
-                  <span className="mr-1.5">{getCategoryIcon(project.categoria)}</span>
+              <td className="px-2 py-3">
+                <span className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded border ${getCategoryColor(project.categoria)}`}>
+                  <span className="mr-1">{getCategoryIcon(project.categoria)}</span>
                   {project.categoria.replace('_', ' ')}
                 </span>
               </td>
-              <td className="px-6 py-5">
+              <td className="px-2 py-3">
                 <div className="flex items-center">
                   <div className={`flex-shrink-0 w-2 h-2 rounded-full mr-2 ${
                     project.estado === 'COMPLETADO' ? 'bg-green-500' :
@@ -181,49 +214,47 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                     project.estado === 'PAUSADO' ? 'bg-yellow-500' :
                     'bg-red-500'
                   }`} />
-                  <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-md ${getStatusColor(project.estado)}`}>
+                  <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded ${getStatusColor(project.estado)}`}>
                     {project.estado.replace('_', ' ')}
                   </span>
                 </div>
               </td>
-              <td className="px-6 py-5">
-                <div className="flex items-center text-sm font-medium text-gray-900">
-                  <DollarSign className="h-4 w-4 text-gray-400 mr-1" />
+              <td className="px-3 py-3">
+                <div className="text-sm font-medium text-gray-900 text-right">
                   {formatCurrency(project.presupuesto)}
                 </div>
               </td>
-              <td className="px-6 py-5">
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="h-4 w-4 text-gray-400 mr-1" />
+              <td className="px-2 py-3">
+                <div className="text-xs text-gray-500 text-center">
                   {new Date(project.fechaInicio).toLocaleDateString('es-ES', {
                     day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
+                    month: '2-digit',
+                    year: '2-digit'
                   })}
                 </div>
               </td>
-              <td className="px-6 py-5">
-                <div className="flex items-center justify-center space-x-1">
+              <td className="px-2 py-3">
+                <div className="flex items-center justify-center">
                   <Link
                     href={`/admin/projects/${project.id}`}
-                    className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
-                    title="Ver detalles"
+                    className="p-1 text-gray-500 hover:text-blue-600 rounded transition-all"
+                    title="Ver"
                   >
-                    <Eye className="h-4 w-4" />
+                    <Eye className="h-3 w-3" />
                   </Link>
                   <Link
                     href={`/admin/projects/${project.id}/edit`}
-                    className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                    className="p-1 text-gray-500 hover:text-indigo-600 rounded transition-all"
                     title="Editar"
                   >
-                    <Edit className="h-4 w-4" />
+                    <Edit className="h-3 w-3" />
                   </Link>
                   <button
-                    className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                    className="p-1 text-gray-500 hover:text-red-600 rounded transition-all"
                     title="Eliminar"
                     onClick={() => handleDelete(project.id)}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3 w-3" />
                   </button>
                 </div>
               </td>

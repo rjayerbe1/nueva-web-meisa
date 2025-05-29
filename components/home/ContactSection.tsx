@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -74,8 +75,8 @@ export function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">Teléfono</p>
-                    <p className="mt-1 text-sm text-gray-600">+57 (1) 234 5678</p>
-                    <p className="text-sm text-gray-600">+57 (1) 234 5679</p>
+                    <p className="mt-1 text-sm text-gray-600">{siteConfig.contacto.telefonoCali}</p>
+                    <p className="text-sm text-gray-600">{siteConfig.contacto.whatsapp}</p>
                   </div>
                 </div>
 
@@ -87,8 +88,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email</p>
-                    <p className="mt-1 text-sm text-gray-600">info@meisa.com.co</p>
-                    <p className="text-sm text-gray-600">ventas@meisa.com.co</p>
+                    <p className="mt-1 text-sm text-gray-600">{siteConfig.contacto.email}</p>
                   </div>
                 </div>
 
@@ -101,8 +101,11 @@ export function ContactSection() {
                   <div>
                     <p className="text-sm font-medium text-gray-900">Oficina Principal</p>
                     <p className="mt-1 text-sm text-gray-600">
-                      Calle 100 # 45-67<br />
-                      Bogotá, Colombia
+                      {siteConfig.contacto.direccionCali}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-600">
+                      <strong>Sede Popayán:</strong><br />
+                      {siteConfig.contacto.direccionPopayan}
                     </p>
                   </div>
                 </div>

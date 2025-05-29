@@ -1,0 +1,1020 @@
+{
+  "fecha_analisis": "2025-05-29T21:04:34.319Z",
+  "total_proyectos": 62,
+  "categorias": {
+    "Centro comercial": [
+      {
+        "ID": 2902,
+        "nombre": "Centro comercial - Armenia plaza",
+        "slug": "nueva-presentacion-de-diapositivas-7",
+        "post_status": "publish",
+        "post_date": "2023-05-17T21:14:07.000Z"
+      },
+      {
+        "ID": 2907,
+        "nombre": "Centro comercial-Bochalema plaza",
+        "slug": "nueva-presentacion-de-diapositivas-8",
+        "post_status": "publish",
+        "post_date": "2023-05-17T21:19:22.000Z"
+      },
+      {
+        "ID": 2398,
+        "nombre": "Centro comercial-Campanario",
+        "slug": "nueva-presentacion-de-diapositivas",
+        "post_status": "publish",
+        "post_date": "2023-05-16T00:12:53.000Z"
+      },
+      {
+        "ID": 2459,
+        "nombre": "Centro comercial-Campanario copia",
+        "slug": "nueva-presentacion-de-diapositivas-3",
+        "post_status": "publish",
+        "post_date": "2023-05-16T04:46:07.000Z"
+      },
+      {
+        "ID": 1847,
+        "nombre": "Centro comercial-Monserrat",
+        "slug": "new-slideshow-46",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:35:36.000Z"
+      },
+      {
+        "ID": 1854,
+        "nombre": "Centro comercial-Paseo villa del rio",
+        "slug": "new-slideshow-47",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:37:25.000Z"
+      },
+      {
+        "ID": 1758,
+        "nombre": "Centro comercial-Unico Barranquilla",
+        "slug": "new-slideshow-30",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:08:58.000Z"
+      },
+      {
+        "ID": 2467,
+        "nombre": "Centro comercial-Unico Cali",
+        "slug": "nueva-presentacion-de-diapositivas-4",
+        "post_status": "publish",
+        "post_date": "2023-05-16T04:49:13.000Z"
+      },
+      {
+        "ID": 2453,
+        "nombre": "Centro comercial-Unico Cali",
+        "slug": "nueva-presentacion-de-diapositivas-2",
+        "post_status": "publish",
+        "post_date": "2023-05-16T04:23:37.000Z"
+      },
+      {
+        "ID": 1762,
+        "nombre": "Centro comercial-Unico Neiva",
+        "slug": "new-slideshow-31",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:10:24.000Z"
+      }
+    ],
+    "Puentes peatonales": [
+      {
+        "ID": 1802,
+        "nombre": "Puentes peatonales - Escalinata curva rio cali",
+        "slug": "new-slideshow-39",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:25:21.000Z"
+      },
+      {
+        "ID": 1670,
+        "nombre": "Puentes peatonales - La 63",
+        "slug": "new-slideshow-14",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:51:31.000Z"
+      },
+      {
+        "ID": 1665,
+        "nombre": "Puentes peatonales - La Tertulia",
+        "slug": "new-slideshow-13",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:50:03.000Z"
+      },
+      {
+        "ID": 1797,
+        "nombre": "Puentes peatonales - Puente autopista sur - carrera 68",
+        "slug": "new-slideshow-38",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:23:44.000Z"
+      },
+      {
+        "ID": 1659,
+        "nombre": "Puentes peatonales - Terminal intermedio",
+        "slug": "new-slideshow-12",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:48:30.000Z"
+      },
+      {
+        "ID": 2779,
+        "nombre": "Puentes peatonales Escalinata curva rio cali 2",
+        "slug": "puentes-peatonales-escalinata-curva-rio-cali",
+        "post_status": "publish",
+        "post_date": "2023-05-17T01:44:51.000Z"
+      }
+    ],
+    "Puentes vehiculares": [
+      {
+        "ID": 1701,
+        "nombre": "Puentes vehiculares - Cambrin",
+        "slug": "new-slideshow-20",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:01:16.000Z"
+      },
+      {
+        "ID": 1707,
+        "nombre": "Puentes vehiculares - Cambrin",
+        "slug": "new-slideshow-21",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:48:25.000Z"
+      },
+      {
+        "ID": 1813,
+        "nombre": "Puentes vehiculares - Carrera 100",
+        "slug": "new-slideshow-41",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:28:17.000Z"
+      },
+      {
+        "ID": 1698,
+        "nombre": "Puentes vehiculares - Frisoles",
+        "slug": "new-slideshow-19",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:00:19.000Z"
+      },
+      {
+        "ID": 1809,
+        "nombre": "Puentes vehiculares - Puente nolasco",
+        "slug": "new-slideshow-40",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:27:21.000Z"
+      },
+      {
+        "ID": 1675,
+        "nombre": "Puentes vehiculares - Río Negro",
+        "slug": "new-slideshow-15",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:52:57.000Z"
+      },
+      {
+        "ID": 1693,
+        "nombre": "Puentes vehiculares -La 21",
+        "slug": "new-slideshow-18",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:58:47.000Z"
+      },
+      {
+        "ID": 1687,
+        "nombre": "Puentes vehiculares -La Paila",
+        "slug": "new-slideshow-17",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:57:05.000Z"
+      },
+      {
+        "ID": 1681,
+        "nombre": "Puentes vehiculares -Saraconcho",
+        "slug": "new-slideshow-16",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:54:32.000Z"
+      },
+      {
+        "ID": 2725,
+        "nombre": "Puentes vehiculares Puente nolasco 2",
+        "slug": "puentes-vehiculares-puente-nolasco",
+        "post_status": "publish",
+        "post_date": "2023-05-17T00:22:44.000Z"
+      }
+    ],
+    "Edificios": [
+      {
+        "ID": 1746,
+        "nombre": "Edificios - Bomberos Popayán",
+        "slug": "new-slideshow-28",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:03:33.000Z"
+      },
+      {
+        "ID": 1840,
+        "nombre": "Edificios - Cinemateca distrital",
+        "slug": "new-slideshow-45",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:33:36.000Z"
+      },
+      {
+        "ID": 2558,
+        "nombre": "Edificios - Cinemateca distrital 2",
+        "slug": "nueva-presentacion-de-diapositivas-5",
+        "post_status": "publish",
+        "post_date": "2023-05-16T21:04:40.000Z"
+      },
+      {
+        "ID": 1832,
+        "nombre": "Edificios - Clinica reina victoria",
+        "slug": "new-slideshow-44",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:32:27.000Z"
+      },
+      {
+        "ID": 1739,
+        "nombre": "Edificios - MIO Guadalupe",
+        "slug": "new-slideshow-27",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:00:54.000Z"
+      },
+      {
+        "ID": 2927,
+        "nombre": "Edificios - MIO terminal intermedio Cali",
+        "slug": "nueva-presentacion-de-diapositivas-9",
+        "post_status": "publish",
+        "post_date": "2023-05-17T21:37:02.000Z"
+      },
+      {
+        "ID": 1729,
+        "nombre": "Edificios - Módulos Médicos",
+        "slug": "new-slideshow-25",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:57:28.000Z"
+      },
+      {
+        "ID": 1752,
+        "nombre": "Edificios - Omega",
+        "slug": "new-slideshow-29",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:06:37.000Z"
+      },
+      {
+        "ID": 1734,
+        "nombre": "Edificios - Sena Santander",
+        "slug": "new-slideshow-26",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:59:23.000Z"
+      },
+      {
+        "ID": 2945,
+        "nombre": "Edificios - Tequendama parking cali",
+        "slug": "nueva-presentacion-de-diapositivas-11",
+        "post_status": "publish",
+        "post_date": "2023-05-17T21:54:48.000Z"
+      }
+    ],
+    "Industria": [
+      {
+        "ID": 1825,
+        "nombre": "Industria - Ampliacion cargill",
+        "slug": "new-slideshow-43",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:31:04.000Z"
+      },
+      {
+        "ID": 1718,
+        "nombre": "Industria - Bodega Duplex Ingenieria",
+        "slug": "new-slideshow-23",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:52:29.000Z"
+      },
+      {
+        "ID": 1713,
+        "nombre": "Industria - Bodega Intera",
+        "slug": "new-slideshow-22",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:50:33.000Z"
+      },
+      {
+        "ID": 1605,
+        "nombre": "Industria - Bodega Protecnica II",
+        "slug": "new-slideshow-2",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:19:57.000Z"
+      },
+      {
+        "ID": 2885,
+        "nombre": "Industria - Tecno químicas Jamundí",
+        "slug": "nueva-presentacion-de-diapositivas-6",
+        "post_status": "publish",
+        "post_date": "2023-05-17T20:14:40.000Z"
+      },
+      {
+        "ID": 1723,
+        "nombre": "Industria - Tecnofar",
+        "slug": "new-slideshow-24",
+        "post_status": "publish",
+        "post_date": "2021-03-20T23:54:16.000Z"
+      },
+      {
+        "ID": 1819,
+        "nombre": "Industria - Torre cogeneración propal",
+        "slug": "new-slideshow-42",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:29:49.000Z"
+      },
+      {
+        "ID": 2643,
+        "nombre": "Industria Ampliacion cargill 2",
+        "slug": "industria-ampliacion-cargill",
+        "post_status": "publish",
+        "post_date": "2023-05-16T22:59:08.000Z"
+      }
+    ],
+    "Escenarios deportivos": [
+      {
+        "ID": 2792,
+        "nombre": "Escenarios deportivos  Complejo acuático popayan 2",
+        "slug": "escenarios-deportivos-complejo-acuatico-popayan",
+        "post_status": "publish",
+        "post_date": "2023-05-17T01:58:10.000Z"
+      },
+      {
+        "ID": 1588,
+        "nombre": "Escenarios deportivos - Cancha Javeriana",
+        "slug": "new-slideshow",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:06:37.000Z"
+      },
+      {
+        "ID": 1645,
+        "nombre": "Escenarios deportivos - CECUN",
+        "slug": "new-slideshow-8",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:42:51.000Z"
+      },
+      {
+        "ID": 1657,
+        "nombre": "Escenarios deportivos - Coliseo artes marciales",
+        "slug": "new-slideshow-11",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:47:31.000Z"
+      },
+      {
+        "ID": 1651,
+        "nombre": "Escenarios deportivos - Coliseo mayor",
+        "slug": "new-slideshow-9",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:45:04.000Z"
+      },
+      {
+        "ID": 1654,
+        "nombre": "Escenarios deportivos - Complejo acuático popayan",
+        "slug": "new-slideshow-10",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:46:37.000Z"
+      },
+      {
+        "ID": 2828,
+        "nombre": "Escenarios deportivos Complejo acuático popayan 3",
+        "slug": "escenarios-deportivos-complejo-acuatico-popayan-2",
+        "post_status": "publish",
+        "post_date": "2023-05-17T02:48:45.000Z"
+      }
+    ],
+    "Cubiertas y fachadas": [
+      {
+        "ID": 1619,
+        "nombre": "Cubiertas y fachadas - Camino viejo",
+        "slug": "new-slideshow-4",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:32:29.000Z"
+      },
+      {
+        "ID": 1640,
+        "nombre": "Cubiertas y fachadas - Cubierta interna",
+        "slug": "new-slideshow-7",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:41:44.000Z"
+      },
+      {
+        "ID": 1623,
+        "nombre": "Cubiertas y fachadas - IPS Sura",
+        "slug": "cubiertas-y-fachadas-camino-viejo",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:34:32.000Z"
+      },
+      {
+        "ID": 1635,
+        "nombre": "Cubiertas y fachadas - Taquillas Pisoje",
+        "slug": "new-slideshow-6",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:39:40.000Z"
+      },
+      {
+        "ID": 1792,
+        "nombre": "Cubiertas y fachadas - Taquillas pisoje comfacauca",
+        "slug": "new-slideshow-37",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:22:15.000Z"
+      }
+    ],
+    "Estructuras modulares": [
+      {
+        "ID": 1628,
+        "nombre": "Estructuras modulares - Cocinas modulares",
+        "slug": "new-slideshow-5",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:36:07.000Z"
+      },
+      {
+        "ID": 1788,
+        "nombre": "Estructuras modulares - Cocinas ocultas",
+        "slug": "new-slideshow-36",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:20:32.000Z"
+      },
+      {
+        "ID": 1614,
+        "nombre": "Estructuras modulares - Módulo oficinas",
+        "slug": "new-slideshow-3",
+        "post_status": "publish",
+        "post_date": "2021-03-20T22:28:45.000Z"
+      }
+    ],
+    "Oil and Gas": [
+      {
+        "ID": 1779,
+        "nombre": "Oil and Gas - Tanque pulmón",
+        "slug": "new-slideshow-34",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:16:48.000Z"
+      },
+      {
+        "ID": 1781,
+        "nombre": "Oil and Gas - Tanques de almacenamiento GLP",
+        "slug": "new-slideshow-35",
+        "post_status": "publish",
+        "post_date": "2021-03-21T00:17:36.000Z"
+      }
+    ],
+    "Otros": [
+      {
+        "ID": 2944,
+        "nombre": "Nueva presentación de diapositivas",
+        "slug": "nueva-presentacion-de-diapositivas-10",
+        "post_status": "publish",
+        "post_date": "2023-05-17T21:54:34.000Z"
+      }
+    ]
+  },
+  "proyectos": [
+    {
+      "id": 2902,
+      "titulo": "- Armenia plaza",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial - Armenia plaza",
+      "slug": "nueva-presentacion-de-diapositivas-7",
+      "fecha": "2023-05-17T21:14:07.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2907,
+      "titulo": "Bochalema plaza",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Bochalema plaza",
+      "slug": "nueva-presentacion-de-diapositivas-8",
+      "fecha": "2023-05-17T21:19:22.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2398,
+      "titulo": "Campanario",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Campanario",
+      "slug": "nueva-presentacion-de-diapositivas",
+      "fecha": "2023-05-16T00:12:53.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2459,
+      "titulo": "Campanario copia",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Campanario copia",
+      "slug": "nueva-presentacion-de-diapositivas-3",
+      "fecha": "2023-05-16T04:46:07.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1847,
+      "titulo": "Monserrat",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Monserrat",
+      "slug": "new-slideshow-46",
+      "fecha": "2021-03-21T00:35:36.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1854,
+      "titulo": "Paseo villa del rio",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Paseo villa del rio",
+      "slug": "new-slideshow-47",
+      "fecha": "2021-03-21T00:37:25.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1758,
+      "titulo": "Unico Barranquilla",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Unico Barranquilla",
+      "slug": "new-slideshow-30",
+      "fecha": "2021-03-21T00:08:58.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2467,
+      "titulo": "Unico Cali",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Unico Cali",
+      "slug": "nueva-presentacion-de-diapositivas-4",
+      "fecha": "2023-05-16T04:49:13.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2453,
+      "titulo": "Unico Cali",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Unico Cali",
+      "slug": "nueva-presentacion-de-diapositivas-2",
+      "fecha": "2023-05-16T04:23:37.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1762,
+      "titulo": "Unico Neiva",
+      "categoria": "Centro comercial",
+      "wordpress_title": "Centro comercial-Unico Neiva",
+      "slug": "new-slideshow-31",
+      "fecha": "2021-03-21T00:10:24.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1802,
+      "titulo": "- Escalinata curva rio cali",
+      "categoria": "Puentes peatonales",
+      "wordpress_title": "Puentes peatonales - Escalinata curva rio cali",
+      "slug": "new-slideshow-39",
+      "fecha": "2021-03-21T00:25:21.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1670,
+      "titulo": "- La 63",
+      "categoria": "Puentes peatonales",
+      "wordpress_title": "Puentes peatonales - La 63",
+      "slug": "new-slideshow-14",
+      "fecha": "2021-03-20T22:51:31.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1665,
+      "titulo": "- La Tertulia",
+      "categoria": "Puentes peatonales",
+      "wordpress_title": "Puentes peatonales - La Tertulia",
+      "slug": "new-slideshow-13",
+      "fecha": "2021-03-20T22:50:03.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1797,
+      "titulo": "- Puente autopista sur - carrera 68",
+      "categoria": "Puentes peatonales",
+      "wordpress_title": "Puentes peatonales - Puente autopista sur - carrera 68",
+      "slug": "new-slideshow-38",
+      "fecha": "2021-03-21T00:23:44.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1659,
+      "titulo": "- Terminal intermedio",
+      "categoria": "Puentes peatonales",
+      "wordpress_title": "Puentes peatonales - Terminal intermedio",
+      "slug": "new-slideshow-12",
+      "fecha": "2021-03-20T22:48:30.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2779,
+      "titulo": "Escalinata curva rio cali 2",
+      "categoria": "Puentes peatonales",
+      "wordpress_title": "Puentes peatonales Escalinata curva rio cali 2",
+      "slug": "puentes-peatonales-escalinata-curva-rio-cali",
+      "fecha": "2023-05-17T01:44:51.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1701,
+      "titulo": "- Cambrin",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares - Cambrin",
+      "slug": "new-slideshow-20",
+      "fecha": "2021-03-20T23:01:16.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1707,
+      "titulo": "- Cambrin",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares - Cambrin",
+      "slug": "new-slideshow-21",
+      "fecha": "2021-03-20T23:48:25.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1813,
+      "titulo": "- Carrera 100",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares - Carrera 100",
+      "slug": "new-slideshow-41",
+      "fecha": "2021-03-21T00:28:17.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1698,
+      "titulo": "- Frisoles",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares - Frisoles",
+      "slug": "new-slideshow-19",
+      "fecha": "2021-03-20T23:00:19.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1809,
+      "titulo": "- Puente nolasco",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares - Puente nolasco",
+      "slug": "new-slideshow-40",
+      "fecha": "2021-03-21T00:27:21.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1675,
+      "titulo": "- Río Negro",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares - Río Negro",
+      "slug": "new-slideshow-15",
+      "fecha": "2021-03-20T22:52:57.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1693,
+      "titulo": "-La 21",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares -La 21",
+      "slug": "new-slideshow-18",
+      "fecha": "2021-03-20T22:58:47.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1687,
+      "titulo": "-La Paila",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares -La Paila",
+      "slug": "new-slideshow-17",
+      "fecha": "2021-03-20T22:57:05.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1681,
+      "titulo": "-Saraconcho",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares -Saraconcho",
+      "slug": "new-slideshow-16",
+      "fecha": "2021-03-20T22:54:32.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2725,
+      "titulo": "Puente nolasco 2",
+      "categoria": "Puentes vehiculares",
+      "wordpress_title": "Puentes vehiculares Puente nolasco 2",
+      "slug": "puentes-vehiculares-puente-nolasco",
+      "fecha": "2023-05-17T00:22:44.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1746,
+      "titulo": "- Bomberos Popayán",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Bomberos Popayán",
+      "slug": "new-slideshow-28",
+      "fecha": "2021-03-21T00:03:33.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1840,
+      "titulo": "- Cinemateca distrital",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Cinemateca distrital",
+      "slug": "new-slideshow-45",
+      "fecha": "2021-03-21T00:33:36.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2558,
+      "titulo": "- Cinemateca distrital 2",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Cinemateca distrital 2",
+      "slug": "nueva-presentacion-de-diapositivas-5",
+      "fecha": "2023-05-16T21:04:40.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1832,
+      "titulo": "- Clinica reina victoria",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Clinica reina victoria",
+      "slug": "new-slideshow-44",
+      "fecha": "2021-03-21T00:32:27.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1739,
+      "titulo": "- MIO Guadalupe",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - MIO Guadalupe",
+      "slug": "new-slideshow-27",
+      "fecha": "2021-03-21T00:00:54.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2927,
+      "titulo": "- MIO terminal intermedio Cali",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - MIO terminal intermedio Cali",
+      "slug": "nueva-presentacion-de-diapositivas-9",
+      "fecha": "2023-05-17T21:37:02.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1729,
+      "titulo": "- Módulos Médicos",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Módulos Médicos",
+      "slug": "new-slideshow-25",
+      "fecha": "2021-03-20T23:57:28.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1752,
+      "titulo": "- Omega",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Omega",
+      "slug": "new-slideshow-29",
+      "fecha": "2021-03-21T00:06:37.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1734,
+      "titulo": "- Sena Santander",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Sena Santander",
+      "slug": "new-slideshow-26",
+      "fecha": "2021-03-20T23:59:23.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2945,
+      "titulo": "- Tequendama parking cali",
+      "categoria": "Edificios",
+      "wordpress_title": "Edificios - Tequendama parking cali",
+      "slug": "nueva-presentacion-de-diapositivas-11",
+      "fecha": "2023-05-17T21:54:48.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1825,
+      "titulo": "- Ampliacion cargill",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Ampliacion cargill",
+      "slug": "new-slideshow-43",
+      "fecha": "2021-03-21T00:31:04.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1718,
+      "titulo": "- Bodega Duplex Ingenieria",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Bodega Duplex Ingenieria",
+      "slug": "new-slideshow-23",
+      "fecha": "2021-03-20T23:52:29.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1713,
+      "titulo": "- Bodega Intera",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Bodega Intera",
+      "slug": "new-slideshow-22",
+      "fecha": "2021-03-20T23:50:33.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1605,
+      "titulo": "- Bodega Protecnica II",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Bodega Protecnica II",
+      "slug": "new-slideshow-2",
+      "fecha": "2021-03-20T22:19:57.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2885,
+      "titulo": "- Tecno químicas Jamundí",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Tecno químicas Jamundí",
+      "slug": "nueva-presentacion-de-diapositivas-6",
+      "fecha": "2023-05-17T20:14:40.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1723,
+      "titulo": "- Tecnofar",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Tecnofar",
+      "slug": "new-slideshow-24",
+      "fecha": "2021-03-20T23:54:16.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1819,
+      "titulo": "- Torre cogeneración propal",
+      "categoria": "Industria",
+      "wordpress_title": "Industria - Torre cogeneración propal",
+      "slug": "new-slideshow-42",
+      "fecha": "2021-03-21T00:29:49.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2643,
+      "titulo": "Ampliacion cargill 2",
+      "categoria": "Industria",
+      "wordpress_title": "Industria Ampliacion cargill 2",
+      "slug": "industria-ampliacion-cargill",
+      "fecha": "2023-05-16T22:59:08.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2792,
+      "titulo": "Complejo acuático popayan 2",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos  Complejo acuático popayan 2",
+      "slug": "escenarios-deportivos-complejo-acuatico-popayan",
+      "fecha": "2023-05-17T01:58:10.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1588,
+      "titulo": "- Cancha Javeriana",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos - Cancha Javeriana",
+      "slug": "new-slideshow",
+      "fecha": "2021-03-20T22:06:37.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1645,
+      "titulo": "- CECUN",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos - CECUN",
+      "slug": "new-slideshow-8",
+      "fecha": "2021-03-20T22:42:51.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1657,
+      "titulo": "- Coliseo artes marciales",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos - Coliseo artes marciales",
+      "slug": "new-slideshow-11",
+      "fecha": "2021-03-20T22:47:31.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1651,
+      "titulo": "- Coliseo mayor",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos - Coliseo mayor",
+      "slug": "new-slideshow-9",
+      "fecha": "2021-03-20T22:45:04.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1654,
+      "titulo": "- Complejo acuático popayan",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos - Complejo acuático popayan",
+      "slug": "new-slideshow-10",
+      "fecha": "2021-03-20T22:46:37.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2828,
+      "titulo": "Complejo acuático popayan 3",
+      "categoria": "Escenarios deportivos",
+      "wordpress_title": "Escenarios deportivos Complejo acuático popayan 3",
+      "slug": "escenarios-deportivos-complejo-acuatico-popayan-2",
+      "fecha": "2023-05-17T02:48:45.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1619,
+      "titulo": "- Camino viejo",
+      "categoria": "Cubiertas y fachadas",
+      "wordpress_title": "Cubiertas y fachadas - Camino viejo",
+      "slug": "new-slideshow-4",
+      "fecha": "2021-03-20T22:32:29.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1640,
+      "titulo": "- Cubierta interna",
+      "categoria": "Cubiertas y fachadas",
+      "wordpress_title": "Cubiertas y fachadas - Cubierta interna",
+      "slug": "new-slideshow-7",
+      "fecha": "2021-03-20T22:41:44.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1623,
+      "titulo": "- IPS Sura",
+      "categoria": "Cubiertas y fachadas",
+      "wordpress_title": "Cubiertas y fachadas - IPS Sura",
+      "slug": "cubiertas-y-fachadas-camino-viejo",
+      "fecha": "2021-03-20T22:34:32.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1635,
+      "titulo": "- Taquillas Pisoje",
+      "categoria": "Cubiertas y fachadas",
+      "wordpress_title": "Cubiertas y fachadas - Taquillas Pisoje",
+      "slug": "new-slideshow-6",
+      "fecha": "2021-03-20T22:39:40.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1792,
+      "titulo": "- Taquillas pisoje comfacauca",
+      "categoria": "Cubiertas y fachadas",
+      "wordpress_title": "Cubiertas y fachadas - Taquillas pisoje comfacauca",
+      "slug": "new-slideshow-37",
+      "fecha": "2021-03-21T00:22:15.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1628,
+      "titulo": "- Cocinas modulares",
+      "categoria": "Estructuras modulares",
+      "wordpress_title": "Estructuras modulares - Cocinas modulares",
+      "slug": "new-slideshow-5",
+      "fecha": "2021-03-20T22:36:07.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1788,
+      "titulo": "- Cocinas ocultas",
+      "categoria": "Estructuras modulares",
+      "wordpress_title": "Estructuras modulares - Cocinas ocultas",
+      "slug": "new-slideshow-36",
+      "fecha": "2021-03-21T00:20:32.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1614,
+      "titulo": "- Módulo oficinas",
+      "categoria": "Estructuras modulares",
+      "wordpress_title": "Estructuras modulares - Módulo oficinas",
+      "slug": "new-slideshow-3",
+      "fecha": "2021-03-20T22:28:45.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1779,
+      "titulo": "- Tanque pulmón",
+      "categoria": "Oil and Gas",
+      "wordpress_title": "Oil and Gas - Tanque pulmón",
+      "slug": "new-slideshow-34",
+      "fecha": "2021-03-21T00:16:48.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 1781,
+      "titulo": "- Tanques de almacenamiento GLP",
+      "categoria": "Oil and Gas",
+      "wordpress_title": "Oil and Gas - Tanques de almacenamiento GLP",
+      "slug": "new-slideshow-35",
+      "fecha": "2021-03-21T00:17:36.000Z",
+      "cantidad_imagenes": 0
+    },
+    {
+      "id": 2944,
+      "titulo": "Nueva presentación de diapositivas",
+      "categoria": "Otros",
+      "wordpress_title": "Nueva presentación de diapositivas",
+      "slug": "nueva-presentacion-de-diapositivas-10",
+      "fecha": "2023-05-17T21:54:34.000Z",
+      "cantidad_imagenes": 0
+    }
+  ]
+}

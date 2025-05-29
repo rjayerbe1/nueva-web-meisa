@@ -70,6 +70,7 @@ enum UserRole {
 model Proyecto {
   id          String           @id @default(cuid())
   titulo      String
+  codigoInterno String?        // Código interno como PM132-25
   descripcion String           @db.Text
   categoria   CategoriaEnum
   estado      EstadoProyecto   @default(PLANIFICACION)

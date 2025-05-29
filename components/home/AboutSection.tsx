@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { CheckCircle2, Award, Shield, Zap } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 const features = [
   {
@@ -12,7 +13,7 @@ const features = [
   },
   {
     name: 'Experiencia Comprobada',
-    description: 'Más de 15 años de trayectoria respaldan nuestro trabajo.',
+    description: `Más de ${siteConfig.empresa.aniosExperiencia} años de trayectoria respaldan nuestro trabajo.`,
     icon: Award,
   },
   {
@@ -39,13 +40,10 @@ export function AboutSection() {
                 Construyendo el futuro con acero
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                MEISA es una empresa líder en el sector de estructuras metálicas en Colombia. Con más de 15 años de experiencia, 
-                nos hemos consolidado como un referente en diseño, fabricación y montaje de estructuras metálicas para proyectos 
-                de gran envergadura.
+                {siteConfig.empresa.descripcion}
               </p>
               <p className="mt-4 text-lg leading-8 text-gray-600">
-                Nuestro compromiso con la excelencia, la innovación y la seguridad nos ha permitido participar en los proyectos 
-                más emblemáticos del país, desde centros comerciales hasta puentes y edificaciones industriales.
+                {siteConfig.empresa.historia}
               </p>
               <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
                 {features.map((feature) => {
@@ -88,7 +86,7 @@ export function AboutSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4">
-                    <p className="text-2xl font-bold text-gray-900">200+</p>
+                    <p className="text-2xl font-bold text-gray-900">{siteConfig.estadisticas.proyectosCompletados}+</p>
                     <p className="text-sm text-gray-600">Proyectos exitosos</p>
                   </div>
                 </div>

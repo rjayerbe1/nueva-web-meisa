@@ -16,7 +16,7 @@ const navigation = [
     name: "Nosotros", 
     href: "#",
     children: [
-      { name: "Nuestra Empresa", href: "/nosotros" },
+      { name: "Nuestra Empresa", href: "/empresa" },
       { name: "Nuestro Equipo", href: "/equipo" },
       { name: "Políticas", href: "/politicas" },
     ]

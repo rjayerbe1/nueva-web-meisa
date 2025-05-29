@@ -3,61 +3,30 @@
 import { useState } from 'react'
 import { Compass, Factory, Wrench, Users, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { siteConfig } from '@/lib/site-config'
 
-const services = [
-  {
-    id: 1,
-    name: 'Diseño Estructural',
-    description: 'Desarrollamos diseños estructurales innovadores y eficientes, optimizando recursos y garantizando la máxima seguridad.',
-    icon: Compass,
-    color: 'from-blue-500 to-blue-600',
-    features: [
-      'Análisis estructural avanzado',
-      'Modelado 3D y BIM',
-      'Optimización de materiales',
-      'Cumplimiento normativo'
-    ]
-  },
-  {
-    id: 2,
-    name: 'Fabricación',
-    description: 'Contamos con instalaciones de última generación para la fabricación de estructuras metálicas de alta calidad.',
-    icon: Factory,
-    color: 'from-green-500 to-green-600',
-    features: [
-      'Corte y soldadura de precisión',
-      'Control de calidad riguroso',
-      'Galvanización y pintura',
-      'Capacidad de producción masiva'
-    ]
-  },
-  {
-    id: 3,
-    name: 'Montaje',
-    description: 'Equipo especializado en el montaje seguro y eficiente de estructuras metálicas en cualquier tipo de proyecto.',
-    icon: Wrench,
-    color: 'from-purple-500 to-purple-600',
-    features: [
-      'Personal certificado',
-      'Equipos especializados',
-      'Cumplimiento de cronogramas',
-      'Seguridad industrial'
-    ]
-  },
-  {
-    id: 4,
-    name: 'Consultoría',
-    description: 'Asesoría experta en todas las fases del proyecto, desde la concepción hasta la entrega final.',
-    icon: Users,
-    color: 'from-orange-500 to-orange-600',
-    features: [
-      'Estudios de factibilidad',
-      'Gestión de proyectos',
-      'Supervisión técnica',
-      'Capacitación especializada'
-    ]
-  }
-]
+const iconMap = {
+  design: Compass,
+  factory: Factory,
+  construction: Wrench,
+  building: Users
+}
+
+const colorMap = {
+  design: 'from-blue-500 to-blue-600',
+  factory: 'from-green-500 to-green-600', 
+  construction: 'from-purple-500 to-purple-600',
+  building: 'from-orange-500 to-orange-600'
+}
+
+const services = siteConfig.servicios.map((servicio, index) => ({
+  id: index + 1,
+  name: servicio.titulo,
+  description: servicio.descripcion,
+  icon: iconMap[servicio.icono as keyof typeof iconMap] || Compass,
+  color: colorMap[servicio.icono as keyof typeof colorMap] || 'from-blue-500 to-blue-600',
+  features: servicio.caracteristicas
+}))
 
 export function ServicesSection() {
   const [hoveredService, setHoveredService] = useState<number | null>(null)

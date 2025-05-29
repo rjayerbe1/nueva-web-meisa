@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { Building2, Users, Trophy, Calendar } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 const stats = [
   {
     id: 1,
     name: 'Proyectos Completados',
-    value: 200,
+    value: siteConfig.estadisticas.proyectosCompletados,
     suffix: '+',
     icon: Building2,
     color: 'text-blue-600',
@@ -16,26 +17,26 @@ const stats = [
   {
     id: 2,
     name: 'Años de Experiencia',
-    value: 15,
-    suffix: '+',
+    value: siteConfig.estadisticas.aniosExperiencia,
+    suffix: '',
     icon: Calendar,
     color: 'text-green-600',
     bgColor: 'bg-green-100',
   },
   {
     id: 3,
-    name: 'Clientes Satisfechos',
-    value: 50,
-    suffix: '+',
+    name: 'Toneladas/Mes',
+    value: siteConfig.estadisticas.toneladas,
+    suffix: '',
     icon: Users,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100',
   },
   {
     id: 4,
-    name: 'Premios y Reconocimientos',
-    value: 12,
-    suffix: '',
+    name: 'Colaboradores',
+    value: siteConfig.estadisticas.empleados,
+    suffix: '+',
     icon: Trophy,
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100',

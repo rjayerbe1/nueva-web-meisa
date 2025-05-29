@@ -1,0 +1,370 @@
+{
+  "total_proyectos": 62,
+  "categorias": [
+    {
+      "nombre": "Centros Comerciales",
+      "cantidad": 10,
+      "proyectos": [
+        {
+          "titulo": "plaza",
+          "ubicacion": "Armenia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "plaza",
+          "ubicacion": "Bochalema",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Campanario",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Campanario copia",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Monserrat",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Paseo villa del rio",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Unico",
+          "ubicacion": "Barranquilla",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Unico",
+          "ubicacion": "Cali",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Unico",
+          "ubicacion": "Cali",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Unico",
+          "ubicacion": "Neiva",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Cubiertas y Fachadas",
+      "cantidad": 5,
+      "proyectos": [
+        {
+          "titulo": "Camino viejo",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Cubierta interna",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "IPS Sura",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Taquillas Pisoje",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Taquillas pisoje comfa",
+          "ubicacion": "Cauca",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Edificios",
+      "cantidad": 10,
+      "proyectos": [
+        {
+          "titulo": "Bomberos",
+          "ubicacion": "Popayán",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Cinemateca distrital",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Cinemateca distrital 2",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Clinica reina victoria",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "MIO Guadalupe",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "MIO terminal intermedio",
+          "ubicacion": "Cali",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Módulos Médicos",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Omega",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Sena",
+          "ubicacion": "Santander",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Tequendama parking",
+          "ubicacion": "Cali",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Escenarios Deportivos",
+      "cantidad": 7,
+      "proyectos": [
+        {
+          "titulo": "Complejo acuático popayan 2",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Cancha Javeriana",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "CECUN",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Coliseo artes marciales",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Coliseo mayor",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Complejo acuático popayan",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Complejo acuático popayan 3",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Estructuras Modulares",
+      "cantidad": 3,
+      "proyectos": [
+        {
+          "titulo": "Cocinas modulares",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Cocinas ocultas",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Módulo oficinas",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Industrial",
+      "cantidad": 8,
+      "proyectos": [
+        {
+          "titulo": "Ampliacion cargill",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Bodega Duplex Ingenieria",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Bodega Intera",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Bodega Protecnica II",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Tecno químicas",
+          "ubicacion": "Jamundí",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Tecnofar",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Torre cogeneración propal",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Ampliacion cargill 2",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Oil and Gas",
+      "cantidad": 2,
+      "proyectos": [
+        {
+          "titulo": "Tanque pulmón",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "Tanques de almacenamiento GLP",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Otros",
+      "cantidad": 1,
+      "proyectos": [
+        {
+          "titulo": "Nueva presentación de diapositivas",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        }
+      ]
+    },
+    {
+      "nombre": "Puentes",
+      "cantidad": 16,
+      "proyectos": [
+        {
+          "titulo": "peatonales - Esnata curva rio",
+          "ubicacion": "Cali",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "peatonales - La 63",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "peatonales - La Tertulia",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "peatonales - Puente autopista sur - carrera 68",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "peatonales - Terminal intermedio",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "peatonales Esnata curva rio  2",
+          "ubicacion": "Cali",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares - Cambrin",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares - Cambrin",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares - Carrera 100",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares - Frisoles",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares - Puente nolasco",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares - Río Negro",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares -La 21",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares -La Paila",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares -Saraconcho",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        },
+        {
+          "titulo": "vehiculares Puente nolasco 2",
+          "ubicacion": "Colombia",
+          "imagenes_count": 0
+        }
+      ]
+    }
+  ],
+  "generado": "2025-05-29T19:46:42.246Z"
+}

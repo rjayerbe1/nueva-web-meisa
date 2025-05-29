@@ -1,0 +1,622 @@
+[
+  {
+    "titulo": "plaza",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Armenia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Armenia.",
+    "imagenes": [],
+    "slider_id": 2902,
+    "slider_name": "Centro comercial - Armenia plaza"
+  },
+  {
+    "titulo": "plaza",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Bochalema",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Bochalema.",
+    "imagenes": [],
+    "slider_id": 2907,
+    "slider_name": "Centro comercial-Bochalema plaza"
+  },
+  {
+    "titulo": "Campanario",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2398,
+    "slider_name": "Centro comercial-Campanario"
+  },
+  {
+    "titulo": "Campanario copia",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2459,
+    "slider_name": "Centro comercial-Campanario copia"
+  },
+  {
+    "titulo": "Monserrat",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1847,
+    "slider_name": "Centro comercial-Monserrat"
+  },
+  {
+    "titulo": "Paseo villa del rio",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1854,
+    "slider_name": "Centro comercial-Paseo villa del rio"
+  },
+  {
+    "titulo": "Unico",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Barranquilla",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Barranquilla.",
+    "imagenes": [],
+    "slider_id": 1758,
+    "slider_name": "Centro comercial-Unico Barranquilla"
+  },
+  {
+    "titulo": "Unico",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Cali",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Cali.",
+    "imagenes": [],
+    "slider_id": 2467,
+    "slider_name": "Centro comercial-Unico Cali"
+  },
+  {
+    "titulo": "Unico",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Cali",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Cali.",
+    "imagenes": [],
+    "slider_id": 2453,
+    "slider_name": "Centro comercial-Unico Cali"
+  },
+  {
+    "titulo": "Unico",
+    "categoria": "Centros Comerciales",
+    "ubicacion": "Neiva",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de centros comerciales desarrollado por MEISA en Neiva.",
+    "imagenes": [],
+    "slider_id": 1762,
+    "slider_name": "Centro comercial-Unico Neiva"
+  },
+  {
+    "titulo": "Camino viejo",
+    "categoria": "Cubiertas y Fachadas",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de cubiertas y fachadas desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1619,
+    "slider_name": "Cubiertas y fachadas - Camino viejo"
+  },
+  {
+    "titulo": "Cubierta interna",
+    "categoria": "Cubiertas y Fachadas",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de cubiertas y fachadas desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1640,
+    "slider_name": "Cubiertas y fachadas - Cubierta interna"
+  },
+  {
+    "titulo": "IPS Sura",
+    "categoria": "Cubiertas y Fachadas",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de cubiertas y fachadas desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1623,
+    "slider_name": "Cubiertas y fachadas - IPS Sura"
+  },
+  {
+    "titulo": "Taquillas Pisoje",
+    "categoria": "Cubiertas y Fachadas",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de cubiertas y fachadas desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1635,
+    "slider_name": "Cubiertas y fachadas - Taquillas Pisoje"
+  },
+  {
+    "titulo": "Taquillas pisoje comfa",
+    "categoria": "Cubiertas y Fachadas",
+    "ubicacion": "Cauca",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de cubiertas y fachadas desarrollado por MEISA en Cauca.",
+    "imagenes": [],
+    "slider_id": 1792,
+    "slider_name": "Cubiertas y fachadas - Taquillas pisoje comfacauca"
+  },
+  {
+    "titulo": "Bomberos",
+    "categoria": "Edificios",
+    "ubicacion": "Popayán",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Popayán.",
+    "imagenes": [],
+    "slider_id": 1746,
+    "slider_name": "Edificios - Bomberos Popayán"
+  },
+  {
+    "titulo": "Cinemateca distrital",
+    "categoria": "Edificios",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1840,
+    "slider_name": "Edificios - Cinemateca distrital"
+  },
+  {
+    "titulo": "Cinemateca distrital 2",
+    "categoria": "Edificios",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2558,
+    "slider_name": "Edificios - Cinemateca distrital 2"
+  },
+  {
+    "titulo": "Clinica reina victoria",
+    "categoria": "Edificios",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1832,
+    "slider_name": "Edificios - Clinica reina victoria"
+  },
+  {
+    "titulo": "MIO Guadalupe",
+    "categoria": "Edificios",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1739,
+    "slider_name": "Edificios - MIO Guadalupe"
+  },
+  {
+    "titulo": "MIO terminal intermedio",
+    "categoria": "Edificios",
+    "ubicacion": "Cali",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Cali.",
+    "imagenes": [],
+    "slider_id": 2927,
+    "slider_name": "Edificios - MIO terminal intermedio Cali"
+  },
+  {
+    "titulo": "Módulos Médicos",
+    "categoria": "Edificios",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1729,
+    "slider_name": "Edificios - Módulos Médicos"
+  },
+  {
+    "titulo": "Omega",
+    "categoria": "Edificios",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1752,
+    "slider_name": "Edificios - Omega"
+  },
+  {
+    "titulo": "Sena",
+    "categoria": "Edificios",
+    "ubicacion": "Santander",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Santander.",
+    "imagenes": [],
+    "slider_id": 1734,
+    "slider_name": "Edificios - Sena Santander"
+  },
+  {
+    "titulo": "Tequendama parking",
+    "categoria": "Edificios",
+    "ubicacion": "Cali",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de edificios desarrollado por MEISA en Cali.",
+    "imagenes": [],
+    "slider_id": 2945,
+    "slider_name": "Edificios - Tequendama parking cali"
+  },
+  {
+    "titulo": "Complejo acuático popayan 2",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2792,
+    "slider_name": "Escenarios deportivos  Complejo acuático popayan 2"
+  },
+  {
+    "titulo": "Cancha Javeriana",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1588,
+    "slider_name": "Escenarios deportivos - Cancha Javeriana"
+  },
+  {
+    "titulo": "CECUN",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1645,
+    "slider_name": "Escenarios deportivos - CECUN"
+  },
+  {
+    "titulo": "Coliseo artes marciales",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1657,
+    "slider_name": "Escenarios deportivos - Coliseo artes marciales"
+  },
+  {
+    "titulo": "Coliseo mayor",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1651,
+    "slider_name": "Escenarios deportivos - Coliseo mayor"
+  },
+  {
+    "titulo": "Complejo acuático popayan",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1654,
+    "slider_name": "Escenarios deportivos - Complejo acuático popayan"
+  },
+  {
+    "titulo": "Complejo acuático popayan 3",
+    "categoria": "Escenarios Deportivos",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de escenarios deportivos desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2828,
+    "slider_name": "Escenarios deportivos Complejo acuático popayan 3"
+  },
+  {
+    "titulo": "Cocinas modulares",
+    "categoria": "Estructuras Modulares",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de estructuras modulares desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1628,
+    "slider_name": "Estructuras modulares - Cocinas modulares"
+  },
+  {
+    "titulo": "Cocinas ocultas",
+    "categoria": "Estructuras Modulares",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de estructuras modulares desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1788,
+    "slider_name": "Estructuras modulares - Cocinas ocultas"
+  },
+  {
+    "titulo": "Módulo oficinas",
+    "categoria": "Estructuras Modulares",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de estructuras modulares desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1614,
+    "slider_name": "Estructuras modulares - Módulo oficinas"
+  },
+  {
+    "titulo": "Ampliacion cargill",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1825,
+    "slider_name": "Industria - Ampliacion cargill"
+  },
+  {
+    "titulo": "Bodega Duplex Ingenieria",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1718,
+    "slider_name": "Industria - Bodega Duplex Ingenieria"
+  },
+  {
+    "titulo": "Bodega Intera",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1713,
+    "slider_name": "Industria - Bodega Intera"
+  },
+  {
+    "titulo": "Bodega Protecnica II",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1605,
+    "slider_name": "Industria - Bodega Protecnica II"
+  },
+  {
+    "titulo": "Tecno químicas",
+    "categoria": "Industrial",
+    "ubicacion": "Jamundí",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Jamundí.",
+    "imagenes": [],
+    "slider_id": 2885,
+    "slider_name": "Industria - Tecno químicas Jamundí"
+  },
+  {
+    "titulo": "Tecnofar",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1723,
+    "slider_name": "Industria - Tecnofar"
+  },
+  {
+    "titulo": "Torre cogeneración propal",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1819,
+    "slider_name": "Industria - Torre cogeneración propal"
+  },
+  {
+    "titulo": "Ampliacion cargill 2",
+    "categoria": "Industrial",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de industrial desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2643,
+    "slider_name": "Industria Ampliacion cargill 2"
+  },
+  {
+    "titulo": "Nueva presentación de diapositivas",
+    "categoria": "Otros",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de otros desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2944,
+    "slider_name": "Nueva presentación de diapositivas"
+  },
+  {
+    "titulo": "Tanque pulmón",
+    "categoria": "Oil and Gas",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de oil and gas desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1779,
+    "slider_name": "Oil and Gas - Tanque pulmón"
+  },
+  {
+    "titulo": "Tanques de almacenamiento GLP",
+    "categoria": "Oil and Gas",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de oil and gas desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1781,
+    "slider_name": "Oil and Gas - Tanques de almacenamiento GLP"
+  },
+  {
+    "titulo": "peatonales - Esnata curva rio",
+    "categoria": "Puentes",
+    "ubicacion": "Cali",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Cali.",
+    "imagenes": [],
+    "slider_id": 1802,
+    "slider_name": "Puentes peatonales - Escalinata curva rio cali"
+  },
+  {
+    "titulo": "peatonales - La 63",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1670,
+    "slider_name": "Puentes peatonales - La 63"
+  },
+  {
+    "titulo": "peatonales - La Tertulia",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1665,
+    "slider_name": "Puentes peatonales - La Tertulia"
+  },
+  {
+    "titulo": "peatonales - Puente autopista sur - carrera 68",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1797,
+    "slider_name": "Puentes peatonales - Puente autopista sur - carrera 68"
+  },
+  {
+    "titulo": "peatonales - Terminal intermedio",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1659,
+    "slider_name": "Puentes peatonales - Terminal intermedio"
+  },
+  {
+    "titulo": "peatonales Esnata curva rio  2",
+    "categoria": "Puentes",
+    "ubicacion": "Cali",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Cali.",
+    "imagenes": [],
+    "slider_id": 2779,
+    "slider_name": "Puentes peatonales Escalinata curva rio cali 2"
+  },
+  {
+    "titulo": "vehiculares - Cambrin",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1701,
+    "slider_name": "Puentes vehiculares - Cambrin"
+  },
+  {
+    "titulo": "vehiculares - Cambrin",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1707,
+    "slider_name": "Puentes vehiculares - Cambrin"
+  },
+  {
+    "titulo": "vehiculares - Carrera 100",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1813,
+    "slider_name": "Puentes vehiculares - Carrera 100"
+  },
+  {
+    "titulo": "vehiculares - Frisoles",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1698,
+    "slider_name": "Puentes vehiculares - Frisoles"
+  },
+  {
+    "titulo": "vehiculares - Puente nolasco",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1809,
+    "slider_name": "Puentes vehiculares - Puente nolasco"
+  },
+  {
+    "titulo": "vehiculares - Río Negro",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1675,
+    "slider_name": "Puentes vehiculares - Río Negro"
+  },
+  {
+    "titulo": "vehiculares -La 21",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1693,
+    "slider_name": "Puentes vehiculares -La 21"
+  },
+  {
+    "titulo": "vehiculares -La Paila",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1687,
+    "slider_name": "Puentes vehiculares -La Paila"
+  },
+  {
+    "titulo": "vehiculares -Saraconcho",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 1681,
+    "slider_name": "Puentes vehiculares -Saraconcho"
+  },
+  {
+    "titulo": "vehiculares Puente nolasco 2",
+    "categoria": "Puentes",
+    "ubicacion": "Colombia",
+    "cliente": "Cliente confidencial",
+    "descripcion": "Proyecto de puentes desarrollado por MEISA en Colombia.",
+    "imagenes": [],
+    "slider_id": 2725,
+    "slider_name": "Puentes vehiculares Puente nolasco 2"
+  }
+]

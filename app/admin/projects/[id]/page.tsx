@@ -62,14 +62,15 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     : 0
 
   // Formatear valores monetarios
-  const formatCurrency = (value: number | null) => {
+  const formatCurrency = (value: any) => {
     if (!value) return '--'
+    const numValue = typeof value === 'number' ? value : Number(value)
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: project.moneda || 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(value)
+    }).format(numValue)
   }
 
   // Obtener icono de estado
@@ -173,7 +174,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
               <div>
                 <p className="text-sm text-gray-500">Fechas</p>
                 <p className="font-medium text-gray-900">
-                  {new Date(project.fechaInicio).toLocaleDateString()} - {new Date(project.fechaFin).toLocaleDateString()}
+                  {new Date(project.fechaInicio).toLocaleDateString()} - {project.fechaFin ? new Date(project.fechaFin).toLocaleDateString() : 'En progreso'}
                 </p>
               </div>
             </div>
@@ -245,7 +246,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
                 <div>
                   <p className="text-sm text-gray-500">Margen</p>
                   <p className="text-lg font-medium text-gray-900">
-                    {((1 - project.costoReal / project.presupuesto) * 100).toFixed(1)}%
+                    {((1 - Number(project.costoReal) / Number(project.presupuesto)) * 100).toFixed(1)}%
                   </p>
                 </div>
               )}
