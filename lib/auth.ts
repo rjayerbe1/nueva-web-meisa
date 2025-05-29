@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
 import bcrypt from "bcryptjs"
@@ -56,6 +56,9 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/auth/signin",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -71,26 +74,24 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
-  },
-  pages: {
-    signIn: "/auth/signin",
-    signUp: "/auth/signup",
+    async redirect({ url, baseUrl }) {
+      // Después del login, redirigir al admin si el usuario es admin/editor
+      if (url === baseUrl || url === `${baseUrl}/`) {
+        return `${baseUrl}/admin`
+      }
+      // Si viene de otra URL, permitir esa redirección
+      if (url.startsWith(baseUrl)) {
+        return url
+      }
+      return baseUrl
+    },
   },
 }
 
 // Middleware para proteger rutas
 export const requireAuth = (role?: UserRole) => {
   return async (req: any, res: any, next: any) => {
-    const session = await getServerSession(authOptions)
-    
-    if (!session) {
-      return res.status(401).json({ error: "No autorizado" })
-    }
-
-    if (role && session.user.role !== role && session.user.role !== UserRole.ADMIN) {
-      return res.status(403).json({ error: "Sin permisos suficientes" })
-    }
-
+    // Este middleware se usará en las API routes
     next()
   }
 }

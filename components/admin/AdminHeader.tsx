@@ -23,7 +23,7 @@ export function AdminHeader({ sidebarOpen, setSidebarOpen }: AdminHeaderProps) {
   const { data: session } = useSession()
 
   return (
-    <header className="bg-white border-b border-gray-200 fixed w-full top-0 z-40">
+    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Mobile menu button */}
