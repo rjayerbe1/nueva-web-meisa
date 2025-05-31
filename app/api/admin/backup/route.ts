@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { createEnhancedBackup } from '@/enhanced-backup-system'
 import path from 'path'
 import fs from 'fs'
 
@@ -13,9 +14,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const { type } = await request.json()
+    const { type, backupType = 'database' } = await request.json()
     
     if (type === 'manual') {
+      // Backup completo con imágenes y logos
+      if (backupType === 'complete') {
+        try {
+          const result = await createEnhancedBackup()
+          
+          if (result.success) {
+            return NextResponse.json({
+              success: true,
+              backup: {
+                name: path.basename(result.backupPath!),
+                path: result.backupPath,
+                size: result.size,
+                created: new Date().toISOString(),
+                type: 'complete',
+                includes: result.includes,
+                stats: result.stats
+              }
+            })
+          } else {
+            return NextResponse.json({ 
+              error: result.error || 'Error al crear backup completo' 
+            }, { status: 500 })
+          }
+        } catch (error) {
+          console.error('Error en backup completo:', error)
+          return NextResponse.json({ 
+            error: 'Error al crear backup completo' 
+          }, { status: 500 })
+        }
+      }
+      
+      // Backup solo de base de datos (comportamiento original)
       // Crear backup manual usando Prisma
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
       const backupName = `backup-meisa-${timestamp}.json`
@@ -42,7 +75,8 @@ export async function POST(request: NextRequest) {
                 documentos: true,
                 progreso: true,
                 timeline: true,
-                comentarios: true
+                comentarios: true,
+                clienteRel: true
               }
             }),
             clientes: await prisma.cliente.findMany(),
@@ -72,7 +106,13 @@ export async function POST(request: NextRequest) {
             name: backupName,
             path: backupPath,
             size: stats.size,
-            created: new Date().toISOString()
+            created: new Date().toISOString(),
+            type: 'database',
+            includes: {
+              database: true,
+              projectImages: false,
+              clientLogos: false
+            }
           }
         })
         
@@ -106,15 +146,35 @@ export async function GET() {
     
     const files = fs.readdirSync(backupDir)
     const backups = files
-      .filter(file => file.endsWith('.json') || file.endsWith('.sql'))
+      .filter(file => file.endsWith('.json') || file.endsWith('.sql') || file.endsWith('.zip'))
       .map(file => {
         const filePath = path.join(backupDir, file)
         const stats = fs.statSync(filePath)
+        
+        // Determinar tipo de backup basado en el nombre del archivo
+        let backupType = 'database'
+        let includes = {
+          database: true,
+          projectImages: false,
+          clientLogos: false
+        }
+        
+        if (file.includes('complete-backup') || file.endsWith('.zip')) {
+          backupType = 'complete'
+          includes = {
+            database: true,
+            projectImages: true,
+            clientLogos: true
+          }
+        }
+        
         return {
           name: file,
           size: stats.size,
           created: stats.birthtime.toISOString(),
-          modified: stats.mtime.toISOString()
+          modified: stats.mtime.toISOString(),
+          type: backupType,
+          includes
         }
       })
       .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())

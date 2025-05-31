@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { UserRole } from '@prisma/client'
+import { UserRole, CategoriaEnum } from '@prisma/client'
+import { moveImageToNewCategory, cleanupEmptyDirectory, getCategoryFolder, slugify } from '@/lib/image-utils'
 
 export async function GET(
   request: NextRequest,
@@ -55,22 +56,28 @@ export async function PUT(
 
     const data = await request.json()
 
+    // Obtener proyecto actual para comparar cambios
+    const currentProject = await prisma.proyecto.findUnique({
+      where: { id: params.id },
+      include: {
+        imagenes: {
+          select: { id: true, url: true }
+        }
+      }
+    })
+
+    if (!currentProject) {
+      return NextResponse.json({ error: 'Proyecto no encontrado' }, { status: 404 })
+    }
+
+    // Detectar si cambió la categoría o título para mover imágenes
+    const categoryChanged = data.categoria && data.categoria !== currentProject.categoria
+    const titleChanged = data.titulo && data.titulo !== currentProject.titulo
+
     // Generar slug si el título cambió
     let slug = data.slug
-    if (data.titulo) {
-      const existingProject = await prisma.proyecto.findUnique({
-        where: { id: params.id },
-        select: { titulo: true }
-      })
-      
-      if (existingProject && existingProject.titulo !== data.titulo) {
-        slug = data.titulo
-          .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .trim()
-      }
+    if (data.titulo && titleChanged) {
+      slug = slugify(data.titulo)
     }
 
     // Build update data object only with provided fields
@@ -103,6 +110,56 @@ export async function PUT(
       where: { id: params.id },
       data: updateData
     })
+
+    // Mover imágenes si cambió la categoría o título
+    if ((categoryChanged || titleChanged) && currentProject.imagenes.length > 0) {
+      try {
+        const newCategory = data.categoria || currentProject.categoria
+        const newTitle = data.titulo || currentProject.titulo
+        const oldCategoryFolder = getCategoryFolder(currentProject.categoria)
+        const oldProjectSlug = slugify(currentProject.titulo)
+
+        console.log(`Moviendo ${currentProject.imagenes.length} imágenes de ${currentProject.categoria} a ${newCategory}`)
+
+        // Mover cada imagen
+        const imageUpdates = await Promise.allSettled(
+          currentProject.imagenes.map(async (imagen) => {
+            const newUrl = await moveImageToNewCategory(
+              imagen.url,
+              currentProject.categoria,
+              newCategory as CategoriaEnum,
+              newTitle
+            )
+
+            // Actualizar URL en base de datos si cambió
+            if (newUrl !== imagen.url) {
+              await prisma.imagenProyecto.update({
+                where: { id: imagen.id },
+                data: { url: newUrl }
+              })
+            }
+
+            return { id: imagen.id, oldUrl: imagen.url, newUrl }
+          })
+        )
+
+        // Log resultados
+        const successful = imageUpdates.filter(result => result.status === 'fulfilled').length
+        const failed = imageUpdates.filter(result => result.status === 'rejected').length
+        
+        console.log(`Imágenes movidas: ${successful} exitosas, ${failed} fallidas`)
+
+        // Limpiar directorio vacío del proyecto anterior si cambió categoría o título
+        if (categoryChanged || titleChanged) {
+          const oldProjectDir = `${oldCategoryFolder}/${oldProjectSlug}`
+          cleanupEmptyDirectory(oldProjectDir)
+        }
+
+      } catch (error) {
+        console.error('Error moviendo imágenes:', error)
+        // No fallar la actualización del proyecto por errores de movimiento de archivos
+      }
+    }
 
     return NextResponse.json(project)
   } catch (error) {

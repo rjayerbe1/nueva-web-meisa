@@ -17,7 +17,12 @@ import {
   Trash2,
   Settings,
   Calendar,
-  RotateCcw
+  RotateCcw,
+  Package,
+  Image,
+  Users,
+  Archive,
+  ExternalLink
 } from 'lucide-react'
 
 interface Backup {
@@ -25,6 +30,12 @@ interface Backup {
   size: number
   created: string
   modified: string
+  type?: 'database' | 'complete'
+  includes?: {
+    database: boolean
+    projectImages: boolean
+    clientLogos: boolean
+  }
 }
 
 interface ScheduleConfig {
@@ -44,7 +55,9 @@ interface ScheduleConfig {
 export function BackupManager() {
   const [backups, setBackups] = useState<Backup[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadingComplete, setLoadingComplete] = useState(false)
   const [restoring, setRestoring] = useState(false)
+  const [restoringComplete, setRestoringComplete] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [cleaning, setCleaning] = useState(false)
   const [confirmPhrase, setConfirmPhrase] = useState('')
@@ -52,6 +65,7 @@ export function BackupManager() {
   const [selectedBackup, setSelectedBackup] = useState<string | null>(null)
   const [selectedBackupToDelete, setSelectedBackupToDelete] = useState<string | null>(null)
   const [showRestoreDialog, setShowRestoreDialog] = useState(false)
+  const [showRestoreCompleteDialog, setShowRestoreCompleteDialog] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showScheduleDialog, setShowScheduleDialog] = useState(false)
   const [schedule, setSchedule] = useState<ScheduleConfig>({
@@ -77,21 +91,33 @@ export function BackupManager() {
     }
   }
 
-  const createBackup = async () => {
-    setLoading(true)
+  const createBackup = async (backupType: 'database' | 'complete' = 'database') => {
+    const isComplete = backupType === 'complete'
+    
+    if (isComplete) {
+      setLoadingComplete(true)
+    } else {
+      setLoading(true)
+    }
     setMessage(null)
     
     try {
       const response = await fetch('/api/admin/backup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'manual' })
+        body: JSON.stringify({ 
+          type: 'manual',
+          backupType 
+        })
       })
       
       const data = await response.json()
       
       if (data.success) {
-        setMessage({ type: 'success', text: 'Backup creado exitosamente' })
+        const message = isComplete 
+          ? `Backup completo creado exitosamente (${(data.backup.size / 1024 / 1024).toFixed(2)} MB)`
+          : 'Backup de base de datos creado exitosamente'
+        setMessage({ type: 'success', text: message })
         loadBackups()
       } else {
         setMessage({ type: 'error', text: data.error || 'Error al crear backup' })
@@ -99,7 +125,11 @@ export function BackupManager() {
     } catch (error) {
       setMessage({ type: 'error', text: 'Error de conexión' })
     } finally {
-      setLoading(false)
+      if (isComplete) {
+        setLoadingComplete(false)
+      } else {
+        setLoading(false)
+      }
     }
   }
 
@@ -139,6 +169,51 @@ export function BackupManager() {
       setMessage({ type: 'error', text: 'Error de conexión' })
     } finally {
       setRestoring(false)
+    }
+  }
+
+  const restoreCompleteBackup = async () => {
+    if (!selectedBackup || confirmPhrase !== 'CONFIRMO RESTAURAR BACKUP COMPLETO') {
+      setMessage({ type: 'error', text: 'Debe escribir exactamente: CONFIRMO RESTAURAR BACKUP COMPLETO' })
+      return
+    }
+
+    setRestoringComplete(true)
+    setMessage(null)
+    
+    try {
+      const response = await fetch('/api/admin/backup/restore-complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          backupName: selectedBackup,
+          confirmPhrase 
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        const components = []
+        if (data.restored.database) components.push('Base de datos')
+        if (data.restored.projectImages) components.push(`${data.stats.imagesRestored} imágenes`)
+        if (data.restored.clientLogos) components.push(`${data.stats.logosRestored} logos`)
+        
+        setMessage({ 
+          type: 'success', 
+          text: `Backup completo restaurado: ${components.join(', ')}` 
+        })
+        setShowRestoreCompleteDialog(false)
+        setConfirmPhrase('')
+        setSelectedBackup(null)
+        loadBackups()
+      } else {
+        setMessage({ type: 'error', text: data.error || 'Error al restaurar backup completo' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Error de conexión' })
+    } finally {
+      setRestoringComplete(false)
     }
   }
 
@@ -254,13 +329,41 @@ export function BackupManager() {
     })
   }
 
+  const downloadBackup = async (backupName: string) => {
+    try {
+      const response = await fetch(`/api/admin/backup/download?backup=${encodeURIComponent(backupName)}`)
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        setMessage({ type: 'error', text: errorData.error || 'Error al descargar backup' })
+        return
+      }
+      
+      // Crear URL del blob y descargar
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = backupName
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      
+      setMessage({ type: 'success', text: 'Backup descargado exitosamente' })
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Error de conexión al descargar backup' })
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Gestión de Backups</h2>
-          <p className="text-gray-600">Administra copias de seguridad de la base de datos</p>
+          <p className="text-gray-600">Administra copias de seguridad completas (base de datos + archivos)</p>
         </div>
         <div className="flex items-center space-x-3">
           <Button
@@ -281,12 +384,21 @@ export function BackupManager() {
             {cleaning ? 'Limpiando...' : 'Limpiar'}
           </Button>
           <Button 
-            onClick={createBackup} 
-            disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700"
+            onClick={() => createBackup('database')} 
+            disabled={loading || loadingComplete}
+            variant="outline"
+            className="border-blue-200 text-blue-600 hover:bg-blue-50"
           >
-            <Download className="h-4 w-4 mr-2" />
-            {loading ? 'Creando...' : 'Crear Backup'}
+            <Database className="h-4 w-4 mr-2" />
+            {loading ? 'Creando...' : 'Solo Base de Datos'}
+          </Button>
+          <Button 
+            onClick={() => createBackup('complete')} 
+            disabled={loading || loadingComplete}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            <Package className="h-4 w-4 mr-2" />
+            {loadingComplete ? 'Creando Completo...' : 'Backup Completo'}
           </Button>
         </div>
       </div>
@@ -310,6 +422,20 @@ export function BackupManager() {
           </div>
         </Card>
       )}
+
+      {/* Información de backup completo */}
+      <Card className="p-4 bg-blue-50 border-blue-200">
+        <div className="flex items-start">
+          <Package className="h-5 w-5 text-blue-600 mr-2 mt-0.5" />
+          <div>
+            <h3 className="font-semibold text-blue-800">Backup Completo Disponible</h3>
+            <p className="text-sm text-blue-700 mt-1">
+              El backup completo incluye base de datos, imágenes de proyectos y logos de clientes. 
+              Ideal para migraciones o restauraciones completas del sistema.
+            </p>
+          </div>
+        </div>
+      </Card>
 
       {/* Advertencia de seguridad */}
       <Card className="p-4 bg-yellow-50 border-yellow-200">
@@ -346,9 +472,20 @@ export function BackupManager() {
                 className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
               >
                 <div className="flex items-center space-x-4">
-                  <Database className="h-5 w-5 text-blue-600" />
+                  {backup.name.endsWith('.zip') || backup.type === 'complete' ? (
+                    <Package className="h-5 w-5 text-green-600" />
+                  ) : (
+                    <Database className="h-5 w-5 text-blue-600" />
+                  )}
                   <div>
-                    <div className="font-medium text-gray-900">{backup.name}</div>
+                    <div className="flex items-center space-x-2">
+                      <div className="font-medium text-gray-900">{backup.name}</div>
+                      {(backup.name.endsWith('.zip') || backup.type === 'complete') && (
+                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
+                          Completo
+                        </span>
+                      )}
+                    </div>
                     <div className="text-sm text-gray-500 flex items-center space-x-4">
                       <span className="flex items-center">
                         <Clock className="h-3 w-3 mr-1" />
@@ -359,34 +496,98 @@ export function BackupManager() {
                         {formatFileSize(backup.size)}
                       </span>
                     </div>
+                    {backup.includes && (
+                      <div className="text-xs text-gray-400 flex items-center space-x-3 mt-1">
+                        {backup.includes.database && (
+                          <span className="flex items-center">
+                            <Database className="h-3 w-3 mr-1" />
+                            BD
+                          </span>
+                        )}
+                        {backup.includes.projectImages && (
+                          <span className="flex items-center">
+                            <Image className="h-3 w-3 mr-1" />
+                            Proyectos
+                          </span>
+                        )}
+                        {backup.includes.clientLogos && (
+                          <span className="flex items-center">
+                            <Users className="h-3 w-3 mr-1" />
+                            Logos
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedBackup(backup.name)
-                      setShowRestoreDialog(true)
-                    }}
-                    className="text-orange-600 border-orange-200 hover:bg-orange-50"
-                  >
-                    <Upload className="h-4 w-4 mr-1" />
-                    Restaurar
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedBackupToDelete(backup.name)
-                      setShowDeleteDialog(true)
-                    }}
-                    className="text-red-600 border-red-200 hover:bg-red-50"
-                  >
-                    <Trash2 className="h-4 w-4 mr-1" />
-                    Eliminar
-                  </Button>
+                  {backup.name.endsWith('.zip') || backup.type === 'complete' ? (
+                    // Para backups completos (ZIP): restaurar completo, descargar y eliminar
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedBackup(backup.name)
+                          setShowRestoreCompleteDialog(true)
+                        }}
+                        className="text-green-600 border-green-200 hover:bg-green-50"
+                      >
+                        <Package className="h-4 w-4 mr-1" />
+                        Restaurar Completo
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => downloadBackup(backup.name)}
+                        className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                      >
+                        <Download className="h-4 w-4 mr-1" />
+                        Descargar
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedBackupToDelete(backup.name)
+                          setShowDeleteDialog(true)
+                        }}
+                        className="text-red-600 border-red-200 hover:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Eliminar
+                      </Button>
+                    </>
+                  ) : (
+                    // Para backups de base de datos (JSON/SQL): restaurar y eliminar
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedBackup(backup.name)
+                          setShowRestoreDialog(true)
+                        }}
+                        className="text-orange-600 border-orange-200 hover:bg-orange-50"
+                      >
+                        <Upload className="h-4 w-4 mr-1" />
+                        Restaurar BD
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedBackupToDelete(backup.name)
+                          setShowDeleteDialog(true)
+                        }}
+                        className="text-red-600 border-red-200 hover:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Eliminar
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -452,6 +653,79 @@ export function BackupManager() {
                 className="flex-1 bg-red-600 hover:bg-red-700"
               >
                 {restoring ? 'Restaurando...' : 'Restaurar'}
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Dialog de restauración completa */}
+      {showRestoreCompleteDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <Card className="p-6 max-w-md w-full mx-4">
+            <div className="flex items-center mb-4">
+              <Package className="h-6 w-6 text-green-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">Confirmar Restauración Completa</h3>
+            </div>
+            
+            <div className="space-y-4">
+              <p className="text-sm text-gray-600">
+                Estás a punto de restaurar el backup completo: <strong>{selectedBackup}</strong>
+              </p>
+              
+              <div className="bg-green-50 border border-green-200 p-3 rounded">
+                <p className="text-sm text-green-800 font-medium">
+                  📦 RESTAURACIÓN COMPLETA
+                </p>
+                <p className="text-sm text-green-700 mt-1">
+                  Se restaurarán: base de datos, imágenes de proyectos y logos de clientes.
+                </p>
+              </div>
+              
+              <div className="bg-red-50 border border-red-200 p-3 rounded">
+                <p className="text-sm text-red-800 font-medium">
+                  ⚠️ ESTA ACCIÓN NO SE PUEDE DESHACER
+                </p>
+                <p className="text-sm text-red-700 mt-1">
+                  Todos los datos y archivos actuales serán reemplazados por los del backup.
+                </p>
+              </div>
+              
+              <div>
+                <Label htmlFor="confirm-phrase-complete" className="text-sm font-medium">
+                  Para continuar, escriba exactamente:
+                </Label>
+                <p className="text-sm font-mono bg-gray-100 p-2 rounded mt-1 mb-2">
+                  CONFIRMO RESTAURAR BACKUP COMPLETO
+                </p>
+                <Input
+                  id="confirm-phrase-complete"
+                  value={confirmPhrase}
+                  onChange={(e) => setConfirmPhrase(e.target.value)}
+                  placeholder="Escriba la frase de confirmación"
+                  className="font-mono"
+                />
+              </div>
+            </div>
+            
+            <div className="flex space-x-3 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowRestoreCompleteDialog(false)
+                  setConfirmPhrase('')
+                  setSelectedBackup(null)
+                }}
+                className="flex-1"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={restoreCompleteBackup}
+                disabled={restoringComplete || confirmPhrase !== 'CONFIRMO RESTAURAR BACKUP COMPLETO'}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+              >
+                {restoringComplete ? 'Restaurando...' : 'Restaurar Completo'}
               </Button>
             </div>
           </Card>

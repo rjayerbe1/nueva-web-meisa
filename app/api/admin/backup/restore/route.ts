@@ -86,25 +86,20 @@ export async function POST(request: NextRequest) {
       const backupData = JSON.parse(backupContent)
       
       // Solo manejar backups JSON por ahora
+      // Los backups ZIP completos deben ser restaurados manualmente
       if (!backupName.endsWith('.json')) {
         return NextResponse.json({ 
-          error: 'Solo se pueden restaurar backups en formato JSON' 
+          error: 'Solo se pueden restaurar backups de base de datos (.json). Los backups completos (.zip) deben ser restaurados manualmente.' 
         }, { status: 400 })
       }
       
       console.log('Restaurando base de datos desde backup...')
       
-      // Desactivar restricciones temporalmente
-      await prisma.$executeRaw`SET foreign_key_checks = 0`
+      // PostgreSQL no necesita desactivar foreign key checks
+      // Las relaciones se manejan con el orden correcto de eliminación e inserción
       
-      // Limpiar todas las tablas (excepto _prisma_migrations)
-      await prisma.contactForm.deleteMany({})
-      await prisma.configuracionSitio.deleteMany({})
-      await prisma.miembroEquipo.deleteMany({})
-      await prisma.servicio.deleteMany({})
-      await prisma.cliente.deleteMany({})
-      
-      // Eliminar datos de proyectos en orden correcto
+      // Limpiar todas las tablas en orden correcto para PostgreSQL
+      // Primero eliminar registros que dependen de otros (relaciones)
       await prisma.comentarioProyecto.deleteMany({})
       await prisma.timelineEntry.deleteMany({})
       await prisma.progresoProyecto.deleteMany({})
@@ -112,7 +107,14 @@ export async function POST(request: NextRequest) {
       await prisma.imagenProyecto.deleteMany({})
       await prisma.proyecto.deleteMany({})
       
-      // Eliminar sesiones y cuentas de usuarios
+      // Luego eliminar tablas independientes
+      await prisma.contactForm.deleteMany({})
+      await prisma.configuracionSitio.deleteMany({})
+      await prisma.miembroEquipo.deleteMany({})
+      await prisma.servicio.deleteMany({})
+      await prisma.cliente.deleteMany({})
+      
+      // Finalmente eliminar sesiones y usuarios
       await prisma.session.deleteMany({})
       await prisma.account.deleteMany({})
       await prisma.user.deleteMany({})
@@ -120,40 +122,45 @@ export async function POST(request: NextRequest) {
       // Restaurar datos
       if (backupData.data.users?.length > 0) {
         for (const user of backupData.data.users) {
-          await prisma.user.create({ data: user })
+          const { createdAt, updatedAt, ...userData } = user
+          await prisma.user.create({ data: userData })
         }
       }
       
       if (backupData.data.clientes?.length > 0) {
         for (const cliente of backupData.data.clientes) {
-          await prisma.cliente.create({ data: cliente })
+          const { id, createdAt, updatedAt, ...clienteData } = cliente
+          await prisma.cliente.create({ data: clienteData })
         }
       }
       
       if (backupData.data.servicios?.length > 0) {
         for (const servicio of backupData.data.servicios) {
-          await prisma.servicio.create({ data: servicio })
+          const { id, createdAt, updatedAt, ...servicioData } = servicio
+          await prisma.servicio.create({ data: servicioData })
         }
       }
       
       if (backupData.data.miembrosEquipo?.length > 0) {
         for (const miembro of backupData.data.miembrosEquipo) {
-          await prisma.miembroEquipo.create({ data: miembro })
+          const { id, createdAt, updatedAt, ...miembroData } = miembro
+          await prisma.miembroEquipo.create({ data: miembroData })
         }
       }
       
       if (backupData.data.proyectos?.length > 0) {
         for (const proyecto of backupData.data.proyectos) {
-          const { imagenes, documentos, progreso, timeline, comentarios, ...proyectoData } = proyecto
+          const { id, imagenes, documentos, progreso, timeline, comentarios, clienteRel, createdAt, updatedAt, ...proyectoData } = proyecto
           
           const nuevoProyecto = await prisma.proyecto.create({ data: proyectoData })
           
           // Restaurar imágenes
           if (imagenes?.length > 0) {
             for (const imagen of imagenes) {
+              const { id, proyectoId, createdAt, updatedAt, ...imagenData } = imagen
               await prisma.imagenProyecto.create({
                 data: {
-                  ...imagen,
+                  ...imagenData,
                   proyectoId: nuevoProyecto.id
                 }
               })
@@ -222,8 +229,7 @@ export async function POST(request: NextRequest) {
         }
       }
       
-      // Reactivar restricciones
-      await prisma.$executeRaw`SET foreign_key_checks = 1`
+      // PostgreSQL: Las restricciones se manejan automáticamente
       
       return NextResponse.json({
         success: true,

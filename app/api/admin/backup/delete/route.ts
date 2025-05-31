@@ -34,7 +34,10 @@ export async function DELETE(request: NextRequest) {
     }
     
     // Verificar que es un archivo de backup válido
-    if (!backupName.endsWith('.json') && !backupName.endsWith('.sql')) {
+    const validExtensions = ['.json', '.sql', '.zip']
+    const isValidBackup = validExtensions.some(ext => backupName.endsWith(ext))
+    
+    if (!isValidBackup) {
       return NextResponse.json({ error: 'Tipo de archivo no válido' }, { status: 400 })
     }
     

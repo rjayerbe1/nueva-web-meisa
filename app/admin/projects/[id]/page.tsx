@@ -22,7 +22,15 @@ async function getProject(id: string) {
     where: { id },
     include: {
       imagenes: {
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          url: true,
+          alt: true,
+          descripcion: true,
+          tipo: true,
+          createdAt: true
+        }
       },
       documentos: {
         orderBy: { createdAt: 'desc' }

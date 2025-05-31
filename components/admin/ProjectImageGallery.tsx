@@ -2,13 +2,14 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Upload, X, Trash2, Image as ImageIcon, Eye, Download } from "lucide-react"
+import { Upload, X, Trash2, Image as ImageIcon, Eye, Download, Star } from "lucide-react"
 
 interface ProjectImage {
   id: string
   url: string
   alt: string
   descripcion: string | null
+  tipo: 'PORTADA' | 'GALERIA' | 'PROCESO' | 'ANTES_DESPUES' | 'PLANOS'
   createdAt: Date
 }
 
@@ -30,6 +31,7 @@ export default function ProjectImageGallery({
   const [uploading, setUploading] = useState(false)
   const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null)
   const [deletingImageId, setDeletingImageId] = useState<string | null>(null)
+  const [updatingCoverId, setUpdatingCoverId] = useState<string | null>(null)
   
   // Form para subir imágenes
   const [files, setFiles] = useState<FileList | null>(null)
@@ -72,6 +74,7 @@ export default function ProjectImageGallery({
           },
           body: JSON.stringify({
             url,
+            originalFileName: file.name,
             descripcion: description || file.name,
             proyectoId: projectId
           }),
@@ -122,6 +125,32 @@ export default function ProjectImageGallery({
     }
   }
 
+  const handleSetCover = async (imageId: string) => {
+    setUpdatingCoverId(imageId)
+    try {
+      const response = await fetch(`/api/admin/media/${imageId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tipo: 'PORTADA'
+        }),
+      })
+
+      if (response.ok) {
+        router.refresh()
+      } else {
+        alert('Error al establecer imagen de portada')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error al establecer imagen de portada')
+    } finally {
+      setUpdatingCoverId(null)
+    }
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
@@ -156,6 +185,14 @@ export default function ProjectImageGallery({
                 onClick={() => setSelectedImage(image)}
               />
               
+              {/* Indicador de imagen de portada */}
+              {image.tipo === 'PORTADA' && (
+                <div className="absolute top-2 left-2 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs font-medium flex items-center">
+                  <Star className="h-3 w-3 mr-1" />
+                  Portada
+                </div>
+              )}
+              
               {/* Overlay con acciones */}
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
                 <div className="flex space-x-2">
@@ -165,6 +202,16 @@ export default function ProjectImageGallery({
                   >
                     <Eye className="h-4 w-4" />
                   </button>
+                  {canEdit && image.tipo !== 'PORTADA' && (
+                    <button
+                      onClick={() => handleSetCover(image.id)}
+                      disabled={updatingCoverId === image.id}
+                      className="p-2 bg-white rounded-full text-yellow-600 hover:text-yellow-700 disabled:opacity-50"
+                      title="Establecer como portada"
+                    >
+                      <Star className="h-4 w-4" />
+                    </button>
+                  )}
                   {canEdit && (
                     <button
                       onClick={() => handleDelete(image.id)}
