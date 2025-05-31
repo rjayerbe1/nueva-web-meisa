@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Building2, Eye, Edit, Trash2, MapPin, Calendar, DollarSign } from "lucide-react"
+import { Building2, Eye, Edit, Trash2, MapPin, Calendar, DollarSign, Scale, Ruler } from "lucide-react"
 
 interface Project {
   id: string
@@ -15,6 +15,8 @@ interface Project {
   fechaInicio: string
   fechaFin: string | null
   presupuesto: number | null
+  toneladas: number | null
+  areaTotal: number | null
   destacado: boolean
   visible: boolean
   createdAt: string
@@ -30,13 +32,27 @@ interface ProjectsTableProps {
 
 export function ProjectsTable({ projects }: ProjectsTableProps) {
   const formatCurrency = (amount: any) => {
-    if (!amount) return 'No definido'
+    if (!amount) return '-'
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(Number(amount))
+  }
+
+  const formatToneladas = (toneladas: any) => {
+    if (!toneladas) return '-'
+    return `${parseFloat(toneladas).toFixed(1)} ton`
+  }
+
+  const formatArea = (area: any) => {
+    if (!area) return '-'
+    const areaNum = parseFloat(area)
+    if (areaNum >= 10000) {
+      return `${(areaNum / 10000).toFixed(1)} ha`
+    }
+    return `${areaNum.toLocaleString('es-CO')} m²`
   }
 
   const getStatusColor = (estado: string) => {
@@ -69,8 +85,31 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
     }
   }
 
-  const handleDelete = async (projectId: string) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
+  const handleDelete = async (projectId: string, projectTitle: string) => {
+    // Primera confirmación
+    const firstConfirm = confirm(
+      `⚠️ ADVERTENCIA: Vas a eliminar el proyecto "${projectTitle}"\n\n` +
+      `Esta acción eliminará:\n` +
+      `• El proyecto completo\n` +
+      `• Todas las imágenes asociadas\n` +
+      `• Todo el progreso y comentarios\n` +
+      `• ESTA ACCIÓN NO SE PUEDE DESHACER\n\n` +
+      `¿Estás completamente seguro?`
+    )
+    
+    if (!firstConfirm) return
+
+    // Segunda confirmación más estricta
+    const confirmPhrase = prompt(
+      `Para confirmar la eliminación del proyecto "${projectTitle}", escribe exactamente:\n\n` +
+      `ELIMINAR PROYECTO\n\n` +
+      `(Distingue mayúsculas y minúsculas)`
+    )
+
+    if (confirmPhrase !== 'ELIMINAR PROYECTO') {
+      if (confirmPhrase !== null) {
+        alert('Frase de confirmación incorrecta. Eliminación cancelada.')
+      }
       return
     }
 
@@ -80,14 +119,15 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
       })
 
       if (response.ok) {
-        // Recargar la página para actualizar la lista
+        alert('Proyecto eliminado exitosamente')
         window.location.reload()
       } else {
-        alert('Error al eliminar el proyecto')
+        const error = await response.json()
+        alert(error.error || 'Error al eliminar el proyecto')
       }
     } catch (error) {
       console.error('Error:', error)
-      alert('Error al eliminar el proyecto')
+      alert('Error de conexión al eliminar el proyecto')
     }
   }
 
@@ -127,6 +167,9 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
             </th>
             <th className="px-2 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[90px]">
               Estado
+            </th>
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[150px]">
+              Especificaciones
             </th>
             <th className="px-3 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider min-w-[120px]">
               Presupuesto
@@ -219,6 +262,25 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                   </span>
                 </div>
               </td>
+              <td className="px-2 py-3">
+                <div className="space-y-1">
+                  {project.toneladas && (
+                    <div className="flex items-center text-xs text-gray-600">
+                      <Scale className="h-3 w-3 mr-1 text-blue-500" />
+                      <span className="font-medium">{formatToneladas(project.toneladas)}</span>
+                    </div>
+                  )}
+                  {project.areaTotal && (
+                    <div className="flex items-center text-xs text-gray-600">
+                      <Ruler className="h-3 w-3 mr-1 text-green-500" />
+                      <span className="font-medium">{formatArea(project.areaTotal)}</span>
+                    </div>
+                  )}
+                  {!project.toneladas && !project.areaTotal && (
+                    <span className="text-xs text-gray-400">-</span>
+                  )}
+                </div>
+              </td>
               <td className="px-3 py-3">
                 <div className="text-sm font-medium text-gray-900 text-right">
                   {formatCurrency(project.presupuesto)}
@@ -252,7 +314,7 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                   <button
                     className="p-1 text-gray-500 hover:text-red-600 rounded transition-all"
                     title="Eliminar"
-                    onClick={() => handleDelete(project.id)}
+                    onClick={() => handleDelete(project.id, project.titulo)}
                   >
                     <Trash2 className="h-3 w-3" />
                   </button>

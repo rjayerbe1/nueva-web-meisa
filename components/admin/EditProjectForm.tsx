@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Save, Calendar, MapPin, DollarSign } from "lucide-react"
+import { ArrowLeft, Save, Calendar, MapPin, DollarSign, Scale, Ruler, Building, ExternalLink } from "lucide-react"
 import { CategoriaEnum, EstadoProyecto, PrioridadEnum } from "@prisma/client"
 
 interface Project {
@@ -12,6 +12,7 @@ interface Project {
   descripcion: string
   categoria: CategoriaEnum
   cliente: string
+  clienteId: string | null
   ubicacion: string
   fechaInicio: Date
   fechaFin: Date
@@ -19,11 +20,14 @@ interface Project {
   prioridad: PrioridadEnum
   presupuesto: number | null
   costoReal: number | null
+  toneladas: number | null
+  areaTotal: number | null
   moneda: string
   contactoCliente: string | null
   telefono: string | null
   email: string | null
   destacado: boolean
+  destacadoEnCategoria: boolean
   visible: boolean
   slug: string
 }
@@ -35,11 +39,14 @@ interface EditProjectFormProps {
 export default function EditProjectForm({ project }: EditProjectFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [clientes, setClientes] = useState([])
+  const [selectedCliente, setSelectedCliente] = useState(null)
   const [formData, setFormData] = useState({
     titulo: project.titulo,
     descripcion: project.descripcion,
     categoria: project.categoria,
     cliente: project.cliente,
+    clienteId: project.clienteId || '',
     ubicacion: project.ubicacion,
     fechaInicio: new Date(project.fechaInicio).toISOString().split('T')[0],
     fechaFin: new Date(project.fechaFin).toISOString().split('T')[0],
@@ -47,13 +54,39 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
     prioridad: project.prioridad,
     presupuesto: project.presupuesto || '',
     costoReal: project.costoReal || '',
+    toneladas: project.toneladas || '',
+    areaTotal: project.areaTotal || '',
     moneda: project.moneda || 'COP',
     contactoCliente: project.contactoCliente || '',
     telefono: project.telefono || '',
     email: project.email || '',
     destacado: project.destacado,
+    destacadoEnCategoria: project.destacadoEnCategoria,
     visible: project.visible
   })
+
+  useEffect(() => {
+    loadClientes()
+  }, [])
+
+  useEffect(() => {
+    if (formData.clienteId && clientes.length > 0) {
+      const cliente = clientes.find(c => c.id === formData.clienteId)
+      setSelectedCliente(cliente)
+    }
+  }, [formData.clienteId, clientes])
+
+  const loadClientes = async () => {
+    try {
+      const response = await fetch('/api/clientes')
+      if (response.ok) {
+        const data = await response.json()
+        setClientes(data)
+      }
+    } catch (error) {
+      console.error('Error loading clientes:', error)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -69,6 +102,9 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
           ...formData,
           presupuesto: formData.presupuesto ? Number(formData.presupuesto) : null,
           costoReal: formData.costoReal ? Number(formData.costoReal) : null,
+          toneladas: formData.toneladas ? Number(formData.toneladas) : null,
+          areaTotal: formData.areaTotal ? Number(formData.areaTotal) : null,
+          clienteId: formData.clienteId || null,
         }),
       })
 
@@ -160,13 +196,65 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Cliente *
               </label>
-              <input
-                type="text"
-                required
-                value={formData.cliente}
-                onChange={(e) => setFormData(prev => ({ ...prev, cliente: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  required
+                  value={formData.cliente}
+                  onChange={(e) => setFormData(prev => ({ ...prev, cliente: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
+                  placeholder="Nombre del cliente"
+                />
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Conectar a cliente existente (opcional)
+                  </label>
+                  <select
+                    value={formData.clienteId}
+                    onChange={(e) => {
+                      const clienteId = e.target.value
+                      setFormData(prev => ({ ...prev, clienteId }))
+                      if (clienteId) {
+                        const cliente = clientes.find(c => c.id === clienteId)
+                        if (cliente) {
+                          setFormData(prev => ({ ...prev, cliente: cliente.nombre }))
+                        }
+                      }
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent text-sm"
+                  >
+                    <option value="">No conectar a cliente</option>
+                    {clientes.map((cliente) => (
+                      <option key={cliente.id} value={cliente.id}>
+                        {cliente.nombre} ({cliente.sector})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {selectedCliente && (
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Building className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium text-blue-900">{selectedCliente.nombre}</span>
+                        <span className="text-sm text-blue-600">({selectedCliente.sector})</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => window.open(`/admin/clientes/${selectedCliente.id}`, '_blank')}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </button>
+                    </div>
+                    {selectedCliente.descripcion && (
+                      <p className="text-sm text-blue-700 mt-1">{selectedCliente.descripcion}</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
@@ -270,6 +358,18 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               <label className="flex items-center">
                 <input
                   type="checkbox"
+                  checked={formData.destacadoEnCategoria}
+                  onChange={(e) => setFormData(prev => ({ ...prev, destacadoEnCategoria: e.target.checked }))}
+                  className="h-4 w-4 text-meisa-blue focus:ring-meisa-blue border-gray-300 rounded"
+                />
+                <span className="ml-2 text-sm font-medium text-gray-700">
+                  Destacado en Categoría (Aparece en el home)
+                </span>
+              </label>
+
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
                   checked={formData.visible}
                   onChange={(e) => setFormData(prev => ({ ...prev, visible: e.target.checked }))}
                   className="h-4 w-4 text-meisa-blue focus:ring-meisa-blue border-gray-300 rounded"
@@ -278,6 +378,45 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                   Visible en el sitio web
                 </span>
               </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Especificaciones Técnicas */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Especificaciones Técnicas</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Scale className="inline h-4 w-4 mr-1" />
+                Toneladas de Acero
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="Ej: 125.5"
+                value={formData.toneladas}
+                onChange={(e) => setFormData(prev => ({ ...prev, toneladas: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
+              />
+              <p className="text-xs text-gray-500 mt-1">Peso total en toneladas del acero utilizado</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Ruler className="inline h-4 w-4 mr-1" />
+                Área Total (m²)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="Ej: 5000"
+                value={formData.areaTotal}
+                onChange={(e) => setFormData(prev => ({ ...prev, areaTotal: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
+              />
+              <p className="text-xs text-gray-500 mt-1">Área total de construcción en metros cuadrados</p>
             </div>
           </div>
         </div>
@@ -294,10 +433,13 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               </label>
               <input
                 type="number"
+                step="1000"
+                placeholder="Ej: 500000000"
                 value={formData.presupuesto}
                 onChange={(e) => setFormData(prev => ({ ...prev, presupuesto: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
               />
+              <p className="text-xs text-gray-500 mt-1">Presupuesto inicial del proyecto</p>
             </div>
 
             <div>
@@ -307,10 +449,13 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               </label>
               <input
                 type="number"
+                step="1000"
+                placeholder="Ej: 480000000"
                 value={formData.costoReal}
                 onChange={(e) => setFormData(prev => ({ ...prev, costoReal: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
               />
+              <p className="text-xs text-gray-500 mt-1">Costo real final del proyecto</p>
             </div>
 
             <div>

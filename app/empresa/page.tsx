@@ -157,12 +157,14 @@ export default function EmpresaPage() {
                 Mediante la cual MEISA establece las políticas para la mitigación del riesgo de LAVADO DE ACTIVOS 
                 Y FINANCIACIÓN DEL TERRORISMO.
               </p>
-              <Link
-                href="/manual-sagrilaft"
+              <a
+                href="https://meisa.com.co/manual-sagrilaft/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-500 text-sm font-medium"
               >
                 Abrir PDF →
-              </Link>
+              </a>
             </div>
             
             <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -173,12 +175,14 @@ export default function EmpresaPage() {
                 Mediante el cual MEISA establece la política para mitigar los riesgos de corrupción y soborno 
                 transnacional.
               </p>
-              <Link
-                href="/politica-programa"
+              <a
+                href="https://meisa.com.co/politica-programa/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-500 text-sm font-medium"
               >
                 Abrir PDF →
-              </Link>
+              </a>
             </div>
             
             <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -187,12 +191,14 @@ export default function EmpresaPage() {
                 MEISA establece la Política para el Tratamiento de los Datos Personales, la cual refleja los 
                 principios y reglas establecidas en el Régimen General de Protección de Datos Personales.
               </p>
-              <Link
-                href="/politica-tratamiento-datos"
+              <a
+                href="https://meisa.com.co/politica-tratamiento-datos/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-500 text-sm font-medium"
               >
                 Abrir PDF →
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -206,12 +212,14 @@ export default function EmpresaPage() {
                   y confiable cualquier situación ética o reporte de operación sospechosa relacionada con el riesgo 
                   de lavado de activos.
                 </p>
-                <Link
-                  href="/contacto"
+                <a
+                  href="https://forms.office.com/Pages/ResponsePage.aspx?id=Y_dVGBsO0Ey2P1SSSSbKDCgtcDGrPHNDquwfzXMlQl5UNVNSNjNTME5LSzQ1RkIwQkVIS1c0TEM4USQlQCN0PWcu&utm_source=website&utm_medium=web"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-500 text-sm font-medium"
                 >
                   Acceder al formulario →
-                </Link>
+                </a>
               </div>
             </div>
           </div>
