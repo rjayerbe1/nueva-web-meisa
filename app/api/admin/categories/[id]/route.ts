@@ -42,6 +42,7 @@ export async function PUT(
     }
 
     const data = await request.json()
+    console.log('Update data received:', data) // Debug log
 
     // Generar slug si cambió el nombre
     let slug = data.slug
@@ -65,12 +66,16 @@ export async function PUT(
     if (data.icono !== undefined) updateData.icono = data.icono
     if (data.color !== undefined) updateData.color = data.color
     if (data.colorSecundario !== undefined) updateData.colorSecundario = data.colorSecundario
+    if (data.overlayColor !== undefined) updateData.overlayColor = data.overlayColor
+    if (data.overlayOpacity !== undefined) updateData.overlayOpacity = data.overlayOpacity
     if (data.metaTitle !== undefined) updateData.metaTitle = data.metaTitle
     if (data.metaDescription !== undefined) updateData.metaDescription = data.metaDescription
     if (data.orden !== undefined) updateData.orden = data.orden
     if (data.visible !== undefined) updateData.visible = data.visible
     if (data.destacada !== undefined) updateData.destacada = data.destacada
 
+    console.log('Update object:', updateData) // Debug log
+    
     const categoria = await prisma.categoriaProyecto.update({
       where: { id: params.id },
       data: updateData

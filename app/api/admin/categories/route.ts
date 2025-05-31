@@ -58,6 +58,8 @@ export async function POST(request: NextRequest) {
         icono: data.icono || null,
         color: data.color || null,
         colorSecundario: data.colorSecundario || null,
+        overlayColor: data.overlayColor || null,
+        overlayOpacity: data.overlayOpacity || 0,
         metaTitle: data.metaTitle || null,
         metaDescription: data.metaDescription || null,
         orden: data.orden || 0,

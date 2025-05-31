@@ -61,6 +61,8 @@ interface Categoria {
   icono: string | null
   color: string | null
   colorSecundario: string | null
+  overlayColor: string | null
+  overlayOpacity: number | null
   metaTitle: string | null
   metaDescription: string | null
   orden: number
@@ -98,6 +100,8 @@ export default function CategoryEditModal({
     icono: categoria?.icono || 'Building',
     color: categoria?.color || '#3B82F6',
     colorSecundario: categoria?.colorSecundario || '',
+    overlayColor: categoria?.overlayColor || '#000000',
+    overlayOpacity: categoria?.overlayOpacity || 0,
     metaTitle: categoria?.metaTitle || '',
     metaDescription: categoria?.metaDescription || '',
     orden: categoria?.orden || 0,
@@ -116,6 +120,8 @@ export default function CategoryEditModal({
         icono: categoria.icono || 'Building',
         color: categoria.color || '#3B82F6',
         colorSecundario: categoria.colorSecundario || '',
+        overlayColor: categoria.overlayColor || '#000000',
+        overlayOpacity: categoria.overlayOpacity || 0,
         metaTitle: categoria.metaTitle || '',
         metaDescription: categoria.metaDescription || '',
         orden: categoria.orden,
@@ -198,6 +204,8 @@ export default function CategoryEditModal({
         : '/api/admin/categories'
       
       const method = categoria ? 'PUT' : 'POST'
+      
+      console.log('Sending form data:', formData) // Debug log
       
       const response = await fetch(url, {
         method,
@@ -380,23 +388,53 @@ export default function CategoryEditModal({
             {/* Tab: Aspecto Visual */}
             {activeTab === 'visual' && (
               <div className="space-y-4">
-                {/* Imagen de Cover */}
+                {/* Imagen de Cover y Preview - Más grande */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Imagen de Portada
+                  <label className="block text-sm font-medium text-gray-700 mb-4">
+                    Imagen de Portada y Vista Previa
                   </label>
                   
-                  <div className="flex justify-center">
-                    {formData.imagenCover ? (
-                      <div className="space-y-3">
-                        <img
-                          src={formData.imagenCover}
-                          alt="Cover preview"
-                          className="w-48 h-48 object-cover rounded-lg border border-gray-300"
-                        />
-                        <div className="flex space-x-2 justify-center">
-                          <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                            {uploading ? 'Subiendo...' : 'Cambiar Imagen'}
+                  <div className="grid grid-cols-2 gap-8">
+                    {/* Upload de imagen */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-600 mb-3">Subir Imagen</h4>
+                      <div className="flex justify-center">
+                        {formData.imagenCover ? (
+                          <div className="space-y-3">
+                            <img
+                              src={formData.imagenCover}
+                              alt="Cover preview"
+                              className="w-80 h-60 object-cover rounded-lg border border-gray-300"
+                            />
+                            <div className="flex space-x-2 justify-center">
+                              <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                {uploading ? 'Subiendo...' : 'Cambiar Imagen'}
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={handleImageUpload}
+                                  className="sr-only"
+                                  disabled={uploading}
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, imagenCover: '' }))}
+                                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                              >
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-80 h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                            <p className="text-base text-gray-600 font-medium">
+                              {uploading ? 'Subiendo...' : 'Subir Imagen'}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                              Se recortará automáticamente a formato cuadrado
+                            </p>
                             <input
                               type="file"
                               accept="image/*"
@@ -405,35 +443,176 @@ export default function CategoryEditModal({
                               disabled={uploading}
                             />
                           </label>
-                          <button
-                            type="button"
-                            onClick={() => setFormData(prev => ({ ...prev, imagenCover: '' }))}
-                            className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
-                          >
-                            Eliminar
-                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Preview completo MÁS GRANDE */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-600 mb-3">Vista Previa Final</h4>
+                      <div className="flex justify-center mb-4">
+                        <div className="w-80 h-60 relative rounded-xl overflow-hidden shadow-xl border border-gray-200 group">
+                          {/* Imagen de fondo o placeholder */}
+                        {formData.imagenCover ? (
+                          <div className="relative w-full h-full">
+                            <img
+                              src={formData.imagenCover}
+                              alt="Preview completo"
+                              className="w-full h-full object-cover"
+                            />
+                            
+                            {/* Overlay personalizable */}
+                            {formData.overlayOpacity > 0 && (
+                              <div 
+                                className="absolute inset-0"
+                                style={{ 
+                                  backgroundColor: formData.overlayColor,
+                                  opacity: formData.overlayOpacity
+                                }}
+                              />
+                            )}
+                            
+                            {/* Overlay oscuro para el texto */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                            
+                            {/* Ícono centrado MÁS GRANDE */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div 
+                                className="text-5xl opacity-80"
+                                style={{ color: formData.color || '#3b82f6' }}
+                              >
+                                {iconData?.type === 'image' ? (
+                                  <img 
+                                    src={iconData.data?.path} 
+                                    alt="Icon preview"
+                                    className="h-16 w-16 object-contain filter brightness-0 invert"
+                                  />
+                                ) : (
+                                  <IconComponent className="h-16 w-16" />
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Información en esquina superior derecha */}
+                            <div className="absolute top-3 right-3 flex flex-col items-end space-y-2">
+                              {/* Info técnica */}
+                              <div className="text-xs text-white/80 bg-black/40 backdrop-blur-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div>Slug: {formData.slug || 'slug'}</div>
+                              </div>
+                              {/* Badges */}
+                              <div className="flex flex-col space-y-1">
+                                {formData.destacada && (
+                                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                    <Star className="h-3 w-3 text-yellow-500" />
+                                  </div>
+                                )}
+                                {!formData.visible && (
+                                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                    <EyeOff className="h-3 w-3 text-gray-600" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Texto en la parte inferior */}
+                            <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                              <h3 className="text-sm font-bold mb-1 drop-shadow-lg">
+                                {formData.nombre || 'Nombre Categoría'}
+                              </h3>
+                              <p className="text-xs text-white/90 mb-2 drop-shadow">
+                                X proyecto(s)
+                              </p>
+                              {formData.descripcion && (
+                                <p className="text-xs text-white/80 line-clamp-2 drop-shadow">
+                                  {formData.descripcion}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="relative w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            {/* Ícono centrado en placeholder */}
+                            <div 
+                              className="text-5xl"
+                              style={{ color: formData.color || '#3b82f6' }}
+                            >
+                              {iconData?.type === 'image' ? (
+                                <img 
+                                  src={iconData.data?.path} 
+                                  alt="Icon preview"
+                                  className="h-16 w-16 object-contain filter brightness-0 invert"
+                                />
+                              ) : (
+                                <IconComponent className="h-16 w-16" />
+                              )}
+                            </div>
+
+                            {/* Badges en placeholder */}
+                            <div className="absolute top-3 right-3 flex flex-col space-y-1">
+                              {formData.destacada && (
+                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                  <Star className="h-3 w-3 text-yellow-500" />
+                                </div>
+                              )}
+                              {!formData.visible && (
+                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                  <EyeOff className="h-3 w-3 text-gray-600" />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Texto en placeholder */}
+                            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent text-white">
+                              <h3 className="text-sm font-bold mb-1">
+                                {formData.nombre || 'Nombre Categoría'}
+                              </h3>
+                              <p className="text-xs text-white/90 mb-2">
+                                X proyecto(s)
+                              </p>
+                              {formData.descripcion && (
+                                <p className="text-xs text-white/80 line-clamp-2">
+                                  {formData.descripcion}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        )}
                         </div>
                       </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center w-48 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                        <Upload className="w-8 h-8 mb-3 text-gray-400" />
-                        <p className="text-sm text-gray-600 font-medium">
-                          {uploading ? 'Subiendo...' : 'Subir Imagen'}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Se recortará automáticamente
-                        </p>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="sr-only"
-                          disabled={uploading}
-                        />
-                      </label>
-                    )}
+                      
+                      {/* Controles del overlay justo debajo del preview */}
+                      <div className="space-y-3">
+                        {/* Color del overlay */}
+                        <div>
+                          <label className="block text-xs text-gray-600 mb-1">Color del Overlay</label>
+                          <input
+                            type="color"
+                            value={formData.overlayColor}
+                            onChange={(e) => setFormData(prev => ({ ...prev, overlayColor: e.target.value }))}
+                            className="w-full h-6 rounded border border-gray-300"
+                          />
+                        </div>
+                        
+                        {/* Opacidad del overlay */}
+                        <div>
+                          <label className="block text-xs text-gray-600 mb-1">
+                            Opacidad: {Math.round(formData.overlayOpacity * 100)}%
+                          </label>
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={formData.overlayOpacity}
+                            onChange={(e) => setFormData(prev => ({ ...prev, overlayOpacity: parseFloat(e.target.value) }))}
+                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
 
                 {/* Selección de Icono */}
                 <div>
@@ -592,43 +771,6 @@ export default function CategoryEditModal({
                   </div>
                 </div>
 
-                {/* Preview */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Vista Previa
-                  </label>
-                  <div className="p-3 border border-gray-200 rounded bg-gray-50">
-                    <div className="flex items-center space-x-2">
-                      <div 
-                        className="p-2 rounded"
-                        style={{ 
-                          backgroundColor: formData.color ? `${formData.color}20` : '#F3F4F6',
-                          color: formData.color || '#6B7280'
-                        }}
-                      >
-                        {iconData?.type === 'image' ? (
-                          <div className="bg-gray-700 rounded p-1">
-                            <img 
-                              src={iconData.data?.path} 
-                              alt="Icon preview"
-                              className="h-4 w-4 object-contain filter brightness-0 invert"
-                            />
-                          </div>
-                        ) : (
-                          <IconComponent className="h-5 w-5" />
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-semibold text-gray-900">
-                          {formData.nombre || 'Nombre de Categoría'}
-                        </h3>
-                        <p className="text-xs text-gray-500">
-                          {formData.descripcion?.substring(0, 50) || 'Descripción...'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             )}
 

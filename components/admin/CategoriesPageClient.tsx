@@ -21,6 +21,8 @@ interface Categoria {
   icono: string | null
   color: string | null
   colorSecundario: string | null
+  overlayColor: string | null
+  overlayOpacity: number | null
   metaTitle: string | null
   metaDescription: string | null
   orden: number
@@ -222,6 +224,17 @@ export default function CategoriesPageClient({
                       alt={`Cover de ${categoria.nombre}`}
                       className="w-full aspect-[4/3] object-cover"
                     />
+                    {/* Overlay personalizable para el ícono */}
+                    {categoria.overlayOpacity && categoria.overlayOpacity > 0 && (
+                      <div 
+                        className="absolute inset-0"
+                        style={{ 
+                          backgroundColor: categoria.overlayColor || '#000000',
+                          opacity: categoria.overlayOpacity
+                        }}
+                      />
+                    )}
+                    
                     {/* Overlay oscuro para legibilidad del texto */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     

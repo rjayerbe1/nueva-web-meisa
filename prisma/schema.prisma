@@ -351,6 +351,8 @@ model CategoriaProyecto {
   icono         String?                // Icon name or URL
   color         String?                // Primary color for the category
   colorSecundario String?              // Secondary color
+  overlayColor  String?                // Overlay color for better icon visibility
+  overlayOpacity Float?  @default(0.0) // Overlay opacity (0.0 to 1.0)
   
   // SEO and organization
   metaTitle     String?
