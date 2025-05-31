@@ -88,15 +88,21 @@ model Proyecto {
   
   // Cliente y ubicación
   cliente     String
+  clienteId   String?          // Relación opcional con tabla Clientes
   contactoCliente String?
   telefono    String?
   email       String?
   ubicacion   String
   coordenadas String?
   
+  // Características técnicas
+  toneladas   Decimal?         @db.Decimal(10, 2)  // Peso en toneladas
+  areaTotal   Decimal?         @db.Decimal(15, 2)  // Área en metros cuadrados
+  
   // Metadata
   tags        String[]
   destacado   Boolean          @default(false)
+  destacadoEnCategoria Boolean  @default(false)  // Para mostrar en homepage por categoría
   visible     Boolean          @default(true)
   ordenFrontend Int?
   
@@ -111,6 +117,7 @@ model Proyecto {
   progreso    ProgresoProyecto[]
   timeline    TimelineEntry[]
   comentarios ComentarioProyecto[]
+  clienteRel  Cliente?         @relation(fields: [clienteId], references: [id])
   
   // Auditoría
   createdBy   String
@@ -254,6 +261,51 @@ model MiembroEquipo {
   @@map("miembros_equipo")
 }
 
+// ======= CLIENTES =======
+model Cliente {
+  id          String   @id @default(cuid())
+  nombre      String
+  logo        String?  // URL del logo
+  logoBlanco  String?  // Versión blanca del logo para fondos oscuros
+  descripcion String?  @db.Text
+  sitioWeb    String?
+  sector      SectorCliente
+  
+  // Proyectos destacados con este cliente
+  proyectoDestacado String?
+  capacidadProyecto String?
+  ubicacionProyecto String?
+  
+  // Visibilidad y orden
+  mostrarEnHome Boolean  @default(true)
+  destacado     Boolean  @default(false)
+  orden         Int      @default(0)
+  activo        Boolean  @default(true)
+  
+  // SEO
+  slug        String   @unique
+  
+  // Relaciones
+  proyectos   Proyecto[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("clientes")
+}
+
+enum SectorCliente {
+  INDUSTRIAL
+  COMERCIAL
+  CONSTRUCCION
+  INSTITUCIONAL
+  GOBIERNO
+  ENERGIA
+  MINERIA
+  SALUD
+  OTRO
+}
+
 // ======= CONTACTO =======
 model ContactForm {
   id          String   @id @default(cuid())
@@ -290,11 +342,13 @@ model ConfiguracionSitio {
 enum CategoriaEnum {
   CENTROS_COMERCIALES
   EDIFICIOS
-  PUENTES
-  OIL_GAS
-  INDUSTRIAL
-  RESIDENCIAL
-  INFRAESTRUCTURA
+  INDUSTRIA
+  PUENTES_VEHICULARES
+  PUENTES_PEATONALES
+  ESCENARIOS_DEPORTIVOS
+  CUBIERTAS_Y_FACHADAS
+  ESTRUCTURAS_MODULARES
+  OIL_AND_GAS
   OTRO
 }
 

@@ -1,0 +1,1561 @@
+{
+  "fecha_extraccion": "2025-05-30T00:08:18.108Z",
+  "total_proyectos_solicitados": 47,
+  "total_proyectos_con_imagenes": 27,
+  "total_imagenes_encontradas": 167,
+  "resultados": {
+    "CENTROS COMERCIALES": {
+      "Centro Comercial Campanario": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 7,
+        "imagenes": [
+          {
+            "nombre_archivo": "Centro-campanario-1.webp",
+            "titulo_imagen": "Centro campanario 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-1.webp",
+            "attachment_id": 2308,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-campanario-2.webp",
+            "titulo_imagen": "Centro campanario 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-2.webp",
+            "attachment_id": 2309,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-campanario-3.webp",
+            "titulo_imagen": "Centro campanario 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-3.webp",
+            "attachment_id": 2310,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-campanario-4.webp",
+            "titulo_imagen": "Centro campanario 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-4.webp",
+            "attachment_id": 2311,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-campanario-5.webp",
+            "titulo_imagen": "Centro campanario 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-5.webp",
+            "attachment_id": 2312,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-campanario-6.webp",
+            "titulo_imagen": "Centro campanario 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-6.webp",
+            "attachment_id": 2313,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-campanario-7.webp",
+            "titulo_imagen": "Centro campanario 7",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-campanario-7.webp",
+            "attachment_id": 2314,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Paseo Villa del Río": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 7,
+        "imagenes": [
+          {
+            "nombre_archivo": "paseo-villa-del-rio-3.jpg",
+            "titulo_imagen": "paseo-villa-del-rio (3)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/paseo-villa-del-rio-3.jpg",
+            "attachment_id": null,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "paseo-villa-del-rio-4.jpg",
+            "titulo_imagen": "paseo-villa-del-rio (4)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/paseo-villa-del-rio-4.jpg",
+            "attachment_id": null,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "paseo-villa-del-rio-5.jpg",
+            "titulo_imagen": "paseo-villa-del-rio (5)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/paseo-villa-del-rio-5.jpg",
+            "attachment_id": null,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "paseo-villa-del-rio-7.jpg",
+            "titulo_imagen": "paseo-villa-del-rio (7)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/paseo-villa-del-rio-7.jpg",
+            "attachment_id": null,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Centro-paseo-villa-del-rio-1.webp",
+            "titulo_imagen": "Centro paseo villa del rio 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-1.webp",
+            "attachment_id": null,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-paseo-villa-del-rio-2.webp",
+            "titulo_imagen": "Centro paseo villa del rio 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-2.webp",
+            "attachment_id": null,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-paseo-villa-del-rio-3.webp",
+            "titulo_imagen": "Centro paseo villa del rio 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-3.webp",
+            "attachment_id": null,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Centro Comercial Monserrat": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 10,
+        "imagenes": [
+          {
+            "nombre_archivo": "Monserrat-Plaza.jpg",
+            "titulo_imagen": "Monserrat Plaza",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/10/Monserrat-Plaza.jpg",
+            "attachment_id": 1220,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Monserrat-Plaza3.jpg",
+            "titulo_imagen": "Monserrat Plaza3",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/10/Monserrat-Plaza3.jpg",
+            "attachment_id": 1221,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Monserrat-Plaza-1.jpg",
+            "titulo_imagen": "Monserrat Plaza",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/10/Monserrat-Plaza-1.jpg",
+            "attachment_id": 1222,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "monserrat-5.jpg",
+            "titulo_imagen": "monserrat-5",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/10/monserrat-5.jpg",
+            "attachment_id": 1223,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Monserrat-Plaza3-1.jpg",
+            "titulo_imagen": "Monserrat 6",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/10/Monserrat-Plaza3-1.jpg",
+            "attachment_id": 1225,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Centro-monserrat-1.webp",
+            "titulo_imagen": "Centro monserrat 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-1.webp",
+            "attachment_id": 2320,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-monserrat-2.webp",
+            "titulo_imagen": "Centro monserrat 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-2.webp",
+            "attachment_id": 2321,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-monserrat-3.webp",
+            "titulo_imagen": "Centro monserrat 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-3.webp",
+            "attachment_id": 2322,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-monserrat-4.webp",
+            "titulo_imagen": "Centro monserrat 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-4.webp",
+            "attachment_id": 2323,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-monserrat-5.webp",
+            "titulo_imagen": "Centro monserrat 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-5.webp",
+            "attachment_id": 2324,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Centro Comercial Unico Cali": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "Centro-unico-cali-1.webp",
+            "titulo_imagen": "Centro unico cali 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-1.webp",
+            "attachment_id": 2330,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-cali-2.webp",
+            "titulo_imagen": "Centro unico cali 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-2.webp",
+            "attachment_id": 2331,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-cali-3.webp",
+            "titulo_imagen": "Centro unico cali 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-3.webp",
+            "attachment_id": 2332,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-cali-4.webp",
+            "titulo_imagen": "Centro unico cali 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-4.webp",
+            "attachment_id": 2333,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-cali-5.webp",
+            "titulo_imagen": "Centro unico cali 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-5.webp",
+            "attachment_id": 2334,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Centro Comercial Unico Neiva": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "Centro-unico-neiva-1.webp",
+            "titulo_imagen": "Centro unico neiva 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-1.webp",
+            "attachment_id": 2335,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-neiva-2.webp",
+            "titulo_imagen": "Centro unico neiva 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-2.webp",
+            "attachment_id": 2336,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-neiva-3.webp",
+            "titulo_imagen": "Centro unico neiva 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-3.webp",
+            "attachment_id": 2337,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-neiva-4.webp",
+            "titulo_imagen": "Centro unico neiva 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-4.webp",
+            "attachment_id": 2338,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-neiva-5.webp",
+            "titulo_imagen": "Centro unico neiva 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-5.webp",
+            "attachment_id": 2339,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Centro Comercial Unico Barranquilla": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 2,
+        "imagenes": [
+          {
+            "nombre_archivo": "Centro-unico-barranquilla-2.webp",
+            "titulo_imagen": "Centro unico barranquilla 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-barranquilla-2.webp",
+            "attachment_id": 2341,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-unico-barranquilla-3.webp",
+            "titulo_imagen": "Centro unico barranquilla 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-barranquilla-3.webp",
+            "attachment_id": 2342,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Centro Comercial Armenia Plaza": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 6,
+        "imagenes": [
+          {
+            "nombre_archivo": "CC-ARMENIA-PLAZA-1.jpeg",
+            "titulo_imagen": "CC ARMENIA PLAZA 1",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/CC-ARMENIA-PLAZA-1.jpeg",
+            "attachment_id": 1525,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "CC-ARMENIA-PLAZA-5.jpeg",
+            "titulo_imagen": "CC ARMENIA PLAZA 5",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/CC-ARMENIA-PLAZA-5.jpeg",
+            "attachment_id": 1542,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Centro-armenia-plaza-1.webp",
+            "titulo_imagen": "Centro armenia plaza 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-1.webp",
+            "attachment_id": 2898,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-armenia-plaza-2.webp",
+            "titulo_imagen": "Centro armenia plaza 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-2.webp",
+            "attachment_id": 2899,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-armenia-plaza-3.webp",
+            "titulo_imagen": "Centro armenia plaza 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-3.webp",
+            "attachment_id": 2900,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-armenia-plaza-4.webp",
+            "titulo_imagen": "Centro armenia plaza 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-4.webp",
+            "attachment_id": 2901,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Centro Comercial Bochalema Plaza": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 11,
+        "imagenes": [
+          {
+            "nombre_archivo": "Centro-Comercial-Bochalema-Plaza-Cali.jpg",
+            "titulo_imagen": "Centro Comercial Bochalema Plaza - Cali",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/Centro-Comercial-Bochalema-Plaza-Cali.jpg",
+            "attachment_id": 438,
+            "parent_post": 2
+          },
+          {
+            "nombre_archivo": "imagenes-proyectos-realizados-miniaturas-CC-Bochalema-Plaza-Cali.jpg",
+            "titulo_imagen": "imagenes proyectos realizados miniaturas-CC Bochalema Plaza, Cali",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/imagenes-proyectos-realizados-miniaturas-CC-Bochalema-Plaza-Cali.jpg",
+            "attachment_id": 1162,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-1.webp",
+            "titulo_imagen": "Centro bochalema plaza 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-1.webp",
+            "attachment_id": 2908,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-2.webp",
+            "titulo_imagen": "Centro bochalema plaza 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-2.webp",
+            "attachment_id": 2909,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-3.webp",
+            "titulo_imagen": "Centro bochalema plaza 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-3.webp",
+            "attachment_id": 2910,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-4.webp",
+            "titulo_imagen": "Centro bochalema plaza 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-4.webp",
+            "attachment_id": 2911,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-5.webp",
+            "titulo_imagen": "Centro bochalema plaza 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-5.webp",
+            "attachment_id": 2912,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-6.webp",
+            "titulo_imagen": "Centro bochalema plaza 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-6.webp",
+            "attachment_id": 2913,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-7.webp",
+            "titulo_imagen": "Centro bochalema plaza 7",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-7.webp",
+            "attachment_id": 2914,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-8.webp",
+            "titulo_imagen": "Centro bochalema plaza 8",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-8.webp",
+            "attachment_id": 2915,
+            "parent_post": 1927
+          },
+          {
+            "nombre_archivo": "Centro-bochalema-plaza-9.webp",
+            "titulo_imagen": "Centro bochalema plaza 9",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-9.webp",
+            "attachment_id": 2916,
+            "parent_post": 1927
+          }
+        ],
+        "busqueda_por_patron": true
+      }
+    },
+    "EDIFICIOS": {
+      "Cinemateca Distrital": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 7,
+        "imagenes": [
+          {
+            "nombre_archivo": "cinemateca-distrital-9.jpg",
+            "titulo_imagen": "cinemateca-distrital (9)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/cinemateca-distrital-9.jpg",
+            "attachment_id": 327,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Edificio-cinemateca-distrital-1.webp",
+            "titulo_imagen": "Edificio cinemateca distrital 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-1.webp",
+            "attachment_id": 2473,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-cinemateca-distrital-2.webp",
+            "titulo_imagen": "Edificio cinemateca distrital 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-2.webp",
+            "attachment_id": 2475,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-cinemateca-distrital-3.webp",
+            "titulo_imagen": "Edificio cinemateca distrital 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-3.webp",
+            "attachment_id": 2476,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-cinemateca-distrital-4.webp",
+            "titulo_imagen": "Edificio cinemateca distrital 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-4.webp",
+            "attachment_id": 2477,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-cinemateca-distrital-5.webp",
+            "titulo_imagen": "Edificio cinemateca distrital 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-5.webp",
+            "attachment_id": 2479,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-cinemateca-distrital-6.webp",
+            "titulo_imagen": "Edificio cinemateca distrital 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-6.webp",
+            "attachment_id": 2480,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Clínica Reina Victoria": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 7,
+        "imagenes": [
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-1.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-1.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-2.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-2.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-3.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-3.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-4.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-4.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-5.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-5.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-6.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-6.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-clinica-reina-victoria-7.webp",
+            "titulo_imagen": "Edificio clinica reina victoria 7",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-7.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Omega": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 6,
+        "imagenes": [
+          {
+            "nombre_archivo": "Seguridad-Omega.webp",
+            "titulo_imagen": "Seguridad-Omega",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2023/04/Seguridad-Omega.webp",
+            "attachment_id": 2264,
+            "parent_post": 2
+          },
+          {
+            "nombre_archivo": "Edificio-omega-1.webp",
+            "titulo_imagen": "Edificio omega 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-1.webp",
+            "attachment_id": 2501,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-omega-2.webp",
+            "titulo_imagen": "Edificio omega 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-2.webp",
+            "attachment_id": 2502,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-omega-3.webp",
+            "titulo_imagen": "Edificio omega 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-3.webp",
+            "attachment_id": 2503,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-omega-4.webp",
+            "titulo_imagen": "Edificio omega 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-4.webp",
+            "attachment_id": 2504,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-omega-5.webp",
+            "titulo_imagen": "Edificio omega 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-5.webp",
+            "attachment_id": 2505,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Bomberos Popayán": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "Edificio-bomberos-popayan-1.webp",
+            "titulo_imagen": "Edificio bomberos popayan 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-1.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-bomberos-popayan-2.webp",
+            "titulo_imagen": "Edificio bomberos popayan 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-2.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-bomberos-popayan-3.webp",
+            "titulo_imagen": "Edificio bomberos popayan 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-3.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-bomberos-popayan-4.webp",
+            "titulo_imagen": "Edificio bomberos popayan 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-4.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-bomberos-popayan-5.webp",
+            "titulo_imagen": "Edificio bomberos popayan 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-5.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Estación MIO Guadalupe": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 6,
+        "imagenes": [
+          {
+            "nombre_archivo": "Edificio-estacion-mio-guadalupe-1.webp",
+            "titulo_imagen": "Edificio estacion mio guadalupe 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-1.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-estacion-mio-guadalupe-2.webp",
+            "titulo_imagen": "Edificio estacion mio guadalupe 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-2.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-estacion-mio-guadalupe-3.webp",
+            "titulo_imagen": "Edificio estacion mio guadalupe 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-3.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-estacion-mio-guadalupe-4.webp",
+            "titulo_imagen": "Edificio estacion mio guadalupe 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-4.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-estacion-mio-guadalupe-5.webp",
+            "titulo_imagen": "Edificio estacion mio guadalupe 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-5.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-estacion-mio-guadalupe-6.webp",
+            "titulo_imagen": "Edificio estacion mio guadalupe 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-6.webp",
+            "attachment_id": null,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "SENA Santander": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 3,
+        "imagenes": [
+          {
+            "nombre_archivo": "Edificio-sena-santander-2.webp",
+            "titulo_imagen": "Edificio sena santander 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-sena-santander-2.webp",
+            "attachment_id": 2535,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-sena-santander-3.webp",
+            "titulo_imagen": "Edificio sena santander 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-sena-santander-3.webp",
+            "attachment_id": 2536,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-sena-santander-4.webp",
+            "titulo_imagen": "Edificio sena santander 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-sena-santander-4.webp",
+            "attachment_id": 2537,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Terminal Intermedio MIO": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 9,
+        "imagenes": [
+          {
+            "nombre_archivo": "Terminal-Intermedio-Mio-Guadalupe-Cali.jpg",
+            "titulo_imagen": "Terminal Intermedio Mio Guadalupe - Cali",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/Terminal-Intermedio-Mio-Guadalupe-Cali.jpg",
+            "attachment_id": 440,
+            "parent_post": 2
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-1.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-1.webp",
+            "attachment_id": 2928,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-2.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-2.webp",
+            "attachment_id": 2929,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-3.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-3.webp",
+            "attachment_id": 2930,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-4.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-4.webp",
+            "attachment_id": 2931,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-5.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-5.webp",
+            "attachment_id": 2932,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-6.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-6.webp",
+            "attachment_id": 2933,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-7.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 7",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-7.webp",
+            "attachment_id": 2934,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-terminal-intermedio-mio-cali-8.webp",
+            "titulo_imagen": "Edificio terminal intermedio mio cali 8",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-8.webp",
+            "attachment_id": 2935,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Tequendama Parking Cali": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 10,
+        "imagenes": [
+          {
+            "nombre_archivo": "TEQUENDAMA-PARKING-CALI.jpg",
+            "titulo_imagen": "TEQUENDAMA PARKING - CALI",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/TEQUENDAMA-PARKING-CALI.jpg",
+            "attachment_id": 439,
+            "parent_post": 2
+          },
+          {
+            "nombre_archivo": "imagenes-proyectos-realizados-miniaturas-tequendama-Parking-Cali.jpg",
+            "titulo_imagen": "imagenes proyectos realizados miniaturas-(tequendama Parking, Cali)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/imagenes-proyectos-realizados-miniaturas-tequendama-Parking-Cali.jpg",
+            "attachment_id": 1161,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-1.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-1.webp",
+            "attachment_id": 2946,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-2.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-2.webp",
+            "attachment_id": 2947,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-3.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-3.webp",
+            "attachment_id": 2948,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-4.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-4.webp",
+            "attachment_id": 2949,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-5.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-5.webp",
+            "attachment_id": 2950,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-6.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-6.webp",
+            "attachment_id": 2951,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-7.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 7",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-7.webp",
+            "attachment_id": 2952,
+            "parent_post": 1951
+          },
+          {
+            "nombre_archivo": "Edificio-tequendama-parking-cali-8.webp",
+            "titulo_imagen": "Edificio tequendama parking cali 8",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-8.webp",
+            "attachment_id": 2953,
+            "parent_post": 1951
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Módulos Médicos": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      }
+    },
+    "INDUSTRIA": {
+      "Ampliación Cargill": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 4,
+        "imagenes": [
+          {
+            "nombre_archivo": "Industria-ampliacion-cargill-1.webp",
+            "titulo_imagen": "Industria ampliacion cargill 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-1.webp",
+            "attachment_id": null,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-ampliacion-cargill-2.webp",
+            "titulo_imagen": "Industria ampliacion cargill 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-2.webp",
+            "attachment_id": null,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-ampliacion-cargill-3.webp",
+            "titulo_imagen": "Industria ampliacion cargill 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-3.webp",
+            "attachment_id": null,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-ampliacion-cargill-4.webp",
+            "titulo_imagen": "Industria ampliacion cargill 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-4.webp",
+            "attachment_id": null,
+            "parent_post": 1962
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Torre Cogeneración Propal": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Bodega Duplex Ingeniería": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Bodega Intera": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "bodega-intera-4.jpeg",
+            "titulo_imagen": "bodega-intera (4)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/bodega-intera-4.jpeg",
+            "attachment_id": 404,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Industria-bodega-intera-1.webp",
+            "titulo_imagen": "Industria bodega intera 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-1.webp",
+            "attachment_id": 2610,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-bodega-intera-2.webp",
+            "titulo_imagen": "Industria bodega intera 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-2.webp",
+            "attachment_id": 2611,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-bodega-intera-3.webp",
+            "titulo_imagen": "Industria bodega intera 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-3.webp",
+            "attachment_id": 2612,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-bodega-intera-4.webp",
+            "titulo_imagen": "Industria bodega intera 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-4.webp",
+            "attachment_id": 2613,
+            "parent_post": 1962
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Tecnofar": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 14,
+        "imagenes": [
+          {
+            "nombre_archivo": "TECNOFAR-1.jpg",
+            "titulo_imagen": "TECNOFAR 1",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-1.jpg",
+            "attachment_id": 1523,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-1-1.jpg",
+            "titulo_imagen": "TECNOFAR 1",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-1-1.jpg",
+            "attachment_id": 1526,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-2.jpg",
+            "titulo_imagen": "TECNOFAR 2",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-2.jpg",
+            "attachment_id": 1527,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-3-2.jpg",
+            "titulo_imagen": "TECNOFAR 3 (2)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-3-2.jpg",
+            "attachment_id": 1528,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-4.jpg",
+            "titulo_imagen": "TECNOFAR 4",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-4.jpg",
+            "attachment_id": 1529,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-6.jpg",
+            "titulo_imagen": "TECNOFAR 6",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-6.jpg",
+            "attachment_id": 1530,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-5.jpg",
+            "titulo_imagen": "TECNOFAR 5",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2021/03/TECNOFAR-5.jpg",
+            "attachment_id": 1531,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-1-1-scaled-1.webp",
+            "titulo_imagen": "TECNOFAR-1-1-scaled",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2023/04/TECNOFAR-1-1-scaled-1.webp",
+            "attachment_id": 2291,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "TECNOFAR-1-scaled-1.webp",
+            "titulo_imagen": "TECNOFAR-1-scaled",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2023/04/TECNOFAR-1-scaled-1.webp",
+            "attachment_id": 2292,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "Industria-tecnofar-1.webp",
+            "titulo_imagen": "Industria tecnofar 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-1.webp",
+            "attachment_id": 2618,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-tecnofar-2.webp",
+            "titulo_imagen": "Industria tecnofar 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-2.webp",
+            "attachment_id": 2619,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-tecnofar-3.webp",
+            "titulo_imagen": "Industria tecnofar 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-3.webp",
+            "attachment_id": 2620,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-tecnofar-4.webp",
+            "titulo_imagen": "Industria tecnofar 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-4.webp",
+            "attachment_id": 2621,
+            "parent_post": 1962
+          },
+          {
+            "nombre_archivo": "Industria-tecnofar-5.webp",
+            "titulo_imagen": "Industria tecnofar 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-5.webp",
+            "attachment_id": 2622,
+            "parent_post": 1962
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Bodega Protecnica Etapa II": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Tecnoquímicas Jamundí": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      }
+    },
+    "PUENTES VEHICULARES": {
+      "Puente Nolasco": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 3,
+        "imagenes": [
+          {
+            "nombre_archivo": "Puente-vehicular-nolasco-1.webp",
+            "titulo_imagen": "Puente vehicular nolasco 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-1.webp",
+            "attachment_id": 2652,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-nolasco-2.webp",
+            "titulo_imagen": "Puente vehicular nolasco 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-2.webp",
+            "attachment_id": 2653,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-nolasco-3.webp",
+            "titulo_imagen": "Puente vehicular nolasco 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-3.webp",
+            "attachment_id": 2654,
+            "parent_post": 1973
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Puente Carrera 100": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 6,
+        "imagenes": [
+          {
+            "nombre_archivo": "puente-carrera-100-1.jpg",
+            "titulo_imagen": "puente-carrera-100 (1)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/puente-carrera-100-1.jpg",
+            "attachment_id": 357,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "puente-carrera-100-2.jpg",
+            "titulo_imagen": "puente-carrera-100 (2)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/puente-carrera-100-2.jpg",
+            "attachment_id": 358,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "puente-carrera-100-3.jpg",
+            "titulo_imagen": "puente-carrera-100 (3)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/puente-carrera-100-3.jpg",
+            "attachment_id": 359,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "puente-carrera-100-4.jpg",
+            "titulo_imagen": "puente-carrera-100 (4)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/puente-carrera-100-4.jpg",
+            "attachment_id": 360,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "puente-carrera-100-5.jpg",
+            "titulo_imagen": "puente-carrera-100 (5)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/puente-carrera-100-5.jpg",
+            "attachment_id": 361,
+            "parent_post": 0
+          },
+          {
+            "nombre_archivo": "puente-carrera-100-6.jpg",
+            "titulo_imagen": "puente-carrera-100 (6)",
+            "url_completa": "http://meisa.com.co/wp-content/uploads/2020/07/puente-carrera-100-6.jpg",
+            "attachment_id": 362,
+            "parent_post": 0
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Cambrin": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "Puente-vehicular-cambrin-1.webp",
+            "titulo_imagen": "Puente vehicular cambrin 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-1.webp",
+            "attachment_id": 2670,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-cambrin-2.webp",
+            "titulo_imagen": "Puente vehicular cambrin 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-2.webp",
+            "attachment_id": 2671,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-cambrin-3.webp",
+            "titulo_imagen": "Puente vehicular cambrin 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-3.webp",
+            "attachment_id": 2672,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-cambrin-4.webp",
+            "titulo_imagen": "Puente vehicular cambrin 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-4.webp",
+            "attachment_id": 2673,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-cambrin-5.webp",
+            "titulo_imagen": "Puente vehicular cambrin 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-5.webp",
+            "attachment_id": 2674,
+            "parent_post": 1973
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Puente Frisoles": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 2,
+        "imagenes": [
+          {
+            "nombre_archivo": "Puente-vehicular-frisoles-1.webp",
+            "titulo_imagen": "Puente vehicular frisoles 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-frisoles-1.webp",
+            "attachment_id": 2680,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-frisoles-2.webp",
+            "titulo_imagen": "Puente vehicular frisoles 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-frisoles-2.webp",
+            "attachment_id": 2681,
+            "parent_post": 1973
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Puente La 21": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Puente La Paila": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "Puente-vehicular-la-paila-1.webp",
+            "titulo_imagen": "Puente vehicular la paila 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-1.webp",
+            "attachment_id": 2692,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-la-paila-2.webp",
+            "titulo_imagen": "Puente vehicular la paila 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-2.webp",
+            "attachment_id": 2693,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-la-paila-3.webp",
+            "titulo_imagen": "Puente vehicular la paila 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-3.webp",
+            "attachment_id": 2694,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-la-paila-4.webp",
+            "titulo_imagen": "Puente vehicular la paila 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-4.webp",
+            "attachment_id": 2696,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-la-paila-5.webp",
+            "titulo_imagen": "Puente vehicular la paila 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-5.webp",
+            "attachment_id": 2697,
+            "parent_post": 1973
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Puente Saraconcho": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 5,
+        "imagenes": [
+          {
+            "nombre_archivo": "Puente-vehicular-saraconcho-1.webp",
+            "titulo_imagen": "Puente vehicular saraconcho 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-1.webp",
+            "attachment_id": 2704,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-saraconcho-2.webp",
+            "titulo_imagen": "Puente vehicular saraconcho 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-2.webp",
+            "attachment_id": 2705,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-saraconcho-3.webp",
+            "titulo_imagen": "Puente vehicular saraconcho 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-3.webp",
+            "attachment_id": 2706,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-saraconcho-4.webp",
+            "titulo_imagen": "Puente vehicular saraconcho 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-4.webp",
+            "attachment_id": 2708,
+            "parent_post": 1973
+          },
+          {
+            "nombre_archivo": "Puente-vehicular-saraconcho-5.webp",
+            "titulo_imagen": "Puente vehicular saraconcho 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-5.webp",
+            "attachment_id": 2709,
+            "parent_post": 1973
+          }
+        ],
+        "busqueda_por_patron": true
+      },
+      "Puente Río Negro": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      }
+    },
+    "PUENTES PEATONALES": {
+      "Escalinata Curva - Río Cali": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Puente Autopista Sur - Carrera 68": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Puente de la 63": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "La Tertulia": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 4,
+        "imagenes": [
+          {
+            "nombre_archivo": "Puente-peatonal-la-tertulia-1.webp",
+            "titulo_imagen": "Puente peatonal la tertulia 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-1.webp",
+            "attachment_id": 2761,
+            "parent_post": 2000
+          },
+          {
+            "nombre_archivo": "Puente-peatonal-la-tertulia-2.webp",
+            "titulo_imagen": "Puente peatonal la tertulia 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-2.webp",
+            "attachment_id": 2762,
+            "parent_post": 2000
+          },
+          {
+            "nombre_archivo": "Puente-peatonal-la-tertulia-3.webp",
+            "titulo_imagen": "Puente peatonal la tertulia 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-3.webp",
+            "attachment_id": 2763,
+            "parent_post": 2000
+          },
+          {
+            "nombre_archivo": "Puente-peatonal-la-tertulia-4.webp",
+            "titulo_imagen": "Puente peatonal la tertulia 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-4.webp",
+            "attachment_id": 2764,
+            "parent_post": 2000
+          }
+        ],
+        "busqueda_por_patron": true
+      }
+    },
+    "ESCENARIOS DEPORTIVOS": {
+      "Complejo Acuático Popayán": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Complejo Acuático Juegos Nacionales 2012": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Coliseo Mayor Juegos Nacionales 2012": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Coliseo de Artes Marciales Nacionales 2012": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Cecun (Universidad del Cauca)": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Cancha Javeriana Cali": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 8,
+        "imagenes": [
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-1.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 1",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-1.webp",
+            "attachment_id": 2812,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-2.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 2",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-2.webp",
+            "attachment_id": 2813,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-3.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 3",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-3.webp",
+            "attachment_id": 2814,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-4.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 4",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-4.webp",
+            "attachment_id": 2815,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-5.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 5",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-5.webp",
+            "attachment_id": 2816,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-6.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 6",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-6.webp",
+            "attachment_id": 2817,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-7.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 7",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-7.webp",
+            "attachment_id": 2818,
+            "parent_post": 2007
+          },
+          {
+            "nombre_archivo": "Escenario-deportivo-cancha-javeriana-cali-8.webp",
+            "titulo_imagen": "Escenario deportivo cancha javeriana cali 8",
+            "url_completa": "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-8.webp",
+            "attachment_id": 2819,
+            "parent_post": 2007
+          }
+        ],
+        "busqueda_por_patron": true
+      }
+    },
+    "ESTRUCTURAS MODULARES": {
+      "Cocinas Ocultas": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Módulo Oficina": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      }
+    },
+    "OIL & GAS": {
+      "Tanque Pulmón": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      },
+      "Tanques de Almacenamiento GLP": {
+        "post_id": null,
+        "post_title": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "busqueda_por_patron": true,
+        "error": "No encontrado ni por post ni por nombre de archivo"
+      }
+    }
+  }
+}

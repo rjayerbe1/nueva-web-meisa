@@ -73,28 +73,35 @@ export async function PUT(
       }
     }
 
+    // Build update data object only with provided fields
+    const updateData: any = {}
+    
+    if (data.titulo !== undefined) updateData.titulo = data.titulo
+    if (data.descripcion !== undefined) updateData.descripcion = data.descripcion
+    if (data.categoria !== undefined) updateData.categoria = data.categoria
+    if (data.cliente !== undefined) updateData.cliente = data.cliente
+    if (data.clienteId !== undefined) updateData.clienteId = data.clienteId
+    if (data.ubicacion !== undefined) updateData.ubicacion = data.ubicacion
+    if (data.fechaInicio !== undefined) updateData.fechaInicio = new Date(data.fechaInicio)
+    if (data.fechaFin !== undefined) updateData.fechaFin = data.fechaFin ? new Date(data.fechaFin) : null
+    if (data.estado !== undefined) updateData.estado = data.estado
+    if (data.prioridad !== undefined) updateData.prioridad = data.prioridad
+    if (data.presupuesto !== undefined) updateData.presupuesto = data.presupuesto
+    if (data.costoReal !== undefined) updateData.costoReal = data.costoReal
+    if (data.toneladas !== undefined) updateData.toneladas = data.toneladas
+    if (data.areaTotal !== undefined) updateData.areaTotal = data.areaTotal
+    if (data.moneda !== undefined) updateData.moneda = data.moneda
+    if (data.contactoCliente !== undefined) updateData.contactoCliente = data.contactoCliente
+    if (data.telefono !== undefined) updateData.telefono = data.telefono
+    if (data.email !== undefined) updateData.email = data.email
+    if (data.destacado !== undefined) updateData.destacado = data.destacado
+    if (data.destacadoEnCategoria !== undefined) updateData.destacadoEnCategoria = data.destacadoEnCategoria
+    if (data.visible !== undefined) updateData.visible = data.visible
+    if (slug) updateData.slug = slug
+
     const project = await prisma.proyecto.update({
       where: { id: params.id },
-      data: {
-        titulo: data.titulo,
-        descripcion: data.descripcion,
-        categoria: data.categoria,
-        cliente: data.cliente,
-        ubicacion: data.ubicacion,
-        fechaInicio: data.fechaInicio ? new Date(data.fechaInicio) : undefined,
-        fechaFin: data.fechaFin ? new Date(data.fechaFin) : undefined,
-        estado: data.estado,
-        prioridad: data.prioridad,
-        presupuesto: data.presupuesto,
-        costoReal: data.costoReal,
-        moneda: data.moneda,
-        contactoCliente: data.contactoCliente,
-        telefono: data.telefono,
-        email: data.email,
-        destacado: data.destacado,
-        visible: data.visible,
-        slug: slug || undefined
-      }
+      data: updateData
     })
 
     return NextResponse.json(project)

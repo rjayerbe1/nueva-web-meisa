@@ -1,34 +1,20 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-// import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
-import {
-  LayoutDashboard,
-  FolderOpen,
-  Users,
-  Settings,
-  FileText,
-  BarChart3,
-  Mail,
-  Image,
-  Menu,
-  X,
-  Building2,
-  Briefcase
-} from "lucide-react"
 
 const navigation = [
-  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Proyectos", href: "/admin/projects", icon: FolderOpen },
-  { name: "Servicios", href: "/admin/services", icon: Briefcase },
-  { name: "Equipo", href: "/admin/team", icon: Users },
-  { name: "Contactos", href: "/admin/messages", icon: Mail },
-  { name: "Media", href: "/admin/media", icon: Image },
-  { name: "Reportes", href: "/admin/reports", icon: BarChart3 },
-  { name: "Configuración", href: "/admin/configuracion", icon: Settings },
+  { name: "Dashboard", href: "/admin" },
+  { name: "Proyectos", href: "/admin/projects" },
+  { name: "Clientes", href: "/admin/clientes" },
+  { name: "Servicios", href: "/admin/services" },
+  { name: "Equipo", href: "/admin/team" },
+  { name: "Contactos", href: "/admin/messages" },
+  { name: "Media", href: "/admin/media" },
+  { name: "Backups", href: "/admin/backup" },
+  { name: "Reportes", href: "/admin/reports" },
+  { name: "Configuración", href: "/admin/configuracion" },
 ]
 
 interface AdminSidebarProps {
@@ -58,8 +44,8 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-800">
             <div className="flex items-center">
-              <div className="h-10 w-10 bg-meisa-blue rounded-lg flex items-center justify-center">
-                <Building2 className="h-6 w-6 text-white" />
+              <div className="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">M</span>
               </div>
               <div className="ml-3">
                 <h1 className="text-xl font-bold text-white">MEISA</h1>
@@ -71,7 +57,7 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-2 rounded-md hover:bg-gray-100"
             >
-              <X className="h-5 w-5" />
+              <span className="text-gray-600 text-2xl">×</span>
             </button>
           </div>
 
@@ -90,11 +76,10 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
                       className={cn(
                         "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
                         isActive
-                          ? "bg-meisa-blue text-white shadow-lg"
+                          ? "bg-blue-600 text-white shadow-lg"
                           : "text-gray-300 hover:bg-gray-800 hover:text-white"
                       )}
                     >
-                      <item.icon className="mr-3 h-5 w-5" />
                       {item.name}
                       
                       {isActive && (

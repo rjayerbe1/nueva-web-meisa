@@ -23,6 +23,18 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'meisa.com.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'meisa.com.co',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   env: {

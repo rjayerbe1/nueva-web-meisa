@@ -10,18 +10,25 @@ export function Footer() {
           <div>
             <h3 className="text-2xl font-bold mb-4">MEISA</h3>
             <p className="text-gray-400 mb-4">
-              Metálicas e Ingeniería S.A. - Líderes en estructuras metálicas
-              con más de 15 años de experiencia en Colombia.
+              Metálicas e Ingeniería S.A.S. - Especialistas en brindar un servicio integral 
+              al cliente con más de 29 años de experiencia desde 1996.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a 
+                href="https://www.facebook.com/Metalicaseingenieria" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a 
+                href="https://www.instagram.com/meisa.s.a.s" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Linkedin className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -57,10 +64,10 @@ export function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Nuestros Servicios</h4>
             <ul className="space-y-2 text-gray-400">
-              <li>Diseño Estructural</li>
-              <li>Fabricación</li>
-              <li>Montaje</li>
-              <li>Consultoría Técnica</li>
+              <li>Consultoría en Diseño Estructural</li>
+              <li>Fabricación de Estructuras Metálicas</li>
+              <li>Montaje de Estructuras Metálicas</li>
+              <li>Construcción de Obras Civiles</li>
             </ul>
           </div>
 
@@ -71,17 +78,21 @@ export function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                 <p className="text-gray-400 text-sm">
-                  Calle 100 #19-54, Oficina 701<br />
-                  Bogotá, Colombia
+                  Vía Panamericana 6 Sur – 195<br />
+                  Jamundí, Valle del Cauca<br />
+                  <span className="text-xs">(Sede Principal)</span>
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-gray-400" />
-                <p className="text-gray-400 text-sm">+57 (1) 756 3000</p>
+                <p className="text-gray-400 text-sm">
+                  PBX: +57 (2) 312 0050-51-52-53<br />
+                  Móvil: +57 (310) 432 7227
+                </p>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-gray-400" />
-                <p className="text-gray-400 text-sm">info@meisa.com.co</p>
+                <p className="text-gray-400 text-sm">contacto@meisa.com.co</p>
               </div>
             </div>
           </div>
@@ -89,15 +100,25 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} MEISA - Metálicas e Ingeniería S.A. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} MEISA - Metálicas e Ingeniería S.A.S. Todos los derechos reservados.</p>
           <div className="mt-2 space-x-4">
-            <Link href="/politica-privacidad" className="hover:text-white transition-colors">
-              Política de Privacidad
-            </Link>
+            <a 
+              href="https://meisa.com.co/politica-tratamiento-datos/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Política de Tratamiento de Datos
+            </a>
             <span>|</span>
-            <Link href="/terminos-condiciones" className="hover:text-white transition-colors">
-              Términos y Condiciones
-            </Link>
+            <a 
+              href="https://meisa.com.co/manual-sagrilaft/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Manual SAGRILAFT
+            </a>
           </div>
         </div>
       </div>

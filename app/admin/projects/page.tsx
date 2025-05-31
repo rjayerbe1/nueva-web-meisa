@@ -19,6 +19,8 @@ async function getProjects() {
       fechaInicio: true,
       fechaFin: true,
       presupuesto: true,
+      toneladas: true,
+      areaTotal: true,
       destacado: true,
       visible: true,
       createdAt: true,
@@ -37,6 +39,8 @@ async function getProjects() {
   return projects.map(project => ({
     ...project,
     presupuesto: project.presupuesto ? Number(project.presupuesto) : null,
+    toneladas: project.toneladas ? Number(project.toneladas) : null,
+    areaTotal: project.areaTotal ? Number(project.areaTotal) : null,
     fechaInicio: project.fechaInicio.toISOString(),
     fechaFin: project.fechaFin?.toISOString() || null,
     createdAt: project.createdAt.toISOString(),

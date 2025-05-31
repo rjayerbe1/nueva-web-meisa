@@ -6,17 +6,27 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 interface ImageUploaderProps {
-  images: string[]
-  onImagesChange: (images: string[]) => void
+  images?: string[]
+  onImagesChange?: (images: string[]) => void
+  onUpload?: (urls: string[]) => void
   maxImages?: number
+  maxFiles?: number
+  acceptedFileTypes?: string[]
+  label?: string
 }
 
 export function ImageUploader({ 
-  images, 
+  images = [], 
   onImagesChange, 
-  maxImages = 10 
+  onUpload,
+  maxImages = 10,
+  maxFiles = 1,
+  acceptedFileTypes = ['image/*'],
+  label = 'Upload images'
 }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false)
+  const maxCount = maxFiles || maxImages
+  const currentImages = images || []
 
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
@@ -29,26 +39,40 @@ export function ImageUploader({
       // Por ahora, simulamos con URLs locales
       const newImages = files.map(file => URL.createObjectURL(file))
       
-      const updatedImages = [...images, ...newImages].slice(0, maxImages)
-      onImagesChange(updatedImages)
+      if (onUpload) {
+        // For single image upload
+        onUpload(newImages.slice(0, maxCount))
+      } else if (onImagesChange) {
+        // For multiple images
+        const updatedImages = [...currentImages, ...newImages].slice(0, maxCount)
+        onImagesChange(updatedImages)
+      }
     } catch (error) {
       console.error("Error uploading images:", error)
     } finally {
       setIsUploading(false)
     }
-  }, [images, maxImages, onImagesChange])
+  }, [currentImages, maxCount, onImagesChange, onUpload])
 
   const removeImage = useCallback((index: number) => {
-    const updatedImages = images.filter((_, i) => i !== index)
-    onImagesChange(updatedImages)
-  }, [images, onImagesChange])
+    if (onImagesChange) {
+      const updatedImages = currentImages.filter((_, i) => i !== index)
+      onImagesChange(updatedImages)
+    } else if (onUpload) {
+      onUpload([])
+    }
+  }, [currentImages, onImagesChange, onUpload])
 
   const moveImage = useCallback((from: number, to: number) => {
-    const updatedImages = [...images]
-    const [removed] = updatedImages.splice(from, 1)
-    updatedImages.splice(to, 0, removed)
-    onImagesChange(updatedImages)
-  }, [images, onImagesChange])
+    if (onImagesChange) {
+      const updatedImages = [...currentImages]
+      const [removed] = updatedImages.splice(from, 1)
+      updatedImages.splice(to, 0, removed)
+      onImagesChange(updatedImages)
+    }
+  }, [currentImages, onImagesChange])
+
+  const showImages = currentImages.length > 0 || (onUpload && currentImages.length === 0)
 
   return (
     <div className="space-y-4">
@@ -56,26 +80,26 @@ export function ImageUploader({
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
         <input
           type="file"
-          multiple
-          accept="image/*"
+          multiple={maxCount > 1}
+          accept={acceptedFileTypes.join(',')}
           onChange={handleFileChange}
           className="hidden"
           id="image-upload"
-          disabled={isUploading || images.length >= maxImages}
+          disabled={isUploading || currentImages.length >= maxCount}
         />
         <label
           htmlFor="image-upload"
           className={`cursor-pointer ${
-            images.length >= maxImages ? "opacity-50 cursor-not-allowed" : ""
+            currentImages.length >= maxCount ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
           <Upload className="mx-auto h-12 w-12 text-gray-400" />
           <p className="mt-2 text-sm text-gray-600">
             {isUploading
               ? "Subiendo..."
-              : images.length >= maxImages
-              ? `Máximo ${maxImages} imágenes`
-              : "Click para subir o arrastra imágenes aquí"}
+              : currentImages.length >= maxCount
+              ? `Máximo ${maxCount} ${maxCount === 1 ? 'imagen' : 'imágenes'}`
+              : label || "Click para subir o arrastra imágenes aquí"}
           </p>
           <p className="text-xs text-gray-500">
             PNG, JPG, GIF hasta 10MB
@@ -84,9 +108,9 @@ export function ImageUploader({
       </div>
 
       {/* Images grid */}
-      {images.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {images.map((image, index) => (
+      {currentImages.length > 0 && (
+        <div className={`grid ${maxCount === 1 ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-4'} gap-4`}>
+          {currentImages.map((image, index) => (
             <div
               key={index}
               className="relative group aspect-square bg-gray-100 rounded-lg overflow-hidden"
@@ -109,7 +133,7 @@ export function ImageUploader({
               {/* Overlay con opciones */}
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                 {/* Mover izquierda */}
-                {index > 0 && (
+                {maxCount > 1 && index > 0 && (
                   <Button
                     size="sm"
                     variant="secondary"
@@ -129,7 +153,7 @@ export function ImageUploader({
                 </Button>
                 
                 {/* Mover derecha */}
-                {index < images.length - 1 && (
+                {maxCount > 1 && index < currentImages.length - 1 && (
                   <Button
                     size="sm"
                     variant="secondary"
@@ -141,18 +165,22 @@ export function ImageUploader({
               </div>
               
               {/* Número de orden */}
-              <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-                {index + 1}
-              </div>
+              {maxCount > 1 && (
+                <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                  {index + 1}
+                </div>
+              )}
             </div>
           ))}
         </div>
       )}
 
       {/* Contador */}
-      <p className="text-sm text-gray-500 text-center">
-        {images.length} / {maxImages} imágenes
-      </p>
+      {maxCount > 1 && (
+        <p className="text-sm text-gray-500 text-center">
+          {currentImages.length} / {maxCount} imágenes
+        </p>
+      )}
     </div>
   )
 }

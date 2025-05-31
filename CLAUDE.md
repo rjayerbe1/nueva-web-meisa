@@ -42,7 +42,7 @@ docker-compose up       # Alternative Docker start
 ### Route Structure
 - `/app` - Next.js 14 App Router
   - `/admin` - Protected admin panel routes
-  - `/api` - API endpoints (auth, projects)
+  - `/api` - API endpoints (auth, projects, clientes)
   - Public pages: home, servicios, proyectos, contacto
 
 ### Key Components Organization
@@ -53,7 +53,7 @@ docker-compose up       # Alternative Docker start
 - `/components/ui` - Reusable Shadcn/ui components
 
 ### Database Schema (Prisma)
-Main models: User, Proyecto, ImagenProyecto, ProgresoProyecto, Servicio, MiembroEquipo, ContactForm
+Main models: User, Proyecto, ImagenProyecto, ProgresoProyecto, Servicio, MiembroEquipo, ContactForm, Cliente
 
 ### Authentication Flow
 - NextAuth.js configuration in `/lib/auth.ts`
@@ -72,6 +72,13 @@ Required in `.env.local`:
 2. API routes: Create/edit in `/app/api/`
 3. UI components: Use existing Shadcn/ui components or create new ones
 4. Admin features: Add to `/app/admin/` with proper auth checks
+
+### Git Best Practices
+- **ALWAYS create commits on a feature branch, NEVER directly on main**
+- Create feature branches: `git checkout -b feature/your-feature-name`
+- Make commits on the feature branch: `git commit -m "your commit message"`
+- Push to feature branch: `git push origin feature/your-feature-name`
+- Create pull request to merge into main
 
 ### Deployment
 - **Vercel**: Automatic deployment on push to main

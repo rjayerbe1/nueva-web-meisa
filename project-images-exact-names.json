@@ -1,0 +1,313 @@
+{
+  "fecha_extraccion": "2025-05-30T00:06:35.459Z",
+  "total_proyectos_solicitados": 47,
+  "total_proyectos_encontrados": 40,
+  "total_imagenes_encontradas": 0,
+  "resultados": {
+    "CENTROS COMERCIALES": {
+      "Centro Comercial Campanario": {
+        "slider_id": 2398,
+        "slider_nombre": "Centro comercial-Campanario",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Paseo Villa del Río": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Centro Comercial Monserrat": {
+        "slider_id": 1847,
+        "slider_nombre": "Centro comercial-Monserrat",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Centro Comercial Unico Cali": {
+        "slider_id": 2467,
+        "slider_nombre": "Centro comercial-Unico Cali",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Centro Comercial Unico Neiva": {
+        "slider_id": 1762,
+        "slider_nombre": "Centro comercial-Unico Neiva",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Centro Comercial Unico Barranquilla": {
+        "slider_id": 1758,
+        "slider_nombre": "Centro comercial-Unico Barranquilla",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Centro Comercial Armenia Plaza": {
+        "slider_id": 2902,
+        "slider_nombre": "Centro comercial - Armenia plaza",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Centro Comercial Bochalema Plaza": {
+        "slider_id": 2907,
+        "slider_nombre": "Centro comercial-Bochalema plaza",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "EDIFICIOS": {
+      "Cinemateca Distrital": {
+        "slider_id": 1840,
+        "slider_nombre": "Edificios - Cinemateca distrital",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Clínica Reina Victoria": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Omega": {
+        "slider_id": 1752,
+        "slider_nombre": "Edificios - Omega",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Bomberos Popayán": {
+        "slider_id": 1746,
+        "slider_nombre": "Edificios - Bomberos Popayán",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Estación MIO Guadalupe": {
+        "slider_id": 1739,
+        "slider_nombre": "Edificios - MIO Guadalupe",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "SENA Santander": {
+        "slider_id": 1734,
+        "slider_nombre": "Edificios - Sena Santander",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Terminal Intermedio MIO": {
+        "slider_id": 2927,
+        "slider_nombre": "Edificios - MIO terminal intermedio Cali",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Tequendama Parking Cali": {
+        "slider_id": 2945,
+        "slider_nombre": "Edificios - Tequendama parking cali",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Módulos Médicos": {
+        "slider_id": 1729,
+        "slider_nombre": "Edificios - Módulos Médicos",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "INDUSTRIA": {
+      "Ampliación Cargill": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Torre Cogeneración Propal": {
+        "slider_id": 1819,
+        "slider_nombre": "Industria - Torre cogeneración propal",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Bodega Duplex Ingeniería": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Bodega Intera": {
+        "slider_id": 1713,
+        "slider_nombre": "Industria - Bodega Intera",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Tecnofar": {
+        "slider_id": 1723,
+        "slider_nombre": "Industria - Tecnofar",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Bodega Protecnica Etapa II": {
+        "slider_id": 1605,
+        "slider_nombre": "Industria - Bodega Protecnica II",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Tecnoquímicas Jamundí": {
+        "slider_id": 2885,
+        "slider_nombre": "Industria - Tecno químicas Jamundí",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "PUENTES VEHICULARES": {
+      "Puente Nolasco": {
+        "slider_id": 1809,
+        "slider_nombre": "Puentes vehiculares - Puente nolasco",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente Carrera 100": {
+        "slider_id": 1813,
+        "slider_nombre": "Puentes vehiculares - Carrera 100",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Cambrin": {
+        "slider_id": 1701,
+        "slider_nombre": "Puentes vehiculares - Cambrin",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente Frisoles": {
+        "slider_id": 1698,
+        "slider_nombre": "Puentes vehiculares - Frisoles",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente La 21": {
+        "slider_id": 1693,
+        "slider_nombre": "Puentes vehiculares -La 21",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente La Paila": {
+        "slider_id": 1687,
+        "slider_nombre": "Puentes vehiculares -La Paila",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente Saraconcho": {
+        "slider_id": 1681,
+        "slider_nombre": "Puentes vehiculares -Saraconcho",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente Río Negro": {
+        "slider_id": 1675,
+        "slider_nombre": "Puentes vehiculares - Río Negro",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "PUENTES PEATONALES": {
+      "Escalinata Curva - Río Cali": {
+        "slider_id": 1802,
+        "slider_nombre": "Puentes peatonales - Escalinata curva rio cali",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente Autopista Sur - Carrera 68": {
+        "slider_id": 1797,
+        "slider_nombre": "Puentes peatonales - Puente autopista sur - carrera 68",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Puente de la 63": {
+        "slider_id": 1670,
+        "slider_nombre": "Puentes peatonales - La 63",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "La Tertulia": {
+        "slider_id": 1665,
+        "slider_nombre": "Puentes peatonales - La Tertulia",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Terminal Intermedio": {
+        "slider_id": 2927,
+        "slider_nombre": "Edificios - MIO terminal intermedio Cali",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "ESCENARIOS DEPORTIVOS": {
+      "Complejo Acuático Popayán": {
+        "slider_id": 1746,
+        "slider_nombre": "Edificios - Bomberos Popayán",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Complejo Acuático Juegos Nacionales 2012": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Coliseo Mayor Juegos Nacionales 2012": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Coliseo de Artes Marciales Nacionales 2012": {
+        "slider_id": null,
+        "slider_nombre": null,
+        "total_imagenes": 0,
+        "imagenes": [],
+        "error": "Slider no encontrado en WordPress"
+      },
+      "Cecun (Universidad del Cauca)": {
+        "slider_id": 1645,
+        "slider_nombre": "Escenarios deportivos - CECUN",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Cancha Javeriana Cali": {
+        "slider_id": 1588,
+        "slider_nombre": "Escenarios deportivos - Cancha Javeriana",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "ESTRUCTURAS MODULARES": {
+      "Cocinas Ocultas": {
+        "slider_id": 1788,
+        "slider_nombre": "Estructuras modulares - Cocinas ocultas",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Módulo Oficina": {
+        "slider_id": 1614,
+        "slider_nombre": "Estructuras modulares - Módulo oficinas",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    },
+    "OIL & GAS": {
+      "Tanque Pulmón": {
+        "slider_id": 1779,
+        "slider_nombre": "Oil and Gas - Tanque pulmón",
+        "total_imagenes": 0,
+        "imagenes": []
+      },
+      "Tanques de Almacenamiento GLP": {
+        "slider_id": 1781,
+        "slider_nombre": "Oil and Gas - Tanques de almacenamiento GLP",
+        "total_imagenes": 0,
+        "imagenes": []
+      }
+    }
+  }
+}

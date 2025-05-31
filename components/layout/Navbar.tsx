@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import { Menu, X, ChevronDown } from "lucide-react"
@@ -17,8 +18,10 @@ const navigation = [
     href: "#",
     children: [
       { name: "Nuestra Empresa", href: "/empresa" },
-      { name: "Nuestro Equipo", href: "/equipo" },
-      { name: "Políticas", href: "/politicas" },
+      { name: "Infraestructura", href: "/#infraestructura" },
+      { name: "Tecnologías", href: "/#tecnologias" },
+      { name: "Valores", href: "/#valores" },
+      { name: "Clientes", href: "/#clientes" },
     ]
   },
   { name: "Contacto", href: "/contacto" },
@@ -30,17 +33,23 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-md shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl font-bold"
+              className="relative h-14 w-48"
             >
-              <span className="text-meisa-blue">MEISA</span>
+              <Image
+                src="/images/logo/logo-meisa.png"
+                alt="MEISA - Metálicas e Ingeniería"
+                fill
+                className="object-contain"
+                priority
+              />
             </motion.div>
           </Link>
 

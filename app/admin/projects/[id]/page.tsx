@@ -6,7 +6,7 @@ import Link from "next/link"
 import { 
   ArrowLeft, Calendar, MapPin, Users, DollarSign, 
   Building, Clock, Tag, Edit, Image as ImageIcon,
-  FileText, CheckCircle, AlertCircle, XCircle
+  FileText, CheckCircle, AlertCircle, XCircle, Scale, Ruler
 } from "lucide-react"
 import ProjectDetailClient from "@/components/admin/ProjectDetailClient"
 import ProjectImageGallery from "@/components/admin/ProjectImageGallery"
@@ -71,6 +71,22 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(numValue)
+  }
+
+  // Formatear toneladas
+  const formatToneladas = (toneladas: any) => {
+    if (!toneladas) return '--'
+    return `${parseFloat(toneladas).toFixed(1)} ton`
+  }
+
+  // Formatear área
+  const formatArea = (area: any) => {
+    if (!area) return '--'
+    const areaNum = parseFloat(area)
+    if (areaNum >= 10000) {
+      return `${(areaNum / 10000).toFixed(1)} ha`
+    }
+    return `${areaNum.toLocaleString('es-CO')} m²`
   }
 
   // Obtener icono de estado
@@ -179,6 +195,64 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
               </div>
             </div>
           </div>
+
+          {/* Especificaciones Técnicas */}
+          {(project.toneladas || project.areaTotal) && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Especificaciones Técnicas</h2>
+              <div className="grid grid-cols-2 gap-6">
+                {project.toneladas && (
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <Scale className="h-8 w-8 text-blue-600" />
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-blue-900">Toneladas de Acero</p>
+                        <p className="text-2xl font-bold text-blue-600">{formatToneladas(project.toneladas)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {project.areaTotal && (
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <Ruler className="h-8 w-8 text-green-600" />
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-green-900">Área Total</p>
+                        <p className="text-2xl font-bold text-green-600">{formatArea(project.areaTotal)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Métricas adicionales */}
+              {project.toneladas && project.areaTotal && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Métricas de Eficiencia</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-gray-500">Densidad de Acero</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {(parseFloat(project.toneladas) / parseFloat(project.areaTotal) * 1000).toFixed(1)} kg/m²
+                      </p>
+                    </div>
+                    {project.presupuesto && (
+                      <div>
+                        <p className="text-xs text-gray-500">Costo por Tonelada</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {formatCurrency(parseFloat(project.presupuesto) / parseFloat(project.toneladas))}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Progreso */}
           {project.progreso.length > 0 && (

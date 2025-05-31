@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { ImageUploader } from "@/components/admin/ImageUploader"
 import { ProgressTracker } from "@/components/admin/ProgressTracker"
 import { Loader2, Save, Eye } from "lucide-react"
@@ -33,6 +34,7 @@ const projectSchema = z.object({
   coordenadas: z.string().optional(),
   tags: z.array(z.string()).default([]),
   destacado: z.boolean().default(false),
+  destacadoEnCategoria: z.boolean().default(false),
   visible: z.boolean().default(true),
   metaTitle: z.string().optional(),
   metaDescription: z.string().optional(),
@@ -49,11 +51,13 @@ interface ProjectFormProps {
 const categoriaLabels = {
   CENTROS_COMERCIALES: "Centros Comerciales",
   EDIFICIOS: "Edificios",
-  PUENTES: "Puentes",
-  OIL_GAS: "Oil & Gas",
-  INDUSTRIAL: "Industrial",
-  RESIDENCIAL: "Residencial",
-  INFRAESTRUCTURA: "Infraestructura",
+  INDUSTRIA: "Industria",
+  PUENTES_VEHICULARES: "Puentes Vehiculares",
+  PUENTES_PEATONALES: "Puentes Peatonales",
+  ESCENARIOS_DEPORTIVOS: "Escenarios Deportivos",
+  CUBIERTAS_Y_FACHADAS: "Cubiertas y Fachadas",
+  ESTRUCTURAS_MODULARES: "Estructuras Modulares",
+  OIL_AND_GAS: "Oil & Gas",
   OTRO: "Otro"
 }
 
@@ -88,6 +92,7 @@ export function ProjectForm({ initialData, onSubmit, isLoading }: ProjectFormPro
       prioridad: PrioridadEnum.MEDIA,
       estado: EstadoProyecto.PLANIFICACION,
       destacado: false,
+      destacadoEnCategoria: false,
       visible: true,
       ...initialData
     }
@@ -321,6 +326,64 @@ export function ProjectForm({ initialData, onSubmit, isLoading }: ProjectFormPro
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Configuración de Visibilidad */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Configuración de Visibilidad</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="space-y-1">
+                    <Label htmlFor="destacado" className="text-sm font-medium">
+                      Proyecto Destacado
+                    </Label>
+                    <p className="text-xs text-gray-500">
+                      Aparecerá en la sección de proyectos destacados
+                    </p>
+                  </div>
+                  <Switch
+                    id="destacado"
+                    checked={watchedData.destacado}
+                    onCheckedChange={(checked) => setValue("destacado", checked)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="space-y-1">
+                    <Label htmlFor="destacadoEnCategoria" className="text-sm font-medium">
+                      Destacado en Categoría
+                    </Label>
+                    <p className="text-xs text-gray-500">
+                      Aparecerá en la sección de proyectos por categoría del home
+                    </p>
+                  </div>
+                  <Switch
+                    id="destacadoEnCategoria"
+                    checked={watchedData.destacadoEnCategoria}
+                    onCheckedChange={(checked) => setValue("destacadoEnCategoria", checked)}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div className="space-y-1">
+                  <Label htmlFor="visible" className="text-sm font-medium">
+                    Proyecto Visible
+                  </Label>
+                  <p className="text-xs text-gray-500">
+                    Controla si el proyecto es visible en el sitio web
+                  </p>
+                </div>
+                <Switch
+                  id="visible"
+                  checked={watchedData.visible}
+                  onCheckedChange={(checked) => setValue("visible", checked)}
+                />
               </div>
             </CardContent>
           </Card>
