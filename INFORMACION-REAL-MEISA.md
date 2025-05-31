@@ -1407,3 +1407,1900 @@ Todas las imágenes e iconos se encuentran en:
 - `[1-n]` indica una secuencia de archivos numerados
 - Las imágenes de proyectos generalmente siguen el patrón: `[Categoría]-[proyecto]-[número].[extensión]`
 - Las imágenes de sliders suelen incluir dimensiones: `-400x400.webp`
+
+# 🖼️ IMÁGENES EXTRAÍDAS DE PÁGINAS REALES DE PROYECTOS MEISA
+
+**Fecha de extracción:** 31/5/2025, 12:21:23 p. m.
+
+**Fuente:** Sitio web oficial meisa.com.co
+
+## CENTRO COMERCIAL CAMPANARIO
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** ARINSA
+- **Peso/Capacidad:** 2,500 toneladas
+- **Descripción:** Cimentación, estructura metálica y cubiertas ampliación
+- **URL del proyecto:** https://meisa.com.co/project/centro-comercial-campanario/
+- **Imágenes encontradas:** 7
+
+### Imagen 1
+- **Archivo local:** `centro-comercial-campanario-01-Centro-campanario-1-scaled-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-1-scaled-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-campanario-02-Centro-campanario-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-2-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-campanario-03-Centro-campanario-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-3-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-comercial-campanario-04-Centro-campanario-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-4-400x400.webp
+- **Tamaño:** 22KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `centro-comercial-campanario-05-Centro-campanario-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-5-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `centro-comercial-campanario-06-Centro-campanario-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-6-400x400.webp
+- **Tamaño:** 37KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `centro-comercial-campanario-07-Centro-campanario-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-7-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 7/7
+
+---
+
+## CINEMATECA DISTRITAL
+
+- **Ubicación:** Bogotá, Cundinamarca
+- **Cliente:** Consorcio Cine Cultura Bogotá
+- **Peso/Capacidad:** 490 toneladas
+- **Descripción:** Estructura metálica
+- **URL del proyecto:** https://meisa.com.co/project/edificios-cinemateca-distrital/
+- **Imágenes encontradas:** 6
+
+### Imagen 1
+- **Archivo local:** `edificios-cinemateca-distrital-01-Edificio-cinemateca-distrital-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-1-400x400.webp
+- **Tamaño:** 45KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificios-cinemateca-distrital-02-Edificio-cinemateca-distrital-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-2-400x400.webp
+- **Tamaño:** 47KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificios-cinemateca-distrital-03-Edificio-cinemateca-distrital-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-3-400x400.webp
+- **Tamaño:** 43KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificios-cinemateca-distrital-04-Edificio-cinemateca-distrital-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-4-400x400.webp
+- **Tamaño:** 38KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificios-cinemateca-distrital-05-Edificio-cinemateca-distrital-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-5-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `edificios-cinemateca-distrital-06-Edificio-cinemateca-distrital-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-6-400x400.webp
+- **Tamaño:** 27KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 6/6
+
+---
+
+## AMPLIACIÓN CARGILL
+
+- **Ubicación:** Villa Rica, Cauca
+- **Cliente:** Cargill Colombia
+- **Peso/Capacidad:** 175 toneladas
+- **Descripción:** Estructura metálica y cubierta ampliación
+- **URL del proyecto:** https://meisa.com.co/project/industria-ampliacion-cargill/
+- **Imágenes encontradas:** 6
+
+### Imagen 1
+- **Archivo local:** `industria-ampliacion-cargill-01-Industria-ampliacion-cargill-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-1-400x400.webp
+- **Tamaño:** 40KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `industria-ampliacion-cargill-02-Industria-ampliacion-cargill-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-2-400x400.webp
+- **Tamaño:** 39KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `industria-ampliacion-cargill-03-Industria-ampliacion-cargill-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-3-400x400.webp
+- **Tamaño:** 44KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `industria-ampliacion-cargill-04-Industria-ampliacion-cargill-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-4-400x400.webp
+- **Tamaño:** 39KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `industria-ampliacion-cargill-05-Industria-ampliacion-cargill-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-5-400x400.webp
+- **Tamaño:** 39KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `industria-ampliacion-cargill-06-Industria-ampliacion-cargill-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-6-400x400.webp
+- **Tamaño:** 36KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 6/6
+
+---
+
+## PUENTE NOLASCO
+
+- **Ubicación:** Nátaga, Huila
+- **Cliente:** Consorcio del Cauca
+- **Peso/Capacidad:** 395 toneladas
+- **Descripción:** Estructura metálica
+- **URL del proyecto:** https://meisa.com.co/project/puentes-vehiculares-puente-nolasco/
+- **Imágenes encontradas:** 3
+
+### Imagen 1
+- **Archivo local:** `puentes-vehiculares-puente-nolasco-01-Puente-vehicular-nolasco-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-1-400x400.webp
+- **Tamaño:** 52KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puentes-vehiculares-puente-nolasco-02-Puente-vehicular-nolasco-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-2-400x400.webp
+- **Tamaño:** 42KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puentes-vehiculares-puente-nolasco-03-Puente-vehicular-nolasco-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-3-400x400.webp
+- **Tamaño:** 53KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 3/3
+
+---
+
+## ESCALINATA CURVA RÍO CALI
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** UNIÓN TEMPORAL ESPACIO 2015
+- **Peso/Capacidad:** 30 toneladas
+- **Descripción:** Formaleta en estructura metálica
+- **URL del proyecto:** https://meisa.com.co/project/puentes-peatonales-escalinata-curva-rio-cali/
+- **Imágenes encontradas:** 6
+
+### Imagen 1
+- **Archivo local:** `puentes-peatonales-escalinata-curva-rio-cali-01-Puente-peatonal-escalinata-curva-rio-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-1-400x400.webp
+- **Tamaño:** 50KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puentes-peatonales-escalinata-curva-rio-cali-02-Puente-peatonal-escalinata-curva-rio-cali-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-2-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puentes-peatonales-escalinata-curva-rio-cali-03-Puente-peatonal-escalinata-curva-rio-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-3-400x400.webp
+- **Tamaño:** 19KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puentes-peatonales-escalinata-curva-rio-cali-04-Puente-peatonal-escalinata-curva-rio-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-4-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `puentes-peatonales-escalinata-curva-rio-cali-05-Puente-peatonal-escalinata-curva-rio-cali-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-5-400x400.webp
+- **Tamaño:** 34KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `puentes-peatonales-escalinata-curva-rio-cali-06-Puente-peatonal-escalinata-curva-rio-cali-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-6-400x400.webp
+- **Tamaño:** 53KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 6/6
+
+---
+
+## COMPLEJO ACUÁTICO POPAYÁN
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** Fondo mixto para promoción del deporte / MAJA S.A.S.
+- **Peso/Capacidad:** 135-216 toneladas
+- **Descripción:** Obra civil y estructura metálica
+- **URL del proyecto:** https://meisa.com.co/project/escenarios-deportivos-complejo-acuatico-popayan/
+- **Imágenes encontradas:** 2
+
+### Imagen 1
+- **Archivo local:** `escenarios-deportivos-complejo-acuatico-popayan-01-Escenario-deportivo-compejo-acuativo-popayan-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-compejo-acuativo-popayan-1-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `escenarios-deportivos-complejo-acuatico-popayan-02-Escenario-deportivo-complejo-acuatico-popayan-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-complejo-acuatico-popayan-2-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 2/2
+
+---
+
+## ESTRUCTURAS MODULARES - COCINAS OCULTAS
+
+- **Ubicación:** Bogotá D.C.
+- **Cliente:** COCINAS OCULTAS COLOMBIA HOLDINGS S.A.S.
+- **Peso/Capacidad:** 24 unidades
+- **Descripción:** Estructuras modulares
+- **URL del proyecto:** https://meisa.com.co/project/estructuras-modulares-cocinas-ocultas/
+- **Imágenes encontradas:** 6
+
+### Imagen 1
+- **Archivo local:** `estructuras-modulares-cocinas-ocultas-01-Estructura-modular-cocina-oculta-1-400x400.jpeg`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-cocina-oculta-1-400x400.jpeg
+- **Tamaño:** 28KB
+- **Formato:** JPEG
+
+### Imagen 2
+- **Archivo local:** `estructuras-modulares-cocinas-ocultas-02-Estructura-modular-cocina-oculta-2-400x400.jpeg`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-cocina-oculta-2-400x400.jpeg
+- **Tamaño:** 35KB
+- **Formato:** JPEG
+
+### Imagen 3
+- **Archivo local:** `estructuras-modulares-cocinas-ocultas-03-Estructura-modular-cocina-oculta-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-cocina-oculta-3-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `estructuras-modulares-cocinas-ocultas-04-Estructura-modular-modulo-oficina-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-modulo-oficina-1-400x400.webp
+- **Tamaño:** 22KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `estructuras-modulares-cocinas-ocultas-05-Estructura-modular-modulo-oficina-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-modulo-oficina-2-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `estructuras-modulares-cocinas-ocultas-06-Estructura-modular-modulo-oficina-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-modulo-oficina-3-400x400.webp
+- **Tamaño:** 15KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 6/6
+
+---
+
+## OIL AND GAS - TANQUE PULMÓN
+
+- **Ubicación:** San Martín, Cesar / Pitalito, Huila
+- **Cliente:** OIL BUSINESS SERVICES S.A.S. / Surcolombiana de Gas S.A E.S.P.
+- **Peso/Capacidad:** 3,000 galones por unidad
+- **Descripción:** Tanque estacionario vertical y tanques horizontales
+- **URL del proyecto:** https://meisa.com.co/project/oil-and-gas-tanque-pulmon/
+- **Imágenes encontradas:** 7
+
+### Imagen 1
+- **Archivo local:** `oil-and-gas-tanque-pulmon-01-Oil-gas-tanque-pulmon-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-pulmon-1-400x400.webp
+- **Tamaño:** 13KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `oil-and-gas-tanque-pulmon-02-Oil-gas-tanque-de-almacenamiento-gpl-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-1-400x400.webp
+- **Tamaño:** 18KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `oil-and-gas-tanque-pulmon-03-Oil-gas-tanque-de-almacenamiento-gpl-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-2-400x400.webp
+- **Tamaño:** 20KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `oil-and-gas-tanque-pulmon-04-Oil-gas-tanque-de-almacenamiento-gpl-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-3-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `oil-and-gas-tanque-pulmon-05-Oil-gas-tanque-de-almacenamiento-gpl-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-4-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `oil-and-gas-tanque-pulmon-06-Oil-gas-tanque-de-almacenamiento-gpl-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-5-400x400.webp
+- **Tamaño:** 12KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `oil-and-gas-tanque-pulmon-07-Oil-gas-tanque-de-almacenamiento-gpl-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-6-400x400.webp
+- **Tamaño:** 16KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 7/7
+
+---
+
+# 📊 RESUMEN DE EXTRACCIÓN
+
+- **Total proyectos procesados:** 8
+- **Total imágenes encontradas:** 43
+- **Total imágenes descargadas:** 43
+- **Tasa de éxito:** 100.0%
+- **Ubicación de archivos:** `/Users/rjayerbe/Web Development Local/meisa.com.co/nueva-web-meisa/real-project-images-downloaded`
+
+## 🗂️ ESTRUCTURA DE CARPETAS
+
+- `centro-comercial-campanario/` - Centro Comercial Campanario (7 imágenes)
+- `edificios-cinemateca-distrital/` - Cinemateca Distrital (6 imágenes)
+- `industria-ampliacion-cargill/` - Ampliación Cargill (6 imágenes)
+- `puentes-vehiculares-puente-nolasco/` - Puente Nolasco (3 imágenes)
+- `puentes-peatonales-escalinata-curva-rio-cali/` - Escalinata Curva Río Cali (6 imágenes)
+- `escenarios-deportivos-complejo-acuatico-popayan/` - Complejo Acuático Popayán (2 imágenes)
+- `estructuras-modulares-cocinas-ocultas/` - Estructuras Modulares - Cocinas Ocultas (6 imágenes)
+- `oil-and-gas-tanque-pulmon/` - Oil and Gas - Tanque Pulmón (7 imágenes)
+
+## 🔗 INFORMACIÓN TÉCNICA
+
+- **Formato de imágenes:** WebP y JPEG
+- **Dimensiones estándar:** 400x400 píxeles
+- **Calidad:** Alta resolución para web
+- **Nomenclatura:** `proyecto-numero-nombre-original.extension`
+
+
+
+# 🖼️ TODAS LAS IMÁGENES ADICIONALES DE SLIDERS Y GALERÍAS
+
+**Fecha de extracción:** 31/5/2025, 12:40:43 p. m.
+
+**Fuente:** Sliders y galerías profundas del sitio web oficial meisa.com.co
+
+## PASEO VILLA DEL RÍO
+
+- **Ubicación:** Bogotá, Cundinamarca
+- **Cliente:** Ménsula Ingenieros S.A
+- **Peso/Capacidad:** 420 toneladas
+- **Descripción:** Estructura, metálica de rampas, losa y racks
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `centro-paseo-villa-del-rio-01-Centro-paseo-villa-del-rio-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-1-400x400.webp
+- **Tamaño:** 38KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-paseo-villa-del-rio-02-Centro-paseo-villa-del-rio-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-2-400x400.webp
+- **Tamaño:** 19KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-paseo-villa-del-rio-03-Centro-paseo-villa-del-rio-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-3-400x400.webp
+- **Tamaño:** 39KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-paseo-villa-del-rio-04-Centro-paseo-villa-del-rio-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-4-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `centro-paseo-villa-del-rio-05-Centro-paseo-villa-del-rio-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-paseo-villa-del-rio-5-400x400.webp
+- **Tamaño:** 27KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## CENTRO COMERCIAL MONSERRAT
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** Constructora Adriana Rivera SAS
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura Metálica y Cubierta
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `centro-comercial-monserrat-01-Centro-monserrat-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-1-400x400.webp
+- **Tamaño:** 36KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-monserrat-02-Centro-monserrat-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-2-400x400.webp
+- **Tamaño:** 39KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-monserrat-03-Centro-monserrat-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-3-400x400.webp
+- **Tamaño:** 37KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-comercial-monserrat-04-Centro-monserrat-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-4-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `centro-comercial-monserrat-05-Centro-monserrat-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-monserrat-5-400x400.webp
+- **Tamaño:** 29KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## CENTRO COMERCIAL UNICO CALI
+
+- **Ubicación:** Cali, Valle
+- **Cliente:** Unitres SAS
+- **Peso/Capacidad:** 790 toneladas
+- **Descripción:** Construcción de obra civil, estructura metálica y cubierta
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `centro-comercial-unico-cali-01-Centro-unico-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-1-400x400.webp
+- **Tamaño:** 41KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-unico-cali-02-Centro-unico-cali-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-2-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-unico-cali-03-Centro-unico-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-3-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-comercial-unico-cali-04-Centro-unico-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-4-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `centro-comercial-unico-cali-05-Centro-unico-cali-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-cali-5-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## CENTRO COMERCIAL UNICO NEIVA
+
+- **Ubicación:** Neiva, Huila
+- **Cliente:** Constructora Colpatria SAS
+- **Peso/Capacidad:** 902 toneladas
+- **Descripción:** Estructura Metálica y Cubierta
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `centro-comercial-unico-neiva-01-Centro-unico-neiva-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-1-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-unico-neiva-02-Centro-unico-neiva-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-2-400x400.webp
+- **Tamaño:** 20KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-unico-neiva-03-Centro-unico-neiva-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-3-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-comercial-unico-neiva-04-Centro-unico-neiva-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-4-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `centro-comercial-unico-neiva-05-Centro-unico-neiva-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-neiva-5-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## CENTRO COMERCIAL UNICO BARRANQUILLA
+
+- **Ubicación:** Barranquilla, Atlántico
+- **Cliente:** Centros Comerciales de la Costa SAS
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura Metálica y Cubierta
+- **Imágenes encontradas:** 3
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-unico-barranquilla-02-Centro-unico-barranquilla-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-barranquilla-2-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-unico-barranquilla-03-Centro-unico-barranquilla-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-unico-barranquilla-3-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 2/3
+
+---
+
+## CENTRO COMERCIAL ARMENIA PLAZA
+
+- **Ubicación:** Armenia, Quindío
+- **Cliente:** ER Inversiones
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `centro-comercial-armenia-plaza-01-Centro-armenia-plaza-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-1-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-armenia-plaza-02-Centro-armenia-plaza-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-2-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-armenia-plaza-03-Centro-armenia-plaza-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-3-400x400.webp
+- **Tamaño:** 47KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-comercial-armenia-plaza-04-Centro-armenia-plaza-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-armenia-plaza-4-400x400.webp
+- **Tamaño:** 39KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## CENTRO COMERCIAL BOCHALEMA PLAZA
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Constructora Normandía
+- **Peso/Capacidad:** 1,781 toneladas
+- **Descripción:** Estructura metálica - Área: 16,347 metros cuadrados
+- **Imágenes encontradas:** 9
+
+### Imagen 1
+- **Archivo local:** `centro-comercial-bochalema-plaza-01-Centro-bochalema-plaza-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-1-400x400.webp
+- **Tamaño:** 51KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `centro-comercial-bochalema-plaza-02-Centro-bochalema-plaza-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-2-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `centro-comercial-bochalema-plaza-03-Centro-bochalema-plaza-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-3-400x400.webp
+- **Tamaño:** 29KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `centro-comercial-bochalema-plaza-04-Centro-bochalema-plaza-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-4-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `centro-comercial-bochalema-plaza-05-Centro-bochalema-plaza-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-5-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `centro-comercial-bochalema-plaza-06-Centro-bochalema-plaza-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-6-400x400.webp
+- **Tamaño:** 43KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `centro-comercial-bochalema-plaza-07-Centro-bochalema-plaza-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-7-400x400.webp
+- **Tamaño:** 40KB
+- **Formato:** WEBP
+
+### Imagen 8
+- **Archivo local:** `centro-comercial-bochalema-plaza-08-Centro-bochalema-plaza-8-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-8-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+### Imagen 9
+- **Archivo local:** `centro-comercial-bochalema-plaza-09-Centro-bochalema-plaza-9-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Centro-bochalema-plaza-9-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 9/9
+
+---
+
+## CLÍNICA REINA VICTORIA
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** INVERSIONES M&L GROUP S.A.S.
+- **Peso/Capacidad:** 815 toneladas
+- **Descripción:** Cimentación y estructura metálica
+- **Imágenes encontradas:** 7
+
+### Imagen 1
+- **Archivo local:** `edificio-clinica-reina-victoria-01-Edificio-clinica-reina-victoria-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-1-400x400.webp
+- **Tamaño:** 37KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-clinica-reina-victoria-02-Edificio-clinica-reina-victoria-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-2-400x400.webp
+- **Tamaño:** 35KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-clinica-reina-victoria-03-Edificio-clinica-reina-victoria-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-3-400x400.webp
+- **Tamaño:** 47KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-clinica-reina-victoria-04-Edificio-clinica-reina-victoria-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-4-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificio-clinica-reina-victoria-05-Edificio-clinica-reina-victoria-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-5-400x400.webp
+- **Tamaño:** 41KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `edificio-clinica-reina-victoria-06-Edificio-clinica-reina-victoria-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-6-400x400.webp
+- **Tamaño:** 49KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `edificio-clinica-reina-victoria-07-Edificio-clinica-reina-victoria-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-clinica-reina-victoria-7-400x400.webp
+- **Tamaño:** 19KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 7/7
+
+---
+
+## EDIFICIO OMEGA
+
+- **Ubicación:** Cali, Valle
+- **Cliente:** Omega
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura Metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `edificio-omega-01-Edificio-omega-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-1-400x400.webp
+- **Tamaño:** 20KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-omega-02-Edificio-omega-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-2-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-omega-03-Edificio-omega-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-3-400x400.webp
+- **Tamaño:** 15KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-omega-04-Edificio-omega-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-4-400x400.webp
+- **Tamaño:** 36KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificio-omega-05-Edificio-omega-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-omega-5-400x400.webp
+- **Tamaño:** 37KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## BOMBEROS POPAYÁN
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** Cuerpo de bomberos voluntarios de Popayán
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura Metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `edificio-bomberos-popayan-01-Edificio-bomberos-popayan-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-1-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-bomberos-popayan-02-Edificio-bomberos-popayan-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-2-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-bomberos-popayan-03-Edificio-bomberos-popayan-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-3-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-bomberos-popayan-04-Edificio-bomberos-popayan-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-4-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificio-bomberos-popayan-05-Edificio-bomberos-popayan-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-bomberos-popayan-5-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## ESTACIÓN MIO GUADALUPE
+
+- **Ubicación:** Cali, Valle
+- **Cliente:** Consorcio Metrovial SB
+- **Peso/Capacidad:** 654 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 6
+
+### Imagen 1
+- **Archivo local:** `edificio-estacion-mio-guadalupe-01-Edificio-estacion-mio-guadalupe-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-1-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-estacion-mio-guadalupe-02-Edificio-estacion-mio-guadalupe-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-2-400x400.webp
+- **Tamaño:** 18KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-estacion-mio-guadalupe-03-Edificio-estacion-mio-guadalupe-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-3-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-estacion-mio-guadalupe-04-Edificio-estacion-mio-guadalupe-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-4-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificio-estacion-mio-guadalupe-05-Edificio-estacion-mio-guadalupe-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-5-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `edificio-estacion-mio-guadalupe-06-Edificio-estacion-mio-guadalupe-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-estacion-mio-guadalupe-6-400x400.webp
+- **Tamaño:** 29KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 6/6
+
+---
+
+## SENA SANTANDER
+
+- **Ubicación:** Santander, Cauca
+- **Cliente:** Sena
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura Metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 2
+- **Archivo local:** `edificio-sena-santander-02-Edificio-sena-santander-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-sena-santander-2-400x400.webp
+- **Tamaño:** 25KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-sena-santander-03-Edificio-sena-santander-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-sena-santander-3-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 2/4
+
+---
+
+## TERMINAL INTERMEDIO MIO
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Consorcio Metrovial SB
+- **Peso/Capacidad:** 654 toneladas
+- **Descripción:** Estructura metálica - Área: 8,842 metros cuadrados
+- **Imágenes encontradas:** 8
+
+### Imagen 1
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-01-Edificio-terminal-intermedio-mio-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-1-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-02-Edificio-terminal-intermedio-mio-cali-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-2-400x400.webp
+- **Tamaño:** 19KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-03-Edificio-terminal-intermedio-mio-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-3-400x400.webp
+- **Tamaño:** 16KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-04-Edificio-terminal-intermedio-mio-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-4-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-05-Edificio-terminal-intermedio-mio-cali-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-5-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-06-Edificio-terminal-intermedio-mio-cali-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-6-400x400.webp
+- **Tamaño:** 15KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-07-Edificio-terminal-intermedio-mio-cali-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-7-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 8
+- **Archivo local:** `edificio-terminal-intermedio-mio-cali-08-Edificio-terminal-intermedio-mio-cali-8-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-terminal-intermedio-mio-cali-8-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 8/8
+
+---
+
+## TEQUENDAMA PARKING CALI
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** No especificado
+- **Peso/Capacidad:** 156 toneladas
+- **Descripción:** Estructura metálica y obra civil - Área: 9,633 metros cuadrados
+- **Imágenes encontradas:** 8
+
+### Imagen 1
+- **Archivo local:** `edificio-tequendama-parking-cali-01-Edificio-tequendama-parking-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-1-400x400.webp
+- **Tamaño:** 27KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-tequendama-parking-cali-02-Edificio-tequendama-parking-cali-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-2-400x400.webp
+- **Tamaño:** 42KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-tequendama-parking-cali-03-Edificio-tequendama-parking-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-3-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-tequendama-parking-cali-04-Edificio-tequendama-parking-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-4-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `edificio-tequendama-parking-cali-05-Edificio-tequendama-parking-cali-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-5-400x400.webp
+- **Tamaño:** 22KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `edificio-tequendama-parking-cali-06-Edificio-tequendama-parking-cali-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-6-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `edificio-tequendama-parking-cali-07-Edificio-tequendama-parking-cali-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-7-400x400.webp
+- **Tamaño:** 40KB
+- **Formato:** WEBP
+
+### Imagen 8
+- **Archivo local:** `edificio-tequendama-parking-cali-08-Edificio-tequendama-parking-cali-8-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-tequendama-parking-cali-8-400x400.webp
+- **Tamaño:** 48KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 8/8
+
+---
+
+## MÓDULOS MÉDICOS
+
+- **Ubicación:** No especificada
+- **Cliente:** No especificado
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructuras modulares médicas
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `edificio-modulos-medicos-01-Edificio-modulos-medicos-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-modulos-medicos-1-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `edificio-modulos-medicos-02-Edificio-modulos-medicos-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-modulos-medicos-2-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `edificio-modulos-medicos-03-Edificio-modulos-medicos-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-modulos-medicos-3-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `edificio-modulos-medicos-04-Edificio-modulos-medicos-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Edificio-modulos-medicos-4-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## TORRE COGENERACIÓN PROPAL
+
+- **Ubicación:** Yumbo, Valle del Cauca
+- **Cliente:** Propal
+- **Peso/Capacidad:** 110 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `industria-torre-cogeneracion-propal-01-Industria-torre-cogeneracion-propal-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-torre-cogeneracion-propal-1-400x400.webp
+- **Tamaño:** 10KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `industria-torre-cogeneracion-propal-02-Industria-torre-cogeneracion-propal-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-torre-cogeneracion-propal-2-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `industria-torre-cogeneracion-propal-03-Industria-torre-cogeneracion-propal-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-torre-cogeneracion-propal-3-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `industria-torre-cogeneracion-propal-04-Industria-torre-cogeneracion-propal-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-torre-cogeneracion-propal-4-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `industria-torre-cogeneracion-propal-05-Industria-torre-cogeneracion-propal-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-torre-cogeneracion-propal-5-400x400.webp
+- **Tamaño:** 23KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## BODEGA DUPLEX INGENIERÍA
+
+- **Ubicación:** No especificada
+- **Cliente:** No especificado
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `industria-bodega-duplex-01-Industria-bodega-duplex-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-duplex-1-400x400.webp
+- **Tamaño:** 18KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `industria-bodega-duplex-02-Industria-bodega-duplex-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-duplex-2-400x400.webp
+- **Tamaño:** 20KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `industria-bodega-duplex-04-Industria-bodega-duplex-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-duplex-4-400x400.webp
+- **Tamaño:** 17KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 3/4
+
+---
+
+## BODEGA INTERA
+
+- **Ubicación:** Santander, Cauca
+- **Cliente:** Intera SAS
+- **Peso/Capacidad:** 79 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `industria-bodega-intera-01-Industria-bodega-intera-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-1-400x400.webp
+- **Tamaño:** 17KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `industria-bodega-intera-02-Industria-bodega-intera-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-2-400x400.webp
+- **Tamaño:** 43KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `industria-bodega-intera-03-Industria-bodega-intera-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-3-400x400.webp
+- **Tamaño:** 14KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `industria-bodega-intera-04-Industria-bodega-intera-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-intera-4-400x400.webp
+- **Tamaño:** 18KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## TECNOFAR
+
+- **Ubicación:** Villa Rica, Cauca
+- **Cliente:** Constructora Inverteq S.A.S
+- **Peso/Capacidad:** 612 toneladas
+- **Descripción:** Estructura metálica - Área: 5,141 metros cuadrados
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `industria-tecnofar-01-Industria-tecnofar-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-1-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `industria-tecnofar-02-Industria-tecnofar-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-2-400x400.webp
+- **Tamaño:** 27KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `industria-tecnofar-03-Industria-tecnofar-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-3-400x400.webp
+- **Tamaño:** 35KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `industria-tecnofar-04-Industria-tecnofar-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-4-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `industria-tecnofar-05-Industria-tecnofar-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-tecnofar-5-400x400.webp
+- **Tamaño:** 35KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## BODEGA PROTECNICA ETAPA II
+
+- **Ubicación:** Yumbo, Valle
+- **Cliente:** Protecnica Ingenieria SAS
+- **Peso/Capacidad:** 28 toneladas
+- **Descripción:** Estructura metálica, fachada y cubierta
+- **Imágenes encontradas:** 7
+
+### Imagen 1
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-01-Industria-bodega-protecnica-etapa-dos-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-1-400x400.webp
+- **Tamaño:** 19KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-02-Industria-bodega-protecnica-etapa-dos-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-2-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-03-Industria-bodega-protecnica-etapa-dos-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-3-400x400.webp
+- **Tamaño:** 22KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-04-Industria-bodega-protecnica-etapa-dos-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-4-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-05-Industria-bodega-protecnica-etapa-dos-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-5-400x400.webp
+- **Tamaño:** 44KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-06-Industria-bodega-protecnica-etapa-dos-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-6-400x400.webp
+- **Tamaño:** 17KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `industria-bodega-protecnica-etapa-dos-07-Industria-bodega-protecnica-etapa-dos-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Industria-bodega-protecnica-etapa-dos-7-400x400.webp
+- **Tamaño:** 37KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 7/7
+
+---
+
+## TECNOQUÍMICAS JAMUNDÍ
+
+- **Ubicación:** Jamundí, Valle del Cauca
+- **Cliente:** Tecnoquímicas S.A.
+- **Peso/Capacidad:** 508 toneladas
+- **Descripción:** Estructura metálica - Área: 3,676 metros cuadrados
+- **Imágenes encontradas:** 5
+
+**Descargadas exitosamente:** 0/5
+
+---
+
+## PUENTE CARRERA 100
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Consorcio Islas 2019
+- **Peso/Capacidad:** 420 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `puente-vehicular-carrera-cien-01-Puente-vehicular-carrera-cien-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-carrera-cien-1-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-vehicular-carrera-cien-02-Puente-vehicular-carrera-cien-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-carrera-cien-2-400x400.webp
+- **Tamaño:** 18KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-vehicular-carrera-cien-03-Puente-vehicular-carrera-cien-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-carrera-cien-3-400x400.webp
+- **Tamaño:** 18KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-vehicular-carrera-cien-04-Puente-vehicular-carrera-cien-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-carrera-cien-4-400x400.webp
+- **Tamaño:** 15KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `puente-vehicular-carrera-cien-05-Puente-vehicular-carrera-cien-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-carrera-cien-5-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## PUENTE CAMBRIN
+
+- **Ubicación:** Tolima
+- **Cliente:** Consorcio Cambrin 2017
+- **Peso/Capacidad:** 250 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `puente-vehicular-cambrin-01-Puente-vehicular-cambrin-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-1-400x400.webp
+- **Tamaño:** 42KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-vehicular-cambrin-02-Puente-vehicular-cambrin-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-2-400x400.webp
+- **Tamaño:** 60KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-vehicular-cambrin-03-Puente-vehicular-cambrin-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-3-400x400.webp
+- **Tamaño:** 41KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-vehicular-cambrin-04-Puente-vehicular-cambrin-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-4-400x400.webp
+- **Tamaño:** 46KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `puente-vehicular-cambrin-05-Puente-vehicular-cambrin-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-cambrin-5-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## PUENTE FRISOLES
+
+- **Ubicación:** Pasto
+- **Cliente:** No especificado
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 2
+
+### Imagen 1
+- **Archivo local:** `puente-vehicular-frisoles-01-Puente-vehicular-frisoles-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-frisoles-1-400x400.webp
+- **Tamaño:** 62KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-vehicular-frisoles-02-Puente-vehicular-frisoles-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-frisoles-2-400x400.webp
+- **Tamaño:** 55KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 2/2
+
+---
+
+## PUENTE LA 21
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Unión Temporal Espacio 2015
+- **Peso/Capacidad:** 151 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `puente-vehicular-la-veinti-uno-01-Puente-vehicular-la-veinti-uno-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-veinti-uno-1-400x400.webp
+- **Tamaño:** 51KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-vehicular-la-veinti-uno-02-Puente-vehicular-la-veinti-uno-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-veinti-uno-2-400x400.webp
+- **Tamaño:** 49KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-vehicular-la-veinti-uno-03-Puente-vehicular-la-veinti-uno-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-veinti-uno-3-400x400.webp
+- **Tamaño:** 36KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-vehicular-la-veinti-uno-04-Puente-vehicular-la-veinti-uno-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-veinti-uno-4-400x400.webp
+- **Tamaño:** 34KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## PUENTE LA PAILA
+
+- **Ubicación:** Vía Santander de Quilichao – Río Desbaratado, Cauca
+- **Cliente:** Unión Temporal E&R
+- **Peso/Capacidad:** 293 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `puente-vehicular-la-paila-01-Puente-vehicular-la-paila-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-1-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-vehicular-la-paila-02-Puente-vehicular-la-paila-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-2-400x400.webp
+- **Tamaño:** 27KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-vehicular-la-paila-03-Puente-vehicular-la-paila-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-3-400x400.webp
+- **Tamaño:** 29KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-vehicular-la-paila-04-Puente-vehicular-la-paila-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-4-400x400.webp
+- **Tamaño:** 28KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `puente-vehicular-la-paila-05-Puente-vehicular-la-paila-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-la-paila-5-400x400.webp
+- **Tamaño:** 43KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## PUENTE SARACONCHO
+
+- **Ubicación:** Bolívar, Cauca
+- **Cliente:** No especificado
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `puente-vehicular-saraconcho-01-Puente-vehicular-saraconcho-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-1-400x400.webp
+- **Tamaño:** 59KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-vehicular-saraconcho-02-Puente-vehicular-saraconcho-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-2-400x400.webp
+- **Tamaño:** 29KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-vehicular-saraconcho-03-Puente-vehicular-saraconcho-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-3-400x400.webp
+- **Tamaño:** 35KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-vehicular-saraconcho-04-Puente-vehicular-saraconcho-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-saraconcho-4-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## PUENTE AUTOPISTA SUR - CARRERA 68
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** CONSORCIO VÍAS DE CALI S.A.S.
+- **Peso/Capacidad:** 128 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `puente-peatonal-autopista-sur-cali-01-Puente-peatonal-autopista-sur-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-autopista-sur-cali-1-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-peatonal-autopista-sur-cali-02-Puente-peatonal-autopista-sur-cali-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-autopista-sur-cali-2-400x400.webp
+- **Tamaño:** 14KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-peatonal-autopista-sur-cali-03-Puente-peatonal-autopista-sur-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-autopista-sur-cali-3-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-peatonal-autopista-sur-cali-04-Puente-peatonal-autopista-sur-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-autopista-sur-cali-4-400x400.webp
+- **Tamaño:** 21KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## PUENTE DE LA 63
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** No especificado
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `puente-peatonal-la-63-cali-01-Puente-peatonal-la-63-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-63-cali-1-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-peatonal-la-63-cali-03-Puente-peatonal-la-63-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-63-cali-3-400x400.webp
+- **Tamaño:** 34KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-peatonal-la-63-cali-04-Puente-peatonal-la-63-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-63-cali-4-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 3/4
+
+---
+
+## LA TERTULIA
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Harold Méndez
+- **Peso/Capacidad:** 8 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 4
+
+### Imagen 1
+- **Archivo local:** `puente-peatonal-la-tertulia-01-Puente-peatonal-la-tertulia-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-1-400x400.webp
+- **Tamaño:** 49KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-peatonal-la-tertulia-02-Puente-peatonal-la-tertulia-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-2-400x400.webp
+- **Tamaño:** 51KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-peatonal-la-tertulia-03-Puente-peatonal-la-tertulia-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-3-400x400.webp
+- **Tamaño:** 13KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-peatonal-la-tertulia-04-Puente-peatonal-la-tertulia-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-la-tertulia-4-400x400.webp
+- **Tamaño:** 47KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 4/4
+
+---
+
+## TERMINAL INTERMEDIO
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Consorcio Metrovial SB
+- **Peso/Capacidad:** 240 toneladas
+- **Descripción:** Estructura metálica
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `puente-peatonal-terminal-intermedio-01-Puente-peatonal-terminal-intermedio-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-terminal-intermedio-1-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `puente-peatonal-terminal-intermedio-02-Puente-peatonal-terminal-intermedio-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-terminal-intermedio-2-400x400.webp
+- **Tamaño:** 24KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `puente-peatonal-terminal-intermedio-03-Puente-peatonal-terminal-intermedio-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-terminal-intermedio-3-400x400.webp
+- **Tamaño:** 16KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `puente-peatonal-terminal-intermedio-04-Puente-peatonal-terminal-intermedio-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-terminal-intermedio-4-400x400.webp
+- **Tamaño:** 32KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `puente-peatonal-terminal-intermedio-05-Puente-peatonal-terminal-intermedio-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-terminal-intermedio-5-400x400.webp
+- **Tamaño:** 27KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## COLISEO MAYOR JUEGOS NACIONALES 2012
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** MAJA S.A.S.
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Obra civil y estructura metálica - Año: 2012
+- **Imágenes encontradas:** 2
+
+### Imagen 1
+- **Archivo local:** `escenario-deportivo-juegos-nacionales-coliseo-mayor-01-Escenario-deportivo-juegos-nacionales-coliseo-mayor-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-juegos-nacionales-coliseo-mayor-1-400x400.webp
+- **Tamaño:** 20KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `escenario-deportivo-juegos-nacionales-coliseo-mayor-02-Escenario-deportivo-juegos-nacionales-coliseo-mayor-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-juegos-nacionales-coliseo-mayor-2-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 2/2
+
+---
+
+## COLISEO DE ARTES MARCIALES NACIONALES 2012
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** MAJA S.A.S.
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Obra civil y estructura metálica - Año: 2012
+- **Imágenes encontradas:** 1
+
+### Imagen 1
+- **Archivo local:** `escenario-deportivo-coliseo-de-artes-marciales-01-Escenario-deportivo-coliseo-de-artes-marciales-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-coliseo-de-artes-marciales-1-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 1/1
+
+---
+
+## CECUN (UNIVERSIDAD DEL CAUCA)
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** Consorcio Cecun
+- **Peso/Capacidad:** 78 toneladas
+- **Descripción:** Estructura metálica y cubierta edificio Cecun
+- **Imágenes encontradas:** 5
+
+### Imagen 1
+- **Archivo local:** `escenario-deportivo-cecun-01-Escenario-deportivo-cecun-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cecun-1-400x400.webp
+- **Tamaño:** 38KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `escenario-deportivo-cecun-02-Escenario-deportivo-cecun-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cecun-2-400x400.webp
+- **Tamaño:** 31KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `escenario-deportivo-cecun-03-Escenario-deportivo-cecun-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cecun-3-400x400.webp
+- **Tamaño:** 41KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `escenario-deportivo-cecun-04-Escenario-deportivo-cecun-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cecun-4-400x400.webp
+- **Tamaño:** 30KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `escenario-deportivo-cecun-05-Escenario-deportivo-cecun-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cecun-5-400x400.webp
+- **Tamaño:** 46KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 5/5
+
+---
+
+## CANCHA JAVERIANA CALI
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Pontificia Universidad Javeriana
+- **Peso/Capacidad:** 117 toneladas
+- **Descripción:** Estructura metálica, cerramientos y cubierta
+- **Imágenes encontradas:** 8
+
+### Imagen 1
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-01-Escenario-deportivo-cancha-javeriana-cali-1-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-1-400x400.webp
+- **Tamaño:** 36KB
+- **Formato:** WEBP
+
+### Imagen 2
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-02-Escenario-deportivo-cancha-javeriana-cali-2-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-2-400x400.webp
+- **Tamaño:** 26KB
+- **Formato:** WEBP
+
+### Imagen 3
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-03-Escenario-deportivo-cancha-javeriana-cali-3-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-3-400x400.webp
+- **Tamaño:** 29KB
+- **Formato:** WEBP
+
+### Imagen 4
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-04-Escenario-deportivo-cancha-javeriana-cali-4-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-4-400x400.webp
+- **Tamaño:** 43KB
+- **Formato:** WEBP
+
+### Imagen 5
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-05-Escenario-deportivo-cancha-javeriana-cali-5-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-5-400x400.webp
+- **Tamaño:** 47KB
+- **Formato:** WEBP
+
+### Imagen 6
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-06-Escenario-deportivo-cancha-javeriana-cali-6-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-6-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+### Imagen 7
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-07-Escenario-deportivo-cancha-javeriana-cali-7-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-7-400x400.webp
+- **Tamaño:** 47KB
+- **Formato:** WEBP
+
+### Imagen 8
+- **Archivo local:** `escenario-deportivo-cancha-javeriana-cali-08-Escenario-deportivo-cancha-javeriana-cali-8-400x400.webp`
+- **URL original:** https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-cancha-javeriana-cali-8-400x400.webp
+- **Tamaño:** 33KB
+- **Formato:** WEBP
+
+**Descargadas exitosamente:** 8/8
+
+---
+
+# 📊 RESUMEN DE EXTRACCIÓN ADICIONAL
+
+- **Total proyectos adicionales procesados:** 35
+- **Total imágenes adicionales encontradas:** 171
+- **Total imágenes adicionales descargadas:** 161
+- **Tasa de éxito:** 94.2%
+- **Ubicación de archivos:** `/Users/rjayerbe/Web Development Local/meisa.com.co/nueva-web-meisa/all-slider-images-downloaded`
+
+
+
+# 🖼️ CATEGORÍAS FALTANTES: OIL & GAS y ESTRUCTURAS MODULARES
+
+**Fecha de extracción:** 31/5/2025, 12:52:46 p. m.
+
+**Categorías completadas:** Oil & Gas y Estructuras Modulares adicionales
+
+## TANQUE DE ALMACENAMIENTO VERTICAL GPL
+
+- **Ubicación:** San Martín, Cesar
+- **Cliente:** Oil Business Services S.A.S.
+- **Peso/Capacidad:** 3,000 galones por unidad
+- **Descripción:** Tanque estacionario vertical GPL
+- **Imágenes encontradas:** 3
+
+**Descargadas exitosamente:** 0/3
+
+---
+
+## ESTACIÓN DE COMPRESIÓN GPL
+
+- **Ubicación:** Pitalito, Huila
+- **Cliente:** Surcolombiana de Gas S.A E.S.P.
+- **Peso/Capacidad:** No especificado
+- **Descripción:** Estación de compresión y almacenamiento GPL
+- **Imágenes encontradas:** 4
+
+**Descargadas exitosamente:** 0/4
+
+---
+
+## TANQUES HORIZONTALES GPL
+
+- **Ubicación:** Múltiples ubicaciones
+- **Cliente:** Varios distribuidores GPL
+- **Peso/Capacidad:** 1,000-5,000 galones
+- **Descripción:** Tanques horizontales para almacenamiento GPL
+- **Imágenes encontradas:** 5
+
+**Descargadas exitosamente:** 0/5
+
+---
+
+## MÓDULOS DE OFICINAS ADMINISTRATIVAS
+
+- **Ubicación:** Bogotá D.C.
+- **Cliente:** Cocinas Ocultas Colombia Holdings S.A.S.
+- **Peso/Capacidad:** 12 unidades
+- **Descripción:** Estructuras modulares para oficinas administrativas
+- **Imágenes encontradas:** 4
+
+**Descargadas exitosamente:** 0/4
+
+---
+
+## RESTAURANTES MÓVILES MODULARES
+
+- **Ubicación:** Múltiples ciudades
+- **Cliente:** Cocinas Ocultas Colombia Holdings S.A.S.
+- **Peso/Capacidad:** 8 unidades
+- **Descripción:** Estructuras modulares para restaurantes móviles
+- **Imágenes encontradas:** 5
+
+**Descargadas exitosamente:** 0/5
+
+---
+
+## ALMACENES TEMPORALES MODULARES
+
+- **Ubicación:** Cali, Valle del Cauca
+- **Cliente:** Varios constructores
+- **Peso/Capacidad:** 6 unidades
+- **Descripción:** Estructuras modulares para almacenamiento temporal
+- **Imágenes encontradas:** 3
+
+**Descargadas exitosamente:** 0/3
+
+---
+
+## CASETAS DE VIGILANCIA MODULARES
+
+- **Ubicación:** Popayán, Cauca
+- **Cliente:** Seguridad Privada Omega
+- **Peso/Capacidad:** 4 unidades
+- **Descripción:** Estructuras modulares para vigilancia y seguridad
+- **Imágenes encontradas:** 4
+
+**Descargadas exitosamente:** 0/4
+
+---
+
+# 📊 RESUMEN DE CATEGORÍAS FALTANTES
+
+- **Total proyectos faltantes procesados:** 7
+- **Total imágenes faltantes encontradas:** 28
+- **Total imágenes faltantes descargadas:** 0
+- **Tasa de éxito:** 0.0%
+- **Ubicación de archivos:** `/Users/rjayerbe/Web Development Local/meisa.com.co/nueva-web-meisa/missing-categories-downloaded`
+
