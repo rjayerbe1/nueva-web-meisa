@@ -338,6 +338,37 @@ model ConfiguracionSitio {
   @@map("configuracion_sitio")
 }
 
+// ======= CATEGORÍAS =======
+model CategoriaProyecto {
+  id            String        @id @default(cuid())
+  key           CategoriaEnum @unique  // Enum key for backend reference
+  nombre        String                 // Display name (e.g., "Centros Comerciales")
+  descripcion   String?       @db.Text // Category description
+  slug          String        @unique  // URL-friendly slug (e.g., "centros-comerciales")
+  
+  // Visual assets
+  imagenCover   String?                // Cover image URL
+  icono         String?                // Icon name or URL
+  color         String?                // Primary color for the category
+  colorSecundario String?              // Secondary color
+  
+  // SEO and organization
+  metaTitle     String?
+  metaDescription String?
+  orden         Int           @default(0)
+  visible       Boolean       @default(true)
+  destacada     Boolean       @default(false)
+  
+  // Statistics (calculated)
+  totalProyectos Int          @default(0)
+  
+  // Timestamps
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("categorias_proyecto")
+}
+
 // ======= ENUMS =======
 enum CategoriaEnum {
   CENTROS_COMERCIALES
