@@ -3,6 +3,12 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { UserRole, CategoriaEnum } from '@prisma/client'
+import { 
+  ensureCategoryDirectory, 
+  getCategoryImageUrls, 
+  createDefaultIcon,
+  normalizeSlug
+} from '@/lib/category-file-manager'
 
 export async function GET() {
   try {
@@ -38,15 +44,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Clave de categoría inválida' }, { status: 400 })
     }
 
-    // Generar slug si no se proporciona
-    const slug = data.slug || data.nombre
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/--+/g, '-')
-      .trim()
+    // Generar slug normalizado
+    const slug = data.slug || normalizeSlug(data.nombre)
+
+    // Crear estructura de directorios para la categoría
+    await ensureCategoryDirectory(slug)
+    
+    // Crear icono por defecto si no existe
+    await createDefaultIcon(slug)
+    
+    // Obtener las rutas de imágenes organizadas
+    const imageUrls = getCategoryImageUrls(slug)
 
     const categoria = await prisma.categoriaProyecto.create({
       data: {
@@ -54,8 +62,8 @@ export async function POST(request: NextRequest) {
         nombre: data.nombre,
         descripcion: data.descripcion || null,
         slug,
-        imagenCover: data.imagenCover || null,
-        icono: data.icono || null,
+        imagenCover: data.imagenCover || imageUrls.imagenCover,
+        icono: data.icono || imageUrls.icono,
         color: data.color || null,
         colorSecundario: data.colorSecundario || null,
         overlayColor: data.overlayColor || null,
@@ -67,6 +75,8 @@ export async function POST(request: NextRequest) {
         destacada: data.destacada !== undefined ? data.destacada : false,
       }
     })
+
+    console.log(`✅ Categoría creada con estructura organizada: ${categoria.nombre} (${slug})`)
 
     return NextResponse.json(categoria, { status: 201 })
   } catch (error) {

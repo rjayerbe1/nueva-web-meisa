@@ -16,11 +16,13 @@ interface BackupResult {
     database: boolean
     projectImages: boolean
     clientLogos: boolean
+    categoryImages: boolean
   }
   stats?: {
     databaseSize: number
     projectImagesCount: number
     clientLogosCount: number
+    categoryImagesCount: number
     totalFiles: number
   }
   error?: string
@@ -45,11 +47,13 @@ async function createEnhancedBackup(): Promise<BackupResult> {
     await fs.promises.mkdir(path.join(backupDir, 'database'), { recursive: true })
     await fs.promises.mkdir(path.join(backupDir, 'project-images'), { recursive: true })
     await fs.promises.mkdir(path.join(backupDir, 'client-logos'), { recursive: true })
+    await fs.promises.mkdir(path.join(backupDir, 'category-images'), { recursive: true })
 
     let stats = {
       databaseSize: 0,
       projectImagesCount: 0,
       clientLogosCount: 0,
+      categoryImagesCount: 0,
       totalFiles: 0
     }
 
@@ -111,13 +115,15 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       const services = await prisma.servicio.findMany()
       const clients = await prisma.cliente.findMany()
       const team = await prisma.miembroEquipo.findMany()
+      const categories = await prisma.categoriaProyecto.findMany()
       
       const criticalData = {
         exportDate: new Date().toISOString(),
         projects,
         services,
         clients,
-        team
+        team,
+        categories
       }
       
       await fs.promises.writeFile(criticalDataPath, JSON.stringify(criticalData, null, 2))
@@ -153,8 +159,22 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       console.log('   ⚠️  Directorio de logos de clientes no encontrado')
     }
 
-    // 4. CREAR ARCHIVO DE INFORMACIÓN DEL BACKUP
-    console.log('\n📋 4. GENERANDO INFORMACIÓN DEL BACKUP...')
+    // 4. BACKUP DE CATEGORÍAS E IMÁGENES
+    console.log('\n🏷️  4. COPIANDO CATEGORÍAS E IMÁGENES...')
+    const categoryImagesSource = path.join(process.cwd(), 'public', 'images', 'categories')
+    const categoryImagesBackup = path.join(backupDir, 'category-images')
+
+    if (fs.existsSync(categoryImagesSource)) {
+      await copyDirectoryRecursive(categoryImagesSource, categoryImagesBackup)
+      stats.categoryImagesCount = await countFilesRecursive(categoryImagesBackup)
+      console.log(`   ✅ ${stats.categoryImagesCount} imágenes de categorías copiadas`)
+    } else {
+      console.log('   ⚠️  Directorio de imágenes de categorías no encontrado')
+      stats.categoryImagesCount = 0
+    }
+
+    // 5. CREAR ARCHIVO DE INFORMACIÓN DEL BACKUP
+    console.log('\n📋 5. GENERANDO INFORMACIÓN DEL BACKUP...')
     const backupInfo = {
       backupDate: new Date().toISOString(),
       backupType: 'complete',
@@ -162,13 +182,15 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       includes: {
         database: true,
         projectImages: fs.existsSync(projectImagesSource),
-        clientLogos: fs.existsSync(clientLogosSource)
+        clientLogos: fs.existsSync(clientLogosSource),
+        categoryImages: fs.existsSync(categoryImagesSource)
       },
       stats: {
         databaseSize: stats.databaseSize,
         projectImagesCount: stats.projectImagesCount,
         clientLogosCount: stats.clientLogosCount,
-        totalFiles: stats.projectImagesCount + stats.clientLogosCount + 1
+        categoryImagesCount: stats.categoryImagesCount,
+        totalFiles: stats.projectImagesCount + stats.clientLogosCount + stats.categoryImagesCount + 1
       },
       systemInfo: {
         nodeVersion: process.version,
@@ -179,6 +201,7 @@ async function createEnhancedBackup(): Promise<BackupResult> {
         database: 'Restaurar con: psql -U username -d database < database/meisa-database.sql',
         projectImages: 'Copiar project-images/* a public/images/projects/',
         clientLogos: 'Copiar client-logos/* a public/images/clients/',
+        categoryImages: 'Copiar category-images/* a public/images/categories/',
         note: 'Ejecutar npm run db:push después de restaurar la base de datos'
       }
     }
@@ -188,8 +211,8 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       JSON.stringify(backupInfo, null, 2)
     )
 
-    // 5. CREAR ARCHIVO ZIP
-    console.log('\n📦 5. CREANDO ARCHIVO ZIP COMPRIMIDO...')
+    // 6. CREAR ARCHIVO ZIP
+    console.log('\n📦 6. CREANDO ARCHIVO ZIP COMPRIMIDO...')
     await createZipArchive(backupDir, zipPath)
 
     // Limpiar directorio temporal
@@ -206,7 +229,8 @@ async function createEnhancedBackup(): Promise<BackupResult> {
     console.log(`      💾 Base de datos: ${(stats.databaseSize / 1024 / 1024).toFixed(2)} MB`)
     console.log(`      🖼️  Imágenes proyectos: ${stats.projectImagesCount} archivos`)
     console.log(`      🏢 Logos clientes: ${stats.clientLogosCount} archivos`)
-    console.log(`      📁 Total archivos: ${stats.projectImagesCount + stats.clientLogosCount + 2}`)
+    console.log(`      🏷️  Imágenes categorías: ${stats.categoryImagesCount} archivos`)
+    console.log(`      📁 Total archivos: ${stats.projectImagesCount + stats.clientLogosCount + stats.categoryImagesCount + 2}`)
 
     await prisma.$disconnect()
 
@@ -217,13 +241,15 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       includes: {
         database: true,
         projectImages: fs.existsSync(projectImagesSource),
-        clientLogos: fs.existsSync(clientLogosSource)
+        clientLogos: fs.existsSync(clientLogosSource),
+        categoryImages: fs.existsSync(categoryImagesSource)
       },
       stats: {
         databaseSize: stats.databaseSize,
         projectImagesCount: stats.projectImagesCount,
         clientLogosCount: stats.clientLogosCount,
-        totalFiles: stats.projectImagesCount + stats.clientLogosCount + 2
+        categoryImagesCount: stats.categoryImagesCount,
+        totalFiles: stats.projectImagesCount + stats.clientLogosCount + stats.categoryImagesCount + 2
       }
     }
 
@@ -249,7 +275,8 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       includes: {
         database: false,
         projectImages: false,
-        clientLogos: false
+        clientLogos: false,
+        categoryImages: false
       },
       error: error instanceof Error ? error.message : 'Error desconocido'
     }

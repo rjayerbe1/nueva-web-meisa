@@ -237,6 +237,32 @@ export default function CategoryEditModal({
     ? LUCIDE_COMPONENTS[iconData.key as keyof typeof LUCIDE_COMPONENTS] 
     : Building
 
+  // Función para renderizar el icono en el preview
+  const renderIconPreview = (size: string = "h-16 w-16") => {
+    if (iconData?.type === 'svg') {
+      return (
+        <img 
+          src={iconData.data?.path} 
+          alt="Icon preview"
+          className={`${size} object-contain`}
+          style={{ filter: 'brightness(0) invert(1)' }}
+        />
+      )
+    }
+    
+    if (iconData?.type === 'image') {
+      return (
+        <img 
+          src={iconData.data?.path} 
+          alt="Icon preview"
+          className={`${size} object-contain filter brightness-0 invert`}
+        />
+      )
+    }
+    
+    return <IconComponent className={size} />
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl max-w-5xl w-full max-h-[95vh] overflow-hidden">
@@ -481,15 +507,7 @@ export default function CategoryEditModal({
                                 className="text-5xl opacity-80"
                                 style={{ color: formData.color || '#3b82f6' }}
                               >
-                                {iconData?.type === 'image' ? (
-                                  <img 
-                                    src={iconData.data?.path} 
-                                    alt="Icon preview"
-                                    className="h-16 w-16 object-contain filter brightness-0 invert"
-                                  />
-                                ) : (
-                                  <IconComponent className="h-16 w-16" />
-                                )}
+                                {renderIconPreview("h-16 w-16")}
                               </div>
                             </div>
 
@@ -536,15 +554,7 @@ export default function CategoryEditModal({
                               className="text-5xl"
                               style={{ color: formData.color || '#3b82f6' }}
                             >
-                              {iconData?.type === 'image' ? (
-                                <img 
-                                  src={iconData.data?.path} 
-                                  alt="Icon preview"
-                                  className="h-16 w-16 object-contain filter brightness-0 invert"
-                                />
-                              ) : (
-                                <IconComponent className="h-16 w-16" />
-                              )}
+                              {renderIconPreview("h-16 w-16")}
                             </div>
 
                             {/* Badges en placeholder */}

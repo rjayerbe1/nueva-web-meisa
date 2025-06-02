@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 const navigation = [
@@ -11,6 +12,7 @@ const navigation = [
   { name: "Clientes", href: "/admin/clientes" },
   { name: "Servicios", href: "/admin/services" },
   { name: "Equipo", href: "/admin/team" },
+  { name: "Usuarios", href: "/admin/users" },
   { name: "Contactos", href: "/admin/messages" },
   { name: "Media", href: "/admin/media" },
   { name: "Backups", href: "/admin/backup" },
@@ -44,15 +46,18 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-800">
-            <div className="flex items-center">
-              <div className="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">M</span>
+            <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
+              <div className="relative h-16 w-40 flex items-center justify-center">
+                <Image
+                  src="/images/logo/logo-meisa.png"
+                  alt="MEISA - Metálicas e Ingeniería S.A.S."
+                  width={140}
+                  height={40}
+                  className="object-contain brightness-0 invert"
+                  style={{ filter: 'brightness(0) invert(1)' }}
+                />
               </div>
-              <div className="ml-3">
-                <h1 className="text-xl font-bold text-white">MEISA</h1>
-                <p className="text-sm text-gray-400">Panel Admin</p>
-              </div>
-            </div>
+            </Link>
             
             <button
               onClick={() => setSidebarOpen(false)}

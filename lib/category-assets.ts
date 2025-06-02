@@ -157,10 +157,20 @@ export function getRecommendedCover(category: CategoriaEnum): string | null {
   return CATEGORY_COVERS[slug as keyof typeof CATEGORY_COVERS]?.path || null
 }
 
-// Función para parsear un valor de icono (puede ser lucide o image)
+// Función para parsear un valor de icono (puede ser lucide, image legacy, o SVG organizado)
 export function parseIconValue(iconValue: string | null) {
   if (!iconValue) return null
   
+  // Nuevo formato: rutas SVG organizadas (/images/categories/[slug]/icon.svg)
+  if (iconValue.startsWith('/images/categories/') && iconValue.endsWith('/icon.svg')) {
+    return {
+      type: 'svg' as const,
+      key: iconValue,
+      data: { path: iconValue }
+    }
+  }
+  
+  // Formato legacy: image:categoria-slug
   if (iconValue.startsWith('image:')) {
     const imageKey = iconValue.replace('image:', '')
     return {
@@ -170,6 +180,7 @@ export function parseIconValue(iconValue: string | null) {
     }
   }
   
+  // Formato Lucide: nombre del componente
   return {
     type: 'lucide' as const,
     key: iconValue,

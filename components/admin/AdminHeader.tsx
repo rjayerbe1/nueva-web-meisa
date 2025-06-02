@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { useSession, signOut } from "next-auth/react"
 import { Menu, X, User, LogOut, Settings } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -40,9 +42,23 @@ export function AdminHeader({ sidebarOpen, setSidebarOpen }: AdminHeaderProps) {
             )}
           </button>
 
-          {/* Logo/Title */}
+          {/* Logo/Title - Visible en móvil cuando sidebar está cerrado */}
           <div className="flex items-center">
-            <h1 className="text-xl font-semibold text-gray-900">
+            {/* Logo móvil */}
+            <Link href="/admin" className="lg:hidden flex items-center mr-4">
+              <div className="relative h-8 w-20 flex items-center justify-center">
+                <Image
+                  src="/images/logo/logo-meisa.png"
+                  alt="MEISA - Metálicas e Ingeniería S.A.S."
+                  width={70}
+                  height={20}
+                  className="object-contain"
+                />
+              </div>
+            </Link>
+            
+            {/* Título para desktop */}
+            <h1 className="hidden lg:block text-xl font-semibold text-gray-900">
               Panel de Administración
             </h1>
           </div>

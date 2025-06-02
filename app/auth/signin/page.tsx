@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { signIn, getSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { Eye, EyeOff, Mail, Lock, Building2 } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock } from "lucide-react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
 export default function SignInPage() {
@@ -45,17 +46,24 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
         {/* Logo y Título */}
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
-            <Building2 className="h-8 w-8 text-white" />
+          <div className="mx-auto h-24 w-56 flex items-center justify-center mb-6">
+            <Image
+              src="/images/logo/logo-meisa.png"
+              alt="MEISA - Metálicas e Ingeniería S.A.S."
+              width={200}
+              height={60}
+              className="object-contain brightness-0 invert"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">
-            Panel MEISA
+          <h2 className="text-2xl font-bold text-white">
+            Panel de Administración
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-gray-300">
             Accede al sistema de administración
           </p>
         </div>
@@ -138,7 +146,7 @@ export default function SignInPage() {
         <div className="text-center">
           <button
             onClick={() => router.push("/")}
-            className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+            className="text-sm text-blue-300 hover:text-blue-200 transition-colors"
           >
             ← Volver al sitio web
           </button>

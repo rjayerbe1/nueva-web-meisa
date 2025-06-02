@@ -15,11 +15,13 @@ interface RestoreResult {
     database: boolean
     projectImages: boolean
     clientLogos: boolean
+    categoryImages: boolean
   }
   stats?: {
     projectsRestored: number
     imagesRestored: number
     logosRestored: number
+    categoryImagesRestored: number
   }
   error?: string
 }
@@ -58,18 +60,21 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
     console.log(`      💾 Base de datos: ${backupInfo.includes.database ? '✅' : '❌'}`)
     console.log(`      🖼️  Imágenes proyectos: ${backupInfo.includes.projectImages ? '✅' : '❌'}`)
     console.log(`      🏢 Logos clientes: ${backupInfo.includes.clientLogos ? '✅' : '❌'}`)
+    console.log(`      🏷️  Imágenes categorías: ${backupInfo.includes.categoryImages ? '✅' : '❌'}`)
 
     let result: RestoreResult = {
       success: true,
       restoredComponents: {
         database: false,
         projectImages: false,
-        clientLogos: false
+        clientLogos: false,
+        categoryImages: false
       },
       stats: {
         projectsRestored: 0,
         imagesRestored: 0,
-        logosRestored: 0
+        logosRestored: 0,
+        categoryImagesRestored: 0
       }
     }
 
@@ -101,7 +106,8 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
         servicios: await prisma.servicio.findMany(),
         miembrosEquipo: await prisma.miembroEquipo.findMany(),
         formulariosContacto: await prisma.contactForm.findMany(),
-        configuracion: await prisma.configuracionSitio.findMany()
+        configuracion: await prisma.configuracionSitio.findMany(),
+        categorias: await prisma.categoriaProyecto.findMany()
       }
     }
     
@@ -169,6 +175,7 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
           // Luego eliminar tablas independientes
           await prisma.contactForm.deleteMany({})
           await prisma.configuracionSitio.deleteMany({})
+          await prisma.categoriaProyecto.deleteMany({})
           await prisma.miembroEquipo.deleteMany({})
           await prisma.servicio.deleteMany({})
           await prisma.cliente.deleteMany({})
@@ -186,6 +193,7 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
           console.log(`      🏢 clientes: ${(data.clientes || data.clients || []).length}`)
           console.log(`      🔧 servicios: ${(data.servicios || data.services || []).length}`)
           console.log(`      👤 equipo: ${(data.miembrosEquipo || data.team || []).length}`)
+          console.log(`      🏷️  categorías: ${(data.categorias || data.categories || []).length}`)
           console.log(`      📂 proyectos: ${(data.proyectos || data.projects || []).length}`)
           console.log(`      📧 contactos: ${(data.formulariosContacto || data.contactForms || []).length}`)
           
@@ -237,8 +245,18 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
               await prisma.miembroEquipo.create({ data: miembroData })
             }
           }
+
+          // 5. Categorías
+          const categoriesData = data.categorias || data.categories || []
+          if (categoriesData.length > 0) {
+            console.log(`   🏷️  Restaurando ${categoriesData.length} categorías...`)
+            for (const categoria of categoriesData) {
+              const { id, createdAt, updatedAt, ...categoriaData } = categoria
+              await prisma.categoriaProyecto.create({ data: categoriaData })
+            }
+          }
           
-          // 5. Proyectos (con validación de claves foráneas)
+          // 6. Proyectos (con validación de claves foráneas)
           const projectsData = data.proyectos || data.projects || []
           if (projectsData.length > 0) {
             console.log(`   📂 Restaurando ${projectsData.length} proyectos...`)
@@ -376,7 +394,7 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
             }
           }
           
-          // 6. Formularios de contacto
+          // 7. Formularios de contacto
           const contactData = data.formulariosContacto || data.contactForms || []
           if (contactData.length > 0) {
             console.log(`   📧 Restaurando ${contactData.length} formularios de contacto...`)
@@ -386,7 +404,7 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
             }
           }
           
-          // 7. Configuración del sitio
+          // 8. Configuración del sitio
           const configData = data.configuracion || data.settings || []
           if (configData.length > 0) {
             console.log(`   ⚙️  Restaurando ${configData.length} configuraciones...`)
@@ -450,8 +468,31 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
       }
     }
 
-    // 7. LIMPIAR ARCHIVOS TEMPORALES
-    console.log('\n🧹 7. LIMPIANDO ARCHIVOS TEMPORALES...')
+    // 7. RESTAURAR IMÁGENES DE CATEGORÍAS
+    if (backupInfo.includes.categoryImages) {
+      console.log('\n🏷️  7. RESTAURANDO IMÁGENES DE CATEGORÍAS...')
+      
+      const categoryImagesSource = path.join(extractDir, 'category-images')
+      const categoryImagesTarget = path.join(process.cwd(), 'public', 'images', 'categories')
+      
+      if (fs.existsSync(categoryImagesSource)) {
+        // Limpiar directorio actual
+        if (fs.existsSync(categoryImagesTarget)) {
+          await fs.promises.rm(categoryImagesTarget, { recursive: true, force: true })
+        }
+        
+        // Copiar nuevas imágenes de categorías
+        await copyDirectoryRecursive(categoryImagesSource, categoryImagesTarget)
+        const categoryImageCount = await countFilesRecursive(categoryImagesTarget)
+        result.stats!.categoryImagesRestored = categoryImageCount
+        
+        console.log(`   ✅ ${categoryImageCount} imágenes de categorías restauradas`)
+        result.restoredComponents.categoryImages = true
+      }
+    }
+
+    // 8. LIMPIAR ARCHIVOS TEMPORALES
+    console.log('\n🧹 8. LIMPIANDO ARCHIVOS TEMPORALES...')
     await fs.promises.rm(extractDir, { recursive: true, force: true })
     console.log('   ✅ Archivos temporales eliminados')
 
@@ -459,6 +500,7 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
     console.log(`   💾 Base de datos: ${result.restoredComponents.database ? '✅' : '❌'}`)
     console.log(`   🖼️  Imágenes proyectos: ${result.restoredComponents.projectImages ? '✅' : '❌'} (${result.stats!.imagesRestored})`)
     console.log(`   🏢 Logos clientes: ${result.restoredComponents.clientLogos ? '✅' : '❌'} (${result.stats!.logosRestored})`)
+    console.log(`   🏷️  Imágenes categorías: ${result.restoredComponents.categoryImages ? '✅' : '❌'} (${result.stats!.categoryImagesRestored})`)
     console.log(`   📁 Backup de seguridad: ${safetyBackupName}`)
 
     await prisma.$disconnect()
@@ -483,7 +525,8 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
       restoredComponents: {
         database: false,
         projectImages: false,
-        clientLogos: false
+        clientLogos: false,
+        categoryImages: false
       },
       error: error instanceof Error ? error.message : 'Error desconocido'
     }
