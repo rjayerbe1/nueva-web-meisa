@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
-import { PROJECT_CATEGORIES, getCategoryByDbValue } from '@/lib/categories-config'
+import { getCategoryIconComponent } from '@/lib/get-category-icon'
 
 interface ProjectImage {
   url: string
@@ -23,24 +23,62 @@ interface Proyecto {
   imagenPortada?: ProjectImage
 }
 
+interface Categoria {
+  id: string
+  key: string
+  nombre: string
+  descripcion: string | null
+  slug: string
+  imagenCover: string | null
+  icono: string | null
+  color: string | null
+  colorSecundario: string | null
+  overlayColor: string | null
+  overlayOpacity: number | null
+  visible: boolean
+  destacada: boolean
+}
+
 interface ProjectsByCategorySectionProps {
   projectsByCategory: Record<string, Proyecto[]>
 }
 
+
 export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCategorySectionProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [categorias, setCategorias] = useState<Categoria[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Cargar categorías desde la base de datos
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch('/api/categories')
+        if (response.ok) {
+          const data = await response.json()
+          setCategorias(data)
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchCategorias()
+  }, [])
 
   // Filtrar solo las categorías que tienen proyectos
-  const categoriesWithProjects = PROJECT_CATEGORIES.filter(category => 
-    projectsByCategory[category.dbValue] && projectsByCategory[category.dbValue].length > 0
+  const categoriesWithProjects = categorias.filter(categoria => 
+    projectsByCategory[categoria.key] && projectsByCategory[categoria.key].length > 0
   )
 
-  const handleCategoryClick = (categoryDbValue: string) => {
-    if (activeCategory === categoryDbValue) {
+  const handleCategoryClick = (categoryKey: string) => {
+    if (activeCategory === categoryKey) {
       setActiveCategory(null)
     } else {
-      setActiveCategory(categoryDbValue)
+      setActiveCategory(categoryKey)
       setCurrentImageIndex(0)
     }
   }
@@ -83,72 +121,101 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
         </motion.div>
 
         {/* Grid de categorías */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
-          {categoriesWithProjects.map((category, index) => {
-            const projectCount = projectsByCategory[category.dbValue]?.length || 0
-            const isActive = activeCategory === category.dbValue
+        {loading ? (
+          <div className="text-center text-white">Cargando categorías...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {categoriesWithProjects.map((categoria, index) => {
+              const projectCount = projectsByCategory[categoria.key]?.length || 0
+              const isActive = activeCategory === categoria.key
 
-            return (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-                className="relative group cursor-pointer"
-                onClick={() => handleCategoryClick(category.dbValue)}
-              >
-                <div className={`
-                  bg-gray-800 rounded-xl p-4 border-2 transition-all duration-300
-                  ${isActive 
-                    ? 'border-blue-500 shadow-lg shadow-blue-500/20' 
-                    : 'border-gray-700 hover:border-gray-600'
-                  }
-                `}>
-                  {/* Icono de categoría */}
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`
-                      w-16 h-16 mb-3 rounded-lg flex items-center justify-center transition-all duration-300
-                      ${isActive 
-                        ? 'bg-blue-500 scale-110' 
-                        : 'bg-gray-700 group-hover:bg-gray-600'
-                      }
-                    `}>
-                      <Image
-                        src={category.icon}
-                        alt={`${category.name} icon`}
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 filter brightness-0 invert"
-                      />
-                    </div>
-                    
-                    <h4 className={`
-                      text-sm font-semibold mb-1 transition-colors duration-300
-                      ${isActive ? 'text-blue-400' : 'text-white group-hover:text-gray-200'}
-                    `}>
-                      {category.name}
-                    </h4>
-                    
-                    <span className="text-xs text-gray-400">
-                      {projectCount} proyecto{projectCount !== 1 ? 's' : ''}
-                    </span>
+              return (
+                <motion.div
+                  key={categoria.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.02 }}
+                  className="relative group cursor-pointer"
+                  onClick={() => handleCategoryClick(categoria.key)}
+                >
+                  <div className={`
+                    relative rounded-2xl overflow-hidden shadow-xl transition-all duration-500
+                    ${isActive 
+                      ? 'ring-4 ring-blue-500 ring-opacity-50 shadow-2xl shadow-blue-500/20' 
+                      : 'hover:shadow-2xl hover:ring-2 hover:ring-blue-400/30'
+                    }
+                  `}>
+                    {/* Imagen de fondo */}
+                    {categoria.imagenCover ? (
+                      <div className="relative">
+                        <img
+                          src={categoria.imagenCover}
+                          alt={`Cover de ${categoria.nombre}`}
+                          className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        
+                        {/* Overlay personalizable para el ícono */}
+                        {categoria.overlayOpacity && categoria.overlayOpacity > 0 && (
+                          <div 
+                            className="absolute inset-0"
+                            style={{ 
+                              backgroundColor: categoria.overlayColor || '#000000',
+                              opacity: categoria.overlayOpacity
+                            }}
+                          />
+                        )}
+                        
+                        {/* Overlay oscuro para legibilidad del texto */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        
+                        {/* Ícono centrado */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div 
+                            className="w-32 h-32 flex items-center justify-center opacity-80"
+                            style={{ color: categoria.color || '#3b82f6' }}
+                          >
+                            {getCategoryIconComponent(categoria.icono, "w-40 h-40")}
+                          </div>
+                        </div>
+
+                        {/* Texto superpuesto en la parte inferior */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                          <h3 className="text-xl font-bold mb-1 drop-shadow-lg">
+                            {categoria.nombre}
+                          </h3>
+                          <p className="text-sm text-white/90 mb-2 drop-shadow">
+                            {projectCount} proyecto{projectCount !== 1 ? 's' : ''}
+                          </p>
+                          <p className="text-xs text-white/70 drop-shadow line-clamp-2">
+                            {categoria.descripcion}
+                          </p>
+                        </div>
+
+                        {/* Indicador activo */}
+                        {isActive && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute top-4 left-4 w-3 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"
+                          />
+                        )}
+
+                        {/* Efecto hover overlay */}
+                        <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-all duration-300" />
+                      </div>
+                    ) : (
+                      <div className="w-full aspect-[4/3] bg-gray-800 flex items-center justify-center">
+                        <span className="text-white">Sin imagen</span>
+                      </div>
+                    )}
                   </div>
-
-                  {/* Indicador activo */}
-                  {isActive && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute -top-2 -right-2 w-4 h-4 bg-blue-500 rounded-full border-2 border-gray-900"
-                    />
-                  )}
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
+                </motion.div>
+              )
+            })}
+          </div>
+        )}
 
         {/* Galería de proyectos de la categoría activa */}
         <AnimatePresence mode="wait">
@@ -165,18 +232,15 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                 {/* Header de la categoría activa */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                      <Image
-                        src={getCategoryByDbValue(activeCategory)?.icon || ''}
-                        alt="Category icon"
-                        width={24}
-                        height={24}
-                        className="w-6 h-6 filter brightness-0 invert"
-                      />
+                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg">
+                      {getCategoryIconComponent(
+                        categorias.find(cat => cat.key === activeCategory)?.icono || null,
+                        "w-6 h-6"
+                      )}
                     </div>
                     <div>
                       <h4 className="text-2xl font-bold text-white">
-                        {getCategoryByDbValue(activeCategory)?.name}
+                        {categorias.find(cat => cat.key === activeCategory)?.nombre}
                       </h4>
                       <p className="text-gray-400">
                         {projectsByCategory[activeCategory].length} proyectos destacados
@@ -235,13 +299,10 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                           <div className="flex items-center justify-center h-full text-gray-400">
                             <div className="text-center">
                               <div className="w-16 h-16 mx-auto mb-4 opacity-50">
-                                <Image
-                                  src={getCategoryByDbValue(activeCategory)?.icon || ''}
-                                  alt="Category icon"
-                                  width={64}
-                                  height={64}
-                                  className="w-full h-full filter brightness-0 invert"
-                                />
+                                {getCategoryIconComponent(
+                                  categorias.find(cat => cat.key === activeCategory)?.icono || null,
+                                  "w-16 h-16"
+                                )}
                               </div>
                               <p>Imagen no disponible</p>
                             </div>

@@ -1,17 +1,57 @@
 "use client"
 
-import { PROJECT_CATEGORIES } from "@/lib/categories-config"
+import { useState, useEffect } from "react"
 import ProjectCategoryCard from "@/components/animations/ProjectCategoryCard"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
-interface ProjectCategoriesSectionProps {
-  onCategorySelect?: (categoryDbValue: string) => void
+interface Categoria {
+  id: string
+  key: string
+  nombre: string
+  descripcion: string | null
+  slug: string
+  imagenCover: string | null
+  icono: string | null
+  color: string | null
+  colorSecundario: string | null
+  overlayColor: string | null
+  overlayOpacity: number | null
+  visible: boolean
+  destacada: boolean
 }
 
-export default function ProjectCategoriesSection({ onCategorySelect }: ProjectCategoriesSectionProps) {
-  const handleCategorySelect = (categoryDbValue: string) => {
+interface ProjectCategoriesSectionProps {
+  onCategorySelect?: (categoryKey: string) => void
+  projectsByCategory?: Record<string, any[]>
+}
+
+export default function ProjectCategoriesSection({ onCategorySelect, projectsByCategory = {} }: ProjectCategoriesSectionProps) {
+  const [categorias, setCategorias] = useState<Categoria[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Cargar categorías desde la base de datos
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch('/api/categories')
+        if (response.ok) {
+          const data = await response.json()
+          setCategorias(data)
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchCategorias()
+  }, [])
+
+  const handleCategorySelect = (categoryKey: string) => {
     if (onCategorySelect) {
-      onCategorySelect(categoryDbValue)
+      onCategorySelect(categoryKey)
     }
   }
 
@@ -36,16 +76,22 @@ export default function ProjectCategoriesSection({ onCategorySelect }: ProjectCa
         </motion.div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROJECT_CATEGORIES.map((category, index) => (
-            <ProjectCategoryCard
-              key={category.id}
-              category={category}
-              onCategorySelect={handleCategorySelect}
-              delay={index * 0.15} // Staggered animation
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center">
+            <p className="text-gray-600">Cargando categorías...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categorias.map((category, index) => (
+              <ProjectCategoryCard
+                key={category.id}
+                category={category}
+                delay={index * 0.15}
+                projectCount={projectsByCategory[category.key]?.length || 0}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Call to Action */}
         <motion.div

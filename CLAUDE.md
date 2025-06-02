@@ -80,6 +80,38 @@ Required in `.env.local`:
 - Push to feature branch: `git push origin feature/your-feature-name`
 - Create pull request to merge into main
 
+### MEISA Brand Colors & Design Guidelines
+
+**Primary Brand Colors (From Logo):**
+- **MEISA Blue**: `#1e40af` (blue-700) - Main brand color for primary elements and structures
+- **MEISA Red**: `#dc2626` (red-600) - Logo red for important highlights and accents  
+- **MEISA Dark Blue**: `#1e3a8a` (blue-800) - For headings and emphasis
+- **MEISA Light Blue**: `#3b82f6` (blue-500) - For accents and hover states
+
+**Secondary Colors:**
+- **Steel Gray**: `#64748b` (slate-500) - For text and secondary elements  
+- **Dark Gray**: `#334155` (slate-700) - For dark backgrounds
+- **Light Gray**: `#f8fafc` (slate-50) - For light backgrounds
+
+**Accent Colors:**
+- **Success Green**: `#16a34a` (green-600) - For success states only (environmental/quality context)
+- **Warning Amber**: `#f59e0b` (amber-500) - For warnings and attention
+- **Error Red**: `#ef4444` (red-500) - For errors and destructive actions
+
+**DO NOT USE:**
+- Orange colors (`orange-*`) - Not part of MEISA brand palette
+- Emerald colors (`emerald-*`) - Too bright, use regular green instead
+- Purple colors - Reserved for specific admin functions only
+
+**Usage Guidelines:**
+- Use MEISA Blue for primary CTAs, navigation active states, and brand elements
+- Use MEISA Red sparingly for important highlights and brand consistency
+- Use Steel Gray for body text and secondary information  
+- Avoid bright emerald greens - use darker green-600/700 when green is needed
+- Gradients should primarily use blue variations: `from-blue-600 to-blue-700`
+- For special highlights, can use red accent: `text-red-600`
+- Hover states: transition from lighter to darker blue shades
+
 ### Deployment
 - **Vercel**: Automatic deployment on push to main
 - **Docker**: Use provided Dockerfile and docker-compose.yml

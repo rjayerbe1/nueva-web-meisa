@@ -2,100 +2,126 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { ProjectCategory } from "@/lib/categories-config"
 import Image from "next/image"
+import Link from "next/link"
+import { getCategoryIconComponent } from '@/lib/get-category-icon'
+
+interface Categoria {
+  id: string
+  key: string
+  nombre: string
+  descripcion: string | null
+  slug: string
+  imagenCover: string | null
+  icono: string | null
+  color: string | null
+  colorSecundario: string | null
+  overlayColor: string | null
+  overlayOpacity: number | null
+  visible: boolean
+  destacada: boolean
+}
 
 interface ProjectCategoryCardProps {
-  category: ProjectCategory
-  onCategorySelect: (categoryDbValue: string) => void
+  category: Categoria
+  onCategorySelect?: (categoryKey: string) => void
   delay?: number
+  projectCount?: number
 }
+
 
 export default function ProjectCategoryCard({ 
   category, 
   onCategorySelect, 
-  delay = 0 
+  delay = 0,
+  projectCount = 0
 }: ProjectCategoryCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false)
 
   const handleClick = () => {
-    onCategorySelect(category.dbValue)
+    if (onCategorySelect) {
+      onCategorySelect(category.key)
+    }
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay }}
-      className="relative h-80 w-full perspective-1000 cursor-pointer group"
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-      onClick={handleClick}
-    >
-      {/* Flip Container */}
+    <Link href={`/proyectos/categoria/${category.slug}`} className="group">
       <motion.div
-        className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d"
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay }}
+        className="relative h-80 w-full cursor-pointer"
       >
-        {/* Front Side - Image */}
-        <div className="absolute inset-0 backface-hidden rounded-lg overflow-hidden shadow-lg">
-          <div className="relative w-full h-full">
-            <Image
-              src={category.image}
-              alt={category.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      <div className="relative h-full rounded-2xl overflow-hidden shadow-xl transition-all duration-500 group-hover:shadow-2xl group-hover:scale-105">
+        {/* Imagen de fondo */}
+        {category.imagenCover ? (
+          <>
+            <img
+              src={category.imagenCover}
+              alt={`Cover de ${category.nombre}`}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-black/20" />
             
-            {/* Category Icon */}
-            <div className="absolute top-4 right-4 bg-white/90 rounded-full p-3 backdrop-blur-sm">
-              <Image
-                src={category.icon}
-                alt={`${category.name} icon`}
-                width={32}
-                height={32}
-                className="w-8 h-8"
+            {/* Overlay personalizable para el ícono */}
+            {category.overlayOpacity && category.overlayOpacity > 0 && (
+              <div 
+                className="absolute inset-0"
+                style={{ 
+                  backgroundColor: category.overlayColor || '#000000',
+                  opacity: category.overlayOpacity
+                }}
               />
-            </div>
+            )}
             
-            {/* Category Name Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-              <h3 className="text-white text-xl font-bold">{category.name}</h3>
+            {/* Overlay oscuro para legibilidad del texto */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent group-hover:from-black/60 group-hover:via-black/20 transition-all duration-300 z-5" />
+            
+            {/* Ícono - se mueve con transform desde la misma posición base */}
+            <div className="absolute top-0 left-0 right-0 bottom-20 flex items-center justify-center">
+              <div 
+                className="flex items-center justify-center opacity-80 transition-all duration-500 ease-out group-hover:opacity-100 transform group-hover:-translate-y-16 group-hover:scale-50"
+                style={{ color: category.color || '#3b82f6' }}
+              >
+                {getCategoryIconComponent(category.icono, "w-32 h-32")}
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* Back Side - Description */}
-        <div 
-          className="absolute inset-0 backface-hidden rounded-lg shadow-lg rotate-y-180 flex flex-col justify-center items-center p-6 text-center text-white"
-          style={{ backgroundColor: category.backgroundColor }}
-        >
-          <div className="mb-4">
-            <Image
-              src={category.icon}
-              alt={`${category.name} icon`}
-              width={48}
-              height={48}
-              className="w-12 h-12 mx-auto mb-4 filter brightness-0 invert"
-            />
+            {/* Título siempre visible en la parte inferior */}
+            <div className="absolute bottom-4 left-4 right-4 z-20">
+              <h3 className="text-xl font-bold text-white drop-shadow-lg">
+                {category.nombre}
+              </h3>
+            </div>
+
+            {/* Información que aparece en el centro en hover */}
+            <div className="absolute top-20 left-0 right-0 bottom-20 flex items-center justify-center p-6 text-white">
+              <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out text-center bg-black/60 backdrop-blur-sm rounded-lg p-4 max-w-full">
+                <p className="text-lg font-bold drop-shadow-lg mb-3 text-white">
+                  {projectCount} proyecto{projectCount !== 1 ? 's' : ''}
+                </p>
+                <p className="text-sm text-white/90 drop-shadow-lg leading-relaxed" style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden'
+                }}>
+                  {category.descripcion}
+                </p>
+              </div>
+            </div>
+
+            {/* Efecto hover overlay */}
+            <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-all duration-300 z-10" />
+            
+            {/* Ring hover effect */}
+            <div className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-blue-400/50 transition-all duration-300 pointer-events-none z-10" />
+          </>
+        ) : (
+          <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+            <span className="text-white">Sin imagen</span>
           </div>
-          
-          <h3 className="text-xl font-bold mb-4">{category.name}</h3>
-          
-          <p className="text-sm leading-relaxed mb-6 opacity-90">
-            {category.description}
-          </p>
-          
-          <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200">
-            Ver Proyectos
-          </button>
-        </div>
+        )}
+      </div>
       </motion.div>
-      
-      {/* Hover Effect Ring */}
-      <div className="absolute inset-0 rounded-lg ring-2 ring-transparent group-hover:ring-blue-400 transition-all duration-300 pointer-events-none" />
-    </motion.div>
+    </Link>
   )
 }

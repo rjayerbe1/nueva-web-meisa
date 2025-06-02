@@ -22,67 +22,67 @@ const services = [
     id: 'diseno',
     title: 'Consultoría en Diseño Estructural',
     subtitle: 'Ingeniería de precisión',
-    description: 'Nuestros ingenieros experimentados optimizan los diseños estructurales considerando cargas estructurales, comportamiento sísmico, resistencia del acero.',
+    description: 'Gracias a un equipo de ingenieros altamente calificado y a la mejor tecnología en análisis estructural, brindamos soluciones óptimas de diseño conforme a los requerimientos del cliente.',
     icon: Cpu,
     image: '/images/services/diseno-estructural.jpg',
     capabilities: [
-      'Modelado 3D y tecnología BIM',
-      'Software: Tekla Structures, RISA-3D',
-      'Análisis sísmico avanzado',
-      'Optimización de materiales'
+      'Análisis y optimización de cargas estructurales',
+      'Diseño según normas sismo resistentes NSR-10',
+      'Modelado 3D con tecnología BIM - Tekla Structures',
+      'Software especializado: RISA-3D, RISAFloor, RISAConnection'
     ],
-    stats: { value: '8', label: 'Software especializados' },
+    stats: { value: '5+', label: 'Software BIM especializados' },
     color: 'from-blue-500 to-cyan-500',
     bgColor: 'from-blue-500/10 to-cyan-500/10'
   },
   {
     id: 'fabricacion',
     title: 'Fabricación de Estructuras Metálicas',
-    subtitle: 'Producción industrial',
-    description: 'Nuestros talleres cuentan con gerentes de fabricación de amplia experiencia que optimizan el uso de materiales y mano de obra.',
+    subtitle: 'Producción industrial de 600 ton/mes',
+    description: 'Con 3 plantas industriales y capacidad de 600 toneladas/mes, contamos con personal capacitado y equipos modernos para la fabricación de estructuras metálicas.',
     icon: Hammer,
     image: '/images/services/industria.jpg',
     capabilities: [
-      'Procesos de limpieza y pintura',
-      '50+ años de protección sin mantenimiento',
-      'Fabricación de cubiertas standing seam',
-      'Recipientes a presión especializados'
+      'Corte con mesas CNC de alta precisión',
+      'Soldadura con personal certificado AWS',
+      'Limpieza por granallado y pintura anticorrosiva',
+      '8 Puentes grúa distribuidos en 3 plantas'
     ],
-    stats: { value: '600', label: 'Ton/mes capacidad' },
+    stats: { value: '600', label: 'Ton/mes capacidad total' },
     color: 'from-slate-500 to-slate-700',
     bgColor: 'from-slate-500/10 to-slate-700/10'
   },
   {
     id: 'montaje',
     title: 'Montaje de Estructuras Metálicas',
-    subtitle: 'Instalación profesional',
-    description: 'Nuestros directores de proyecto supervisan cada etapa garantizando el cumplimiento de las especificaciones técnicas y la calidad.',
+    subtitle: 'Instalación profesional certificada',
+    description: 'Contamos con personal experimentado que, siguiendo estrictos protocolos de seguridad de trabajo en alturas y utilizando equipos de izaje especializados, logra terminar los proyectos exitosamente.',
     icon: Building2,
     image: '/images/services/montaje.jpg',
     capabilities: [
-      'Oficiales de montaje certificados',
-      'Protocolos de trabajo en altura',
-      'Equipos profesionales especializados',
-      'Control de calidad integral'
+      'Grúas y equipos de izaje certificados',
+      'Personal con certificación en alturas',
+      'Supervisión por inspectores SIG',
+      'Experiencia: puentes hasta 180m (Puente La Floresta)'
     ],
-    stats: { value: '100+', label: 'Proyectos montados' },
-    color: 'from-green-500 to-emerald-500',
-    bgColor: 'from-green-500/10 to-emerald-500/10'
+    stats: { value: '62+', label: 'Proyectos ejecutados' },
+    color: 'from-green-600 to-green-700',
+    bgColor: 'from-green-600/10 to-green-700/10'
   },
   {
     id: 'construccion',
-    title: 'Construcción de Obras Civiles',
-    subtitle: 'Soluciones completas',
-    description: 'Brindamos obras civiles que complementan nuestros servicios, desde cimentación hasta detalles de acabado.',
+    title: 'Construcción de Obra Civil',
+    subtitle: 'Servicio integral llave en mano',
+    description: 'Para brindar un servicio integral, realizamos todas las obras civiles complementarias que requiera el cliente, desde la cimentación hasta los acabados.',
     icon: Settings,
     image: '/images/services/industria.jpg',
     capabilities: [
-      'Cimentaciones especializadas',
-      'Obras civiles complementarias',
-      'Acabados de alta calidad',
-      'Proyectos llave en mano'
+      'Estudios de suelos y cimentaciones',
+      'Construcción de bases y pedestales',
+      'Obras de concreto reforzado',
+      'Coordinación integral de proyectos'
     ],
-    stats: { value: '29+', label: 'Años experiencia' },
+    stats: { value: '27+', label: 'Años experiencia' },
     color: 'from-purple-500 to-violet-500',
     bgColor: 'from-purple-500/10 to-violet-500/10'
   },

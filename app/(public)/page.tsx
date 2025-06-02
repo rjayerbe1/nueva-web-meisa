@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma'
 
 // Importaciones de componentes
-import { HeroSection } from '@/components/sections/HeroSectionNew'
+import { HeroSection } from '@/components/sections/HeroSection'
+import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
 import { StatsSection } from '@/components/sections/StatsSectionNew'
 import { ServicesSection } from '@/components/sections/ServicesSectionNew'
 import { TecnologiasSection } from '@/components/sections/TecnologiasSection'
@@ -65,9 +66,12 @@ export default async function HomePage() {
   const projectsByCategory = await getProjectsByCategory()
 
   return (
-    <main className="min-h-screen bg-gray-900 pt-20">
+    <main className="min-h-screen bg-gray-900">
       {/* Hero Section */}
       <HeroSection />
+      
+      {/* Sección de Capacidades */}
+      <CapacitiesSection />
       
       {/* Sección de Estadísticas */}
       <StatsSection />

@@ -24,6 +24,7 @@ model User {
 
   // Relations
   projects      Proyecto[]
+  historias     HistoriaProyecto[]
   sessions      Session[]
   accounts      Account[]
 
@@ -117,6 +118,7 @@ model Proyecto {
   progreso    ProgresoProyecto[]
   timeline    TimelineEntry[]
   comentarios ComentarioProyecto[]
+  historia    HistoriaProyecto?
   clienteRel  Cliente?         @relation(fields: [clienteId], references: [id])
   
   // Auditoría
@@ -369,6 +371,91 @@ model CategoriaProyecto {
   updatedAt     DateTime      @updatedAt
 
   @@map("categorias_proyecto")
+}
+
+// ======= HISTORIA DE PROYECTOS =======
+model HistoriaProyecto {
+  id            String   @id @default(cuid())
+  
+  // Básico
+  proyectoId    String   @unique
+  activo        Boolean  @default(false)  // Si se muestra la historia completa
+  
+  // DESAFÍO - Contexto y retos del proyecto
+  contexto      String?  // Situación inicial del cliente
+  desafios      Json?    // Array de desafíos específicos 
+  // Ejemplo: ["Estructura en zona sísmica", "Tiempo limitado de construcción", "Acceso restringido"]
+  
+  problemasIniciales String? // Descripción detallada de problemas a resolver
+  
+  // SOLUCIÓN - Cómo MEISA abordó el proyecto  
+  enfoque       String?  // Enfoque técnico general de MEISA
+  solucionTecnica String? // Detalles de la solución implementada
+  innovaciones  Json?    // Innovaciones o técnicas especiales aplicadas
+  // Ejemplo: ["Soldadura robotizada", "Acero de alta resistencia", "Montaje modular"]
+  
+  equipoEspecialista Json? // Equipo especializado asignado
+  // Ejemplo: [{"rol": "Ingeniero Estructural", "experiencia": "15 años"}, {...}]
+  
+  // PROCESO - Cómo se ejecutó
+  metodologia   String?  // Metodología de trabajo aplicada
+  fasesEjecucion Json?   // Fases del proyecto con detalles
+  // Ejemplo: [{"fase": "Diseño", "duracion": "2 meses", "descripcion": "..."}, {...}]
+  
+  tiempoTotal   String?  // Tiempo total de ejecución
+  recursos      Json?    // Recursos específicos utilizados
+  
+  // RESULTADO - Impacto y logros
+  resultados    Json?    // Resultados específicos obtenidos
+  // Ejemplo: ["Reducción de 30% en tiempo de montaje", "Certificación LEED Gold", "0 accidentes"]
+  
+  impactoCliente String? // Impacto específico para el cliente
+  reconocimientos Json? // Premios, reconocimientos, certificaciones
+  
+  // MÉTRICAS TÉCNICAS
+  datosInteres  Json?    // Datos técnicos de interés
+  // Ejemplo: {"toneladas_acero": 450, "altura_max": "85m", "area_cubierta": "15000m2"}
+  
+  // LECCIONES Y VALOR
+  leccionesAprendidas String? // Qué se aprendió del proyecto
+  valorAgregado String?       // Valor único que MEISA aportó
+  
+  // TESTIMONIOS
+  testimonioCliente String?   // Testimonio directo del cliente
+  testimonioEquipo  String?   // Testimonio del equipo MEISA
+  
+  // VISUAL ASSETS
+  imagenDestacada   String?   // Imagen principal para la historia
+  videoUrl          String?   // Video explicativo (opcional)
+  infografias       Json?     // URLs de infografías o gráficos explicativos
+  
+  // SELECCIÓN DE IMÁGENES POR SECCIÓN (hasta 4 imágenes por sección)
+  imagenesDesafio   Json?     // Array de objetos: [{"id": "img_id", "titulo": "...", "descripcion": "..."}]
+  imagenesSolucion  Json?     // Array de objetos con títulos y descripciones personalizadas
+  imagenesResultado Json?     // Array de objetos para mostrar en "Los Resultados"
+  // Ejemplo: [{"id": "img_id_1", "titulo": "Situación inicial", "descripcion": "Estado previo"}, {...}]
+  
+  // TAGS Y ORGANIZACIÓN
+  tagsTecnicos      Json?     // Tags técnicos específicos
+  // Ejemplo: ["soldadura-especializada", "estructura-sismica", "montaje-rapido"]
+  
+  dificultadTecnica Int?      // Escala 1-10 de dificultad técnica
+  innovacionNivel   Int?      // Escala 1-10 de nivel de innovación
+  
+  // SEO Y PRESENTACIÓN
+  resumenCorto      String?   // Resumen de 2-3 líneas para previews
+  tituloAlternativo String?   // Título más narrativo para la historia
+  
+  // METADATA
+  fechaCreacion     DateTime  @default(now())
+  fechaActualizacion DateTime @updatedAt
+  creadoPor         String
+  
+  // RELACIONES
+  proyecto          Proyecto  @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  creador           User      @relation(fields: [creadoPor], references: [id])
+  
+  @@map("historias_proyecto")
 }
 
 // ======= ENUMS =======

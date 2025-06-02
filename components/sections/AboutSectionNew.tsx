@@ -34,10 +34,10 @@ const features = [
 ]
 
 const milestones = [
-  { year: '1996', event: 'Fundación en Popayán, Cauca', icon: Factory },
-  { year: '2010', event: 'Apertura segunda planta Jamundí', icon: Factory },
-  { year: '2015', event: 'Apertura tercera planta Villa Rica', icon: Factory },
-  { year: '2024', event: '600 toneladas/mes capacidad total', icon: CheckCircle2 },
+  { year: '1996', event: 'Fundación en Popayán con enfoque en estructuras metálicas', icon: Factory },
+  { year: '2000s', event: 'Expansión a proyectos nacionales y diversificación de servicios', icon: Award },
+  { year: '2010s', event: 'Incorporación de tecnología BIM y apertura de nuevas plantas', icon: Zap },
+  { year: '2020s', event: 'Consolidación con 3 plantas y capacidad de 600 ton/mes', icon: CheckCircle2 },
 ]
 
 export function AboutSection() {
@@ -71,28 +71,44 @@ export function AboutSection() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-blue-400 font-semibold text-lg mb-2">Sobre Nosotros</h2>
+            <h2 className="text-blue-400 font-semibold text-lg mb-2">Sobre MEISA</h2>
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Construyendo el futuro 
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-slate-300 via-slate-100 to-slate-400">
-                con acero desde 1996
+              Más de 27 Años 
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500">
+                Construyendo el Futuro de Colombia
               </span>
             </h3>
             
             <p className="text-gray-300 text-lg mb-6 leading-relaxed">
-              <strong>Misión:</strong> Fortalecer la empresa a nivel nacional garantizando un crecimiento 
-              en el tiempo a través de calidad de los productos y servicios, generando rentabilidad, 
-              aumento de confianza, mayor satisfacción de clientes y colaboradores para así mantener 
-              su consolidación y talento profesional ante el mercado y llegar a nuevos clientes.
+              Fundada en <strong className="text-red-500">1996 en Popayán, Cauca</strong>, MEISA (Metálicas e Ingeniería S.A.S.) 
+              nació con la visión de transformar la industria metalmecánica colombiana. Lo que comenzó como una empresa local 
+              se ha convertido en uno de los referentes nacionales en diseño, fabricación y montaje de estructuras metálicas.
             </p>
             
-            <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-              <strong>Visión:</strong> Desarrollar soluciones a proyectos con estructuras metálicas 
-              y obras civiles, logrando el balance ideal entre costos, diseño, funcionalidad y 
-              excelente calidad, cumpliendo con las normas sismo resistentes vigentes, los estándares 
-              de fabricación y montaje actuales, de la mano del talento humano y responsabilidad 
-              de los trabajadores.
+            <p className="text-gray-300 text-lg mb-6 leading-relaxed">
+              Durante estas décadas, hemos participado en la construcción de importantes proyectos de infraestructura que han 
+              contribuido al desarrollo del país: desde el <strong className="text-blue-400">Puente La Floresta en Bogotá</strong> hasta el 
+              <strong className="text-blue-400"> Centro Comercial Campanario en Popayán</strong>, pasando por terminales de transporte masivo, 
+              plantas industriales y escenarios deportivos.
             </p>
+
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-gray-700">
+              <h4 className="text-white font-semibold text-xl mb-4">Nuestra Misión</h4>
+              <p className="text-gray-300 leading-relaxed">
+                Somos una empresa especializada en el Diseño, Fabricación, Montaje de estructuras metálicas y la construcción de obras civiles; 
+                garantizamos a nuestros clientes, productos y servicios que satisfacen plenamente sus necesidades y expectativas. Como parte del 
+                compromiso por la gestión de los riesgos laborales y la mejora continua de nuestro Sistema Integrado de Gestión (SIG).
+              </p>
+            </div>
+
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-gray-700">
+              <h4 className="text-white font-semibold text-xl mb-4">Nuestra Visión</h4>
+              <p className="text-gray-300 leading-relaxed">
+                Desarrollar soluciones a proyectos con estructuras metálicas y obras civiles, logrando el balance ideal entre costos, 
+                diseño, funcionalidad y excelente calidad, cumpliendo con las normas sismo resistentes vigentes, los estándares de 
+                fabricación y montaje actuales, de la mano del talento humano y responsabilidad de los trabajadores.
+              </p>
+            </div>
 
             {/* Timeline simplificado */}
             <div className="mb-8">
@@ -113,9 +129,9 @@ export function AboutSection() {
                         <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-gray-700 transition-colors">
                           <Icon className="w-5 h-5 text-blue-400" />
                         </div>
-                        <div className="flex-1 flex items-center justify-between">
-                          <span className="text-blue-400 font-semibold">{milestone.year}</span>
-                          <span className="text-gray-400">{milestone.event}</span>
+                        <div className="flex-1">
+                          <span className="text-red-500 font-semibold block">{milestone.year}</span>
+                          <span className="text-gray-300 text-sm">{milestone.event}</span>
                         </div>
                       </div>
                     </motion.div>

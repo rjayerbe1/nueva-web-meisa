@@ -11,27 +11,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react"
 import { motion } from "framer-motion"
 
-const oficinas = [
+const ubicaciones = [
   {
-    ciudad: "Bogotá - Oficina Principal",
-    direccion: "Calle 100 #19-54, Oficina 701",
-    telefono: "+57 (1) 756 3000",
-    email: "bogota@meisa.com.co",
-    horario: "Lun-Vie: 8:00 AM - 6:00 PM"
+    ciudad: "Popayán - Oficina Principal",
+    direccion: "Popayán, Cauca",
+    telefono: "+57 (2) 312 0050",
+    email: "contacto@meisa.com.co",
+    horario: "Lun-Vie: 7:00 AM - 5:00 PM"
   },
   {
-    ciudad: "Medellín",
-    direccion: "Carrera 43A #1-50, Torre 1, Piso 15",
-    telefono: "+57 (4) 444 5555",
-    email: "medellin@meisa.com.co",
-    horario: "Lun-Vie: 8:00 AM - 6:00 PM"
+    ciudad: "Jamundí - Planta de Producción",
+    direccion: "Jamundí, Valle del Cauca",
+    telefono: "+57 (2) 312 0050",
+    email: "contacto@meisa.com.co",
+    horario: "Lun-Vie: 7:00 AM - 5:00 PM"
   },
   {
-    ciudad: "Cartagena",
-    direccion: "Bocagrande, Av. San Martín #10-20",
-    telefono: "+57 (5) 665 4444",
-    email: "cartagena@meisa.com.co",
-    horario: "Lun-Vie: 8:00 AM - 5:00 PM"
+    ciudad: "Villa Rica - Planta de Producción",
+    direccion: "Villa Rica, Cauca",
+    telefono: "+57 (2) 312 0050",
+    email: "contacto@meisa.com.co",
+    horario: "Lun-Vie: 7:00 AM - 5:00 PM"
   }
 ]
 
@@ -228,8 +228,8 @@ export default function ContactoPage() {
                   <div className="flex items-start gap-4">
                     <Phone className="w-5 h-5 text-meisa-blue mt-1" />
                     <div>
-                      <p className="font-semibold">Línea nacional</p>
-                      <p className="text-gray-600">01 8000 123 456</p>
+                      <p className="font-semibold">Teléfono Principal</p>
+                      <p className="text-gray-600">+57 (2) 312 0050</p>
                     </div>
                   </div>
                   
@@ -237,7 +237,7 @@ export default function ContactoPage() {
                     <Mail className="w-5 h-5 text-meisa-blue mt-1" />
                     <div>
                       <p className="font-semibold">Email general</p>
-                      <p className="text-gray-600">info@meisa.com.co</p>
+                      <p className="text-gray-600">contacto@meisa.com.co</p>
                     </div>
                   </div>
                   
@@ -245,8 +245,7 @@ export default function ContactoPage() {
                     <Clock className="w-5 h-5 text-meisa-blue mt-1" />
                     <div>
                       <p className="font-semibold">Horario de atención</p>
-                      <p className="text-gray-600">Lunes a Viernes: 8:00 AM - 6:00 PM</p>
-                      <p className="text-gray-600">Sábados: 8:00 AM - 12:00 PM</p>
+                      <p className="text-gray-600">Lunes a Viernes: 7:00 AM - 5:00 PM</p>
                     </div>
                   </div>
                 </CardContent>
@@ -256,12 +255,12 @@ export default function ContactoPage() {
             {/* Oficinas */}
             <AnimatedSection direction="right" delay={0.2}>
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Nuestras oficinas
+                Nuestras ubicaciones
               </h3>
               <div className="space-y-4">
-                {oficinas.map((oficina, index) => (
+                {ubicaciones.map((ubicacion, index) => (
                   <motion.div
-                    key={oficina.ciudad}
+                    key={ubicacion.ciudad}
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -269,24 +268,24 @@ export default function ContactoPage() {
                     <Card>
                       <CardContent className="p-6">
                         <h4 className="font-semibold text-lg text-gray-900 mb-3">
-                          {oficina.ciudad}
+                          {ubicacion.ciudad}
                         </h4>
                         <div className="space-y-2 text-sm text-gray-600">
                           <p className="flex items-start gap-2">
                             <MapPin className="w-4 h-4 mt-0.5" />
-                            {oficina.direccion}
+                            {ubicacion.direccion}
                           </p>
                           <p className="flex items-center gap-2">
                             <Phone className="w-4 h-4" />
-                            {oficina.telefono}
+                            {ubicacion.telefono}
                           </p>
                           <p className="flex items-center gap-2">
                             <Mail className="w-4 h-4" />
-                            {oficina.email}
+                            {ubicacion.email}
                           </p>
                           <p className="flex items-center gap-2">
                             <Clock className="w-4 h-4" />
-                            {oficina.horario}
+                            {ubicacion.horario}
                           </p>
                         </div>
                       </CardContent>

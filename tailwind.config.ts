@@ -54,9 +54,15 @@ const config: Config = {
         // Colores MEISA
         meisa: {
           blue: "#1e40af",
-          orange: "#ea580c",
-          gray: "#374151",
+          red: "#dc2626",
+          "dark-blue": "#1e3a8a", 
+          "light-blue": "#3b82f6",
+          gray: "#64748b",
+          "dark-gray": "#334155",
           light: "#f8fafc",
+          success: "#16a34a",
+          warning: "#f59e0b",
+          error: "#ef4444",
         }
       },
       borderRadius: {
@@ -87,6 +93,15 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out",
         "slide-in": "slide-in 0.8s ease-out",
+      },
+      perspective: {
+        '1000': '1000px',
+        '1500': '1500px',
+        '2000': '2000px',
+      },
+      backdropFilter: {
+        'none': 'none',
+        'blur': 'blur(20px)',
       },
     },
   },
