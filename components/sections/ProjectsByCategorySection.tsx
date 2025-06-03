@@ -173,7 +173,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                         {/* Ícono centrado */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div 
-                            className="w-32 h-32 flex items-center justify-center opacity-80"
+                            className="w-32 h-32 flex items-center justify-center opacity-80 transform -translate-y-4"
                             style={{ color: categoria.color || '#3b82f6' }}
                           >
                             {getCategoryIconComponent(categoria.icono, "w-40 h-40")}
@@ -249,7 +249,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                   </div>
                   
                   <Link
-                    href={`/proyectos?categoria=${activeCategory}`}
+                    href={`/proyectos/categoria/${categorias.find(cat => cat.key === activeCategory)?.slug}`}
                     className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                   >
                     Ver todos

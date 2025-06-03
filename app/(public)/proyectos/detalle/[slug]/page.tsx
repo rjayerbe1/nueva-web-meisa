@@ -44,9 +44,13 @@ interface Proyecto {
     enfoque: string | null
     solucionTecnica: string | null
     innovaciones: any
+    equipoEspecialista: any
     metodologia: string | null
     tiempoTotal: string | null
+    fasesEjecucion: any
+    recursos: any
     resultados: any
+    reconocimientos: any
     impactoCliente: string | null
     valorAgregado: string | null
     testimonioCliente: string | null
@@ -55,10 +59,12 @@ interface Proyecto {
     innovacionNivel: number | null
     tagsTecnicos: any
     imagenDestacada: string | null
-    imagenDesafio: string | null
-    imagenSolucion: string | null
-    imagenResultado: string | null
-    imagenesGaleria: any
+    videoUrl: string | null
+    datosInteres: any
+    leccionesAprendidas: string | null
+    imagenesDesafio: any
+    imagenesSolucion: any
+    imagenesResultado: any
   }
 }
 
@@ -70,6 +76,7 @@ export default function ProjectDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [lightboxImage, setLightboxImage] = useState(0)
+
 
   useEffect(() => {
     const slug = params.slug as string
@@ -162,10 +169,10 @@ export default function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando proyecto...</p>
+          <p className="text-slate-600">Cargando proyecto...</p>
         </div>
       </div>
     )
@@ -173,10 +180,10 @@ export default function ProjectDetailPage() {
 
   if (error || !proyecto) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Proyecto no encontrado</h1>
-          <p className="text-gray-600 mb-6">{error || 'El proyecto solicitado no existe'}</p>
+          <h1 className="text-2xl font-bold text-slate-900 mb-4">Proyecto no encontrado</h1>
+          <p className="text-slate-600 mb-6">{error || 'El proyecto solicitado no existe'}</p>
           <Link
             href="/proyectos"
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
@@ -208,15 +215,32 @@ export default function ProjectDetailPage() {
     return proyecto.imagenes.find(img => img.id === imageId)
   }
 
-  // Get selected images for each section
-  const imagenDesafio = hasHistoria ? findImageById(proyecto.historia?.imagenDesafio) : null
-  const imagenSolucion = hasHistoria ? findImageById(proyecto.historia?.imagenSolucion) : null
-  const imagenResultado = hasHistoria ? findImageById(proyecto.historia?.imagenResultado) : null
+  // Get selected images for each section (nuevo esquema)
+  const imagenesDesafio = hasHistoria && Array.isArray(proyecto.historia?.imagenesDesafio) 
+    ? proyecto.historia.imagenesDesafio.map((img: any) => ({
+        ...img,
+        imageData: findImageById(img.id)
+      })).filter((img: any) => img.imageData) 
+    : []
+  
+  const imagenesSolucion = hasHistoria && Array.isArray(proyecto.historia?.imagenesSolucion) 
+    ? proyecto.historia.imagenesSolucion.map((img: any) => ({
+        ...img,
+        imageData: findImageById(img.id)
+      })).filter((img: any) => img.imageData) 
+    : []
+  
+  const imagenesResultado = hasHistoria && Array.isArray(proyecto.historia?.imagenesResultado) 
+    ? proyecto.historia.imagenesResultado.map((img: any) => ({
+        ...img,
+        imageData: findImageById(img.id)
+      })).filter((img: any) => img.imageData) 
+    : []
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 project-page">
       {/* Hero Section - Adaptado según si tiene historia */}
-      <section className={`relative text-white overflow-hidden ${
+      <section className={`relative text-white overflow-hidden -mt-4 sm:mt-0 ${
         hasHistoria 
           ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900' 
           : 'bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900'
@@ -278,7 +302,7 @@ export default function ProjectDetailPage() {
                       ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
                       : proyecto.estado === 'EN_PROGRESO'
                       ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30'
-                      : 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+                      : 'bg-slate-500/20 text-slate-300 border border-slate-500/30'
                   }`}>
                     {proyecto.estado === 'COMPLETADO' ? '✓ Completado' : 
                      proyecto.estado === 'EN_PROGRESO' ? '⚡ En Progreso' : 
@@ -421,13 +445,10 @@ export default function ProjectDetailPage() {
                     </div>
                   )}
                   
-                  {/* Hover Content */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="text-center text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-slate-700 rounded-full flex items-center justify-center shadow-xl border-2 border-slate-400/50">
-                        <ZoomIn className="w-8 h-8" />
-                      </div>
-                      <p className="text-lg font-semibold bg-slate-800/90 px-6 py-3 rounded-full shadow-xl border border-slate-500/50">Ver en alta resolución</p>
+                  {/* Hover Content - Lupa sutil */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-30 transition-all duration-500">
+                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                      <ZoomIn className="w-6 h-6 text-white" />
                     </div>
                   </div>
                   
@@ -519,10 +540,10 @@ export default function ProjectDetailPage() {
                 <Award className="w-4 h-4" />
                 Historia de Éxito MEISA
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                 Cómo MEISA Transformó Este Desafío en Éxito
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
                 La historia completa del proyecto desde el desafío inicial hasta los resultados excepcionales.
               </p>
             </motion.div>
@@ -540,23 +561,23 @@ export default function ProjectDetailPage() {
                       initial={{ opacity: 0, x: -50 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.8, delay: 0.2 }}
-                      className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+                      className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch min-h-[400px] lg:min-h-[600px]"
                     >
                       {/* Número del acto */}
-                      <div className="absolute left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
-                        <span className="text-white font-bold text-xl">01</span>
+                      <div className="absolute left-1/2 transform -translate-x-1/2 top-[-2rem] lg:top-auto w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
+                        <span className="text-white font-bold text-lg lg:text-xl">01</span>
                       </div>
                       
                       {/* Contenido */}
                       <div className="lg:pr-8">
                         <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 shadow-xl border border-slate-200">
                           <div className="flex items-center gap-4 mb-6">
-                            <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <div className="w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl flex items-center justify-center shadow-lg">
                               <Target className="w-7 h-7 text-white" />
                             </div>
                             <div>
-                              <h3 className="text-2xl font-bold text-slate-900">El Desafío</h3>
-                              <p className="text-red-600 font-medium">Problemas complejos a resolver</p>
+                              <h3 className="text-xl lg:text-2xl font-bold text-slate-900">El Desafío</h3>
+                              <p className="text-slate-600 font-medium">Problemas complejos a resolver</p>
                             </div>
                           </div>
                           
@@ -566,37 +587,83 @@ export default function ProjectDetailPage() {
                             </div>
                           )}
                           
+                          {proyecto.historia?.problemasIniciales && (
+                            <div className="mb-6">
+                              <h4 className="font-bold text-slate-900 mb-3 text-lg">Problemática inicial:</h4>
+                              <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                <p className="text-slate-700 leading-relaxed">{proyecto.historia.problemasIniciales}</p>
+                              </div>
+                            </div>
+                          )}
+                          
                           {desafios.length > 0 && (
                             <div>
                               <h4 className="font-bold text-slate-900 mb-4 text-lg">Desafíos específicos:</h4>
-                              <div className="space-y-3">
+                              {/* Desktop - Lista vertical */}
+                              <div className="hidden lg:block space-y-3">
                                 {desafios.map((desafio: string, index: number) => (
-                                  <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-red-100">
-                                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
+                                  <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                    <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                                     <span className="text-slate-800 font-medium">{desafio}</span>
                                   </div>
                                 ))}
+                              </div>
+                              {/* Móvil - Slider de tarjetas */}
+                              <div className="lg:hidden">
+                                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                                  {/* Espaciador inicial para mostrar que hay más contenido */}
+                                  <div className="flex-shrink-0 w-5"></div>
+                                  {desafios.map((desafio: string, index: number) => (
+                                    <div key={index} className="flex-shrink-0 w-80 bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                                      <div className="flex items-start gap-3">
+                                        <div className="w-3 h-3 bg-slate-600 rounded-full mt-1 flex-shrink-0"></div>
+                                        <span className="text-slate-800 font-medium leading-relaxed">{desafio}</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           )}
                         </div>
                       </div>
                       
-                      {/* Imagen contextual del proyecto */}
-                      <div className="hidden lg:block pl-8">
-                        {imagenDesafio ? (
-                          <div className="h-80 rounded-3xl shadow-2xl overflow-hidden relative group">
-                            <Image
-                              src={imagenDesafio.urlOptimized || imagenDesafio.url}
-                              alt={imagenDesafio.alt}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                              <p className="font-bold text-xl mb-2">Situación Inicial</p>
-                              <p className="text-white/80 text-sm">Estado previo al proyecto</p>
-                            </div>
+                      {/* Imágenes contextuales del proyecto - Desktop */}
+                      <div className="hidden lg:flex lg:pl-8 h-full flex-col">
+                        {imagenesDesafio.length > 0 ? (
+                          <div className="space-y-4 h-full flex flex-col">
+                            {imagenesDesafio.map((imagen: any, index: number) => {
+                              const globalIndex = proyecto.imagenes.findIndex(img => img.id === imagen.id)
+                              return (
+                                <div 
+                                  key={imagen.id} 
+                                  className="flex-1 min-h-48 rounded-2xl shadow-xl overflow-hidden relative group cursor-pointer"
+                                  onClick={() => openLightbox(globalIndex)}
+                                >
+                                  <Image
+                                    src={imagen.imageData.urlOptimized || imagen.imageData.url}
+                                    alt={imagen.imageData.alt}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/30 to-transparent"></div>
+                                  
+                                  {/* Icono de zoom al hacer hover */}
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                                      <ZoomIn className="w-6 h-6 text-white" />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="absolute bottom-3 left-3 text-white">
+                                    <p className="font-bold text-sm mb-1">{imagen.titulo}</p>
+                                    {imagen.descripcion && (
+                                      <p className="text-white/80 text-xs">{imagen.descripcion}</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
                           </div>
                         ) : proyecto.imagenes && proyecto.imagenes.length > 1 ? (
                           <div className="h-80 rounded-3xl shadow-2xl overflow-hidden relative group">
@@ -624,6 +691,42 @@ export default function ProjectDetailPage() {
                           </div>
                         )}
                       </div>
+                      
+                      {/* Slider móvil - Imágenes del Desafío */}
+                      {imagenesDesafio.length > 0 && (
+                        <div className="lg:hidden mt-8">
+                          <h4 className="text-lg font-bold text-slate-900 mb-4">Imágenes del Desafío</h4>
+                          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                            {/* Espaciador inicial para mostrar que hay más contenido */}
+                            <div className="flex-shrink-0 w-5"></div>
+                            {imagenesDesafio.map((imagen: any, index: number) => {
+                              const globalIndex = proyecto.imagenes.findIndex(img => img.id === imagen.id)
+                              return (
+                                <div 
+                                  key={imagen.id} 
+                                  className="flex-shrink-0 w-72 h-48 rounded-xl shadow-lg overflow-hidden relative cursor-pointer"
+                                  onClick={() => openLightbox(globalIndex)}
+                                >
+                                  <Image
+                                    src={imagen.imageData.urlOptimized || imagen.imageData.url}
+                                    alt={imagen.imageData.alt}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/30 to-transparent"></div>
+                                  
+                                  <div className="absolute bottom-3 left-3 right-3">
+                                    <h5 className="text-white font-bold text-sm mb-1">{imagen.titulo}</h5>
+                                    {imagen.descripcion && (
+                                      <p className="text-slate-200 text-xs leading-relaxed line-clamp-2">{imagen.descripcion}</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </motion.div>
                   )}
 
@@ -633,28 +736,49 @@ export default function ProjectDetailPage() {
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.8, delay: 0.4 }}
-                      className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+                      className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch min-h-[400px] lg:min-h-[600px]"
                     >
                       {/* Número del acto */}
-                      <div className="absolute left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
-                        <span className="text-white font-bold text-xl">02</span>
+                      <div className="absolute left-1/2 transform -translate-x-1/2 top-[-2rem] lg:top-auto w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
+                        <span className="text-white font-bold text-lg lg:text-xl">02</span>
                       </div>
                       
-                      {/* Imagen contextual del proceso - Izquierda en desktop */}
-                      <div className="hidden lg:block pr-8 order-1 lg:order-none">
-                        {imagenSolucion ? (
-                          <div className="h-80 rounded-3xl shadow-2xl overflow-hidden relative group">
-                            <Image
-                              src={imagenSolucion.urlOptimized || imagenSolucion.url}
-                              alt={imagenSolucion.alt}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-800/30 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                              <p className="font-bold text-xl mb-2">Proceso MEISA</p>
-                              <p className="text-blue-100 text-sm">Solución en desarrollo</p>
-                            </div>
+                      {/* Imágenes del proceso - Izquierda en desktop */}
+                      <div className="hidden lg:flex lg:pr-8 h-full flex-col">
+                        {imagenesSolucion.length > 0 ? (
+                          <div className="space-y-4 h-full flex flex-col">
+                            {imagenesSolucion.map((imagen: any, index: number) => {
+                              const globalIndex = proyecto.imagenes.findIndex(img => img.id === imagen.id)
+                              return (
+                                <div 
+                                  key={imagen.id} 
+                                  className="flex-1 min-h-48 rounded-2xl shadow-xl overflow-hidden relative group cursor-pointer"
+                                  onClick={() => openLightbox(globalIndex)}
+                                >
+                                  <Image
+                                    src={imagen.imageData.urlOptimized || imagen.imageData.url}
+                                    alt={imagen.imageData.alt}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/30 to-transparent"></div>
+                                  
+                                  {/* Icono de zoom al hacer hover */}
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                                      <ZoomIn className="w-6 h-6 text-white" />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="absolute bottom-3 left-3 text-white">
+                                    <p className="font-bold text-sm mb-1">{imagen.titulo}</p>
+                                    {imagen.descripcion && (
+                                      <p className="text-blue-100 text-xs">{imagen.descripcion}</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
                           </div>
                         ) : proyecto.imagenes && proyecto.imagenes.length > 2 ? (
                           <div className="h-80 rounded-3xl shadow-2xl overflow-hidden relative group">
@@ -685,14 +809,14 @@ export default function ProjectDetailPage() {
                       
                       {/* Contenido */}
                       <div className="lg:pl-8">
-                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 shadow-xl border border-blue-200">
+                        <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 shadow-xl border border-slate-200">
                           <div className="flex items-center gap-4 mb-6">
-                            <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
+                            <div className="w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl flex items-center justify-center shadow-lg">
                               <Lightbulb className="w-7 h-7 text-white" />
                             </div>
                             <div>
-                              <h3 className="text-2xl font-bold text-slate-900">La Solución</h3>
-                              <p className="text-blue-600 font-medium">Enfoque técnico MEISA</p>
+                              <h3 className="text-xl lg:text-2xl font-bold text-slate-900">La Solución</h3>
+                              <p className="text-slate-600 font-medium">Enfoque técnico MEISA</p>
                             </div>
                           </div>
                           
@@ -702,30 +826,100 @@ export default function ProjectDetailPage() {
                             </div>
                           )}
                           
+                          {proyecto.historia?.solucionTecnica && (
+                            <div className="mb-6">
+                              <h4 className="font-bold text-slate-900 mb-3 text-lg">Solución técnica detallada:</h4>
+                              <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                <p className="text-slate-700 leading-relaxed">{proyecto.historia.solucionTecnica}</p>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {proyecto.historia?.metodologia && (
+                            <div className="mb-6">
+                              <h4 className="font-bold text-slate-900 mb-3 text-lg">Metodología aplicada:</h4>
+                              <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                <p className="text-slate-700 leading-relaxed">{proyecto.historia.metodologia}</p>
+                              </div>
+                            </div>
+                          )}
+                          
                           {innovaciones.length > 0 && (
                             <div className="mb-6">
                               <h4 className="font-bold text-slate-900 mb-4 text-lg">Innovaciones aplicadas:</h4>
-                              <div className="space-y-3">
+                              {/* Desktop - Lista vertical */}
+                              <div className="hidden lg:block space-y-3">
                                 {innovaciones.map((innovacion: string, index: number) => (
-                                  <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                  <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                    <div className="w-2 h-2 bg-slate-600 rounded-full mt-2 flex-shrink-0"></div>
                                     <span className="text-slate-800 font-medium">{innovacion}</span>
                                   </div>
                                 ))}
+                              </div>
+                              {/* Móvil - Slider de tarjetas */}
+                              <div className="lg:hidden">
+                                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                                  {/* Espaciador inicial para mostrar que hay más contenido */}
+                                  <div className="flex-shrink-0 w-5"></div>
+                                  {innovaciones.map((innovacion: string, index: number) => (
+                                    <div key={index} className="flex-shrink-0 w-80 bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl shadow-lg border border-blue-200">
+                                      <div className="flex items-start gap-3">
+                                        <div className="w-3 h-3 bg-blue-600 rounded-full mt-1 flex-shrink-0"></div>
+                                        <span className="text-slate-800 font-medium leading-relaxed">{innovacion}</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           )}
 
                           {proyecto.historia?.tiempoTotal && (
-                            <div className="pt-4 border-t border-blue-200">
+                            <div className="pt-4 border-t border-slate-200">
                               <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
-                                <Clock className="w-5 h-5 text-blue-600" />
+                                <Clock className="w-5 h-5 text-slate-600" />
                                 <span className="font-bold text-slate-900">Tiempo total: {proyecto.historia.tiempoTotal}</span>
                               </div>
                             </div>
                           )}
                         </div>
                       </div>
+                      
+                      {/* Slider móvil - Imágenes de la Solución */}
+                      {imagenesSolucion.length > 0 && (
+                        <div className="lg:hidden mt-8">
+                          <h4 className="text-lg font-bold text-slate-900 mb-4">Imágenes de la Solución</h4>
+                          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                            {/* Espaciador inicial para mostrar que hay más contenido */}
+                            <div className="flex-shrink-0 w-5"></div>
+                            {imagenesSolucion.map((imagen: any, index: number) => {
+                              const globalIndex = proyecto.imagenes.findIndex(img => img.id === imagen.id)
+                              return (
+                                <div 
+                                  key={imagen.id} 
+                                  className="flex-shrink-0 w-72 h-48 rounded-xl shadow-lg overflow-hidden relative cursor-pointer"
+                                  onClick={() => openLightbox(globalIndex)}
+                                >
+                                  <Image
+                                    src={imagen.imageData.urlOptimized || imagen.imageData.url}
+                                    alt={imagen.imageData.alt}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/30 to-transparent"></div>
+                                  
+                                  <div className="absolute bottom-3 left-3 right-3">
+                                    <h5 className="text-white font-bold text-sm mb-1">{imagen.titulo}</h5>
+                                    {imagen.descripcion && (
+                                      <p className="text-slate-200 text-xs leading-relaxed line-clamp-2">{imagen.descripcion}</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </motion.div>
                   )}
 
@@ -735,65 +929,112 @@ export default function ProjectDetailPage() {
                       initial={{ opacity: 0, x: -50 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.8, delay: 0.6 }}
-                      className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+                      className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch min-h-[400px] lg:min-h-[600px]"
                     >
                       {/* Número del acto */}
-                      <div className="absolute left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
-                        <span className="text-white font-bold text-xl">03</span>
+                      <div className="absolute left-1/2 transform -translate-x-1/2 top-[-2rem] lg:top-auto w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
+                        <span className="text-white font-bold text-lg lg:text-xl">03</span>
                       </div>
                       
                       {/* Contenido */}
                       <div className="lg:pr-8">
-                        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-8 shadow-xl border border-green-200">
+                        <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 shadow-xl border border-slate-200">
                           <div className="flex items-center gap-4 mb-6">
-                            <div className="w-14 h-14 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center shadow-lg">
+                            <div className="w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl flex items-center justify-center shadow-lg">
                               <TrendingUp className="w-7 h-7 text-white" />
                             </div>
                             <div>
-                              <h3 className="text-2xl font-bold text-slate-900">Los Resultados</h3>
-                              <p className="text-green-600 font-medium">Éxito comprobado</p>
+                              <h3 className="text-xl lg:text-2xl font-bold text-slate-900">Los Resultados</h3>
+                              <p className="text-slate-600 font-medium">Éxito comprobado</p>
                             </div>
                           </div>
                           
                           {resultados.length > 0 && (
                             <div className="mb-6">
                               <h4 className="font-bold text-slate-900 mb-4 text-lg">Logros específicos:</h4>
-                              <div className="space-y-3">
+                              {/* Desktop - Lista vertical */}
+                              <div className="hidden lg:block space-y-3">
                                 {resultados.map((resultado: string, index: number) => (
-                                  <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                                  <div key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <CheckCircle className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
                                     <span className="text-slate-800 font-medium">{resultado}</span>
                                   </div>
                                 ))}
+                              </div>
+                              {/* Móvil - Slider de tarjetas */}
+                              <div className="lg:hidden">
+                                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                                  {/* Espaciador inicial para mostrar que hay más contenido */}
+                                  <div className="flex-shrink-0 w-5"></div>
+                                  {resultados.map((resultado: string, index: number) => (
+                                    <div key={index} className="flex-shrink-0 w-80 bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl shadow-lg border border-green-200">
+                                      <div className="flex items-start gap-3">
+                                        <CheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                                        <span className="text-slate-800 font-medium leading-relaxed">{resultado}</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           )}
                           
                           {proyecto.historia?.impactoCliente && (
-                            <div className="pt-4 border-t border-green-200">
-                              <div className="bg-white p-4 rounded-xl shadow-sm">
+                            <div className="mb-6">
+                              <h4 className="font-bold text-slate-900 mb-3 text-lg">Impacto para el cliente:</h4>
+                              <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
                                 <p className="text-slate-700 leading-relaxed text-lg font-medium">{proyecto.historia.impactoCliente}</p>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {proyecto.historia?.valorAgregado && (
+                            <div className="pt-4 border-t border-slate-200">
+                              <h4 className="font-bold text-slate-900 mb-3 text-lg">Valor agregado MEISA:</h4>
+                              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                                <p className="text-slate-800 leading-relaxed font-medium">{proyecto.historia.valorAgregado}</p>
                               </div>
                             </div>
                           )}
                         </div>
                       </div>
                       
-                      {/* Imagen del resultado final */}
-                      <div className="hidden lg:block pl-8">
-                        {imagenResultado ? (
-                          <div className="h-80 rounded-3xl shadow-2xl overflow-hidden relative group">
-                            <Image
-                              src={imagenResultado.urlOptimized || imagenResultado.url}
-                              alt={imagenResultado.alt}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-800/30 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                              <p className="font-bold text-xl mb-2">Resultado Final</p>
-                              <p className="text-green-100 text-sm">Proyecto completado</p>
-                            </div>
+                      {/* Imágenes del resultado final - Desktop */}
+                      <div className="hidden lg:flex lg:pl-8 h-full flex-col">
+                        {imagenesResultado.length > 0 ? (
+                          <div className="space-y-4 h-full flex flex-col">
+                            {imagenesResultado.map((imagen: any, index: number) => {
+                              const globalIndex = proyecto.imagenes.findIndex(img => img.id === imagen.id)
+                              return (
+                                <div 
+                                  key={imagen.id} 
+                                  className="flex-1 min-h-48 rounded-2xl shadow-xl overflow-hidden relative group cursor-pointer"
+                                  onClick={() => openLightbox(globalIndex)}
+                                >
+                                  <Image
+                                    src={imagen.imageData.urlOptimized || imagen.imageData.url}
+                                    alt={imagen.imageData.alt}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/30 to-transparent"></div>
+                                  
+                                  {/* Icono de zoom al hacer hover */}
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                                      <ZoomIn className="w-6 h-6 text-white" />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="absolute bottom-3 left-3 text-white">
+                                    <p className="font-bold text-sm mb-1">{imagen.titulo}</p>
+                                    {imagen.descripcion && (
+                                      <p className="text-green-100 text-xs">{imagen.descripcion}</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
                           </div>
                         ) : proyecto.imagenes && proyecto.imagenes.length > 0 ? (
                           <div className="h-80 rounded-3xl shadow-2xl overflow-hidden relative group">
@@ -821,6 +1062,42 @@ export default function ProjectDetailPage() {
                           </div>
                         )}
                       </div>
+                      
+                      {/* Slider móvil - Imágenes de los Resultados */}
+                      {imagenesResultado.length > 0 && (
+                        <div className="lg:hidden mt-8">
+                          <h4 className="text-lg font-bold text-slate-900 mb-4">Imágenes de los Resultados</h4>
+                          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                            {/* Espaciador inicial para mostrar que hay más contenido */}
+                            <div className="flex-shrink-0 w-5"></div>
+                            {imagenesResultado.map((imagen: any, index: number) => {
+                              const globalIndex = proyecto.imagenes.findIndex(img => img.id === imagen.id)
+                              return (
+                                <div 
+                                  key={imagen.id} 
+                                  className="flex-shrink-0 w-72 h-48 rounded-xl shadow-lg overflow-hidden relative cursor-pointer"
+                                  onClick={() => openLightbox(globalIndex)}
+                                >
+                                  <Image
+                                    src={imagen.imageData.urlOptimized || imagen.imageData.url}
+                                    alt={imagen.imageData.alt}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/30 to-transparent"></div>
+                                  
+                                  <div className="absolute bottom-3 left-3 right-3">
+                                    <h5 className="text-white font-bold text-sm mb-1">{imagen.titulo}</h5>
+                                    {imagen.descripcion && (
+                                      <p className="text-slate-200 text-xs leading-relaxed line-clamp-2">{imagen.descripcion}</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </div>
@@ -959,7 +1236,8 @@ export default function ProjectDetailPage() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Desktop - Grid */}
+                  <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {equipoEspecialista.map((miembro: any, index: number) => (
                       <div key={index} className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
                         <div className="text-center">
@@ -976,6 +1254,29 @@ export default function ProjectDetailPage() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                  {/* Móvil - Slider */}
+                  <div className="lg:hidden">
+                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                      {/* Espaciador inicial para mostrar que hay más contenido */}
+                      <div className="flex-shrink-0 w-5"></div>
+                      {equipoEspecialista.map((miembro: any, index: number) => (
+                        <div key={index} className="flex-shrink-0 w-64 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200 shadow-lg">
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full mx-auto mb-4 flex items-center justify-center">
+                              <User className="w-8 h-8 text-white" />
+                            </div>
+                            <h4 className="font-bold text-slate-900 mb-2">{miembro.rol || miembro.name}</h4>
+                            {miembro.experiencia && (
+                              <p className="text-green-700 text-sm font-medium">{miembro.experiencia}</p>
+                            )}
+                            {miembro.especialidad && (
+                              <p className="text-slate-600 text-sm mt-1">{miembro.especialidad}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -1000,13 +1301,29 @@ export default function ProjectDetailPage() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Desktop - Grid */}
+                  <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 gap-4">
                     {recursos.map((recurso: string, index: number) => (
                       <div key={index} className="flex items-center gap-3 bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
                         <div className="w-3 h-3 bg-orange-500 rounded-full flex-shrink-0"></div>
                         <span className="text-slate-800 font-medium">{recurso}</span>
                       </div>
                     ))}
+                  </div>
+                  {/* Móvil - Slider */}
+                  <div className="lg:hidden">
+                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                      {/* Espaciador inicial para mostrar que hay más contenido */}
+                      <div className="flex-shrink-0 w-5"></div>
+                      {recursos.map((recurso: string, index: number) => (
+                        <div key={index} className="flex-shrink-0 w-72 bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-lg border border-orange-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
+                            <span className="text-slate-800 font-medium leading-relaxed">{recurso}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -1031,7 +1348,8 @@ export default function ProjectDetailPage() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Desktop - Grid */}
+                  <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 gap-6">
                     {reconocimientos.map((reconocimiento: any, index: number) => (
                       <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-amber-200">
                         <div className="flex items-start gap-4">
@@ -1056,6 +1374,36 @@ export default function ProjectDetailPage() {
                       </div>
                     ))}
                   </div>
+                  {/* Móvil - Slider */}
+                  <div className="lg:hidden">
+                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-hint">
+                      {/* Espaciador inicial para mostrar que hay más contenido */}
+                      <div className="flex-shrink-0 w-5"></div>
+                      {reconocimientos.map((reconocimiento: any, index: number) => (
+                        <div key={index} className="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-lg border border-amber-200">
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                              <Award className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-slate-900 mb-2">
+                                {reconocimiento.titulo || reconocimiento.name || 'Reconocimiento'}
+                              </h4>
+                              {reconocimiento.descripcion && (
+                                <p className="text-slate-700 text-sm mb-2">{reconocimiento.descripcion}</p>
+                              )}
+                              {reconocimiento.entidad && (
+                                <p className="text-amber-700 text-sm font-medium">Otorgado por: {reconocimiento.entidad}</p>
+                              )}
+                              {reconocimiento.fecha && (
+                                <p className="text-slate-500 text-xs mt-1">{reconocimiento.fecha}</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -1066,21 +1414,21 @@ export default function ProjectDetailPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 1.4 }}
-                className="mb-16"
+                className="mt-16 mb-20"
               >
-                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-3xl p-8 shadow-xl border border-purple-200">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 md:p-12 shadow-xl border border-slate-200">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-8">
+                    <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl flex items-center justify-center shadow-lg">
                       <BookOpen className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-slate-900">Lecciones Aprendidas</h3>
-                      <p className="text-purple-700">Conocimientos valiosos del proyecto</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-slate-900">Lecciones Aprendidas</h3>
+                      <p className="text-slate-600 font-medium">Conocimientos valiosos del proyecto</p>
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded-2xl p-6 shadow-lg">
-                    <p className="text-slate-700 leading-relaxed text-lg">{proyecto.historia.leccionesAprendidas}</p>
+                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-slate-200">
+                    <p className="text-slate-700 leading-relaxed text-lg md:text-xl">{proyecto.historia.leccionesAprendidas}</p>
                   </div>
                 </div>
               </motion.div>
@@ -1129,31 +1477,6 @@ export default function ProjectDetailPage() {
               </motion.div>
             )}
 
-            {/* Valor Agregado MEISA */}
-            {proyecto.historia?.valorAgregado && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.6 }}
-                className="mb-16"
-              >
-                <div className="bg-gradient-to-br from-blue-900 to-slate-900 rounded-3xl p-8 shadow-2xl text-white">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                      <Star className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-white">El Valor Único de MEISA</h3>
-                      <p className="text-blue-200">Lo que nos diferencia del resto</p>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/20">
-                    <p className="text-lg leading-relaxed text-blue-100">{proyecto.historia.valorAgregado}</p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
 
             {/* Testimonios si están disponibles */}
             {(proyecto.historia?.testimonioCliente || proyecto.historia?.testimonioEquipo) && (
@@ -1161,7 +1484,7 @@ export default function ProjectDetailPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 1.7 }}
-                className="mb-16"
+                className="mb-24 mt-16"
               >
                 <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200">
                   <div className="text-center mb-8">
@@ -1208,13 +1531,13 @@ export default function ProjectDetailPage() {
               </motion.div>
             )}
 
-            {/* Galería Visual del Proyecto */}
-            {proyecto.imagenes && proyecto.imagenes.length > 3 && (
+            {/* Galería Visual del Proyecto - Solo Desktop */}
+            {proyecto.imagenes && proyecto.imagenes.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 1.7 }}
-                className="mb-16"
+                className="mb-16 hidden lg:block"
               >
                 <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200">
                   <div className="flex items-center gap-4 mb-8">
@@ -1228,14 +1551,14 @@ export default function ProjectDetailPage() {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {proyecto.imagenes.slice(3).map((imagen, index) => (
+                    {proyecto.imagenes.map((imagen, index) => (
                       <motion.div 
                         key={imagen.id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: 1.8 + (index * 0.1) }}
                         className="relative group cursor-pointer"
-                        onClick={() => openLightbox(index + 3)}
+                        onClick={() => openLightbox(index)}
                       >
                         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-500">
                           <Image
@@ -1322,7 +1645,7 @@ export default function ProjectDetailPage() {
                   transition={{ duration: 0.6 }}
                   className="bg-white rounded-2xl shadow-xl p-8 mb-8"
                 >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Detalles del Proyecto</h2>
+                  <h2 className="text-2xl font-bold text-slate-900 mb-6">Detalles del Proyecto</h2>
                   
                   <div className="prose prose-lg max-w-none">
                     <p className="text-gray-600 leading-relaxed">
@@ -1365,11 +1688,11 @@ export default function ProjectDetailPage() {
                     </h2>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {proyecto.imagenes.slice(1).map((imagen, index) => (
+                      {proyecto.imagenes.map((imagen, index) => (
                         <motion.div 
                           key={imagen.id} 
                           className="relative group cursor-pointer"
-                          onClick={() => openLightbox(index + 1)}
+                          onClick={() => openLightbox(index)}
                           whileHover={{ scale: 1.02 }}
                           transition={{ duration: 0.3 }}
                         >
@@ -1589,18 +1912,32 @@ export default function ProjectDetailPage() {
               </a>
             </div>
             
-            <div className="mt-8 flex items-center justify-center gap-8 text-sm text-blue-200">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span>600 Ton/Mes</span>
+            {/* Información de contacto y empresa */}
+            <div className="mt-8 text-center text-blue-200">
+              <div className="mb-4 text-sm">
+                <div className="mb-2">
+                  <span className="font-medium">contacto@meisa.com.co</span>
+                </div>
+                <div>
+                  <span>Lun-Vie: 7AM-5PM</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span>27+ Años</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span>3 Plantas</span>
+              
+              <div className="flex items-center justify-center gap-4 lg:gap-8 text-sm flex-wrap">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span>600 TON/MES</span>
+                </div>
+                <div className="hidden sm:block text-blue-300">|</div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span>27+ AÑOS</span>
+                </div>
+                <div className="hidden sm:block text-blue-300">|</div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span>3 PLANTAS</span>
+                </div>
               </div>
             </div>
           </motion.div>

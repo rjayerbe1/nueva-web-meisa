@@ -16,6 +16,36 @@
   animation: shimmer 1.5s infinite;
 }
 
+/* Ocultar scrollbar en sliders móviles */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Scroll inicial para mostrar que hay más contenido */
+.scroll-hint {
+  scroll-behavior: smooth;
+  scroll-padding-left: 20px;
+}
+
+/* Fix para espacio en blanco en móvil - Ya no necesario con la barra de contacto visible */
+@media (max-width: 640px) {
+  body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  /* Ajuste para posicionamiento correcto con barra de contacto móvil */
+  .project-page {
+    margin-top: 0 !important;
+    padding-top: 100px; /* Espacio para navbar móvil con barra de contacto */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

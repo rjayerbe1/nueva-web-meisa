@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Eye, Plus, X, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Save, Eye, Plus, X, AlertCircle, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
+import ImageSelectorModal from '@/components/admin/ImageSelectorModal'
 
 interface Proyecto {
   id: string
@@ -19,57 +20,43 @@ export default function NuevaHistoriaPage() {
   const [selectedProyecto, setSelectedProyecto] = useState('')
   const [proyectoImagenes, setProyectoImagenes] = useState<any[]>([])
   
+  // Modal states
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalSection, setModalSection] = useState<'desafio' | 'solucion' | 'resultado' | null>(null)
+  
   // Estados del formulario
   const [formData, setFormData] = useState({
-    // Básico
     activo: false,
     tituloAlternativo: '',
     resumenCorto: '',
-    
-    // Desafío
     contexto: '',
     problemasIniciales: '',
     desafios: [] as string[],
-    
-    // Solución
     enfoque: '',
     solucionTecnica: '',
     innovaciones: [] as string[],
     equipoEspecialista: [] as any[],
-    
-    // Proceso
     metodologia: '',
     tiempoTotal: '',
     fasesEjecucion: [] as any[],
     recursos: [] as string[],
-    
-    // Resultado
-    impactoCliente: '',
-    leccionesAprendidas: '',
-    valorAgregado: '',
     resultados: [] as string[],
     reconocimientos: [] as string[],
-    
-    // Testimonios
+    impactoCliente: '',
+    valorAgregado: '',
     testimonioCliente: '',
     testimonioEquipo: '',
-    
-    // Visual
-    imagenDestacada: '',
-    videoUrl: '',
-    infografias: [] as string[],
-    
-    // Métricas
     dificultadTecnica: 5,
     innovacionNivel: 5,
     tagsTecnicos: [] as string[],
+    imagenDestacada: '',
+    videoUrl: '',
     datosInteres: {} as any,
-    
-    // Selección de imágenes
-    imagenDesafio: '',
-    imagenSolucion: '',
-    imagenResultado: '',
-    imagenesGaleria: [] as string[]
+    leccionesAprendidas: '',
+    // Selección de imágenes (nuevo esquema)
+    imagenesDesafio: [] as any[],
+    imagenesSolucion: [] as any[],
+    imagenesResultado: [] as any[]
   })
 
   useEffect(() => {
@@ -107,7 +94,7 @@ export default function NuevaHistoriaPage() {
     }
   }
 
-  const handleSubmit = async (isDraft = true) => {
+  const handleSubmit = async (shouldActivate = false) => {
     if (!selectedProyecto) {
       alert('Debes seleccionar un proyecto')
       return
@@ -120,7 +107,7 @@ export default function NuevaHistoriaPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           proyectoId: selectedProyecto,
-          activo: !isDraft,
+          activo: shouldActivate,
           ...formData
         })
       })
@@ -136,6 +123,45 @@ export default function NuevaHistoriaPage() {
       alert('Error al crear la historia')
     } finally {
       setLoading(false)
+    }
+  }
+
+  // Funciones para el modal de selección de imágenes
+  const openImageModal = (section: 'desafio' | 'solucion' | 'resultado') => {
+    setModalSection(section)
+    setModalOpen(true)
+  }
+
+  const handleImageSelection = (selectedImages: any[]) => {
+    if (modalSection) {
+      const fieldName = `imagenes${modalSection.charAt(0).toUpperCase() + modalSection.slice(1)}` as keyof typeof formData
+      setFormData(prev => ({
+        ...prev,
+        [fieldName]: selectedImages
+      }))
+    }
+  }
+
+  const getCurrentSelection = (section: 'desafio' | 'solucion' | 'resultado') => {
+    const fieldName = `imagenes${section.charAt(0).toUpperCase() + section.slice(1)}` as keyof typeof formData
+    return formData[fieldName] as any[] || []
+  }
+
+  const getSectionTitle = (section: 'desafio' | 'solucion' | 'resultado') => {
+    switch (section) {
+      case 'desafio': return 'El Desafío'
+      case 'solucion': return 'La Solución'
+      case 'resultado': return 'Los Resultados'
+      default: return ''
+    }
+  }
+
+  const getSectionColor = (section: 'desafio' | 'solucion' | 'resultado') => {
+    switch (section) {
+      case 'desafio': return 'red' as const
+      case 'solucion': return 'blue' as const
+      case 'resultado': return 'green' as const
+      default: return 'blue' as const
     }
   }
 
@@ -309,6 +335,18 @@ export default function NuevaHistoriaPage() {
                 className="w-full rounded-md border border-gray-300 px-3 py-2"
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Imagen Destacada
+              </label>
+              <input
+                type="url"
+                value={formData.imagenDestacada}
+                onChange={(e) => setFormData(prev => ({ ...prev, imagenDestacada: e.target.value }))}
+                placeholder="URL de la imagen principal"
+                className="w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Resumen Corto
@@ -325,180 +363,119 @@ export default function NuevaHistoriaPage() {
         </div>
 
         {/* Selección de Imágenes */}
-        {selectedProyecto && proyectoImagenes.length > 0 && (
+        {proyectoImagenes.length > 0 && (
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">2b. Selección de Imágenes para la Historia</h2>
-            <p className="text-gray-600 mb-6">Selecciona qué imágenes del proyecto mostrar en cada sección de la historia</p>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Selección de Imágenes para la Historia</h2>
+            <p className="text-gray-600 mb-6">Elige hasta 4 imágenes para cada sección de la historia y personaliza sus títulos y descripciones.</p>
             
-            <div className="space-y-6">
-              {/* Imagen para El Desafío */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Imagen para "El Desafío" (situación inicial)
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {proyectoImagenes.map((imagen) => (
-                    <div 
-                      key={imagen.id}
-                      onClick={() => setFormData(prev => ({ ...prev, imagenDesafio: imagen.id }))}
-                      className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                        formData.imagenDesafio === imagen.id 
-                          ? 'border-red-500 ring-2 ring-red-200' 
-                          : 'border-gray-200 hover:border-red-300'
-                      }`}
-                    >
-                      <div className="aspect-[4/3] relative">
-                        <img
-                          src={imagen.urlOptimized || imagen.url}
-                          alt={imagen.alt}
-                          className="w-full h-full object-cover"
-                        />
-                        {formData.imagenDesafio === imagen.id && (
-                          <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
-                            <div className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
-                              Seleccionada
-                            </div>
-                          </div>
-                        )}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Botón para El Desafío */}
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  El Desafío
+                </h3>
+                <button
+                  onClick={() => openImageModal('desafio')}
+                  className="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-red-300 rounded-lg hover:border-red-400 hover:bg-red-50 transition-colors"
+                >
+                  <ImageIcon className="w-5 h-5 text-red-600" />
+                  <span className="text-red-700 font-medium">
+                    {getCurrentSelection('desafio').length > 0 
+                      ? `${getCurrentSelection('desafio').length} imagen(es) seleccionada(s)`
+                      : 'Seleccionar imágenes'
+                    }
+                  </span>
+                </button>
+                {getCurrentSelection('desafio').length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {getCurrentSelection('desafio').slice(0, 3).map((img: any, idx: number) => {
+                      const imageData = proyectoImagenes.find(p => p.id === img.id)
+                      return imageData ? (
+                        <div key={img.id} className="w-12 h-8 rounded overflow-hidden">
+                          <img src={imageData.urlOptimized || imageData.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      ) : null
+                    })}
+                    {getCurrentSelection('desafio').length > 3 && (
+                      <div className="w-12 h-8 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600">
+                        +{getCurrentSelection('desafio').length - 3}
                       </div>
-                      <div className="p-2">
-                        <p className="text-xs text-gray-600 truncate">{imagen.titulo || imagen.alt}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* Imagen para La Solución */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Imagen para "La Solución" (proceso de trabajo)
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {proyectoImagenes.map((imagen) => (
-                    <div 
-                      key={imagen.id}
-                      onClick={() => setFormData(prev => ({ ...prev, imagenSolucion: imagen.id }))}
-                      className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                        formData.imagenSolucion === imagen.id 
-                          ? 'border-blue-500 ring-2 ring-blue-200' 
-                          : 'border-gray-200 hover:border-blue-300'
-                      }`}
-                    >
-                      <div className="aspect-[4/3] relative">
-                        <img
-                          src={imagen.urlOptimized || imagen.url}
-                          alt={imagen.alt}
-                          className="w-full h-full object-cover"
-                        />
-                        {formData.imagenSolucion === imagen.id && (
-                          <div className="absolute inset-0 bg-blue-500/20 flex items-center justify-center">
-                            <div className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium">
-                              Seleccionada
-                            </div>
-                          </div>
-                        )}
+              {/* Botón para La Solución */}
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  La Solución
+                </h3>
+                <button
+                  onClick={() => openImageModal('solucion')}
+                  className="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-blue-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                >
+                  <ImageIcon className="w-5 h-5 text-blue-600" />
+                  <span className="text-blue-700 font-medium">
+                    {getCurrentSelection('solucion').length > 0 
+                      ? `${getCurrentSelection('solucion').length} imagen(es) seleccionada(s)`
+                      : 'Seleccionar imágenes'
+                    }
+                  </span>
+                </button>
+                {getCurrentSelection('solucion').length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {getCurrentSelection('solucion').slice(0, 3).map((img: any, idx: number) => {
+                      const imageData = proyectoImagenes.find(p => p.id === img.id)
+                      return imageData ? (
+                        <div key={img.id} className="w-12 h-8 rounded overflow-hidden">
+                          <img src={imageData.urlOptimized || imageData.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      ) : null
+                    })}
+                    {getCurrentSelection('solucion').length > 3 && (
+                      <div className="w-12 h-8 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600">
+                        +{getCurrentSelection('solucion').length - 3}
                       </div>
-                      <div className="p-2">
-                        <p className="text-xs text-gray-600 truncate">{imagen.titulo || imagen.alt}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* Imagen para Los Resultados */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Imagen para "Los Resultados" (proyecto terminado)
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {proyectoImagenes.map((imagen) => (
-                    <div 
-                      key={imagen.id}
-                      onClick={() => setFormData(prev => ({ ...prev, imagenResultado: imagen.id }))}
-                      className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                        formData.imagenResultado === imagen.id 
-                          ? 'border-green-500 ring-2 ring-green-200' 
-                          : 'border-gray-200 hover:border-green-300'
-                      }`}
-                    >
-                      <div className="aspect-[4/3] relative">
-                        <img
-                          src={imagen.urlOptimized || imagen.url}
-                          alt={imagen.alt}
-                          className="w-full h-full object-cover"
-                        />
-                        {formData.imagenResultado === imagen.id && (
-                          <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
-                            <div className="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">
-                              Seleccionada
-                            </div>
-                          </div>
-                        )}
+              {/* Botón para Los Resultados */}
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  Los Resultados
+                </h3>
+                <button
+                  onClick={() => openImageModal('resultado')}
+                  className="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-green-300 rounded-lg hover:border-green-400 hover:bg-green-50 transition-colors"
+                >
+                  <ImageIcon className="w-5 h-5 text-green-600" />
+                  <span className="text-green-700 font-medium">
+                    {getCurrentSelection('resultado').length > 0 
+                      ? `${getCurrentSelection('resultado').length} imagen(es) seleccionada(s)`
+                      : 'Seleccionar imágenes'
+                    }
+                  </span>
+                </button>
+                {getCurrentSelection('resultado').length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {getCurrentSelection('resultado').slice(0, 3).map((img: any, idx: number) => {
+                      const imageData = proyectoImagenes.find(p => p.id === img.id)
+                      return imageData ? (
+                        <div key={img.id} className="w-12 h-8 rounded overflow-hidden">
+                          <img src={imageData.urlOptimized || imageData.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      ) : null
+                    })}
+                    {getCurrentSelection('resultado').length > 3 && (
+                      <div className="w-12 h-8 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600">
+                        +{getCurrentSelection('resultado').length - 3}
                       </div>
-                      <div className="p-2">
-                        <p className="text-xs text-gray-600 truncate">{imagen.titulo || imagen.alt}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Imágenes para Galería Adicional */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Imágenes para Galería Adicional (selecciona múltiples)
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {proyectoImagenes.map((imagen) => (
-                    <div 
-                      key={imagen.id}
-                      onClick={() => {
-                        const isSelected = formData.imagenesGaleria.includes(imagen.id)
-                        if (isSelected) {
-                          setFormData(prev => ({ 
-                            ...prev, 
-                            imagenesGaleria: prev.imagenesGaleria.filter(id => id !== imagen.id)
-                          }))
-                        } else {
-                          setFormData(prev => ({ 
-                            ...prev, 
-                            imagenesGaleria: [...prev.imagenesGaleria, imagen.id]
-                          }))
-                        }
-                      }}
-                      className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                        formData.imagenesGaleria.includes(imagen.id)
-                          ? 'border-purple-500 ring-2 ring-purple-200' 
-                          : 'border-gray-200 hover:border-purple-300'
-                      }`}
-                    >
-                      <div className="aspect-[4/3] relative">
-                        <img
-                          src={imagen.urlOptimized || imagen.url}
-                          alt={imagen.alt}
-                          className="w-full h-full object-cover"
-                        />
-                        {formData.imagenesGaleria.includes(imagen.id) && (
-                          <div className="absolute inset-0 bg-purple-500/20 flex items-center justify-center">
-                            <div className="bg-purple-500 text-white px-2 py-1 rounded text-xs font-medium">
-                              En Galería
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-2">
-                        <p className="text-xs text-gray-600 truncate">{imagen.titulo || imagen.alt}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {formData.imagenesGaleria.length > 0 && (
-                  <div className="mt-3">
-                    <p className="text-sm text-purple-700 font-medium">
-                      {formData.imagenesGaleria.length} imagen(es) seleccionada(s) para la galería
-                    </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -506,7 +483,7 @@ export default function NuevaHistoriaPage() {
           </div>
         )}
 
-        {/* Desafío */}
+        {/* El Desafío */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">3. El Desafío</h2>
           <div className="space-y-6">
@@ -544,7 +521,7 @@ export default function NuevaHistoriaPage() {
           </div>
         </div>
 
-        {/* Solución */}
+        {/* La Solución */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">4. La Solución MEISA</h2>
           <div className="space-y-6">
@@ -574,18 +551,6 @@ export default function NuevaHistoriaPage() {
               />
             </div>
 
-            <ArrayInput
-              field="innovaciones"
-              placeholder="Ej: Soldadura robotizada"
-              label="Innovaciones Aplicadas"
-            />
-          </div>
-        </div>
-
-        {/* Proceso */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">5. El Proceso</h2>
-          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -612,6 +577,30 @@ export default function NuevaHistoriaPage() {
                 />
               </div>
             </div>
+
+            <ArrayInput
+              field="innovaciones"
+              placeholder="Ej: Soldadura robotizada"
+              label="Innovaciones Aplicadas"
+            />
+          </div>
+        </div>
+
+        {/* El Proceso */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">5. El Proceso</h2>
+          <div className="space-y-6">
+            <ArrayInput
+              field="equipoEspecialista"
+              placeholder="Ej: Ingeniero Estructural con 15 años de experiencia"
+              label="Equipo Especialista"
+            />
+
+            <ArrayInput
+              field="fasesEjecucion"
+              placeholder="Ej: Diseño - 2 meses - Planos detallados y cálculos"
+              label="Fases de Ejecución"
+            />
 
             <ArrayInput
               field="recursos"
@@ -656,6 +645,25 @@ export default function NuevaHistoriaPage() {
               placeholder="Ej: Reducción de 30% en tiempo de montaje"
               label="Resultados Específicos"
             />
+
+            <ArrayInput
+              field="reconocimientos"
+              placeholder="Ej: Certificación LEED Gold"
+              label="Reconocimientos y Premios"
+            />
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Lecciones Aprendidas
+              </label>
+              <textarea
+                value={formData.leccionesAprendidas}
+                onChange={(e) => setFormData(prev => ({ ...prev, leccionesAprendidas: e.target.value }))}
+                placeholder="Conocimientos valiosos obtenidos del proyecto"
+                rows={4}
+                className="w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
           </div>
         </div>
 
@@ -735,18 +743,6 @@ export default function NuevaHistoriaPage() {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Imagen Destacada
-              </label>
-              <input
-                type="url"
-                value={formData.imagenDestacada}
-                onChange={(e) => setFormData(prev => ({ ...prev, imagenDestacada: e.target.value }))}
-                placeholder="URL de la imagen principal para la historia"
-                className="w-full rounded-md border border-gray-300 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Video Explicativo
               </label>
               <input
@@ -757,7 +753,37 @@ export default function NuevaHistoriaPage() {
                 className="w-full rounded-md border border-gray-300 px-3 py-2"
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Datos de Interés
+              </label>
+              <textarea
+                value={JSON.stringify(formData.datosInteres, null, 2)}
+                onChange={(e) => {
+                  try {
+                    const parsed = JSON.parse(e.target.value)
+                    setFormData(prev => ({ ...prev, datosInteres: parsed }))
+                  } catch {
+                    // Invalid JSON, don't update
+                  }
+                }}
+                placeholder='{"metrosCuadrados": "5000", "pisos": "12", "materiales": ["Acero", "Concreto"]}'
+                rows={4}
+                className="w-full rounded-md border border-gray-300 px-3 py-2 font-mono text-sm"
+              />
+              <p className="text-xs text-gray-500 mt-1">Datos adicionales en formato JSON para mostrar métricas específicas del proyecto</p>
+            </div>
           </div>
+        </div>
+
+        {/* Tags Técnicos */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">10. Tags Técnicos</h2>
+          <ArrayInput
+            field="tagsTecnicos"
+            placeholder="Ej: soldadura-especializada"
+            label="Tags Técnicos"
+          />
         </div>
       </div>
 
@@ -773,7 +799,7 @@ export default function NuevaHistoriaPage() {
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => handleSubmit(true)}
+            onClick={() => handleSubmit(false)}
             disabled={loading}
             className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg flex items-center gap-2"
           >
@@ -783,15 +809,32 @@ export default function NuevaHistoriaPage() {
           
           <button
             type="button"
-            onClick={() => handleSubmit(false)}
+            onClick={() => handleSubmit(true)}
             disabled={loading}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2"
           >
             <Eye className="w-4 h-4" />
-            Publicar Historia
+            Guardar y Activar
           </button>
         </div>
       </div>
+
+      {/* Modal de selección de imágenes */}
+      {modalOpen && modalSection && (
+        <ImageSelectorModal
+          isOpen={modalOpen}
+          onClose={() => {
+            setModalOpen(false)
+            setModalSection(null)
+          }}
+          onSave={handleImageSelection}
+          availableImages={proyectoImagenes}
+          currentSelection={getCurrentSelection(modalSection)}
+          sectionTitle={getSectionTitle(modalSection)}
+          sectionColor={getSectionColor(modalSection)}
+          maxImages={4}
+        />
+      )}
     </div>
   )
 }
