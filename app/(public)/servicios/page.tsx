@@ -79,6 +79,7 @@ async function getServicios() {
     
     return {
       id: servicio.slug,
+      slug: servicio.slug,
       titulo: servicio.titulo || servicio.nombre,
       subtitulo: servicio.subtitulo || '',
       descripcion: servicio.descripcion,

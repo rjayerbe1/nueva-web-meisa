@@ -57,12 +57,31 @@ export async function POST(request: NextRequest) {
     const service = await prisma.servicio.create({
       data: {
         nombre: data.nombre,
+        titulo: data.titulo || null,
+        subtitulo: data.subtitulo || null,
         slug: slug,
         descripcion: data.descripcion,
         caracteristicas: data.caracteristicas || [],
+        capacidades: data.capacidades || [],
+        tecnologias: data.tecnologias || null,
+        normativas: data.normativas || null,
+        equipamiento: data.equipamiento || null,
+        certificaciones: data.certificaciones || null,
+        metodologia: data.metodologia || null,
+        ventajas: data.ventajas || null,
+        equipos: data.equipos || null,
+        seguridad: data.seguridad || null,
+        expertiseTitulo: data.expertiseTitulo || null,
+        expertiseDescripcion: data.expertiseDescripcion || null,
         orden: data.orden || 999,
         icono: data.icono || null,
+        imagen: data.imagen || null,
         color: data.color || 'blue',
+        bgGradient: data.bgGradient || null,
+        destacado: data.destacado || false,
+        activo: data.activo !== undefined ? data.activo : true,
+        metaTitle: data.metaTitle || null,
+        metaDescription: data.metaDescription || null
       }
     })
 

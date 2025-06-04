@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,23 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ======= AUTHENTICATION & USERS =======
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
+  id            String             @id @default(cuid())
+  email         String             @unique
   password      String?
   name          String?
-  role          UserRole  @default(VIEWER)
+  role          UserRole           @default(VIEWER)
   avatar        String?
   emailVerified DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
-  projects      Proyecto[]
-  historias     HistoriaProyecto[]
-  sessions      Session[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
   accounts      Account[]
+  historias     HistoriaProyecto[]
+  projects      Proyecto[]
+  sessions      Session[]
 
   @@map("users")
 }
@@ -37,15 +31,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -61,265 +54,311 @@ model Session {
   @@map("sessions")
 }
 
-enum UserRole {
-  ADMIN
-  EDITOR
-  VIEWER
-}
-
-// ======= PROYECTOS CORE =======
 model Proyecto {
-  id          String           @id @default(cuid())
-  titulo      String
-  codigoInterno String?        // Código interno como PM132-25
-  descripcion String           @db.Text
-  categoria   CategoriaEnum
-  estado      EstadoProyecto   @default(PLANIFICACION)
-  prioridad   PrioridadEnum    @default(MEDIA)
-  
-  // Fechas
-  fechaInicio DateTime
-  fechaFin    DateTime?
-  fechaEstimada DateTime?
-  
-  // Financiero
-  presupuesto Decimal?         @db.Decimal(15, 2)
-  costoReal   Decimal?         @db.Decimal(15, 2)
-  moneda      String           @default("COP")
-  
-  // Cliente y ubicación
-  cliente     String
-  clienteId   String?          // Relación opcional con tabla Clientes
-  contactoCliente String?
-  telefono    String?
-  email       String?
-  ubicacion   String
-  coordenadas String?
-  
-  // Características técnicas
-  toneladas   Decimal?         @db.Decimal(10, 2)  // Peso en toneladas
-  areaTotal   Decimal?         @db.Decimal(15, 2)  // Área en metros cuadrados
-  
-  // Metadata
-  tags        String[]
-  destacado   Boolean          @default(false)
-  destacadoEnCategoria Boolean  @default(false)  // Para mostrar en homepage por categoría
-  visible     Boolean          @default(true)
-  ordenFrontend Int?
-  
-  // SEO
-  slug        String           @unique
-  metaTitle   String?
-  metaDescription String?
-  
-  // Relaciones
-  imagenes    ImagenProyecto[]
-  documentos  DocumentoProyecto[]
-  progreso    ProgresoProyecto[]
-  timeline    TimelineEntry[]
-  comentarios ComentarioProyecto[]
-  historia    HistoriaProyecto?
-  clienteRel  Cliente?         @relation(fields: [clienteId], references: [id])
-  
-  // Auditoría
-  createdBy   String
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  
-  user        User             @relation(fields: [createdBy], references: [id])
+  id                   String               @id @default(cuid())
+  titulo               String
+  codigoInterno        String?
+  descripcion          String
+  categoria            CategoriaEnum
+  estado               EstadoProyecto       @default(PLANIFICACION)
+  prioridad            PrioridadEnum        @default(MEDIA)
+  fechaInicio          DateTime
+  fechaFin             DateTime?
+  fechaEstimada        DateTime?
+  presupuesto          Decimal?             @db.Decimal(15, 2)
+  costoReal            Decimal?             @db.Decimal(15, 2)
+  moneda               String               @default("COP")
+  cliente              String
+  contactoCliente      String?
+  telefono             String?
+  email                String?
+  ubicacion            String
+  coordenadas          String?
+  tags                 String[]
+  destacado            Boolean              @default(false)
+  destacadoEnCategoria Boolean              @default(false)
+  visible              Boolean              @default(true)
+  ordenFrontend        Int?
+  slug                 String               @unique
+  metaTitle            String?
+  metaDescription      String?
+  createdBy            String
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  areaTotal            Decimal?             @db.Decimal(15, 2)
+  toneladas            Decimal?             @db.Decimal(10, 2)
+  clienteId            String?
+  comentarios          ComentarioProyecto[]
+  documentos           DocumentoProyecto[]
+  historia             HistoriaProyecto?
+  imagenes             ImagenProyecto[]
+  progreso             ProgresoProyecto[]
+  clienteRel           Cliente?             @relation(fields: [clienteId], references: [id])
+  user                 User                 @relation(fields: [createdBy], references: [id])
+  timeline             TimelineEntry[]
 
   @@map("proyectos")
 }
 
 model ImagenProyecto {
-  id          String   @id @default(cuid())
-  url         String
+  id           String     @id @default(cuid())
+  url          String
   urlOptimized String?
-  alt         String
-  titulo      String?
-  descripcion String?
-  orden       Int      @default(0)
-  tipo        TipoImagen @default(GALERIA)
-  size        Int?
-  width       Int?
-  height      Int?
-  format      String?
-  
-  proyectoId  String
-  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  alt          String
+  titulo       String?
+  descripcion  String?
+  orden        Int        @default(0)
+  tipo         TipoImagen @default(GALERIA)
+  size         Int?
+  width        Int?
+  height       Int?
+  format       String?
+  proyectoId   String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  proyecto     Proyecto   @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
 
   @@map("imagenes_proyecto")
 }
 
 model DocumentoProyecto {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   nombre      String
   descripcion String?
   url         String
   tipo        TipoDocumento
   size        Int?
   formato     String?
-  
   proyectoId  String
-  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  proyecto    Proyecto      @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
 
   @@map("documentos_proyecto")
 }
 
 model ProgresoProyecto {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   fase        String
   descripcion String?
-  porcentaje  Int      @default(0) // 0-100
+  porcentaje  Int       @default(0)
   fechaInicio DateTime?
   fechaFin    DateTime?
-  completado  Boolean  @default(false)
-  orden       Int      @default(0)
-  
+  completado  Boolean   @default(false)
+  orden       Int       @default(0)
   proyectoId  String
-  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  proyecto    Proyecto  @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
 
   @@map("progreso_proyecto")
 }
 
 model TimelineEntry {
-  id          String   @id @default(cuid())
+  id          String       @id @default(cuid())
   titulo      String
   descripcion String?
   fecha       DateTime
   tipo        TipoTimeline @default(HITO)
-  importante  Boolean  @default(false)
-  
+  importante  Boolean      @default(false)
   proyectoId  String
-  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
+  createdAt   DateTime     @default(now())
+  proyecto    Proyecto     @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
 
   @@map("timeline_proyecto")
 }
 
 model ComentarioProyecto {
-  id          String   @id @default(cuid())
-  contenido   String   @db.Text
-  interno     Boolean  @default(true) // Si es visible solo para admin
-  
-  proyectoId  String
-  proyecto    Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(cuid())
+  contenido  String
+  interno    Boolean  @default(true)
+  proyectoId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  proyecto   Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
 
   @@map("comentarios_proyecto")
 }
 
-// ======= SERVICIOS =======
 model Servicio {
-  id          String   @id @default(cuid())
-  nombre      String   // Mantener compatibilidad con datos existentes
-  titulo      String?  // Nuevo campo opcional
-  subtitulo   String?  // Nuevo campo opcional  
-  descripcion String   @db.Text
-  caracteristicas String[] @default([]) // Mantener compatibilidad
-  
-  // Capacidades principales (array de strings)
-  capacidades String[] @default([])
-  
-  // Información adicional en JSON
-  tecnologias Json?    // {titulo: string, items: string[]}
-  equipamiento Json?   // {titulo: string, items: string[]}
-  certificaciones Json? // {titulo: string, items: string[]}
-  normativas Json?     // {titulo: string, items: string[]}
-  metodologia Json?    // {titulo: string, items: string[]}
-  ventajas Json?       // {titulo: string, items: string[]}
-  equipos Json?        // {titulo: string, items: string[]}
-  seguridad Json?      // {titulo: string, items: string[]}
-  
-  // Expertise section
-  expertiseTitulo String?
-  expertiseDescripcion String? @db.Text
-  
-  // Visual elements
-  icono       String?  // Nombre del icono de lucide-react
-  imagen      String?  // URL de imagen principal
-  color       String   @default("blue") // Color principal del servicio
-  bgGradient  String?  // Clase CSS del gradiente de fondo
-  
-  // Organización
-  orden       Int      @default(0)
-  destacado   Boolean  @default(false)
-  activo      Boolean  @default(true)
-  
-  // SEO
-  slug        String   @unique
-  metaTitle   String?
-  metaDescription String?
-  
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  nombre               String
+  descripcion          String
+  caracteristicas      String[] @default([])
+  icono                String?
+  imagen               String?
+  orden                Int      @default(0)
+  destacado            Boolean  @default(false)
+  activo               Boolean  @default(true)
+  slug                 String   @unique
+  metaTitle            String?
+  metaDescription      String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  bgGradient           String?
+  capacidades          String[] @default([])
+  certificaciones      Json?
+  color                String   @default("blue")
+  equipamiento         Json?
+  equipos              Json?
+  expertiseDescripcion String?
+  expertiseTitulo      String?
+  metodologia          Json?
+  normativas           Json?
+  seguridad            Json?
+  subtitulo            String?
+  tecnologias          Json?
+  titulo               String?
+  ventajas             Json?
 
   @@map("servicios")
 }
 
-// ======= EQUIPO =======
 model MiembroEquipo {
-  id          String   @id @default(cuid())
-  nombre      String
-  cargo       String
-  bio         String?  @db.Text
-  foto        String?
-  email       String?
-  telefono    String?
-  linkedin    String?
-  orden       Int      @default(0)
-  activo      Boolean  @default(true)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  nombre    String
+  cargo     String
+  bio       String?
+  foto      String?
+  email     String?
+  telefono  String?
+  linkedin  String?
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("miembros_equipo")
 }
 
-// ======= CLIENTES =======
 model Cliente {
-  id          String   @id @default(cuid())
-  nombre      String
-  logo        String?  // URL del logo
-  logoBlanco  String?  // Versión blanca del logo para fondos oscuros
-  descripcion String?  @db.Text
-  sitioWeb    String?
-  sector      SectorCliente
-  
-  // Proyectos destacados con este cliente
+  id                String        @id @default(cuid())
+  nombre            String
+  logo              String?
+  logoBlanco        String?
+  descripcion       String?
+  sitioWeb          String?
+  sector            SectorCliente
   proyectoDestacado String?
   capacidadProyecto String?
   ubicacionProyecto String?
-  
-  // Visibilidad y orden
-  mostrarEnHome Boolean  @default(true)
-  destacado     Boolean  @default(false)
-  orden         Int      @default(0)
-  activo        Boolean  @default(true)
-  
-  // SEO
-  slug        String   @unique
-  
-  // Relaciones
-  proyectos   Proyecto[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  mostrarEnHome     Boolean       @default(true)
+  destacado         Boolean       @default(false)
+  orden             Int           @default(0)
+  activo            Boolean       @default(true)
+  slug              String        @unique
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  proyectos         Proyecto[]
 
   @@map("clientes")
+}
+
+model ContactForm {
+  id         String   @id @default(cuid())
+  nombre     String
+  email      String
+  telefono   String?
+  empresa    String?
+  mensaje    String
+  origen     String?
+  leido      Boolean  @default(false)
+  respondido Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("formularios_contacto")
+}
+
+model ConfiguracionSitio {
+  id          String     @id @default(cuid())
+  clave       String     @unique
+  valor       String
+  descripcion String?
+  tipo        TipoConfig @default(TEXTO)
+  categoria   String?
+  updatedAt   DateTime   @updatedAt
+
+  @@map("configuracion_sitio")
+}
+
+model CategoriaProyecto {
+  id                  String        @id @default(cuid())
+  key                 CategoriaEnum @unique
+  nombre              String
+  descripcion         String?
+  slug                String        @unique
+  imagenCover         String?
+  icono               String?
+  color               String?
+  colorSecundario     String?
+  metaTitle           String?
+  metaDescription     String?
+  orden               Int           @default(0)
+  visible             Boolean       @default(true)
+  destacada           Boolean       @default(false)
+  totalProyectos      Int           @default(0)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  overlayColor        String?
+  overlayOpacity      Float?        @default(0.0)
+  beneficios          Json?
+  descripcionAmpliada String?
+  estadisticas        Json?
+  procesoTrabajo      Json?
+  casosExitoIds       Json?
+  imagenBanner        String?
+
+  @@map("categorias_proyecto")
+}
+
+model HistoriaProyecto {
+  id                  String   @id @default(cuid())
+  proyectoId          String   @unique
+  activo              Boolean  @default(false)
+  contexto            String?
+  desafios            Json?
+  problemasIniciales  String?
+  enfoque             String?
+  solucionTecnica     String?
+  innovaciones        Json?
+  equipoEspecialista  Json?
+  metodologia         String?
+  fasesEjecucion      Json?
+  tiempoTotal         String?
+  recursos            Json?
+  resultados          Json?
+  impactoCliente      String?
+  reconocimientos     Json?
+  datosInteres        Json?
+  leccionesAprendidas String?
+  valorAgregado       String?
+  testimonioCliente   String?
+  testimonioEquipo    String?
+  imagenDestacada     String?
+  videoUrl            String?
+  infografias         Json?
+  tagsTecnicos        Json?
+  dificultadTecnica   Int?
+  innovacionNivel     Int?
+  resumenCorto        String?
+  tituloAlternativo   String?
+  fechaCreacion       DateTime @default(now())
+  fechaActualizacion  DateTime @updatedAt
+  creadoPor           String
+  imagenesDesafio     Json?
+  imagenesResultado   Json?
+  imagenesSolucion    Json?
+  creador             User     @relation(fields: [creadoPor], references: [id])
+  proyecto            Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+
+  @@map("historias_proyecto")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  VIEWER
 }
 
 enum SectorCliente {
@@ -334,165 +373,6 @@ enum SectorCliente {
   OTRO
 }
 
-// ======= CONTACTO =======
-model ContactForm {
-  id          String   @id @default(cuid())
-  nombre      String
-  email       String
-  telefono    String?
-  empresa     String?
-  mensaje     String   @db.Text
-  origen      String?  // De qué página vino
-  leido       Boolean  @default(false)
-  respondido  Boolean  @default(false)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("formularios_contacto")
-}
-
-// ======= CONFIGURACIÓN =======
-model ConfiguracionSitio {
-  id          String   @id @default(cuid())
-  clave       String   @unique
-  valor       String   @db.Text
-  descripcion String?
-  tipo        TipoConfig @default(TEXTO)
-  categoria   String?
-  
-  updatedAt   DateTime @updatedAt
-
-  @@map("configuracion_sitio")
-}
-
-// ======= CATEGORÍAS =======
-model CategoriaProyecto {
-  id            String        @id @default(cuid())
-  key           CategoriaEnum @unique  // Enum key for backend reference
-  nombre        String                 // Display name (e.g., "Centros Comerciales")
-  descripcion   String?       @db.Text // Category description
-  slug          String        @unique  // URL-friendly slug (e.g., "centros-comerciales")
-  
-  // Visual assets
-  imagenCover   String?                // Cover image URL for cards/thumbnails
-  imagenBanner  String?                // Banner image URL for category page hero
-  icono         String?                // Icon name or URL
-  color         String?                // Primary color for the category
-  colorSecundario String?              // Secondary color
-  overlayColor  String?                // Overlay color for better icon visibility
-  overlayOpacity Float?  @default(0.0) // Overlay opacity (0.0 to 1.0)
-  
-  // SEO and organization
-  metaTitle     String?
-  metaDescription String?
-  orden         Int           @default(0)
-  visible       Boolean       @default(true)
-  destacada     Boolean       @default(false)
-  
-  // Statistics (calculated)
-  totalProyectos Int          @default(0)
-  
-  // Enhanced content for category pages
-  descripcionAmpliada String?  @db.Text  // Rich text description for category page
-  beneficios          Json?              // Array of benefits: [{title, description}]
-  procesoTrabajo      Json?              // Array of process steps: [{step, description, order}]
-  estadisticas        Json?              // Statistics object: {toneladasTotal, proyectosCompletados, anosExperiencia, tiempoPromedioEntrega}
-  casosExitoIds       Json?              // Array of project IDs to show as success cases: ["proj1", "proj2", "proj3"]
-  
-  // Timestamps
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  @@map("categorias_proyecto")
-}
-
-// ======= HISTORIA DE PROYECTOS =======
-model HistoriaProyecto {
-  id            String   @id @default(cuid())
-  
-  // Básico
-  proyectoId    String   @unique
-  activo        Boolean  @default(false)  // Si se muestra la historia completa
-  
-  // DESAFÍO - Contexto y retos del proyecto
-  contexto      String?  // Situación inicial del cliente
-  desafios      Json?    // Array de desafíos específicos 
-  // Ejemplo: ["Estructura en zona sísmica", "Tiempo limitado de construcción", "Acceso restringido"]
-  
-  problemasIniciales String? // Descripción detallada de problemas a resolver
-  
-  // SOLUCIÓN - Cómo MEISA abordó el proyecto  
-  enfoque       String?  // Enfoque técnico general de MEISA
-  solucionTecnica String? // Detalles de la solución implementada
-  innovaciones  Json?    // Innovaciones o técnicas especiales aplicadas
-  // Ejemplo: ["Soldadura robotizada", "Acero de alta resistencia", "Montaje modular"]
-  
-  equipoEspecialista Json? // Equipo especializado asignado
-  // Ejemplo: [{"rol": "Ingeniero Estructural", "experiencia": "15 años"}, {...}]
-  
-  // PROCESO - Cómo se ejecutó
-  metodologia   String?  // Metodología de trabajo aplicada
-  fasesEjecucion Json?   // Fases del proyecto con detalles
-  // Ejemplo: [{"fase": "Diseño", "duracion": "2 meses", "descripcion": "..."}, {...}]
-  
-  tiempoTotal   String?  // Tiempo total de ejecución
-  recursos      Json?    // Recursos específicos utilizados
-  
-  // RESULTADO - Impacto y logros
-  resultados    Json?    // Resultados específicos obtenidos
-  // Ejemplo: ["Reducción de 30% en tiempo de montaje", "Certificación LEED Gold", "0 accidentes"]
-  
-  impactoCliente String? // Impacto específico para el cliente
-  reconocimientos Json? // Premios, reconocimientos, certificaciones
-  
-  // MÉTRICAS TÉCNICAS
-  datosInteres  Json?    // Datos técnicos de interés
-  // Ejemplo: {"toneladas_acero": 450, "altura_max": "85m", "area_cubierta": "15000m2"}
-  
-  // LECCIONES Y VALOR
-  leccionesAprendidas String? // Qué se aprendió del proyecto
-  valorAgregado String?       // Valor único que MEISA aportó
-  
-  // TESTIMONIOS
-  testimonioCliente String?   // Testimonio directo del cliente
-  testimonioEquipo  String?   // Testimonio del equipo MEISA
-  
-  // VISUAL ASSETS
-  imagenDestacada   String?   // Imagen principal para la historia
-  videoUrl          String?   // Video explicativo (opcional)
-  infografias       Json?     // URLs de infografías o gráficos explicativos
-  
-  // SELECCIÓN DE IMÁGENES POR SECCIÓN (hasta 4 imágenes por sección)
-  imagenesDesafio   Json?     // Array de objetos: [{"id": "img_id", "titulo": "...", "descripcion": "..."}]
-  imagenesSolucion  Json?     // Array de objetos con títulos y descripciones personalizadas
-  imagenesResultado Json?     // Array de objetos para mostrar en "Los Resultados"
-  // Ejemplo: [{"id": "img_id_1", "titulo": "Situación inicial", "descripcion": "Estado previo"}, {...}]
-  
-  // TAGS Y ORGANIZACIÓN
-  tagsTecnicos      Json?     // Tags técnicos específicos
-  // Ejemplo: ["soldadura-especializada", "estructura-sismica", "montaje-rapido"]
-  
-  dificultadTecnica Int?      // Escala 1-10 de dificultad técnica
-  innovacionNivel   Int?      // Escala 1-10 de nivel de innovación
-  
-  // SEO Y PRESENTACIÓN
-  resumenCorto      String?   // Resumen de 2-3 líneas para previews
-  tituloAlternativo String?   // Título más narrativo para la historia
-  
-  // METADATA
-  fechaCreacion     DateTime  @default(now())
-  fechaActualizacion DateTime @updatedAt
-  creadoPor         String
-  
-  // RELACIONES
-  proyecto          Proyecto  @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-  creador           User      @relation(fields: [creadoPor], references: [id])
-  
-  @@map("historias_proyecto")
-}
-
-// ======= ENUMS =======
 enum CategoriaEnum {
   CENTROS_COMERCIALES
   EDIFICIOS
