@@ -68,7 +68,7 @@ export default function ClienteFormPage({ params }: PageProps) {
         
         if (!isNew) {
           // Filtrar proyectos conectados a este cliente
-          const connected = projects.filter(p => p.clienteId === params.id)
+          const connected = projects.filter((p: any) => p.clienteId === params.id)
           setConnectedProjects(connected)
         }
       }
@@ -559,7 +559,7 @@ export default function ClienteFormPage({ params }: PageProps) {
                         Proyectos Asociados ({connectedProjects.length})
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {connectedProjects.map((project) => (
+                        {connectedProjects.map((project: any) => (
                           <div key={project.id} className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
                             <div className="flex items-center space-x-3">
                               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -599,8 +599,8 @@ export default function ClienteFormPage({ params }: PageProps) {
                     </h4>
                     <div className="max-h-60 overflow-y-auto">
                       {availableProjects
-                        .filter(p => p.clienteId !== params.id && (!p.clienteId || p.cliente === formData.nombre))
-                        .map((project) => (
+                        .filter((p: any) => p.clienteId !== params.id && (!p.clienteId || p.cliente === formData.nombre))
+                        .map((project: any) => (
                           <div key={project.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg mb-2 hover:bg-gray-50">
                             <div className="flex items-center space-x-3">
                               <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
@@ -628,7 +628,7 @@ export default function ClienteFormPage({ params }: PageProps) {
                             </Button>
                           </div>
                         ))}
-                      {availableProjects.filter(p => p.clienteId !== params.id && (!p.clienteId || p.cliente === formData.nombre)).length === 0 && (
+                      {availableProjects.filter((p: any) => p.clienteId !== params.id && (!p.clienteId || p.cliente === formData.nombre)).length === 0 && (
                         <p className="text-gray-500 text-center py-4">
                           No hay proyectos disponibles para conectar
                         </p>

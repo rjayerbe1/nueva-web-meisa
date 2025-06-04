@@ -10,13 +10,15 @@ interface ImageCropModalProps {
   onClose: () => void
   onCropComplete: (croppedImageUrl: string) => void
   imageFile: File | null
+  aspectRatio?: number // Nuevo prop para aspect ratio (ancho/alto)
 }
 
 export default function ImageCropModal({ 
   isOpen, 
   onClose, 
   onCropComplete, 
-  imageFile 
+  imageFile,
+  aspectRatio = 1 // Default 1:1 (cuadrado)
 }: ImageCropModalProps) {
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -50,10 +52,22 @@ export default function ImageCropModal({
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
-    // Set canvas size to be square (400x400)
-    const size = 400
-    canvas.width = size
-    canvas.height = size
+    // Set canvas size based on aspect ratio
+    let canvasWidth: number
+    let canvasHeight: number
+    
+    if (aspectRatio >= 1) {
+      // Landscape or square
+      canvasWidth = 800
+      canvasHeight = Math.round(800 / aspectRatio)
+    } else {
+      // Portrait
+      canvasHeight = 800
+      canvasWidth = Math.round(800 * aspectRatio)
+    }
+    
+    canvas.width = canvasWidth
+    canvas.height = canvasHeight
 
     ctx.drawImage(
       image,
@@ -63,8 +77,8 @@ export default function ImageCropModal({
       crop.height * scaleY,
       0,
       0,
-      size,
-      size
+      canvasWidth,
+      canvasHeight
     )
 
     return new Promise((resolve) => {
@@ -98,13 +112,31 @@ export default function ImageCropModal({
   }
 
   const resetCrop = () => {
-    setCrop({
-      unit: '%',
-      width: 90,
-      height: 90,
-      x: 5,
-      y: 5,
-    })
+    if (imgRef.current) {
+      const { width, height } = imgRef.current
+      
+      let cropWidth: number
+      let cropHeight: number
+      
+      if (aspectRatio >= 1) {
+        cropWidth = Math.min(width, height * aspectRatio) * 0.8
+        cropHeight = cropWidth / aspectRatio
+      } else {
+        cropHeight = Math.min(height, width / aspectRatio) * 0.8
+        cropWidth = cropHeight * aspectRatio
+      }
+      
+      const x = (width - cropWidth) / 2
+      const y = (height - cropHeight) / 2
+      
+      setCrop({
+        unit: 'px',
+        x,
+        y,
+        width: cropWidth,
+        height: cropHeight,
+      })
+    }
   }
 
   if (!isOpen || !imageFile) return null
@@ -128,14 +160,14 @@ export default function ImageCropModal({
         {/* Content */}
         <div className="p-4">
           <p className="text-sm text-gray-600 mb-4">
-            Arrastra para seleccionar el área que quieres mantener. La imagen se recortará como un cuadrado.
+            Arrastra para seleccionar el área que quieres mantener. La imagen se recortará con proporción {aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`}.
           </p>
           
           <div className="flex justify-center mb-4">
             <ReactCrop
               crop={crop}
               onChange={(c) => setCrop(c)}
-              aspect={1} // Forzar aspecto cuadrado
+              aspect={aspectRatio} // Usar aspect ratio dinámico
               circularCrop={false}
               className="max-w-full"
             >
@@ -147,15 +179,29 @@ export default function ImageCropModal({
                 onLoad={() => {
                   // Inicializar el crop cuando la imagen se carga
                   const { width, height } = imgRef.current!
-                  const size = Math.min(width, height) * 0.8
-                  const x = (width - size) / 2
-                  const y = (height - size) / 2
+                  
+                  let cropWidth: number
+                  let cropHeight: number
+                  
+                  if (aspectRatio >= 1) {
+                    // Landscape: basar en el ancho
+                    cropWidth = Math.min(width, height * aspectRatio) * 0.8
+                    cropHeight = cropWidth / aspectRatio
+                  } else {
+                    // Portrait: basar en la altura
+                    cropHeight = Math.min(height, width / aspectRatio) * 0.8
+                    cropWidth = cropHeight * aspectRatio
+                  }
+                  
+                  const x = (width - cropWidth) / 2
+                  const y = (height - cropHeight) / 2
+                  
                   setCrop({
                     unit: 'px',
                     x,
                     y,
-                    width: size,
-                    height: size,
+                    width: cropWidth,
+                    height: cropHeight,
                   })
                 }}
               />
@@ -166,7 +212,13 @@ export default function ImageCropModal({
           <div className="flex items-center gap-4 mb-6">
             <div>
               <p className="text-sm font-medium text-gray-700 mb-2">Vista previa:</p>
-              <div className="w-20 h-20 border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50">
+              <div 
+                className="border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50"
+                style={{
+                  width: aspectRatio >= 1 ? '96px' : `${Math.round(80 * aspectRatio)}px`,
+                  height: aspectRatio >= 1 ? `${Math.round(96 / aspectRatio)}px` : '80px'
+                }}
+              >
                 {imageUrl && crop.width && crop.height && (
                   <div
                     className="w-full h-full bg-cover bg-center"
@@ -181,7 +233,7 @@ export default function ImageCropModal({
             </div>
             <div className="flex-1">
               <p className="text-sm text-gray-600">
-                La imagen será redimensionada a 400×400 píxeles manteniendo la calidad.
+                La imagen será redimensionada manteniendo la proporción {aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`} y la calidad.
               </p>
             </div>
           </div>

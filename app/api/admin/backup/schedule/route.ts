@@ -128,7 +128,7 @@ function getConfigDescription(clave: string): string {
   return descriptions[clave] || ''
 }
 
-function getConfigType(clave: string): string {
+function getConfigType(clave: string): 'TEXTO' | 'NUMERO' | 'BOOLEAN' | 'JSON' | 'URL' | 'EMAIL' {
   if (clave.includes('enabled')) return 'BOOLEAN'
   if (clave.includes('time')) return 'TEXTO'
   if (clave.includes('day')) return 'TEXTO'

@@ -38,9 +38,18 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
     notFound()
   }
 
+  // Convert Decimal fields to numbers for the form
+  const projectForForm = {
+    ...project,
+    presupuesto: project.presupuesto ? Number(project.presupuesto) : null,
+    costoReal: project.costoReal ? Number(project.costoReal) : null,
+    toneladas: project.toneladas ? Number(project.toneladas) : null,
+    areaTotal: project.areaTotal ? Number(project.areaTotal) : null,
+  }
+
   return (
     <div className="space-y-8">
-      <EditProjectForm project={project} />
+      <EditProjectForm project={projectForForm as any} />
       
       {/* Galería de Imágenes */}
       <ProjectImageGallery

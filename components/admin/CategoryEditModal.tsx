@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, Upload, Palette, Eye } from "lucide-react"
+import { X, Upload, Palette, Eye, Star, EyeOff } from "lucide-react"
 import { CategoriaEnum } from "@prisma/client"
 import { 
   getAllAvailableIcons, 
@@ -58,6 +58,7 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  imagenBanner: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -68,6 +69,12 @@ interface Categoria {
   orden: number
   visible: boolean
   destacada: boolean
+  // Nuevos campos para contenido ampliado
+  descripcionAmpliada: string | null
+  beneficios: any | null
+  procesoTrabajo: any | null
+  estadisticas: any | null
+  casosExitoIds: any | null
 }
 
 interface CategoryEditModalProps {
@@ -85,10 +92,13 @@ export default function CategoryEditModal({
 }: CategoryEditModalProps) {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'basic' | 'visual' | 'seo'>('basic')
+  const [activeTab, setActiveTab] = useState<'basic' | 'visual' | 'seo' | 'content'>('basic')
   const [activeIconTab, setActiveIconTab] = useState<'specialized' | 'generic'>('specialized')
   const [showCropModal, setShowCropModal] = useState(false)
+  const [showBannerCropModal, setShowBannerCropModal] = useState(false)
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null)
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null)
+  const [availableProjects, setAvailableProjects] = useState<{id: string, titulo: string}[]>([])
   
   // Form data
   const [formData, setFormData] = useState({
@@ -97,6 +107,7 @@ export default function CategoryEditModal({
     descripcion: categoria?.descripcion || '',
     slug: categoria?.slug || '',
     imagenCover: categoria?.imagenCover || '',
+    imagenBanner: categoria?.imagenBanner || '',
     icono: categoria?.icono || 'Building',
     color: categoria?.color || '#3B82F6',
     colorSecundario: categoria?.colorSecundario || '',
@@ -107,6 +118,12 @@ export default function CategoryEditModal({
     orden: categoria?.orden || 0,
     visible: categoria?.visible !== undefined ? categoria.visible : true,
     destacada: categoria?.destacada !== undefined ? categoria.destacada : false,
+    // Nuevos campos para contenido ampliado
+    descripcionAmpliada: categoria?.descripcionAmpliada || '',
+    beneficios: categoria?.beneficios || [],
+    procesoTrabajo: categoria?.procesoTrabajo || [],
+    estadisticas: categoria?.estadisticas || {},
+    casosExitoIds: categoria?.casosExitoIds || []
   })
 
   useEffect(() => {
@@ -117,6 +134,7 @@ export default function CategoryEditModal({
         descripcion: categoria.descripcion || '',
         slug: categoria.slug,
         imagenCover: categoria.imagenCover || '',
+        imagenBanner: categoria.imagenBanner || '',
         icono: categoria.icono || 'Building',
         color: categoria.color || '#3B82F6',
         colorSecundario: categoria.colorSecundario || '',
@@ -127,9 +145,36 @@ export default function CategoryEditModal({
         orden: categoria.orden,
         visible: categoria.visible,
         destacada: categoria.destacada,
+        // Nuevos campos para contenido ampliado
+        descripcionAmpliada: categoria.descripcionAmpliada || '',
+        beneficios: categoria.beneficios || [],
+        procesoTrabajo: categoria.procesoTrabajo || [],
+        estadisticas: categoria.estadisticas || {},
+        casosExitoIds: categoria.casosExitoIds || []
       })
     }
   }, [categoria])
+
+  // Cargar proyectos disponibles para casos de éxito
+  useEffect(() => {
+    const fetchProjects = async () => {
+      if (categoria?.key) {
+        try {
+          const response = await fetch(`/api/projects/by-category/${categoria.key}`)
+          if (response.ok) {
+            const projects = await response.json()
+            setAvailableProjects(projects.map((p: any) => ({ id: p.id, titulo: p.titulo })))
+          }
+        } catch (error) {
+          console.error('Error fetching projects:', error)
+        }
+      }
+    }
+    
+    if (isOpen && categoria) {
+      fetchProjects()
+    }
+  }, [categoria, isOpen])
 
   // Auto-generar slug cuando cambia el nombre
   useEffect(() => {
@@ -194,6 +239,55 @@ export default function CategoryEditModal({
     }
   }
 
+  const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validar tipo de archivo
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor selecciona una imagen válida')
+      return
+    }
+
+    setSelectedBannerFile(file)
+    setShowBannerCropModal(true)
+  }
+
+  const handleBannerCropComplete = async (croppedImageUrl: string) => {
+    setUploading(true)
+    try {
+      // Convertir la URL del blob a archivo
+      const response = await fetch(croppedImageUrl)
+      const blob = await response.blob()
+      const file = new File([blob], 'cropped-banner.jpg', { type: 'image/jpeg' })
+
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      const uploadResponse = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (uploadResponse.ok) {
+        const uploadResult = await uploadResponse.json()
+        setFormData(prev => ({ ...prev, imagenBanner: uploadResult.url }))
+        setShowBannerCropModal(false)
+      } else {
+        alert('Error al subir el banner')
+      }
+      
+      // Limpiar el blob URL
+      URL.revokeObjectURL(croppedImageUrl)
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error al subir el banner')
+    } finally {
+      setUploading(false)
+      setSelectedBannerFile(null)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -205,25 +299,58 @@ export default function CategoryEditModal({
       
       const method = categoria ? 'PUT' : 'POST'
       
-      console.log('Sending form data:', formData) // Debug log
+      // Limpiar datos antes de enviar
+      const cleanFormData = {
+        key: formData.key,
+        nombre: formData.nombre,
+        descripcion: formData.descripcion,
+        slug: formData.slug,
+        imagenCover: formData.imagenCover,
+        imagenBanner: formData.imagenBanner,
+        icono: formData.icono,
+        color: formData.color,
+        colorSecundario: formData.colorSecundario,
+        overlayColor: formData.overlayColor,
+        overlayOpacity: formData.overlayOpacity,
+        metaTitle: formData.metaTitle,
+        metaDescription: formData.metaDescription,
+        orden: formData.orden,
+        visible: formData.visible,
+        destacada: formData.destacada,
+        descripcionAmpliada: formData.descripcionAmpliada,
+        beneficios: formData.beneficios,
+        procesoTrabajo: formData.procesoTrabajo,
+        estadisticas: formData.estadisticas,
+        casosExitoIds: formData.casosExitoIds
+      }
+      
+      console.log('Sending clean form data:', cleanFormData) // Debug log
       
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(cleanFormData),
       })
 
       if (response.ok) {
         onSave()
       } else {
-        const error = await response.json()
-        alert(error.error || 'Error al guardar categoría')
+        console.error('Response status:', response.status)
+        const responseText = await response.text()
+        console.error('Response text:', responseText)
+        
+        try {
+          const error = JSON.parse(responseText)
+          alert(`Error al guardar categoría: ${error.error}\n${error.details ? 'Detalles: ' + error.details : ''}`)
+        } catch {
+          alert(`Error al guardar categoría (${response.status}): ${responseText}`)
+        }
       }
     } catch (error) {
       console.error('Error:', error)
-      alert('Error al guardar categoría')
+      alert(`Error de conexión al guardar categoría: ${error.message}`)
     } finally {
       setLoading(false)
     }
@@ -285,6 +412,7 @@ export default function CategoryEditModal({
             {[
               { id: 'basic', name: 'Información Básica' },
               { id: 'visual', name: 'Aspecto Visual' },
+              { id: 'content', name: 'Contenido de Página' },
               { id: 'seo', name: 'SEO y Metadatos' }
             ].map(tab => (
               <button
@@ -623,6 +751,145 @@ export default function CategoryEditModal({
                   </div>
                 </div>
 
+                {/* Imagen de Banner para Hero */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-4">
+                    Imagen de Banner (Hero de la página de categoría)
+                  </label>
+                  
+                  <div className="grid grid-cols-2 gap-8">
+                    {/* Upload de banner */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-600 mb-3">Subir Banner</h4>
+                      <div className="flex justify-center">
+                        {formData.imagenBanner ? (
+                          <div className="space-y-3">
+                            <img
+                              src={formData.imagenBanner}
+                              alt="Banner preview"
+                              className="w-80 h-48 object-cover rounded-lg border border-gray-300"
+                            />
+                            <div className="flex space-x-2 justify-center">
+                              <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                {uploading ? 'Subiendo...' : 'Cambiar Banner'}
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={handleBannerUpload}
+                                  className="sr-only"
+                                  disabled={uploading}
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, imagenBanner: '' }))}
+                                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                              >
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-80 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                            <p className="text-base text-gray-600 font-medium">
+                              {uploading ? 'Subiendo...' : 'Subir Banner'}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                              Proporción 6:1 (muy horizontal) - Se ajustará al recortar
+                            </p>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleBannerUpload}
+                              className="sr-only"
+                              disabled={uploading}
+                            />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Preview del banner - Formato real del hero */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-600 mb-3">Vista Previa Hero Real</h4>
+                      <div className="flex justify-center">
+                        <div className="w-96 h-16 relative rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-gray-900">
+                          {formData.imagenBanner ? (
+                            <img
+                              src={formData.imagenBanner}
+                              alt="Banner preview"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center">
+                              <div className="text-center text-gray-400">
+                                <div className="w-8 h-8 mx-auto mb-1 opacity-60" style={{ color: formData.color || '#3b82f6' }}>
+                                  {renderIconPreview("w-8 h-8")}
+                                </div>
+                                <p className="text-xs">Sin banner - se usará fondo oscuro</p>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Overlay personalizable si está configurado */}
+                          {formData.overlayOpacity > 0 && (
+                            <div 
+                              className="absolute inset-0"
+                              style={{ 
+                                backgroundColor: formData.overlayColor,
+                                opacity: formData.overlayOpacity
+                              }}
+                            />
+                          )}
+                          
+                          {/* Gradient overlay base para legibilidad */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20" />
+                          
+                          {/* Contenido del hero exactamente como aparece en la página real */}
+                          <div className="absolute inset-0 flex items-center px-3">
+                            <div className="text-white flex items-center gap-3 w-full">
+                              {/* Ícono de la categoría - más pequeño */}
+                              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{ color: formData.color || '#3b82f6' }}>
+                                {renderIconPreview("w-8 h-8")}
+                              </div>
+                              
+                              <div className="flex-1">
+                                {/* Breadcrumb simulado - más compacto */}
+                                <nav className="mb-1">
+                                  <ol className="flex items-center gap-1 text-[10px] opacity-80">
+                                    <li>Inicio</li>
+                                    <li>/</li>
+                                    <li>Proyectos</li>
+                                    <li>/</li>
+                                    <li className="text-white/80">{formData.nombre || 'Categoría'}</li>
+                                  </ol>
+                                </nav>
+                                
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <h1 className="text-sm font-bold mb-1">
+                                      {formData.nombre || 'Nombre Categoría'}
+                                    </h1>
+                                    <div className="flex items-center gap-3 text-[10px] text-white/80">
+                                      <span>X proyectos</span>
+                                      <span className="truncate max-w-[120px]">
+                                        {formData.descripcion ? `${formData.descripcion.substring(0, 30)}...` : 'Descripción'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500 text-center mt-2">
+                        Proporción 6:1 recomendada • Hero height: 320px (h-80) • Ancho completo responsivo
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Selección de Icono */}
                 <div>
@@ -838,6 +1105,280 @@ export default function CategoryEditModal({
                 </div>
               </div>
             )}
+
+            {/* Tab: Contenido de Página */}
+            {activeTab === 'content' && (
+              <div className="space-y-8">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-blue-900 mb-2">Contenido Ampliado</h3>
+                  <p className="text-sm text-blue-700">
+                    Configure el contenido adicional que aparecerá en la página dedicada de esta categoría.
+                  </p>
+                </div>
+
+                {/* Descripción Ampliada */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Descripción Ampliada
+                  </label>
+                  <textarea
+                    value={formData.descripcionAmpliada}
+                    onChange={(e) => setFormData(prev => ({ ...prev, descripcionAmpliada: e.target.value }))}
+                    rows={6}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="Descripción detallada de esta especialidad que aparecerá en la sección 'Sobre esta especialidad'"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Esta descripción aparecerá en la sección principal de la página de categoría.
+                  </p>
+                </div>
+
+                {/* Beneficios */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Beneficios de elegir MEISA
+                  </label>
+                  <div className="space-y-3">
+                    {(formData.beneficios as string[]).map((beneficio, index) => (
+                      <div key={index} className="flex gap-2">
+                        <input
+                          type="text"
+                          value={beneficio}
+                          onChange={(e) => {
+                            const newBeneficios = [...(formData.beneficios as string[])]
+                            newBeneficios[index] = e.target.value
+                            setFormData(prev => ({ ...prev, beneficios: newBeneficios }))
+                          }}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                          placeholder="Ej: 27+ años de experiencia en estructuras metálicas"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newBeneficios = (formData.beneficios as string[]).filter((_, i) => i !== index)
+                            setFormData(prev => ({ ...prev, beneficios: newBeneficios }))
+                          }}
+                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newBeneficios = [...(formData.beneficios as string[]), '']
+                        setFormData(prev => ({ ...prev, beneficios: newBeneficios }))
+                      }}
+                      className="w-full px-3 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50"
+                    >
+                      + Agregar Beneficio
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Lista de beneficios que aparecerá con checkmarks verdes.
+                  </p>
+                </div>
+
+                {/* Proceso de Trabajo */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nuestro Proceso de Trabajo
+                  </label>
+                  <div className="space-y-3">
+                    {(formData.procesoTrabajo as string[]).map((paso, index) => (
+                      <div key={index} className="flex gap-2 items-start">
+                        <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+                          {index + 1}
+                        </div>
+                        <input
+                          type="text"
+                          value={paso}
+                          onChange={(e) => {
+                            const newProceso = [...(formData.procesoTrabajo as string[])]
+                            newProceso[index] = e.target.value
+                            setFormData(prev => ({ ...prev, procesoTrabajo: newProceso }))
+                          }}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                          placeholder="Ej: Análisis de requerimientos y diseño inicial"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newProceso = (formData.procesoTrabajo as string[]).filter((_, i) => i !== index)
+                            setFormData(prev => ({ ...prev, procesoTrabajo: newProceso }))
+                          }}
+                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newProceso = [...(formData.procesoTrabajo as string[]), '']
+                        setFormData(prev => ({ ...prev, procesoTrabajo: newProceso }))
+                      }}
+                      className="w-full px-3 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50"
+                    >
+                      + Agregar Paso del Proceso
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Pasos numerados del proceso de trabajo que sigue MEISA.
+                  </p>
+                </div>
+
+                {/* Estadísticas */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Estadísticas de la Categoría
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Toneladas Total
+                      </label>
+                      <input
+                        type="number"
+                        value={(formData.estadisticas as any)?.toneladasTotal || ''}
+                        onChange={(e) => setFormData(prev => ({ 
+                          ...prev, 
+                          estadisticas: { 
+                            ...(prev.estadisticas as any), 
+                            toneladasTotal: e.target.value ? parseInt(e.target.value) : undefined 
+                          } 
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        placeholder="1500"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Proyectos Completados
+                      </label>
+                      <input
+                        type="number"
+                        value={(formData.estadisticas as any)?.proyectosCompletados || ''}
+                        onChange={(e) => setFormData(prev => ({ 
+                          ...prev, 
+                          estadisticas: { 
+                            ...(prev.estadisticas as any), 
+                            proyectosCompletados: e.target.value ? parseInt(e.target.value) : undefined 
+                          } 
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        placeholder="25"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Años de Experiencia
+                      </label>
+                      <input
+                        type="number"
+                        value={(formData.estadisticas as any)?.anosExperiencia || ''}
+                        onChange={(e) => setFormData(prev => ({ 
+                          ...prev, 
+                          estadisticas: { 
+                            ...(prev.estadisticas as any), 
+                            anosExperiencia: e.target.value ? parseInt(e.target.value) : undefined 
+                          } 
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        placeholder="27"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Tiempo Promedio de Entrega
+                      </label>
+                      <input
+                        type="text"
+                        value={(formData.estadisticas as any)?.tiempoPromedioEntrega || ''}
+                        onChange={(e) => setFormData(prev => ({ 
+                          ...prev, 
+                          estadisticas: { 
+                            ...(prev.estadisticas as any), 
+                            tiempoPromedioEntrega: e.target.value 
+                          } 
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        placeholder="12 meses"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Estas estadísticas aparecerán como tarjetas destacadas en la página de categoría.
+                  </p>
+                </div>
+
+                {/* Casos de Éxito */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Casos de Éxito Destacados
+                  </label>
+                  <div className="space-y-3">
+                    <div className="text-sm text-gray-600 mb-3">
+                      Selecciona hasta 3 proyectos para mostrar como casos de éxito en la página de categoría:
+                    </div>
+                    
+                    {availableProjects.length > 0 ? (
+                      <div className="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3">
+                        {availableProjects.map((project) => (
+                          <label key={project.id} className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded">
+                            <input
+                              type="checkbox"
+                              checked={(formData.casosExitoIds as string[]).includes(project.id)}
+                              onChange={(e) => {
+                                const currentIds = formData.casosExitoIds as string[]
+                                let newIds: string[]
+                                
+                                if (e.target.checked) {
+                                  // Agregar solo si no está en la lista y no excede 3
+                                  if (!currentIds.includes(project.id) && currentIds.length < 3) {
+                                    newIds = [...currentIds, project.id]
+                                  } else {
+                                    newIds = currentIds
+                                  }
+                                } else {
+                                  // Remover de la lista
+                                  newIds = currentIds.filter(id => id !== project.id)
+                                }
+                                
+                                setFormData(prev => ({ ...prev, casosExitoIds: newIds }))
+                              }}
+                              disabled={(formData.casosExitoIds as string[]).length >= 3 && !(formData.casosExitoIds as string[]).includes(project.id)}
+                              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm text-gray-900 flex-1">{project.titulo}</span>
+                            {(formData.casosExitoIds as string[]).includes(project.id) && (
+                              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                #{(formData.casosExitoIds as string[]).indexOf(project.id) + 1}
+                              </span>
+                            )}
+                          </label>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-gray-500 border border-gray-200 rounded-md">
+                        {categoria ? 'No hay proyectos disponibles en esta categoría' : 'Selecciona una categoría primero'}
+                      </div>
+                    )}
+                    
+                    <div className="text-xs text-gray-500">
+                      <span className="font-medium">Seleccionados: {(formData.casosExitoIds as string[]).length}/3</span>
+                      <br />
+                      Los proyectos aparecerán en el orden seleccionado en la sección "Casos de Éxito Destacados".
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Footer con botones */}
@@ -869,6 +1410,18 @@ export default function CategoryEditModal({
         }}
         onCropComplete={handleCropComplete}
         imageFile={selectedImageFile}
+      />
+
+      {/* Modal de Crop Banner */}
+      <ImageCropModal
+        isOpen={showBannerCropModal}
+        onClose={() => {
+          setShowBannerCropModal(false)
+          setSelectedBannerFile(null)
+        }}
+        onCropComplete={handleBannerCropComplete}
+        imageFile={selectedBannerFile}
+        aspectRatio={6}
       />
     </div>
   )

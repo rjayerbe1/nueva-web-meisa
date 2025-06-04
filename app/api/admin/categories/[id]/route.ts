@@ -93,6 +93,8 @@ export async function PUT(
       updateData.imagenCover = imageUrls.imagenCover
     }
     
+    if (data.imagenBanner !== undefined) updateData.imagenBanner = data.imagenBanner
+    
     if (data.icono !== undefined) {
       updateData.icono = data.icono
     } else if (newSlug !== currentCategory.slug) {
@@ -109,6 +111,13 @@ export async function PUT(
     if (data.orden !== undefined) updateData.orden = data.orden
     if (data.visible !== undefined) updateData.visible = data.visible
     if (data.destacada !== undefined) updateData.destacada = data.destacada
+    
+    // Handle new enhanced content fields
+    if (data.descripcionAmpliada !== undefined) updateData.descripcionAmpliada = data.descripcionAmpliada
+    if (data.beneficios !== undefined) updateData.beneficios = data.beneficios
+    if (data.procesoTrabajo !== undefined) updateData.procesoTrabajo = data.procesoTrabajo
+    if (data.estadisticas !== undefined) updateData.estadisticas = data.estadisticas
+    if (data.casosExitoIds !== undefined) updateData.casosExitoIds = data.casosExitoIds
 
     console.log('Update object:', updateData) // Debug log
     
@@ -122,10 +131,13 @@ export async function PUT(
     return NextResponse.json(categoria)
   } catch (error) {
     console.error('Error updating category:', error)
-    if (error.code === 'P2002') {
+    if ((error as any).code === 'P2002') {
       return NextResponse.json({ error: 'Ya existe una categoría con ese slug' }, { status: 409 })
     }
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    }, { status: 500 })
   }
 }
 

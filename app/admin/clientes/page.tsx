@@ -219,7 +219,7 @@ export default function ClientesPage() {
           </TableHeader>
           <TableBody>
             {filteredClientes.map((cliente: any) => {
-              const SectorIcon = sectorIcons[cliente.sector] || Shield
+              const SectorIcon = (sectorIcons as any)[cliente.sector] || Shield
               return (
                 <TableRow key={cliente.id}>
                   <TableCell>
@@ -248,7 +248,7 @@ export default function ClientesPage() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge className={sectorColors[cliente.sector]}>
+                    <Badge className={(sectorColors as any)[cliente.sector]}>
                       {cliente.sector}
                     </Badge>
                   </TableCell>

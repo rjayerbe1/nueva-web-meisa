@@ -138,7 +138,8 @@ export const siteConfig = {
     plantas: 3,
     puentesGrua: 8,
     mesasCorte: 3,
-    areaTotal: 10400 // m2 combinado
+    areaTotal: 10400, // m2 combinado
+    proyectosCompletados: 150 // Proyectos exitosos completados
   },
   tecnologias: [
     {

@@ -48,7 +48,7 @@ export default async function MessagesPage() {
         {messages.length > 0 ? (
           <div className="divide-y divide-gray-200">
             {messages.map((message) => (
-              <MessageCard key={message.id} message={message} />
+              <MessageCard key={message.id} message={message as any} />
             ))}
           </div>
         ) : (

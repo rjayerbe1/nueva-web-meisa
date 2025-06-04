@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { UserRole } from '@prisma/client'
+import { VALID_SERVICE_COLORS, isValidServiceColor } from '@/lib/service-colors'
 
 export async function GET(
   request: NextRequest,
@@ -43,6 +44,14 @@ export async function PUT(
 
     const data = await request.json()
     
+    // Validar color
+    if (data.color && !isValidServiceColor(data.color)) {
+      return NextResponse.json(
+        { error: `Color no válido. Debe ser uno de: ${VALID_SERVICE_COLORS.join(', ')}` }, 
+        { status: 400 }
+      )
+    }
+    
     // Generar nuevo slug si el nombre cambió
     const slug = data.nombre
       .toLowerCase()
@@ -64,6 +73,7 @@ export async function PUT(
         caracteristicas: data.caracteristicas,
         orden: data.orden,
         icono: data.icono,
+        color: data.color,
       }
     })
 

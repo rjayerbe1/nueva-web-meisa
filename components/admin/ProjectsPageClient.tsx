@@ -17,6 +17,8 @@ type Project = {
   fechaInicio: string
   fechaFin: string | null
   presupuesto: number | null
+  toneladas: number | null
+  areaTotal: number | null
   destacado: boolean
   visible: boolean
   createdAt: string

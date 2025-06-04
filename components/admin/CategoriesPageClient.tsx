@@ -18,6 +18,7 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  imagenBanner: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -31,6 +32,12 @@ interface Categoria {
   totalProyectos: number
   createdAt: Date
   updatedAt: Date
+  // Nuevos campos para contenido ampliado
+  descripcionAmpliada: string | null
+  beneficios: any[] | null
+  procesoTrabajo: any[] | null
+  estadisticas: any | null
+  casosExitoIds: string[] | null
 }
 
 interface CategoriesPageClientProps {

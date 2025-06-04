@@ -17,13 +17,13 @@ import {
   X,
   Building2,
   Briefcase,
-  Handshake
+  UserCheck
 } from "lucide-react"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Proyectos", href: "/admin/projects", icon: FolderOpen },
-  { name: "Clientes", href: "/admin/clientes", icon: Handshake },
+  { name: "Clientes", href: "/admin/clientes", icon: UserCheck },
   { name: "Servicios", href: "/admin/services", icon: Briefcase },
   { name: "Equipo", href: "/admin/team", icon: Users },
   { name: "Contactos", href: "/admin/messages", icon: Mail },

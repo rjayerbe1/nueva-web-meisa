@@ -46,7 +46,7 @@ export default async function CategoriesPage() {
       </div>
 
       <CategoriesPageClient 
-        categorias={categorias} 
+        categorias={categorias as any} 
         categoryStats={categoryStats}
         canEdit={session.user.role !== 'VIEWER'}
       />

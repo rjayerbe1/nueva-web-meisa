@@ -224,11 +224,36 @@ model ComentarioProyecto {
 // ======= SERVICIOS =======
 model Servicio {
   id          String   @id @default(cuid())
-  nombre      String
+  nombre      String   // Mantener compatibilidad con datos existentes
+  titulo      String?  // Nuevo campo opcional
+  subtitulo   String?  // Nuevo campo opcional  
   descripcion String   @db.Text
-  caracteristicas String[] @default([])
-  icono       String?
-  imagen      String?
+  caracteristicas String[] @default([]) // Mantener compatibilidad
+  
+  // Capacidades principales (array de strings)
+  capacidades String[] @default([])
+  
+  // Información adicional en JSON
+  tecnologias Json?    // {titulo: string, items: string[]}
+  equipamiento Json?   // {titulo: string, items: string[]}
+  certificaciones Json? // {titulo: string, items: string[]}
+  normativas Json?     // {titulo: string, items: string[]}
+  metodologia Json?    // {titulo: string, items: string[]}
+  ventajas Json?       // {titulo: string, items: string[]}
+  equipos Json?        // {titulo: string, items: string[]}
+  seguridad Json?      // {titulo: string, items: string[]}
+  
+  // Expertise section
+  expertiseTitulo String?
+  expertiseDescripcion String? @db.Text
+  
+  // Visual elements
+  icono       String?  // Nombre del icono de lucide-react
+  imagen      String?  // URL de imagen principal
+  color       String   @default("blue") // Color principal del servicio
+  bgGradient  String?  // Clase CSS del gradiente de fondo
+  
+  // Organización
   orden       Int      @default(0)
   destacado   Boolean  @default(false)
   activo      Boolean  @default(true)
@@ -237,6 +262,7 @@ model Servicio {
   slug        String   @unique
   metaTitle   String?
   metaDescription String?
+  
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -349,7 +375,8 @@ model CategoriaProyecto {
   slug          String        @unique  // URL-friendly slug (e.g., "centros-comerciales")
   
   // Visual assets
-  imagenCover   String?                // Cover image URL
+  imagenCover   String?                // Cover image URL for cards/thumbnails
+  imagenBanner  String?                // Banner image URL for category page hero
   icono         String?                // Icon name or URL
   color         String?                // Primary color for the category
   colorSecundario String?              // Secondary color
@@ -365,6 +392,13 @@ model CategoriaProyecto {
   
   // Statistics (calculated)
   totalProyectos Int          @default(0)
+  
+  // Enhanced content for category pages
+  descripcionAmpliada String?  @db.Text  // Rich text description for category page
+  beneficios          Json?              // Array of benefits: [{title, description}]
+  procesoTrabajo      Json?              // Array of process steps: [{step, description, order}]
+  estadisticas        Json?              // Statistics object: {toneladasTotal, proyectosCompletados, anosExperiencia, tiempoPromedioEntrega}
+  casosExitoIds       Json?              // Array of project IDs to show as success cases: ["proj1", "proj2", "proj3"]
   
   // Timestamps
   createdAt     DateTime      @default(now())

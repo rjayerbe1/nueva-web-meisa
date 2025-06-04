@@ -206,7 +206,7 @@ export default function ProjectDetailPage() {
   const fasesEjecucion = hasHistoria && Array.isArray(proyecto.historia?.fasesEjecucion) ? proyecto.historia.fasesEjecucion : []
   const recursos = hasHistoria && Array.isArray(proyecto.historia?.recursos) ? proyecto.historia.recursos : []
   const reconocimientos = hasHistoria && Array.isArray(proyecto.historia?.reconocimientos) ? proyecto.historia.reconocimientos : []
-  const infografias = hasHistoria && Array.isArray(proyecto.historia?.infografias) ? proyecto.historia.infografias : []
+  const infografias = hasHistoria && Array.isArray((proyecto.historia as any)?.infografias) ? (proyecto.historia as any).infografias : []
   const datosInteres = hasHistoria && proyecto.historia?.datosInteres ? proyecto.historia.datosInteres : {}
 
   // Helper function to find image by ID

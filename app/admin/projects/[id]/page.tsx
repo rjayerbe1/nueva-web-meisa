@@ -84,13 +84,13 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   // Formatear toneladas
   const formatToneladas = (toneladas: any) => {
     if (!toneladas) return '--'
-    return `${parseFloat(toneladas).toFixed(1)} ton`
+    return `${Number(toneladas).toFixed(1)} ton`
   }
 
   // Formatear área
   const formatArea = (area: any) => {
     if (!area) return '--'
-    const areaNum = parseFloat(area)
+    const areaNum = Number(area)
     if (areaNum >= 10000) {
       return `${(areaNum / 10000).toFixed(1)} ha`
     }
@@ -245,14 +245,14 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
                     <div>
                       <p className="text-xs text-gray-500">Densidad de Acero</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {(parseFloat(project.toneladas) / parseFloat(project.areaTotal) * 1000).toFixed(1)} kg/m²
+                        {(Number(project.toneladas) / Number(project.areaTotal) * 1000).toFixed(1)} kg/m²
                       </p>
                     </div>
                     {project.presupuesto && (
                       <div>
                         <p className="text-xs text-gray-500">Costo por Tonelada</p>
                         <p className="text-sm font-medium text-gray-900">
-                          {formatCurrency(parseFloat(project.presupuesto) / parseFloat(project.toneladas))}
+                          {formatCurrency(Number(project.presupuesto) / Number(project.toneladas))}
                         </p>
                       </div>
                     )}

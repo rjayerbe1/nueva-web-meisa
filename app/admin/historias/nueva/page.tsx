@@ -288,7 +288,7 @@ export default function NuevaHistoriaPage() {
                       <p><span className="font-medium">Título:</span> {proyecto.titulo}</p>
                       <p><span className="font-medium">Cliente:</span> {proyecto.cliente}</p>
                       <p><span className="font-medium">Categoría:</span> {proyecto.categoria.replace(/_/g, ' ')}</p>
-                      {proyecto.destacado && (
+                      {(proyecto as any).destacado && (
                         <span className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
                           Proyecto Destacado
                         </span>
@@ -296,7 +296,7 @@ export default function NuevaHistoriaPage() {
                     </div>
                     <div className="mt-3">
                       <Link
-                        href={`/proyectos/detalle/${proyecto.slug}`}
+                        href={`/proyectos/detalle/${(proyecto as any).slug}`}
                         target="_blank"
                         className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
                       >

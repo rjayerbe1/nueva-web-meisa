@@ -35,7 +35,7 @@ const stats = [
   {
     id: 4,
     name: 'Colaboradores',
-    value: siteConfig.estadisticas.empleados,
+    value: siteConfig.estadisticas.totalColaboradores,
     suffix: '+',
     icon: Trophy,
     color: 'text-yellow-600',

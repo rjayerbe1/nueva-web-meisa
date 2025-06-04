@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
         descripcion: data.descripcion || null,
         slug,
         imagenCover: data.imagenCover || imageUrls.imagenCover,
+        imagenBanner: data.imagenBanner || null,
         icono: data.icono || imageUrls.icono,
         color: data.color || null,
         colorSecundario: data.colorSecundario || null,
@@ -73,6 +74,12 @@ export async function POST(request: NextRequest) {
         orden: data.orden || 0,
         visible: data.visible !== undefined ? data.visible : true,
         destacada: data.destacada !== undefined ? data.destacada : false,
+        // Enhanced content fields
+        descripcionAmpliada: data.descripcionAmpliada || null,
+        beneficios: data.beneficios || null,
+        procesoTrabajo: data.procesoTrabajo || null,
+        estadisticas: data.estadisticas || null,
+        casosExitoIds: data.casosExitoIds || null,
       }
     })
 

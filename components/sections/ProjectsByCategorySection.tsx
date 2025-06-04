@@ -45,8 +45,6 @@ interface ProjectsByCategorySectionProps {
 
 
 export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCategorySectionProps) {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -74,29 +72,9 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
     projectsByCategory[categoria.key] && projectsByCategory[categoria.key].length > 0
   )
 
-  const handleCategoryClick = (categoryKey: string) => {
-    if (activeCategory === categoryKey) {
-      setActiveCategory(null)
-    } else {
-      setActiveCategory(categoryKey)
-      setCurrentImageIndex(0)
-    }
-  }
-
-  const nextImage = () => {
-    if (activeCategory && projectsByCategory[activeCategory]) {
-      setCurrentImageIndex((prev) => 
-        prev === projectsByCategory[activeCategory].length - 1 ? 0 : prev + 1
-      )
-    }
-  }
-
-  const prevImage = () => {
-    if (activeCategory && projectsByCategory[activeCategory]) {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? projectsByCategory[activeCategory].length - 1 : prev - 1
-      )
-    }
+  const handleCategoryClick = (categoria: Categoria) => {
+    // Navegar directamente a la página de la categoría
+    window.location.href = `/proyectos/categoria/${categoria.slug}`
   }
 
   return (
@@ -127,7 +105,6 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {categoriesWithProjects.map((categoria, index) => {
               const projectCount = projectsByCategory[categoria.key]?.length || 0
-              const isActive = activeCategory === categoria.key
 
               return (
                 <motion.div
@@ -138,15 +115,9 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                   viewport={{ once: true }}
                   whileHover={{ scale: 1.02 }}
                   className="relative group cursor-pointer"
-                  onClick={() => handleCategoryClick(categoria.key)}
+                  onClick={() => handleCategoryClick(categoria)}
                 >
-                  <div className={`
-                    relative rounded-2xl overflow-hidden shadow-xl transition-all duration-500
-                    ${isActive 
-                      ? 'ring-4 ring-blue-500 ring-opacity-50 shadow-2xl shadow-blue-500/20' 
-                      : 'hover:shadow-2xl hover:ring-2 hover:ring-blue-400/30'
-                    }
-                  `}>
+                  <div className="relative rounded-2xl overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl hover:ring-2 hover:ring-blue-400/30">
                     {/* Imagen de fondo */}
                     {categoria.imagenCover ? (
                       <div className="relative">
@@ -193,14 +164,6 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                           </p>
                         </div>
 
-                        {/* Indicador activo */}
-                        {isActive && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute top-4 left-4 w-3 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"
-                          />
-                        )}
 
                         {/* Efecto hover overlay */}
                         <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-all duration-300" />
@@ -217,154 +180,6 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
           </div>
         )}
 
-        {/* Galería de proyectos de la categoría activa */}
-        <AnimatePresence mode="wait">
-          {activeCategory && projectsByCategory[activeCategory] && (
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5 }}
-              className="overflow-hidden"
-            >
-              <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-                {/* Header de la categoría activa */}
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg">
-                      {getCategoryIconComponent(
-                        categorias.find(cat => cat.key === activeCategory)?.icono || null,
-                        "w-6 h-6"
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="text-2xl font-bold text-white">
-                        {categorias.find(cat => cat.key === activeCategory)?.nombre}
-                      </h4>
-                      <p className="text-gray-400">
-                        {projectsByCategory[activeCategory].length} proyectos destacados
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <Link
-                    href={`/proyectos/categoria/${categorias.find(cat => cat.key === activeCategory)?.slug}`}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                  >
-                    Ver todos
-                    <ExternalLink className="w-4 h-4" />
-                  </Link>
-                </div>
-
-                {/* Carrusel de proyectos */}
-                <div className="relative">
-                  {projectsByCategory[activeCategory].length > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                      </button>
-                      
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors"
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </button>
-                    </>
-                  )}
-
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentImageIndex}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -50 }}
-                      transition={{ duration: 0.3 }}
-                      className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-                    >
-                      {/* Imagen del proyecto */}
-                      <div className="relative h-80 bg-gray-700 rounded-xl overflow-hidden">
-                        {projectsByCategory[activeCategory][currentImageIndex]?.imagenPortada ? (
-                          <Image
-                            src={projectsByCategory[activeCategory][currentImageIndex].imagenPortada.url}
-                            alt={projectsByCategory[activeCategory][currentImageIndex].imagenPortada.alt}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full text-gray-400">
-                            <div className="text-center">
-                              <div className="w-16 h-16 mx-auto mb-4 opacity-50">
-                                {getCategoryIconComponent(
-                                  categorias.find(cat => cat.key === activeCategory)?.icono || null,
-                                  "w-16 h-16"
-                                )}
-                              </div>
-                              <p>Imagen no disponible</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Información del proyecto */}
-                      <div className="flex flex-col justify-center">
-                        <h5 className="text-2xl font-bold text-white mb-4">
-                          {projectsByCategory[activeCategory][currentImageIndex]?.titulo}
-                        </h5>
-                        
-                        <p className="text-gray-300 mb-6 leading-relaxed">
-                          {projectsByCategory[activeCategory][currentImageIndex]?.descripcion}
-                        </p>
-                        
-                        <div className="space-y-3 mb-6">
-                          <div className="flex items-center gap-3">
-                            <span className="text-gray-400 font-medium">Cliente:</span>
-                            <span className="text-white">
-                              {projectsByCategory[activeCategory][currentImageIndex]?.cliente}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span className="text-gray-400 font-medium">Ubicación:</span>
-                            <span className="text-white">
-                              {projectsByCategory[activeCategory][currentImageIndex]?.ubicacion}
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <Link
-                          href={`/proyectos/${projectsByCategory[activeCategory][currentImageIndex]?.slug}`}
-                          className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition-colors"
-                        >
-                          Ver proyecto completo
-                          <ExternalLink className="w-4 h-4" />
-                        </Link>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-
-                  {/* Indicadores de página */}
-                  {projectsByCategory[activeCategory].length > 1 && (
-                    <div className="flex justify-center gap-2 mt-6">
-                      {projectsByCategory[activeCategory].map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            index === currentImageIndex ? 'bg-blue-500' : 'bg-gray-600 hover:bg-gray-500'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Call to action */}
         <motion.div
