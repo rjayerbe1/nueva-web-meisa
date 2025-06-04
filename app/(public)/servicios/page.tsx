@@ -3,59 +3,67 @@ import { prisma } from '@/lib/prisma'
 import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
 
-// Proceso integral de MEISA (esto podría también venir de la BD en el futuro)
+// Proceso integral de MEISA - 4 fases optimizadas con toda la información clave
 const procesoIntegral = [
   {
     fase: 1,
-    titulo: 'Análisis y Conceptualización',
-    descripcion: 'Entendemos profundamente su proyecto y desarrollamos la solución óptima',
+    titulo: 'Consultoría e Ingeniería BIM',
+    descripcion: 'Análisis estructural integral, modelado 3D avanzado y planeación detallada del proyecto',
     fortalezas: [
-      'Equipo multidisciplinario experimentado',
-      'Análisis técnico exhaustivo',
-      'Propuestas innovadoras y eficientes',
-      'Evaluación integral de alternativas'
+      'Análisis estructural y sísmico especializado',
+      'Modelado 3D con Tekla Structures y BIM 360',
+      'Software RISA-3D, RISAFloor, RISAConnection',
+      'Modelos BIM 3D con coordinación multidisciplinaria',
+      'Planos de fabricación y memorias de cálculo',
+      'Plan de ejecución integral del proyecto'
     ],
-    entregables: 'Propuesta técnica detallada con análisis de alternativas y recomendaciones especializadas',
-    icono: 'Lightbulb'
-  },
-  {
-    fase: 2,
-    titulo: 'Ingeniería y Diseño BIM',
-    descripcion: 'Desarrollamos modelado 3D avanzado con tecnología BIM para visualización completa del proyecto',
-    fortalezas: [
-      'Tekla Structures y Autodesk BIM 360',
-      'Modelado 3D paramétrico completo',
-      'Coordinación multidisciplinaria en tiempo real',
-      'Detección automática de interferencias'
-    ],
-    entregables: 'Modelos BIM 3D, planos ejecutivos, memorias de cálculo y especificaciones técnicas',
+    entregables: '',
     icono: 'Calculator'
   },
   {
-    fase: 3,
-    titulo: 'Fabricación con Control Numérico',
-    descripcion: 'Producción automatizada con maquinaria CNC y seguimiento en tiempo real del progreso',
+    fase: 2,
+    titulo: 'Fabricación y Logística Integral',
+    descripcion: 'Producción especializada con tecnología CNC, gestión integrada y transporte de cargas pesadas',
     fortalezas: [
-      'Corte plasma CNC de alta precisión',
-      'Soldadores certificados AWS D1.1',
-      'Sistema ERP integrado para seguimiento',
-      'Capacidad 600 ton/mes certificada'
+      'Corte CNC con FastCAM de alta precisión',
+      'Sistema de gestión de producción integrado',
+      'Soldadura calificada con certificación AWS',
+      'Protección anticorrosiva garantizada 50 años',
+      'Estructuras fabricadas con trazabilidad completa',
+      'Transporte especializado hasta 100 toneladas'
     ],
-    entregables: 'Estructuras fabricadas con trazabilidad digital y certificados de calidad',
+    entregables: '',
     icono: 'Cog'
   },
   {
-    fase: 4,
-    titulo: 'Montaje y Coordinación en Sitio',
-    descripcion: 'Coordinación previa detallada e instalación con protocolos de seguridad certificados',
+    fase: 3,
+    titulo: 'Montaje Especializado',
+    descripcion: 'Instalación con equipos especializados, trabajo en altura certificado e inspección continua SIG',
     fortalezas: [
-      'Coordinación previa con modelo 3D',
-      'Equipos especializados certificados',
-      'Comunicación constante con cliente',
-      'Protocolos de seguridad ISO 45001'
+      'Izaje con grúas y equipos especializados',
+      'Trabajo en altura certificado',
+      'Inspección continua con Sistema SIG',
+      'Protocolos de seguridad ISO 45001',
+      'Estructura montada con documentación completa',
+      'Coordinación previa con modelo 3D'
     ],
-    entregables: 'Estructura instalada, documentación As-Built y transferencia de conocimiento',
+    entregables: '',
     icono: 'HardHat'
+  },
+  {
+    fase: 4,
+    titulo: 'Entrega y Garantía',
+    descripcion: 'Puesta en marcha documentada con garantía de calidad, capacitación y soporte especializado',
+    fortalezas: [
+      'Documentación As-Built completa',
+      'Capacitación técnica especializada al cliente',
+      'Garantía de calidad certificada',
+      'Soporte post-venta continuo',
+      'Transferencia completa de conocimiento',
+      'Seguimiento de desempeño del proyecto'
+    ],
+    entregables: '',
+    icono: 'Award'
   }
 ]
 

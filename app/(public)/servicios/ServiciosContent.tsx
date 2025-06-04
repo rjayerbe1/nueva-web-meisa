@@ -193,7 +193,8 @@ export default function ServiciosContent({
         style={{ opacity: heroOpacity, scale: heroScale }}
         className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden"
       >
-        <div className="absolute inset-0 bg-[url('/images/backgrounds/steel-texture.jpg')] opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-slate-900/40"></div>
         
         {/* Elementos flotantes animados con colores MEISA */}
         <motion.div
@@ -282,7 +283,7 @@ export default function ServiciosContent({
             <div className="flex flex-wrap justify-center items-center gap-8 mt-12">
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-400">4</div>
-                <div className="text-sm text-gray-400">Fases Integradas</div>
+                <div className="text-sm text-gray-400">Fases Optimizadas</div>
               </div>
               <div className="hidden sm:block w-px h-8 bg-white/20"></div>
               <div className="text-center">
@@ -291,16 +292,58 @@ export default function ServiciosContent({
               </div>
               <div className="hidden sm:block w-px h-8 bg-white/20"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-400">100%</div>
-                <div className="text-sm text-gray-400">Metodología Propia</div>
+                <div className="text-3xl font-bold text-blue-400">100</div>
+                <div className="text-sm text-gray-400">Toneladas Transporte</div>
+              </div>
+              <div className="hidden sm:block w-px h-8 bg-white/20"></div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-400">50</div>
+                <div className="text-sm text-gray-400">Años Garantía</div>
               </div>
             </div>
+            
+            {/* Timeline visual del proceso */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="mt-16 bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10"
+            >
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="text-center md:text-left">
+                  <h3 className="text-lg font-semibold text-white mb-2">Flujo de Trabajo Integrado</h3>
+                  <p className="text-sm text-gray-400">Cada fase se conecta perfectamente con la siguiente</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                    <div className="w-16 h-1 bg-gradient-to-r from-blue-400 to-green-400"></div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                    <div className="w-16 h-1 bg-gradient-to-r from-green-400 to-yellow-400"></div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                    <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 to-red-400"></div>
+                  </div>
+                  <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
 
-          {/* Proceso rediseñado */}
+          {/* Proceso rediseñado con interactividad mejorada */}
           <div className="relative">
-            {/* Línea de conexión central */}
-            <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"></div>
+            {/* Línea de conexión central animada */}
+            <motion.div 
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              viewport={{ once: true }}
+              className="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent origin-left"
+            />
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
               {procesoIntegral.map((paso, index) => {
@@ -342,27 +385,41 @@ export default function ServiciosContent({
                         </p>
                       </div>
                       
-                      {/* Fortalezas mejoradas */}
+                      {/* Lista integrada sin etiquetas */}
                       <div className="space-y-3">
-                        <h4 className="font-semibold text-xs uppercase tracking-wider text-blue-300 border-b border-blue-400/30 pb-2">
-                          Fortalezas Clave
-                        </h4>
-                        <ul className="space-y-2">
-                          {paso.fortalezas.slice(0, 3).map((fortaleza, idx) => (
-                            <li key={idx} className="flex items-start gap-3 text-xs">
-                              <div className="w-4 h-4 bg-blue-400/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                        <ul className="space-y-3">
+                          {paso.fortalezas.map((fortaleza, idx) => (
+                            <motion.li 
+                              key={idx} 
+                              initial={{ opacity: 0, x: -10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: 0.4 + idx * 0.1 }}
+                              viewport={{ once: true }}
+                              className="flex items-start gap-3 text-sm group/item"
+                            >
+                              <div className="w-5 h-5 bg-blue-400/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover/item:bg-blue-400/30 transition-colors">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                               </div>
-                              <span className="text-gray-300 leading-relaxed">{fortaleza}</span>
-                            </li>
+                              <span className="text-gray-300 leading-relaxed group-hover/item:text-gray-200 transition-colors">{fortaleza}</span>
+                            </motion.li>
                           ))}
                         </ul>
                       </div>
                       
-                      {/* Entregables */}
+                      {/* Indicador de progreso */}
                       <div className="mt-6 pt-4 border-t border-white/10">
-                        <div className="text-xs text-blue-300 font-medium mb-1">Entregable:</div>
-                        <div className="text-xs text-gray-400 leading-relaxed">{paso.entregables}</div>
+                        <div className="flex items-center justify-center">
+                          <div className="flex items-center gap-1">
+                            {[...Array(4)].map((_, i) => (
+                              <div 
+                                key={i} 
+                                className={`w-2 h-2 rounded-full transition-colors ${
+                                  i < paso.fase ? 'bg-blue-400' : 'bg-white/20'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -371,7 +428,7 @@ export default function ServiciosContent({
             </div>
           </div>
           
-          {/* Footer de la sección */}
+          {/* Footer de la sección con CTA y métricas */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -381,147 +438,53 @@ export default function ServiciosContent({
           >
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-4xl mx-auto border border-white/20">
               <h3 className="text-2xl font-bold text-white mb-4">¿Por qué nuestro proceso es único?</h3>
-              <p className="text-gray-300 leading-relaxed">
+              <p className="text-gray-300 leading-relaxed mb-8">
                 Cada fase está diseñada para <span className="text-blue-300 font-semibold">integrar tecnología BIM</span>, 
                 <span className="text-blue-300 font-semibold"> seguimiento en tiempo real</span> y 
                 <span className="text-blue-300 font-semibold"> control de calidad certificado</span>, 
                 garantizando que su proyecto se entregue a tiempo, dentro del presupuesto y con los más altos estándares.
               </p>
+              
+              {/* Métricas de éxito del proceso */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 pt-8 border-t border-white/10">
+                <div>
+                  <div className="text-2xl font-bold text-blue-400">98%</div>
+                  <div className="text-xs text-gray-400 mt-1">Entrega a Tiempo</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-400">0</div>
+                  <div className="text-xs text-gray-400 mt-1">Defectos Críticos</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-yellow-400">24/7</div>
+                  <div className="text-xs text-gray-400 mt-1">Seguimiento Digital</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-red-400">100%</div>
+                  <div className="text-xs text-gray-400 mt-1">Trazabilidad</div>
+                </div>
+              </div>
+              
+              {/* CTA para conocer más del proceso */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mt-8"
+              >
+                <Link
+                  href="/contacto"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  Conocer más sobre nuestro proceso
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Tecnología y Herramientas - Movido aquí para mejor flujo */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Tecnología y Herramientas Especializadas
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Utilizamos las herramientas más avanzadas de la industria para garantizar precisión, 
-              eficiencia y seguimiento en tiempo real de cada proyecto
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* BIM y Modelado 3D */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6">
-                <Calculator className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">BIM y Modelado 3D</h3>
-              <p className="text-gray-600 mb-6">
-                Tecnología de vanguardia para modelado paramétrico y coordinación multidisciplinaria
-              </p>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                  <span className="text-gray-700">Tekla Structures</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                  <span className="text-gray-700">Autodesk BIM 360</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                  <span className="text-gray-700">Detección de interferencias</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Fabricación CNC */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center mb-6">
-                <Cog className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Fabricación Automatizada</h3>
-              <p className="text-gray-600 mb-6">
-                Maquinaria CNC de precisión para corte y fabricación de componentes estructurales
-              </p>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full" />
-                  <span className="text-gray-700">Corte plasma CNC</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full" />
-                  <span className="text-gray-700">Control numérico computarizado</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full" />
-                  <span className="text-gray-700">Capacidad 600 ton/mes</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Seguimiento de Proyectos */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-slate-600 to-slate-700 rounded-2xl flex items-center justify-center mb-6">
-                <Globe className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Seguimiento Digital</h3>
-              <p className="text-gray-600 mb-6">
-                Sistemas integrados para el seguimiento en tiempo real del progreso de fabricación
-              </p>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-slate-600 rounded-full" />
-                  <span className="text-gray-700">Sistema ERP integrado</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-slate-600 rounded-full" />
-                  <span className="text-gray-700">Trazabilidad completa</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-slate-600 rounded-full" />
-                  <span className="text-gray-700">Reportes en tiempo real</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Mensaje destacado */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-8 text-white text-center"
-          >
-            <h3 className="text-2xl font-bold mb-4">Integración Tecnológica Completa</h3>
-            <p className="text-blue-100 text-lg max-w-3xl mx-auto">
-              Desde el diseño BIM hasta la entrega final, cada proyecto es gestionado con tecnología de vanguardia 
-              que permite comunicación transparente, seguimiento detallado y entrega oportuna con los más altos estándares de calidad.
-            </p>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Navegación Sticky */}
       <div 
