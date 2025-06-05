@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import { useState } from "react"
+import { ChevronDown, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navigation = [
@@ -11,7 +13,15 @@ const navigation = [
   { name: "Historias", href: "/admin/historias" },
   { name: "Categorías", href: "/admin/categories" },
   { name: "Clientes", href: "/admin/clientes" },
-  { name: "Servicios", href: "/admin/services" },
+  { 
+    name: "Servicios", 
+    href: "/admin/services",
+    subItems: [
+      { name: "Lista de Servicios", href: "/admin/services" },
+      { name: "Aspectos Visuales", href: "/admin/services/visual" },
+      { name: "Contenido Detallado", href: "/admin/services/content" }
+    ]
+  },
   { name: "Equipo", href: "/admin/team" },
   { name: "Usuarios", href: "/admin/users" },
   { name: "Contactos", href: "/admin/messages" },
@@ -28,6 +38,15 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps) {
   const pathname = usePathname()
+  const [expandedItems, setExpandedItems] = useState<string[]>(['Servicios'])
+
+  const toggleExpansion = (itemName: string) => {
+    setExpandedItems(prev => 
+      prev.includes(itemName) 
+        ? prev.filter(name => name !== itemName)
+        : [...prev, itemName]
+    )
+  }
 
   return (
     <>
@@ -70,29 +89,91 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
 
           {/* Navigation */}
           <nav className="flex-1 p-6">
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               {navigation.map((item) => {
+                const hasSubItems = 'subItems' in item && item.subItems
+                const isExpanded = expandedItems.includes(item.name)
                 const isActive = pathname === item.href || 
                   (item.href !== "/admin" && pathname.startsWith(item.href))
 
                 return (
                   <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setSidebarOpen(false)}
-                      className={cn(
-                        "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
-                        isActive
-                          ? "bg-blue-600 text-white shadow-lg"
-                          : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                      )}
-                    >
-                      {item.name}
-                      
-                      {isActive && (
-                        <div className="ml-auto w-2 h-2 bg-white rounded-full" />
-                      )}
-                    </Link>
+                    {hasSubItems ? (
+                      <div>
+                        {/* Parent item with expand/collapse */}
+                        <button
+                          onClick={() => toggleExpansion(item.name)}
+                          className={cn(
+                            "w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 text-left",
+                            isActive
+                              ? "bg-blue-600 text-white shadow-lg"
+                              : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                          )}
+                        >
+                          {item.name}
+                          
+                          <div className="ml-auto flex items-center">
+                            {isActive && (
+                              <div className="w-2 h-2 bg-white rounded-full mr-2" />
+                            )}
+                            {isExpanded ? (
+                              <ChevronDown className="h-4 w-4" />
+                            ) : (
+                              <ChevronRight className="h-4 w-4" />
+                            )}
+                          </div>
+                        </button>
+
+                        {/* Sub-items */}
+                        {isExpanded && (
+                          <ul className="mt-1 ml-4 space-y-1">
+                            {item.subItems.map((subItem) => {
+                              const isSubActive = pathname === subItem.href
+
+                              return (
+                                <li key={subItem.name}>
+                                  <Link
+                                    href={subItem.href}
+                                    onClick={() => setSidebarOpen(false)}
+                                    className={cn(
+                                      "flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200",
+                                      isSubActive
+                                        ? "bg-blue-500 text-white shadow-md"
+                                        : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
+                                    )}
+                                  >
+                                    <div className="w-1.5 h-1.5 bg-current rounded-full mr-3 opacity-60" />
+                                    {subItem.name}
+                                    
+                                    {isSubActive && (
+                                      <div className="ml-auto w-1.5 h-1.5 bg-white rounded-full" />
+                                    )}
+                                  </Link>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        )}
+                      </div>
+                    ) : (
+                      /* Regular item without sub-items */
+                      <Link
+                        href={item.href}
+                        onClick={() => setSidebarOpen(false)}
+                        className={cn(
+                          "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+                          isActive
+                            ? "bg-blue-600 text-white shadow-lg"
+                            : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                        )}
+                      >
+                        {item.name}
+                        
+                        {isActive && (
+                          <div className="ml-auto w-2 h-2 bg-white rounded-full" />
+                        )}
+                      </Link>
+                    )}
                   </li>
                 )
               })}

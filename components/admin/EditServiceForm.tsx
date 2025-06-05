@@ -2,17 +2,70 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Save, Plus, X } from "lucide-react"
+import { ArrowLeft, Save, Plus, X, Settings } from "lucide-react"
 import Link from "next/link"
+import ServiceDetailEditor from './ServiceDetailEditor'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select'
+import * as Icons from 'lucide-react'
+import { ImageUploader } from '@/components/admin/ImageUploader'
+import { COLOR_OPTIONS } from '@/lib/service-colors'
+import toast from 'react-hot-toast'
 
 interface Service {
   id: string
   nombre: string
+  titulo?: string
+  subtitulo?: string
   descripcion: string
   caracteristicas?: string[]
+  capacidades?: string[]
   orden: number
   icono: string | null
+  color?: string
+  bgGradient?: string
+  imagen?: string
+  destacado?: boolean
+  activo?: boolean
+  slug?: string
+  metaTitle?: string
+  metaDescription?: string
+  expertiseTitulo?: string
+  expertiseDescripcion?: string
+  tecnologias?: any
+  equipamiento?: any
+  certificaciones?: any
+  normativas?: any
+  metodologia?: any
+  ventajas?: any
+  equipos?: any
+  seguridad?: any
+  [key: string]: any
 }
+
+interface JsonSection {
+  titulo: string
+  items: string[]
+}
+
+const iconOptions = [
+  'Calculator', 'Settings', 'Truck', 'Users', 
+  'Building2', 'Cog', 'HardHat', 'Shield',
+  'Zap', 'Award', 'FileText', 'Globe'
+]
 
 interface EditServiceFormProps {
   serviceId: string
@@ -22,13 +75,39 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Service>({
+    id: '',
     nombre: '',
+    titulo: '',
+    subtitulo: '',
     descripcion: '',
     caracteristicas: [''],
+    capacidades: [],
     orden: 1,
-    icono: ''
+    icono: 'Settings',
+    color: 'blue',
+    bgGradient: '',
+    imagen: '',
+    destacado: false,
+    activo: true,
+    slug: '',
+    metaTitle: '',
+    metaDescription: '',
+    expertiseTitulo: '',
+    expertiseDescripcion: '',
+    tecnologias: null,
+    equipamiento: null,
+    certificaciones: null,
+    normativas: null,
+    metodologia: null,
+    ventajas: null,
+    equipos: null,
+    seguridad: null
   })
+  
+  const [newCapacidad, setNewCapacidad] = useState('')
+  const [activeSection, setActiveSection] = useState<string>('')
+  const [newSectionItem, setNewSectionItem] = useState('')
 
   useEffect(() => {
     const fetchService = async () => {
@@ -43,11 +122,23 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
         if (response.ok) {
           const service: Service = await response.json()
           setFormData({
-            nombre: service.nombre,
-            descripcion: service.descripcion,
+            ...service,
             caracteristicas: (service.caracteristicas && service.caracteristicas.length > 0) ? service.caracteristicas : [''],
-            orden: service.orden,
-            icono: service.icono || ''
+            capacidades: service.capacidades || [],
+            icono: service.icono || 'Settings',
+            color: service.color || 'blue',
+            bgGradient: service.bgGradient || '',
+            imagen: service.imagen || '',
+            destacado: service.destacado || false,
+            activo: service.activo !== undefined ? service.activo : true,
+            tecnologias: service.tecnologias || null,
+            equipamiento: service.equipamiento || null,
+            certificaciones: service.certificaciones || null,
+            normativas: service.normativas || null,
+            metodologia: service.metodologia || null,
+            ventajas: service.ventajas || null,
+            equipos: service.equipos || null,
+            seguridad: service.seguridad || null
           })
         } else if (response.status === 401) {
           // Si no está autenticado, redirigir al login
@@ -83,7 +174,8 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
         credentials: 'include',
         body: JSON.stringify({
           ...formData,
-          caracteristicas: formData.caracteristicas.filter(c => c.trim() !== '')
+          caracteristicas: formData.caracteristicas.filter(c => c.trim() !== ''),
+          bgGradient: formData.bgGradient || `from-${formData.color}-600 to-${formData.color}-800`
         }),
       })
 
@@ -98,6 +190,31 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
       alert('Error al actualizar el servicio')
     } finally {
       setLoading(false)
+    }
+  }
+
+  // Helper functions
+  const generateSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '')
+  }
+
+  const handleChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+
+    // Auto-generate slug from titulo
+    if (field === 'titulo' && !formData.id) {
+      setFormData(prev => ({
+        ...prev,
+        slug: generateSlug(value)
+      }))
     }
   }
 
@@ -122,6 +239,68 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
     }))
   }
 
+  // Handle capacidades
+  const addCapacidad = () => {
+    if (newCapacidad.trim()) {
+      handleChange('capacidades', [...formData.capacidades, newCapacidad.trim()])
+      setNewCapacidad('')
+    }
+  }
+
+  const removeCapacidad = (index: number) => {
+    handleChange('capacidades', formData.capacidades.filter((_, i) => i !== index))
+  }
+
+  // Handle JSON sections
+  const initializeSection = (sectionKey: string, titulo: string) => {
+    handleChange(sectionKey, { titulo: titulo || '', items: [] })
+    setActiveSection(sectionKey)
+  }
+
+  const addSectionItem = (sectionKey: string) => {
+    if (newSectionItem.trim()) {
+      const section = formData[sectionKey as keyof typeof formData] as JsonSection
+      if (section && section.items) {
+        handleChange(sectionKey, {
+          ...section,
+          items: [...section.items, newSectionItem.trim()]
+        })
+        setNewSectionItem('')
+      } else {
+        handleChange(sectionKey, {
+          titulo: section?.titulo || '',
+          items: [newSectionItem.trim()]
+        })
+        setNewSectionItem('')
+      }
+    }
+  }
+
+  const removeSectionItem = (sectionKey: string, index: number) => {
+    const section = formData[sectionKey as keyof typeof formData] as JsonSection
+    if (section && section.items) {
+      handleChange(sectionKey, {
+        ...section,
+        items: section.items.filter((_, i) => i !== index)
+      })
+    }
+  }
+
+  const removeSection = (sectionKey: string) => {
+    handleChange(sectionKey, null)
+    if (activeSection === sectionKey) {
+      setActiveSection('')
+    }
+  }
+
+  // Get icon component
+  const getIcon = (iconName: string) => {
+    const Icon = (Icons as any)[iconName] || Icons.Settings
+    return Icon
+  }
+
+  const SelectedIcon = getIcon(formData.icono)
+
   if (initialLoading) {
     return (
       <div className="flex items-center justify-center min-h-96">
@@ -131,7 +310,7 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto py-6 px-4 max-w-7xl space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -149,8 +328,15 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+      <Tabs defaultValue="basic" className="w-full">
+        <TabsList className="grid grid-cols-2 w-full max-w-md">
+          <TabsTrigger value="basic">Información Básica</TabsTrigger>
+          <TabsTrigger value="advanced">Contenido Avanzado</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="basic">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -263,6 +449,40 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
           </div>
         </form>
       </div>
+    </TabsContent>
+    
+    <TabsContent value="advanced">
+      <ServiceDetailEditor 
+        service={formData}
+        onSave={async (data) => {
+          setLoading(true)
+          try {
+            const response = await fetch(`/api/admin/services/${serviceId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify(data),
+            })
+            
+            if (response.ok) {
+              router.push('/admin/services')
+              router.refresh()
+            } else {
+              alert('Error al actualizar el servicio')
+            }
+          } catch (error) {
+            console.error('Error:', error)
+            alert('Error al actualizar el servicio')
+          } finally {
+            setLoading(false)
+          }
+        }}
+        loading={loading}
+      />
+    </TabsContent>
+  </Tabs>
     </div>
   )
 }

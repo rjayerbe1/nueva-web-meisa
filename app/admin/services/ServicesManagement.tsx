@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Trash2, Plus, Eye, EyeOff } from 'lucide-react'
+import { Edit, Trash2, Plus, Eye, EyeOff, Palette, FileText } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -141,7 +141,7 @@ export default function ServicesManagement({ initialServices }: ServicesManageme
                   {service.descripcion}
                 </p>
                 
-                {service.capacidades.length > 0 && (
+                {Array.isArray(service.capacidades) && service.capacidades.length > 0 && (
                   <div className="mb-4">
                     <p className="text-sm font-medium text-gray-600 mb-2">
                       Capacidades: {service.capacidades.length}
@@ -161,7 +161,7 @@ export default function ServicesManagement({ initialServices }: ServicesManageme
                   )}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button
                     variant="outline"
                     size="sm"
@@ -181,10 +181,17 @@ export default function ServicesManagement({ initialServices }: ServicesManageme
                     )}
                   </Button>
                   
-                  <Link href={`/admin/services/${service.id}/edit`}>
-                    <Button variant="outline" size="sm" className="flex items-center gap-2">
-                      <Edit className="w-4 h-4" />
-                      Editar
+                  <Link href="/admin/services/visual">
+                    <Button variant="outline" size="sm" className="flex items-center gap-2 text-purple-600 hover:text-purple-700">
+                      <Palette className="w-4 h-4" />
+                      Visual
+                    </Button>
+                  </Link>
+
+                  <Link href="/admin/services/content">
+                    <Button variant="outline" size="sm" className="flex items-center gap-2 text-blue-600 hover:text-blue-700">
+                      <FileText className="w-4 h-4" />
+                      Contenido
                     </Button>
                   </Link>
                   

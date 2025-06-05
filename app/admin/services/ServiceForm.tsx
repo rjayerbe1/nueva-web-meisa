@@ -118,17 +118,24 @@ export default function ServiceForm({ service }: ServiceFormProps) {
 
   // Handle JSON sections
   const initializeSection = (sectionKey: string, titulo: string) => {
-    handleChange(sectionKey, { titulo, items: [] })
+    handleChange(sectionKey, { titulo: titulo || '', items: [] })
     setActiveSection(sectionKey)
   }
 
   const addSectionItem = (sectionKey: string) => {
     if (newSectionItem.trim()) {
       const section = formData[sectionKey as keyof typeof formData] as JsonSection
-      if (section) {
+      if (section && section.items) {
         handleChange(sectionKey, {
           ...section,
           items: [...section.items, newSectionItem.trim()]
+        })
+        setNewSectionItem('')
+      } else {
+        // Initialize if not properly set
+        handleChange(sectionKey, {
+          titulo: section?.titulo || '',
+          items: [newSectionItem.trim()]
         })
         setNewSectionItem('')
       }
@@ -137,7 +144,7 @@ export default function ServiceForm({ service }: ServiceFormProps) {
 
   const removeSectionItem = (sectionKey: string, index: number) => {
     const section = formData[sectionKey as keyof typeof formData] as JsonSection
-    if (section) {
+    if (section && section.items) {
       handleChange(sectionKey, {
         ...section,
         items: section.items.filter((_, i) => i !== index)
@@ -420,7 +427,7 @@ export default function ServiceForm({ service }: ServiceFormProps) {
                       {sectionData && (
                         <div className="space-y-2">
                           <Input
-                            value={sectionData.titulo}
+                            value={sectionData.titulo || ''}
                             onChange={(e) => handleChange(section.key, { ...sectionData, titulo: e.target.value })}
                             placeholder="Título de la sección"
                             className="mb-2"
@@ -451,9 +458,9 @@ export default function ServiceForm({ service }: ServiceFormProps) {
                           )}
                           
                           <div className="space-y-1">
-                            {sectionData.items.map((item, index) => (
+                            {sectionData.items && Array.isArray(sectionData.items) && sectionData.items.map((item: any, index) => (
                               <Badge key={index} variant="outline" className="mr-2">
-                                {item}
+                                {typeof item === 'string' ? item : (item.titulo || JSON.stringify(item))}
                                 <button
                                   type="button"
                                   onClick={() => removeSectionItem(section.key, index)}

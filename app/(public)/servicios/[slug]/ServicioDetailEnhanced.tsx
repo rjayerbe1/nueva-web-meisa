@@ -22,7 +22,14 @@ import {
   Building2,
   HardHat,
   Briefcase,
-  ChevronDown
+  ChevronDown,
+  Image as ImageIcon,
+  BarChart3,
+  GitBranch,
+  Trophy,
+  Quote,
+  Play,
+  Radar
 } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { getServiceColors } from '@/lib/service-colors'
@@ -58,7 +65,7 @@ interface ServicioData {
   titulo: string
   subtitulo: string
   descripcion: string
-  capacidades: string[]
+  capacidades: (string | { titulo?: string; descripcion?: string })[]
   tecnologias?: TecnologiaItem[]
   equipamiento?: EquipamientoItem[]
   equipos?: string[]
@@ -66,12 +73,19 @@ interface ServicioData {
   metodologia?: MetodologiaFase[]
   normativas?: string[]
   seguridad?: string[]
-  ventajas?: string[]
+  ventajas?: (string | { titulo?: string; descripcion?: string })[]
   expertise: { titulo: string; descripcion: string }
   imagen: string
   icono: string
   color: string
   bgGradient: string
+  // New enhanced fields
+  imagenesGaleria?: string[]
+  estadisticas?: Array<{ label: string; value: string; icon: string }>
+  procesoPasos?: Array<{ title: string; description: string; icon: string }>
+  competencias?: Array<{ label: string; value: number }>
+  casosExito?: Array<{ titulo: string; descripcion: string; metrica1: string; metrica2: string; metrica3: string }>
+  testimonios?: Array<{ cliente: string; cargo: string; texto: string }>
 }
 
 interface OtroServicio {
@@ -108,13 +122,16 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
   // Navigation sections
   const sections = [
     { id: 'overview', label: 'Descripción General', icon: BookOpen },
+    { id: 'galeria', label: 'Galería', icon: ImageIcon },
+    { id: 'estadisticas', label: 'Estadísticas', icon: BarChart3 },
     { id: 'capacidades', label: 'Capacidades', icon: Target },
+    { id: 'proceso', label: 'Proceso', icon: GitBranch },
+    { id: 'competencias', label: 'Competencias', icon: Radar },
     { id: 'tecnologia', label: 'Tecnología', icon: Zap },
-    { id: 'equipamiento', label: 'Equipamiento', icon: Wrench },
-    { id: 'metodologia', label: 'Metodología', icon: FileCheck },
+    { id: 'casos', label: 'Casos de Éxito', icon: Trophy },
+    { id: 'testimonios', label: 'Testimonios', icon: MessageSquare },
     { id: 'certificaciones', label: 'Certificaciones', icon: Award },
     { id: 'normativas', label: 'Normativas', icon: Shield },
-    { id: 'seguridad', label: 'Seguridad', icon: HardHat },
     { id: 'ventajas', label: 'Ventajas', icon: TrendingUp }
   ]
 
@@ -146,7 +163,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      const offset = 100
+      const offset = 150 // Increased to account for navbar + sticky navigation
       const elementPosition = element.getBoundingClientRect().top
       const offsetPosition = elementPosition + window.pageYOffset - offset
 
@@ -236,8 +253,8 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
         </div>
       </section>
 
-      {/* Sticky Navigation */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-md">
+      {/* Sticky Navigation - Fixed to account for navbar height */}
+      <div className="sticky top-16 md:top-20 z-40 bg-white/95 backdrop-blur-md shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex overflow-x-auto py-4 gap-2 scrollbar-hide">
             {sections.map((section) => {
@@ -248,14 +265,15 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 <button
                   key={section.id}
                   onClick={() => scrollToSection(section.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium whitespace-nowrap transition-all duration-300 ${
+                  className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium whitespace-nowrap transition-all duration-300 text-sm md:text-base ${
                     isActive 
                       ? `${colors.bg} ${colors.text} shadow-lg scale-105` 
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   <SectionIcon className="w-4 h-4" />
-                  {section.label}
+                  <span className="hidden sm:inline">{section.label}</span>
+                  <span className="sm:hidden">{section.label.split(' ')[0]}</span>
                 </button>
               )
             })}
@@ -381,28 +399,39 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicio.capacidades.map((capacidad, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border border-gray-100 group-hover:border-blue-200">
-                  <div className={`w-16 h-16 ${colors.bg} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <CheckCircle2 className={`w-8 h-8 ${colors.text}`} />
+            {servicio.capacidades.map((capacidad, idx) => {
+              // Handle both string and object formats
+              const capacidadText = typeof capacidad === 'string' 
+                ? capacidad 
+                : (capacidad?.titulo || capacidad?.descripcion || 'Capacidad');
+              
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border border-gray-100 group-hover:border-blue-200">
+                    <div className={`w-16 h-16 ${colors.bg} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                      <CheckCircle2 className={`w-8 h-8 ${colors.text}`} />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {typeof capacidad === 'object' && capacidad?.titulo 
+                        ? capacidad.titulo 
+                        : `Capacidad ${idx + 1}`}
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      {typeof capacidad === 'object' && capacidad?.descripcion 
+                        ? capacidad.descripcion 
+                        : capacidadText}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Capacidad {idx + 1}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {capacidad}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -439,7 +468,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                   <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 h-full">
                     <div className="flex items-start justify-between mb-4">
                       <h4 className="font-semibold text-gray-900">
-                        {typeof tech === 'string' ? tech : tech.nombre}
+                        {typeof tech === 'string' ? tech : (tech?.nombre || 'Tecnología')}
                       </h4>
                       {typeof tech !== 'string' && tech.nivel && (
                         <span className={`text-xs px-2 py-1 rounded-full ${
@@ -499,7 +528,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                         <Wrench className={`w-6 h-6 ${colors.text}`} />
                       </div>
                       <h4 className="text-xl font-bold text-gray-900">
-                        {typeof equipo === 'string' ? equipo : equipo.nombre}
+                        {typeof equipo === 'string' ? equipo : (equipo?.nombre || 'Equipo')}
                       </h4>
                     </div>
                     {typeof equipo !== 'string' && equipo.capacidad && (
@@ -633,7 +662,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                     <Award className={`w-8 h-8 ${colors.text}`} />
                   </div>
                   <h4 className="font-semibold text-gray-900 mb-2">
-                    {typeof cert === 'string' ? cert : cert.nombre}
+                    {typeof cert === 'string' ? cert : (cert?.nombre || 'Certificación')}
                   </h4>
                   {typeof cert !== 'string' && (
                     <>
@@ -754,28 +783,373 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {servicio.ventajas.map((ventaja, idx) => (
+              {servicio.ventajas.map((ventaja, idx) => {
+                // Handle both string and object formats
+                const ventajaText = typeof ventaja === 'string' 
+                  ? ventaja 
+                  : (ventaja?.titulo || ventaja?.descripcion || 'Ventaja');
+                
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    viewport={{ once: true }}
+                    className="group"
+                  >
+                    <div className={`bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-${servicio.color}-200`}>
+                      <div className="flex items-start gap-4">
+                        <div className={`w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                          <TrendingUp className={`w-6 h-6 ${colors.text}`} />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900 mb-2">
+                            {typeof ventaja === 'object' && ventaja?.titulo 
+                              ? ventaja.titulo 
+                              : `Ventaja ${idx + 1}`}
+                          </h4>
+                          <p className="text-gray-700 leading-relaxed">
+                            {typeof ventaja === 'object' && ventaja?.descripcion 
+                              ? ventaja.descripcion 
+                              : ventajaText}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Gallery Section */}
+      {servicio.imagenesGaleria && servicio.imagenesGaleria.length > 0 && (
+        <section id="galeria" className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Galería de Proyectos
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Ejemplos de trabajos realizados con nuestro servicio de {servicio.titulo}
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {servicio.imagenesGaleria.map((imagen, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group relative h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                >
+                  <Image
+                    src={imagen}
+                    alt={`${servicio.titulo} - Proyecto ${idx + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <p className="text-white font-semibold text-lg">
+                        Proyecto {idx + 1}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Statistics Section */}
+      {servicio.estadisticas && servicio.estadisticas.length > 0 && (
+        <section id="estadisticas" className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Nuestros Números
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Resultados que respaldan nuestra experiencia y calidad
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {servicio.estadisticas.map((stat, idx) => {
+                const StatIcon = getIcon(stat.icon)
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    viewport={{ once: true }}
+                    className="text-center"
+                  >
+                    <div className={`w-20 h-20 ${colors.bg} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+                      <StatIcon className={`w-10 h-10 ${colors.text}`} />
+                    </div>
+                    <h3 className="text-4xl font-bold text-gray-900 mb-2">
+                      {stat.value}
+                    </h3>
+                    <p className="text-gray-600">
+                      {stat.label}
+                    </p>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Process Section */}
+      {servicio.procesoPasos && servicio.procesoPasos.length > 0 && (
+        <section id="proceso" className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Nuestro Proceso
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Metodología paso a paso para garantizar resultados excepcionales
+              </p>
+            </motion.div>
+
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gray-300 md:transform md:-translate-x-1/2"></div>
+              
+              {servicio.procesoPasos.map((paso, idx) => {
+                const StepIcon = getIcon(paso.icon)
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: idx * 0.2 }}
+                    viewport={{ once: true }}
+                    className={`relative flex items-center mb-12 ${
+                      idx % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
+                    }`}
+                  >
+                    <div className={`w-full md:w-5/12 ${idx % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+                      <div className="bg-white rounded-2xl p-8 shadow-lg">
+                        <div className={`flex items-center gap-4 mb-4 ${idx % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
+                          <div className={`w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center`}>
+                            <StepIcon className={`w-6 h-6 ${colors.text}`} />
+                          </div>
+                          <h3 className="text-xl font-bold text-gray-900">
+                            {paso.title}
+                          </h3>
+                        </div>
+                        <p className="text-gray-700">
+                          {paso.description}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Timeline dot */}
+                    <div className={`absolute left-8 md:left-1/2 w-4 h-4 ${colors.bg} rounded-full transform md:-translate-x-1/2 ring-4 ring-white`}>
+                      <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${colors.bg}`}></div>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Competencies Radar Chart Section */}
+      {servicio.competencias && servicio.competencias.length > 0 && (
+        <section id="competencias" className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Nuestras Competencias
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Áreas de especialización y nivel de expertise
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="order-2 lg:order-1">
+                <div className="space-y-6">
+                  {servicio.competencias.map((comp, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <h4 className="font-semibold text-gray-900">{comp.label}</h4>
+                        <span className="text-sm font-medium text-gray-600">{comp.value}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <motion.div
+                          className={`h-3 rounded-full ${colors.bg}`}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${comp.value}%` }}
+                          transition={{ duration: 1, delay: idx * 0.1 }}
+                          viewport={{ once: true }}
+                        />
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="order-1 lg:order-2 flex justify-center">
+                <div className={`w-80 h-80 ${colors.bg} rounded-full opacity-10 relative`}>
+                  <div className="absolute inset-8 bg-white rounded-full shadow-inner flex items-center justify-center">
+                    <Radar className={`w-24 h-24 ${colors.text} opacity-50`} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Success Cases Section */}
+      {servicio.casosExito && servicio.casosExito.length > 0 && (
+        <section id="casos" className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Casos de Éxito
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Proyectos destacados que demuestran nuestra capacidad y experiencia
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {servicio.casosExito.map((caso, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
+                >
+                  <div className={`h-2 ${colors.bg}`}></div>
+                  <div className="p-8">
+                    <Trophy className={`w-12 h-12 ${colors.text} opacity-50 mb-4`} />
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {caso.titulo}
+                    </h3>
+                    <p className="text-gray-700 mb-6">
+                      {caso.descripcion}
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span className="text-sm text-gray-600">Resultado</span>
+                        <span className="font-semibold text-gray-900">{caso.metrica1}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span className="text-sm text-gray-600">Tiempo</span>
+                        <span className="font-semibold text-gray-900">{caso.metrica2}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span className="text-sm text-gray-600">Ahorro</span>
+                        <span className="font-semibold text-gray-900">{caso.metrica3}</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Testimonials Section */}
+      {servicio.testimonios && servicio.testimonios.length > 0 && (
+        <section id="testimonios" className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Lo que dicen nuestros clientes
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Testimonios reales de empresas que han confiado en nosotros
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {servicio.testimonios.map((testimonio, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="group"
+                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <div className={`bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-${servicio.color}-200`}>
-                    <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                        <TrendingUp className={`w-6 h-6 ${colors.text}`} />
-                      </div>
-                      <div>
-                        <h4 className="text-xl font-bold text-gray-900 mb-2">
-                          Ventaja {idx + 1}
-                        </h4>
-                        <p className="text-gray-700 leading-relaxed">
-                          {ventaja}
-                        </p>
-                      </div>
+                  <Quote className={`w-10 h-10 ${colors.text} opacity-30 mb-4`} />
+                  <p className="text-gray-700 mb-6 italic">
+                    "{testimonio.texto}"
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 ${colors.bg} rounded-full flex items-center justify-center text-white font-bold`}>
+                      {testimonio.cliente.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        {testimonio.cliente}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {testimonio.cargo}
+                      </p>
                     </div>
                   </div>
                 </motion.div>

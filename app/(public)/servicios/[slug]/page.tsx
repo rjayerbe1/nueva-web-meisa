@@ -23,21 +23,70 @@ async function getServicio(slug: string) {
 
   const colors = getServiceColors(servicio.color || 'blue')
   
+  // Helper to extract items from structured sections
+  const extractItems = (data: any): string[] => {
+    if (!data) return []
+    if (Array.isArray(data)) {
+      // Filter out non-string items and convert objects to strings if needed
+      return data.map(item => {
+        if (typeof item === 'string') return item
+        if (typeof item === 'object' && item !== null) {
+          // If it's an object with titulo, use that
+          if (item.titulo) return item.titulo
+          // If it's an object with nombre, use that
+          if (item.nombre) return item.nombre
+          // Otherwise, try to stringify it
+          return JSON.stringify(item)
+        }
+        return String(item)
+      })
+    }
+    if (data.items && Array.isArray(data.items)) {
+      return data.items.map(item => {
+        if (typeof item === 'string') return item
+        if (typeof item === 'object' && item !== null) {
+          if (item.titulo) return item.titulo
+          if (item.nombre) return item.nombre
+          return JSON.stringify(item)
+        }
+        return String(item)
+      })
+    }
+    return []
+  }
+
+  // Helper to extract structured data (objects) from sections
+  const extractStructuredData = (data: any): any[] => {
+    if (!data) return []
+    if (Array.isArray(data)) {
+      // Ensure each item is an object, not a string
+      return data.filter(item => typeof item === 'object' && item !== null)
+    }
+    if (data.items && Array.isArray(data.items)) {
+      return data.items.filter(item => typeof item === 'object' && item !== null)
+    }
+    // If data is an object with titulo/descripcion, wrap it in an array
+    if (typeof data === 'object' && data.titulo) {
+      return [data]
+    }
+    return []
+  }
+
   return {
     id: servicio.id,
     slug: servicio.slug,
     titulo: servicio.titulo || servicio.nombre,
     subtitulo: servicio.subtitulo || '',
     descripcion: servicio.descripcion,
-    capacidades: servicio.capacidades,
-    tecnologias: servicio.tecnologias as any,
-    normativas: servicio.normativas as any,
-    equipamiento: servicio.equipamiento as any,
-    certificaciones: servicio.certificaciones as any,
-    metodologia: servicio.metodologia as any,
-    ventajas: servicio.ventajas as any,
-    equipos: servicio.equipos as any,
-    seguridad: servicio.seguridad as any,
+    capacidades: Array.isArray(servicio.capacidades) ? servicio.capacidades : [],
+    tecnologias: extractStructuredData(servicio.tecnologias),
+    normativas: extractItems(servicio.normativas),
+    equipamiento: extractStructuredData(servicio.equipamiento),
+    certificaciones: extractStructuredData(servicio.certificaciones),
+    metodologia: extractStructuredData(servicio.metodologia),
+    ventajas: servicio.ventajas || [],
+    equipos: extractItems(servicio.equipos),
+    seguridad: extractItems(servicio.seguridad),
     expertise: {
       titulo: servicio.expertiseTitulo || 'Nuestra Experiencia',
       descripcion: servicio.expertiseDescripcion || ''
@@ -47,7 +96,18 @@ async function getServicio(slug: string) {
     color: servicio.color || 'blue',
     bgGradient: servicio.bgGradient || colors.gradient,
     metaTitle: servicio.metaTitle,
-    metaDescription: servicio.metaDescription
+    metaDescription: servicio.metaDescription,
+    // New enhanced fields - these are already arrays
+    imagenesGaleria: Array.isArray(servicio.imagenesGaleria) ? servicio.imagenesGaleria : [],
+    estadisticas: Array.isArray(servicio.estadisticas) ? servicio.estadisticas : [],
+    procesoPasos: Array.isArray(servicio.procesoPasos) ? servicio.procesoPasos : [],
+    competencias: Array.isArray(servicio.competencias) ? servicio.competencias : [],
+    tablaComparativa: servicio.tablaComparativa || { headers: [], rows: [] },
+    videoDemostrativo: servicio.videoDemostrativo,
+    casosExito: Array.isArray(servicio.casosExito) ? servicio.casosExito : [],
+    testimonios: Array.isArray(servicio.testimonios) ? servicio.testimonios : [],
+    preguntasFrecuentes: Array.isArray(servicio.preguntasFrecuentes) ? servicio.preguntasFrecuentes : [],
+    recursosDescargables: Array.isArray(servicio.recursosDescargables) ? servicio.recursosDescargables : []
   }
 }
 

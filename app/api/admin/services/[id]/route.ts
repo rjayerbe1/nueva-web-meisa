@@ -92,7 +92,18 @@ export async function PUT(
         destacado: data.destacado || false,
         activo: data.activo !== undefined ? data.activo : true,
         metaTitle: data.metaTitle || null,
-        metaDescription: data.metaDescription || null
+        metaDescription: data.metaDescription || null,
+        // New fields for enhanced service detail page
+        imagenesGaleria: data.imagenesGaleria || null,
+        estadisticas: data.estadisticas || null,
+        procesoPasos: data.procesoPasos || null,
+        competencias: data.competencias || null,
+        tablaComparativa: data.tablaComparativa || null,
+        videoDemostrativo: data.videoDemostrativo || null,
+        casosExito: data.casosExito || null,
+        testimonios: data.testimonios || null,
+        preguntasFrecuentes: data.preguntasFrecuentes || null,
+        recursosDescargables: data.recursosDescargables || null
       }
     })
 
