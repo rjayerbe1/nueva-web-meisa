@@ -115,6 +115,7 @@ export function Navbar() {
                   src="/images/logo/logo-meisa.png"
                   alt="MEISA - Metálicas e Ingeniería"
                   fill
+                  sizes="192px"
                   className="object-contain transition-transform group-hover:scale-105"
                   priority
                 />

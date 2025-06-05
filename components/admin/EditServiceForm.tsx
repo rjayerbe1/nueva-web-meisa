@@ -32,7 +32,6 @@ interface Service {
   subtitulo?: string
   descripcion: string
   caracteristicas?: string[]
-  capacidades?: string[]
   orden: number
   icono: string | null
   color?: string
@@ -47,12 +46,8 @@ interface Service {
   expertiseDescripcion?: string
   tecnologias?: any
   equipamiento?: any
-  certificaciones?: any
   normativas?: any
-  metodologia?: any
-  ventajas?: any
   equipos?: any
-  seguridad?: any
   [key: string]: any
 }
 
@@ -82,7 +77,6 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
     subtitulo: '',
     descripcion: '',
     caracteristicas: [''],
-    capacidades: [],
     orden: 1,
     icono: 'Settings',
     color: 'blue',
@@ -97,15 +91,10 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
     expertiseDescripcion: '',
     tecnologias: null,
     equipamiento: null,
-    certificaciones: null,
     normativas: null,
-    metodologia: null,
-    ventajas: null,
     equipos: null,
-    seguridad: null
   })
   
-  const [newCapacidad, setNewCapacidad] = useState('')
   const [activeSection, setActiveSection] = useState<string>('')
   const [newSectionItem, setNewSectionItem] = useState('')
 
@@ -124,7 +113,6 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
           setFormData({
             ...service,
             caracteristicas: (service.caracteristicas && service.caracteristicas.length > 0) ? service.caracteristicas : [''],
-            capacidades: service.capacidades || [],
             icono: service.icono || 'Settings',
             color: service.color || 'blue',
             bgGradient: service.bgGradient || '',
@@ -133,12 +121,8 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
             activo: service.activo !== undefined ? service.activo : true,
             tecnologias: service.tecnologias || null,
             equipamiento: service.equipamiento || null,
-            certificaciones: service.certificaciones || null,
             normativas: service.normativas || null,
-            metodologia: service.metodologia || null,
-            ventajas: service.ventajas || null,
             equipos: service.equipos || null,
-            seguridad: service.seguridad || null
           })
         } else if (response.status === 401) {
           // Si no está autenticado, redirigir al login
@@ -239,17 +223,6 @@ export default function EditServiceForm({ serviceId }: EditServiceFormProps) {
     }))
   }
 
-  // Handle capacidades
-  const addCapacidad = () => {
-    if (newCapacidad.trim()) {
-      handleChange('capacidades', [...formData.capacidades, newCapacidad.trim()])
-      setNewCapacidad('')
-    }
-  }
-
-  const removeCapacidad = (index: number) => {
-    handleChange('capacidades', formData.capacidades.filter((_, i) => i !== index))
-  }
 
   // Handle JSON sections
   const initializeSection = (sectionKey: string, titulo: string) => {

@@ -65,15 +65,10 @@ interface ServicioData {
   titulo: string
   subtitulo: string
   descripcion: string
-  capacidades: (string | { titulo?: string; descripcion?: string })[]
   tecnologias?: TecnologiaItem[]
   equipamiento?: EquipamientoItem[]
   equipos?: string[]
-  certificaciones?: CertificacionItem[]
-  metodologia?: MetodologiaFase[]
   normativas?: string[]
-  seguridad?: string[]
-  ventajas?: (string | { titulo?: string; descripcion?: string })[]
   expertise: { titulo: string; descripcion: string }
   imagen: string
   icono: string
@@ -83,9 +78,6 @@ interface ServicioData {
   imagenesGaleria?: string[]
   estadisticas?: Array<{ label: string; value: string; icon: string }>
   procesoPasos?: Array<{ title: string; description: string; icon: string }>
-  competencias?: Array<{ label: string; value: number }>
-  casosExito?: Array<{ titulo: string; descripcion: string; metrica1: string; metrica2: string; metrica3: string }>
-  testimonios?: Array<{ cliente: string; cargo: string; texto: string }>
 }
 
 interface OtroServicio {
@@ -107,6 +99,7 @@ interface ServicioDetailEnhancedProps {
 
 export default function ServicioDetailEnhanced({ servicio, otrosServicios }: ServicioDetailEnhancedProps) {
   const [activeSection, setActiveSection] = useState('overview')
+  const [showFloatingNav, setShowFloatingNav] = useState(false)
   const { scrollY } = useScroll()
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0])
   const heroScale = useTransform(scrollY, [0, 300], [1, 1.1])
@@ -122,22 +115,19 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
   // Navigation sections
   const sections = [
     { id: 'overview', label: 'Descripción General', icon: BookOpen },
-    { id: 'galeria', label: 'Galería', icon: ImageIcon },
-    { id: 'estadisticas', label: 'Estadísticas', icon: BarChart3 },
-    { id: 'capacidades', label: 'Capacidades', icon: Target },
-    { id: 'proceso', label: 'Proceso', icon: GitBranch },
-    { id: 'competencias', label: 'Competencias', icon: Radar },
-    { id: 'tecnologia', label: 'Tecnología', icon: Zap },
-    { id: 'casos', label: 'Casos de Éxito', icon: Trophy },
-    { id: 'testimonios', label: 'Testimonios', icon: MessageSquare },
-    { id: 'certificaciones', label: 'Certificaciones', icon: Award },
     { id: 'normativas', label: 'Normativas', icon: Shield },
-    { id: 'ventajas', label: 'Ventajas', icon: TrendingUp }
+    { id: 'estadisticas', label: 'Estadísticas', icon: BarChart3 },
+    { id: 'proceso', label: 'Proceso', icon: GitBranch }
   ]
 
   // Scroll spy effect
   useEffect(() => {
     const handleScroll = () => {
+      const scrollPosition = window.scrollY
+      
+      // Show floating nav after scrolling past hero
+      setShowFloatingNav(scrollPosition > 600)
+      
       const sectionElements = sections.map(section => ({
         id: section.id,
         element: document.getElementById(section.id)
@@ -176,6 +166,18 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Progress bar at the very top */}
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-1 z-50 bg-gray-200"
+      >
+        <motion.div
+          className={`h-full bg-gradient-to-r ${colors.gradient}`}
+          style={{
+            scaleX: useTransform(scrollY, [0, 3000], [0, 1]),
+            transformOrigin: "left"
+          }}
+        />
+      </motion.div>
       {/* Enhanced Hero Section with Parallax */}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <motion.div 
@@ -253,10 +255,19 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
         </div>
       </section>
 
-      {/* Sticky Navigation - Fixed to account for navbar height */}
-      <div className="sticky top-16 md:top-20 z-40 bg-white/95 backdrop-blur-md shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto py-4 gap-2 scrollbar-hide">
+
+      {/* Mobile Floating Navigation */}
+      <motion.div
+        className="fixed bottom-20 left-4 right-4 z-50 lg:hidden"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ 
+          opacity: showFloatingNav ? 1 : 0, 
+          y: showFloatingNav ? 0 : 100 
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-3 border border-gray-200">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
             {sections.map((section) => {
               const SectionIcon = section.icon
               const isActive = activeSection === section.id
@@ -265,21 +276,89 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 <button
                   key={section.id}
                   onClick={() => scrollToSection(section.id)}
-                  className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium whitespace-nowrap transition-all duration-300 text-sm md:text-base ${
+                  className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all duration-300 min-w-[80px] ${
                     isActive 
-                      ? `${colors.bg} ${colors.text} shadow-lg scale-105` 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? `${colors.bg} ${colors.text}` 
+                      : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <SectionIcon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{section.label}</span>
-                  <span className="sm:hidden">{section.label.split(' ')[0]}</span>
+                  <SectionIcon className={`w-5 h-5 ${isActive ? 'animate-pulse' : ''}`} />
+                  <span className="text-xs font-medium">
+                    {section.label.split(' ')[0]}
+                  </span>
                 </button>
               )
             })}
           </div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Desktop Floating Side Navigation */}
+      <motion.div
+        className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ 
+          opacity: showFloatingNav ? 1 : 0, 
+          x: showFloatingNav ? 0 : 100 
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-4 border border-gray-200">
+          <div className="space-y-3">
+            {sections.map((section) => {
+              const SectionIcon = section.icon
+              const isActive = activeSection === section.id
+              
+              return (
+                <motion.button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`group flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden ${
+                    isActive 
+                      ? `${colors.bg} ${colors.text}` 
+                      : 'hover:bg-gray-100 text-gray-600'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {/* Animated background for active state */}
+                  {isActive && (
+                    <motion.div
+                      className={`absolute inset-0 bg-gradient-to-r ${colors.gradient} opacity-20`}
+                      initial={{ x: -100 }}
+                      animate={{ x: 0 }}
+                      transition={{ type: "spring", stiffness: 200 }}
+                    />
+                  )}
+                  
+                  <SectionIcon className={`w-5 h-5 relative z-10 ${isActive ? 'animate-pulse' : ''}`} />
+                  <span className={`font-medium text-sm relative z-10 ${isActive ? 'font-bold' : ''}`}>
+                    {section.label}
+                  </span>
+                  
+                  {/* Active indicator bar */}
+                  {isActive && (
+                    <motion.div
+                      className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full"
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    />
+                  )}
+                </motion.button>
+              )
+            })}
+          </div>
+          
+          {/* Current section indicator */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <p className="text-xs text-gray-500 text-center mb-2">Sección actual:</p>
+            <p className={`font-bold text-center ${colors.text.replace('text-', '').includes('white') ? 'text-gray-800' : colors.text}`}>
+              {sections.find(s => s.id === activeSection)?.label}
+            </p>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Overview Section */}
       <section id="overview" className="py-20">
@@ -293,7 +372,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
               viewport={{ once: true }}
             >
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Descripción General del Servicio
+                {servicio.titulo}
               </h2>
               <div className="prose prose-lg text-gray-700">
                 <p className="leading-relaxed mb-6">
@@ -332,17 +411,19 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 <div className="space-y-4">
                   <div className="relative h-48 rounded-2xl overflow-hidden shadow-xl">
                     <Image
-                      src={servicio.imagen}
+                      src={servicio.imagenesGaleria?.[0] || servicio.imagen}
                       alt={`${servicio.titulo} 1`}
                       fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 300px"
                       className="object-cover"
                     />
                   </div>
                   <div className="relative h-64 rounded-2xl overflow-hidden shadow-xl">
                     <Image
-                      src={servicio.imagen}
+                      src={servicio.imagenesGaleria?.[1] || servicio.imagen}
                       alt={`${servicio.titulo} 2`}
                       fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 300px"
                       className="object-cover"
                     />
                   </div>
@@ -350,17 +431,19 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 <div className="space-y-4 pt-8">
                   <div className="relative h-64 rounded-2xl overflow-hidden shadow-xl">
                     <Image
-                      src={servicio.imagen}
+                      src={servicio.imagenesGaleria?.[2] || servicio.imagen}
                       alt={`${servicio.titulo} 3`}
                       fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 300px"
                       className="object-cover"
                     />
                   </div>
                   <div className="relative h-48 rounded-2xl overflow-hidden shadow-xl">
                     <Image
-                      src={servicio.imagen}
+                      src={servicio.imagenesGaleria?.[3] || servicio.imagen}
                       alt={`${servicio.titulo} 4`}
                       fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 300px"
                       className="object-cover"
                     />
                   </div>
@@ -380,61 +463,6 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
         </div>
       </section>
 
-      {/* Capacidades Section */}
-      <section id="capacidades" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Nuestras Capacidades
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Contamos con las capacidades técnicas y operativas para ejecutar proyectos de cualquier envergadura
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicio.capacidades.map((capacidad, idx) => {
-              // Handle both string and object formats
-              const capacidadText = typeof capacidad === 'string' 
-                ? capacidad 
-                : (capacidad?.titulo || capacidad?.descripcion || 'Capacidad');
-              
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border border-gray-100 group-hover:border-blue-200">
-                    <div className={`w-16 h-16 ${colors.bg} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                      <CheckCircle2 className={`w-8 h-8 ${colors.text}`} />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">
-                      {typeof capacidad === 'object' && capacidad?.titulo 
-                        ? capacidad.titulo 
-                        : `Capacidad ${idx + 1}`}
-                    </h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      {typeof capacidad === 'object' && capacidad?.descripcion 
-                        ? capacidad.descripcion 
-                        : capacidadText}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* Tecnología Section */}
       {servicio.tecnologias && servicio.tecnologias.length > 0 && (
@@ -551,135 +579,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
         </section>
       )}
 
-      {/* Metodología Section */}
-      {servicio.metodologia && servicio.metodologia.length > 0 && (
-        <section id="metodologia" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Metodología de Trabajo
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Proceso estructurado y probado para garantizar el éxito de cada proyecto
-              </p>
-            </motion.div>
 
-            <div className="relative">
-              {servicio.metodologia.map((fase, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: idx * 0.2 }}
-                  viewport={{ once: true }}
-                  className={`flex items-center gap-8 mb-12 ${idx % 2 === 0 ? 'justify-start' : 'justify-end'}`}
-                >
-                  {/* Timeline line */}
-                  {idx < servicio.metodologia!.length - 1 && (
-                    <div className="absolute left-1/2 top-12 bottom-0 w-0.5 bg-gray-300" />
-                  )}
-                  
-                  <div className={`w-full max-w-xl ${idx % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                    <div className={`bg-white rounded-2xl p-8 shadow-lg border border-gray-100 ${idx % 2 === 0 ? 'mr-auto' : 'ml-auto'}`}>
-                      <div className={`flex items-center gap-4 mb-4 ${idx % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
-                        <h3 className="text-2xl font-bold text-gray-900">
-                          {typeof fase === 'string' ? `Fase ${idx + 1}` : fase.fase}
-                        </h3>
-                        <div className={`w-12 h-12 ${colors.bg} rounded-full flex items-center justify-center text-white font-bold`}>
-                          {idx + 1}
-                        </div>
-                      </div>
-                      
-                      {typeof fase !== 'string' && (
-                        <>
-                          {fase.actividades && (
-                            <div className="mb-4">
-                              <h4 className="font-semibold text-gray-700 mb-2">Actividades:</h4>
-                              <ul className={`space-y-2 ${idx % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                                {fase.actividades.map((actividad, actIdx) => (
-                                  <li key={actIdx} className="text-gray-600">
-                                    {actividad}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                          
-                          {fase.duracion && (
-                            <p className="text-sm text-gray-500 flex items-center gap-2">
-                              <Clock className="w-4 h-4" />
-                              Duración: {fase.duracion}
-                            </p>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Certificaciones Section */}
-      {servicio.certificaciones && servicio.certificaciones.length > 0 && (
-        <section id="certificaciones" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Certificaciones y Acreditaciones
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Respaldo de calidad y cumplimiento de los más altos estándares
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {servicio.certificaciones.map((cert, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: idx * 0.05 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
-                  className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 text-center"
-                >
-                  <div className={`w-16 h-16 ${colors.bg} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                    <Award className={`w-8 h-8 ${colors.text}`} />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-2">
-                    {typeof cert === 'string' ? cert : (cert?.nombre || 'Certificación')}
-                  </h4>
-                  {typeof cert !== 'string' && (
-                    <>
-                      {cert.entidad && (
-                        <p className="text-sm text-gray-600 mb-1">{cert.entidad}</p>
-                      )}
-                      {cert.vigencia && (
-                        <p className="text-xs text-gray-500">Vigente hasta: {cert.vigencia}</p>
-                      )}
-                    </>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Normativas Section */}
       {servicio.normativas && servicio.normativas.length > 0 && (
@@ -721,158 +621,8 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
         </section>
       )}
 
-      {/* Seguridad Section */}
-      {servicio.seguridad && servicio.seguridad.length > 0 && (
-        <section id="seguridad" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Protocolos de Seguridad
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                La seguridad es nuestra prioridad en cada fase del proyecto
-              </p>
-            </motion.div>
 
-            <div className="bg-white rounded-3xl shadow-xl p-12 border border-gray-100">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {servicio.seguridad.map((protocolo, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                      <HardHat className="w-4 h-4 text-green-600" />
-                    </div>
-                    <p className="text-gray-700">{protocolo}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
-      {/* Ventajas Section */}
-      {servicio.ventajas && servicio.ventajas.length > 0 && (
-        <section id="ventajas" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Ventajas Competitivas
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Lo que nos diferencia y garantiza el éxito de tu proyecto
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {servicio.ventajas.map((ventaja, idx) => {
-                // Handle both string and object formats
-                const ventajaText = typeof ventaja === 'string' 
-                  ? ventaja 
-                  : (ventaja?.titulo || ventaja?.descripcion || 'Ventaja');
-                
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    viewport={{ once: true }}
-                    className="group"
-                  >
-                    <div className={`bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-${servicio.color}-200`}>
-                      <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                          <TrendingUp className={`w-6 h-6 ${colors.text}`} />
-                        </div>
-                        <div>
-                          <h4 className="text-xl font-bold text-gray-900 mb-2">
-                            {typeof ventaja === 'object' && ventaja?.titulo 
-                              ? ventaja.titulo 
-                              : `Ventaja ${idx + 1}`}
-                          </h4>
-                          <p className="text-gray-700 leading-relaxed">
-                            {typeof ventaja === 'object' && ventaja?.descripcion 
-                              ? ventaja.descripcion 
-                              : ventajaText}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Gallery Section */}
-      {servicio.imagenesGaleria && servicio.imagenesGaleria.length > 0 && (
-        <section id="galeria" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Galería de Proyectos
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Ejemplos de trabajos realizados con nuestro servicio de {servicio.titulo}
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {servicio.imagenesGaleria.map((imagen, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group relative h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-                >
-                  <Image
-                    src={imagen}
-                    alt={`${servicio.titulo} - Proyecto ${idx + 1}`}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-white font-semibold text-lg">
-                        Proyecto {idx + 1}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Statistics Section */}
       {servicio.estadisticas && servicio.estadisticas.length > 0 && (
@@ -986,178 +736,8 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
         </section>
       )}
 
-      {/* Competencies Radar Chart Section */}
-      {servicio.competencias && servicio.competencias.length > 0 && (
-        <section id="competencias" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Nuestras Competencias
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Áreas de especialización y nivel de expertise
-              </p>
-            </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1">
-                <div className="space-y-6">
-                  {servicio.competencias.map((comp, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: idx * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <h4 className="font-semibold text-gray-900">{comp.label}</h4>
-                        <span className="text-sm font-medium text-gray-600">{comp.value}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-3">
-                        <motion.div
-                          className={`h-3 rounded-full ${colors.bg}`}
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${comp.value}%` }}
-                          transition={{ duration: 1, delay: idx * 0.1 }}
-                          viewport={{ once: true }}
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="order-1 lg:order-2 flex justify-center">
-                <div className={`w-80 h-80 ${colors.bg} rounded-full opacity-10 relative`}>
-                  <div className="absolute inset-8 bg-white rounded-full shadow-inner flex items-center justify-center">
-                    <Radar className={`w-24 h-24 ${colors.text} opacity-50`} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
-      {/* Success Cases Section */}
-      {servicio.casosExito && servicio.casosExito.length > 0 && (
-        <section id="casos" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Casos de Éxito
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Proyectos destacados que demuestran nuestra capacidad y experiencia
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {servicio.casosExito.map((caso, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
-                >
-                  <div className={`h-2 ${colors.bg}`}></div>
-                  <div className="p-8">
-                    <Trophy className={`w-12 h-12 ${colors.text} opacity-50 mb-4`} />
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">
-                      {caso.titulo}
-                    </h3>
-                    <p className="text-gray-700 mb-6">
-                      {caso.descripcion}
-                    </p>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <span className="text-sm text-gray-600">Resultado</span>
-                        <span className="font-semibold text-gray-900">{caso.metrica1}</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <span className="text-sm text-gray-600">Tiempo</span>
-                        <span className="font-semibold text-gray-900">{caso.metrica2}</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <span className="text-sm text-gray-600">Ahorro</span>
-                        <span className="font-semibold text-gray-900">{caso.metrica3}</span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Testimonials Section */}
-      {servicio.testimonios && servicio.testimonios.length > 0 && (
-        <section id="testimonios" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Lo que dicen nuestros clientes
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Testimonios reales de empresas que han confiado en nosotros
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {servicio.testimonios.map((testimonio, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <Quote className={`w-10 h-10 ${colors.text} opacity-30 mb-4`} />
-                  <p className="text-gray-700 mb-6 italic">
-                    "{testimonio.texto}"
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 ${colors.bg} rounded-full flex items-center justify-center text-white font-bold`}>
-                      {testimonio.cliente.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">
-                        {testimonio.cliente}
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        {testimonio.cargo}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Enhanced CTA Section */}
       <section className={`py-24 bg-gradient-to-br ${servicio.bgGradient} relative overflow-hidden`}>

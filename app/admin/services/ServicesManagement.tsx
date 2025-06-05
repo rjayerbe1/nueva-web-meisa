@@ -141,13 +141,6 @@ export default function ServicesManagement({ initialServices }: ServicesManageme
                   {service.descripcion}
                 </p>
                 
-                {Array.isArray(service.capacidades) && service.capacidades.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-sm font-medium text-gray-600 mb-2">
-                      Capacidades: {service.capacidades.length}
-                    </p>
-                  </div>
-                )}
 
                 <div className="flex gap-4 text-sm text-gray-600 mb-4">
                   {service.expertiseTitulo && (

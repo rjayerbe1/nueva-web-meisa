@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ServicioDetailEnhanced from './ServicioDetailEnhanced'
 import { getServiceColors } from '@/lib/service-colors'
+import { getServiceImages } from '@/lib/service-images'
 
 interface ServicioPageProps {
   params: {
@@ -78,19 +79,10 @@ async function getServicio(slug: string) {
     titulo: servicio.titulo || servicio.nombre,
     subtitulo: servicio.subtitulo || '',
     descripcion: servicio.descripcion,
-    capacidades: Array.isArray(servicio.capacidades) 
-      ? servicio.capacidades as Array<string | { titulo?: string; descripcion?: string }>
-      : [],
     tecnologias: extractStructuredData(servicio.tecnologias),
     normativas: extractItems(servicio.normativas),
     equipamiento: extractStructuredData(servicio.equipamiento),
-    certificaciones: extractStructuredData(servicio.certificaciones),
-    metodologia: extractStructuredData(servicio.metodologia),
-    ventajas: Array.isArray(servicio.ventajas) 
-      ? servicio.ventajas as Array<string | { titulo?: string; descripcion?: string }>
-      : [],
     equipos: extractItems(servicio.equipos),
-    seguridad: extractItems(servicio.seguridad),
     expertise: {
       titulo: servicio.expertiseTitulo || 'Nuestra Experiencia',
       descripcion: servicio.expertiseDescripcion || ''
@@ -102,26 +94,17 @@ async function getServicio(slug: string) {
     metaTitle: servicio.metaTitle,
     metaDescription: servicio.metaDescription,
     // New enhanced fields - these are already arrays
-    imagenesGaleria: Array.isArray(servicio.imagenesGaleria) 
+    imagenesGaleria: Array.isArray(servicio.imagenesGaleria) && servicio.imagenesGaleria.length > 0
       ? servicio.imagenesGaleria as string[]
-      : [],
+      : getServiceImages(servicio.slug),
     estadisticas: Array.isArray(servicio.estadisticas) 
       ? servicio.estadisticas as Array<{ label: string; value: string; icon: string }>
       : [],
     procesoPasos: Array.isArray(servicio.procesoPasos) 
       ? servicio.procesoPasos as Array<{ title: string; description: string; icon: string }>
       : [],
-    competencias: Array.isArray(servicio.competencias) 
-      ? servicio.competencias as Array<{ label: string; value: number }>
-      : [],
     tablaComparativa: servicio.tablaComparativa || { headers: [], rows: [] },
     videoDemostrativo: servicio.videoDemostrativo,
-    casosExito: Array.isArray(servicio.casosExito) 
-      ? servicio.casosExito as Array<{ titulo: string; descripcion: string; metrica1: string; metrica2: string; metrica3: string }>
-      : [],
-    testimonios: Array.isArray(servicio.testimonios) 
-      ? servicio.testimonios as Array<{ cliente: string; cargo: string; texto: string }>
-      : [],
     preguntasFrecuentes: Array.isArray(servicio.preguntasFrecuentes) ? servicio.preguntasFrecuentes : [],
     recursosDescargables: Array.isArray(servicio.recursosDescargables) ? servicio.recursosDescargables : []
   }

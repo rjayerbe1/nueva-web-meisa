@@ -27,7 +27,6 @@ interface Service {
   subtitulo?: string
   descripcion: string
   caracteristicas?: string[]
-  capacidades?: string[]
   orden: number
   icono: string | null
   color?: string
@@ -42,20 +41,13 @@ interface Service {
   expertiseDescripcion?: string
   tecnologias?: any
   equipamiento?: any
-  certificaciones?: any
   normativas?: any
-  metodologia?: any
-  ventajas?: any
   equipos?: any
-  seguridad?: any
   imagenesGaleria?: any
   estadisticas?: any
   procesoPasos?: any
-  casosExito?: any
-  testimonios?: any
   preguntasFrecuentes?: any
   recursosDescargables?: any
-  competencias?: any
   tablaComparativa?: any
   videoDemostrativo?: string
   [key: string]: any
@@ -138,11 +130,8 @@ export default function ServicesContentManagement({ initialServices }: ServicesC
       galeria: safeLength(service.imagenesGaleria),
       estadisticas: safeLength(service.estadisticas),
       procesos: safeLength(service.procesoPasos),
-      casos: safeLength(service.casosExito),
-      testimonios: safeLength(service.testimonios),
       faqs: safeLength(service.preguntasFrecuentes),
-      recursos: safeLength(service.recursosDescargables),
-      competencias: safeLength(service.competencias)
+      recursos: safeLength(service.recursosDescargables)
     }
   }
 
@@ -212,12 +201,6 @@ export default function ServicesContentManagement({ initialServices }: ServicesC
                             {stats.estadisticas}
                           </Badge>
                         )}
-                        {stats.casos > 0 && (
-                          <Badge variant="secondary" className="text-xs">
-                            <Award className="h-3 w-3 mr-1" />
-                            {stats.casos}
-                          </Badge>
-                        )}
                       </div>
                       <span className="text-gray-400">
                         {totalContent} elementos
@@ -267,16 +250,6 @@ export default function ServicesContentManagement({ initialServices }: ServicesC
                     </div>
                     <Badge variant={stats.procesos > 0 ? "default" : "secondary"}>
                       {stats.procesos}
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Award className="h-4 w-4 text-orange-500" />
-                      <span className="text-sm">Casos de Éxito</span>
-                    </div>
-                    <Badge variant={stats.casos > 0 ? "default" : "secondary"}>
-                      {stats.casos}
                     </Badge>
                   </div>
                   

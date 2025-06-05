@@ -83,15 +83,10 @@ async function getServicios() {
       titulo: servicio.titulo || servicio.nombre,
       subtitulo: servicio.subtitulo || '',
       descripcion: servicio.descripcion,
-      capacidades: servicio.capacidades,
       tecnologias: servicio.tecnologias as any,
       normativas: servicio.normativas as any,
       equipamiento: servicio.equipamiento as any,
-      certificaciones: servicio.certificaciones as any,
-      metodologia: servicio.metodologia as any,
-      ventajas: servicio.ventajas as any,
       equipos: servicio.equipos as any,
-      seguridad: servicio.seguridad as any,
       expertise: {
         titulo: servicio.expertiseTitulo || 'Nuestra Experiencia',
         descripcion: servicio.expertiseDescripcion || ''

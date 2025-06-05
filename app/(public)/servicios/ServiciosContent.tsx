@@ -21,15 +21,10 @@ interface ServicioData {
   titulo: string
   subtitulo: string
   descripcion: string
-  capacidades: string[]
   tecnologias?: { titulo: string; items: string[] }
   normativas?: { titulo: string; items: string[] }
   equipamiento?: { titulo: string; items: string[] }
-  certificaciones?: { titulo: string; items: string[] }
-  metodologia?: { titulo: string; items: string[] }
-  ventajas?: { titulo: string; items: string[] }
   equipos?: { titulo: string; items: string[] }
-  seguridad?: { titulo: string; items: string[] }
   expertise: { titulo: string; descripcion: string }
   imagen: string
   icono: string
@@ -642,34 +637,9 @@ export default function ServiciosContent({
                   </div>
                 </div>
 
-                {/* Capacidades Grid */}
-                <div className="mb-20">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-12 text-center">
-                    Capacidades Principales
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    {servicio.capacidades.map((capacidad, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: idx * 0.1 }}
-                        viewport={{ once: true }}
-                        className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:${colors.bgHover} transition-colors shadow-sm`}>
-                            <CheckCircle2 className={`w-6 h-6 ${colors.text}`} />
-                          </div>
-                          <p className="text-gray-800 font-medium leading-relaxed">{capacidad}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
 
                 {/* Información Adicional - Layout Mejorado */}
-                {(servicio.normativas || servicio.certificaciones || servicio.seguridad || servicio.ventajas) && (
+                {(servicio.normativas) && (
                   <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
                       {/* Sección de Estándares/Certificaciones */}
@@ -684,16 +654,10 @@ export default function ServiciosContent({
                           <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
                             <Shield className="w-6 h-6 text-green-600" />
                           </div>
-                          {servicio.normativas?.titulo || 
-                           servicio.certificaciones?.titulo || 
-                           servicio.seguridad?.titulo || 
-                           servicio.ventajas?.titulo}
+                          {servicio.normativas?.titulo}
                         </h3>
                         <ul className="space-y-5">
-                          {(servicio.normativas?.items || 
-                            servicio.certificaciones?.items || 
-                            servicio.seguridad?.items || 
-                            servicio.ventajas?.items)?.map((item, idx) => (
+                          {(servicio.normativas?.items)?.map((item, idx) => (
                             <li key={idx} className="flex items-start gap-4">
                               <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                                 <CheckCircle2 className="w-4 h-4 text-green-600" />

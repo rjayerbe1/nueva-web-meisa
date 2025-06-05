@@ -196,30 +196,22 @@ model Servicio {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
   bgGradient           String?
-  capacidades          String[] @default([])
-  certificaciones      Json?
   color                String   @default("blue")
   equipamiento         Json?
   equipos              Json?
   expertiseDescripcion String?
   expertiseTitulo      String?
-  metodologia          Json?
   normativas           Json?
-  seguridad            Json?
   subtitulo            String?
   tecnologias          Json?
   titulo               String?
-  ventajas             Json?
   
   // New fields for enhanced service detail page
   imagenesGaleria      Json?    // Array of image URLs for gallery
   estadisticas         Json?    // Key stats like years of experience, projects completed
   procesoPasos         Json?    // Process flow steps with icons and descriptions
-  competencias         Json?    // Competency levels for radar chart
   tablaComparativa     Json?    // Comparison table data
   videoDemostrativo    String?  // YouTube or video URL
-  casosExito           Json?    // Success stories with metrics
-  testimonios          Json?    // Client testimonials
   preguntasFrecuentes  Json?    // FAQs specific to this service
   recursosDescargables Json?    // PDFs, brochures, technical specs
   

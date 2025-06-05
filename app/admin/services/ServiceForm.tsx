@@ -51,15 +51,10 @@ export default function ServiceForm({ service }: ServiceFormProps) {
     titulo: service?.titulo || '',
     subtitulo: service?.subtitulo || '',
     descripcion: service?.descripcion || '',
-    capacidades: service?.capacidades || [],
     tecnologias: (service?.tecnologias as unknown as JsonSection) || null,
     equipamiento: (service?.equipamiento as unknown as JsonSection) || null,
-    certificaciones: (service?.certificaciones as unknown as JsonSection) || null,
     normativas: (service?.normativas as unknown as JsonSection) || null,
-    metodologia: (service?.metodologia as unknown as JsonSection) || null,
-    ventajas: (service?.ventajas as unknown as JsonSection) || null,
     equipos: (service?.equipos as unknown as JsonSection) || null,
-    seguridad: (service?.seguridad as unknown as JsonSection) || null,
     expertiseTitulo: service?.expertiseTitulo || '',
     expertiseDescripcion: service?.expertiseDescripcion || '',
     icono: service?.icono || 'Settings',
@@ -74,7 +69,6 @@ export default function ServiceForm({ service }: ServiceFormProps) {
     metaDescription: service?.metaDescription || '',
   })
 
-  const [newCapacidad, setNewCapacidad] = useState('')
   const [activeSection, setActiveSection] = useState<string>('')
   const [newSectionItem, setNewSectionItem] = useState('')
 
@@ -104,17 +98,6 @@ export default function ServiceForm({ service }: ServiceFormProps) {
     }
   }
 
-  // Handle capacidades
-  const addCapacidad = () => {
-    if (newCapacidad.trim()) {
-      handleChange('capacidades', [...formData.capacidades, newCapacidad.trim()])
-      setNewCapacidad('')
-    }
-  }
-
-  const removeCapacidad = (index: number) => {
-    handleChange('capacidades', formData.capacidades.filter((_, i) => i !== index))
-  }
 
   // Handle JSON sections
   const initializeSection = (sectionKey: string, titulo: string) => {
@@ -316,41 +299,6 @@ export default function ServiceForm({ service }: ServiceFormProps) {
 
         {/* Tab Contenido */}
         <TabsContent value="contenido" className="space-y-6">
-          {/* Capacidades */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Capacidades Principales</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  value={newCapacidad}
-                  onChange={(e) => setNewCapacidad(e.target.value)}
-                  placeholder="Agregar capacidad..."
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCapacidad())}
-                />
-                <Button type="button" onClick={addCapacidad} variant="outline">
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="space-y-2">
-                {formData.capacidades.map((cap, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <Badge variant="secondary" className="flex-1 justify-between">
-                      {cap}
-                      <button
-                        type="button"
-                        onClick={() => removeCapacidad(index)}
-                        className="ml-2"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Expertise */}
           <Card>
@@ -390,12 +338,8 @@ export default function ServiceForm({ service }: ServiceFormProps) {
                 {[
                   { key: 'tecnologias', label: 'Tecnologías', defaultTitle: 'Tecnología de Vanguardia' },
                   { key: 'equipamiento', label: 'Equipamiento', defaultTitle: 'Equipamiento Especializado' },
-                  { key: 'certificaciones', label: 'Certificaciones', defaultTitle: 'Certificaciones de Calidad' },
                   { key: 'normativas', label: 'Normativas', defaultTitle: 'Cumplimiento Normativo' },
-                  { key: 'metodologia', label: 'Metodología', defaultTitle: 'Metodología de Trabajo' },
-                  { key: 'ventajas', label: 'Ventajas', defaultTitle: 'Ventajas Competitivas' },
                   { key: 'equipos', label: 'Equipos', defaultTitle: 'Equipos Especializados' },
-                  { key: 'seguridad', label: 'Seguridad', defaultTitle: 'Seguridad Industrial' },
                 ].map(section => {
                   const sectionData = formData[section.key as keyof typeof formData] as JsonSection | null
                   

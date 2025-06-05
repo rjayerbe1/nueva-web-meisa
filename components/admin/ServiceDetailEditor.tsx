@@ -66,25 +66,17 @@ export default function ServiceDetailEditor({ service, onSave, loading }: Servic
 
   const [formData, setFormData] = useState({
     ...service,
-    capacidades: Array.isArray(service.capacidades) ? service.capacidades : [],
     tecnologias: initializeSection(service.tecnologias, 'Tecnología de Vanguardia'),
     normativas: initializeSection(service.normativas, 'Cumplimiento Normativo Integral'),
-    ventajas: initializeSection(service.ventajas, 'Valor Agregado MEISA'),
     equipamiento: initializeSection(service.equipamiento, 'Equipamiento Especializado'),
-    certificaciones: initializeSection(service.certificaciones, 'Certificaciones de Calidad'),
-    metodologia: initializeSection(service.metodologia, 'Metodología de Trabajo'),
     equipos: initializeSection(service.equipos, 'Equipos Especializados'),
-    seguridad: initializeSection(service.seguridad, 'Seguridad Industrial'),
     imagenesGaleria: Array.isArray(service.imagenesGaleria) ? service.imagenesGaleria : [],
     estadisticas: Array.isArray(service.estadisticas) ? service.estadisticas : [
       { label: 'Años de experiencia', value: '25+', icon: 'Clock' },
       { label: 'Proyectos completados', value: '500+', icon: 'Building2' }
     ],
     procesoPasos: Array.isArray(service.procesoPasos) ? service.procesoPasos : [],
-    competencias: Array.isArray(service.competencias) ? service.competencias : [],
     tablaComparativa: service.tablaComparativa || { headers: [], rows: [] },
-    casosExito: Array.isArray(service.casosExito) ? service.casosExito : [],
-    testimonios: Array.isArray(service.testimonios) ? service.testimonios : [],
     preguntasFrecuentes: Array.isArray(service.preguntasFrecuentes) ? service.preguntasFrecuentes : [],
     recursosDescargables: Array.isArray(service.recursosDescargables) ? service.recursosDescargables : []
   })
@@ -121,14 +113,11 @@ export default function ServiceDetailEditor({ service, onSave, loading }: Servic
   return (
     <>
       <Tabs defaultValue="general" className="w-full">
-        <TabsList className="grid grid-cols-8 w-full text-xs">
+        <TabsList className="grid grid-cols-5 w-full text-xs">
           <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="capacidades">Capacidades</TabsTrigger>
-          <TabsTrigger value="secciones">Secciones</TabsTrigger>
           <TabsTrigger value="galeria">Galería</TabsTrigger>
           <TabsTrigger value="estadisticas">Stats</TabsTrigger>
           <TabsTrigger value="proceso">Proceso</TabsTrigger>
-          <TabsTrigger value="casos">Casos</TabsTrigger>
           <TabsTrigger value="seo">SEO</TabsTrigger>
         </TabsList>
 
@@ -780,10 +769,11 @@ export default function ServiceDetailEditor({ service, onSave, loading }: Servic
           <Card>
             <CardHeader>
               <CardTitle>Galería de Imágenes</CardTitle>
+              <p className="text-sm text-gray-500">Máximo 4 imágenes para la vista previa del servicio</p>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                {formData.imagenesGaleria?.map((imagen: string, index: number) => (
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                {formData.imagenesGaleria?.slice(0, 4).map((imagen: string, index: number) => (
                   <div key={index} className="relative group">
                     <img
                       src={imagen}
@@ -799,12 +789,19 @@ export default function ServiceDetailEditor({ service, onSave, loading }: Servic
                   </div>
                 ))}
               </div>
-              <ImageUploader
-                images={formData.imagenesGaleria || []}
-                onUpload={(urls) => handleArrayFieldAdd('imagenesGaleria', urls[0])}
-                maxFiles={1}
-                label="Agregar Imagen a Galería"
-              />
+              {(!formData.imagenesGaleria || formData.imagenesGaleria.length < 4) && (
+                <ImageUploader
+                  images={formData.imagenesGaleria || []}
+                  onUpload={(urls) => handleArrayFieldAdd('imagenesGaleria', urls[0])}
+                  maxFiles={1}
+                  label="Agregar Imagen a Galería"
+                />
+              )}
+              {formData.imagenesGaleria && formData.imagenesGaleria.length >= 4 && (
+                <p className="text-sm text-amber-600 text-center py-2">
+                  Has alcanzado el límite de 4 imágenes
+                </p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -874,58 +871,6 @@ export default function ServiceDetailEditor({ service, onSave, loading }: Servic
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Competencias (para gráfico radar)</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {formData.competencias?.map((comp: any, index: number) => (
-                <div key={index} className="flex gap-4 items-end">
-                  <div className="flex-1">
-                    <Label>Competencia</Label>
-                    <Input
-                      value={comp.label}
-                      onChange={(e) => {
-                        const updated = [...formData.competencias]
-                        updated[index] = { ...comp, label: e.target.value }
-                        setFormData({ ...formData, competencias: updated })
-                      }}
-                      placeholder="Ej: Diseño BIM"
-                    />
-                  </div>
-                  <div className="w-32">
-                    <Label>Nivel (0-100)</Label>
-                    <Input
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={comp.value}
-                      onChange={(e) => {
-                        const updated = [...formData.competencias]
-                        updated[index] = { ...comp, value: parseInt(e.target.value) }
-                        setFormData({ ...formData, competencias: updated })
-                      }}
-                    />
-                  </div>
-                  <Button
-                    onClick={() => handleArrayFieldRemove('competencias', index)}
-                    variant="destructive"
-                    size="icon"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <Button
-                onClick={() => handleArrayFieldAdd('competencias', { label: '', value: 50 })}
-                variant="outline"
-                className="w-full"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Agregar Competencia
-              </Button>
-            </CardContent>
-          </Card>
         </TabsContent>
 
         {/* Proceso Tab */}
