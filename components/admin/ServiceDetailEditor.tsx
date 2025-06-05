@@ -461,6 +461,318 @@ export default function ServiceDetailEditor({ service, onSave, loading }: Servic
               </Button>
             </CardContent>
           </Card>
+
+          {/* Equipamiento */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Equipamiento Especializado</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Título de la Sección</Label>
+                <Input
+                  value={formData.equipamiento?.titulo || ''}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    equipamiento: { 
+                      ...formData.equipamiento, 
+                      titulo: e.target.value,
+                      items: formData.equipamiento?.items || []
+                    }
+                  })}
+                  placeholder="Ej: Equipamiento Especializado"
+                />
+              </div>
+              
+              {formData.equipamiento?.items?.map((item: string, index: number) => (
+                <div key={index} className="flex gap-4 items-center">
+                  <Input
+                    value={item}
+                    onChange={(e) => {
+                      const updated = [...(formData.equipamiento?.items || [])]
+                      updated[index] = e.target.value
+                      setFormData({ 
+                        ...formData, 
+                        equipamiento: { 
+                          ...formData.equipamiento, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    placeholder="Ej: Grúas telescópicas de 200 toneladas"
+                  />
+                  <Button
+                    onClick={() => {
+                      const updated = (formData.equipamiento?.items || []).filter((_: any, i: number) => i !== index)
+                      setFormData({ 
+                        ...formData, 
+                        equipamiento: { 
+                          ...formData.equipamiento, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    variant="destructive"
+                    size="icon"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              
+              <Button
+                onClick={() => {
+                  const items = formData.equipamiento?.items || []
+                  setFormData({ 
+                    ...formData, 
+                    equipamiento: { 
+                      titulo: formData.equipamiento?.titulo || 'Equipamiento Especializado',
+                      items: [...items, '']
+                    }
+                  })
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar Equipo
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Certificaciones */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Certificaciones de Calidad</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Título de la Sección</Label>
+                <Input
+                  value={formData.certificaciones?.titulo || ''}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    certificaciones: { 
+                      ...formData.certificaciones, 
+                      titulo: e.target.value,
+                      items: formData.certificaciones?.items || []
+                    }
+                  })}
+                  placeholder="Ej: Certificaciones y Acreditaciones"
+                />
+              </div>
+              
+              {formData.certificaciones?.items?.map((item: string, index: number) => (
+                <div key={index} className="flex gap-4 items-center">
+                  <Input
+                    value={item}
+                    onChange={(e) => {
+                      const updated = [...(formData.certificaciones?.items || [])]
+                      updated[index] = e.target.value
+                      setFormData({ 
+                        ...formData, 
+                        certificaciones: { 
+                          ...formData.certificaciones, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    placeholder="Ej: ISO 9001:2015"
+                  />
+                  <Button
+                    onClick={() => {
+                      const updated = (formData.certificaciones?.items || []).filter((_: any, i: number) => i !== index)
+                      setFormData({ 
+                        ...formData, 
+                        certificaciones: { 
+                          ...formData.certificaciones, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    variant="destructive"
+                    size="icon"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              
+              <Button
+                onClick={() => {
+                  const items = formData.certificaciones?.items || []
+                  setFormData({ 
+                    ...formData, 
+                    certificaciones: { 
+                      titulo: formData.certificaciones?.titulo || 'Certificaciones de Calidad',
+                      items: [...items, '']
+                    }
+                  })
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar Certificación
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Metodología */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Metodología de Trabajo</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Título de la Sección</Label>
+                <Input
+                  value={formData.metodologia?.titulo || ''}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    metodologia: { 
+                      ...formData.metodologia, 
+                      titulo: e.target.value,
+                      items: formData.metodologia?.items || []
+                    }
+                  })}
+                  placeholder="Ej: Metodología de Trabajo"
+                />
+              </div>
+              
+              {formData.metodologia?.items?.map((item: string, index: number) => (
+                <div key={index} className="flex gap-4 items-center">
+                  <Input
+                    value={item}
+                    onChange={(e) => {
+                      const updated = [...(formData.metodologia?.items || [])]
+                      updated[index] = e.target.value
+                      setFormData({ 
+                        ...formData, 
+                        metodologia: { 
+                          ...formData.metodologia, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    placeholder="Ej: Fase 1: Análisis y Planificación"
+                  />
+                  <Button
+                    onClick={() => {
+                      const updated = (formData.metodologia?.items || []).filter((_: any, i: number) => i !== index)
+                      setFormData({ 
+                        ...formData, 
+                        metodologia: { 
+                          ...formData.metodologia, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    variant="destructive"
+                    size="icon"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              
+              <Button
+                onClick={() => {
+                  const items = formData.metodologia?.items || []
+                  setFormData({ 
+                    ...formData, 
+                    metodologia: { 
+                      titulo: formData.metodologia?.titulo || 'Metodología de Trabajo',
+                      items: [...items, '']
+                    }
+                  })
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar Fase
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Seguridad */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Protocolos de Seguridad</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Título de la Sección</Label>
+                <Input
+                  value={formData.seguridad?.titulo || ''}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    seguridad: { 
+                      ...formData.seguridad, 
+                      titulo: e.target.value,
+                      items: formData.seguridad?.items || []
+                    }
+                  })}
+                  placeholder="Ej: Seguridad Industrial"
+                />
+              </div>
+              
+              {formData.seguridad?.items?.map((item: string, index: number) => (
+                <div key={index} className="flex gap-4 items-center">
+                  <Input
+                    value={item}
+                    onChange={(e) => {
+                      const updated = [...(formData.seguridad?.items || [])]
+                      updated[index] = e.target.value
+                      setFormData({ 
+                        ...formData, 
+                        seguridad: { 
+                          ...formData.seguridad, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    placeholder="Ej: Uso obligatorio de EPP certificado"
+                  />
+                  <Button
+                    onClick={() => {
+                      const updated = (formData.seguridad?.items || []).filter((_: any, i: number) => i !== index)
+                      setFormData({ 
+                        ...formData, 
+                        seguridad: { 
+                          ...formData.seguridad, 
+                          items: updated 
+                        }
+                      })
+                    }}
+                    variant="destructive"
+                    size="icon"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              
+              <Button
+                onClick={() => {
+                  const items = formData.seguridad?.items || []
+                  setFormData({ 
+                    ...formData, 
+                    seguridad: { 
+                      titulo: formData.seguridad?.titulo || 'Seguridad Industrial',
+                      items: [...items, '']
+                    }
+                  })
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar Protocolo
+              </Button>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Galería Tab */}
