@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ServicioDetailEnhanced from './ServicioDetailEnhanced'
 import { getServiceColors } from '@/lib/service-colors'
-import { getServiceImages } from '@/lib/service-images'
+import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 
 interface ServicioPageProps {
   params: {
@@ -91,6 +91,7 @@ async function getServicio(slug: string) {
     icono: servicio.icono || 'Settings',
     color: servicio.color || 'blue',
     bgGradient: servicio.bgGradient || colors.gradient,
+    backgroundImage: getServiceBackgroundImage(servicio.slug),
     metaTitle: servicio.metaTitle,
     metaDescription: servicio.metaDescription,
     // New enhanced fields - these are already arrays

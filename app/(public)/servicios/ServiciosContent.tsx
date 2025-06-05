@@ -581,10 +581,10 @@ export default function ServiciosContent({
                       </div>
                       <Link 
                         href={`/servicios/${servicio.slug}`}
-                        className={`inline-flex items-center gap-2 ${colors.text} hover:text-blue-600 font-medium text-sm transition-colors`}
+                        className={`group inline-flex items-center gap-3 px-6 py-3 ${colors.bg} ${colors.text} hover:${colors.bg.replace('bg-', 'bg-opacity-90')} font-semibold text-sm rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105`}
                       >
-                        Ver detalles
-                        <ArrowRight className="w-4 h-4" />
+                        Explorar este servicio
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </div>
                     
@@ -668,53 +668,6 @@ export default function ServiciosContent({
                         </ul>
                       </motion.div>
 
-                      {/* Destacado de Valor Agregado */}
-                      <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        viewport={{ once: true }}
-                        className={`bg-gradient-to-br ${colors.gradient} p-10 rounded-3xl text-white relative overflow-hidden shadow-xl`}
-                      >
-                        <div className="relative z-10">
-                          <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                              <Award className="w-6 h-6" />
-                            </div>
-                            Valor Agregado MEISA
-                          </h3>
-                          <div className="space-y-5">
-                            <div className="flex items-start gap-4">
-                              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <CheckCircle2 className="w-4 h-4 text-white" />
-                              </div>
-                              <span className="text-white/95 leading-relaxed">Tecnología BIM integrada</span>
-                            </div>
-                            <div className="flex items-start gap-4">
-                              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <CheckCircle2 className="w-4 h-4 text-white" />
-                              </div>
-                              <span className="text-white/95 leading-relaxed">Seguimiento en tiempo real</span>
-                            </div>
-                            <div className="flex items-start gap-4">
-                              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <CheckCircle2 className="w-4 h-4 text-white" />
-                              </div>
-                              <span className="text-white/95 leading-relaxed">Equipo técnico especializado</span>
-                            </div>
-                            <div className="flex items-start gap-4">
-                              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <CheckCircle2 className="w-4 h-4 text-white" />
-                              </div>
-                              <span className="text-white/95 leading-relaxed">Capacidad 600 ton/mes</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
-                        <div className="absolute top-6 right-6 opacity-10">
-                          <Target className="w-20 h-20" />
-                        </div>
-                      </motion.div>
                     </div>
                   </div>
                 )}

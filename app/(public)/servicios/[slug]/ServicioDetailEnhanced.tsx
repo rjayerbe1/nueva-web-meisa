@@ -74,6 +74,7 @@ interface ServicioData {
   icono: string
   color: string
   bgGradient: string
+  backgroundImage?: string
   // New enhanced fields
   imagenesGaleria?: string[]
   estadisticas?: Array<{ label: string; value: string; icon: string }>
@@ -183,81 +184,178 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
           }}
         />
       </motion.div>
-      {/* Enhanced Hero Section with Parallax */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+      {/* Dynamic Hero Section */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+        {/* Dynamic background based on service */}
         <motion.div 
-          className={`absolute inset-0 bg-gradient-to-br ${servicio.bgGradient}`}
-          style={{ scale: heroScale }}
-        />
-        <motion.div 
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070')] bg-cover bg-center"
-          style={{ opacity: 0.1, scale: heroScale }}
-        />
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/60 to-slate-900/40"
-          style={{ opacity: heroOpacity }}
+          className={`absolute inset-0 bg-cover bg-center`}
+          style={{ 
+            backgroundImage: `url('${servicio.backgroundImage || 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070'}')`,
+            scale: heroScale 
+          }}
         />
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Gradient overlay with service color */}
+        <div className={`absolute inset-0 bg-gradient-to-r ${colors.gradient} opacity-90`} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left side - Text content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-center text-white"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-white"
           >
-            {/* Breadcrumb */}
-            <div className="flex items-center justify-center gap-2 mb-8 text-white/80">
-              <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
-              <ChevronRight className="w-4 h-4" />
-              <Link href="/servicios" className="hover:text-white transition-colors">Servicios</Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-white">{servicio.titulo}</span>
-            </div>
-
-            {/* Animated Icon */}
-            <motion.div 
-              className="mb-8"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+            {/* Service badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md rounded-full px-4 py-2 mb-6 border border-white/20"
             >
-              <div className="w-32 h-32 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-6 relative">
-                <div className="absolute inset-0 bg-white/10 rounded-3xl animate-pulse" />
-                <ServicioIcon className="w-16 h-16 text-white relative z-10" />
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight">
-                {servicio.titulo}
-              </h1>
-              <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-8 leading-relaxed">
-                {servicio.subtitulo}
-              </p>
+              <ServicioIcon className="w-4 h-4" />
+              <span className="text-sm font-medium">Servicio Especializado MEISA</span>
             </motion.div>
+            
+            {/* Main title */}
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              {servicio.titulo.split(' ').map((word, idx) => (
+                <span key={idx} className={idx === 0 ? "block" : ""}>
+                  {word}{' '}
+                </span>
+              ))}
+            </motion.h1>
+            
+            {/* Subtitle with better styling */}
+            <motion.p 
+              className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              {servicio.subtitulo}
+            </motion.p>
 
-            {/* Enhanced CTA buttons */}
+            {/* CTA buttons with better design */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
               <Link
                 href="/contacto"
-                className="group inline-flex items-center gap-3 bg-white text-slate-900 hover:bg-white/90 font-semibold py-5 px-10 rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
+                className={`group inline-flex items-center justify-center gap-3 bg-white text-gray-900 hover:bg-gray-100 font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105`}
               >
-                <MessageSquare className="w-6 h-6" />
-                Solicitar Cotización
+                <Briefcase className="w-5 h-5" />
+                Iniciar mi proyecto
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <button
-                onClick={() => scrollToSection('overview')}
-                className="inline-flex items-center gap-3 bg-transparent border-2 border-white/50 text-white hover:bg-white/10 hover:border-white font-semibold py-5 px-10 rounded-2xl transition-all duration-300 backdrop-blur-sm"
+              <Link
+                href={`https://wa.me/573108765432?text=Hola,%20necesito%20información%20sobre%20${encodeURIComponent(servicio.titulo)}`}
+                className="inline-flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                Explorar Servicio
-                <ChevronDown className="w-5 h-5 animate-bounce" />
-              </button>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="currentColor" 
+                  className="w-5 h-5"
+                >
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.346"/>
+                </svg>
+                WhatsApp directo
+              </Link>
+            </motion.div>
+
+            {/* Key highlights - simplified */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex items-center gap-6 text-white/80"
+            >
+              {[
+                { icon: Shield, text: "Certificado ISO" },
+                { icon: Clock, text: "Entrega puntual" },
+                { icon: Award, text: "Garantía total" }
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <item.icon className="w-4 h-4" />
+                  <span className="text-sm font-medium">{item.text}</span>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
+
+          {/* Right side - Cleaner visual element */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden lg:block relative"
+          >
+            {/* Clean service card */}
+            <div className="relative bg-white/15 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
+              {/* Service stats - clean design without duplicate title and icon */}
+              <div className="space-y-6">
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p className="text-2xl font-bold text-white">25+</p>
+                    <p className="text-white/70 text-xs">Años experiencia</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-white">500+</p>
+                    <p className="text-white/70 text-xs">Proyectos</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-white">100%</p>
+                    <p className="text-white/70 text-xs">Satisfacción</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-3 pt-4 border-t border-white/10">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-white/70">Tiempo de respuesta</span>
+                    <span className="font-medium text-white">24 horas</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-white/70">Cobertura</span>
+                    <span className="font-medium text-white">Nacional</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-white/70">Certificación</span>
+                    <span className="font-medium text-white">ISO 9001</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        >
+          <button
+            onClick={() => scrollToSection('overview')}
+            className="flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors"
+          >
+            <span className="text-sm font-medium">Descubre más</span>
+            <ChevronDown className="w-6 h-6 animate-bounce" />
+          </button>
+        </motion.div>
       </section>
 
 
@@ -629,49 +727,107 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
 
 
 
-      {/* Statistics Section */}
+      {/* Statistics Section - Professional Visual Design */}
       {servicio.estadisticas && servicio.estadisticas.length > 0 && (
-        <section id="estadisticas" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="estadisticas" className="py-24 relative overflow-hidden">
+          {/* Background pattern */}
+          <div className="absolute inset-0 bg-gray-50">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(229_231_235)_1px,_transparent_1px)] bg-[size:40px_40px]" />
+          </div>
+          
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="text-center mb-20"
             >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Nuestros Números
+              <h2 className="text-5xl font-bold text-gray-900 mb-6">
+                Números que Respaldan Nuestra Experiencia
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Resultados que respaldan nuestra experiencia y calidad
-              </p>
+              <div className={`w-24 h-1 ${colors.bg} mx-auto rounded-full`} />
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
               {servicio.estadisticas.map((stat, idx) => {
-                const StatIcon = getIcon(stat.icon)
+                // Parse the value to separate number and unit/text
+                const valueMatch = stat.value.match(/^(\d+[.,]?\d*)\+?\s*(.*)$/)
+                const numberValue = valueMatch ? valueMatch[1] : stat.value
+                const unitValue = valueMatch ? valueMatch[2] : ''
+                const hasPlus = stat.value.includes('+')
+                
                 return (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    transition={{ duration: 0.6, delay: idx * 0.15 }}
                     viewport={{ once: true }}
-                    className="text-center"
+                    className="relative"
                   >
-                    <div className={`w-20 h-20 ${colors.bg} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
-                      <StatIcon className={`w-10 h-10 ${colors.text}`} />
+                    {/* Card with gradient border effect */}
+                    <div className="relative bg-white rounded-3xl p-10 h-full group hover:scale-105 transition-all duration-300">
+                      {/* Gradient border */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${colors.gradient} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                      <div className="absolute inset-[2px] bg-white rounded-3xl" />
+                      
+                      {/* Content */}
+                      <div className="relative">
+                        {/* Number display */}
+                        <div className="mb-6 relative">
+                          {/* Big background number for effect */}
+                          <div className="absolute inset-0 flex items-center justify-center opacity-5">
+                            <span className="text-[120px] font-black text-gray-900">
+                              {numberValue}
+                            </span>
+                          </div>
+                          
+                          {/* Main number */}
+                          <div className="relative flex items-baseline justify-center gap-2">
+                            <span className={`text-6xl lg:text-7xl font-black bg-gradient-to-br ${colors.gradient} bg-clip-text text-transparent`}>
+                              {numberValue}
+                            </span>
+                            {hasPlus && (
+                              <span className={`text-4xl lg:text-5xl font-bold bg-gradient-to-br ${colors.gradient} bg-clip-text text-transparent`}>
+                                +
+                              </span>
+                            )}
+                            {unitValue && (
+                              <span className="text-2xl lg:text-3xl font-bold text-gray-500 ml-1">
+                                {unitValue}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Label */}
+                        <p className="text-gray-700 font-semibold text-lg text-center leading-snug">
+                          {stat.label}
+                        </p>
+                        
+                        {/* Animated underline */}
+                        <motion.div 
+                          className={`h-1 ${colors.bg} mx-auto mt-4 rounded-full`}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: '4rem' }}
+                          transition={{ duration: 0.8, delay: idx * 0.15 + 0.3 }}
+                          viewport={{ once: true }}
+                        />
+                      </div>
                     </div>
-                    <h3 className="text-4xl font-bold text-gray-900 mb-2">
-                      {stat.value}
-                    </h3>
-                    <p className="text-gray-600">
-                      {stat.label}
-                    </p>
                   </motion.div>
                 )
               })}
+            </div>
+
+            {/* Optional: Add a visual separator or pattern */}
+            <div className="mt-20 flex justify-center">
+              <div className="flex items-center gap-3">
+                <div className={`w-12 h-[2px] ${colors.bg}`} />
+                <div className={`w-3 h-3 ${colors.bg} rounded-full`} />
+                <div className={`w-12 h-[2px] ${colors.bg}`} />
+              </div>
             </div>
           </div>
         </section>
