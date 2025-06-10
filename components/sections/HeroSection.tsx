@@ -81,7 +81,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gray-900 pt-20 lg:pt-24">
+    <section className="relative min-h-screen w-full overflow-hidden bg-gray-900 pt-16 sm:pt-20 lg:pt-24">
       {/* Fondo de imágenes con transición suave */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -136,8 +136,8 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="mb-6"
             >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-2 leading-none tracking-tight">
-                <div className="block h-24 md:h-32 lg:h-36 relative overflow-hidden">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white mb-2 leading-none tracking-tight">
+                <div className="block h-20 sm:h-24 md:h-32 lg:h-36 relative overflow-hidden">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={currentSpecialty}
@@ -145,7 +145,7 @@ export function HeroSection() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -100, opacity: 0 }}
                       transition={{ duration: 0.8, ease: "easeInOut" }}
-                      className="absolute inset-0 flex items-center justify-start text-transparent bg-clip-text bg-gradient-to-r from-slate-300 via-blue-200 to-slate-400 whitespace-pre-line text-center md:text-left"
+                      className="absolute inset-0 flex items-center justify-start text-transparent bg-clip-text bg-gradient-to-r from-slate-300 via-blue-200 to-slate-400 whitespace-pre-line text-center sm:text-left"
                     >
                       {specialties[currentSpecialty]}
                     </motion.span>

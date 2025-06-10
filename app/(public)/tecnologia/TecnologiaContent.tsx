@@ -4,253 +4,163 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
+import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
 import { 
-  Cpu, 
-  Layers, 
-  Settings, 
   Monitor,
-  Database,
-  BarChart3,
-  Gauge,
+  Settings,
+  Factory,
   ArrowRight,
   CheckCircle2,
-  Wrench,
-  Factory,
-  Eye,
-  Target,
-  Grid3x3,
-  Package,
-  Link2,
+  Play,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Code,
+  Zap,
+  Shield,
+  BarChart3,
+  Gauge
 } from 'lucide-react'
 
+// Estructura coherente - 3 secciones alineadas con proceso tecnológico
 const tecnologiaSections = [
   {
-    id: 'software-diseno',
-    titulo: 'Software de Diseño',
+    id: 'diseno-analisis',
+    titulo: 'Diseño y Análisis',
     icon: Monitor,
-    color: 'from-blue-500 to-blue-600',
     content: {
-      titulo: 'Software de Diseño e Ingeniería',
-      subtitulo: 'Herramientas BIM de vanguardia',
-      descripcion: 'Utilizamos las herramientas más avanzadas del mercado para garantizar precisión y eficiencia en cada proyecto.',
-      destacados: [
-        'Trimble Tekla Structures - Líder mundial en BIM',
-        'ETABS - Análisis estructural avanzado',
-        'SAP2000 - Diseño universal de estructuras',
-        'SAFE - Especialista en losas y cimentaciones'
-      ]
+      titulo: 'Diseño y Análisis',
+      subtitulo: 'Modelado BIM + Análisis estructural integrado',
+      descripcion: 'Utilizamos las herramientas BIM y de análisis estructural más avanzadas para diseño, coordinación multidisciplinaria y verificación de estructuras.'
     }
   },
   {
-    id: 'software-conexiones',
-    titulo: 'Conexiones y Elementos',
-    icon: Link2,
-    color: 'from-red-500 to-red-600',
-    content: {
-      titulo: 'Software de Conexiones y Elementos',
-      subtitulo: 'Diseño especializado de conexiones',
-      descripcion: 'Software revolucionario para el diseño y verificación de conexiones de acero y elementos de concreto.',
-      destacados: [
-        'IDEA StatiCa Connection - Conexiones complejas',
-        'DC-CAD Vigas y Columnas - Concreto reforzado',
-        'Análisis por elementos finitos CBFEM',
-        'Verificación según códigos internacionales'
-      ]
-    }
-  },
-  {
-    id: 'software-analisis',
-    titulo: 'Análisis Avanzado',
-    icon: BarChart3,
-    color: 'from-purple-500 to-purple-600',
-    content: {
-      titulo: 'Software de Análisis Avanzado',
-      subtitulo: 'Capacidades de simulación superiores',
-      descripcion: 'Herramientas de análisis avanzado con capacidades BIM integradas para estructuras complejas.',
-      destacados: [
-        'Midas - Análisis estructural avanzado',
-        'Construcción por etapas',
-        'Análisis de fatiga y durabilidad',
-        'BIM integrado completo'
-      ]
-    }
-  },
-  {
-    id: 'gestion-produccion',
-    titulo: 'Gestión y Producción',
-    icon: Database,
-    color: 'from-green-500 to-green-600',
-    content: {
-      titulo: 'Software de Gestión y Producción',
-      subtitulo: 'Control integral de fabricación',
-      descripcion: 'Sistemas líderes mundiales en gestión integral y control de producción para fabricantes de estructuras metálicas.',
-      destacados: [
-        'StruM.I.S - Gestión integral líder mundial',
-        'Control de producción en tiempo real',
-        'Trazabilidad completa de materiales',
-        'FastCAM - Optimización de corte CNC'
-      ]
-    }
-  },
-  {
-    id: 'equipamiento',
-    titulo: 'Equipamiento',
-    icon: Wrench,
-    color: 'from-orange-500 to-orange-600',
-    content: {
-      titulo: 'Equipamiento Industrial',
-      subtitulo: 'Maquinaria de última generación',
-      descripcion: 'Nuestras 3 plantas cuentan con maquinaria de última generación para garantizar la máxima precisión.',
-      destacados: [
-        '3 Mesas de corte CNC distribuidas',
-        '8 Puentes grúa (5 en Popayán, 3 en Jamundí)',
-        'Equipos especializados de alta precisión',
-        'Sistemas de soldadura certificados'
-      ]
-    }
-  },
-  {
-    id: 'innovacion',
-    titulo: 'Innovación',
-    icon: Eye,
-    color: 'from-cyan-500 to-cyan-600',
-    content: {
-      titulo: 'Innovación en Procesos',
-      subtitulo: 'Tecnología BIM y control digital',
-      descripcion: 'Implementamos las últimas innovaciones tecnológicas para optimizar cada etapa del proceso productivo.',
-      destacados: [
-        'Tecnología BIM en mayoría de proyectos',
-        'Control de calidad digital',
-        'Trazabilidad mediante códigos QR',
-        'Reportes digitales en tiempo real'
-      ]
-    }
-  }
-]
-
-// Función helper para crear softwareTools dinámicos
-const createSoftwareTools = (getText: Function) => [
-  {
-    name: getText('Trimble Tekla Structures', 'softwareTools.0.name'),
-    description: getText('Software BIM líder mundial para modelado de estructuras metálicas y concreto', 'softwareTools.0.description'),
-    features: [
-      getText('Modelado 3D detallado de estructuras complejas', 'softwareTools.0.features.0'),
-      getText('Coordinación multidisciplinaria BIM', 'softwareTools.0.features.1'),
-      getText('Generación automática de planos de fabricación', 'softwareTools.0.features.2'),
-      getText('Detección de interferencias', 'softwareTools.0.features.3'),
-      getText('Cuantificación exacta de materiales', 'softwareTools.0.features.4')
-    ],
-    icon: Layers,
-    color: 'from-blue-500 to-blue-600'
-  },
-  {
-    name: getText('ETABS', 'softwareTools.1.name'),
-    description: getText('Software de análisis y diseño estructural de edificios líder en la industria', 'softwareTools.1.description'),
-    features: [
-      getText('Análisis no lineal avanzado', 'softwareTools.1.features.0'),
-      getText('Diseño sísmico con normativas internacionales', 'softwareTools.1.features.1'),
-      getText('Modelado de estructuras complejas', 'softwareTools.1.features.2'),
-      getText('Análisis dinámico y pushover', 'softwareTools.1.features.3'),
-      getText('Diseño de elementos de concreto y acero', 'softwareTools.1.features.4')
-    ],
-    icon: BarChart3,
-    color: 'from-green-500 to-green-600'
-  },
-  {
-    name: getText('SAP2000', 'softwareTools.2.name'),
-    description: getText('Programa de análisis estructural y diseño para todo tipo de estructuras', 'softwareTools.2.description'),
-    features: [
-      getText('Análisis estructural completo', 'softwareTools.2.features.0'),
-      getText('Diseño de puentes y estructuras especiales', 'softwareTools.2.features.1'),
-      getText('Análisis no lineal y dinámico', 'softwareTools.2.features.2'),
-      getText('Modelado paramétrico avanzado', 'softwareTools.2.features.3'),
-      getText('Integración con BIM', 'softwareTools.2.features.4')
-    ],
-    icon: Grid3x3,
-    color: 'from-indigo-500 to-indigo-600'
-  },
-  {
-    name: getText('IDEA StatiCa Connection', 'softwareTools.3.name'),
-    description: getText('Software revolucionario para el diseño y verificación de conexiones de acero', 'softwareTools.3.description'),
-    features: [
-      getText('Diseño de conexiones complejas', 'softwareTools.3.features.0'),
-      getText('Análisis por elementos finitos CBFEM', 'softwareTools.3.features.1'),
-      getText('Verificación según códigos internacionales', 'softwareTools.3.features.2'),
-      getText('Optimización de conexiones', 'softwareTools.3.features.3'),
-      getText('Reportes detallados de cálculo', 'softwareTools.3.features.4')
-    ],
-    icon: Link2,
-    color: 'from-red-500 to-red-600'
-  }
-]
-
-// Función helper para crear equipment dinámico
-const createEquipment = (getText: Function) => [
-  {
-    title: getText('Maquinaria de Corte', 'equipment.0.title'),
-    items: [
-      getText('3 Mesas de corte CNC distribuidas en nuestras plantas', 'equipment.0.items.0'),
-      getText('Control numérico computarizado', 'equipment.0.items.1'),
-      getText('Precisión milimétrica', 'equipment.0.items.2'),
-      getText('Capacidad para espesores diversos', 'equipment.0.items.3'),
-      getText('Alta velocidad de producción', 'equipment.0.items.4')
-    ],
-    icon: Wrench,
-    color: 'from-red-500 to-red-600'
-  },
-  {
-    title: getText('Equipos de Izaje', 'equipment.1.title'),
-    items: [
-      getText('8 Puentes grúa (5 en Popayán, 3 en Jamundí)', 'equipment.1.items.0'),
-      getText('Capacidad de manejo seguro de piezas pesadas', 'equipment.1.items.1'),
-      getText('Optimización de flujo en planta', 'equipment.1.items.2'),
-      getText('Seguridad certificada', 'equipment.1.items.3'),
-      getText('Mantenimiento preventivo continuo', 'equipment.1.items.4')
-    ],
-    icon: Factory,
-    color: 'from-blue-500 to-blue-600'
-  },
-  {
-    title: getText('Equipos Especializados', 'equipment.2.title'),
-    items: [
-      getText('Granalladora industrial para limpieza y preparación', 'equipment.2.items.0'),
-      getText('Ensambladora de perfiles de alta precisión', 'equipment.2.items.1'),
-      getText('Curvadora de tejas para cubiertas especiales', 'equipment.2.items.2'),
-      getText('Equipos de soldadura con personal certificado', 'equipment.2.items.3'),
-      getText('Sistemas de pintura y recubrimientos', 'equipment.2.items.4')
-    ],
+    id: 'fabricacion-montaje',
+    titulo: 'Fabricación y Montaje',
     icon: Settings,
-    color: 'from-green-500 to-green-600'
+    content: {
+      titulo: 'Fabricación y Montaje',
+      subtitulo: 'Tecnologías CNC + Equipos de montaje especializados',
+      descripcion: 'Tecnologías avanzadas para fabricación de precisión y montaje de estructuras metálicas con equipamiento especializado distribuido en nuestras plantas.'
+    }
+  },
+  {
+    id: 'control-digital',
+    titulo: 'Control Digital',
+    icon: Gauge,
+    content: {
+      titulo: 'Control Digital',
+      subtitulo: 'Trazabilidad QR y calidad certificada',
+      descripcion: 'Sistemas digitales integrados que garantizan calidad y trazabilidad completa en cada proceso productivo.'
+    }
   }
 ]
 
-// Función helper para crear innovations dinámico
-const createInnovations = (getText: Function) => [
+// Nuevas funciones helper completamente rediseñadas y configurables desde backend
+const createSoftwareCategories = (getText: Function, getImage: Function) => [
   {
-    title: getText('Tecnología BIM', 'innovations.0.title'),
-    description: getText('La mayoría de nuestros proyectos se coordinan utilizando Building Information Modeling', 'innovations.0.description'),
-    benefits: [
-      getText('Reducción de errores en obra', 'innovations.0.benefits.0'),
-      getText('Mayor precisión en fabricación', 'innovations.0.benefits.1'),
-      getText('Coordinación entre disciplinas', 'innovations.0.benefits.2'),
-      getText('Visualización 3D para clientes', 'innovations.0.benefits.3'),
-      getText('Detección temprana de conflictos', 'innovations.0.benefits.4')
-    ],
-    icon: Eye
+    category: getText('Diseño BIM', 'softwareCategories.0.category'),
+    description: getText('Modelado 3D y coordinación multidisciplinaria', 'softwareCategories.0.description'),
+    image: getImage('/images/servicios/consultoria-1.jpg', 'softwareCategories.0.image'),
+    tools: [
+      {
+        name: getText('Trimble Tekla Structures', 'softwareCategories.0.tools.0.name'),
+        specialty: getText('Líder mundial en BIM para estructuras', 'softwareCategories.0.tools.0.specialty'),
+        image: getImage('/images/servicios/consultoria-1.jpg', 'softwareCategories.0.tools.0.image')
+      },
+      {
+        name: getText('AutoCAD', 'softwareCategories.0.tools.1.name'),
+        specialty: getText('Diseño técnico 2D/3D', 'softwareCategories.0.tools.1.specialty'),
+        image: getImage('/images/servicios/consultoria-2.jpg', 'softwareCategories.0.tools.1.image')
+      }
+    ]
   },
   {
-    title: getText('Control de Calidad Digital', 'innovations.1.title'),
-    description: getText('Sistemas digitales integrados para garantizar la excelencia en cada proceso', 'innovations.1.description'),
+    category: getText('Análisis Estructural', 'softwareCategories.1.category'),
+    description: getText('Simulación y análisis avanzado de estructuras', 'softwareCategories.1.description'),
+    image: getImage('/images/servicios/consultoria-4.jpg', 'softwareCategories.1.image'),
+    tools: [
+      {
+        name: getText('ETABS', 'softwareCategories.1.tools.0.name'),
+        specialty: getText('Análisis de edificios y estructuras complejas', 'softwareCategories.1.tools.0.specialty'),
+        image: getImage('/images/servicios/consultoria-4.jpg', 'softwareCategories.1.tools.0.image')
+      },
+      {
+        name: getText('SAP2000', 'softwareCategories.1.tools.1.name'),
+        specialty: getText('Análisis universal de estructuras', 'softwareCategories.1.tools.1.specialty'),
+        image: getImage('/images/servicios/consultoria-3.jpg', 'softwareCategories.1.tools.1.image')
+      }
+    ]
+  },
+  {
+    category: getText('Conexiones Especializadas', 'softwareCategories.2.category'),
+    description: getText('Diseño y verificación de conexiones críticas', 'softwareCategories.2.description'),
+    image: getImage('/images/servicios/gestion-1.jpg', 'softwareCategories.2.image'),
+    tools: [
+      {
+        name: getText('IDEA StatiCa', 'softwareCategories.2.tools.0.name'),
+        specialty: getText('Conexiones complejas con análisis CBFEM', 'softwareCategories.2.tools.0.specialty'),
+        image: getImage('/images/servicios/gestion-1.jpg', 'softwareCategories.2.tools.0.image')
+      }
+    ]
+  }
+]
+
+const createEquipmentCategories = (getText: Function, getImage: Function) => [
+  {
+    category: getText('Corte CNC', 'equipmentCategories.0.category'),
+    description: getText('Mesas de corte automatizado de precisión', 'equipmentCategories.0.description'),
+    image: getImage('/images/equipo/equipo-industrial-1.jpg', 'equipmentCategories.0.image'),
+    specs: [
+      getText('3 Mesas CNC distribuidas estratégicamente', 'equipmentCategories.0.specs.0'),
+      getText('Control numérico computarizado', 'equipmentCategories.0.specs.1'),
+      getText('Precisión milimétrica garantizada', 'equipmentCategories.0.specs.2'),
+      getText('Corte hasta 150mm de espesor', 'equipmentCategories.0.specs.3')
+    ]
+  },
+  {
+    category: getText('Equipos de Izaje', 'equipmentCategories.1.category'),
+    description: getText('Sistemas de manejo de cargas pesadas', 'equipmentCategories.1.description'),
+    image: getImage('/images/general/industria-general.jpg', 'equipmentCategories.1.image'),
+    specs: [
+      getText('8 Puentes grúa en total', 'equipmentCategories.1.specs.0'),
+      getText('5 en Planta Popayán', 'equipmentCategories.1.specs.1'),
+      getText('3 en Planta Jamundí', 'equipmentCategories.1.specs.2'),
+      getText('Capacidades de 5 a 20 toneladas', 'equipmentCategories.1.specs.3')
+    ]
+  },
+  {
+    category: getText('Equipos Especializados', 'equipmentCategories.2.category'),
+    description: getText('Maquinaria especializada para procesos únicos', 'equipmentCategories.2.description'),
+    image: getImage('/images/servicios/fabricacion-1.jpg', 'equipmentCategories.2.image'),
+    specs: [
+      getText('Granalladora industrial', 'equipmentCategories.2.specs.0'),
+      getText('Ensambladora de perfiles', 'equipmentCategories.2.specs.1'),
+      getText('Curvadora de tejas especializada', 'equipmentCategories.2.specs.2'),
+      getText('Sistemas de soldadura certificados', 'equipmentCategories.2.specs.3')
+    ]
+  }
+]
+
+const createDigitalProcesses = (getText: Function, getImage: Function) => [
+  {
+    process: getText('Trazabilidad QR', 'digitalProcesses.0.process'),
+    description: getText('Seguimiento completo mediante códigos QR', 'digitalProcesses.0.description'),
+    image: getImage('/images/servicios/gestion-2.jpg', 'digitalProcesses.0.image'),
     benefits: [
-      getText('Trazabilidad mediante códigos QR', 'innovations.1.benefits.0'),
-      getText('Registro fotográfico de procesos', 'innovations.1.benefits.1'),
-      getText('Reportes digitales en tiempo real', 'innovations.1.benefits.2'),
-      getText('Certificados de calidad digitalizados', 'innovations.1.benefits.3'),
-      getText('Control de espesores digitales', 'innovations.1.benefits.4')
-    ],
-    icon: Gauge
+      getText('Historial completo de cada pieza', 'digitalProcesses.0.benefits.0'),
+      getText('Ubicación en tiempo real', 'digitalProcesses.0.benefits.1'),
+      getText('Control de calidad digital', 'digitalProcesses.0.benefits.2')
+    ]
+  },
+  {
+    process: getText('Reportes Digitales', 'digitalProcesses.1.process'),
+    description: getText('Documentación automática de procesos', 'digitalProcesses.1.description'),
+    image: getImage('/images/servicios/gestion-3.jpg', 'digitalProcesses.1.image'),
+    benefits: [
+      getText('Informes en tiempo real', 'digitalProcesses.1.benefits.0'),
+      getText('Evidencia fotográfica', 'digitalProcesses.1.benefits.1'),
+      getText('Certificación digital', 'digitalProcesses.1.benefits.2')
+    ]
   }
 ]
 
@@ -301,10 +211,10 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
     return defaultPath
   }
 
-  // Crear instancias dinámicas de los datos
-  const softwareTools = createSoftwareTools(getText)
-  const equipment = createEquipment(getText)
-  const innovations = createInnovations(getText)
+  // Crear instancias dinámicas de los datos rediseñados
+  const softwareCategories = createSoftwareCategories(getText, getImage)
+  const equipmentCategories = createEquipmentCategories(getText, getImage)
+  const digitalProcesses = createDigitalProcesses(getText, getImage)
   
   const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({})
   const navRef = useRef<HTMLDivElement>(null)
@@ -535,39 +445,32 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
               {getText('Proceso Tecnológico Integral', 'procesoIntegral.title')}
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              {getText('Desde el diseño BIM hasta la fabricación CNC, cada etapa cuenta con tecnología de vanguardia', 'procesoIntegral.subtitle')}
+              {getText('Tres etapas fundamentales con tecnología de vanguardia: desde diseño BIM hasta control digital', 'procesoIntegral.subtitle')}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { 
-                title: getText("Diseño BIM", 'procesoFases.0.title'), 
-                desc: getText("Modelado 3D con Tekla Structures", 'procesoFases.0.description'), 
+                title: getText("Diseño y Análisis", 'procesoFases.0.title'), 
+                desc: getText("Modelado BIM + Análisis estructural integrado", 'procesoFases.0.description'), 
                 icon: Monitor,
                 step: "01",
                 image: getImage('/images/servicios/consultoria-1.jpg', 'procesoFases.0.image')
               },
               { 
-                title: getText("Análisis Estructural", 'procesoFases.1.title'), 
-                desc: getText("ETABS, SAP2000, Midas", 'procesoFases.1.description'), 
-                icon: BarChart3,
-                step: "02",
-                image: getImage('/images/servicios/consultoria-4.jpg', 'procesoFases.1.image')
-              },
-              { 
-                title: getText("Fabricación CNC", 'procesoFases.2.title'), 
-                desc: getText("Corte automatizado de precisión", 'procesoFases.2.description'), 
+                title: getText("Fabricación y Montaje", 'procesoFases.1.title'), 
+                desc: getText("Tecnologías CNC + Equipos de montaje especializados", 'procesoFases.1.description'), 
                 icon: Settings,
-                step: "03",
-                image: getImage('/images/equipo/equipo-industrial-1.jpg', 'procesoFases.2.image')
+                step: "02",
+                image: getImage('/images/equipo/equipo-industrial-1.jpg', 'procesoFases.1.image')
               },
               { 
-                title: getText("Control Digital", 'procesoFases.3.title'), 
-                desc: getText("Trazabilidad y calidad", 'procesoFases.3.description'), 
+                title: getText("Control Digital", 'procesoFases.2.title'), 
+                desc: getText("Trazabilidad QR y calidad certificada", 'procesoFases.2.description'), 
                 icon: Gauge,
-                step: "04",
-                image: getImage('/images/servicios/gestion-2.jpg', 'procesoFases.3.image')
+                step: "03",
+                image: getImage('/images/servicios/gestion-2.jpg', 'procesoFases.2.image')
               }
             ].map((phase, index) => {
               const IconComponent = phase.icon
@@ -676,7 +579,7 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
         </div>
       </div>
 
-      {/* Dynamic Sections */}
+      {/* Nueva estructura de secciones rediseñadas - elimina duplicaciones */}
       {tecnologiaSections.map((section, index) => (
         <section
           key={section.id}
@@ -700,80 +603,66 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
               </p>
             </motion.div>
 
-            {section.id === 'software-diseno' && (
-              <>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-                  {softwareTools.map((tool, toolIndex) => {
-                    const IconComponent = tool.icon
-                    return (
-                      <motion.div
-                        key={tool.name}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: toolIndex * 0.2 }}
-                        viewport={{ once: true }}
-                        className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
-                      >
-                        <div className={`w-16 h-16 bg-gradient-to-br ${tool.color} rounded-xl flex items-center justify-center mb-6`}>
-                          <IconComponent className="w-8 h-8 text-white" />
-                        </div>
-                        
-                        <h4 className="text-2xl font-bold text-gray-900 mb-3">{tool.name}</h4>
-                        <p className="text-gray-600 mb-6 leading-relaxed">{tool.description}</p>
-                        
-                        <div className="space-y-3">
-                          {tool.features.map((feature, featureIndex) => (
-                            <motion.div
-                              key={featureIndex}
-                              initial={{ opacity: 0, x: -20 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.4, delay: 0.6 + featureIndex * 0.1 }}
-                              viewport={{ once: true }}
-                              className="flex items-start gap-3"
-                            >
-                              <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                              <span className="text-gray-700">{feature}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-
-                {/* Screenshots de Software */}
+            {/* Diseño y Análisis Section - UNIFICADO SIN DUPLICACIONES */}
+            {section.id === 'diseno-analisis' && (
+              <div className="space-y-16">
+                {/* Software Gallery Único - Elimina duplicaciones de categorías + gallery */}
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
-                  className="text-center mb-16"
+                  className="text-center"
                 >
-                  <h3 className="text-3xl font-bold text-gray-900 mb-12">
-                    Software Especializado en Acción
-                  </h3>
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
                       {
-                        title: 'Trimble Tekla Structures',
-                        description: 'Modelado BIM 3D detallado',
-                        image: getImage('/images/servicios/consultoria-1.jpg', 'softwareTools.0.screenshot')
+                        title: getText('Trimble Tekla Structures', 'softwareGallery.tools.0.title'),
+                        description: getText('Software BIM líder mundial para modelado detallado de estructuras metálicas y concreto', 'softwareGallery.tools.0.description'),
+                        image: getImage('/images/tecnologia/software-diseno-cad.jpg', 'softwareGallery.tools.0.image'),
+                        features: [
+                          getText('Modelado 3D completo y detallado', 'softwareGallery.tools.0.features.0'),
+                          getText('Coordinación multidisciplinaria BIM', 'softwareGallery.tools.0.features.1'),
+                          getText('Generación automática de planos de fabricación', 'softwareGallery.tools.0.features.2')
+                        ],
+                        badge: getText('BIM Líder Mundial', 'softwareGallery.tools.0.badge'),
+                        color: 'from-blue-500 to-blue-600'
                       },
                       {
-                        title: 'ETABS',
-                        description: 'Análisis estructural avanzado',
-                        image: getImage('/images/servicios/consultoria-4.jpg', 'softwareTools.1.screenshot')
+                        title: getText('ETABS & SAP2000', 'softwareGallery.tools.1.title'),
+                        description: getText('Suite completa de análisis estructural para edificios y estructuras complejas', 'softwareGallery.tools.1.description'),
+                        image: getImage('/images/servicios/consultoria-4.jpg', 'softwareGallery.tools.1.image'),
+                        features: [
+                          getText('Análisis sísmico y dinámico avanzado', 'softwareGallery.tools.1.features.0'),
+                          getText('Diseño según normativas internacionales', 'softwareGallery.tools.1.features.1'),
+                          getText('Optimización estructural y de materiales', 'softwareGallery.tools.1.features.2')
+                        ],
+                        badge: getText('Análisis Avanzado', 'softwareGallery.tools.1.badge'),
+                        color: 'from-green-500 to-green-600'
                       },
                       {
-                        title: 'SAP2000',
-                        description: 'Diseño de estructuras complejas',
-                        image: getImage('/images/servicios/consultoria-2.jpg', 'softwareTools.2.screenshot')
+                        title: getText('IDEA StatiCa Connection', 'softwareGallery.tools.2.title'),
+                        description: getText('Software revolucionario para diseño y verificación de conexiones de acero complejas', 'softwareGallery.tools.2.description'),
+                        image: getImage('/images/servicios/consultoria-3.jpg', 'softwareGallery.tools.2.image'),
+                        features: [
+                          getText('Análisis por elementos finitos CBFEM', 'softwareGallery.tools.2.features.0'),
+                          getText('Verificación según códigos internacionales', 'softwareGallery.tools.2.features.1'),
+                          getText('Reportes detallados de cálculo', 'softwareGallery.tools.2.features.2')
+                        ],
+                        badge: getText('Conexiones Especializadas', 'softwareGallery.tools.2.badge'),
+                        color: 'from-purple-500 to-purple-600'
                       },
                       {
-                        title: 'IDEA StatiCa Connection',
-                        description: 'Diseño de conexiones',
-                        image: getImage('/images/servicios/consultoria-3.jpg', 'softwareTools.3.screenshot')
+                        title: getText('Suite Complementaria', 'softwareGallery.tools.3.title'),
+                        description: getText('Midas Civil, SAFE, DC-CAD y herramientas especializadas para análisis integral', 'softwareGallery.tools.3.description'),
+                        image: getImage('/images/tecnologia/tecnologia-industrial-1.jpg', 'softwareGallery.tools.3.image'),
+                        features: [
+                          getText('Análisis de losas y cimentaciones', 'softwareGallery.tools.3.features.0'),
+                          getText('Diseño de elementos de concreto', 'softwareGallery.tools.3.features.1'),
+                          getText('Integración completa con workflow BIM', 'softwareGallery.tools.3.features.2')
+                        ],
+                        badge: getText('Suite Completa', 'softwareGallery.tools.3.badge'),
+                        color: 'from-orange-500 to-orange-600'
                       }
                     ].map((software, index) => (
                       <motion.div
@@ -782,97 +671,110 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: index * 0.1 }}
                         viewport={{ once: true }}
-                        className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 group border border-gray-100 hover:border-blue-200"
                       >
-                        <div className="relative h-48">
+                        <div className="relative h-64 overflow-hidden">
                           <Image
                             src={software.image}
                             alt={software.title}
                             fill
-                            className="object-cover"
+                            className="object-cover group-hover:scale-110 transition-transform duration-500"
                             sizes="(max-width: 768px) 100vw, 50vw"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-gray-900/20" />
+                          
+                          {/* Badge superior */}
+                          <div className="absolute top-4 left-4">
+                            <div className={`px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm bg-gradient-to-r ${software.color}`}>
+                              {software.badge}
+                            </div>
+                          </div>
+                          
+                          {/* Icono del software */}
+                          <div className="absolute top-4 right-4">
+                            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                              <Monitor className="w-6 h-6 text-white" />
+                            </div>
+                          </div>
                         </div>
+                        
                         <div className="p-6">
-                          <h4 className="text-lg font-bold text-gray-900 mb-2">{software.title}</h4>
-                          <p className="text-gray-600 text-sm">{software.description}</p>
+                          <div className="flex items-start justify-between mb-3">
+                            <h4 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                              {software.title}
+                            </h4>
+                            <div className="w-8 h-8 bg-gray-100 group-hover:bg-blue-100 rounded-lg flex items-center justify-center transition-colors duration-300">
+                              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all duration-300" />
+                            </div>
+                          </div>
+                          
+                          <p className="text-gray-600 mb-6 leading-relaxed">{software.description}</p>
+                          
+                          <div className="space-y-3">
+                            {software.features.map((feature, featureIndex) => (
+                              <motion.div
+                                key={featureIndex}
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.3, delay: 0.1 + featureIndex * 0.1 }}
+                                viewport={{ once: true }}
+                                className="flex items-center gap-3 group/item"
+                              >
+                                <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                  <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                </div>
+                                <span className="text-gray-700 text-sm group-hover/item:text-gray-900 transition-colors duration-200">
+                                  {feature}
+                                </span>
+                              </motion.div>
+                            ))}
+                          </div>
                         </div>
                       </motion.div>
                     ))}
                   </div>
                 </motion.div>
-              </>
-            )}
 
-            {(section.id === 'software-conexiones' || section.id === 'software-analisis' || section.id === 'gestion-produccion') && (
-              <div className="text-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                  {section.content.destacados.map((destacado, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: idx * 0.1 }}
-                      viewport={{ once: true }}
-                      className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      <div className={`w-16 h-16 bg-gradient-to-br ${section.color} rounded-xl flex items-center justify-center mx-auto mb-6`}>
-                        <section.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h4 className="text-xl font-bold text-gray-900 mb-4">
-                        {destacado.split(' - ')[0]}
-                      </h4>
-                      {destacado.split(' - ')[1] && (
-                        <p className="text-gray-600">{destacado.split(' - ')[1]}</p>
-                      )}
-                    </motion.div>
-                  ))}
+                {/* Estadísticas Tecnológicas - Usando componente unificado */}
+                <div className="mt-20">
+                  <UnifiedStatsGrid
+                    title={getText('Tecnología en Números', 'techStats.title')}
+                    subtitle={getText('Datos que demuestran nuestro compromiso con la innovación tecnológica', 'techStats.subtitle')}
+                    stats={[
+                      {
+                        number: getText('15', 'techStats.stats.0.number'),
+                        label: getText('Software Especializados', 'techStats.stats.0.label'),
+                        suffix: '+'
+                      },
+                      {
+                        number: getText('99.8', 'techStats.stats.1.number'),
+                        label: getText('Precisión CNC', 'techStats.stats.1.label'),
+                        suffix: '%'
+                      },
+                      {
+                        number: getText('100', 'techStats.stats.2.number'),
+                        label: getText('Trazabilidad Digital', 'techStats.stats.2.label'),
+                        suffix: '%'
+                      },
+                      {
+                        number: getText('27', 'techStats.stats.3.number'),
+                        label: getText('Años de Innovación', 'techStats.stats.3.label'),
+                        suffix: ''
+                      }
+                    ]}
+                    variant="default"
+                    colorScheme="blue"
+                    columns={4}
+                    showDecorator={false}
+                  />
                 </div>
               </div>
             )}
 
-            {section.id === 'equipamiento' && (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                  {equipment.map((item, idx) => {
-                    const IconComponent = item.icon
-                    return (
-                      <motion.div
-                        key={item.title}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: idx * 0.2 }}
-                        viewport={{ once: true }}
-                        className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                      >
-                        <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-6`}>
-                          <IconComponent className="w-8 h-8 text-white" />
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">{item.title}</h3>
-                        
-                        <div className="space-y-3">
-                          {item.items.map((feature, featureIndex) => (
-                            <motion.div
-                              key={featureIndex}
-                              initial={{ opacity: 0, x: -20 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.4, delay: 0.4 + featureIndex * 0.1 }}
-                              viewport={{ once: true }}
-                              className="flex items-start gap-3"
-                            >
-                              <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                              <span className="text-gray-600 text-sm">{feature}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-
-                {/* Equipamiento Industrial Visual */}
+            {/* Fabricación y Montaje Section - UNIFICADO SIN DUPLICACIONES */}
+            {section.id === 'fabricacion-montaje' && (
+              <div className="space-y-16">
+                {/* Equipamiento Industrial Único - Elimina duplicaciones de categorías + visual mejorado */}
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -880,29 +782,55 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
                   viewport={{ once: true }}
                   className="text-center"
                 >
-                  <h3 className="text-3xl font-bold text-gray-900 mb-12">
-                    Nuestro Equipamiento Industrial
-                  </h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {[
                       {
-                        title: 'Maquinaria de Corte CNC',
-                        subtitle: '3 Mesas CNC',
-                        image: getImage('/images/equipo/equipo-industrial-1.jpg', 'equipment.0.image'),
-                        description: 'Control numérico computarizado de alta precisión'
+                        title: getText('Corte CNC', 'equipmentCategories.0.category'),
+                        subtitle: getText('3 Mesas Automatizadas', 'equipmentCategories.0.subtitle'),
+                        image: getImage('/images/equipo/equipo-industrial-1.jpg', 'equipmentCategories.0.image'),
+                        description: getText('Control numérico computarizado para corte de precisión milimétrica', 'equipmentCategories.0.description'),
+                        specs: [
+                          getText('Precisión ±0.5mm', 'equipmentCategories.0.specs.0'),
+                          getText('Corte hasta 150mm', 'equipmentCategories.0.specs.1'),
+                          getText('3 mesas distribuidas', 'equipmentCategories.0.specs.2')
+                        ],
+                        color: 'from-orange-500 to-orange-600'
                       },
                       {
-                        title: 'Equipos de Izaje',
-                        subtitle: '8 Puentes Grúa',
-                        image: getImage('/images/general/industria-general.jpg', 'equipment.1.image'),
-                        description: 'Distribución estratégica en nuestras plantas'
+                        title: getText('Sistemas de Izaje', 'equipmentCategories.1.category'),
+                        subtitle: getText('8 Puentes Grúa', 'equipmentCategories.1.subtitle'),
+                        image: getImage('/images/general/industria-general.jpg', 'equipmentCategories.1.image'),
+                        description: getText('Sistemas de manejo de cargas para fabricación y montaje', 'equipmentCategories.1.description'),
+                        specs: [
+                          getText('5 en Popayán', 'equipmentCategories.1.specs.0'),
+                          getText('3 en Jamundí', 'equipmentCategories.1.specs.1'),
+                          getText('Hasta 20 toneladas', 'equipmentCategories.1.specs.2')
+                        ],
+                        color: 'from-blue-500 to-blue-600'
                       },
                       {
-                        title: 'Equipos Especializados',
-                        subtitle: 'Granalladora y Más',
-                        image: getImage('/images/servicios/fabricacion-1.jpg', 'equipment.2.image'),
-                        description: 'Granalladora, ensambladora y curvadora especializada'
+                        title: getText('Equipos de Montaje', 'equipmentCategories.2.category'),
+                        subtitle: getText('Tecnología Móvil', 'equipmentCategories.2.subtitle'),
+                        image: getImage('/images/servicios/montaje-1.jpg', 'equipmentCategories.2.image'),
+                        description: getText('Equipamiento especializado para montaje en obra', 'equipmentCategories.2.description'),
+                        specs: [
+                          getText('Grúas móviles', 'equipmentCategories.2.specs.0'),
+                          getText('Equipos de soldadura', 'equipmentCategories.2.specs.1'),
+                          getText('Sistemas de posicionamiento', 'equipmentCategories.2.specs.2')
+                        ],
+                        color: 'from-purple-500 to-purple-600'
+                      },
+                      {
+                        title: getText('Equipos Especializados', 'equipmentCategories.3.category'),
+                        subtitle: getText('Procesos Únicos', 'equipmentCategories.3.subtitle'),
+                        image: getImage('/images/servicios/fabricacion-1.jpg', 'equipmentCategories.3.image'),
+                        description: getText('Maquinaria para procesos especializados de acabado', 'equipmentCategories.3.description'),
+                        specs: [
+                          getText('Granalladora industrial', 'equipmentCategories.3.specs.0'),
+                          getText('Curvadora de tejas', 'equipmentCategories.3.specs.1'),
+                          getText('Sistemas de pintura', 'equipmentCategories.3.specs.2')
+                        ],
+                        color: 'from-green-500 to-green-600'
                       }
                     ].map((equipo, index) => (
                       <motion.div
@@ -911,78 +839,54 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: index * 0.2 }}
                         viewport={{ once: true }}
-                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
                       >
-                        <div className="relative h-64">
+                        <div className="relative h-64 overflow-hidden">
                           <Image
                             src={equipo.image}
                             alt={equipo.title}
                             fill
-                            className="object-cover"
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
                             sizes="(max-width: 768px) 100vw, 33vw"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+                          
+                          {/* Badge superior */}
+                          <div className="absolute top-4 left-4">
+                            <div className={`px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm bg-gradient-to-r ${equipo.color}`}>
+                              {equipo.subtitle}
+                            </div>
+                          </div>
+                          
                           <div className="absolute bottom-6 left-6 right-6 text-white">
-                            <span className="text-blue-300 text-sm font-medium">{equipo.subtitle}</span>
-                            <h3 className="text-xl font-bold">{equipo.title}</h3>
+                            <h3 className="text-xl font-bold mb-2">{equipo.title}</h3>
+                            <p className="text-gray-200 text-sm">{equipo.description}</p>
                           </div>
                         </div>
+                        
                         <div className="p-6">
-                          <p className="text-gray-600">{equipo.description}</p>
+                          <div className="space-y-3">
+                            {equipo.specs.map((spec, specIndex) => (
+                              <div key={specIndex} className="flex items-center gap-3">
+                                <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                  <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                </div>
+                                <span className="text-gray-700 text-sm">{spec}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </motion.div>
                     ))}
                   </div>
                 </motion.div>
-              </>
+              </div>
             )}
 
-            {section.id === 'innovacion' && (
-              <>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-                  {innovations.map((innovation, idx) => {
-                    const IconComponent = innovation.icon
-                    return (
-                      <motion.div
-                        key={innovation.title}
-                        initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="flex flex-col"
-                      >
-                        <div className="bg-white rounded-2xl p-8 shadow-lg flex-1">
-                          <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                              <IconComponent className="w-6 h-6 text-white" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-gray-900">{innovation.title}</h3>
-                          </div>
-                          
-                          <p className="text-gray-600 mb-6 leading-relaxed">{innovation.description}</p>
-                          
-                          <div className="space-y-3">
-                            {innovation.benefits.map((benefit, benefitIndex) => (
-                              <motion.div
-                                key={benefitIndex}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.4, delay: 0.4 + benefitIndex * 0.1 }}
-                                viewport={{ once: true }}
-                                className="flex items-center gap-3"
-                              >
-                                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                <span className="text-gray-700">{benefit}</span>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-
-                {/* Innovaciones en Acción */}
+            {/* Control Digital Section - UNIFICADO SIN DUPLICACIONES */}
+            {section.id === 'control-digital' && (
+              <div className="space-y-16">
+                {/* Control Digital Único - Elimina duplicaciones de procesos + innovación */}
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -990,55 +894,95 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
                   viewport={{ once: true }}
                   className="text-center"
                 >
-                  <h3 className="text-3xl font-bold text-gray-900 mb-12">
-                    Innovación en Cada Proceso
-                  </h3>
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
                       {
-                        title: 'Tecnología BIM Integrada',
-                        subtitle: 'Building Information Modeling',
-                        image: getImage('/images/servicios/gestion-1.jpg', 'innovations.0.image'),
-                        description: 'Coordinación multidisciplinaria y detección temprana de conflictos'
+                        title: getText('Trazabilidad QR Integral', 'digitalProcesses.0.process'),
+                        subtitle: getText('Seguimiento en Tiempo Real', 'digitalProcesses.0.subtitle'),
+                        image: getImage('/images/servicios/gestion-2.jpg', 'digitalProcesses.0.image'),
+                        description: getText('Sistema completo de códigos QR que permite seguimiento desde fabricación hasta montaje con ubicación GPS en tiempo real', 'digitalProcesses.0.description'),
+                        benefits: [
+                          getText('Historial completo de cada pieza', 'digitalProcesses.0.benefits.0'),
+                          getText('Ubicación GPS en tiempo real', 'digitalProcesses.0.benefits.1'),
+                          getText('Control de calidad digital integrado', 'digitalProcesses.0.benefits.2')
+                        ],
+                        color: 'from-purple-500 to-purple-600'
                       },
                       {
-                        title: 'Control Digital de Calidad',
-                        subtitle: 'Trazabilidad QR',
-                        image: getImage('/images/servicios/gestion-2.jpg', 'innovations.1.image'),
-                        description: 'Reportes digitales en tiempo real y certificación digitalizada'
+                        title: getText('Reportes Digitales Automáticos', 'digitalProcesses.1.process'),
+                        subtitle: getText('Certificación Digital', 'digitalProcesses.1.subtitle'),
+                        image: getImage('/images/servicios/gestion-3.jpg', 'digitalProcesses.1.image'),
+                        description: getText('Documentación automática completa con evidencia fotográfica y certificaciones digitales blockchain', 'digitalProcesses.1.description'),
+                        benefits: [
+                          getText('Informes automáticos en tiempo real', 'digitalProcesses.1.benefits.0'),
+                          getText('Evidencia fotográfica completa', 'digitalProcesses.1.benefits.1'),
+                          getText('Certificación digital blockchain', 'digitalProcesses.1.benefits.2')
+                        ],
+                        color: 'from-blue-500 to-blue-600'
                       }
-                    ].map((innovacion, index) => (
+                    ].map((sistema, index) => (
                       <motion.div
-                        key={innovacion.title}
+                        key={sistema.title}
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: index * 0.2 }}
                         viewport={{ once: true }}
-                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
                       >
-                        <div className="relative h-64">
+                        <div className="relative h-64 overflow-hidden">
                           <Image
-                            src={innovacion.image}
-                            alt={innovacion.title}
+                            src={sistema.image}
+                            alt={sistema.title}
                             fill
-                            className="object-cover"
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
                             sizes="(max-width: 768px) 100vw, 50vw"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+                          
+                          {/* Badge superior */}
+                          <div className="absolute top-4 left-4">
+                            <div className={`px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm bg-gradient-to-r ${sistema.color}`}>
+                              {sistema.subtitle}
+                            </div>
+                          </div>
+                          
+                          {/* Icono del sistema */}
+                          <div className="absolute top-4 right-4">
+                            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                              <Shield className="w-6 h-6 text-white" />
+                            </div>
+                          </div>
+                          
                           <div className="absolute bottom-6 left-6 right-6 text-white">
-                            <span className="text-cyan-300 text-sm font-medium">{innovacion.subtitle}</span>
-                            <h3 className="text-xl font-bold">{innovacion.title}</h3>
+                            <h3 className="text-xl font-bold mb-2">{sistema.title}</h3>
+                            <p className="text-gray-200 text-sm">{sistema.description}</p>
                           </div>
                         </div>
+                        
                         <div className="p-6">
-                          <p className="text-gray-600">{innovacion.description}</p>
+                          <div className="space-y-3">
+                            {sistema.benefits.map((benefit, benefitIndex) => (
+                              <motion.div
+                                key={benefitIndex}
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.3, delay: 0.1 + benefitIndex * 0.1 }}
+                                viewport={{ once: true }}
+                                className="flex items-center gap-3"
+                              >
+                                <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                  <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                </div>
+                                <span className="text-gray-700 text-sm">{benefit}</span>
+                              </motion.div>
+                            ))}
+                          </div>
                         </div>
                       </motion.div>
                     ))}
                   </div>
                 </motion.div>
-              </>
+              </div>
             )}
           </div>
         </section>

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Building2, MapPin, Truck, Construction, ExternalLink, Factory, Forklift, Warehouse } from 'lucide-react'
+import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
 
 const plantas = [
   {
@@ -226,34 +227,23 @@ export function InfraestructuraSection() {
           </div>
         </motion.div>
 
-        {/* Resumen de capacidades */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-blue-50 to-gray-50 border border-gray-200 rounded-2xl p-8 text-center"
-        >
-          <h4 className="text-xl font-bold text-gray-900 mb-4">Capacidad Total Combinada</h4>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-              <p className="text-3xl font-bold text-blue-600">600</p>
-              <p className="text-sm text-gray-600">Ton/mes</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-blue-600">10,400</p>
-              <p className="text-sm text-gray-600">m² área total</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-blue-600">8</p>
-              <p className="text-sm text-gray-600">Puentes grúa</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-blue-600">3</p>
-              <p className="text-sm text-gray-600">Mesas CNC</p>
-            </div>
-          </div>
-        </motion.div>
+        {/* Capacidad Total - Usando componente unificado */}
+        <div className="mt-16">
+          <UnifiedStatsGrid
+            title="Capacidad Total Combinada"
+            subtitle="Infraestructura distribuida estratégicamente para máxima eficiencia productiva"
+            stats={[
+              { number: "600", label: "Capacidad Total", suffix: " ton/mes" },
+              { number: "10,400", label: "Área Total", suffix: " m²" },
+              { number: "8", label: "Puentes Grúa", suffix: "" },
+              { number: "3", label: "Mesas CNC", suffix: "" }
+            ]}
+            variant="compact"
+            colorScheme="blue"
+            columns={4}
+            showDecorator={false}
+          />
+        </div>
       </div>
     </section>
   )

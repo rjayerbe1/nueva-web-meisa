@@ -61,29 +61,222 @@ async function createPages() {
         heroTitle: 'Tecnología e Innovación',
         heroTitleHighlight: 'de Vanguardia',
         heroSubtitle: 'En MEISA utilizamos las herramientas más avanzadas del mercado para diseñar, fabricar y montar estructuras metálicas con la máxima precisión y eficiencia.',
+        procesoIntegral: {
+          title: 'Proceso Tecnológico Integral',
+          subtitle: 'Tres etapas fundamentales con tecnología de vanguardia: desde diseño BIM hasta control digital'
+        },
         heroCta1: 'Solicitar Consultoría',
         heroCta2: 'Ver Proyectos Realizados',
         heroImage: '/images/tecnologia/tecnologia-industrial-1.jpg',
         procesoFases: {
           0: {
-            title: 'Diseño BIM',
-            description: 'Modelado 3D con Tekla Structures',
+            title: 'Diseño y Análisis',
+            description: 'Modelado BIM + Análisis estructural integrado',
             image: '/images/servicios/consultoria-1.jpg'
           },
           1: {
-            title: 'Análisis Estructural',
-            description: 'ETABS, SAP2000, Midas',
-            image: '/images/servicios/consultoria-4.jpg'
-          },
-          2: {
-            title: 'Fabricación CNC',
-            description: 'Corte automatizado de precisión',
+            title: 'Fabricación y Montaje',
+            description: 'Tecnologías CNC + Equipos de montaje especializados',
             image: '/images/equipo/equipo-industrial-1.jpg'
           },
-          3: {
+          2: {
             title: 'Control Digital',
-            description: 'Trazabilidad y calidad',
+            description: 'Trazabilidad QR y calidad certificada',
             image: '/images/servicios/gestion-2.jpg'
+          }
+        },
+        softwareCategories: {
+          0: {
+            category: 'Diseño BIM',
+            description: 'Modelado 3D y coordinación multidisciplinaria',
+            image: '/images/servicios/consultoria-1.jpg',
+            tools: {
+              0: {
+                name: 'Trimble Tekla Structures',
+                specialty: 'Líder mundial en BIM para estructuras',
+                image: '/images/servicios/consultoria-1.jpg'
+              },
+              1: {
+                name: 'AutoCAD',
+                specialty: 'Diseño técnico 2D/3D',
+                image: '/images/servicios/consultoria-2.jpg'
+              }
+            }
+          },
+          1: {
+            category: 'Análisis Estructural',
+            description: 'Simulación y análisis avanzado de estructuras',
+            image: '/images/servicios/consultoria-4.jpg',
+            tools: {
+              0: {
+                name: 'ETABS',
+                specialty: 'Análisis de edificios y estructuras complejas',
+                image: '/images/servicios/consultoria-4.jpg'
+              },
+              1: {
+                name: 'SAP2000',
+                specialty: 'Análisis universal de estructuras',
+                image: '/images/servicios/consultoria-3.jpg'
+              }
+            }
+          },
+          2: {
+            category: 'Conexiones Especializadas',
+            description: 'Diseño y verificación de conexiones críticas',
+            image: '/images/servicios/gestion-1.jpg',
+            tools: {
+              0: {
+                name: 'IDEA StatiCa',
+                specialty: 'Conexiones complejas con análisis CBFEM',
+                image: '/images/servicios/gestion-1.jpg'
+              }
+            }
+          }
+        },
+        equipmentCategories: {
+          0: {
+            category: 'Corte CNC',
+            subtitle: '3 Mesas Automatizadas',
+            description: 'Control numérico computarizado para corte de precisión milimétrica',
+            image: '/images/equipo/equipo-industrial-1.jpg',
+            specs: {
+              0: 'Precisión ±0.5mm',
+              1: 'Corte hasta 150mm',
+              2: '3 mesas distribuidas'
+            }
+          },
+          1: {
+            category: 'Sistemas de Izaje',
+            subtitle: '8 Puentes Grúa',
+            description: 'Sistemas de manejo de cargas para fabricación y montaje',
+            image: '/images/general/industria-general.jpg',
+            specs: {
+              0: '5 en Popayán',
+              1: '3 en Jamundí',
+              2: 'Hasta 20 toneladas'
+            }
+          },
+          2: {
+            category: 'Equipos de Montaje',
+            subtitle: 'Tecnología Móvil',
+            description: 'Equipamiento especializado para montaje en obra',
+            image: '/images/servicios/montaje-1.jpg',
+            specs: {
+              0: 'Grúas móviles',
+              1: 'Equipos de soldadura',
+              2: 'Sistemas de posicionamiento'
+            }
+          },
+          3: {
+            category: 'Equipos Especializados',
+            subtitle: 'Procesos Únicos',
+            description: 'Maquinaria para procesos especializados de acabado',
+            image: '/images/servicios/fabricacion-1.jpg',
+            specs: {
+              0: 'Granalladora industrial',
+              1: 'Curvadora de tejas',
+              2: 'Sistemas de pintura'
+            }
+          }
+        },
+        digitalProcesses: {
+          0: {
+            process: 'Trazabilidad QR Integral',
+            subtitle: 'Seguimiento en Tiempo Real',
+            description: 'Sistema completo de códigos QR que permite seguimiento desde fabricación hasta montaje con ubicación GPS en tiempo real',
+            image: '/images/servicios/gestion-2.jpg',
+            benefits: {
+              0: 'Historial completo de cada pieza',
+              1: 'Ubicación GPS en tiempo real',
+              2: 'Control de calidad digital integrado'
+            }
+          },
+          1: {
+            process: 'Reportes Digitales Automáticos',
+            subtitle: 'Certificación Digital',
+            description: 'Documentación automática completa con evidencia fotográfica y certificaciones digitales blockchain',
+            image: '/images/servicios/gestion-3.jpg',
+            benefits: {
+              0: 'Informes automáticos en tiempo real',
+              1: 'Evidencia fotográfica completa',
+              2: 'Certificación digital blockchain'
+            }
+          }
+        },
+        softwareGallery: {
+          title: 'Software Especializado en Acción',
+          subtitle: 'Herramientas de vanguardia que nos permiten crear estructuras metálicas con precisión milimétrica',
+          tools: {
+            0: {
+              title: 'Trimble Tekla Structures',
+              description: 'Software BIM líder mundial para modelado detallado de estructuras metálicas y concreto',
+              image: '/images/tecnologia/software-diseno-cad.jpg',
+              badge: 'BIM Líder Mundial',
+              features: {
+                0: 'Modelado 3D completo y detallado',
+                1: 'Coordinación multidisciplinaria BIM',
+                2: 'Generación automática de planos de fabricación'
+              }
+            },
+            1: {
+              title: 'ETABS & SAP2000',
+              description: 'Suite completa de análisis estructural para edificios y estructuras complejas',
+              image: '/images/servicios/consultoria-4.jpg',
+              badge: 'Análisis Avanzado',
+              features: {
+                0: 'Análisis sísmico y dinámico avanzado',
+                1: 'Diseño según normativas internacionales',
+                2: 'Optimización estructural y de materiales'
+              }
+            },
+            2: {
+              title: 'IDEA StatiCa Connection',
+              description: 'Software revolucionario para diseño y verificación de conexiones de acero complejas',
+              image: '/images/servicios/consultoria-3.jpg',
+              badge: 'Conexiones Especializadas',
+              features: {
+                0: 'Análisis por elementos finitos CBFEM',
+                1: 'Verificación según códigos internacionales',
+                2: 'Reportes detallados de cálculo'
+              }
+            },
+            3: {
+              title: 'Suite Complementaria',
+              description: 'Midas Civil, SAFE, DC-CAD y herramientas especializadas para análisis integral',
+              image: '/images/tecnologia/tecnologia-industrial-1.jpg',
+              badge: 'Suite Completa',
+              features: {
+                0: 'Análisis de losas y cimentaciones',
+                1: 'Diseño de elementos de concreto',
+                2: 'Integración completa con workflow BIM'
+              }
+            }
+          }
+        },
+        techStats: {
+          title: 'Tecnología en Números',
+          subtitle: 'Datos que demuestran nuestro compromiso con la innovación tecnológica',
+          stats: {
+            0: {
+              number: '15+',
+              label: 'Software Especializados',
+              description: 'Herramientas BIM y de análisis'
+            },
+            1: {
+              number: '99.8%',
+              label: 'Precisión CNC',
+              description: 'Tolerancia milimétrica'
+            },
+            2: {
+              number: '100%',
+              label: 'Trazabilidad Digital',
+              description: 'Control QR completo'
+            },
+            3: {
+              number: '27',
+              label: 'Años de Innovación',
+              description: 'Evolución tecnológica constante'
+            }
           }
         }
       },

@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
+import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
+import { COMPANY_STATS } from '@/lib/company-data'
 import { 
   Building2, 
   Target, 
@@ -288,48 +290,37 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
 
       {/* Numbers Section */}
       <section className="py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {getText('MEISA en Números', 'numeros.title')}
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              {getText('Más de 27 años de experiencia nos han posicionado como líderes en el sector metalmecánico.', 'numeros.subtitle')}
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: getText("27", 'numeroStats.0.number'), label: getText("Años de Experiencia", 'numeroStats.0.label'), icon: Award },
-              { number: getText("350", 'numeroStats.1.number'), label: getText("Toneladas/Mes", 'numeroStats.1.label'), icon: Building2 },
-              { number: getText("3", 'numeroStats.2.number'), label: getText("Plantas", 'numeroStats.2.label'), icon: Target },
-              { number: getText("100+", 'numeroStats.3.number'), label: getText("Colaboradores", 'numeroStats.3.label'), icon: Users }
-            ].map((item, index) => {
-              const IconComponent = item.icon
-              return (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
-                >
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <IconComponent className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-4xl font-bold text-white mb-2">{item.number}</div>
-                  <div className="text-white font-semibold">{item.label}</div>
-                </motion.div>
-              )
-            })}
-          </div>
+        <div className="relative z-10">
+          <UnifiedStatsGrid
+            title={getText('MEISA en Números', 'numeros.title')}
+            subtitle={getText('Más de 27 años de experiencia nos han posicionado como líderes en el sector metalmecánico.', 'numeros.subtitle')}
+            stats={[
+              { 
+                number: COMPANY_STATS.YEARS_EXPERIENCE.toString(), 
+                label: getText("Años de Experiencia", 'numeroStats.0.label'), 
+                suffix: "" 
+              },
+              { 
+                number: COMPANY_STATS.MONTHLY_CAPACITY.toString(), 
+                label: getText("Toneladas/Mes", 'numeroStats.1.label'), 
+                suffix: "" 
+              },
+              { 
+                number: COMPANY_STATS.PLANTS.toString(), 
+                label: getText("Plantas Industriales", 'numeroStats.2.label'), 
+                suffix: "" 
+              },
+              { 
+                number: COMPANY_STATS.TOTAL_TEAM.toString(), 
+                label: getText("Colaboradores", 'numeroStats.3.label'), 
+                suffix: "+" 
+              }
+            ]}
+            variant="default"
+            colorScheme="blue"
+            columns={4}
+            showDecorator={true}
+          />
         </div>
       </section>
 
@@ -551,40 +542,12 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
             className="mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {getText('Nuestras Capacidades', 'sections.capacidades.title')}
+              {getText('Nuestras Fortalezas en Acción', 'sections.capacidades.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {getText('La experiencia y capacidad productiva que nos posiciona como líderes del sector.', 'sections.capacidades.subtitle')}
+              {getText('Capacidades que nos permiten ejecutar proyectos de la más alta complejidad.', 'sections.capacidades.subtitle')}
             </p>
           </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: getText("27", 'capacidadStats.0.number'), label: getText("Años de Experiencia", 'capacidadStats.0.label'), desc: getText("Liderando el sector", 'capacidadStats.0.desc'), icon: Award },
-              { number: getText("350", 'capacidadStats.1.number'), label: getText("Toneladas/Mes", 'capacidadStats.1.label'), desc: getText("Capacidad de producción", 'capacidadStats.1.desc'), icon: Building2 },
-              { number: getText("3", 'capacidadStats.2.number'), label: getText("Plantas", 'capacidadStats.2.label'), desc: getText("Popayán, Jamundí y expansión", 'capacidadStats.2.desc'), icon: Target },
-              { number: getText("100+", 'capacidadStats.3.number'), label: getText("Colaboradores", 'capacidadStats.3.label'), desc: getText("Equipo especializado", 'capacidadStats.3.desc'), icon: Users }
-            ].map((item, index) => {
-              const IconComponent = item.icon
-              return (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <IconComponent className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-4xl font-bold text-gray-900 mb-2">{item.number}</div>
-                  <div className="text-gray-900 font-semibold mb-1">{item.label}</div>
-                  <div className="text-gray-600 text-sm">{item.desc}</div>
-                </motion.div>
-              )
-            })}
-          </div>
 
           {/* Capacidades Visuales */}
           <motion.div

@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma"
 import { UserRole } from "@prisma/client"
 import { Building2, Users, Wrench, MessageSquare, BarChart3, Plus, TrendingUp, Clock } from "lucide-react"
 import Link from "next/link"
+import { UnifiedStatsGrid } from "@/components/ui/unified-stats-card"
 
 async function getStats() {
   const [proyectos, servicios, formularios] = await Promise.all([
@@ -67,75 +68,21 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Proyectos</p>
-              <div className="flex items-baseline">
-                <p className="text-3xl font-bold text-gray-900">{stats.proyectos}</p>
-                <span className="ml-2 text-sm text-green-600 flex items-center">
-                  <TrendingUp className="h-4 w-4 mr-1" />
-                  +12%
-                </span>
-              </div>
-            </div>
-            <div className="p-3 bg-blue-100 rounded-lg">
-              <Building2 className="h-6 w-6 text-blue-600" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Servicios Activos</p>
-              <div className="flex items-baseline">
-                <p className="text-3xl font-bold text-gray-900">{stats.servicios}</p>
-              </div>
-            </div>
-            <div className="p-3 bg-green-100 rounded-lg">
-              <Wrench className="h-6 w-6 text-green-600" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Mensajes Nuevos</p>
-              <div className="flex items-baseline">
-                <p className="text-3xl font-bold text-gray-900">{stats.formularios}</p>
-                {stats.formularios > 0 && (
-                  <span className="ml-2 text-xs text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
-                    Sin leer
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="p-3 bg-orange-100 rounded-lg">
-              <MessageSquare className="h-6 w-6 text-orange-600" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total General</p>
-              <div className="flex items-baseline">
-                <p className="text-3xl font-bold text-gray-900">
-                  {stats.proyectos + stats.servicios}
-                </p>
-              </div>
-            </div>
-            <div className="p-3 bg-purple-100 rounded-lg">
-              <BarChart3 className="h-6 w-6 text-purple-600" />
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Stats Grid - Usando componente unificado */}
+      <UnifiedStatsGrid
+        title="Panel de Control"
+        subtitle="Estadísticas actuales del sistema administrativo"
+        stats={[
+          { number: stats.proyectos.toString(), label: "Total Proyectos", suffix: "" },
+          { number: stats.servicios.toString(), label: "Servicios Activos", suffix: "" },
+          { number: stats.formularios.toString(), label: "Mensajes Nuevos", suffix: "" },
+          { number: (stats.proyectos + stats.servicios).toString(), label: "Contenido Total", suffix: "" }
+        ]}
+        variant="compact"
+        colorScheme="blue"
+        columns={4}
+        showDecorator={false}
+      />
 
       {/* Proyectos Recientes */}
       <div className="bg-white shadow-sm border border-gray-200 rounded-xl overflow-hidden">

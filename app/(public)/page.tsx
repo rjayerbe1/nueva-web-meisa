@@ -1,17 +1,7 @@
 import { prisma } from '@/lib/prisma'
 
-// Importaciones de componentes
-import { HeroSection } from '@/components/sections/HeroSection'
-import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
-import { StatsSection } from '@/components/sections/StatsSectionNew'
-import { ServicesSection } from '@/components/sections/ServicesSectionNew'
-import { TecnologiasSection } from '@/components/sections/TecnologiasSection'
-import { InfraestructuraSection } from '@/components/sections/InfraestructuraSection'
-import { ProjectsByCategorySection } from '@/components/sections/ProjectsByCategorySection'
-import { ClientesSection } from '@/components/sections/ClientesSection'
-import { ValoresSection } from '@/components/sections/ValoresSection'
-import { AboutSection } from '@/components/sections/AboutSectionNew'
-import { ContactSection } from '@/components/sections/ContactSection'
+// Importaciones de componentes mejoradas con estilo de servicios
+import { HomeContent } from '@/components/home/HomeContent'
 
 async function getProjectsByCategory() {
   const projects = await prisma.proyecto.findMany({
@@ -62,43 +52,28 @@ async function getProjectsByCategory() {
   return projectsByCategory
 }
 
+// Estructura de secciones para navegación sticky
+const homeSections = [
+  { id: 'inicio', titulo: 'Inicio', icon: 'Home' },
+  { id: 'capacidades', titulo: 'Capacidades', icon: 'Building2' },
+  { id: 'estadisticas', titulo: 'Números', icon: 'BarChart3' },
+  { id: 'nosotros', titulo: 'Nosotros', icon: 'Users' },
+  { id: 'servicios', titulo: 'Servicios', icon: 'Settings' },
+  { id: 'tecnologia', titulo: 'Tecnología', icon: 'Monitor' },
+  { id: 'infraestructura', titulo: 'Infraestructura', icon: 'Factory' },
+  { id: 'proyectos', titulo: 'Proyectos', icon: 'Award' },
+  { id: 'clientes', titulo: 'Clientes', icon: 'UserCheck' },
+  { id: 'valores', titulo: 'Valores', icon: 'Heart' },
+  { id: 'contacto', titulo: 'Contacto', icon: 'MessageSquare' }
+]
+
 export default async function HomePage() {
   const projectsByCategory = await getProjectsByCategory()
 
   return (
-    <main className="min-h-screen bg-gray-900">
-      {/* Hero Section */}
-      <HeroSection />
-      
-      {/* Sección de Capacidades */}
-      <CapacitiesSection />
-      
-      {/* Sección de Estadísticas */}
-      <StatsSection />
-      
-      {/* Sección Sobre Nosotros con Misión/Visión */}
-      <AboutSection />
-      
-      {/* Sección de Servicios con modelos 3D */}
-      <ServicesSection />
-      
-      {/* Sección de Tecnologías (8 software) */}
-      <TecnologiasSection />
-      
-      {/* Sección de Infraestructura (3 plantas) */}
-      <InfraestructuraSection />
-      
-      {/* Proyectos por Categoría */}
-      <ProjectsByCategorySection projectsByCategory={projectsByCategory} />
-      
-      {/* Sección de Clientes Destacados */}
-      <ClientesSection />
-      
-      {/* Sección de Valores Corporativos */}
-      <ValoresSection />
-      
-      {/* Sección de Contacto */}
-      <ContactSection />
-    </main>
+    <HomeContent 
+      projectsByCategory={projectsByCategory}
+      sections={homeSections}
+    />
   )
 }

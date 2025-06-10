@@ -9,7 +9,7 @@ export default function PublicLayout({
   return (
     <>
       <Navbar />
-      <main className="pt-16">
+      <main className="w-full overflow-x-hidden">
         {children}
       </main>
       <Footer />
