@@ -5,7 +5,7 @@ export const siteConfig = {
   empresa: {
     nombre: "MEISA - Metálicas e Ingeniería S.A.",
     descripcion: "Somos una empresa colombiana especializada en brindar soluciones completas de ingeniería. A través de procesos eficientes y tecnologías de alto nivel, diseñamos, fabricamos e instalamos estructuras metálicas para proyectos de construcción e infraestructura con la más alta calidad.",
-    historia: "Metálicas e Ingeniería S.A fue constituida en el año de 1996 en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructura Metálica; durante más de 28 años hemos participado activamente en la construcción, manejo de Proyectos y Obras Civiles en todo el territorio Nacional.",
+    historia: "Metálicas e Ingeniería S.A fue constituida en el año de 1996 en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructura Metálica; durante más de 29 años hemos participado activamente en la construcción, manejo de Proyectos y Obras Civiles en todo el territorio Nacional.",
     aniosExperiencia: 29,
     mision: "Fortalecer la empresa a nivel nacional garantizando un crecimiento en el tiempo a través de calidad de los productos y servicios, generando rentabilidad, aumento de confianza, mayor satisfacción de clientes y colaboradores para así mantener su consolidación y talento profesional ante el mercado y llegar a nuevos clientes.",
     vision: "Desarrollar soluciones a proyectos con estructuras metálicas y obras civiles, logrando el balance ideal entre costos, diseño, funcionalidad y excelente calidad, cumpliendo con las normas sismo resistentes vigentes, los estándares de fabricación y montaje actuales, de la mano del talento humano y responsabilidad de los trabajadores.",
@@ -24,7 +24,7 @@ export const siteConfig = {
       "Proteger la integridad y salud de los trabajadores",
       "Prestar servicios conforme a los requisitos del cliente y lograr una alta satisfacción",
       "Identificar los peligros, evaluar y valorar los riesgos y establecer los controles respectivos",
-      "Prevenir accidentes de trabajo, enfermedades laborales y fomentar la adopción de un estilo de vida y de trabajo saludable",
+      "Prevenir riesgos laborales y fomentar la adopción de un estilo de vida y de trabajo saludable",
       "Establecer relaciones de calidad de mutuo beneficio con los proveedores",
       "Cumplir con los requisitos legales vigentes",
       "Compromiso con la asignación de recursos y la mejora continua del Sistema Integrado de Gestión (SIG)",
@@ -48,10 +48,10 @@ export const siteConfig = {
       caracteristicas: [
         "Uso de modelado 3D y tecnología BIM",
         "Análisis de cargas estructurales, comportamiento sísmico, resistencia del acero",
-        "Software: Tekla Structures, RISA-3D, RISAFloor, RISAConnection",
+        "Software: Trimble Tekla Structures, ETABS, SAFE, SAP2000",
         "Planos de fabricación y montaje detallados"
       ],
-      software: ["Tekla Structures", "RISA-3D", "RISA Steel", "RISAFloor", "RISAConnection", "RISAFoundation"]
+      software: ["Trimble Tekla Structures", "ETABS", "SAFE", "SAP2000", "Midas", "IDEA StatiCa Connection", "DC-CAD Vigas y Columnas"]
     },
     {
       titulo: "Fabricación de Estructuras Metálicas",
@@ -139,38 +139,43 @@ export const siteConfig = {
     puentesGrua: 8,
     mesasCorte: 3,
     areaTotal: 10400, // m2 combinado
-    proyectosCompletados: 150 // Proyectos exitosos completados
+    proyectosCompletados: 500 // Más de 500 proyectos exitosos según Hero del sitio
   },
   tecnologias: [
     {
-      nombre: "Tekla Structures",
+      nombre: "Trimble Tekla Structures",
       descripcion: "Software BIM líder mundial en estructura metálicas y de concreto",
       categoria: "diseño"
     },
     {
-      nombre: "RISA-3D",
-      descripcion: "Paquete integrado de software para el análisis y el diseño de edificios",
+      nombre: "ETABS",
+      descripcion: "Software de análisis y diseño estructural de edificios líder en la industria",
       categoria: "analisis"
     },
     {
-      nombre: "RISA Steel",
-      descripcion: "Permite diseñar acero, hormigón, aluminio, mampostería, madera para estructuras industriales y comerciales",
-      categoria: "diseño"
+      nombre: "SAFE",
+      descripcion: "Software especializado para el análisis y diseño de sistemas de losas y cimentaciones",
+      categoria: "cimentaciones"
     },
     {
-      nombre: "RISAFloor",
-      descripcion: "Diseña sistemas de pisos y trabaja con RISA-3D y RISAFoundation",
-      categoria: "diseño"
+      nombre: "SAP2000",
+      descripcion: "Programa de análisis estructural y diseño para todo tipo de estructuras",
+      categoria: "analisis"
     },
     {
-      nombre: "RISAConnection",
-      descripcion: "RISAConnection es la solución a diseño de conexiónes. Memorias de cálculo de ingeniería le dan la capacidad para comprobar rápidamente todos los aspectos del diseño",
+      nombre: "Midas",
+      descripcion: "Software avanzado de análisis y diseño estructural con capacidades BIM integradas",
+      categoria: "analisis"
+    },
+    {
+      nombre: "IDEA StatiCa Connection",
+      descripcion: "Software revolucionario para el diseño y verificación de conexiones de acero",
       categoria: "conexiones"
     },
     {
-      nombre: "RISAFoundation",
-      descripcion: "Diseño de cimentaciones completas, incluyendo losas, zapatas, vigas de amarre y muros",
-      categoria: "cimentaciones"
+      nombre: "DC-CAD Vigas y Columnas",
+      descripcion: "Software especializado para el diseño de elementos estructurales de concreto reforzado",
+      categoria: "diseño"
     },
     {
       nombre: "StruM.I.S",

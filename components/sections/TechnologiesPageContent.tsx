@@ -18,7 +18,10 @@ import {
   Wrench,
   Factory,
   Eye,
-  Target
+  Target,
+  Grid3x3,
+  Package,
+  Link2
 } from 'lucide-react'
 
 const softwareTools = [
@@ -26,7 +29,7 @@ const softwareTools = [
     category: 'Diseño e Ingeniería',
     tools: [
       {
-        name: 'Tekla Structures',
+        name: 'Trimble Tekla Structures',
         description: 'Software BIM líder mundial para modelado de estructuras metálicas y concreto',
         features: [
           'Modelado 3D detallado de estructuras complejas',
@@ -39,16 +42,82 @@ const softwareTools = [
         color: 'from-blue-500 to-blue-600'
       },
       {
-        name: 'Suite RISA',
-        description: 'Herramientas completas para análisis y diseño estructural',
+        name: 'ETABS',
+        description: 'Software de análisis y diseño estructural de edificios líder en la industria',
         features: [
-          'RISA-3D: Análisis y diseño integral de edificios',
-          'RISAFloor: Diseño optimizado de sistemas de pisos',
-          'RISAConnection: Diseño detallado de conexiones',
-          'RISAFoundation: Cálculo de cimentaciones completas'
+          'Análisis no lineal avanzado',
+          'Diseño sísmico con normativas internacionales',
+          'Modelado de estructuras complejas',
+          'Análisis dinámico y pushover',
+          'Diseño de elementos de concreto y acero'
         ],
         icon: BarChart3,
         color: 'from-green-500 to-green-600'
+      },
+      {
+        name: 'SAP2000',
+        description: 'Programa de análisis estructural y diseño para todo tipo de estructuras',
+        features: [
+          'Análisis estructural completo',
+          'Diseño de puentes y estructuras especiales',
+          'Análisis no lineal y dinámico',
+          'Modelado paramétrico avanzado',
+          'Integración con BIM'
+        ],
+        icon: Grid3x3,
+        color: 'from-indigo-500 to-indigo-600'
+      },
+      {
+        name: 'SAFE',
+        description: 'Software especializado para el análisis y diseño de sistemas de losas y cimentaciones',
+        features: [
+          'Diseño de losas postensadas',
+          'Análisis de cimentaciones complejas',
+          'Diseño de zapatas y vigas de fundación',
+          'Análisis de punzonamiento',
+          'Integración con ETABS'
+        ],
+        icon: Package,
+        color: 'from-cyan-500 to-cyan-600'
+      },
+      {
+        name: 'Midas',
+        description: 'Software avanzado de análisis y diseño estructural con capacidades BIM integradas',
+        features: [
+          'Análisis estructural avanzado',
+          'Diseño de estructuras de acero y concreto',
+          'Simulación de construcción por etapas',
+          'Análisis de fatiga y durabilidad',
+          'Modelado BIM integrado'
+        ],
+        icon: Layers,
+        color: 'from-purple-500 to-purple-600'
+      },
+      {
+        name: 'IDEA StatiCa Connection',
+        description: 'Software revolucionario para el diseño y verificación de conexiones de acero',
+        features: [
+          'Diseño de conexiones complejas',
+          'Análisis por elementos finitos CBFEM',
+          'Verificación según códigos internacionales',
+          'Optimización de conexiones',
+          'Reportes detallados de cálculo'
+        ],
+        icon: Link2,
+        color: 'from-red-500 to-red-600'
+      },
+      {
+        name: 'DC-CAD Vigas y Columnas',
+        description: 'Software especializado para el diseño de elementos estructurales de concreto reforzado',
+        features: [
+          'Diseño optimizado de vigas y columnas',
+          'Cálculo de refuerzo longitudinal y transversal',
+          'Verificación de deflexiones',
+          'Diseño sísmico NSR-10',
+          'Generación automática de despieces'
+        ],
+        icon: Settings,
+        color: 'from-amber-500 to-amber-600'
       }
     ]
   },
@@ -190,7 +259,7 @@ export function TechnologiesPageContent() {
   return (
     <main className="min-h-screen bg-gray-50 pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 py-20">
+      <section className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             ref={ref}

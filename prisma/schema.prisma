@@ -286,6 +286,40 @@ model ConfiguracionSitio {
   @@map("configuracion_sitio")
 }
 
+model Pagina {
+  id               String          @id @default(cuid())
+  slug             String          @unique
+  titulo           String
+  subtitulo        String?
+  contenido        Json            // Contenido estructurado en JSON
+  metaTitle        String?
+  metaDescription  String?
+  imagenHero       String?
+  imagenBanner     String?
+  activa           Boolean         @default(true)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  secciones        SeccionPagina[]
+
+  @@map("paginas")
+}
+
+model SeccionPagina {
+  id         String   @id @default(cuid())
+  paginaId   String
+  titulo     String
+  subtitulo  String?
+  contenido  Json
+  tipo       TipoSeccion
+  orden      Int      @default(0)
+  visible    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  pagina     Pagina   @relation(fields: [paginaId], references: [id], onDelete: Cascade)
+
+  @@map("secciones_pagina")
+}
+
 model CategoriaProyecto {
   id                  String        @id @default(cuid())
   key                 CategoriaEnum @unique
@@ -439,4 +473,22 @@ enum TipoConfig {
   JSON
   URL
   EMAIL
+}
+
+enum TipoSeccion {
+  HERO
+  CONTENIDO
+  CARACTERISTICAS
+  GALERIA
+  ESTADISTICAS
+  PROCESOS
+  EQUIPO
+  CTA
+  ACORDEON
+  TABS
+  TIMELINE
+  TESTIMONIOS
+  VIDEO
+  MAPA
+  FORMULARIO
 }

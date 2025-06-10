@@ -1,12 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Monitor, Settings, Layers, Home, Link as LinkIcon, Building, Cpu, Scissors } from 'lucide-react'
+import { Monitor, Settings, Layers, Home, Link as LinkIcon, Building, Cpu, Scissors, Grid } from 'lucide-react'
 
 const tecnologias = [
   {
     id: 1,
-    nombre: "Tekla Structures",
+    nombre: "Trimble Tekla Structures",
     descripcion: "Software BIM líder mundial en estructura metálicas y de concreto",
     categoria: "Diseño BIM",
     icon: Monitor,
@@ -15,48 +15,48 @@ const tecnologias = [
   },
   {
     id: 2,
-    nombre: "RISA-3D",
-    descripcion: "Paquete integrado de software para el análisis y el diseño de edificios",
+    nombre: "ETABS",
+    descripcion: "Software de análisis y diseño estructural de edificios líder en la industria",
     categoria: "Análisis Estructural",
     icon: Settings,
-    color: "from-blue-600 to-blue-700",
-    features: ["Análisis 3D", "Diseño de edificios", "Cálculo estructural", "Integración completa"]
+    color: "from-green-600 to-green-700",
+    features: ["Análisis no lineal", "Diseño sísmico", "Estructuras complejas", "Normativas internacionales"]
   },
   {
     id: 3,
-    nombre: "RISA Steel",
-    descripcion: "Permite diseñar acero, hormigón, aluminio, mampostería, madera para estructuras industriales y comerciales",
-    categoria: "Diseño Multi-material",
+    nombre: "SAP2000",
+    descripcion: "Programa de análisis estructural y diseño para todo tipo de estructuras",
+    categoria: "Análisis Universal",
     icon: Building,
-    color: "from-gray-600 to-gray-700",
-    features: ["Diseño de acero", "Hormigón", "Aluminio", "Mampostería", "Madera"]
+    color: "from-indigo-600 to-indigo-700",
+    features: ["Análisis completo", "Puentes", "Estructuras especiales", "BIM integrado"]
   },
   {
     id: 4,
-    nombre: "RISAFloor",
-    descripcion: "Diseña sistemas de pisos y trabaja con RISA-3D y RISAFoundation",
-    categoria: "Sistemas de Pisos",
+    nombre: "SAFE",
+    descripcion: "Software especializado para el análisis y diseño de sistemas de losas y cimentaciones",
+    categoria: "Losas y Cimentaciones",
     icon: Layers,
-    color: "from-slate-500 to-slate-600",
-    features: ["Sistemas de pisos", "Integración RISA-3D", "RISAFoundation", "Diseño optimizado"]
+    color: "from-cyan-600 to-cyan-700",
+    features: ["Losas postensadas", "Cimentaciones", "Zapatas", "Análisis de punzonamiento"]
   },
   {
     id: 5,
-    nombre: "RISAConnection",
-    descripcion: "Solución para diseño de conexiones. Memorias de cálculo de ingeniería le dan la capacidad para comprobar rápidamente todos los aspectos del diseño",
+    nombre: "IDEA StatiCa Connection",
+    descripcion: "Software revolucionario para el diseño y verificación de conexiones de acero",
     categoria: "Conexiones",
     icon: LinkIcon,
-    color: "from-blue-700 to-blue-800",
-    features: ["Diseño de conexiones", "Memorias de cálculo", "Verificación rápida", "Ingeniería detallada"]
+    color: "from-red-600 to-red-700",
+    features: ["Conexiones complejas", "Elementos finitos CBFEM", "Códigos internacionales", "Optimización"]
   },
   {
     id: 6,
-    nombre: "RISAFoundation",
-    descripcion: "Diseño de cimentaciones completas, incluyendo losas, zapatas, vigas de amarre y muros",
-    categoria: "Cimentaciones",
+    nombre: "Midas",
+    descripcion: "Software avanzado de análisis y diseño estructural con capacidades BIM integradas",
+    categoria: "Análisis Avanzado",
     icon: Home,
-    color: "from-gray-700 to-gray-800",
-    features: ["Cimentaciones completas", "Losas", "Zapatas", "Vigas de amarre", "Muros"]
+    color: "from-purple-600 to-purple-700",
+    features: ["Análisis avanzado", "Construcción por etapas", "Fatiga y durabilidad", "BIM integrado"]
   },
   {
     id: 7,
@@ -69,6 +69,15 @@ const tecnologias = [
   },
   {
     id: 8,
+    nombre: "DC-CAD Vigas y Columnas",
+    descripcion: "Software especializado para el diseño de elementos estructurales de concreto reforzado",
+    categoria: "Concreto Reforzado",
+    icon: Grid,
+    color: "from-amber-600 to-amber-700",
+    features: ["Vigas y columnas", "Refuerzo optimizado", "NSR-10", "Despieces automáticos"]
+  },
+  {
+    id: 9,
     nombre: "FastCAM",
     descripcion: "Proveedor líder de software de ingeniería para máquina de corte por Plasma y Oxicorte",
     categoria: "Fabricación CNC",

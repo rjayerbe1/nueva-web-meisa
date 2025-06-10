@@ -9,9 +9,15 @@ import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Dashboard", href: "/admin" },
-  { name: "Proyectos", href: "/admin/projects" },
-  { name: "Historias", href: "/admin/historias" },
-  { name: "Categorías", href: "/admin/categories" },
+  { 
+    name: "Gestión de Proyectos", 
+    href: "/admin/projects",
+    subItems: [
+      { name: "Proyectos", href: "/admin/projects" },
+      { name: "Historias", href: "/admin/historias" },
+      { name: "Categorías", href: "/admin/categories" }
+    ]
+  },
   { name: "Clientes", href: "/admin/clientes" },
   { 
     name: "Servicios", 
@@ -20,6 +26,15 @@ const navigation = [
       { name: "Lista de Servicios", href: "/admin/services" },
       { name: "Aspectos Visuales", href: "/admin/services/visual" },
       { name: "Contenido Detallado", href: "/admin/services/content" }
+    ]
+  },
+  { 
+    name: "Páginas",
+    href: "/admin/paginas",
+    subItems: [
+      { name: "Calidad", href: "/admin/paginas/calidad" },
+      { name: "Tecnología", href: "/admin/paginas/tecnologia" },
+      { name: "Empresa", href: "/admin/paginas/empresa" }
     ]
   },
   { name: "Equipo", href: "/admin/team" },
@@ -38,7 +53,7 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps) {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(['Servicios'])
+  const [expandedItems, setExpandedItems] = useState<string[]>(['Gestión de Proyectos', 'Servicios', 'Páginas'])
 
   const toggleExpansion = (itemName: string) => {
     setExpandedItems(prev => 
@@ -93,8 +108,14 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
               {navigation.map((item) => {
                 const hasSubItems = 'subItems' in item && item.subItems
                 const isExpanded = expandedItems.includes(item.name)
-                const isActive = pathname === item.href || 
-                  (item.href !== "/admin" && pathname.startsWith(item.href))
+                
+                // Check if current path matches item or any of its sub-items
+                let isActive = pathname === item.href
+                if (hasSubItems) {
+                  isActive = isActive || item.subItems.some(subItem => pathname === subItem.href)
+                } else if (item.href !== "/admin") {
+                  isActive = isActive || pathname.startsWith(item.href)
+                }
 
                 return (
                   <li key={item.name}>

@@ -69,7 +69,7 @@ const policies = [
     commitments: [
       'Protección integral de colaboradores, contratistas y visitantes',
       'Identificación, evaluación y control de riesgos laborales',
-      'Prevención de accidentes y enfermedades laborales',
+      'Prevención proactiva de riesgos laborales',
       'Cumplimiento de normatividad nacional vigente',
       'Condiciones laborales seguras y saludables'
     ],
@@ -171,12 +171,6 @@ const qualityControl = [
   }
 ]
 
-const indicators = [
-  { metric: '>90%', label: 'Satisfacción del Cliente', icon: BarChart3 },
-  { metric: '100%', label: 'Cumplimiento de Cronogramas', icon: Clock },
-  { metric: '<2%', label: 'Índice de Reprocesos', icon: Target },
-  { metric: '0', label: 'Accidentes Fatales en 27 años', icon: Shield }
-]
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -215,7 +209,7 @@ export function QualityPageContent() {
   return (
     <main className="min-h-screen bg-gray-50 pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 py-20">
+      <section className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             ref={ref}
@@ -246,7 +240,7 @@ export function QualityPageContent() {
             >
               MEISA cuenta con un robusto Sistema Integrado de Gestión (SIG) que garantiza calidad, 
               seguridad, cumplimiento normativo y mejora continua en todos nuestros procesos. 
-              Más de 27 años sin accidentes fatales respaldan nuestro compromiso con la excelencia.
+              Más de 27 años de excelencia en seguridad respaldan nuestro compromiso con la calidad.
             </motion.p>
 
             <motion.div
@@ -486,48 +480,6 @@ export function QualityPageContent() {
         </div>
       </section>
 
-      {/* Indicators Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Indicadores de Gestión
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Nuestros resultados demuestran el compromiso con la excelencia operacional 
-              y la mejora continua en todos los procesos.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {indicators.map((indicator, index) => {
-              const IconComponent = indicator.icon
-              return (
-                <motion.div
-                  key={indicator.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center"
-                >
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <IconComponent className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-4xl font-bold text-gray-900 mb-2">{indicator.metric}</div>
-                  <div className="text-gray-600">{indicator.label}</div>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600">
@@ -544,7 +496,7 @@ export function QualityPageContent() {
             <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
               Nuestro compromiso con la calidad, seguridad y cumplimiento normativo 
               nos ha posicionado como líderes en el sector metalmecánico colombiano. 
-              Más de 27 años sin accidentes fatales y cientos de proyectos exitosos 
+              Más de 27 años de excelencia operacional y cientos de proyectos exitosos 
               respaldan nuestra trayectoria.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

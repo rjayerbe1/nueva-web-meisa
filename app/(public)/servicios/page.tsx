@@ -114,5 +114,5 @@ export default async function ServiciosPage() {
 
 export const metadata = {
   title: 'Servicios | MEISA - Estructuras Metálicas',
-  description: 'Servicios integrales de estructuras metálicas: consultoría, diseño, fabricación y montaje. Más de 27 años de experiencia en proyectos industriales y comerciales.',
+  description: 'Servicios integrales de estructuras metálicas: consultoría, diseño, fabricación y montaje. Más de 29 años de experiencia en proyectos industriales y comerciales.',
 }

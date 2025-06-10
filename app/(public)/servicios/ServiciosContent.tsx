@@ -562,7 +562,7 @@ export default function ServiciosContent({
             key={servicio.id}
             id={servicio.id}
             ref={(el) => { sectionsRef.current[servicio.id] = el }}
-            className={`min-h-screen py-24 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+            className={`py-24 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
@@ -637,38 +637,33 @@ export default function ServiciosContent({
                   </div>
                 </div>
 
-
-                {/* Información Adicional - Layout Mejorado */}
-                {(servicio.normativas) && (
-                  <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-                      {/* Sección de Estándares/Certificaciones */}
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl border border-green-100 shadow-lg"
-                      >
-                        <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-                          <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                            <Shield className="w-6 h-6 text-green-600" />
-                          </div>
-                          {servicio.normativas?.titulo}
-                        </h3>
-                        <ul className="space-y-5">
-                          {(servicio.normativas?.items)?.map((item, idx) => (
-                            <li key={idx} className="flex items-start gap-4">
-                              <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <CheckCircle2 className="w-4 h-4 text-green-600" />
-                              </div>
-                              <span className="text-gray-700 leading-relaxed">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </motion.div>
-
-                    </div>
+                {/* Información Adicional - Solo mostrar si hay contenido real */}
+                {servicio.normativas && servicio.normativas.items && servicio.normativas.items.length > 0 && (
+                  <div className="max-w-6xl mx-auto mt-16">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6 }}
+                      viewport={{ once: true }}
+                      className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl border border-green-100 shadow-lg"
+                    >
+                      <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                          <Shield className="w-6 h-6 text-green-600" />
+                        </div>
+                        {servicio.normativas.titulo}
+                      </h3>
+                      <ul className="space-y-5">
+                        {servicio.normativas.items.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-4">
+                            <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <CheckCircle2 className="w-4 h-4 text-green-600" />
+                            </div>
+                            <span className="text-gray-700 leading-relaxed">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
                   </div>
                 )}
               </motion.div>

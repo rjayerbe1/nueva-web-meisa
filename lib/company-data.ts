@@ -65,7 +65,7 @@ export const SERVICES = [
     capabilities: [
       'Uso de modelado 3D y tecnología BIM',
       'Análisis de cargas estructurales y sísmicas',
-      'Software: Tekla Structures, RISA-3D, RISAFloor, RISAConnection',
+      'Software: Trimble Tekla Structures, ETABS, SAFE, SAP2000',
       'Personal de proyectistas y dibujantes especializados'
     ]
   },
@@ -119,12 +119,13 @@ export const CORPORATE_VALUES = [
 ] as const
 
 export const TECHNOLOGIES = [
-  { name: 'Tekla Structures', description: 'Software BIM líder mundial en estructura metálicas y de concreto' },
-  { name: 'RISA-3D', description: 'Paquete integrado de software para el análisis y el diseño de edificios' },
-  { name: 'RISA Steel', description: 'Permite diseñar acero, hormigón, aluminio, mampostería, madera para estructuras industriales y comerciales' },
-  { name: 'RISAFloor', description: 'Diseña sistemas de pisos y trabaja con RISA-3D y RISAFoundation' },
-  { name: 'RISAConnection', description: 'Solución a diseño de conexiones con memorias de cálculo de ingeniería' },
-  { name: 'RISAFoundation', description: 'Diseño de cimentaciones completas, incluyendo losas, zapatas, vigas de amarre y muros' },
+  { name: 'Trimble Tekla Structures', description: 'Software BIM líder mundial en estructura metálicas y de concreto' },
+  { name: 'ETABS', description: 'Software de análisis y diseño estructural de edificios líder en la industria' },
+  { name: 'SAFE', description: 'Software especializado para el análisis y diseño de sistemas de losas y cimentaciones' },
+  { name: 'SAP2000', description: 'Programa de análisis estructural y diseño para todo tipo de estructuras' },
+  { name: 'Midas', description: 'Software avanzado de análisis y diseño estructural con capacidades BIM integradas' },
+  { name: 'IDEA StatiCa Connection', description: 'Software revolucionario para el diseño y verificación de conexiones de acero' },
+  { name: 'DC-CAD Vigas y Columnas', description: 'Software especializado para el diseño de elementos estructurales de concreto reforzado' },
   { name: 'StruM.I.S', description: 'Software líder mundial en gestión integral y control de producción para fabricantes de estructuras metálicas' },
   { name: 'FastCAM', description: 'Proveedor líder de software de ingeniería para máquina de corte por Plasma y Oxicorte' }
 ] as const

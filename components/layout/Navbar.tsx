@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock } from "lucide-react"
+import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock, Building2, Cpu, Award } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -17,12 +17,24 @@ const navigation = [
     name: "Nosotros", 
     href: "#",
     children: [
-      { name: "Nuestra Empresa", href: "/empresa", description: "27+ años de experiencia" },
-      { name: "Tecnología", href: "/tecnologia", description: "BIM y software especializado" },
-      { name: "Calidad", href: "/calidad", description: "Sistema Integrado de Gestión" },
-      { name: "Infraestructura", href: "/#infraestructura", description: "3 plantas de producción" },
-      { name: "Valores", href: "/#valores", description: "Compromiso y excelencia" },
-      { name: "Clientes", href: "/#clientes", description: "Más de 320 proyectos" },
+      { 
+        name: "Nuestra Empresa", 
+        href: "/empresa", 
+        description: "Desde 1996 en Popayán, 320 colaboradores",
+        icon: "Building2"
+      },
+      { 
+        name: "Tecnología e Infraestructura", 
+        href: "/tecnologia", 
+        description: "10,400 m² de capacidad productiva",
+        icon: "Cpu"
+      },
+      { 
+        name: "Sistema Integrado de Gestión", 
+        href: "/calidad", 
+        description: "SIG - Calidad, seguridad y cumplimiento",
+        icon: "Award"
+      },
     ]
   },
   { name: "Contacto", href: "/contacto" },
@@ -69,7 +81,7 @@ export function Navbar() {
             <div className="hidden lg:flex items-center space-x-4 text-xs">
               <span className="text-blue-400 font-semibold">600 TON/MES</span>
               <span className="text-gray-400">|</span>
-              <span className="text-blue-400 font-semibold">27+ AÑOS</span>
+              <span className="text-blue-400 font-semibold">29+ AÑOS</span>
               <span className="text-gray-400">|</span>
               <span className="text-blue-400 font-semibold">3 PLANTAS</span>
             </div>
@@ -85,7 +97,7 @@ export function Navbar() {
               <div className="flex items-center space-x-2 text-xs">
                 <span className="text-blue-400 font-semibold">600 TON/MES</span>
                 <span className="text-gray-400">|</span>
-                <span className="text-blue-400 font-semibold">27+ AÑOS</span>
+                <span className="text-blue-400 font-semibold">29+ AÑOS</span>
                 <span className="text-gray-400">|</span>
                 <span className="text-blue-400 font-semibold">3 PLANTAS</span>
               </div>
@@ -150,40 +162,64 @@ export function Navbar() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+                            className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
                           >
-                            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4">
-                              <h3 className="text-white font-bold text-lg">Conócenos</h3>
-                              <p className="text-blue-100 text-sm">Líderes en estructuras metálicas</p>
+                            <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6">
+                              <h3 className="text-white font-bold text-xl mb-1">Conócenos</h3>
+                              <p className="text-blue-100 text-sm">29+ años construyendo el futuro de Colombia</p>
                             </div>
                             
-                            <div className="p-2">
-                              {item.children.map((child, childIndex) => (
-                                <motion.div
-                                  key={child.name}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: childIndex * 0.05 }}
-                                >
-                                  <Link
-                                    href={child.href}
-                                    className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 group"
-                                    onClick={() => setDropdownOpen(false)}
+                            <div className="p-3">
+                              {item.children.map((child, childIndex) => {
+                                const IconComponent = child.icon === 'Building2' ? Building2 : 
+                                                     child.icon === 'Cpu' ? Cpu : 
+                                                     child.icon === 'Award' ? Award : Building2;
+                                
+                                return (
+                                  <motion.div
+                                    key={child.name}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: childIndex * 0.05 }}
                                   >
-                                    <div className="font-medium group-hover:translate-x-1 transition-transform">
-                                      {child.name}
-                                    </div>
-                                    <div className="text-xs text-gray-500 mt-1">
-                                      {child.description}
-                                    </div>
-                                  </Link>
-                                </motion.div>
-                              ))}
+                                    <Link
+                                      href={child.href}
+                                      className="flex items-start gap-4 px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100/50 hover:text-blue-700 rounded-xl transition-all duration-200 group"
+                                      onClick={() => setDropdownOpen(false)}
+                                    >
+                                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors">
+                                        <IconComponent className="w-5 h-5 text-blue-600" />
+                                      </div>
+                                      <div className="flex-1">
+                                        <div className="font-semibold group-hover:translate-x-1 transition-transform">
+                                          {child.name}
+                                        </div>
+                                        <div className="text-sm text-gray-600 mt-0.5">
+                                          {child.description}
+                                        </div>
+                                      </div>
+                                    </Link>
+                                  </motion.div>
+                                );
+                              })}
                             </div>
                             
-                            <div className="bg-gray-50 p-4 border-t">
-                              <div className="text-xs text-gray-500 text-center">
-                                <span className="text-blue-600 font-semibold">600 ton/mes</span> • <span className="text-blue-600 font-semibold">27+ años</span> • <span className="text-blue-600 font-semibold">3 plantas</span>
+                            <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-t">
+                              <div className="flex items-center justify-center gap-6 text-sm">
+                                <div className="text-center">
+                                  <p className="text-2xl font-bold text-blue-600">600</p>
+                                  <p className="text-xs text-gray-600">ton/mes</p>
+                                </div>
+                                <div className="w-px h-10 bg-gray-300"></div>
+                                <div className="text-center">
+                                  <p className="text-2xl font-bold text-blue-600">29+</p>
+                                  <p className="text-xs text-gray-600">años</p>
+                                </div>
+                                <div className="w-px h-10 bg-gray-300"></div>
+                                <div className="text-center">
+                                  <p className="text-2xl font-bold text-blue-600">3</p>
+                                  <p className="text-xs text-gray-600">plantas</p>
+                                </div>
                               </div>
                             </div>
                           </motion.div>
