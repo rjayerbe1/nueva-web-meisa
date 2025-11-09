@@ -1,321 +1,731 @@
 "use client"
 
 import { useState } from "react"
-import { AnimatedSection } from "@/components/animations/AnimatedSection"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react"
-import { motion } from "framer-motion"
+import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, ChevronRight, X, FileText } from "lucide-react"
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
-const ubicaciones = [
+const contactSchema = z.object({
+  nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+  empresa: z.string().optional(),
+  email: z.string().email('Email inválido'),
+  telefono: z.string().min(10, 'Teléfono inválido'),
+  ciudad: z.string().min(2, 'La ciudad es requerida'),
+  tipoProyecto: z.string().min(1, 'Seleccione un tipo de proyecto'),
+  ubicacionProyecto: z.string().optional(),
+  tamanoProyecto: z.string().optional(),
+  serviciosRequeridos: z.array(z.string()).optional(),
+  plazoDeseado: z.string().optional(),
+  descripcion: z.string().min(20, 'Por favor describa su proyecto (mínimo 20 caracteres)'),
+  tienePlanos: z.string().optional(),
+})
+
+type ContactFormData = z.infer<typeof contactSchema>
+
+const tiposProyecto = [
+  'Estructura metálica para edificación',
+  'Estructura industrial',
+  'Cubierta metálica',
+  'Puente o pasarela',
+  'Tanque o recipiente',
+  'Escalera metálica',
+  'Mantenimiento o reparación',
+  'Otro tipo de proyecto'
+]
+
+const serviciosDisponibles = [
+  'Diseño estructural',
+  'Fabricación',
+  'Montaje',
+  'Pintura y acabados',
+  'Mantenimiento'
+]
+
+const plantas = [
   {
-    ciudad: "Popayán - Oficina Principal",
-    direccion: "Popayán, Cauca",
+    id: 1,
+    nombre: "Sede Principal Jamundí",
+    ubicacion: "Vía Panamericana 6 Sur – 195 – Valle del Cauca",
+    tipo: "Sede Administrativa y Producción",
     telefono: "+57 (2) 312 0050",
     email: "contacto@meisa.com.co",
-    horario: "Lun-Vie: 7:00 AM - 5:00 PM"
+    horario: "Lun-Vie: 7:00 AM - 5:00 PM",
+    googleMaps: "https://www.google.com/maps/place/Met%C3%A1licas+e+Ingenier%C3%ADa+S.A.S./@3.2487893,-76.5289749,17z/data=!3m1!4b1!4m6!3m5!1s0x8e309ea112757501:0x2cfda6d9126079df!8m2!3d3.2487839!4d-76.5263946!16s%2Fg%2F11c75_b9hv?entry=ttu",
+    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.090874524427!2d-76.5289749!3d3.2487893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e309ea112757501%3A0x2cfda6d9126079df!2zTWV0w6FsaWNhcyBlIEluZ2VuaWVyw61hIFMuQS5TLg!5e0!3m2!1ses!2sco!4v1699999999999",
+    color: "from-blue-500 to-blue-600"
   },
   {
-    ciudad: "Jamundí - Planta de Producción",
-    direccion: "Jamundí, Valle del Cauca",
+    id: 2,
+    nombre: "Planta Popayán",
+    ubicacion: "Bodega E13 Parque Industrial – Cauca",
+    tipo: "Planta Principal de Producción",
     telefono: "+57 (2) 312 0050",
     email: "contacto@meisa.com.co",
-    horario: "Lun-Vie: 7:00 AM - 5:00 PM"
+    horario: "Lun-Vie: 7:00 AM - 5:00 PM",
+    googleMaps: "https://www.google.com/maps/place/Met%C3%A1licas+E+Ingenier%C3%ADa+S.A./@2.5024221,-76.5623836,17z/data=!3m1!4b1!4m6!3m5!1s0x8e30042e3d132a67:0xedbc4d22716e928a!8m2!3d2.5024167!4d-76.5598033!16s%2Fg%2F1hdzvkr66?entry=ttu",
+    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7609843675785!2d-76.5623836!3d2.5024221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e30042e3d132a67%3A0xedbc4d22716e928a!2zTWV0w6FsaWNhcyBFIEluZ2VuaWVyw61hIFMuQS4!5e0!3m2!1ses!2sco!4v1699999999998",
+    color: "from-blue-600 to-blue-700"
   },
   {
-    ciudad: "Villa Rica - Planta de Producción",
-    direccion: "Villa Rica, Cauca",
+    id: 3,
+    nombre: "Planta Villa Rica",
+    ubicacion: "Vía Puerto Tejada – Villa Rica, Cauca",
+    tipo: "Planta de Apoyo",
     telefono: "+57 (2) 312 0050",
     email: "contacto@meisa.com.co",
-    horario: "Lun-Vie: 7:00 AM - 5:00 PM"
+    horario: "Lun-Vie: 7:00 AM - 5:00 PM",
+    googleMaps: "https://www.google.com/maps/place/MEISA+-+VILLA+RICA/@3.1879019,-76.4511832,17z/data=!3m1!4b1!4m6!3m5!1s0x8e3a7700295ca9bf:0xa6b69c2179a47088!8m2!3d3.1878965!4d-76.4486029!16s%2Fg%2F11zkbv1dth?entry=ttu",
+    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.5371893449743!2d-76.4511832!3d3.1879019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3a7700295ca9bf%3A0xa6b69c2179a47088!2sMEISA%20-%20VILLA%20RICA!5e0!3m2!1ses!2sco!4v1699999999997",
+    color: "from-slate-600 to-slate-700"
   }
 ]
 
 export default function ContactoPage() {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    empresa: "",
-    email: "",
-    telefono: "",
-    servicio: "",
-    mensaje: ""
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [selectedPlanta, setSelectedPlanta] = useState<typeof plantas[0] | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema)
+  })
+
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
-    
-    // Simular envío
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSuccess(true)
-    
-    // Reset form
-    setTimeout(() => {
-      setFormData({
-        nombre: "",
-        empresa: "",
-        email: "",
-        telefono: "",
-        servicio: "",
-        mensaje: ""
-      })
-      setIsSuccess(false)
-    }, 5000)
-  }
+    setSubmitStatus('idle')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) throw new Error('Error al enviar el mensaje')
+
+      setSubmitStatus('success')
+      reset()
+
+      setTimeout(() => setSubmitStatus('idle'), 5000)
+    } catch (error) {
+      setSubmitStatus('error')
+      console.error('Error:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-20">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <AnimatedSection>
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Contáctanos
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Estamos listos para ayudarte con tu proyecto. Contáctanos y un experto 
-              de nuestro equipo te asesorará de manera personalizada.
-            </p>
-          </div>
-        </AnimatedSection>
+    <main className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+      {/* Hero Section with Background Image */}
+      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/about/planta-produccion.webp"
+            alt="MEISA Contacto"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark Overlay for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 via-gray-900/70 to-gray-900/80" />
+        </div>
 
-        {/* Contenido principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Formulario */}
-          <AnimatedSection direction="left">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">Envíanos un mensaje</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isSuccess ? (
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Breadcrumb */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-center gap-2 text-gray-300 mb-6"
+          >
+            <a href="/" className="hover:text-blue-400 transition-colors">Inicio</a>
+            <ChevronRight className="w-4 h-4" />
+            <span className="text-white font-semibold">Contacto</span>
+          </motion.div>
+
+          {/* Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
+          >
+            Contáctanos
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto"
+          >
+            Expertos en diseño, fabricación y montaje de estructuras metálicas
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Main Contact Section: Form + Contact Info + Locations */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* LEFT COLUMN: Contact Form */}
+            <motion.div
+              id="formulario-contacto"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 sticky top-24">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Solicitar Cotización</h2>
+                  <p className="text-gray-600 text-sm">Cuéntanos sobre tu proyecto y te contactaremos pronto</p>
+                </div>
+
+                {submitStatus === 'success' ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-12"
                   >
-                    <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                    <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <h4 className="text-2xl font-semibold text-gray-900 mb-2">
                       ¡Mensaje enviado!
-                    </h3>
+                    </h4>
                     <p className="text-gray-600">
                       Nos pondremos en contacto contigo pronto.
                     </p>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Nombre y Empresa */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="nombre">Nombre completo *</Label>
-                        <Input
+                        <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
+                          Nombre Completo *
+                        </label>
+                        <input
+                          {...register('nombre')}
+                          type="text"
                           id="nombre"
-                          name="nombre"
-                          value={formData.nombre}
-                          onChange={handleChange}
-                          required
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="Tu nombre"
                         />
+                        {errors.nombre && (
+                          <p className="mt-1 text-sm text-red-500">{errors.nombre.message}</p>
+                        )}
                       </div>
+
                       <div>
-                        <Label htmlFor="empresa">Empresa</Label>
-                        <Input
+                        <label htmlFor="empresa" className="block text-sm font-medium text-gray-700 mb-2">
+                          Empresa
+                        </label>
+                        <input
+                          {...register('empresa')}
+                          type="text"
                           id="empresa"
-                          name="empresa"
-                          value={formData.empresa}
-                          onChange={handleChange}
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="Tu empresa"
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Email y Teléfono */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="email">Email *</Label>
-                        <Input
-                          id="email"
-                          name="email"
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                          Email *
+                        </label>
+                        <input
+                          {...register('email')}
                           type="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
+                          id="email"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="tu@email.com"
                         />
+                        {errors.email && (
+                          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                        )}
                       </div>
+
                       <div>
-                        <Label htmlFor="telefono">Teléfono</Label>
-                        <Input
+                        <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-2">
+                          Teléfono *
+                        </label>
+                        <input
+                          {...register('telefono')}
+                          type="tel"
                           id="telefono"
-                          name="telefono"
-                          value={formData.telefono}
-                          onChange={handleChange}
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="+57 300 123 4567"
+                        />
+                        {errors.telefono && (
+                          <p className="mt-1 text-sm text-red-500">{errors.telefono.message}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Ciudad */}
+                    <div>
+                      <label htmlFor="ciudad" className="block text-sm font-medium text-gray-700 mb-2">
+                        Ciudad *
+                      </label>
+                      <input
+                        {...register('ciudad')}
+                        type="text"
+                        id="ciudad"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        placeholder="Tu ciudad"
+                      />
+                      {errors.ciudad && (
+                        <p className="mt-1 text-sm text-red-500">{errors.ciudad.message}</p>
+                      )}
+                    </div>
+
+                    {/* Tipo de Proyecto */}
+                    <div>
+                      <label htmlFor="tipoProyecto" className="block text-sm font-medium text-gray-700 mb-2">
+                        Tipo de Proyecto *
+                      </label>
+                      <select
+                        {...register('tipoProyecto')}
+                        id="tipoProyecto"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                      >
+                        <option value="">Seleccione un tipo</option>
+                        {tiposProyecto.map((tipo) => (
+                          <option key={tipo} value={tipo}>{tipo}</option>
+                        ))}
+                      </select>
+                      {errors.tipoProyecto && (
+                        <p className="mt-1 text-sm text-red-500">{errors.tipoProyecto.message}</p>
+                      )}
+                    </div>
+
+                    {/* Ubicación y Tamaño del Proyecto */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="ubicacionProyecto" className="block text-sm font-medium text-gray-700 mb-2">
+                          Ubicación del Proyecto
+                        </label>
+                        <input
+                          {...register('ubicacionProyecto')}
+                          type="text"
+                          id="ubicacionProyecto"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="Ej: Cali, Valle del Cauca"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="tamanoProyecto" className="block text-sm font-medium text-gray-700 mb-2">
+                          Tamaño Aproximado
+                        </label>
+                        <input
+                          {...register('tamanoProyecto')}
+                          type="text"
+                          id="tamanoProyecto"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder="Ej: 500 m², 50 toneladas"
                         />
                       </div>
                     </div>
 
+                    {/* Servicios requeridos */}
                     <div>
-                      <Label htmlFor="servicio">Servicio de interés</Label>
-                      <Select
-                        value={formData.servicio}
-                        onValueChange={(value) => setFormData({ ...formData, servicio: value })}
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        Servicios Requeridos
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {serviciosDisponibles.map((servicio) => (
+                          <label key={servicio} className="flex items-center gap-2 cursor-pointer group">
+                            <input
+                              type="checkbox"
+                              value={servicio}
+                              {...register('serviciosRequeridos')}
+                              className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <span className="text-gray-700 text-sm group-hover:text-gray-900 transition-colors">
+                              {servicio}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Plazo Deseado */}
+                    <div>
+                      <label htmlFor="plazoDeseado" className="block text-sm font-medium text-gray-700 mb-2">
+                        Plazo Deseado
+                      </label>
+                      <select
+                        {...register('plazoDeseado')}
+                        id="plazoDeseado"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un servicio" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="diseno">Diseño Estructural</SelectItem>
-                          <SelectItem value="fabricacion">Fabricación</SelectItem>
-                          <SelectItem value="montaje">Montaje</SelectItem>
-                          <SelectItem value="consultoria">Consultoría</SelectItem>
-                          <SelectItem value="proyecto-completo">Proyecto Completo</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <option value="">Seleccione un plazo</option>
+                        <option value="urgente">Urgente (menos de 1 mes)</option>
+                        <option value="1-3-meses">1-3 meses</option>
+                        <option value="3-6-meses">3-6 meses</option>
+                        <option value="mas-6-meses">Más de 6 meses</option>
+                        <option value="por-definir">Por definir</option>
+                      </select>
                     </div>
 
+                    {/* Descripción del Proyecto */}
                     <div>
-                      <Label htmlFor="mensaje">Mensaje *</Label>
-                      <Textarea
-                        id="mensaje"
-                        name="mensaje"
-                        value={formData.mensaje}
-                        onChange={handleChange}
-                        rows={5}
-                        placeholder="Cuéntanos sobre tu proyecto..."
-                        required
+                      <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 mb-2">
+                        Descripción del Proyecto *
+                      </label>
+                      <textarea
+                        {...register('descripcion')}
+                        id="descripcion"
+                        rows={4}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+                        placeholder="Cuéntanos los detalles de tu proyecto..."
                       />
+                      {errors.descripcion && (
+                        <p className="mt-1 text-sm text-red-500">{errors.descripcion.message}</p>
+                      )}
                     </div>
 
-                    <Button
+                    {/* Tiene Planos */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        ¿Cuenta con planos o diseños?
+                      </label>
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            value="si"
+                            {...register('tienePlanos')}
+                            className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-gray-700">Sí</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            value="no"
+                            {...register('tienePlanos')}
+                            className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-gray-700">No</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            value="parcial"
+                            {...register('tienePlanos')}
+                            className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-gray-700">Parcialmente</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
                       type="submit"
-                      size="lg"
-                      className="w-full"
                       disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
                         <>Enviando...</>
                       ) : (
                         <>
                           Enviar mensaje
-                          <Send className="w-4 h-4 ml-2" />
+                          <Send className="w-5 h-5" />
                         </>
                       )}
-                    </Button>
+                    </button>
+
+                    {submitStatus === 'error' && (
+                      <p className="text-red-500 text-sm text-center">
+                        Hubo un error al enviar el mensaje. Por favor intenta de nuevo.
+                      </p>
+                    )}
                   </form>
                 )}
-              </CardContent>
-            </Card>
-          </AnimatedSection>
-
-          {/* Información de contacto */}
-          <div className="space-y-8">
-            <AnimatedSection direction="right">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Información de contacto</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <Phone className="w-5 h-5 text-meisa-blue mt-1" />
-                    <div>
-                      <p className="font-semibold">Teléfono Principal</p>
-                      <p className="text-gray-600">+57 (2) 312 0050</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <Mail className="w-5 h-5 text-meisa-blue mt-1" />
-                    <div>
-                      <p className="font-semibold">Email general</p>
-                      <p className="text-gray-600">contacto@meisa.com.co</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <Clock className="w-5 h-5 text-meisa-blue mt-1" />
-                    <div>
-                      <p className="font-semibold">Horario de atención</p>
-                      <p className="text-gray-600">Lunes a Viernes: 7:00 AM - 5:00 PM</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </AnimatedSection>
-
-            {/* Oficinas */}
-            <AnimatedSection direction="right" delay={0.2}>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Nuestras ubicaciones
-              </h3>
-              <div className="space-y-4">
-                {ubicaciones.map((ubicacion, index) => (
-                  <motion.div
-                    key={ubicacion.ciudad}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card>
-                      <CardContent className="p-6">
-                        <h4 className="font-semibold text-lg text-gray-900 mb-3">
-                          {ubicacion.ciudad}
-                        </h4>
-                        <div className="space-y-2 text-sm text-gray-600">
-                          <p className="flex items-start gap-2">
-                            <MapPin className="w-4 h-4 mt-0.5" />
-                            {ubicacion.direccion}
-                          </p>
-                          <p className="flex items-center gap-2">
-                            <Phone className="w-4 h-4" />
-                            {ubicacion.telefono}
-                          </p>
-                          <p className="flex items-center gap-2">
-                            <Mail className="w-4 h-4" />
-                            {ubicacion.email}
-                          </p>
-                          <p className="flex items-center gap-2">
-                            <Clock className="w-4 h-4" />
-                            {ubicacion.horario}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
               </div>
-            </AnimatedSection>
+            </motion.div>
+
+            {/* RIGHT COLUMN: Contact Info + Locations */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              {/* Contact Info Section */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Información de Contacto</h3>
+
+                <div className="space-y-3">
+                  {/* Teléfonos */}
+                  <div className="group bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md flex-shrink-0">
+                        <Phone className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-gray-900 font-semibold mb-1 text-sm">Teléfonos</h4>
+                        <div className="space-y-0.5">
+                          <p className="text-gray-600 text-xs">PBX: +57 (2) 312 0050-51-52-53</p>
+                          <p className="text-gray-600 text-xs">Móvil: +57 (310) 432 7227</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div className="group bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md flex-shrink-0">
+                        <Mail className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-gray-900 font-semibold mb-1 text-sm">Email</h4>
+                        <p className="text-gray-600 text-xs">contacto@meisa.com.co</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Horarios */}
+                  <div className="group bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-blue-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md flex-shrink-0">
+                        <Clock className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-gray-900 font-semibold mb-1 text-sm">Horario de Atención</h4>
+                        <div className="space-y-0.5">
+                          <p className="text-gray-600 text-xs">Lun-Vie: 7:00 AM - 5:00 PM</p>
+                          <p className="text-gray-600 text-xs">Sáb: 8:00 AM - 12:00 PM</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Locations Section */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Nuestras <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">Ubicaciones</span></h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Visítanos en cualquiera de nuestras tres plantas industriales
+                </p>
+
+                <div className="space-y-4">
+                  {plantas.map((planta, index) => (
+                    <motion.div
+                      key={planta.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      onClick={() => setSelectedPlanta(planta)}
+                      className="group cursor-pointer"
+                    >
+                      <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200 hover:border-blue-300">
+                        {/* Map Preview */}
+                        <div className="relative h-36 overflow-hidden">
+                          <iframe
+                            src={planta.mapEmbed}
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            className="pointer-events-none"
+                          />
+                          {/* Overlay on hover */}
+                          <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-300 flex items-center justify-center">
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white px-3 py-1.5 rounded-full shadow-lg">
+                              <p className="text-blue-600 font-semibold text-sm">Ver detalles</p>
+                            </div>
+                          </div>
+
+                          {/* Title Badge */}
+                          <div className="absolute top-0 left-0 right-0">
+                            <div className={`bg-gradient-to-br ${planta.color} backdrop-blur-md bg-opacity-95 px-3 py-2 shadow-2xl`}>
+                              <h4 className="text-sm font-bold text-white">{planta.nombre}</h4>
+                              <p className="text-white/90 text-xs font-medium">{planta.tipo}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Info */}
+                        <div className="p-3">
+                          <div className="space-y-1.5">
+                            <p className="flex items-start gap-2 text-gray-700">
+                              <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-blue-600" />
+                              <span className="text-xs leading-snug">{planta.ubicacion}</span>
+                            </p>
+                            <p className="flex items-center gap-2 text-gray-700">
+                              <Phone className="w-3.5 h-3.5 flex-shrink-0 text-blue-600" />
+                              <span className="text-xs">{planta.telefono}</span>
+                            </p>
+                            <p className="flex items-center gap-2 text-gray-700">
+                              <Clock className="w-3.5 h-3.5 flex-shrink-0 text-blue-600" />
+                              <span className="text-xs">{planta.horario}</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
+      </section>
 
-        {/* Mapa */}
-        <AnimatedSection delay={0.5}>
-          <div className="mt-16">
-            <Card className="overflow-hidden">
-              <div className="relative h-96 bg-gray-200">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.5346159785724!2d-74.04950052412564!3d4.676206495306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9a921c9d4b6b%3A0x5f9c4e1c82a04a5e!2sCalle%20100%2C%20Bogot%C3%A1!5e0!3m2!1ses!2sco!4v1703024400000!5m2!1ses!2sco"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+      {/* Modal for Map Details */}
+      <AnimatePresence>
+        {selectedPlanta && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedPlanta(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25 }}
+              className="relative bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedPlanta(null)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white shadow-lg transition-all duration-200 hover:scale-110"
+              >
+                <X className="w-5 h-5 text-gray-700" />
+              </button>
+
+              {/* Header with gradient */}
+              <div className={`relative bg-gradient-to-br ${selectedPlanta.color} px-8 py-8`}>
+                <h3 className="text-3xl font-bold text-white mb-2">{selectedPlanta.nombre}</h3>
+                <p className="text-white/90 text-lg">{selectedPlanta.tipo}</p>
+                <div className="flex items-center gap-2 mt-4 text-white/90">
+                  <MapPin className="w-5 h-5" />
+                  <p className="text-sm">{selectedPlanta.ubicacion}</p>
+                </div>
               </div>
-            </Card>
-          </div>
-        </AnimatedSection>
-      </div>
+
+              {/* Large interactive map */}
+              <div className="p-8">
+                <div className="mb-8 rounded-2xl overflow-hidden shadow-lg">
+                  <iframe
+                    src={selectedPlanta.mapEmbed}
+                    width="100%"
+                    height="450"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Contact Info Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-gray-50 rounded-xl p-6 text-center">
+                    <Phone className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Teléfono</h4>
+                    <p className="text-gray-600 text-sm">{selectedPlanta.telefono}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-xl p-6 text-center">
+                    <Mail className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Email</h4>
+                    <p className="text-gray-600 text-sm">{selectedPlanta.email}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-xl p-6 text-center">
+                    <Clock className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Horario</h4>
+                    <p className="text-gray-600 text-sm">{selectedPlanta.horario}</p>
+                  </div>
+                </div>
+
+                {/* Google Maps button */}
+                <a
+                  href={selectedPlanta.googleMaps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-full flex items-center justify-center gap-3 bg-gradient-to-r ${selectedPlanta.color} hover:shadow-xl text-white px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 group`}
+                >
+                  <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  Abrir en Google Maps
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Final CTA Banner */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              ¿Listo para comenzar tu proyecto?
+            </h2>
+            <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+              Nuestro equipo está preparado para convertir tu visión en realidad
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href="tel:+573104327227"
+                className="group px-8 py-4 bg-white hover:bg-gray-100 text-blue-700 rounded-xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+              >
+                <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                Llamar Ahora
+              </a>
+              <a
+                href="#formulario-contacto"
+                className="group px-8 py-4 bg-blue-800/50 backdrop-blur-sm hover:bg-blue-800/70 text-white rounded-xl font-semibold border-2 border-white/30 hover:border-white/50 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+              >
+                <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Enviar Mensaje
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </main>
   )
 }
