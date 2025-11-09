@@ -1932,7 +1932,7 @@ export default function ProjectDetailPage() {
                 <div className="hidden sm:block text-blue-300">|</div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span>27+ AÑOS</span>
+                  <span>{siteConfig.empresa.aniosExperiencia}+ AÑOS</span>
                 </div>
                 <div className="hidden sm:block text-blue-300">|</div>
                 <div className="flex items-center gap-2">
