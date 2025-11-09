@@ -4,10 +4,10 @@ import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { 
-  Cpu, 
-  Hammer, 
-  Building2, 
+import {
+  Cpu,
+  Hammer,
+  Building2,
   Settings,
   ArrowRight,
   CheckCircle2,
@@ -16,6 +16,7 @@ import {
   Timer,
   Award
 } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 const services = [
   {
@@ -82,7 +83,7 @@ const services = [
       'Obras de concreto reforzado',
       'Coordinación integral de proyectos'
     ],
-    stats: { value: '27+', label: 'Años experiencia' },
+    stats: { value: `${siteConfig.aniosExperiencia}+`, label: 'Años experiencia' },
     color: 'from-purple-500 to-violet-500',
     bgColor: 'from-purple-500/10 to-violet-500/10'
   },
@@ -91,7 +92,7 @@ const services = [
 const benefits = [
   { icon: Shield, title: 'Calidad Garantizada', desc: 'Normas internacionales' },
   { icon: Timer, title: 'Entregas Puntuales', desc: 'Cumplimiento 100%' },
-  { icon: Award, title: 'Experiencia Comprobada', desc: '29+ años' },
+  { icon: Award, title: 'Experiencia Comprobada', desc: `${siteConfig.aniosExperiencia}+ años` },
   { icon: Zap, title: 'Tecnología Avanzada', desc: 'Equipos modernos' }
 ]
 

@@ -1,12 +1,29 @@
 // Configuración del sitio MEISA
 // Generado desde WordPress el 29/5/2025
 
+// ============================================
+// CÁLCULO AUTOMÁTICO DE AÑOS DE EXPERIENCIA
+// ============================================
+// Fundación de MEISA en 1996
+const ANIO_FUNDACION = 1996
+
+// Calcula automáticamente los años desde la fundación
+const calcularAniosExperiencia = () => {
+  return new Date().getFullYear() - ANIO_FUNDACION
+}
+
+// Función para obtener texto formateado de años
+export const getAniosExperienciaTexto = () => {
+  const anios = calcularAniosExperiencia()
+  return `${anios}+`
+}
+
 export const siteConfig = {
   empresa: {
     nombre: "MEISA - Metálicas e Ingeniería S.A.",
     descripcion: "Somos una empresa colombiana especializada en brindar soluciones completas de ingeniería. A través de procesos eficientes y tecnologías de alto nivel, diseñamos, fabricamos e instalamos estructuras metálicas para proyectos de construcción e infraestructura con la más alta calidad.",
-    historia: "Metálicas e Ingeniería S.A fue constituida en el año de 1996 en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructura Metálica; durante más de 29 años hemos participado activamente en la construcción, manejo de Proyectos y Obras Civiles en todo el territorio Nacional.",
-    aniosExperiencia: 29,
+    historia: `Metálicas e Ingeniería S.A fue constituida en el año de 1996 en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructura Metálica; durante más de ${calcularAniosExperiencia()} años hemos participado activamente en la construcción, manejo de Proyectos y Obras Civiles en todo el territorio Nacional.`,
+    aniosExperiencia: calcularAniosExperiencia(),
     mision: "Fortalecer la empresa a nivel nacional garantizando un crecimiento en el tiempo a través de calidad de los productos y servicios, generando rentabilidad, aumento de confianza, mayor satisfacción de clientes y colaboradores para así mantener su consolidación y talento profesional ante el mercado y llegar a nuevos clientes.",
     vision: "Desarrollar soluciones a proyectos con estructuras metálicas y obras civiles, logrando el balance ideal entre costos, diseño, funcionalidad y excelente calidad, cumpliendo con las normas sismo resistentes vigentes, los estándares de fabricación y montaje actuales, de la mano del talento humano y responsabilidad de los trabajadores.",
     valores: [
@@ -130,7 +147,7 @@ export const siteConfig = {
     email: "contacto@meisa.com.co"
   },
   estadisticas: {
-    aniosExperiencia: 29,
+    aniosExperiencia: calcularAniosExperiencia(),
     trabajadoresDirectos: 220,
     contratistas: 100,
     totalColaboradores: 320,

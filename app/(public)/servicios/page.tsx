@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { prisma } from '@/lib/prisma'
 import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
+import { siteConfig } from '@/lib/site-config'
 
 // Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
@@ -118,5 +119,5 @@ export default async function ServiciosPage() {
 
 export const metadata = {
   title: 'Servicios | MEISA - Estructuras Metálicas',
-  description: 'Servicios integrales de estructuras metálicas: consultoría, diseño, fabricación y montaje. Más de 29 años de experiencia en proyectos industriales y comerciales.',
+  description: `Servicios integrales de estructuras metálicas: consultoría, diseño, fabricación y montaje. Más de ${siteConfig.aniosExperiencia} años de experiencia en proyectos industriales y comerciales.`,
 }

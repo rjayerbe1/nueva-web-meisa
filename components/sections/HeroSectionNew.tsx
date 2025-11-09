@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, ArrowDown, Play, Award, Shield, Zap } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 export function HeroSectionNew() {
   return (
@@ -73,13 +74,13 @@ export function HeroSectionNew() {
           </motion.h1>
           
           {/* Subtítulo */}
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
             className="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto mb-12 leading-relaxed"
           >
-            Más de <span className="font-semibold text-blue-400">29 años</span> diseñando, 
+            Más de <span className="font-semibold text-blue-400">{siteConfig.aniosExperiencia} años</span> diseñando,
             fabricando y montando estructuras metálicas con{' '}
             <span className="font-semibold text-blue-400">tecnología de vanguardia</span>{' '}
             y calidad certificada ISO 9001
@@ -135,7 +136,7 @@ export function HeroSectionNew() {
             className="flex flex-wrap justify-center gap-8 mb-12"
           >
             {[
-              { icon: Award, text: "29+ Años", desc: "de experiencia" },
+              { icon: Award, text: `${siteConfig.aniosExperiencia}+ Años`, desc: "de experiencia" },
               { icon: Shield, text: "ISO 9001", desc: "Certificación" },
               { icon: Zap, text: "600 ton/mes", desc: "Capacidad" }
             ].map((item, index) => {

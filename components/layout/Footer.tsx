@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react"
+import { siteConfig } from "@/lib/site-config"
 
 export function Footer() {
   return (
@@ -10,8 +11,8 @@ export function Footer() {
           <div>
             <h3 className="text-2xl font-bold mb-4">MEISA</h3>
             <p className="text-gray-400 mb-4">
-              Metálicas e Ingeniería S.A.S. - Líderes en diseño, fabricación y montaje de estructuras metálicas. 
-              <span className="text-blue-400 font-semibold"> Más de 27 años</span> construyendo el futuro de Colombia.
+              Metálicas e Ingeniería S.A.S. - Líderes en diseño, fabricación y montaje de estructuras metálicas.
+              <span className="text-blue-400 font-semibold"> Más de {siteConfig.aniosExperiencia} años</span> construyendo el futuro de Colombia.
             </p>
             
             {/* Trust badges */}
@@ -174,7 +175,7 @@ export function Footer() {
           <div className="mt-4 flex flex-wrap justify-center items-center gap-6 text-xs text-gray-500">
             <div className="flex items-center gap-1">
               <span className="text-green-400">✓</span>
-              <span>+27 años de experiencia</span>
+              <span>+{siteConfig.aniosExperiencia} años de experiencia</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="text-green-400">✓</span>

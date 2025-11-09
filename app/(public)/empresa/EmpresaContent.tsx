@@ -260,7 +260,7 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed"
           >
-            {getText('Líderes en estructuras metálicas con más de 29 años de experiencia', 'heroSubtitle')}
+            {getText(`Líderes en estructuras metálicas con más de ${siteConfig.aniosExperiencia} años de experiencia`, 'heroSubtitle')}
           </motion.p>
 
           <motion.div
@@ -293,7 +293,7 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
         <div className="relative z-10">
           <UnifiedStatsGrid
             title={getText('MEISA en Números', 'numeros.title')}
-            subtitle={getText('Más de 27 años de experiencia nos han posicionado como líderes en el sector metalmecánico.', 'numeros.subtitle')}
+            subtitle={getText(`Más de ${siteConfig.aniosExperiencia} años de experiencia nos han posicionado como líderes en el sector metalmecánico.`, 'numeros.subtitle')}
             stats={[
               { 
                 number: COMPANY_STATS.YEARS_EXPERIENCE.toString(), 
@@ -898,7 +898,7 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
               {getText('Construyamos el Futuro Juntos', 'cta.title')}
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-              {getText('Con más de 27 años de experiencia, MEISA continúa siendo el aliado estratégico para proyectos de estructuras metálicas en Colombia.', 'cta.subtitle')}
+              {getText(`Con más de ${siteConfig.aniosExperiencia} años de experiencia, MEISA continúa siendo el aliado estratégico para proyectos de estructuras metálicas en Colombia.`, 'cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

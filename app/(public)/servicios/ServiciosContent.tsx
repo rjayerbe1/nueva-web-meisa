@@ -4,16 +4,17 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { 
-  CheckCircle2, ArrowRight, Award, 
+import {
+  CheckCircle2, ArrowRight, Award,
   FileText, Settings, Truck, Shield, Calculator,
-  ChevronDown, ChevronRight, Play, Users, 
+  ChevronDown, ChevronRight, Play, Users,
   Building2, Cog, HardHat, MessageSquare,
   Target, Lightbulb, Zap, Globe, ArrowDown,
   ChevronLeft
 } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { getServiceColors } from '@/lib/service-colors'
+import { siteConfig } from '@/lib/site-config'
 
 interface ServicioData {
   id: string
@@ -215,7 +216,7 @@ export default function ServiciosContent({
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto mb-12">
               Soluciones completas en estructuras metálicas con{' '}
-              <span className="font-semibold text-blue-400">29+ años de experiencia</span>{' '}
+              <span className="font-semibold text-blue-400">{siteConfig.aniosExperiencia}+ años de experiencia</span>{' '}
               y tecnología de vanguardia
             </p>
             
@@ -693,7 +694,7 @@ export default function ServiciosContent({
               Trabajemos Juntos en su Próximo Proyecto
             </h2>
             <p className="text-xl mb-12 text-gray-200 max-w-2xl mx-auto">
-              Con 29+ años de experiencia y más de 500 proyectos exitosos, 
+              Con {siteConfig.aniosExperiencia}+ años de experiencia y más de 500 proyectos exitosos,
               estamos listos para hacer realidad su visión
             </p>
             

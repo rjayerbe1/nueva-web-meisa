@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { 
-  Shield, 
-  Award, 
-  CheckCircle2, 
+import {
+  Shield,
+  Award,
+  CheckCircle2,
   FileCheck,
   Users,
   Settings,
@@ -22,6 +22,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 const calidadSections = [
   {
@@ -472,7 +473,7 @@ export default function CalidadContent({ paginaData }: CalidadContentProps) {
             transition={{ duration: 1, delay: 0.6 }}
             className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed"
           >
-            {getText('MEISA cuenta con un robusto Sistema Integrado de Gestión (SIG) que garantiza calidad, seguridad, cumplimiento normativo y mejora continua en todos nuestros procesos. Más de 27 años de excelencia en seguridad respaldan nuestro compromiso con la calidad.', 'heroSubtitle')}
+            {getText(`MEISA cuenta con un robusto Sistema Integrado de Gestión (SIG) que garantiza calidad, seguridad, cumplimiento normativo y mejora continua en todos nuestros procesos. Más de ${siteConfig.aniosExperiencia} años de excelencia en seguridad respaldan nuestro compromiso con la calidad.`, 'heroSubtitle')}
           </motion.p>
 
           <motion.div
@@ -830,7 +831,7 @@ export default function CalidadContent({ paginaData }: CalidadContentProps) {
               {getText('Calidad que Trasciende en cada Proyecto', 'cta.title')}
             </h2>
             <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
-              {getText('Nuestro compromiso con la calidad, seguridad y cumplimiento normativo nos ha posicionado como líderes en el sector metalmecánico colombiano. Más de 27 años de excelencia operacional y cientos de proyectos exitosos respaldan nuestra trayectoria.', 'cta.subtitle')}
+              {getText(`Nuestro compromiso con la calidad, seguridad y cumplimiento normativo nos ha posicionado como líderes en el sector metalmecánico colombiano. Más de ${siteConfig.aniosExperiencia} años de excelencia operacional y cientos de proyectos exitosos respaldan nuestra trayectoria.`, 'cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
