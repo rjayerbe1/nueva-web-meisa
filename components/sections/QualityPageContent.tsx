@@ -4,10 +4,10 @@ import { useEffect, useRef } from 'react'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { 
-  Shield, 
-  Award, 
-  CheckCircle2, 
+import {
+  Shield,
+  Award,
+  CheckCircle2,
   FileCheck,
   Users,
   Settings,
@@ -21,6 +21,7 @@ import {
   Eye,
   Lock
 } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 const sigComponents = [
   {
@@ -234,13 +235,13 @@ export function QualityPageContent() {
               </span>
             </motion.h1>
             
-            <motion.p 
+            <motion.p
               variants={itemVariants}
               className="text-xl text-gray-300 max-w-4xl mx-auto mb-8"
             >
-              MEISA cuenta con un robusto Sistema Integrado de Gestión (SIG) que garantiza calidad, 
-              seguridad, cumplimiento normativo y mejora continua en todos nuestros procesos. 
-              Más de 27 años de excelencia en seguridad respaldan nuestro compromiso con la calidad.
+              MEISA cuenta con un robusto Sistema Integrado de Gestión (SIG) que garantiza calidad,
+              seguridad, cumplimiento normativo y mejora continua en todos nuestros procesos.
+              Más de {siteConfig.empresa.aniosExperiencia} años de excelencia en seguridad respaldan nuestro compromiso con la calidad.
             </motion.p>
 
             <motion.div
@@ -494,9 +495,9 @@ export function QualityPageContent() {
               Calidad que Trasciende en cada Proyecto
             </h2>
             <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
-              Nuestro compromiso con la calidad, seguridad y cumplimiento normativo 
-              nos ha posicionado como líderes en el sector metalmecánico colombiano. 
-              Más de 27 años de excelencia operacional y cientos de proyectos exitosos 
+              Nuestro compromiso con la calidad, seguridad y cumplimiento normativo
+              nos ha posicionado como líderes en el sector metalmecánico colombiano.
+              Más de {siteConfig.empresa.aniosExperiencia} años de excelencia operacional y cientos de proyectos exitosos
               respaldan nuestra trayectoria.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
