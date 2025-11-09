@@ -12,7 +12,6 @@ import * as Icons from 'lucide-react'
 // Importaciones de componentes
 import { HeroSection } from '@/components/sections/HeroSection'
 import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
-import { StatsSection } from '@/components/sections/StatsSectionNew'
 import { ServicesSection } from '@/components/sections/ServicesSectionNew'
 import { TecnologiasSection } from '@/components/sections/TecnologiasSection'
 import { InfraestructuraSection } from '@/components/sections/InfraestructuraSection'
@@ -37,9 +36,10 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
   const [activeSection, setActiveSection] = useState('inicio') // Inicializar con 'inicio'
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(false)
+  const [showSideNav, setShowSideNav] = useState(false) // Para mostrar nav lateral
   const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({})
   const navRef = useRef<HTMLDivElement>(null)
-  
+
   const { scrollY } = useScroll()
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0])
   const heroScale = useTransform(scrollY, [0, 300], [1, 0.95])
@@ -53,6 +53,11 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
 
       // Definir límites específicos para cada tipo de pantalla
       const heroThreshold = isMobile ? windowHeight * 0.8 : windowHeight * 0.7 // 80% en móvil, 70% en desktop
+
+      // Mostrar navegación lateral cuando pasamos el hero (solo desktop)
+      if (!isMobile) {
+        setShowSideNav(scrollY > heroThreshold)
+      }
 
       // Si estamos en la sección hero (primera pantalla)
       if (scrollY < heroThreshold) {
@@ -193,9 +198,9 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
   }
 
   return (
-    <div className="w-full overflow-x-hidden bg-gradient-to-b from-gray-50 to-white">
+    <div className="w-full bg-gradient-to-b from-gray-50 to-white" style={{ overflowX: 'hidden', overflowY: 'visible' }}>
       {/* Hero Section - Original que te gustaba */}
-      <motion.section 
+      <motion.section
         id="inicio"
         ref={(el) => { sectionsRef.current['inicio'] = el }}
         className="w-full overflow-hidden"
@@ -203,76 +208,97 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
         <HeroSection />
       </motion.section>
 
-      {/* Navegación Sticky - Mejorada para fondo oscuro */}
-      <div 
-        ref={navRef}
-        className="hidden sm:block sticky top-20 z-40 bg-white/95 backdrop-blur-lg border-b border-gray-200/60 shadow-xl"
-        style={{
-          background: 'linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(255,255,255,0.95))',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 16px rgba(0,0,0,0.08)'
-        }}
+      {/* Navegación horizontal sticky - Visible al inicio, se oculta al pasar el hero */}
+      <div
+        className={`hidden sm:block sticky top-20 z-40 transition-all duration-500 ${
+          showSideNav ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0'
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="relative flex items-center">
-            {/* Left Arrow */}
-            {showLeftArrow && (
-              <button
-                onClick={() => scrollNavigation('left')}
-                className="absolute left-0 z-10 p-2 lg:p-3 bg-white/90 backdrop-blur-sm shadow-lg rounded-full hover:bg-white hover:shadow-xl transition-all duration-200 border border-gray-200/50"
-              >
-                <ChevronLeft className="w-4 h-4 lg:w-5 lg:h-5 text-gray-700" />
-              </button>
-            )}
+        <div className="bg-white/95 backdrop-blur-lg border-b border-gray-200/60 shadow-xl"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(255,255,255,0.95))',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 16px rgba(0,0,0,0.08)'
+          }}
+        >
+          <div className="w-full px-3">
+            <div className="flex items-center justify-center gap-1.5 py-3">
+              {sections.map((section) => {
+                const IconComponent = getIcon(section.icon)
+                const isActive = activeSection === section.id
 
-            {/* Navigation Container */}
-            <div className="overflow-x-auto scroll-container mx-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex space-x-2 py-4 min-w-max">
-                {sections.map((section) => {
-                  const IconComponent = getIcon(section.icon)
-                  const isActive = activeSection === section.id
-                  
-                  return (
-                    <button
-                      key={section.id}
-                      data-section-id={section.id}
-                      onClick={() => scrollToSection(section.id)}
-                      className={`
-                        group relative flex items-center gap-3 px-4 lg:px-6 py-3 rounded-xl font-medium transition-all duration-300 whitespace-nowrap
-                        ${isActive 
-                          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg scale-105 border border-blue-500/20' 
-                          : 'text-gray-700 hover:bg-gray-50/80 hover:text-blue-600 hover:shadow-md border border-transparent hover:border-blue-200/50'
-                        }
-                      `}
-                    >
-                      <div className={`
-                        w-7 h-7 lg:w-8 lg:h-8 rounded-lg flex items-center justify-center transition-all duration-300
-                        ${isActive ? 'bg-white/20 shadow-inner' : 'bg-gray-100 group-hover:bg-blue-50'}
-                      `}>
-                        <IconComponent className={`w-4 h-4 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}`} />
-                      </div>
-                      <span>{section.titulo}</span>
-                      
-                      {isActive && (
-                        <motion.div
-                          layoutId="activeIndicator"
-                          className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full"
-                        />
-                      )}
-                    </button>
-                  )
-                })}
-              </div>
+                return (
+                  <button
+                    key={section.id}
+                    data-section-id={section.id}
+                    onClick={() => scrollToSection(section.id)}
+                    className={`
+                      group relative flex items-center gap-2 px-3.5 py-2.5 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap text-sm
+                      ${isActive
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg scale-105 border border-blue-500/20'
+                        : 'text-gray-700 hover:bg-gray-50/80 hover:text-blue-600 hover:shadow-md border border-transparent hover:border-blue-200/50'
+                      }
+                    `}
+                  >
+                    <div className={`
+                      w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-300
+                      ${isActive ? 'bg-white/20 shadow-inner' : 'bg-gray-100 group-hover:bg-blue-50'}
+                    `}>
+                      <IconComponent className={`w-4 h-4 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}`} />
+                    </div>
+                    <span className="leading-none">{section.titulo}</span>
+
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeIndicatorHorizontal"
+                        className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-600 rounded-full"
+                      />
+                    )}
+                  </button>
+                )
+              })}
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Right Arrow */}
-            {showRightArrow && (
-              <button
-                onClick={() => scrollNavigation('right')}
-                className="absolute right-0 z-10 p-2 lg:p-3 bg-white/90 backdrop-blur-sm shadow-lg rounded-full hover:bg-white hover:shadow-xl transition-all duration-200 border border-gray-200/50"
-              >
-                <ChevronRight className="w-4 h-4 lg:w-5 lg:h-5 text-gray-700" />
-              </button>
-            )}
+      {/* Navegación lateral - Similar a móvil, aparece después del hero */}
+      <div
+        ref={navRef}
+        className={`hidden sm:block fixed right-3 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-500 ${
+          showSideNav ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 pointer-events-none'
+        }`}
+      >
+        <div className="bg-white/90 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 py-4 px-3">
+          <div className="flex flex-col space-y-3">
+            {sections.map((section) => {
+              const isActive = activeSection === section.id
+              const IconComponent = getIcon(section.icon)
+              return (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`
+                    relative w-11 h-11 rounded-full transition-all duration-300 flex items-center justify-center group
+                    ${isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg scale-110'
+                      : 'bg-gray-100 hover:bg-blue-50 hover:scale-105'
+                    }
+                  `}
+                  title={section.titulo}
+                  aria-label={`Ir a sección ${section.titulo}`}
+                >
+                  <IconComponent className={`w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}`} />
+                  {isActive && (
+                    <div className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-20 -z-10" />
+                  )}
+                  {/* Tooltip */}
+                  <div className="absolute right-full mr-3 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                    {section.titulo}
+                    <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 rotate-45 w-2 h-2 bg-gray-900" />
+                  </div>
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -314,21 +340,14 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       </div>
 
       {/* Secciones con referencias para scroll spy */}
-      <section 
+      <section
         id="capacidades"
         ref={(el) => { sectionsRef.current['capacidades'] = el }}
       >
         <CapacitiesSection />
       </section>
-      
-      <section 
-        id="estadisticas"
-        ref={(el) => { sectionsRef.current['estadisticas'] = el }}
-      >
-        <StatsSection />
-      </section>
-      
-      <section 
+
+      <section
         id="nosotros"
         ref={(el) => { sectionsRef.current['nosotros'] = el }}
       >

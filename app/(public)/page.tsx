@@ -59,8 +59,7 @@ async function getProjectsByCategory() {
 // Estructura de secciones para navegación sticky
 const homeSections = [
   { id: 'inicio', titulo: 'Inicio', icon: 'Home' },
-  { id: 'capacidades', titulo: 'Capacidades', icon: 'Building2' },
-  { id: 'estadisticas', titulo: 'Números', icon: 'BarChart3' },
+  { id: 'capacidades', titulo: 'Números', icon: 'BarChart3' },
   { id: 'nosotros', titulo: 'Nosotros', icon: 'Users' },
   { id: 'servicios', titulo: 'Servicios', icon: 'Settings' },
   { id: 'tecnologia', titulo: 'Tecnología', icon: 'Monitor' },

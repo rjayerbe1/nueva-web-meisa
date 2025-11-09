@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Building2, HardHat, Cog } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const heroImages = [
   {
@@ -22,44 +22,10 @@ const heroImages = [
 ]
 
 const specialties = [
-  'ESTRUCTURAS\nMETÁLICAS',
-  'OBRAS\nCIVILES',
-  'RECIPIENTES\nA PRESIÓN',
-  'INTERCAMBIADORES\nDE CALOR',
-  'CUBIERTAS\nSTEEL SEAM',
-  'EQUIPOS\nINDUSTRIALES',
-  'STEEL\nDECK',
-  'OIL &\nGAS'
-]
-
-const stats = [
-  { 
-    icon: Building2, 
-    value: '10,400', 
-    label: 'M² industriales',
-    description: 'Área total de plantas',
-    highlight: 'CAPACIDAD'
-  },
-  { 
-    icon: HardHat, 
-    value: '8', 
-    label: 'Puentes grúa',
-    description: 'Equipamiento especializado',
-    highlight: 'TECNOLOGÍA'
-  },
-  { 
-    icon: Cog, 
-    value: '100', 
-    label: 'Ton transporte',
-    description: 'Capacidad logística',
-    highlight: 'LOGÍSTICA'
-  },
-]
-
-const achievements = [
-  { value: '50+', label: 'Años protección' },
-  { value: '8', label: 'Software BIM' },
-  { value: '9', label: 'Categorías proyectos' },
+  'DISEÑO\nESTRUCTURAL',
+  'FABRICACIÓN\nMETÁLICA',
+  'MONTAJE\nESPECIALIZADO',
+  'GESTIÓN DE\nPROYECTOS'
 ]
 
 export function HeroSection() {
@@ -81,7 +47,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-gray-900 pt-16 sm:pt-20 lg:pt-24">
+    <section className="relative min-h-[65vh] w-full overflow-hidden bg-gray-900 pt-24 sm:pt-28 lg:pt-32 pb-8 sm:pb-12 lg:pb-16">
       {/* Fondo de imágenes con transición suave */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -197,108 +163,9 @@ export function HeroSection() {
                 Solicitar cotización
               </Link>
             </motion.div>
-
-            {/* Estadísticas mejoradas */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2 }}
-              className="mt-16"
-            >
-              <div className="grid grid-cols-3 gap-6">
-                {stats.map((stat, index) => {
-                  const Icon = stat.icon
-                  return (
-                    <motion.div
-                      key={stat.label}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      className="relative group"
-                    >
-                      <div className="bg-gray-800/50 backdrop-blur-md border border-gray-700/50 rounded-xl p-6 hover:border-blue-500/30 transition-all duration-300">
-                        {/* Badge de destacado */}
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="p-2 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg group-hover:from-blue-500/30 group-hover:to-blue-600/30 transition-all">
-                            <Icon className="w-6 h-6 text-blue-400" />
-                          </div>
-                          <span className="text-xs font-semibold text-blue-400 bg-blue-500/10 px-2 py-1 rounded-full">
-                            {stat.highlight}
-                          </span>
-                        </div>
-                        
-                        {/* Número principal */}
-                        <div className="mb-2">
-                          <p className="text-3xl font-black text-white group-hover:text-blue-100 transition-colors">
-                            {stat.value}
-                          </p>
-                          <p className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
-                            {stat.label}
-                          </p>
-                        </div>
-                        
-                        {/* Descripción */}
-                        <p className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
-                          {stat.description}
-                        </p>
-                        
-                        {/* Línea de progreso animada */}
-                        <motion.div
-                          className="mt-3 h-0.5 bg-gray-700 rounded-full overflow-hidden"
-                        >
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 1.5, delay: 1.6 + index * 0.1 }}
-                            className="h-full bg-gradient-to-r from-blue-500 to-blue-400"
-                          />
-                        </motion.div>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-              
-              {/* Logros adicionales */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.8 }}
-                className="mt-8 grid grid-cols-3 gap-6"
-              >
-                {achievements.map((achievement, index) => (
-                  <motion.div
-                    key={achievement.label}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 2 + index * 0.1 }}
-                    className="text-center group"
-                  >
-                    <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-3 group-hover:bg-white/10 transition-all">
-                      <p className="text-xl font-bold text-white mb-1">{achievement.value}</p>
-                      <p className="text-xs text-gray-400">{achievement.label}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
           </motion.div>
         </div>
       </div>
-
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 2, repeat: Infinity, repeatType: "reverse" }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2"
-      >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/50 rounded-full mt-2" />
-        </div>
-      </motion.div>
     </section>
   )
 }
