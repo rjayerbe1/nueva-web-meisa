@@ -2,6 +2,9 @@ import { Suspense } from 'react'
 import { prisma } from '@/lib/prisma'
 import ServicesManagement from './ServicesManagement'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 async function getServices() {
   const services = await prisma.servicio.findMany({
     orderBy: [

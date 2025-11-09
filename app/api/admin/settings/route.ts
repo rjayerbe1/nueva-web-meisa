@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { UserRole } from '@prisma/client'
 
+export const dynamic = 'force-dynamic'
+
 // En un escenario real, esto se almacenaría en la base de datos
 // Por ahora simulamos con un objeto en memoria
 let settings = {

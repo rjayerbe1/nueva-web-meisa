@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Force all pages to be dynamic (no static generation during build)
+  output: 'standalone',
   experimental: {
     serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
+    // Force dynamic rendering for all pages
+    isrMemoryCacheSize: 0,
+  },
+  // Skip static page generation during build
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
   },
   images: {
     remotePatterns: [

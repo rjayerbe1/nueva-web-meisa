@@ -1,6 +1,10 @@
 import { prisma } from "@/lib/prisma"
 import ProjectsPageClient from "./ProjectsPageClient"
 
+// Force dynamic rendering (no static generation during build)
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 async function getProyectos() {
   return await prisma.proyecto.findMany({
     where: { visible: true },

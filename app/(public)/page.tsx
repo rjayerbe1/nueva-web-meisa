@@ -3,6 +3,10 @@ import { prisma } from '@/lib/prisma'
 // Importaciones de componentes mejoradas con estilo de servicios
 import { HomeContent } from '@/components/home/HomeContent'
 
+// Force dynamic rendering (no static generation during build)
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 async function getProjectsByCategory() {
   const projects = await prisma.proyecto.findMany({
     where: {

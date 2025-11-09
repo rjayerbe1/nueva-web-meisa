@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import path from 'path'
 import fs from 'fs'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

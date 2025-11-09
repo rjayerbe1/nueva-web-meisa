@@ -4,6 +4,10 @@ import ServicioDetailEnhanced from './ServicioDetailEnhanced'
 import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 
+// Force dynamic rendering (no static generation during build)
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 interface ServicioPageProps {
   params: {
     slug: string
@@ -140,16 +144,17 @@ async function getOtrosServicios(currentSlug: string) {
   })
 }
 
-export async function generateStaticParams() {
-  const servicios = await prisma.servicio.findMany({
-    where: { activo: true },
-    select: { slug: true }
-  })
+// Disabled static generation - pages are generated dynamically
+// export async function generateStaticParams() {
+//   const servicios = await prisma.servicio.findMany({
+//     where: { activo: true },
+//     select: { slug: true }
+//   })
 
-  return servicios.map((servicio) => ({
-    slug: servicio.slug,
-  }))
-}
+//   return servicios.map((servicio) => ({
+//     slug: servicio.slug,
+//   }))
+// }
 
 export async function generateMetadata({ params }: ServicioPageProps) {
   const servicio = await getServicio(params.slug)

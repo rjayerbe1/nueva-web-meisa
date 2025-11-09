@@ -1,0 +1,70 @@
+# Configuración para Google Cloud Run - MEISA Web
+# Este archivo define los recursos y configuración del servicio
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: meisa-web
+  labels:
+    cloud.googleapis.com/location: us-central1
+  annotations:
+    # Permitir tráfico de internet
+    run.googleapis.com/ingress: all
+    # Usar HTTP/2
+    run.googleapis.com/launch-stage: BETA
+spec:
+  template:
+    metadata:
+      annotations:
+        # Auto-scaling: mínimo 0, máximo 10 instancias
+        autoscaling.knative.dev/minScale: '0'
+        autoscaling.knative.dev/maxScale: '10'
+        # CPU siempre disponible (mejor para Next.js)
+        run.googleapis.com/cpu-throttling: 'false'
+        # Timeout de 60 segundos (suficiente para Next.js)
+        run.googleapis.com/timeout: '60s'
+    spec:
+      # Timeout de contenedor
+      containerConcurrency: 80
+      timeoutSeconds: 60
+      serviceAccountName: default
+      containers:
+      - name: meisa-web
+        image: PLACEHOLDER_IMAGE # Se reemplaza durante el deployment
+        ports:
+        - name: http1
+          containerPort: 3000
+        env:
+        # Variables de entorno (se configuran durante deployment)
+        - name: NODE_ENV
+          value: production
+        - name: PORT
+          value: '3000'
+        # DATABASE_URL - configurar con --set-env-vars durante deployment
+        # NEXTAUTH_URL - configurar con --set-env-vars durante deployment
+        # NEXTAUTH_SECRET - configurar con --set-env-vars durante deployment
+        # UPLOADCARE_PUBLIC_KEY - configurar con --set-env-vars durante deployment
+        resources:
+          limits:
+            # Memoria: 512MB (suficiente para empezar)
+            # Aumentar a 1GB si es necesario
+            memory: 512Mi
+            # CPU: 1 vCPU
+            cpu: '1'
+        # Health check
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3

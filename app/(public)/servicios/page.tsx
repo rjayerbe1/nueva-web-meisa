@@ -3,6 +3,10 @@ import { prisma } from '@/lib/prisma'
 import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
 
+// Force dynamic rendering (no static generation during build)
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // Proceso integral de MEISA - 4 fases optimizadas con toda la información clave
 const procesoIntegral = [
   {
