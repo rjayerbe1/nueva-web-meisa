@@ -16,7 +16,7 @@ const features = [
   },
   {
     name: 'Experiencia Comprobada',
-    description: `Más de ${siteConfig.aniosExperiencia} años de trayectoria respaldan nuestro trabajo.`,
+    description: `Más de ${siteConfig.empresa.aniosExperiencia} años de trayectoria respaldan nuestro trabajo.`,
     icon: Award,
     color: 'from-slate-600 to-slate-700',
   },
@@ -74,7 +74,7 @@ export function AboutSection() {
           >
             <h2 className="text-blue-400 font-semibold text-lg mb-2">Sobre MEISA</h2>
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Más de {siteConfig.aniosExperiencia} Años
+              Más de {siteConfig.empresa.aniosExperiencia} Años
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500">
                 Construyendo el Futuro de Colombia
               </span>
@@ -231,7 +231,7 @@ export function AboutSection() {
                       <p className="text-sm text-gray-300">Generaciones</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-white">{siteConfig.aniosExperiencia}+</p>
+                      <p className="text-3xl font-bold text-white">{siteConfig.empresa.aniosExperiencia}+</p>
                       <p className="text-sm text-gray-300">Años líder</p>
                     </div>
                   </div>

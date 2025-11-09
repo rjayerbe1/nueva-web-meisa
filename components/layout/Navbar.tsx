@@ -82,7 +82,7 @@ export function Navbar() {
             <div className="hidden lg:flex items-center space-x-4 text-xs">
               <span className="text-blue-400 font-semibold">600 TON/MES</span>
               <span className="text-gray-400">|</span>
-              <span className="text-blue-400 font-semibold">{siteConfig.aniosExperiencia}+ AÑOS</span>
+              <span className="text-blue-400 font-semibold">{siteConfig.empresa.aniosExperiencia}+ AÑOS</span>
               <span className="text-gray-400">|</span>
               <span className="text-blue-400 font-semibold">3 PLANTAS</span>
             </div>
@@ -98,7 +98,7 @@ export function Navbar() {
               <div className="flex items-center space-x-2 text-xs">
                 <span className="text-blue-400 font-semibold">600 TON/MES</span>
                 <span className="text-gray-400">|</span>
-                <span className="text-blue-400 font-semibold">{siteConfig.aniosExperiencia}+ AÑOS</span>
+                <span className="text-blue-400 font-semibold">{siteConfig.empresa.aniosExperiencia}+ AÑOS</span>
                 <span className="text-gray-400">|</span>
                 <span className="text-blue-400 font-semibold">3 PLANTAS</span>
               </div>
@@ -167,7 +167,7 @@ export function Navbar() {
                           >
                             <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6">
                               <h3 className="text-white font-bold text-xl mb-1">Conócenos</h3>
-                              <p className="text-blue-100 text-sm">{siteConfig.aniosExperiencia}+ años construyendo el futuro de Colombia</p>
+                              <p className="text-blue-100 text-sm">{siteConfig.empresa.aniosExperiencia}+ años construyendo el futuro de Colombia</p>
                             </div>
                             
                             <div className="p-3">
@@ -213,7 +213,7 @@ export function Navbar() {
                                 </div>
                                 <div className="w-px h-10 bg-gray-300"></div>
                                 <div className="text-center">
-                                  <p className="text-2xl font-bold text-blue-600">{siteConfig.aniosExperiencia}+</p>
+                                  <p className="text-2xl font-bold text-blue-600">{siteConfig.empresa.aniosExperiencia}+</p>
                                   <p className="text-xs text-gray-600">años</p>
                                 </div>
                                 <div className="w-px h-10 bg-gray-300"></div>

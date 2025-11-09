@@ -131,15 +131,6 @@ export default function SignInPage() {
               {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
             </Button>
           </form>
-
-          {/* Credenciales de prueba */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <p className="text-sm text-gray-600 font-medium mb-2">Credenciales de desarrollo:</p>
-            <div className="text-xs text-gray-500 space-y-1">
-              <p><strong>Email:</strong> admin@meisa.com.co</p>
-              <p><strong>Password:</strong> admin123</p>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}

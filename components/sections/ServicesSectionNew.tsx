@@ -83,7 +83,7 @@ const services = [
       'Obras de concreto reforzado',
       'Coordinación integral de proyectos'
     ],
-    stats: { value: `${siteConfig.aniosExperiencia}+`, label: 'Años experiencia' },
+    stats: { value: `${siteConfig.empresa.aniosExperiencia}+`, label: 'Años experiencia' },
     color: 'from-purple-500 to-violet-500',
     bgColor: 'from-purple-500/10 to-violet-500/10'
   },
@@ -92,7 +92,7 @@ const services = [
 const benefits = [
   { icon: Shield, title: 'Calidad Garantizada', desc: 'Normas internacionales' },
   { icon: Timer, title: 'Entregas Puntuales', desc: 'Cumplimiento 100%' },
-  { icon: Award, title: 'Experiencia Comprobada', desc: `${siteConfig.aniosExperiencia}+ años` },
+  { icon: Award, title: 'Experiencia Comprobada', desc: `${siteConfig.empresa.aniosExperiencia}+ años` },
   { icon: Zap, title: 'Tecnología Avanzada', desc: 'Equipos modernos' }
 ]
 
