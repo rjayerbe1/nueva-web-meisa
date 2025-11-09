@@ -1,6 +1,7 @@
 'use client'
 
 import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
+import { siteConfig } from '@/lib/site-config'
 
 const capacities = [
   {
@@ -19,7 +20,7 @@ const capacities = [
     suffix: ""
   },
   {
-    number: "27",
+    number: String(siteConfig.empresa.aniosExperiencia),
     label: "Años de Experiencia",
     suffix: "+"
   },

@@ -5,7 +5,8 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
-import { 
+import { siteConfig } from '@/lib/site-config'
+import {
   Monitor,
   Settings,
   Factory,
@@ -757,7 +758,7 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
                         suffix: '%'
                       },
                       {
-                        number: getText('27', 'techStats.stats.3.number'),
+                        number: getText(String(siteConfig.empresa.aniosExperiencia), 'techStats.stats.3.number'),
                         label: getText('Años de Innovación', 'techStats.stats.3.label'),
                         suffix: ''
                       }

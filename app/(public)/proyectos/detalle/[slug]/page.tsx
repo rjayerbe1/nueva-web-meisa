@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, MapPin, User, Calendar, Building, Award, Settings, ExternalLink, Phone, Mail, Star, Clock, Ruler, Weight, Share2, Eye, X, ChevronLeft, ChevronRight, ZoomIn, Target, Lightbulb, TrendingUp, Users, Quote, CheckCircle, Play, BarChart3, Wrench, Users2, Trophy, BookOpen, FileText, Camera, Video, Download } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 interface Proyecto {
   id: string
@@ -1888,9 +1889,9 @@ export default function ProjectDetailPage() {
               {hasHistoria ? '¿Listo para Tu Próximo Caso de Éxito?' : '¿Tienes un proyecto en mente?'}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              {hasHistoria 
-                ? 'Con más de 27 años transformando desafíos en éxitos, MEISA está listo para hacer de tu proyecto la próxima historia de éxito.'
-                : 'Somos expertos en estructuras metálicas con más de 27 años de experiencia. Convierte tu visión en realidad con la calidad y confianza que nos caracteriza.'
+              {hasHistoria
+                ? `Con más de ${siteConfig.empresa.aniosExperiencia} años transformando desafíos en éxitos, MEISA está listo para hacer de tu proyecto la próxima historia de éxito.`
+                : `Somos expertos en estructuras metálicas con más de ${siteConfig.empresa.aniosExperiencia} años de experiencia. Convierte tu visión en realidad con la calidad y confianza que nos caracteriza.`
               }
             </p>
             
