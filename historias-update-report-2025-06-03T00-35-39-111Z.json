@@ -1,0 +1,149 @@
+{
+  "timestamp": "2025-06-03T00:35:39.113Z",
+  "summary": {
+    "totalProcessed": 2,
+    "successful": 2,
+    "errors": 0,
+    "fieldsUpdatedGlobally": [
+      "equipoEspecialista",
+      "fasesEjecucion",
+      "reconocimientos",
+      "leccionesAprendidas",
+      "datosInteres",
+      "videoUrl",
+      "imagenesDesafio",
+      "imagenesSolucion",
+      "imagenesResultado"
+    ]
+  },
+  "details": [
+    {
+      "historiaId": "cmbflkopk000380troyjozzs0",
+      "proyectoTitulo": "Torre Cogeneracion Propal",
+      "proyectoCliente": "Cliente",
+      "fieldsUpdated": [
+        "equipoEspecialista",
+        "fasesEjecucion",
+        "reconocimientos",
+        "leccionesAprendidas",
+        "datosInteres",
+        "videoUrl",
+        "imagenesDesafio",
+        "imagenesSolucion",
+        "imagenesResultado"
+      ],
+      "status": "success",
+      "changes": {
+        "equipoEspecialista": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "fasesEjecucion": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "reconocimientos": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "leccionesAprendidas": {
+          "from": null,
+          "to": "Proyecto exitoso que refuerza la capacidad de MEISA para entregar soluciones de alta calidad",
+          "type": "generated_template"
+        },
+        "datosInteres": {
+          "from": null,
+          "to": {},
+          "type": "new_field"
+        },
+        "videoUrl": {
+          "from": null,
+          "to": null,
+          "type": "new_field"
+        },
+        "imagenesDesafio": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "imagenesSolucion": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "imagenesResultado": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        }
+      }
+    },
+    {
+      "historiaId": "cmbflkopn000580trp8870yx1",
+      "proyectoTitulo": "Puente Vehicular Carrera 100",
+      "proyectoCliente": "Consorcio Islas 2019",
+      "fieldsUpdated": [
+        "equipoEspecialista",
+        "fasesEjecucion",
+        "reconocimientos",
+        "leccionesAprendidas",
+        "datosInteres",
+        "videoUrl",
+        "imagenesDesafio",
+        "imagenesSolucion",
+        "imagenesResultado"
+      ],
+      "status": "success",
+      "changes": {
+        "equipoEspecialista": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "fasesEjecucion": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "reconocimientos": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "leccionesAprendidas": {
+          "from": null,
+          "to": "Proyecto exitoso que refuerza la capacidad de MEISA para entregar soluciones de alta calidad",
+          "type": "generated_template"
+        },
+        "datosInteres": {
+          "from": null,
+          "to": {},
+          "type": "new_field"
+        },
+        "videoUrl": {
+          "from": null,
+          "to": null,
+          "type": "new_field"
+        },
+        "imagenesDesafio": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "imagenesSolucion": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        },
+        "imagenesResultado": {
+          "from": null,
+          "to": [],
+          "type": "new_field"
+        }
+      }
+    }
+  ]
+}

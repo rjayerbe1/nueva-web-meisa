@@ -1,0 +1,133 @@
+{
+  "extractionDate": "2025-05-31T17:22:06.378Z",
+  "totalProjects": 8,
+  "totalImages": 43,
+  "totalDownloaded": 43,
+  "successRate": 100,
+  "projects": {
+    "centro-comercial-campanario": {
+      "title": "Centro Comercial Campanario",
+      "location": "Popayán, Cauca",
+      "client": "ARINSA",
+      "weight": "2,500 toneladas",
+      "description": "Cimentación, estructura metálica y cubiertas ampliación",
+      "url": "https://meisa.com.co/project/centro-comercial-campanario/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-1-scaled-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-3-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-4-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-5-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-6-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2023/05/Centro-campanario-7-400x400.webp"
+      ]
+    },
+    "edificios-cinemateca-distrital": {
+      "title": "Cinemateca Distrital",
+      "location": "Bogotá, Cundinamarca",
+      "client": "Consorcio Cine Cultura Bogotá",
+      "weight": "490 toneladas",
+      "description": "Estructura metálica",
+      "url": "https://meisa.com.co/project/edificios-cinemateca-distrital/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-3-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-4-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-5-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Edificio-cinemateca-distrital-6-400x400.webp"
+      ]
+    },
+    "industria-ampliacion-cargill": {
+      "title": "Ampliación Cargill",
+      "location": "Villa Rica, Cauca",
+      "client": "Cargill Colombia",
+      "weight": "175 toneladas",
+      "description": "Estructura metálica y cubierta ampliación",
+      "url": "https://meisa.com.co/project/industria-ampliacion-cargill/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-3-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-4-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-5-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Industria-ampliacion-cargill-6-400x400.webp"
+      ]
+    },
+    "puentes-vehiculares-puente-nolasco": {
+      "title": "Puente Nolasco",
+      "location": "Nátaga, Huila",
+      "client": "Consorcio del Cauca",
+      "weight": "395 toneladas",
+      "description": "Estructura metálica",
+      "url": "https://meisa.com.co/project/puentes-vehiculares-puente-nolasco/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-vehicular-nolasco-3-400x400.webp"
+      ]
+    },
+    "puentes-peatonales-escalinata-curva-rio-cali": {
+      "title": "Escalinata Curva Río Cali",
+      "location": "Cali, Valle del Cauca",
+      "client": "UNIÓN TEMPORAL ESPACIO 2015",
+      "weight": "30 toneladas",
+      "description": "Formaleta en estructura metálica",
+      "url": "https://meisa.com.co/project/puentes-peatonales-escalinata-curva-rio-cali/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-3-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-4-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-5-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Puente-peatonal-escalinata-curva-rio-cali-6-400x400.webp"
+      ]
+    },
+    "escenarios-deportivos-complejo-acuatico-popayan": {
+      "title": "Complejo Acuático Popayán",
+      "location": "Popayán, Cauca",
+      "client": "Fondo mixto para promoción del deporte / MAJA S.A.S.",
+      "weight": "135-216 toneladas",
+      "description": "Obra civil y estructura metálica",
+      "url": "https://meisa.com.co/project/escenarios-deportivos-complejo-acuatico-popayan/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-compejo-acuativo-popayan-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Escenario-deportivo-complejo-acuatico-popayan-2-400x400.webp"
+      ]
+    },
+    "estructuras-modulares-cocinas-ocultas": {
+      "title": "Estructuras Modulares - Cocinas Ocultas",
+      "location": "Bogotá D.C.",
+      "client": "COCINAS OCULTAS COLOMBIA HOLDINGS S.A.S.",
+      "weight": "24 unidades",
+      "description": "Estructuras modulares",
+      "url": "https://meisa.com.co/project/estructuras-modulares-cocinas-ocultas/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-cocina-oculta-1-400x400.jpeg",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-cocina-oculta-2-400x400.jpeg",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-cocina-oculta-3-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-modulo-oficina-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-modulo-oficina-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Estructura-modular-modulo-oficina-3-400x400.webp"
+      ]
+    },
+    "oil-and-gas-tanque-pulmon": {
+      "title": "Oil and Gas - Tanque Pulmón",
+      "location": "San Martín, Cesar / Pitalito, Huila",
+      "client": "OIL BUSINESS SERVICES S.A.S. / Surcolombiana de Gas S.A E.S.P.",
+      "weight": "3,000 galones por unidad",
+      "description": "Tanque estacionario vertical y tanques horizontales",
+      "url": "https://meisa.com.co/project/oil-and-gas-tanque-pulmon/",
+      "images": [
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-pulmon-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-1-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-2-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-3-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-4-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-5-400x400.webp",
+        "https://meisa.com.co/wp-content/uploads/2021/03/Oil-gas-tanque-de-almacenamiento-gpl-6-400x400.webp"
+      ]
+    }
+  },
+  "outputPath": "/Users/rjayerbe/Web Development Local/meisa.com.co/nueva-web-meisa/real-project-images-downloaded"
+}
