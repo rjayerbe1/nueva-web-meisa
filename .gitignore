@@ -73,3 +73,14 @@ logs
 deploy.sh
 start-dev.sh
 start-docker.sh
+
+# Sensitive files with credentials/keys
+backups/
+*.backup.json
+*-backup-*.json
+cors-config.json
+.claude/settings.local.json
+credentials.json
+service-account*.json
+*-key.json
+*-keys.json
