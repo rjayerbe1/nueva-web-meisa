@@ -492,3 +492,60 @@ enum TipoSeccion {
   MAPA
   FORMULARIO
 }
+
+enum NivelDetalle {
+  BAJO
+  MEDIO
+  ALTO
+}
+
+model ProyectoHojaVida {
+  id                   String        @id @default(cuid())
+  entidadContratante   String
+  objetoContrato       String        @db.Text
+  tituloDisplay        String?       // Título compacto para mostrar
+  descripcionSecundaria String?      @db.Text // Detalles técnicos adicionales
+  fechaInicio          DateTime
+  fechaFin             DateTime
+  pesoKg               Decimal?      @db.Decimal(12, 2)
+  areaM2               Decimal?      @db.Decimal(12, 2)
+  ubicacion            String
+  departamento         String?
+  valorContrato        Decimal       @db.Decimal(15, 2)
+  moneda               String        @default("COP")
+  imagenes             Json?
+  nivelDetalle         NivelDetalle  @default(MEDIO)
+  destacado            Boolean       @default(false)
+  visible              Boolean       @default(true)
+  orden                Int           @default(0)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@map("proyectos_hoja_vida")
+}
+
+model ConfiguracionTrayectoria {
+  id              String   @id @default(cuid())
+  resenaHistorica String   @db.Text
+  mision          String   @db.Text
+  vision          String   @db.Text
+  valores         Json
+  updatedAt       DateTime @updatedAt
+
+  @@map("configuracion_trayectoria")
+}
+
+model ResumenAnio {
+  id               String   @id @default(cuid())
+  anio             Int      @unique
+  titulo           String
+  descripcion      String   @db.Text
+  categorias       Json?
+  imagenesFeatured Json?
+  estadisticas     Json?
+  visible          Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("resumenes_anio")
+}

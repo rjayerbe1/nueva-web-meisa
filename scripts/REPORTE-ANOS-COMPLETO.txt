@@ -1,0 +1,3038 @@
+📊 REPORTE DETALLADO POR AÑO
+
+Usa este reporte para escribir mejores títulos y descripciones
+
+====================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 1996
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 1
+Total apariciones (con multi-año): 1
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 1996 (1 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. FRIESLAND COLOMBIA S.A.
+   Diseño y construcción de la  estructura metálica y cubierta para planta de producción en Pasto
+   📅 1996-01-01 a 1996-12-30
+   📍 Pasto
+   📐 611 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 1996
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • FRIESLAND COLOMBIA S.A. (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Pasto (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Plantas Industriales (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 1996 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 1998
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 5
+Total apariciones (con multi-año): 5
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 1998 (5 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. GUIDO GAVILANES Y OSCAR RUIZ
+   Diseño y construcción de estructuras metálicas para tres bodegas  en el Parque Industrial de Popayán
+   📅 1998-01-01 a 1998-12-30
+   📍 Popayán
+   📐 1,400 m²
+
+2. ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en San
+   ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en Santa Rosa, Piendamó, Corinto, La Sierra, Timbiquí y Santander de Quilichao (Cauca) y Tumaco (Nariño)
+   📅 1998-01-01 a 1998-12-30
+   📍 Cauca
+   📐 9,000 m²
+
+3. LOTERÍA DEL CAUCA
+   Diseño y construcción estructuras  metálicas para el Edificio Edgar Negret Popayán
+   📅 1998-01-01 a 1998-12-30
+   📍 Popayán
+   📐 545 m²
+
+4. UNIVERSIDAD DEL CAUCA
+   Diseño y construcción Coliseo Cubierto en el Campus de Popayán
+   📅 1998-01-01 a 1998-12-30
+   📍 Popayán
+   📐 1,632 m²
+
+5. MUNICIPIO DE POPAYÁN, GOBERNACIÓN DEL CAUCA Y OTRAS ENTIDADES
+   Diseño y construcción de Coliseos Polideportivos en los barrios Palacé, Alfonso López, La Esmeralda, Pandiguando, Chuni, Colegio Negret, Berlín, Sauces, Independencia y La Paz
+   📅 1998-01-01 a 1998-12-30
+   📍 Popayán
+   📐 8,650 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 1998
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • GUIDO GAVILANES Y OSCAR RUIZ (1 proyecto)
+   • ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en San (1 proyecto)
+   • LOTERÍA DEL CAUCA (1 proyecto)
+   • UNIVERSIDAD DEL CAUCA (1 proyecto)
+   • MUNICIPIO DE POPAYÁN, GOBERNACIÓN DEL CAUCA Y OTRAS ENTIDADES (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Popayán (4 proyectos)
+   • Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Escenarios Deportivos (3 proyectos)
+   • Bodegas (1 proyecto)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 1998 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 1999
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 8
+Total apariciones (con multi-año): 8
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 1999 (8 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. PARROQUIA NIÑO JESÚS DE PRAGA
+   Santander de Quilichao - Cubierta metálica iglesia Parroquial
+   📅 1999-01-01 a 1999-12-30
+   📍 Colombia
+   📐 600 m²
+
+2. MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud
+   MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud 25 mts c/u.
+   📅 1999-01-01 a 1999-12-30
+   📍 Pasto
+   ⚖️  80 toneladas
+
+3. CONSTRUCTORA AYACAR S.A
+   Estructuras metálicas de cubierta y entrepisos Edificio Droguería Humanitaria de Cali
+   📅 1999-01-01 a 1999-12-30
+   📍 Cali
+   📐 770 m²
+
+4. AROMA DEL CAUCA
+   Estructura metálica cubierta para fábrica en el Parque Industrial Popayán
+   📅 1999-01-01 a 1999-12-30
+   📍 Popayán
+   📐 1,790 m²
+
+5. YAZAKI METREX S.A.
+   Estructura metálica cubierta para fábrica en el Parque Industrial Popayán
+   📅 1999-01-01 a 1999-12-30
+   📍 Popayán
+   📐 3,000 m²
+
+6. MUNICIPIO DE GUAPI
+   Puente sobre el río Napi para conducción tubería  de acueducto       longitud 117 mts.
+   📅 1999-01-01 a 1999-12-30
+   📍 Colombia
+   ⚖️  25 toneladas
+
+7. MUNICIPIO DE POPAYÁN
+   Puente peatonal sobre el río Molino, sector Universidad-Hospital.    Longitud 18 mts.
+   📅 1999-01-01 a 1999-12-30
+   📍 Popayán
+   ⚖️  12 toneladas
+
+8. CORPORACIÓN NASA KIWE
+   Construcción de vigas, pen- dolones y suministro cables para puente colgante vehicular  La Troja en Tierradentro.         Longitud 103 mts.
+   📅 1999-01-01 a 1999-12-30
+   📍 Colombia
+   ⚖️  35 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 1999
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • PARROQUIA NIÑO JESÚS DE PRAGA (1 proyecto)
+   • MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud (1 proyecto)
+   • CONSTRUCTORA AYACAR S.A (1 proyecto)
+   • AROMA DEL CAUCA (1 proyecto)
+   • YAZAKI METREX S.A. (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Colombia (3 proyectos)
+   • Popayán (3 proyectos)
+   • Pasto (1 proyecto)
+   • Cali (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Puentes (4 proyectos)
+   • Cubiertas (3 proyectos)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 1999 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2000
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 7
+Total apariciones (con multi-año): 7
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2000 (7 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Ing. RICARDO ARBOLEDA
+   Estructuras metálicas para  bodegas C.I. Valle
+   📅 2000-01-01 a 2000-12-30
+   📍 Colombia
+   📐 1,320 m²
+
+2. Ing. JUAN CARLOS MEJÍA
+   Estructura metálica Plaza de Mercado en Guapi, Depto. Del Cauca
+   📅 2000-01-01 a 2000-12-30
+   📍 Cauca
+   📐 520 m²
+
+3. CALDERON & JARAMILLO
+   Estructuras básicas y de cubierta para el Condominio "Costa Esmeralda" en Panamá.
+   📅 2000-01-01 a 2000-12-30
+   📍 Colombia
+   📐 2,000 m²
+
+4. Constructora Carpol
+   Carpintería metálica y cerramiento para Urbanización Villa del Viento - Popayán 400 viviendas
+   📅 2000-01-01 a 2000-12-30
+   📍 Popayán
+
+5. Ing. ANDRÉS CASTRILLÓN
+   Soportes metálicos para conducción acueducto Pílamo -Caloto  longitud 800 mts.
+   📅 2000-01-01 a 2000-12-30
+   📍 Colombia
+
+6. FONDO NAL. CAMINOS VECINALES
+   Diseño y construcción de dos puentes peatonales en San José del Palmar Departamento del Chocó               longitud : 37 mts.
+   📅 2000-01-01 a 2000-12-30
+   📍 Colombia
+   ⚖️  20 toneladas
+
+7. Ing. DIEGO CARVAJAL
+   Estructura metálica edificio Banco Coopdesarrollo en Jamundí
+   📅 2000-01-01 a 2000-12-30
+   📍 Jamundí
+   📐 300 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2000
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Ing. RICARDO ARBOLEDA (1 proyecto)
+   • Ing. JUAN CARLOS MEJÍA (1 proyecto)
+   • CALDERON & JARAMILLO (1 proyecto)
+   • Constructora Carpol (1 proyecto)
+   • Ing. ANDRÉS CASTRILLÓN (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Colombia (4 proyectos)
+   • Cauca (1 proyecto)
+   • Popayán (1 proyecto)
+   • Jamundí (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (2 proyectos)
+   • Bodegas (1 proyecto)
+   • Cubiertas (1 proyecto)
+   • Fachadas y Cerramientos (1 proyecto)
+   • Puentes (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2000 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2001
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 9
+Total apariciones (con multi-año): 9
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2001 (9 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. GOBERNACIÓN DEL CAUCA
+   Dos esculturas “Tierradentro”
+   📅 2001-01-01 a 2001-12-30
+   📍 Cauca
+   ⚖️  16 toneladas
+
+2. CONSORCIO Q.M. SAN ISIDRO
+   Construcción estructuras metálicas y rejas de seguridad, Penitenciaría San Isidro Popayán Cauca
+   📅 2001-01-01 a 2001-12-30
+   📍 Popayán
+   📐 2,376 m²
+
+3. J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 2
+   J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 20 mts.
+   📅 2001-01-01 a 2001-12-30
+   📍 Cauca
+   ⚖️  30 toneladas
+
+4. Ing. JUAN CARLOS CANENCIO
+   Estructura metálica para Plaza de Mercado en Corinto Cauca.
+   📅 2001-01-01 a 2001-12-30
+   📍 Cauca
+   📐 4,115 m²
+
+5. CORPORACIÓN NASA KIWE
+   Puente vehicular quebrada "El Lucero" Tierradentro Cauca.         Longitud : 16 mts.
+   📅 2001-01-01 a 2001-12-30
+   📍 Cauca
+   ⚖️  30 toneladas
+
+6. VIDRIOS Y ALUMINIOS ELSOL
+   Estructura metálica para fábrica en Popayán.
+   📅 2001-01-01 a 2001-12-30
+   📍 Popayán
+   📐 663 m²
+
+7. CALDERON Y JARAMILLO INGS.
+   Estructura metálica para fábrica de quesos Delvechio - Bogotá
+   📅 2001-01-01 a 2001-12-30
+   📍 Bogotá
+   📐 3,322 m²
+
+8. READY FRUIT COMPANY
+   Estructura metálica de cubierta  y entrepisos, Planta de La Unión, Valle del Cauca
+   📅 2001-01-01 a 2001-12-30
+   📍 Cauca
+   📐 3,579 m²
+
+9. CALDERON Y JARAMILLO INGS.
+   Refuerzo puente vehicular Cameguadua, Chinchiná, Caldas        longitud 10 mts.
+   📅 2001-01-01 a 2001-12-30
+   📍 Colombia
+   ⚖️  15 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2001
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • CALDERON Y JARAMILLO INGS. (2 proyectos)
+   • GOBERNACIÓN DEL CAUCA (1 proyecto)
+   • CONSORCIO Q.M. SAN ISIDRO (1 proyecto)
+   • J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 2 (1 proyecto)
+   • Ing. JUAN CARLOS CANENCIO (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cauca (5 proyectos)
+   • Popayán (2 proyectos)
+   • Bogotá (1 proyecto)
+   • Colombia (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (5 proyectos)
+   • Puentes (3 proyectos)
+   • Plantas Industriales (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2001 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2002
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 6
+Total apariciones (con multi-año): 6
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2002 (6 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Ing. HERNAN VALLEJO
+   estructura metálica Hospital de Timbiquí, Cauca.
+   📅 2002-01-01 a 2002-12-30
+   📍 Cauca
+   📐 520 m²
+
+2. Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos de
+   Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos del Plan Colombia en Almaguer,Cajibío, Morales, Caldono y Florencia- Depto. Del Cauca
+   📅 2002-01-01 a 2002-12-30
+   📍 Cauca
+   ⚖️  231 toneladas
+
+3. In. HERNAN VALLEJO
+   Puente peatonal "Sesecito" en Timbiquí Cauca.                                         Longitud 22 mts.
+   📅 2002-01-01 a 2002-12-30
+   📍 Cauca
+   ⚖️  10 toneladas
+
+4. Ing. JESUS ALBEIRO VASQUEZ
+   Puente colgante sobre el río El Molino, Paispamba Cauca     Longitud 25 mts.
+   📅 2002-01-01 a 2002-12-30
+   📍 Cauca
+   ⚖️  12 toneladas
+
+5. CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P
+   CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en Puerto Tejada, Cauca
+   📅 2002-01-01 a 2002-12-30
+   📍 Cauca
+   📐 1,532 m²
+
+6. Ing. JORGE PALECHOR
+   Puente peatonal colgante río Dos Brazos en Popayán                          Longitud 28 mts.
+   📅 2002-01-01 a 2002-12-30
+   📍 Popayán
+   ⚖️  12 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2002
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Ing. HERNAN VALLEJO (1 proyecto)
+   • Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos de (1 proyecto)
+   • In. HERNAN VALLEJO (1 proyecto)
+   • Ing. JESUS ALBEIRO VASQUEZ (1 proyecto)
+   • CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cauca (5 proyectos)
+   • Popayán (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Puentes (3 proyectos)
+   • Estructuras Metálicas (1 proyecto)
+   • Escenarios Deportivos (1 proyecto)
+   • Plantas Industriales (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2002 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2003
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 6
+Total apariciones (con multi-año): 6
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2003 (6 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. IGLESIA DE DIOS MINISTERIAL
+   POPAYÁN - estructura metálica de cubierta.
+   📅 2003-01-01 a 2003-12-30
+   📍 Popayán
+   📐 1,200 m²
+
+2. Ing. ÁLVARO CARVAJAL
+   Estructura metálica de cubierta para Centro de Acopio en La Vega - Cauca.
+   📅 2003-01-01 a 2003-12-30
+   📍 Cauca
+   📐 1,100 m²
+
+3. CONSTRUCCIONES E INGENIERÍA LTDA.
+   Viaductos para soportar tuberías 500 mm Ingenio Providencia Valle del Cauca                                                      Longitud 70 mts.
+   📅 2003-01-01 a 2003-12-30
+   📍 Cauca
+
+4. FERTECNICA S.A.
+   Puente vehicular en vigas metálicas y losa de concreto sobre Metaldeck  carretera Tacueyó- López Depto. Del Cauca.                        Longitud 12 mts.
+   📅 2003-01-01 a 2003-12-30
+   📍 Cauca
+   ⚖️  15 toneladas
+
+5. UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto
+   UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto
+   📅 2003-01-01 a 2003-12-30
+   📍 Pasto
+   📐 665 m²
+
+6. COLEGIO STA. ISABEL DE HUNGRÍA
+   CALI diseño y construcción de estructura metálica para Coliseo Deportivo Dúplex en la ciudad de Cali.
+   📅 2003-01-01 a 2003-12-30
+   📍 Cali
+   📐 1,650 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2003
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • IGLESIA DE DIOS MINISTERIAL (1 proyecto)
+   • Ing. ÁLVARO CARVAJAL (1 proyecto)
+   • CONSTRUCCIONES E INGENIERÍA LTDA. (1 proyecto)
+   • FERTECNICA S.A. (1 proyecto)
+   • UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cauca (3 proyectos)
+   • Popayán (1 proyecto)
+   • Pasto (1 proyecto)
+   • Cali (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Cubiertas (2 proyectos)
+   • Puentes (2 proyectos)
+   • Centros Comerciales (1 proyecto)
+   • Escenarios Deportivos (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2003 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2004
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 3
+Total apariciones (con multi-año): 3
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2004 (3 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC 
+   ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC de 1200 mm                                       Longitud 27,50 mts
+   📅 2004-01-01 a 2004-12-30
+   📍 Popayán
+
+2. PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaqu
+   PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaquivá, Segovia, Carrizales y La Estrella (Cauca) Longitud 94 mts.
+   📅 2004-01-01 a 2004-12-30
+   📍 Cauca
+   ⚖️  30 toneladas
+
+3. CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación.
+   CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación.
+   📅 2004-01-01 a 2004-12-30
+   📍 Colombia
+   📐 1,715 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2004
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC  (1 proyecto)
+   • PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaqu (1 proyecto)
+   • CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación. (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Popayán (1 proyecto)
+   • Cauca (1 proyecto)
+   • Colombia (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Puentes (2 proyectos)
+   • Bodegas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2004 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2005
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 8
+Total apariciones (con multi-año): 8
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2005 (8 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. CONSTRUCTORA PIJAO LTDA. Construcción de 14 puentes metálicos en apartamentos
+   Cali.    Longitud 58.80 mts.
+   📅 2005-01-01 a 2005-12-30
+   📍 Cali
+   ⚖️  52 toneladas
+
+2. COLEGIO STA. ISABEL DE HUNGRIA
+   Estructura básica y de cubierta , obra civil y acabados en Sede Cali Ciudad 2000
+   📅 2005-01-01 a 2005-12-30
+   📍 Cali
+   📐 1,200 m²
+
+3. VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali
+   VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali
+   📅 2005-01-01 a 2005-12-30
+   📍 Cali
+   📐 550 m²
+
+4. VELKAR S.A.
+   Diseño y construcción estructuras metálicas para fábrica TEXCINTAS S.A. en Cali
+   📅 2005-01-01 a 2005-12-30
+   📍 Cali
+   📐 800 m²
+
+5. PROGRAMA TIERRADENTRO
+   UNIÓN EUROPEA - Diseño y construcción puentes peatonales y caballares en Mosoco, Calderas y Cohetando, Depto. Del Cauca.  Longitud 45 mts.
+   📅 2005-01-01 a 2005-12-30
+   📍 Cauca
+   ⚖️  15 toneladas
+
+6. Ing. JUAN CARLOS CANENCIO
+   Estructura metálica para Plaza de Mercado Villarrica Cauca
+   📅 2005-01-01 a 2005-12-30
+   📍 Cauca
+   📐 600 m²
+
+7. CONSORCIO ACUANORTE
+   Instalación 1.800 mts. Tubería de hierro dúctil acueducto del río Palacé y diseño y construcción de 5 viaductos metálicos.           Longitud 130 mts.
+   📅 2005-01-01 a 2005-12-30
+   📍 Colombia
+
+8. MIRA TU SALUD EPS. Reforzamiento edificio de 5 plantas en Bogotá y obras metálicas varias
+   MIRA TU SALUD EPS. Reforzamiento edificio de 5 plantas en Bogotá y obras metálicas varias
+   📅 2005-01-01 a 2005-12-30
+   📍 Bogotá
+   📐 1,200 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2005
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • CONSTRUCTORA PIJAO LTDA. Construcción de 14 puentes metálicos en apartamentos (1 proyecto)
+   • COLEGIO STA. ISABEL DE HUNGRIA (1 proyecto)
+   • VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali (1 proyecto)
+   • VELKAR S.A. (1 proyecto)
+   • PROGRAMA TIERRADENTRO (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali (4 proyectos)
+   • Cauca (2 proyectos)
+   • Colombia (1 proyecto)
+   • Bogotá (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (3 proyectos)
+   • Puentes (2 proyectos)
+   • Cubiertas (1 proyecto)
+   • Edificios (1 proyecto)
+   • Plantas Industriales (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2005 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2006
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 10
+Total apariciones (con multi-año): 10
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2006 (10 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. CONSTRUCTORA MELENDEZ
+   Estructura metálica cubierta Clubhouse Urbanización Palmera Real de Cali.
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   📐 300 m²
+
+2. VELKAR S.A.  Estructura metálica de cubierta y de soporte 3a. Etapa Centro Comercial Único
+   Cali
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   📐 4,000 m²
+
+3. SUPERMERCADOS POMONA Estructura metálica y cubierta Ciudad Jardín
+   Cali
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   ⚖️  29 toneladas
+
+4. Arq. JAIME CÁRDENAS Y ASOCS. Estructuras metálicas en Universidad San Buenaventura de Cali
+   Arq. JAIME CÁRDENAS Y ASOCS. Estructuras metálicas en Universidad San Buenaventura de Cali
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   ⚖️  12 toneladas
+
+5. MUNICIPIO DE MIRNDA
+   CAUCA. Diseño y construcción Coliseo Cubierto Plaza Principal
+   📅 2006-01-01 a 2006-12-30
+   📍 Cauca
+   📐 1,912 m²
+
+6. CLINICA EXCELLENCE CALI
+   Estructura básica de soporte edificio de 4 plantas
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   ⚖️  55 toneladas
+
+7. INCICO LTDA. Diseño y construcción estructura metálica bodega Cementos Argos en Yumbo Valle del Cauc
+   INCICO LTDA. Diseño y construcción estructura metálica bodega Cementos Argos en Yumbo Valle del Cauca
+   📅 2006-01-01 a 2006-12-30
+   📍 Yumbo
+   📐 480 m²
+
+8. POLLOS BUCANERO
+   Estructura metálica mezaninne y escalera de acceso
+   📅 2006-01-01 a 2006-12-30
+   📍 Colombia
+   ⚖️  6 toneladas
+
+9. COLEGIO COLOMBO BRITÁNICO
+   Estructura de Cubierta en sede de Cali
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   📐 220 m²
+
+10. D.C.I. ARTE
+   Estructuras y cubierta sede Cali
+   📅 2006-01-01 a 2006-12-30
+   📍 Cali
+   ⚖️  15 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2006
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • CONSTRUCTORA MELENDEZ (1 proyecto)
+   • VELKAR S.A.  Estructura metálica de cubierta y de soporte 3a. Etapa Centro Comercial Único (1 proyecto)
+   • SUPERMERCADOS POMONA Estructura metálica y cubierta Ciudad Jardín (1 proyecto)
+   • Arq. JAIME CÁRDENAS Y ASOCS. Estructuras metálicas en Universidad San Buenaventura de Cali (1 proyecto)
+   • MUNICIPIO DE MIRNDA (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali (7 proyectos)
+   • Cauca (1 proyecto)
+   • Yumbo (1 proyecto)
+   • Colombia (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (4 proyectos)
+   • Cubiertas (3 proyectos)
+   • Escenarios Deportivos (1 proyecto)
+   • Plantas Industriales (1 proyecto)
+   • Bodegas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2006 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2007
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 7
+Total apariciones (con multi-año): 7
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2007 (7 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. CONSTRUCTORA CARPOL
+   Estructuras metálicas varias Conjunto Residencial Campo Real en Popayán
+   📅 2007-01-01 a 2007-12-30
+   📍 Popayán
+   ⚖️  19 toneladas
+
+2. CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa
+   Estructuras metálicas varias
+   📅 2007-01-01 a 2007-12-30
+   📍 Cali
+   ⚖️  60 toneladas
+
+3. CALDERON Y JARAMILLO INGS.
+   Estructura de Cubierta para Estación de Servicio en Manizales
+   📅 2007-01-01 a 2007-12-30
+   📍 Manizales
+   ⚖️  10 toneladas
+
+4. VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali
+   VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali
+   📅 2007-01-01 a 2007-12-30
+   📍 Cali
+   ⚖️  24 toneladas
+
+5. ALPICAL
+   Estructuras metálicas fábrica Caloto Cauca
+   📅 2007-01-01 a 2007-12-30
+   📍 Cauca
+   ⚖️  9 toneladas
+
+6. POLLOS BUCANERO
+   2A. Etapa. Estructuras metálicas varias
+   📅 2007-01-01 a 2007-12-30
+   📍 Colombia
+   ⚖️  15 toneladas
+
+7. CONSTRUCTORA HERNANDEZ BOHMER
+   Estructura metálica edificio Campestre Towers Cali
+   📅 2007-01-01 a 2007-12-30
+   📍 Cali
+   ⚖️  16 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2007
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • CONSTRUCTORA CARPOL (1 proyecto)
+   • CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa (1 proyecto)
+   • CALDERON Y JARAMILLO INGS. (1 proyecto)
+   • VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali (1 proyecto)
+   • ALPICAL (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali (3 proyectos)
+   • Popayán (1 proyecto)
+   • Manizales (1 proyecto)
+   • Cauca (1 proyecto)
+   • Colombia (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (4 proyectos)
+   • Cubiertas (1 proyecto)
+   • Bodegas (1 proyecto)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2007 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2008
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 6
+Total apariciones (con multi-año): 6
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2008 (6 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. COMITÉ CAFETEROS CAUCA
+   Estructura metálica Coliseo  Cubierto  Timbío
+   📅 2008-01-01 a 2008-12-30
+   📍 Cauca
+   ⚖️  19 toneladas
+
+2. ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario
+   Popayán
+   📅 2008-01-01 a 2008-12-30
+   📍 Popayán
+   ⚖️  470 toneladas
+   📐 22,000 m²
+
+3. DISCOTECA CUCARA-MACARA
+   Estructura metálica de cubierta en Yumbo (Valle)
+   📅 2008-01-01 a 2008-12-30
+   📍 Yumbo
+   ⚖️  20 toneladas
+   📐 800 m²
+
+4. CLINICA EXCELLENCE
+   Estructura metálica para ampliación de la Clínica en Cali
+   📅 2008-01-01 a 2008-12-30
+   📍 Cali
+   ⚖️  16 toneladas
+
+5. NUTRIPLANTAS
+   Estructura metálica de cubierta en bodega de Tuluá
+   📅 2008-01-01 a 2008-12-30
+   📍 Tuluá
+   ⚖️  94 toneladas
+   📐 4,800 m²
+
+6. TERMINAL DE TRNSPORTES POPAYÁN
+   Cubierta muelle de embarque
+   📅 2008-01-01 a 2008-12-30
+   📍 Popayán
+   ⚖️  28 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2008
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • COMITÉ CAFETEROS CAUCA (1 proyecto)
+   • ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario (1 proyecto)
+   • DISCOTECA CUCARA-MACARA (1 proyecto)
+   • CLINICA EXCELLENCE (1 proyecto)
+   • NUTRIPLANTAS (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Popayán (2 proyectos)
+   • Cauca (1 proyecto)
+   • Yumbo (1 proyecto)
+   • Cali (1 proyecto)
+   • Tuluá (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (2 proyectos)
+   • Cubiertas (2 proyectos)
+   • Escenarios Deportivos (1 proyecto)
+   • Bodegas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2008 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2009
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 6
+Total apariciones (con multi-año): 6
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2009 (6 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. CONSTRUCTORA CARPOL LTDA.
+   Estructuras metálicas y cubiertas Colegio Potrerogrande en Cali
+   📅 2009-01-01 a 2009-12-30
+   📍 Cali
+   📐 2,800 m²
+
+2. O.P.P. GRANELES
+   Estructuras metálicas para bodegas en Buenaventura (Valle del Cauca)
+   📅 2009-01-01 a 2009-12-30
+   📍 Buenaventura
+   ⚖️  67 toneladas
+
+3. CENTRO COMERCIAL ÚNICO
+   BARRANQUILLA - Diseño y construcción estructura metálica y cubierta
+   📅 2009-01-01 a 2009-12-30
+   📍 Barranquilla
+   ⚖️  626 toneladas
+   📐 21,984 m²
+
+4. ESTACIÓN MARBELLA -Estructura metálica para la Estación de Servicio en Cali.
+   ESTACIÓN MARBELLA -Estructura metálica para la Estación de Servicio en Cali.
+   📅 2009-01-01 a 2009-12-30
+   📍 Cali
+   📐 1,400 m²
+
+5. CONSORCIO DEL CAUCA
+   Diseño y construcción Puente Vehicular "Nolasco" sobre el río Páez        Longitud 145 mts.
+   📅 2009-01-01 a 2009-12-30
+   📍 Cauca
+   ⚖️  350 toneladas
+
+6. ZONA FRANCA PALMASECA
+   Estructura metálica para cubierta de bodegas
+   📅 2009-01-01 a 2009-12-30
+   📍 Colombia
+   ⚖️  23 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2009
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • CONSTRUCTORA CARPOL LTDA. (1 proyecto)
+   • O.P.P. GRANELES (1 proyecto)
+   • CENTRO COMERCIAL ÚNICO (1 proyecto)
+   • ESTACIÓN MARBELLA -Estructura metálica para la Estación de Servicio en Cali. (1 proyecto)
+   • CONSORCIO DEL CAUCA (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali (2 proyectos)
+   • Buenaventura (1 proyecto)
+   • Barranquilla (1 proyecto)
+   • Cauca (1 proyecto)
+   • Colombia (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Cubiertas (2 proyectos)
+   • Bodegas (2 proyectos)
+   • Infraestructura de Transporte (1 proyecto)
+   • Puentes (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2009 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2010
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 5
+Total apariciones (con multi-año): 5
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2010 (5 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. COLEGIO COLOMBO FRANCES
+   POPAYÁN Coliseo Cubierto para el Colegio
+   📅 2010-01-01 a 2010-12-30
+   📍 Popayán
+   📐 896 m²
+
+2. CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts.
+   CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts.
+   📅 2010-01-01 a 2010-12-30
+   📍 Cauca
+   ⚖️  63 toneladas
+
+3. CONSORCIO SANTANDER 3
+   Estructuras metálicas varias Matadero de Santander de Quilichao
+   📅 2010-01-01 a 2010-12-30
+   📍 Colombia
+   ⚖️  34 toneladas
+
+4. Ing. MANUEL MUÑOZ
+   Reparación y montaje puente peatonal Terminal de Transportes de Popayán  Longitud 70 mts.
+   📅 2010-01-01 a 2010-12-30
+   📍 Popayán
+   ⚖️  57 toneladas
+
+5. COMFACAUCA
+   Estructura metálica y cubierta Obra Jardín Social en Popayán
+   📅 2010-01-01 a 2010-12-30
+   📍 Popayán
+   📐 1,345 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2010
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • COLEGIO COLOMBO FRANCES (1 proyecto)
+   • CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts. (1 proyecto)
+   • CONSORCIO SANTANDER 3 (1 proyecto)
+   • Ing. MANUEL MUÑOZ (1 proyecto)
+   • COMFACAUCA (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Popayán (3 proyectos)
+   • Cauca (1 proyecto)
+   • Colombia (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Puentes (2 proyectos)
+   • Escenarios Deportivos (1 proyecto)
+   • Estructuras Metálicas (1 proyecto)
+   • Cubiertas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2010 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2011
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 12
+Total apariciones (con multi-año): 12
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2011 (12 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Ca
+   CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Cali
+   📅 2011-01-01 a 2011-12-30
+   📍 Cali
+   ⚖️  170 toneladas
+
+2. CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de
+   CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de Cali
+   📅 2011-01-01 a 2011-12-30
+   📍 Cali
+   ⚖️  128 toneladas
+
+3. ODINSA S.A.
+   Diseño y construcción puente peatonal Romelia 1 en Risaralda - Autopistas del Café. Long. 130 mts.
+   📅 2011-01-01 a 2011-12-30
+   📍 Colombia
+   ⚖️  59 toneladas
+
+4. CENTRO COMERCIAL ÚNICO PASTO
+   Estructuras metálicas y cubiertas en teja Standing Seam para sede de Pasto.
+   📅 2011-01-01 a 2011-12-30
+   📍 Pasto
+   ⚖️  410 toneladas
+   📐 18,820 m²
+
+5. CALIMA MOTORS
+   Estructura metálica y cubierta para bodegas en Buenaventura (Valle)
+   📅 2011-01-01 a 2011-12-30
+   📍 Cali
+   📐 1,370 m²
+
+6. FERRETERIA MARACAIBO
+   Estructura metálica mezaninne para bodega de cemento en Popayán
+   📅 2011-01-01 a 2011-12-30
+   📍 Popayán
+   📐 180 m²
+
+7. COMFACAUCA
+   Estructura metálica y cubierta Colegio Jardín Social El Mirador, Popayán
+   📅 2011-01-01 a 2011-12-30
+   📍 Popayán
+   📐 1,900 m²
+
+8. ODINSA S.A. Diseño y construcción puente peatonal Romelia 2 en Dosquebradas Risaralda  Longitud 212 
+   ODINSA S.A. Diseño y construcción puente peatonal Romelia 2 en Dosquebradas Risaralda  Longitud 212 mts.
+   📅 2011-01-01 a 2011-12-30
+   📍 Colombia
+   ⚖️  92 toneladas
+
+9. EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali
+   EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali
+   📅 2011-01-01 a 2011-12-30
+   📍 Cali
+   ⚖️  15 toneladas
+
+10. I.C.B.F. Estructuras metálicas y cubiertas en Guapi y El Bordo, Depto, del Cauca
+   I.C.B.F. Estructuras metálicas y cubiertas en Guapi y El Bordo, Depto, del Cauca
+   📅 2011-01-01 a 2011-12-30
+   📍 Cauca
+   📐 883 m²
+
+11. VARELA FIHOLL & CIA. LTDA. Estructura metálica, cubiertas y carpintería metálica Colegio Matamoros P
+   VARELA FIHOLL & CIA. LTDA. Estructura metálica, cubiertas y carpintería metálica Colegio Matamoros Popayán
+   📅 2011-01-01 a 2011-12-30
+   📍 Popayán
+   📐 2,770 m²
+
+12. COMFACAUCA
+   Cubierta en teja Standing Seam para el Colegio de Puerto Tejada (Cauca)
+   📅 2011-01-01 a 2011-12-30
+   📍 Cauca
+   📐 758 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2011
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • COMFACAUCA (2 proyectos)
+   • CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Ca (1 proyecto)
+   • CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de (1 proyecto)
+   • ODINSA S.A. (1 proyecto)
+   • CENTRO COMERCIAL ÚNICO PASTO (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali (4 proyectos)
+   • Popayán (3 proyectos)
+   • Colombia (2 proyectos)
+   • Cauca (2 proyectos)
+   • Pasto (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Cubiertas (5 proyectos)
+   • Puentes (4 proyectos)
+   • Bodegas (2 proyectos)
+   • Estructuras Metálicas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2011 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2012
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 15
+Total apariciones (con multi-año): 15
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2012 (15 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Ings. CELY y CAICEDO
+   Estructura metálica y cubierta edificio PRADO 2 en Popayán
+   📅 2012-01-01 a 2012-12-30
+   📍 Popayán
+   ⚖️  15 toneladas
+   📐 220 m²
+
+2. Ing. ALBERTO VIDAL
+   Estructura metálica y cubierta par Morgue en Tuluá (Valle)
+   📅 2012-01-01 a 2012-12-30
+   📍 Tuluá
+   📐 350 m²
+
+3. COLEGIO FRANCISCANAS
+   Diseño y construcción del Coliseo Cubierto No. 2 en Popayán
+   📅 2012-01-01 a 2012-12-30
+   📍 Popayán
+   📐 750 m²
+
+4. COMFACAUCA
+   Diseño y construcción de estructuras y cubiertas par canchas Centro Recreativo Pisojé.
+   📅 2012-01-01 a 2012-12-30
+   📍 Cauca
+   📐 2,470 m²
+
+5. COMFACAUCA
+   Diseño y construcción de mezaninne para oficinas sede de Popayán
+   📅 2012-01-01 a 2012-12-30
+   📍 Popayán
+   📐 216 m²
+
+6. CONSORCIO CORREDORES DE COMPETITIVIDAD
+   Diseño y construcción Puente Cusiyaco              Longitud 40 mts.
+   📅 2012-01-01 a 2012-12-30
+   📍 Colombia
+   ⚖️  41 toneladas
+
+7. CONSORCIO MJ 2011
+   Coliseo de fútbol sala para los Juegos Nacionales de Popayán
+   📅 2012-01-01 a 2012-12-30
+   📍 Popayán
+   ⚖️  268 toneladas
+   📐 6,133 m²
+
+8. ARGEU S.A.
+   Coliseo de Artes Marciales para los Juegos Nacionales de Popayán
+   📅 2012-01-01 a 2012-12-30
+   📍 Popayán
+   ⚖️  196 toneladas
+   📐 4,036 m²
+
+9. INGENIO MANUELITA
+   Estructura metálica para edificio de 6 plantas, sector de mezclas en Palmira (Valle)
+   📅 2012-01-01 a 2012-12-30
+   📍 Palmira
+   ⚖️  72 toneladas
+   📐 703 m²
+
+10. POLLOS BUCANERO 3A. ETAPA
+   Estructura metálica y  cubierta en ampliación
+   📅 2012-01-01 a 2012-12-30
+   📍 Colombia
+   📐 3,170 m²
+
+11. COMFACAUCA
+   Diseño y construcción puente vehicular sobre rio Cauca Centro Recreativo Pisojé Longitud 40 mts.
+   📅 2012-01-01 a 2012-12-30
+   📍 Cauca
+   ⚖️  20 toneladas
+
+12. CENTRO COMERCIAL ÚNICO
+   Diseño y construcción de estructuras metálicas y cubiertas, en Villavicencio
+   📅 2012-01-01 a 2012-12-30
+   📍 Colombia
+   ⚖️  670 toneladas
+   📐 16,300 m²
+
+13. CONSORCIO CORREDORES DE COMPETITIVIDAD
+   Diseño  y construcción puente vehicular en Arco,  Saraconcho     Longitud 150 mts.
+   📅 2012-01-01 a 2012-12-30
+   📍 Colombia
+   ⚖️  357 toneladas
+
+14. ALMACEN CARREFOUR
+   Diseño uy construcción de mezaninne en Pasto (Nariño)
+   📅 2012-01-01 a 2012-12-30
+   📍 Pasto
+   📐 870 m²
+
+15. FONDO MIXTO PARA PROMOCIÓN DEL DEPORTE- Diseño y construcción estructura metálica y cubierta para la
+   FONDO MIXTO PARA PROMOCIÓN DEL DEPORTE- Diseño y construcción estructura metálica y cubierta para la piscina olímpica, Juegos Nacionales de Popayán
+   📅 2012-01-01 a 2012-12-30
+   📍 Popayán
+   ⚖️  135 toneladas
+   📐 3,557 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2012
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • COMFACAUCA (3 proyectos)
+   • CONSORCIO CORREDORES DE COMPETITIVIDAD (2 proyectos)
+   • Ings. CELY y CAICEDO (1 proyecto)
+   • Ing. ALBERTO VIDAL (1 proyecto)
+   • COLEGIO FRANCISCANAS (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Popayán (6 proyectos)
+   • Colombia (4 proyectos)
+   • Cauca (2 proyectos)
+   • Tuluá (1 proyecto)
+   • Palmira (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Cubiertas (5 proyectos)
+   • Escenarios Deportivos (3 proyectos)
+   • Puentes (3 proyectos)
+   • Estructuras Metálicas (2 proyectos)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2012 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2013
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 15
+Total apariciones (con multi-año): 15
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2013 (15 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Ing. LUIS CARLOS RIOS
+   P.Q.P PRODUCTOS QUÍMICOS PANAMERICANOS Estructura metálica y cubiertas en Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   ⚖️  30 toneladas
+   📐 1,050 m²
+
+2. ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio "Parque 102" en Cali
+   ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio "Parque 102" en Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   ⚖️  15 toneladas
+   📐 310 m²
+
+3. ANDRÉS ARBOLEDA
+   Estructura metálica y cubierta para locales "Cañas Gordas" . Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   ⚖️  6 toneladas
+   📐 517 m²
+
+4. ABRAHAM STRELECK & ILLIAN COHEN
+   Estructura metálica y cubierta edificio "Portal Plaza" en Cli
+   📅 2013-01-01 a 2013-12-30
+   📍 Colombia
+   ⚖️  140 toneladas
+
+5. INGENIO MAYAGUEZ
+   Estructura metálica y cubierta para bodega Dúplex - altura 26 mts.
+   📅 2013-01-01 a 2013-12-30
+   📍 Colombia
+   ⚖️  327 toneladas
+   📐 4,900 m²
+
+6. CENTRO COMERCIAL AUTOMOTRIZ
+   Estructura metálica y cubierta local en Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   📐 273 m²
+
+7. CONSTRUCTORA PRODYGIO S.A.S. Estructura metálica y cubierta restaurante “La Lomita" en Popayán
+   CONSTRUCTORA PRODYGIO S.A.S. Estructura metálica y cubierta restaurante “La Lomita" en Popayán
+   📅 2013-01-01 a 2013-12-30
+   📍 Popayán
+   📐 656 m²
+
+8. CENTRO COMERCIAL ÚNICO
+   Estructuras metálicas , cubiertas y fachadas para ampliación en Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   ⚖️  1800 toneladas
+   📐 30,000 m²
+
+9. Ing. MAURICIO HOLGUÍN & Arq. MAURICIO HERZ
+   Cubierta Dispensario Batallón Ejército en Popayán
+   📅 2013-01-01 a 2013-12-30
+   📍 Popayán
+   ⚖️  16 toneladas
+
+10. CONSORCIO A.P.V.
+   Estructura metálica y cubiertas para Colegio Chiriquí en Valledupar
+   📅 2013-01-01 a 2013-12-30
+   📍 Valledupar
+   ⚖️  52 toneladas
+   📐 2,650 m²
+
+11. MAJA S.A.S.
+   Estructura metálica y cubierta para el Coliseo Mundialista Korfball en Cali, Juegos Mundiales.
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   ⚖️  216 toneladas
+   📐 3,300 m²
+
+12. CENTRO COMERCIAL ÚNICO
+   Diseño y construcción de centro comercial en Yumbo (Valle)
+   📅 2013-01-01 a 2013-12-30
+   📍 Yumbo
+   ⚖️  320 toneladas
+   📐 9,890 m²
+
+13. POLLOS BUCANERO 4a, ETAPA
+   Estructuras metálicas y cubiertas  para bodegas y cuartos fríos - Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   📐 5,325 m²
+
+14. CRANE & SAFETY BUREAU S.A.S. Estructura metálica y cubierta en casa "Laguna Seca"
+   Cali
+   📅 2013-01-01 a 2013-12-30
+   📍 Cali
+   ⚖️  15 toneladas
+   📐 256 m²
+
+15. INGENIO MAYAGUEZ
+   Estructura metálica y cubierta para edificio "Torre Tacho" -  seis niveles -  altura 30 mts.
+   📅 2013-01-01 a 2013-12-30
+   📍 Colombia
+   ⚖️  272 toneladas
+   📐 345 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2013
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • INGENIO MAYAGUEZ (2 proyectos)
+   • CENTRO COMERCIAL ÚNICO (2 proyectos)
+   • Ing. LUIS CARLOS RIOS (1 proyecto)
+   • ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio "Parque 102" en Cali (1 proyecto)
+   • ANDRÉS ARBOLEDA (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali (8 proyectos)
+   • Colombia (3 proyectos)
+   • Popayán (2 proyectos)
+   • Valledupar (1 proyecto)
+   • Yumbo (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Cubiertas (8 proyectos)
+   • Edificios (3 proyectos)
+   • Bodegas (2 proyectos)
+   • Centros Comerciales (1 proyecto)
+   • Estructuras Metálicas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2013 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2014
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 21
+Total apariciones (con multi-año): 21
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2014 (21 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. MEJIA SANTANDER JUAN CARLOS
+   Municipio Paez -Construcción Puentes Peatonales: El Cristo L=58m, El Buco L=39m y San Vicente L=126m
+   📅 2014-01-01 a 2014-12-30
+   📍 Colombia
+
+2. Ing. ORLANDO REVELO
+   Construcción puente vehicular "Frisoles" - Ancuyá Nariño                       Longitud 48 mts.
+   📅 2014-01-01 a 2014-12-30
+   📍 Colombia
+   ⚖️  94 toneladas
+
+3. CONSTRUCTORA COLPATRIA
+   Edificio World Trade Center Pacific, estructura metálica y cubierta
+   📅 2014-01-01 a 2014-12-30
+   📍 Colombia
+   ⚖️  110 toneladas
+
+4. CONSORCIO CORREDORES DE COMPETITIVIDAD
+   Barandas para puentes sector La Lupa - Cauca
+   📅 2014-01-01 a 2014-12-30
+   📍 Cauca
+   ⚖️  14 toneladas
+
+5. PARK PLAZA
+   Cali - Estructura Metálica & Cubierta
+   📅 2014-01-01 a 2014-12-30
+   📍 Cali
+   ⚖️  30 toneladas
+   📐 4,620 m²
+
+6. POLLOS BUCANERO
+   Villagorgona - Cubierta Pasillo & Nuevo Casino
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  17 toneladas
+   📐 747 m²
+
+7. CONSTRUCTORA HABITEK SAS
+   Cali - Estructura Metálica Conjunto Residencial Lombar Día Club House
+   📅 2014-01-01 a 2014-12-30
+   📍 Cali
+   ⚖️  57 toneladas
+
+8. POLLOS BUCANERO
+   Villagorgona - Proyecto Pollo Campesino & Cuartos Fríos
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  149 toneladas
+
+9. CONSORCIO PIC
+   Cali - Estructura Metálica para Bodega DIAN
+   📅 2014-01-01 a 2014-12-30
+   📍 Cali
+   ⚖️  17 toneladas
+
+10. INGENIO MAYAGÜEZ
+   Estructura metálica para Edificio Torre
+   📅 2014-01-01 a 2014-12-30
+   📍 Colombia
+   ⚖️  16 toneladas
+
+11. PELÁEZ HERNÁNDEZ MAURICIO
+   Popayán - Estructura Metálica Dispensario Popayán
+   📅 2014-01-01 a 2014-12-30
+   📍 Popayán
+   ⚖️  16 toneladas
+
+12. ARBOLEDA ROJAS ANDRÉS
+   Cali - Estructura Metálica y Cubierta Locales Avenida Cañasgordas
+   📅 2014-01-01 a 2014-12-30
+   📍 Cali
+   ⚖️  13 toneladas
+   📐 977 m²
+
+13. POLLOS BUCANERO
+   Villagorgona - Hangar Pollo en Pie
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  17 toneladas
+   📐 1,122 m²
+
+14. CONSTRUCCIONES PROFORMAS
+   Popayán - Cubierta Local Comercial Alberto VO5
+   📅 2014-01-01 a 2014-12-30
+   📍 Popayán
+   ⚖️  10 toneladas
+   📐 305 m²
+
+15. CENTRO COMERCIAL  ÚNICO
+   YUMBO - Parqueaderos y cinemas
+   📅 2014-01-01 a 2014-12-30
+   📍 Yumbo
+   ⚖️  122 toneladas
+   📐 1,998 m²
+
+16. POLLOS BUCANERO
+   Villagorgona - 3 Niveles y Cubierta  Subproductos
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  32 toneladas
+
+17. POLLOS BUCANERO
+   Villagorgona - 3 Niveles y Cubierta  Subproductos
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  23 toneladas
+   📐 245 m²
+
+18. POLLOS BUCANERO
+   Villagorgona - Sala de Maquinas
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  15 toneladas
+   📐 206 m²
+
+19. OBANDO LODOÑO JHON
+   Laguna Seca - Estructura Metálica Casa
+   📅 2014-01-01 a 2014-12-30
+   📍 Colombia
+   ⚖️  10 toneladas
+   📐 256 m²
+
+20. CONSORCIO APV
+   Valledupar - Estructura Metálica y Cubierta Colegio Chiriqui
+   📅 2014-01-01 a 2014-12-30
+   📍 Valledupar
+   ⚖️  59 toneladas
+   📐 2,637 m²
+
+21. POLLOS BUCANERO
+   Villagorgona - Subestación Eléctrica
+   📅 2014-01-01 a 2014-12-30
+   📍 Villagorgona
+   ⚖️  9 toneladas
+   📐 142 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2014
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • POLLOS BUCANERO (7 proyectos)
+   • MEJIA SANTANDER JUAN CARLOS (1 proyecto)
+   • Ing. ORLANDO REVELO (1 proyecto)
+   • CONSTRUCTORA COLPATRIA (1 proyecto)
+   • CONSORCIO CORREDORES DE COMPETITIVIDAD (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Villagorgona (7 proyectos)
+   • Colombia (5 proyectos)
+   • Cali (4 proyectos)
+   • Popayán (2 proyectos)
+   • Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Cubiertas (7 proyectos)
+   • Estructuras Metálicas (7 proyectos)
+   • Puentes (3 proyectos)
+   • Edificios (2 proyectos)
+   • Bodegas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2014 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2015
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 20
+Total apariciones (con multi-año): 20
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2015 (20 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. POLLOS BUCANERO
+   Villagorgona - Baños & Vestir
+   📅 2015-01-01 a 2015-12-30
+   📍 Villagorgona
+   ⚖️  5 toneladas
+   📐 545 m²
+
+2. TUGO
+   Cali - Estructura Metálica Bodega Muebles y Objetos
+   📅 2015-01-01 a 2015-12-30
+   📍 Cali
+   ⚖️  57 toneladas
+
+3. DISTRIBUIDORA INTERNACIONAL ARTICULOS
+   MEZANINE LOCAL POLO
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   📐 27 m²
+
+4. ALMACENES ÉXITO S.A.
+   CONST E INST ESTRUCTURA PLATAFORMA DE EQUIPO AIRE
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  2 toneladas
+
+5. CONSORCIO COLPATRIA ALPES CCA
+   CONST E INST ESTRUCTURA WTC
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  247 toneladas
+
+6. AIRES MODERNOS S.A.S
+   CONST E INST ESTRUCTURA PLATAFORMA DE EQUIPO AIRE
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  1 toneladas
+
+7. ARINSA – POPAYAN – Cimentación, Estructura Metálica y Cubiertas Ampliación Centro Comercial Campanar
+   ARINSA – POPAYAN – Cimentación, Estructura Metálica y Cubiertas Ampliación Centro Comercial Campanario
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  2455 toneladas
+   📐 12,000 m²
+
+8. CONSTRUCTORA COLPATRIA – NEIVA – Estructura Metálicas Centro Comercial Único Neiva.
+   CONSTRUCTORA COLPATRIA – NEIVA – Estructura Metálicas Centro Comercial Único Neiva.
+   📅 2015-01-01 a 2015-12-30
+   📍 Neiva
+   ⚖️  583 toneladas
+   📐 14,140 m²
+
+9. UNIÓN TEMPORAL E & R
+   Corinto - Obra Civil y Traslado Puente El Jagua L=70 pies
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  70 toneladas
+
+10. POLLOS BUCANERO
+   Barranquilla - Estructura Metálica Cuartos Fríos
+   📅 2015-01-01 a 2015-12-30
+   📍 Barranquilla
+   ⚖️  7 toneladas
+
+11. CONSORCIO REMIN – Nariño – Estructura Metálica Para Puente Frisoles, Ancuya – Ancusa, L=47 m
+   CONSORCIO REMIN – Nariño – Estructura Metálica Para Puente Frisoles, Ancuya – Ancusa, L=47 m
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  89 toneladas
+
+12. CONSTRUCTORA COLPATRIA S.A. – BARRANQUILLA – Estructura Metálicas Centro Comercial Único Barranquill
+   CONSTRUCTORA COLPATRIA S.A. – BARRANQUILLA – Estructura Metálicas Centro Comercial Único Barranquilla.
+   📅 2015-01-01 a 2015-12-30
+   📍 Barranquilla
+   ⚖️  15 toneladas
+
+13. CENTRO COMERCIAL  ÚNICO
+   PASTO - Parqueaderos y Cinemas, estructuras metálicas
+   📅 2015-01-01 a 2015-12-30
+   📍 Pasto
+   ⚖️  256 toneladas
+   📐 5,148 m²
+
+14. POLLOS BUCANERO
+   Villagorgona - Planta de Harinas
+   📅 2015-01-01 a 2015-12-30
+   📍 Villagorgona
+   📐 800 m²
+
+15. POLLOS BUCANERO
+   Villagorgona - Taller Satélite
+   📅 2015-01-01 a 2015-12-30
+   📍 Villagorgona
+   ⚖️  11 toneladas
+
+16. CONSORCIO DECEPAZ
+   Cali - Estructura Metálica de Cubierta Centro de Salud DECEPAZ
+   📅 2015-01-01 a 2015-12-30
+   📍 Cali
+   ⚖️  7 toneladas
+
+17. POLLOS BUCANERO
+   Villagorgona - Cubierta Doble Agua Planta de Pollos
+   📅 2015-01-01 a 2015-12-30
+   📍 Villagorgona
+   ⚖️  1 toneladas
+
+18. ARBOLEDA ROJAS ANDRÉS
+   Cali - Estructura Metálica Casa Zen
+   📅 2015-01-01 a 2015-12-30
+   📍 Cali
+   ⚖️  25 toneladas
+
+19. ESTRUMETAL
+   Villarrica - Fabricación Estructura Metálica Bodega E42 Proyecto Hero Motors
+   📅 2015-01-01 a 2015-12-30
+   📍 Colombia
+   ⚖️  114 toneladas
+
+20. CONSORCIO CORREDORES DE COMPETITIVIDAD
+   La Sierra Cauca - Barandas Metálicas para Peatones Iglesia
+   📅 2015-01-01 a 2015-12-30
+   📍 Cauca
+   ⚖️  2 toneladas
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2015
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • POLLOS BUCANERO (5 proyectos)
+   • TUGO (1 proyecto)
+   • DISTRIBUIDORA INTERNACIONAL ARTICULOS (1 proyecto)
+   • ALMACENES ÉXITO S.A. (1 proyecto)
+   • CONSORCIO COLPATRIA ALPES CCA (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Colombia (8 proyectos)
+   • Villagorgona (4 proyectos)
+   • Cali (3 proyectos)
+   • Barranquilla (2 proyectos)
+   • Neiva (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (10 proyectos)
+   • Bodegas (2 proyectos)
+   • Cubiertas (2 proyectos)
+   • Centros Comerciales (2 proyectos)
+   • Puentes (2 proyectos)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2015 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2016
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 20
+Total apariciones (con multi-año): 20
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2016 (20 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. ROYAL FILMS S.A.S
+   Construcción graderías y losas salas de cine UNICO NEIVA Y ADICIONALES
+   📅 2016-06-01 a 2016-12-31
+   📍 Neiva
+   ⚖️  61 toneladas
+
+2. ROYAL FILMS SAS
+   Cali - Estructura Metálica para obras de Adecuación Salas de Cine C.C. Jardín Plaza
+   📅 2016-06-01 a 2016-12-31
+   📍 Cali
+   ⚖️  11 toneladas
+
+3. CENTROS COMERCIALES DE LA COSTA S.A.S
+   Adecuación Royal Films UNICO BARRANQUILLA
+   📅 2016-06-01 a 2016-12-31
+   📍 Barranquilla
+   ⚖️  0 toneladas
+
+4. SOCIEDAD DESARROLLOS INMOBILIARIOS
+   ESTRUCT METALICA RAMPA PROVISIONAL UNICO BARRANQUILLA
+   📅 2016-06-01 a 2016-12-31
+   📍 Barranquilla
+   ⚖️  5 toneladas
+
+5. CENTROS COMERCIALES DEL HUILA SAS
+   CONTRAPISO LOCAL ROYAL FILMS C.C.UNICO NEIVA
+   📅 2016-06-01 a 2016-12-31
+   📍 Neiva
+   📐 1,592 m²
+
+6. ROYAL FILMS SAS
+   Cali - Estructura Metálica Soporte Graderías y Cuartos de Proyección Salas de Cine C.C Único Cali
+   📅 2016-06-01 a 2016-12-31
+   📍 Cali
+   ⚖️  124 toneladas
+
+7. JUAN MANUEL RODRIGUEZ -MEZANINE ALBERTO Vo5 UNICO NEIVA
+   JUAN MANUEL RODRIGUEZ -MEZANINE ALBERTO Vo5 UNICO NEIVA
+   📅 2016-06-01 a 2016-12-31
+   📍 Neiva
+   ⚖️  4 toneladas
+
+8. ROYAL FILMS SAS
+   Yumbo - Obras Civiles Adecuación de Salas de Cine C.C Único Yumbo
+   📅 2016-06-01 a 2016-12-31
+   📍 Yumbo
+   📐 800 m²
+
+9. Edgar Oliveros
+   Estructura metálica para el proyecto Cinemateca distrital Bogotá
+   📅 2016-06-01 a 2016-12-31
+   📍 Bogotá
+   ⚖️  490 toneladas
+   📐 1,636 m²
+
+10. INDUSTRIA MERCADEO Y COLOR SAS
+   Mezanine local ESPRIT - LA ESTACION CALI
+   📅 2016-06-01 a 2016-12-31
+   📍 Cali
+   ⚖️  1 toneladas
+
+11. JUEGOS ELECTRONICOS DE SUR
+   Estructura cielo falso PETERLAND UNICO NEIVA
+   📅 2016-06-01 a 2016-12-31
+   📍 Neiva
+   ⚖️  3 toneladas
+
+12. C.C. CONSTRUCCIONES S.A.S
+   Estructura metálica Edificio Servicios Industriales (Equipos Auxiliares) POSTOBON Estructura Metálica cubiertas nueva sala de jarabes
+   📅 2016-06-01 a 2016-12-31
+   📍 Colombia
+   ⚖️  139 toneladas
+
+13. ROYAL FILMS SAS
+   Pasto - Obras Civiles de Salas de Cine C.C Único Pasto
+   📅 2016-06-01 a 2016-12-31
+   📍 Pasto
+   📐 1,000 m²
+
+14. ROYAL FILMS S.A.S
+   Construcción graderías y losas salas de cine C.C. LA ESTACION CALI
+   📅 2016-06-01 a 2016-12-31
+   📍 Cali
+   ⚖️  118 toneladas
+
+15. UNION TEMPORAL EYR
+   Barandas metálicas peatonales para puente El Jagual - Caloto
+   📅 2016-06-01 a 2016-12-31
+   📍 Colombia
+   ⚖️  4 toneladas
+
+16. UNION TEMPORAL EYR
+   Construcción Puente Vehicular "La Paila"
+   📅 2016-06-01 a 2016-12-31
+   📍 Colombia
+   ⚖️  293 toneladas
+
+17. PROCOCASA
+   Remodelación Vacio central UNICO II
+   📅 2016-06-01 a 2016-12-31
+   📍 Colombia
+   ⚖️  2 toneladas
+
+18. BANCO DE OCCIDENTE
+   Construcción de obra civiles, estructuras y cubiertas para la Ampliación C.C. UNICO TRES - Cali
+   📅 2016-06-01 a 2016-12-31
+   📍 Cali
+   ⚖️  780 toneladas
+   📐 15,900 m²
+
+19. CENTROS COMERCIALES DEL CAFE S.AS
+   Adecuación Royal Films UNICO NEIVA
+   📅 2016-06-01 a 2016-12-31
+   📍 Neiva
+   ⚖️  0 toneladas
+
+20. INGENIO PROVIDENCIA S.A.
+   CONST E INST CUBIERTA TEJA
+   📅 2016-06-01 a 2016-12-31
+   📍 Colombia
+   📐 929 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2016
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • ROYAL FILMS SAS (4 proyectos)
+   • ROYAL FILMS S.A.S (2 proyectos)
+   • UNION TEMPORAL EYR (2 proyectos)
+   • CENTROS COMERCIALES DE LA COSTA S.A.S (1 proyecto)
+   • SOCIEDAD DESARROLLOS INMOBILIARIOS (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Neiva (5 proyectos)
+   • Cali (5 proyectos)
+   • Colombia (5 proyectos)
+   • Barranquilla (2 proyectos)
+   • Yumbo (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (13 proyectos)
+   • Infraestructura de Transporte (2 proyectos)
+   • Puentes (2 proyectos)
+   • Cubiertas (2 proyectos)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2016 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2017
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 3
+Total apariciones (con multi-año): 3
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2017 (1 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Omega
+   Construcción edificio nueva sede Seguridad Omega
+   📅 2017-05-01 a 2017-09-25
+   📍 Cali-Valle
+   ⚖️  115 toneladas
+   📐 1,633 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2017 (2 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Cambrin 2017
+   Puente Vehicular Cambrín
+   📅 2017-08-16 a 2018-08-19 (hasta 2018)
+   📍 Rio Blanco-Tolima
+   ⚖️  290 toneladas TOTAL
+   📐 91 m²
+
+2. Construcciones Adriana Rivera S.A.S
+   Construcción de estructura metálica y cubiertas para Centro comercial Monserrat
+   📅 2017-11-07 a 2018-12-07 (hasta 2018)
+   📍 Popayán-Cauca
+   ⚖️  212 toneladas TOTAL
+   📐 4,308 m²
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2017
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Omega (1 proyecto)
+   • Consorcio Cambrin 2017 (1 proyecto)
+   • Construcciones Adriana Rivera S.A.S (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali-Valle (1 proyecto)
+   • Rio Blanco-Tolima (1 proyecto)
+   • Popayán-Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Edificios (1 proyecto)
+   • Puentes (1 proyecto)
+   • Cubiertas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2017 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2018
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 6
+Total apariciones (con multi-año): 6
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2018 (1 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Orlando Revelo Villota
+   Puente Vehicular Río Negro
+   📅 2018-05-10 a 2018-12-11
+   📍 Inzá-Cauca
+   ⚖️  55 toneladas
+   📐 32 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2018 (3 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Metrovial Sb
+   Terminal intermedio autopista Simon Bolivar parte 2
+   📅 2018-03-01 a 2021-10-27 (hasta 2021)
+   📍 Cali-Valle
+   ⚖️  654 toneladas TOTAL
+   📐 8,842 m²
+
+2. Ménsula Ingenieros S.A.S
+   Estructura metálica Centro Comercial Paseo Villa del Río
+   📅 2018-09-07 a 2020-02-13 (hasta 2020)
+   📍 Bogotá
+   ⚖️  420 toneladas TOTAL
+   📐 2,789 m²
+
+3. Consorcio Islas 2019
+   Puente Vehicular Cra 100
+   📅 2018-12-17 a 2019-10-19 (hasta 2019)
+   📍 Cali-Valle
+   ⚖️  445 toneladas TOTAL
+   📐 76 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2018 (2 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Cambrin 2017
+   Puente Vehicular Cambrín
+   📅 2017-08-16 (desde 2017) a 2018-08-19
+   📍 Rio Blanco-Tolima
+   ⚖️  290 toneladas TOTAL
+
+2. Construcciones Adriana Rivera S.A.S
+   Construcción de estructura metálica y cubiertas para Centro comercial Monserrat
+   📅 2017-11-07 (desde 2017) a 2018-12-07
+   📍 Popayán-Cauca
+   ⚖️  212 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2018
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Consorcio Cambrin 2017 (1 proyecto)
+   • Construcciones Adriana Rivera S.A.S (1 proyecto)
+   • Consorcio Metrovial Sb (1 proyecto)
+   • Orlando Revelo Villota (1 proyecto)
+   • Ménsula Ingenieros S.A.S (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali-Valle (2 proyectos)
+   • Rio Blanco-Tolima (1 proyecto)
+   • Popayán-Cauca (1 proyecto)
+   • Inzá-Cauca (1 proyecto)
+   • Bogotá (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Puentes (3 proyectos)
+   • Cubiertas (1 proyecto)
+   • Estructuras Metálicas (1 proyecto)
+   • Centros Comerciales (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2018 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2019
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 6
+Total apariciones (con multi-año): 6
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2019 (1 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Cargill Colombia
+   Construcción e instalación de estructura métalica y ampliación de la cubierta
+   📅 2019-04-21 a 2019-09-24
+   📍 Villa Rica-Cauca
+   ⚖️  176 toneladas
+   📐 3,910 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2019 (2 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Propal
+   Construcción e instalación de estructura metálica para torre cogeneración
+   📅 2019-08-11 a 2020-01-20 (hasta 2020)
+   📍 Yumbo-Valle
+   ⚖️  110 toneladas TOTAL
+   📐 1,102 m²
+
+2. Cuerpo de Bomberos Popayán
+   Construcción edificio administrativo cuerpo de bomberos Popayán
+   📅 2019-09-08 a 2020-01-06 (hasta 2020)
+   📍 Popayán-Cauca
+   ⚖️  92 toneladas TOTAL
+   📐 1,085 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 PROYECTOS EN CURSO DURANTE 2019 (2 proyectos)
+   (Iniciados en años anteriores, continúan en 2019)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Metrovial Sb
+   Terminal intermedio autopista Simon Bolivar parte 2
+   📅 2018-03-01 (desde 2018) a 2021-10-27 (hasta 2021)
+   📍 Cali-Valle
+   ⚖️  654 toneladas TOTAL
+
+2. Ménsula Ingenieros S.A.S
+   Estructura metálica Centro Comercial Paseo Villa del Río
+   📅 2018-09-07 (desde 2018) a 2020-02-13 (hasta 2020)
+   📍 Bogotá
+   ⚖️  420 toneladas TOTAL
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2019 (1 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Islas 2019
+   Puente Vehicular Cra 100
+   📅 2018-12-17 (desde 2018) a 2019-10-19
+   📍 Cali-Valle
+   ⚖️  445 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2019
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Consorcio Metrovial Sb (1 proyecto)
+   • Ménsula Ingenieros S.A.S (1 proyecto)
+   • Consorcio Islas 2019 (1 proyecto)
+   • Cargill Colombia (1 proyecto)
+   • Propal (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali-Valle (2 proyectos)
+   • Bogotá (1 proyecto)
+   • Villa Rica-Cauca (1 proyecto)
+   • Yumbo-Valle (1 proyecto)
+   • Popayán-Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Edificios (2 proyectos)
+   • Estructuras Metálicas (1 proyecto)
+   • Centros Comerciales (1 proyecto)
+   • Puentes (1 proyecto)
+   • Cubiertas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2019 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2020
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 12
+Total apariciones (con multi-año): 12
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2020 (1 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Pontificia Universidad Javeriana
+   Construccion de estructura y acabados, proyecto cancha multiple- etapa 2
+   📅 2020-03-15 a 2020-05-10
+   📍 Cali-Valle
+   ⚖️  87 toneladas
+   📐 1,228 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2020 (7 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Diego María Romero
+   Construccion estructura metalica edificio de 3 pisos para parqueadero.Tequendama Parking
+   📅 2020-03-03 a 2021-11-03 (hasta 2021)
+   📍 Cali-Valle
+   ⚖️  156 toneladas TOTAL
+   📐 9,633 m²
+
+2. Constructora Normandia
+   Construcción estructura metalica CC Bochalema Plaza
+   📅 2020-04-06 a 2022-05-06 (hasta 2022)
+   📍 Cali-Valle
+   ⚖️  1781 toneladas TOTAL
+   📐 16,347 m²
+
+3. Constructora Inverteq S.A.S
+   Construccion de bodega semisolidos Tecnofar
+   📅 2020-07-14 a 2021-03-12 (hasta 2021)
+   📍 Villa Rica-Cauca
+   ⚖️  612 toneladas TOTAL
+   📐 5,141 m²
+
+4. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Edificio capsulas Blandas Envases y empaques TQ Jamundi
+   📅 2020-12-03 a 2021-07-18 (hasta 2021)
+   📍 Jamundi-Valle
+   ⚖️  508 toneladas TOTAL
+   📐 3,676 m²
+
+5. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Bodega 3 TQ Jamundi
+   📅 2020-12-03 a 2021-06-08 (hasta 2021)
+   📍 Jamundi-Valle
+   ⚖️  132 toneladas TOTAL
+   📐 2,100 m²
+
+6. Juan Tama
+   Infraestuctura de Trilladora de Café
+   📅 2020-12-07 a 2024-01-29 (hasta 2024)
+   📍 Inza-Cauca
+   ⚖️  78 toneladas TOTAL
+   📐 1,065 m²
+
+7. Ingenio Providencia S.A.
+   Construcción de obra civil, estructura metalica, fachada y cubierta del complejo industrial Piedechinche
+   📅 2020-12-29 a 2022-06-29 (hasta 2022)
+   📍 Cerrito-Valle
+   ⚖️  812 toneladas TOTAL
+   📐 14,519 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 PROYECTOS EN CURSO DURANTE 2020 (1 proyectos)
+   (Iniciados en años anteriores, continúan en 2020)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Metrovial Sb
+   Terminal intermedio autopista Simon Bolivar parte 2
+   📅 2018-03-01 (desde 2018) a 2021-10-27 (hasta 2021)
+   📍 Cali-Valle
+   ⚖️  654 toneladas TOTAL
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2020 (3 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Ménsula Ingenieros S.A.S
+   Estructura metálica Centro Comercial Paseo Villa del Río
+   📅 2018-09-07 (desde 2018) a 2020-02-13
+   📍 Bogotá
+   ⚖️  420 toneladas TOTAL
+
+2. Propal
+   Construcción e instalación de estructura metálica para torre cogeneración
+   📅 2019-08-11 (desde 2019) a 2020-01-20
+   📍 Yumbo-Valle
+   ⚖️  110 toneladas TOTAL
+
+3. Cuerpo de Bomberos Popayán
+   Construcción edificio administrativo cuerpo de bomberos Popayán
+   📅 2019-09-08 (desde 2019) a 2020-01-06
+   📍 Popayán-Cauca
+   ⚖️  92 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2020
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Tecnoquímicas S.A. (2 proyectos)
+   • Consorcio Metrovial Sb (1 proyecto)
+   • Ménsula Ingenieros S.A.S (1 proyecto)
+   • Propal (1 proyecto)
+   • Cuerpo de Bomberos Popayán (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali-Valle (4 proyectos)
+   • Jamundi-Valle (2 proyectos)
+   • Bogotá (1 proyecto)
+   • Yumbo-Valle (1 proyecto)
+   • Popayán-Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (4 proyectos)
+   • Edificios (4 proyectos)
+   • Bodegas (2 proyectos)
+   • Centros Comerciales (1 proyecto)
+   • Cubiertas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2020 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2021
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 11
+Total apariciones (con multi-año): 11
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2021 (3 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Solidos de Altos Volumenes TQ Jamundi
+   📅 2021-07-27 a 2023-01-29 (hasta 2023)
+   📍 Jamundi-Valle
+   ⚖️  615 toneladas TOTAL
+   📐 3,328 m²
+
+2. Inverteq S.A.S. - Tecnosur
+   Construccion Estructura Metalica Modulo 7 - Tecnosur Villa Rica
+   📅 2021-07-27 a 2023-01-29 (hasta 2023)
+   📍 Villa Rica-Cauca
+   ⚖️  155 toneladas TOTAL
+   📐 2,928 m²
+
+3. Ingenio Providencia S.A.
+   Bodega 5 Azucar
+   📅 2021-11-30 a 2022-06-05 (hasta 2022)
+   📍 Cerrito-Valle
+   ⚖️  227 toneladas TOTAL
+   📐 3,544 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 PROYECTOS EN CURSO DURANTE 2021 (3 proyectos)
+   (Iniciados en años anteriores, continúan en 2021)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Constructora Normandia
+   Construcción estructura metalica CC Bochalema Plaza
+   📅 2020-04-06 (desde 2020) a 2022-05-06 (hasta 2022)
+   📍 Cali-Valle
+   ⚖️  1781 toneladas TOTAL
+
+2. Juan Tama
+   Infraestuctura de Trilladora de Café
+   📅 2020-12-07 (desde 2020) a 2024-01-29 (hasta 2024)
+   📍 Inza-Cauca
+   ⚖️  78 toneladas TOTAL
+
+3. Ingenio Providencia S.A.
+   Construcción de obra civil, estructura metalica, fachada y cubierta del complejo industrial Piedechinche
+   📅 2020-12-29 (desde 2020) a 2022-06-29 (hasta 2022)
+   📍 Cerrito-Valle
+   ⚖️  812 toneladas TOTAL
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2021 (5 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Consorcio Metrovial Sb
+   Terminal intermedio autopista Simon Bolivar parte 2
+   📅 2018-03-01 (desde 2018) a 2021-10-27
+   📍 Cali-Valle
+   ⚖️  654 toneladas TOTAL
+
+2. Diego María Romero
+   Construccion estructura metalica edificio de 3 pisos para parqueadero.Tequendama Parking
+   📅 2020-03-03 (desde 2020) a 2021-11-03
+   📍 Cali-Valle
+   ⚖️  156 toneladas TOTAL
+
+3. Constructora Inverteq S.A.S
+   Construccion de bodega semisolidos Tecnofar
+   📅 2020-07-14 (desde 2020) a 2021-03-12
+   📍 Villa Rica-Cauca
+   ⚖️  612 toneladas TOTAL
+
+4. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Edificio capsulas Blandas Envases y empaques TQ Jamundi
+   📅 2020-12-03 (desde 2020) a 2021-07-18
+   📍 Jamundi-Valle
+   ⚖️  508 toneladas TOTAL
+
+5. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Bodega 3 TQ Jamundi
+   📅 2020-12-03 (desde 2020) a 2021-06-08
+   📍 Jamundi-Valle
+   ⚖️  132 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2021
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Tecnoquímicas S.A. (3 proyectos)
+   • Ingenio Providencia S.A. (2 proyectos)
+   • Consorcio Metrovial Sb (1 proyecto)
+   • Diego María Romero (1 proyecto)
+   • Constructora Normandia (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cali-Valle (3 proyectos)
+   • Jamundi-Valle (3 proyectos)
+   • Villa Rica-Cauca (2 proyectos)
+   • Cerrito-Valle (2 proyectos)
+   • Inza-Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (5 proyectos)
+   • Bodegas (3 proyectos)
+   • Edificios (2 proyectos)
+   • Cubiertas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2021 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2022
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 11
+Total apariciones (con multi-año): 11
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2022 (2 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Comfacauca
+   Construcción de la estructura metalica de cubierta caña dulce
+   📅 2022-02-01 a 2022-08-01
+   📍 Santander de Quilichao-Cauca
+   ⚖️  110 toneladas
+   📐 2,260 m²
+
+2. Inverteq S.A.S. - Tecnosur
+   Centro de distribución - Villa Rica
+   📅 2022-08-24 a 2022-12-29
+   📍 Villa Rica-Cauca
+   ⚖️  840 toneladas
+   📐 11,879 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2022 (3 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Ingenio Providencia S.A.
+   Obras civiles y Estructura Metalica Zona de Catas Oficinas y Vestier
+   📅 2022-06-13 a 2023-03-21 (hasta 2023)
+   📍 Cerrito-Valle
+   ⚖️  5 toneladas TOTAL
+
+2. PAVCOL
+   Puente la Floresta
+   📅 2022-10-20 a 2023-01-27 (hasta 2023)
+   📍 Bogotá
+   ⚖️  398 toneladas TOTAL
+
+3. Sucroal S.A
+   Edificio Citrico
+   📅 2022-11-07 a 2024-04-09 (hasta 2024)
+   📍 Palmira - Valle
+   ⚖️  166 toneladas TOTAL
+   📐 1,099 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 PROYECTOS EN CURSO DURANTE 2022 (3 proyectos)
+   (Iniciados en años anteriores, continúan en 2022)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Juan Tama
+   Infraestuctura de Trilladora de Café
+   📅 2020-12-07 (desde 2020) a 2024-01-29 (hasta 2024)
+   📍 Inza-Cauca
+   ⚖️  78 toneladas TOTAL
+
+2. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Solidos de Altos Volumenes TQ Jamundi
+   📅 2021-07-27 (desde 2021) a 2023-01-29 (hasta 2023)
+   📍 Jamundi-Valle
+   ⚖️  615 toneladas TOTAL
+
+3. Inverteq S.A.S. - Tecnosur
+   Construccion Estructura Metalica Modulo 7 - Tecnosur Villa Rica
+   📅 2021-07-27 (desde 2021) a 2023-01-29 (hasta 2023)
+   📍 Villa Rica-Cauca
+   ⚖️  155 toneladas TOTAL
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2022 (3 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Constructora Normandia
+   Construcción estructura metalica CC Bochalema Plaza
+   📅 2020-04-06 (desde 2020) a 2022-05-06
+   📍 Cali-Valle
+   ⚖️  1781 toneladas TOTAL
+
+2. Ingenio Providencia S.A.
+   Construcción de obra civil, estructura metalica, fachada y cubierta del complejo industrial Piedechinche
+   📅 2020-12-29 (desde 2020) a 2022-06-29
+   📍 Cerrito-Valle
+   ⚖️  812 toneladas TOTAL
+
+3. Ingenio Providencia S.A.
+   Bodega 5 Azucar
+   📅 2021-11-30 (desde 2021) a 2022-06-05
+   📍 Cerrito-Valle
+   ⚖️  227 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2022
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Ingenio Providencia S.A. (3 proyectos)
+   • Inverteq S.A.S. - Tecnosur (2 proyectos)
+   • Constructora Normandia (1 proyecto)
+   • Juan Tama (1 proyecto)
+   • Tecnoquímicas S.A. (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Cerrito-Valle (3 proyectos)
+   • Villa Rica-Cauca (2 proyectos)
+   • Cali-Valle (1 proyecto)
+   • Inza-Cauca (1 proyecto)
+   • Jamundi-Valle (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (6 proyectos)
+   • Cubiertas (2 proyectos)
+   • Bodegas (1 proyecto)
+   • Puentes (1 proyecto)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2022 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2023
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 16
+Total apariciones (con multi-año): 16
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2023 (4 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. JJVM S.A.S.
+   Entre Bosques
+   📅 2023-01-17 a 2023-12-08
+   📍 Cali-Valle
+   ⚖️  5 toneladas
+
+2. Ingenio Providencia S.A.
+   Bahía de Alcoholes
+   📅 2023-03-12 a 2023-10-29
+   📍 Cerrito-Valle
+   ⚖️  15 toneladas
+   📐 270 m²
+
+3. Unión Temporal Complejo Acuático Pereira
+   Complejo Acuatico Pereira
+   📅 2023-05-14 a 2023-11-07
+   📍 Pereira
+   ⚖️  40 toneladas
+
+4. Consorcio Deportivo GAMJ
+   Coliseo Menor Pereira
+   📅 2023-06-05 a 2023-11-15
+   📍 Pereira
+   ⚖️  119 toneladas
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2023 (6 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Sucroal S.A
+   Centro de Distribución - Palmira
+   📅 2023-01-01 a 2024-03-29 (hasta 2024)
+   📍 Palmira - Valle
+   ⚖️  170 toneladas TOTAL
+   📐 2,331 m²
+
+2. Astrelec S.A.S
+   Construccion estructura metalica locales comerciales Natura Park
+   📅 2023-05-25 a 2024-03-11 (hasta 2024)
+   📍 Jamundi-Valle
+   ⚖️  73 toneladas TOTAL
+   📐 2,327 m²
+
+3. PAVCOL
+   Estación Calle 19 y Puente Peatonal Av. Esperanza Norte P8 Grupo 4
+   📅 2023-08-13 a 2025-09-27 (hasta 2025)
+   📍 Bogotá
+   ⚖️  273 toneladas TOTAL
+
+4. Grupo Constructor y Prodigyo S.A
+   Construccion de Estructura Metalica y pintura para el Proyecto Cubierta Modulo Espiritu Santo
+   📅 2023-09-12 a 2024-06-29 (hasta 2024)
+   📍 Popayan-Cauca
+   ⚖️  7 toneladas TOTAL
+   📐 2,547 m²
+
+5. C.A.S.A. Sucol
+   Construccion y Montaje Estructura Metalica Puente Cascada
+   📅 2023-10-19 a 2024-10-30 (hasta 2024)
+   📍 Mondomo-Cauca
+   ⚖️  537 toneladas TOTAL
+
+6. Construandes
+   Galeria local 326 CC Llanogrande
+   📅 2023-11-13 a 2024-06-29 (hasta 2024)
+   📍 Palmira - Valle
+   ⚖️  325 toneladas TOTAL
+   📐 3,024 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 PROYECTOS EN CURSO DURANTE 2023 (2 proyectos)
+   (Iniciados en años anteriores, continúan en 2023)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Juan Tama
+   Infraestuctura de Trilladora de Café
+   📅 2020-12-07 (desde 2020) a 2024-01-29 (hasta 2024)
+   📍 Inza-Cauca
+   ⚖️  78 toneladas TOTAL
+
+2. Sucroal S.A
+   Edificio Citrico
+   📅 2022-11-07 (desde 2022) a 2024-04-09 (hasta 2024)
+   📍 Palmira - Valle
+   ⚖️  166 toneladas TOTAL
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2023 (4 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Tecnoquímicas S.A.
+   Construccion Estructura Metalica Solidos de Altos Volumenes TQ Jamundi
+   📅 2021-07-27 (desde 2021) a 2023-01-29
+   📍 Jamundi-Valle
+   ⚖️  615 toneladas TOTAL
+
+2. Inverteq S.A.S. - Tecnosur
+   Construccion Estructura Metalica Modulo 7 - Tecnosur Villa Rica
+   📅 2021-07-27 (desde 2021) a 2023-01-29
+   📍 Villa Rica-Cauca
+   ⚖️  155 toneladas TOTAL
+
+3. Ingenio Providencia S.A.
+   Obras civiles y Estructura Metalica Zona de Catas Oficinas y Vestier
+   📅 2022-06-13 (desde 2022) a 2023-03-21
+   📍 Cerrito-Valle
+   ⚖️  5 toneladas TOTAL
+
+4. PAVCOL
+   Puente la Floresta
+   📅 2022-10-20 (desde 2022) a 2023-01-27
+   📍 Bogotá
+   ⚖️  398 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2023
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Ingenio Providencia S.A. (2 proyectos)
+   • PAVCOL (2 proyectos)
+   • Sucroal S.A (2 proyectos)
+   • Juan Tama (1 proyecto)
+   • Tecnoquímicas S.A. (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Palmira - Valle (3 proyectos)
+   • Jamundi-Valle (2 proyectos)
+   • Cerrito-Valle (2 proyectos)
+   • Bogotá (2 proyectos)
+   • Pereira (2 proyectos)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (9 proyectos)
+   • Puentes (3 proyectos)
+   • Edificios (1 proyecto)
+   • Centros Comerciales (1 proyecto)
+   • Escenarios Deportivos (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2023 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2024
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 18
+Total apariciones (con multi-año): 18
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2024 (5 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Pollo Listo
+   Construccion y Montaje Estructura Metalica Cuarto Frio
+   📅 2024-04-25 a 2024-11-29
+   📍 Villa Gorgona - Valle del Cauca
+   ⚖️  31 toneladas
+   📐 454 m²
+
+2. Inverteq S.A.S. - Tecnosur
+   Construccion Estructura Metalica Modulo 8 - Tecnosur Villa Rica
+   📅 2024-05-20 a 2024-10-30
+   📍 Villa Rica-Cauca
+   ⚖️  109 toneladas
+   📐 4,081 m²
+
+3. Construandes S.A.S
+   Estructura Metalica Hangar Aeropuerto
+   📅 2024-09-01 a 2024-10-25
+   📍 Palmira - Valle
+   ⚖️  47 toneladas
+   📐 890 m²
+
+4. Dollar City
+   Construccion y Montaje Estructura Metalica Dollar City Alfaguara
+   📅 2024-09-01 a 2024-12-18
+   📍 Jamundi - Valle del Cauca
+   ⚖️  54 toneladas
+   📐 560 m²
+
+5. Dollar City
+   Construccion y Montaje Estructura Metalica Dollar City La Maria
+   📅 2024-10-23 a 2024-12-13
+   📍 Popayan-Cauca
+   ⚖️  60 toneladas
+   📐 759 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🚀 PROYECTOS MULTI-AÑO QUE INICIAN EN 2024 (5 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. MHC
+   Estaciones de Transmilenio Cra 11 y 19
+   📅 2024-01-21 a 2025-06-11 (hasta 2025)
+   📍 Bogotá
+   ⚖️  424 toneladas TOTAL
+
+2. Construcción y Administración S.A Sucursal Colombia
+   Puente Vehicular OVEJAS
+   📅 2024-05-20 a 2025-12-29 (hasta 2025)
+   📍 Santander de Quilichao-Cauca
+   ⚖️  536 toneladas TOTAL
+   📐 2,360 m²
+
+3. Inverteq S.A.S. - Tecnosur
+   Construccion Estructura Metalica Mezzanine Esteriles - Tecnosur Villa Rica
+   📅 2024-11-24 a 2025-01-17 (hasta 2025)
+   📍 Villa Rica-Cauca
+   ⚖️  106 toneladas TOTAL
+   📐 673 m²
+
+4. OMEGA
+   Ampliacion Omega Tercer Piso
+   📅 2024-12-09 a 2025-05-27 (hasta 2025)
+   📍 Cali-Valle
+   ⚖️  8 toneladas TOTAL
+   📐 263 m²
+
+5. PAVCOL
+   Ciclopuente Calle 98 P11 GRUPO 7
+   📅 2024-12-14 a 2025-08-29 (hasta 2025)
+   📍 Bogotá
+   ⚖️  381 toneladas TOTAL
+   📐 1,528 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🔄 PROYECTOS EN CURSO DURANTE 2024 (1 proyectos)
+   (Iniciados en años anteriores, continúan en 2024)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. PAVCOL
+   Estación Calle 19 y Puente Peatonal Av. Esperanza Norte P8 Grupo 4
+   📅 2023-08-13 (desde 2023) a 2025-09-27 (hasta 2025)
+   📍 Bogotá
+   ⚖️  273 toneladas TOTAL
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2024 (7 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Juan Tama
+   Infraestuctura de Trilladora de Café
+   📅 2020-12-07 (desde 2020) a 2024-01-29
+   📍 Inza-Cauca
+   ⚖️  78 toneladas TOTAL
+
+2. Sucroal S.A
+   Edificio Citrico
+   📅 2022-11-07 (desde 2022) a 2024-04-09
+   📍 Palmira - Valle
+   ⚖️  166 toneladas TOTAL
+
+3. Sucroal S.A
+   Centro de Distribución - Palmira
+   📅 2023-01-01 (desde 2023) a 2024-03-29
+   📍 Palmira - Valle
+   ⚖️  170 toneladas TOTAL
+
+4. Astrelec S.A.S
+   Construccion estructura metalica locales comerciales Natura Park
+   📅 2023-05-25 (desde 2023) a 2024-03-11
+   📍 Jamundi-Valle
+   ⚖️  73 toneladas TOTAL
+
+5. Grupo Constructor y Prodigyo S.A
+   Construccion de Estructura Metalica y pintura para el Proyecto Cubierta Modulo Espiritu Santo
+   📅 2023-09-12 (desde 2023) a 2024-06-29
+   📍 Popayan-Cauca
+   ⚖️  7 toneladas TOTAL
+
+6. C.A.S.A. Sucol
+   Construccion y Montaje Estructura Metalica Puente Cascada
+   📅 2023-10-19 (desde 2023) a 2024-10-30
+   📍 Mondomo-Cauca
+   ⚖️  537 toneladas TOTAL
+
+7. Construandes
+   Galeria local 326 CC Llanogrande
+   📅 2023-11-13 (desde 2023) a 2024-06-29
+   📍 Palmira - Valle
+   ⚖️  325 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2024
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Sucroal S.A (2 proyectos)
+   • PAVCOL (2 proyectos)
+   • Inverteq S.A.S. - Tecnosur (2 proyectos)
+   • Dollar City (2 proyectos)
+   • Juan Tama (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Palmira - Valle (4 proyectos)
+   • Bogotá (3 proyectos)
+   • Popayan-Cauca (2 proyectos)
+   • Villa Rica-Cauca (2 proyectos)
+   • Inza-Cauca (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (9 proyectos)
+   • Puentes (4 proyectos)
+   • Edificios (2 proyectos)
+   • Centros Comerciales (1 proyecto)
+   • Cubiertas (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2024 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+AÑO 2025
+████████████████████████████████████████████████████████████████████████████████████████████████████
+Total proyectos únicos: 9
+Total apariciones (con multi-año): 9
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📍 PROYECTOS SOLO DE 2025 (3 proyectos)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. Dollar City
+   Construccion y Montaje Estructura Metalica Dollar City Mazuren
+   📅 2025-06-01 a 2025-08-30
+   📍 Bogotá
+   ⚖️  126 toneladas
+   📐 789 m²
+
+2. Dollar City
+   Construccion y Montaje Estructura Metalica Dollar City Chapinero
+   📅 2025-07-31 a 2025-10-31
+   📍 Bogotá
+   ⚖️  60 toneladas
+   📐 572 m²
+
+3. Dollar City
+   Construccion y Montaje Estructura Metalica Dollar City Rio Negro Calle 100
+   📅 2025-08-10 a 2025-12-28
+   📍 Bogotá
+   ⚖️  75 toneladas
+   📐 498 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏁 PROYECTOS QUE TERMINAN EN 2025 (6 proyectos)
+   (Iniciados en años anteriores)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+1. PAVCOL
+   Estación Calle 19 y Puente Peatonal Av. Esperanza Norte P8 Grupo 4
+   📅 2023-08-13 (desde 2023) a 2025-09-27
+   📍 Bogotá
+   ⚖️  273 toneladas TOTAL
+
+2. MHC
+   Estaciones de Transmilenio Cra 11 y 19
+   📅 2024-01-21 (desde 2024) a 2025-06-11
+   📍 Bogotá
+   ⚖️  424 toneladas TOTAL
+
+3. Construcción y Administración S.A Sucursal Colombia
+   Puente Vehicular OVEJAS
+   📅 2024-05-20 (desde 2024) a 2025-12-29
+   📍 Santander de Quilichao-Cauca
+   ⚖️  536 toneladas TOTAL
+
+4. Inverteq S.A.S. - Tecnosur
+   Construccion Estructura Metalica Mezzanine Esteriles - Tecnosur Villa Rica
+   📅 2024-11-24 (desde 2024) a 2025-01-17
+   📍 Villa Rica-Cauca
+   ⚖️  106 toneladas TOTAL
+
+5. OMEGA
+   Ampliacion Omega Tercer Piso
+   📅 2024-12-09 (desde 2024) a 2025-05-27
+   📍 Cali-Valle
+   ⚖️  8 toneladas TOTAL
+
+6. PAVCOL
+   Ciclopuente Calle 98 P11 GRUPO 7
+   📅 2024-12-14 (desde 2024) a 2025-08-29
+   📍 Bogotá
+   ⚖️  381 toneladas TOTAL
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📊 RESUMEN 2025
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+🏢 PRINCIPALES CLIENTES:
+   • Dollar City (3 proyectos)
+   • PAVCOL (2 proyectos)
+   • MHC (1 proyecto)
+   • Construcción y Administración S.A Sucursal Colombia (1 proyecto)
+   • Inverteq S.A.S. - Tecnosur (1 proyecto)
+
+📍 UBICACIONES PRINCIPALES:
+   • Bogotá (6 proyectos)
+   • Santander de Quilichao-Cauca (1 proyecto)
+   • Villa Rica-Cauca (1 proyecto)
+   • Cali-Valle (1 proyecto)
+
+🏗️  TIPOS DE PROYECTO:
+   • Estructuras Metálicas (4 proyectos)
+   • Puentes (3 proyectos)
+   • Infraestructura de Transporte (1 proyecto)
+   • Edificios (1 proyecto)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+✍️  SUGERENCIA: Usa esta información para escribir un título y descripción
+   más específicos para el año 2025 en:
+   - scripts/titulos-anos-propuestos.json
+   - scripts/descripciones-anos-propuestas.json
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████
+FIN DEL REPORTE
+████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Ahora edita los archivos JSON con mejores títulos y descripciones.
+Luego ejecuta: node scripts/generar-resumenes-anio.mjs

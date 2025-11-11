@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock, Building2, Cpu, Award } from "lucide-react"
+import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock, Building2, Cpu, Award, History } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { siteConfig } from "@/lib/site-config"
@@ -14,25 +14,31 @@ const navigation = [
   { name: "Inicio", href: "/" },
   { name: "Servicios", href: "/servicios" },
   { name: "Proyectos", href: "/proyectos" },
-  { 
-    name: "Nosotros", 
+  {
+    name: "Nosotros",
     href: "#",
     children: [
-      { 
-        name: "Nuestra Empresa", 
-        href: "/empresa", 
+      {
+        name: "Nuestra Empresa",
+        href: "/empresa",
         description: "Desde 1996 en Popayán, 320 colaboradores",
         icon: "Building2"
       },
-      { 
-        name: "Tecnología e Infraestructura", 
-        href: "/tecnologia", 
+      {
+        name: "Trayectoria",
+        href: "/trayectoria",
+        description: "Nuestra historia y proyectos ejecutados",
+        icon: "History"
+      },
+      {
+        name: "Tecnología e Infraestructura",
+        href: "/tecnologia",
         description: "10,400 m² de capacidad productiva",
         icon: "Cpu"
       },
-      { 
-        name: "Sistema Integrado de Gestión", 
-        href: "/calidad", 
+      {
+        name: "Sistema Integrado de Gestión",
+        href: "/calidad",
         description: "SIG - Calidad, seguridad y cumplimiento",
         icon: "Award"
       },
@@ -151,7 +157,10 @@ export function Navbar() {
                       onMouseEnter={() => setDropdownOpen(true)}
                       onMouseLeave={() => setDropdownOpen(false)}
                     >
-                      <button className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-blue-50">
+                      <button className={cn(
+                        "flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-blue-50",
+                        item.children.some(child => pathname.startsWith(child.href)) && "text-blue-600 bg-blue-50"
+                      )}>
                         <span>{item.name}</span>
                         <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
                       </button>
@@ -172,10 +181,11 @@ export function Navbar() {
                             
                             <div className="p-3">
                               {item.children.map((child, childIndex) => {
-                                const IconComponent = child.icon === 'Building2' ? Building2 : 
-                                                     child.icon === 'Cpu' ? Cpu : 
-                                                     child.icon === 'Award' ? Award : Building2;
-                                
+                                const IconComponent = child.icon === 'Building2' ? Building2 :
+                                                     child.icon === 'Cpu' ? Cpu :
+                                                     child.icon === 'Award' ? Award :
+                                                     child.icon === 'History' ? History : Building2;
+
                                 return (
                                   <motion.div
                                     key={child.name}
@@ -185,7 +195,10 @@ export function Navbar() {
                                   >
                                     <Link
                                       href={child.href}
-                                      className="flex items-start gap-4 px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100/50 hover:text-blue-700 rounded-xl transition-all duration-200 group"
+                                      className={cn(
+                                        "flex items-start gap-4 px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100/50 hover:text-blue-700 rounded-xl transition-all duration-200 group",
+                                        pathname.startsWith(child.href) && "bg-gradient-to-r from-blue-50 to-blue-100/50 text-blue-700"
+                                      )}
                                       onClick={() => setDropdownOpen(false)}
                                     >
                                       <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors">
@@ -232,11 +245,13 @@ export function Navbar() {
                       href={item.href}
                       className={cn(
                         "text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-blue-50 relative",
-                        (pathname === item.href || (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "text-blue-600 bg-blue-50"
+                        (pathname === item.href ||
+                         (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "text-blue-600 bg-blue-50"
                       )}
                     >
                       {item.name}
-                      {(pathname === item.href || (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
+                      {(pathname === item.href ||
+                        (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
                         <motion.div
                           layoutId="activeTab"
                           className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full"
@@ -325,7 +340,10 @@ export function Navbar() {
                             <Link
                               key={child.name}
                               href={child.href}
-                              className="block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
+                              className={cn(
+                                "block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200",
+                                pathname.startsWith(child.href) && "bg-blue-50 text-blue-600"
+                              )}
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               <div className="font-medium">{child.name}</div>
@@ -339,7 +357,8 @@ export function Navbar() {
                         href={item.href}
                         className={cn(
                           "block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 font-medium",
-                          (pathname === item.href || (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "bg-blue-50 text-blue-600"
+                          (pathname === item.href ||
+                           (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "bg-blue-50 text-blue-600"
                         )}
                         onClick={() => setMobileMenuOpen(false)}
                       >
