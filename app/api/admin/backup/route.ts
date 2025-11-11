@@ -81,7 +81,6 @@ export async function POST(request: NextRequest) {
             }),
             clientes: await prisma.cliente.findMany(),
             servicios: await prisma.servicio.findMany(),
-            miembrosEquipo: await prisma.miembroEquipo.findMany(),
             formulariosContacto: await prisma.contactForm.findMany(),
             configuracion: await prisma.configuracionSitio.findMany()
           }

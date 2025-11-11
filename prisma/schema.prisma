@@ -96,6 +96,7 @@ model Proyecto {
   clienteRel           Cliente?             @relation(fields: [clienteId], references: [id])
   user                 User                 @relation(fields: [createdBy], references: [id])
   timeline             TimelineEntry[]
+  hojaVida             ProyectoHojaVida?    // Relación opcional con hoja de vida
 
   @@map("proyectos")
 }
@@ -216,23 +217,6 @@ model Servicio {
   recursosDescargables Json?    // PDFs, brochures, technical specs
   
   @@map("servicios")
-}
-
-model MiembroEquipo {
-  id        String   @id @default(cuid())
-  nombre    String
-  cargo     String
-  bio       String?
-  foto      String?
-  email     String?
-  telefono  String?
-  linkedin  String?
-  orden     Int      @default(0)
-  activo    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("miembros_equipo")
 }
 
 model Cliente {
@@ -493,12 +477,6 @@ enum TipoSeccion {
   FORMULARIO
 }
 
-enum NivelDetalle {
-  BAJO
-  MEDIO
-  ALTO
-}
-
 model ProyectoHojaVida {
   id                   String        @id @default(cuid())
   entidadContratante   String
@@ -514,12 +492,13 @@ model ProyectoHojaVida {
   valorContrato        Decimal       @db.Decimal(15, 2)
   moneda               String        @default("COP")
   imagenes             Json?
-  nivelDetalle         NivelDetalle  @default(MEDIO)
   destacado            Boolean       @default(false)
   visible              Boolean       @default(true)
   orden                Int           @default(0)
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @updatedAt
+  proyectoDetalladoId  String?       @unique // ID del proyecto detallado relacionado
+  proyectoDetallado    Proyecto?     @relation(fields: [proyectoDetalladoId], references: [id])
 
   @@map("proyectos_hoja_vida")
 }

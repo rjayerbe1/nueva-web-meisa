@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { X, MapPin, Calendar, Weight, Maximize2, Building2, ChevronLeft, ChevronRight, Images } from 'lucide-react'
+import { X, MapPin, Calendar, Weight, Maximize2, Building2, ChevronLeft, ChevronRight, Image } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,6 @@ interface Proyecto {
   valorContrato: number
   pesoKg: number | null
   areaM2: number | null
-  nivelDetalle: 'BAJO' | 'MEDIO' | 'ALTO'
   imagenes: string[] | null
   destacado: boolean
 }
@@ -121,7 +120,7 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
 
                   {/* Image Counter */}
                   <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5">
-                    <Images className="w-4 h-4" />
+                    <Image className="w-4 h-4" />
                     <span>
                       {currentImageIndex + 1} / {proyecto.imagenes!.length}
                     </span>

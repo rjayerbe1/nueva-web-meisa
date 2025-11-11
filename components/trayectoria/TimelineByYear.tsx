@@ -17,7 +17,6 @@ interface Proyecto {
   valorContrato: number
   pesoKg: number | null
   areaM2: number | null
-  nivelDetalle: 'BAJO' | 'MEDIO' | 'ALTO'
   imagenes: string[] | null
   destacado: boolean
 }

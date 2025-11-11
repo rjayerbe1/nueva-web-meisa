@@ -1,0 +1,2338 @@
+{
+  "fecha": "2025-11-11T22:25:04.765Z",
+  "estadisticas": {
+    "totalTrayectoria": 239,
+    "totalPrincipales": 39,
+    "coincidencias": 10,
+    "soloTrayectoria": 229,
+    "soloPrincipales": 32
+  },
+  "coincidencias": [
+    {
+      "trayectoria": {
+        "id": "cmhunrt2j001a3olsymappukg",
+        "titulo": "Consorcio Cambrin 2017 - Puente Vehicular Cambrín",
+        "fechaInicio": "2017-08-16T12:00:00.000Z",
+        "ubicacion": "Rio Blanco-Tolima"
+      },
+      "principal": {
+        "id": "cmbclqbpt00aekd27zs71slfc",
+        "titulo": "Puente Vehicular Cambrin",
+        "cliente": "Consorcio Cambrin 2017",
+        "categoria": "PUENTES_VEHICULARES",
+        "fechaInicio": "2017-08-01T00:00:00.000Z",
+        "ubicacion": "Tolima"
+      },
+      "similitud": 100
+    },
+    {
+      "trayectoria": {
+        "id": "cmhunrt2i00183ols9k0zow5l",
+        "titulo": "Consorcio Islas 2019 - Puente Vehicular Cra 100",
+        "fechaInicio": "2018-12-17T12:00:00.000Z",
+        "ubicacion": "Cali-Valle"
+      },
+      "principal": {
+        "id": "cmbclqbpn00a2kd27r5sq3d8r",
+        "titulo": "Puente Vehicular Carrera 100",
+        "cliente": "Consorcio Islas 2019",
+        "categoria": "PUENTES_VEHICULARES",
+        "fechaInicio": "2019-03-01T00:00:00.000Z",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      "similitud": 86
+    },
+    {
+      "trayectoria": {
+        "id": "cmhuof1x50006sz9ikpzd7fth",
+        "titulo": "UNION TEMPORAL EYR - Construcción Puente Vehicular \"La Paila\"",
+        "fechaInicio": "2016-06-01T12:00:00.000Z",
+        "ubicacion": "Colombia"
+      },
+      "principal": {
+        "id": "cmbclqbq400b6kd27nac5sxbx",
+        "titulo": "Puente Vehicular La Paila",
+        "cliente": "Unión Temporal E&R",
+        "categoria": "PUENTES_VEHICULARES",
+        "fechaInicio": "2014-06-01T00:00:00.000Z",
+        "ubicacion": "Vía Santander de Quilichao – Río Desbaratado, Cauca"
+      },
+      "similitud": 78
+    },
+    {
+      "trayectoria": {
+        "id": "cmhunrt1r00073ols3wdppf1l",
+        "titulo": "Construcción y Administración S.A Sucursal Colombia - Puente Vehicular OVEJAS",
+        "fechaInicio": "2024-05-20T12:00:00.000Z",
+        "ubicacion": "S. de Quilichao"
+      },
+      "principal": {
+        "id": "cmbclqbq000awkd27a43pmwpc",
+        "titulo": "Puente Vehicular La 21",
+        "cliente": "Unión Temporal Espacio 2015",
+        "categoria": "PUENTES_VEHICULARES",
+        "fechaInicio": "2015-04-01T00:00:00.000Z",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      "similitud": 74
+    },
+    {
+      "trayectoria": {
+        "id": "cmhunrt24000n3olsuxbeylmx",
+        "titulo": "Unión Temporal Complejo Acuático Pereira - Complejo Acuatico Pereira",
+        "fechaInicio": "2023-05-14T12:00:00.000Z",
+        "ubicacion": "Pereira"
+      },
+      "principal": {
+        "id": "cmbclqbra00d2kd27ds0h922j",
+        "titulo": "Complejo Acuático Popayán",
+        "cliente": "Fondo mixto para promoción del deporte",
+        "categoria": "ESCENARIOS_DEPORTIVOS",
+        "fechaInicio": "2012-01-01T00:00:00.000Z",
+        "ubicacion": "Popayán, Cauca"
+      },
+      "similitud": 73
+    },
+    {
+      "trayectoria": {
+        "id": "cmhunrt2l001c3olsxt0nhiib",
+        "titulo": "Orlando Revelo Villota - Puente Vehicular Río Negro",
+        "fechaInicio": "2018-05-10T12:00:00.000Z",
+        "ubicacion": "Inzá-Cauca"
+      },
+      "principal": {
+        "id": "cmbclqbq000awkd27a43pmwpc",
+        "titulo": "Puente Vehicular La 21",
+        "cliente": "Unión Temporal Espacio 2015",
+        "categoria": "PUENTES_VEHICULARES",
+        "fechaInicio": "2015-04-01T00:00:00.000Z",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      "similitud": 70
+    },
+    {
+      "trayectoria": {
+        "id": "cmhuof1yl001tsz9ibgyq9bmd",
+        "titulo": "CRANE & SAFETY BUREAU S.A.S. Estructura metálica y cubierta en casa \"Laguna Seca\" - Cali",
+        "fechaInicio": "2013-01-01T12:00:00.000Z",
+        "ubicacion": "Cali"
+      },
+      "principal": {
+        "id": "cmbclqbmc006ckd2735daav5e",
+        "titulo": "La 63 Cali",
+        "cliente": "Cliente",
+        "categoria": "PUENTES_PEATONALES",
+        "fechaInicio": "2025-05-31T17:59:30.410Z",
+        "ubicacion": "Cali"
+      },
+      "similitud": 60
+    },
+    {
+      "trayectoria": {
+        "id": "cmhuof1zl0035sz9idn09kzxt",
+        "titulo": "ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario - Popayán",
+        "fechaInicio": "2008-01-01T12:00:00.000Z",
+        "ubicacion": "Popayán"
+      },
+      "principal": {
+        "id": "cmbclqbk7001ckd27wkxkh2d4",
+        "titulo": "Bomberos Popayan",
+        "cliente": "Cliente",
+        "categoria": "EDIFICIOS",
+        "fechaInicio": "2025-05-31T17:59:25.273Z",
+        "ubicacion": "Popayan"
+      },
+      "similitud": 60
+    },
+    {
+      "trayectoria": {
+        "id": "cmhuof205003rsz9itn0huyoy",
+        "titulo": "VELKAR S.A.  Estructura metálica de cubierta y de soporte 3a. Etapa Centro Comercial Único - Cali",
+        "fechaInicio": "2006-01-01T12:00:00.000Z",
+        "ubicacion": "Cali"
+      },
+      "principal": {
+        "id": "cmbclqbmc006ckd2735daav5e",
+        "titulo": "La 63 Cali",
+        "cliente": "Cliente",
+        "categoria": "PUENTES_PEATONALES",
+        "fechaInicio": "2025-05-31T17:59:30.410Z",
+        "ubicacion": "Cali"
+      },
+      "similitud": 60
+    },
+    {
+      "trayectoria": {
+        "id": "cmhuof200003isz9idu7tsgs0",
+        "titulo": "SUPERMERCADOS POMONA Estructura metálica y cubierta Ciudad Jardín - Cali",
+        "fechaInicio": "2006-01-01T12:00:00.000Z",
+        "ubicacion": "Cali"
+      },
+      "principal": {
+        "id": "cmbclqbmc006ckd2735daav5e",
+        "titulo": "La 63 Cali",
+        "cliente": "Cliente",
+        "categoria": "PUENTES_PEATONALES",
+        "fechaInicio": "2025-05-31T17:59:30.410Z",
+        "ubicacion": "Cali"
+      },
+      "similitud": 60
+    }
+  ],
+  "soloEnTrayectoria": [
+    {
+      "id": "cmhunrt1p00053olstmn9k3c5",
+      "titulo": "Dollar City - Construccion y Montaje Estructura Metalica Dollar City Rio Negro Calle 100",
+      "fechaInicio": "2025-08-10T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1o00043ols3hgqgdkd",
+      "titulo": "Dollar City - Construccion y Montaje Estructura Metalica Dollar City Chapinero",
+      "fechaInicio": "2025-07-31T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1n00033olse4cbp4a4",
+      "titulo": "Dollar City - Construccion y Montaje Estructura Metalica Dollar City Mazuren",
+      "fechaInicio": "2025-06-01T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1h00003olsipb9iuc5",
+      "titulo": "PAVCOL - Ciclopuente Calle 98 P11 GRUPO 7",
+      "fechaInicio": "2024-12-14T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1m00023olsz6hzlgqv",
+      "titulo": "OMEGA - Ampliacion Omega Tercer Piso",
+      "fechaInicio": "2024-12-09T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1s00083olsk3g2n9z3",
+      "titulo": "Inverteq S.A.S. - Tecnosur - Construccion Estructura Metalica Mezzanine Esteriles - Tecnosur Villa Rica",
+      "fechaInicio": "2024-11-24T12:00:00.000Z",
+      "ubicacion": "Villa Rica",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1v000b3olsk4xubfcb",
+      "titulo": "Dollar City - Construccion y Montaje Estructura Metalica Dollar City La Maria",
+      "fechaInicio": "2024-10-23T12:00:00.000Z",
+      "ubicacion": "Popayan-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1u000a3olsnls3iqzd",
+      "titulo": "Dollar City - Construccion y Montaje Estructura Metalica Dollar City Alfaguara",
+      "fechaInicio": "2024-09-01T12:00:00.000Z",
+      "ubicacion": "Jamundi - Valle del Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1t00093olse1zzz6vq",
+      "titulo": "Construandes S.A.S - Estructura Metalica Hangar Aeropuerto",
+      "fechaInicio": "2024-09-01T12:00:00.000Z",
+      "ubicacion": "Palmira - Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1x000d3olsxiam6h5q",
+      "titulo": "Inverteq S.A.S. - Tecnosur - Construccion Estructura Metalica Modulo 8 - Tecnosur Villa Rica",
+      "fechaInicio": "2024-05-20T12:00:00.000Z",
+      "ubicacion": "Villa Rica-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1w000c3olsaj6u8faf",
+      "titulo": "Pollo Listo - Construccion y Montaje Estructura Metalica Cuarto Frio",
+      "fechaInicio": "2024-04-25T12:00:00.000Z",
+      "ubicacion": "Villa Gorgona - Valle del Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1l00013olsik8u5kl9",
+      "titulo": "MHC - Estaciones de Transmilenio Cra 11 y 19",
+      "fechaInicio": "2024-01-21T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1z000g3ols95a3nxwz",
+      "titulo": "Construandes - Galeria local 326 CC Llanogrande",
+      "fechaInicio": "2023-11-13T12:00:00.000Z",
+      "ubicacion": "Palmira - Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1y000e3ols6wpz255s",
+      "titulo": "C.A.S.A. Sucol - Construccion y Montaje Estructura Metalica Puente Cascada",
+      "fechaInicio": "2023-10-19T12:00:00.000Z",
+      "ubicacion": "Mondomo-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1y000f3olspsk68883",
+      "titulo": "Grupo Constructor y Prodigyo S.A - Construccion de Estructura Metalica y pintura para el Proyecto Cubierta Modulo Espiritu Santo",
+      "fechaInicio": "2023-09-12T12:00:00.000Z",
+      "ubicacion": "Popayan-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt1q00063olseoocchpq",
+      "titulo": "PAVCOL - Estación Calle 19 y Puente Peatonal Av. Esperanza Norte P8 Grupo 4",
+      "fechaInicio": "2023-08-13T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt24000m3olsuha863zo",
+      "titulo": "Consorcio Deportivo GAMJ - Coliseo Menor Pereira",
+      "fechaInicio": "2023-06-05T12:00:00.000Z",
+      "ubicacion": "Pereira",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt20000h3olsjhl2kxan",
+      "titulo": "Astrelec S.A.S - Construccion estructura metalica locales comerciales Natura Park",
+      "fechaInicio": "2023-05-25T12:00:00.000Z",
+      "ubicacion": "Jamundi-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt25000o3olsek97aqft",
+      "titulo": "Ingenio Providencia S.A. - Bahía de Alcoholes",
+      "fechaInicio": "2023-03-12T12:00:00.000Z",
+      "ubicacion": "Cerrito-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt23000l3olsw1h2z43x",
+      "titulo": "JJVM S.A.S. - Entre Bosques",
+      "fechaInicio": "2023-01-17T12:00:00.000Z",
+      "ubicacion": "Cali-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt22000k3olssaqmxfct",
+      "titulo": "Sucroal S.A - Centro de Distribución - Palmira",
+      "fechaInicio": "2023-01-01T12:00:00.000Z",
+      "ubicacion": "Palmira - Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt22000j3ols4hy75o6z",
+      "titulo": "Sucroal S.A - Edificio Citrico",
+      "fechaInicio": "2022-11-07T12:00:00.000Z",
+      "ubicacion": "Palmira - Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt26000q3olshn6qu4lb",
+      "titulo": "PAVCOL - Puente la Floresta",
+      "fechaInicio": "2022-10-20T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt27000s3ols87o6a1zo",
+      "titulo": "Inverteq S.A.S. - Tecnosur - Centro de distribución - Villa Rica",
+      "fechaInicio": "2022-08-24T12:00:00.000Z",
+      "ubicacion": "Villa Rica-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt25000p3olsidi7271b",
+      "titulo": "Ingenio Providencia S.A. - Obras civiles y Estructura Metalica Zona de Catas Oficinas y Vestier",
+      "fechaInicio": "2022-06-13T12:00:00.000Z",
+      "ubicacion": "Cerrito-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt29000u3ols56e8gtr9",
+      "titulo": "Comfacauca - Construcción de la estructura metalica de cubierta caña dulce",
+      "fechaInicio": "2022-02-01T12:00:00.000Z",
+      "ubicacion": "Santander de Quilichao-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt29000v3olsb1wqe972",
+      "titulo": "Ingenio Providencia S.A. - Bodega 5 Azucar",
+      "fechaInicio": "2021-11-30T12:00:00.000Z",
+      "ubicacion": "Cerrito-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt27000r3olsai5d896s",
+      "titulo": "Tecnoquímicas S.A. - Construccion Estructura Metalica Solidos de Altos Volumenes TQ Jamundi",
+      "fechaInicio": "2021-07-27T12:00:00.000Z",
+      "ubicacion": "Jamundi-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt28000t3ols4wyokn6b",
+      "titulo": "Inverteq S.A.S. - Tecnosur - Construccion Estructura Metalica Modulo 7 - Tecnosur Villa Rica",
+      "fechaInicio": "2021-07-27T12:00:00.000Z",
+      "ubicacion": "Villa Rica-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2a000x3olsybk0kiw7",
+      "titulo": "Ingenio Providencia S.A. - Construcción de obra civil, estructura metalica, fachada y cubierta del complejo industrial Piedechinche",
+      "fechaInicio": "2020-12-29T12:00:00.000Z",
+      "ubicacion": "Cerrito-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt21000i3olshv1yuttk",
+      "titulo": "Juan Tama - Infraestuctura de Trilladora de Café",
+      "fechaInicio": "2020-12-07T12:00:00.000Z",
+      "ubicacion": "Inza-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2e00113olsk7bt8xy6",
+      "titulo": "Tecnoquímicas S.A. - Construccion Estructura Metalica Bodega 3 TQ Jamundi",
+      "fechaInicio": "2020-12-03T12:00:00.000Z",
+      "ubicacion": "Jamundi-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2c00103olsgvgp9pt9",
+      "titulo": "Tecnoquímicas S.A. - Construccion Estructura Metalica Edificio capsulas Blandas Envases y empaques TQ Jamundi",
+      "fechaInicio": "2020-12-03T12:00:00.000Z",
+      "ubicacion": "Jamundi-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2f00123olsv9xesccg",
+      "titulo": "Constructora Inverteq S.A.S - Construccion de bodega semisolidos Tecnofar",
+      "fechaInicio": "2020-07-14T12:00:00.000Z",
+      "ubicacion": "Villa Rica-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2a000w3olsu2xde9yp",
+      "titulo": "Constructora Normandia - Construcción estructura metalica CC Bochalema Plaza",
+      "fechaInicio": "2020-04-06T12:00:00.000Z",
+      "ubicacion": "Cali-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2f00133ols3dgurpks",
+      "titulo": "Pontificia Universidad Javeriana - Construccion de estructura y acabados, proyecto cancha multiple- etapa 2",
+      "fechaInicio": "2020-03-15T12:00:00.000Z",
+      "ubicacion": "Cali-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2c000z3ols6j50x0ct",
+      "titulo": "Diego María Romero - Construccion estructura metalica edificio de 3 pisos para parqueadero.Tequendama Parking",
+      "fechaInicio": "2020-03-03T12:00:00.000Z",
+      "ubicacion": "Cali-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2g00143ols6ojpkh0y",
+      "titulo": "Cuerpo de Bomberos Popayán - Construcción edificio administrativo cuerpo de bomberos Popayán",
+      "fechaInicio": "2019-09-08T12:00:00.000Z",
+      "ubicacion": "Popayán-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2h00163olsscz8sniv",
+      "titulo": "Propal - Construcción e instalación de estructura metálica para torre cogeneración",
+      "fechaInicio": "2019-08-11T12:00:00.000Z",
+      "ubicacion": "Yumbo-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2i00173olse6nv8p4a",
+      "titulo": "Cargill Colombia - Construcción e instalación de estructura métalica y ampliación de la cubierta",
+      "fechaInicio": "2019-04-21T12:00:00.000Z",
+      "ubicacion": "Villa Rica-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2g00153olst88ilbq2",
+      "titulo": "Ménsula Ingenieros S.A.S - Estructura metálica Centro Comercial Paseo Villa del Río",
+      "fechaInicio": "2018-09-07T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2b000y3ols9j5mfqep",
+      "titulo": "Consorcio Metrovial Sb - Terminal intermedio autopista Simon Bolivar parte 2",
+      "fechaInicio": "2018-03-01T12:00:00.000Z",
+      "ubicacion": "Cali-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2k001b3olsaj0t3h68",
+      "titulo": "Construcciones Adriana Rivera S.A.S - Construcción de estructura metálica y cubiertas para Centro comercial Monserrat",
+      "fechaInicio": "2017-11-07T12:00:00.000Z",
+      "ubicacion": "Popayán-Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2m001d3ols27ut8ytr",
+      "titulo": "Omega - Construcción edificio nueva sede Seguridad Omega",
+      "fechaInicio": "2017-05-01T12:00:00.000Z",
+      "ubicacion": "Cali-Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x40005sz9itvo7uex9",
+      "titulo": "PROCOCASA - Remodelación Vacio central UNICO II",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x10002sz9ik6i3qsn0",
+      "titulo": "CENTROS COMERCIALES DEL CAFE S.AS - Adecuación Royal Films UNICO NEIVA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Neiva",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x50007sz9i8aim40dr",
+      "titulo": "UNION TEMPORAL EYR - Barandas metálicas peatonales para puente El Jagual - Caloto",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x60008sz9i14j7yqw0",
+      "titulo": "ROYAL FILMS S.A.S - Construcción graderías y losas salas de cine UNICO NEIVA Y ADICIONALES",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Neiva",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xc000gsz9i68wfn1h8",
+      "titulo": "ROYAL FILMS SAS - Pasto - Obras Civiles de Salas de Cine C.C Único Pasto",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x30004sz9iwkwq9g5r",
+      "titulo": "BANCO DE OCCIDENTE - Construcción de obra civiles, estructuras y cubiertas para la Ampliación C.C. UNICO TRES - Cali",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1wa0000sz9itt3okbxm",
+      "titulo": "JUEGOS ELECTRONICOS DE SUR - Estructura cielo falso PETERLAND UNICO NEIVA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Neiva",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x8000asz9ibw5sp9my",
+      "titulo": "INDUSTRIA MERCADEO Y COLOR SAS - Mezanine local ESPRIT - LA ESTACION CALI",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x8000bsz9iyb21v4gq",
+      "titulo": "C.C. CONSTRUCCIONES S.A.S - Estructura metálica Edificio Servicios Industriales (Equipos Auxiliares) POSTOBON Estructura Metálica cubiertas nueva sala de jarabes",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1wz0001sz9i794b03i2",
+      "titulo": "INGENIO PROVIDENCIA S.A. - CONST E INST CUBIERTA TEJA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xp000xsz9iqyd2p7v6",
+      "titulo": "CENTROS COMERCIALES DEL HUILA SAS - CONTRAPISO LOCAL ROYAL FILMS C.C.UNICO NEIVA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Neiva",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yc001esz9i358r7elv",
+      "titulo": "ROYAL FILMS SAS - Cali - Estructura Metálica Soporte Graderías y Cuartos de Proyección Salas de Cine C.C Único Cali",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xq000zsz9isw02i6uf",
+      "titulo": "SOCIEDAD DESARROLLOS INMOBILIARIOS - ESTRUCT METALICA RAMPA PROVISIONAL UNICO BARRANQUILLA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Barranquilla",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xj000osz9i54n40ooe",
+      "titulo": "ROYAL FILMS SAS - Yumbo - Obras Civiles Adecuación de Salas de Cine C.C Único Yumbo",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Yumbo",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x20003sz9i6ij19dsh",
+      "titulo": "CENTROS COMERCIALES DE LA COSTA S.A.S - Adecuación Royal Films UNICO BARRANQUILLA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Barranquilla",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhunrt2j00193olsmb355eoe",
+      "titulo": "Edgar Oliveros - Estructura metálica para el proyecto Cinemateca distrital Bogotá",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x70009sz9i073a4ox0",
+      "titulo": "ROYAL FILMS S.A.S - Construcción graderías y losas salas de cine C.C. LA ESTACION CALI",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xq000ysz9imgcbq6a2",
+      "titulo": "JUAN MANUEL RODRIGUEZ -MEZANINE ALBERTO Vo5 UNICO NEIVA - JUAN MANUEL RODRIGUEZ -MEZANINE ALBERTO Vo5 UNICO NEIVA",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Neiva",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xf000jsz9inu2v705z",
+      "titulo": "ROYAL FILMS SAS - Cali - Estructura Metálica para obras de Adecuación Salas de Cine C.C. Jardín Plaza",
+      "fechaInicio": "2016-06-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xg000lsz9ieqiu8iyi",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Baños & Vestir",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xr0010sz9iopedo7t6",
+      "titulo": "DISTRIBUIDORA INTERNACIONAL ARTICULOS - MEZANINE LOCAL POLO",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xk000psz9ih6bgbhxr",
+      "titulo": "POLLOS BUCANERO - Barranquilla - Estructura Metálica Cuartos Fríos",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Barranquilla",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xp000wsz9i0xu5awxu",
+      "titulo": "ALMACENES ÉXITO S.A. - CONST E INST ESTRUCTURA PLATAFORMA DE EQUIPO AIRE",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xs0011sz9ifas82nh2",
+      "titulo": "CONSORCIO COLPATRIA ALPES CCA - CONST E INST ESTRUCTURA WTC",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xo000vsz9i2mzqqz1l",
+      "titulo": "AIRES MODERNOS S.A.S - CONST E INST ESTRUCTURA PLATAFORMA DE EQUIPO AIRE",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xd000hsz9iberhrfsb",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Cubierta Doble Agua Planta de Pollos",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xm000tsz9izhfbrkpk",
+      "titulo": "ARINSA – POPAYAN – Cimentación, Estructura Metálica y Cubiertas Ampliación Centro Comercial Campanar - ARINSA – POPAYAN – Cimentación, Estructura Metálica y Cubiertas Ampliación Centro Comercial Campanario",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xm000ssz9i3yzfzdj8",
+      "titulo": "CONSTRUCTORA COLPATRIA – NEIVA – Estructura Metálicas Centro Comercial Único Neiva. - CONSTRUCTORA COLPATRIA – NEIVA – Estructura Metálicas Centro Comercial Único Neiva.",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Neiva",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xl000rsz9if0i6avng",
+      "titulo": "CONSORCIO REMIN – Nariño – Estructura Metálica Para Puente Frisoles, Ancuya – Ancusa, L=47 m - CONSORCIO REMIN – Nariño – Estructura Metálica Para Puente Frisoles, Ancuya – Ancusa, L=47 m",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xa000dsz9ifeqdslk3",
+      "titulo": "CENTRO COMERCIAL  ÚNICO - PASTO - Parqueaderos y Cinemas, estructuras metálicas",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xb000fsz9is8n98a5p",
+      "titulo": "TUGO - Cali - Estructura Metálica Bodega Muebles y Objetos",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xh000msz9iu21uw5p0",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Planta de Harinas",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xh000nsz9inw9t6kd4",
+      "titulo": "ESTRUMETAL - Villarrica - Fabricación Estructura Metálica Bodega E42 Proyecto Hero Motors",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1x9000csz9iurfh4xxu",
+      "titulo": "ARBOLEDA ROJAS ANDRÉS - Cali - Estructura Metálica Casa Zen",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xf000ksz9iipmoh3de",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Taller Satélite",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xk000qsz9ietvxr24m",
+      "titulo": "UNIÓN TEMPORAL E & R - Corinto - Obra Civil y Traslado Puente El Jagua L=70 pies",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xn000usz9ickt3bz2q",
+      "titulo": "CONSTRUCTORA COLPATRIA S.A. – BARRANQUILLA – Estructura Metálicas Centro Comercial Único Barranquill - CONSTRUCTORA COLPATRIA S.A. – BARRANQUILLA – Estructura Metálicas Centro Comercial Único Barranquilla.",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Barranquilla",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xb000esz9i2socddel",
+      "titulo": "CONSORCIO CORREDORES DE COMPETITIVIDAD - La Sierra Cauca - Barandas Metálicas para Peatones Iglesia",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xe000isz9idmgt5rj7",
+      "titulo": "CONSORCIO DECEPAZ - Cali - Estructura Metálica de Cubierta Centro de Salud DECEPAZ",
+      "fechaInicio": "2015-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xy001asz9igd9pftvj",
+      "titulo": "ARBOLEDA ROJAS ANDRÉS - Cali - Estructura Metálica y Cubierta Locales Avenida Cañasgordas",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xw0017sz9ijdlhfoec",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Proyecto Pollo Campesino & Cuartos Fríos",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yg001msz9iwchw71qn",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Cubierta Pasillo & Nuevo Casino",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yd001fsz9ioxiystbh",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Sala de Maquinas",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yd001hsz9itliibgmh",
+      "titulo": "POLLOS BUCANERO - Villagorgona - 3 Niveles y Cubierta  Subproductos",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ye001isz9iio1f5434",
+      "titulo": "POLLOS BUCANERO - Villagorgona - 3 Niveles y Cubierta  Subproductos",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yf001ksz9iha9wkjw2",
+      "titulo": "CONSTRUCCIONES PROFORMAS - Popayán - Cubierta Local Comercial Alberto VO5",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yf001lsz9i1agetvky",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Hangar Pollo en Pie",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xs0012sz9i04apfn1z",
+      "titulo": "PARK PLAZA - Cali - Estructura Metálica & Cubierta",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yd001gsz9iyf78pfoz",
+      "titulo": "POLLOS BUCANERO - Villagorgona - Subestación Eléctrica",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Villagorgona",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ye001jsz9i4hucygns",
+      "titulo": "CENTRO COMERCIAL  ÚNICO - YUMBO - Parqueaderos y cinemas",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Yumbo",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ya001dsz9idfd55jr5",
+      "titulo": "CONSTRUCTORA HABITEK SAS - Cali - Estructura Metálica Conjunto Residencial Lombar Día Club House",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xz001csz9id7ue2mdz",
+      "titulo": "INGENIO MAYAGÜEZ - Estructura metálica para Edificio Torre",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xu0015sz9i1aql5yjo",
+      "titulo": "Ing. ORLANDO REVELO - Construcción puente vehicular \"Frisoles\" - Ancuyá Nariño                       Longitud 48 mts.",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yh001nsz9i1cv6aiey",
+      "titulo": "CONSORCIO PIC - Cali - Estructura Metálica para Bodega DIAN",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xt0013sz9iyywvuhlu",
+      "titulo": "CONSORCIO CORREDORES DE COMPETITIVIDAD - Barandas para puentes sector La Lupa - Cauca",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xt0014sz9islpt0o7a",
+      "titulo": "CONSTRUCTORA COLPATRIA - Edificio World Trade Center Pacific, estructura metálica y cubierta",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xv0016sz9i5jwynmcf",
+      "titulo": "MEJIA SANTANDER JUAN CARLOS - Municipio Paez -Construcción Puentes Peatonales: El Cristo L=58m, El Buco L=39m y San Vicente L=126m",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xw0018sz9ig89f207l",
+      "titulo": "CONSORCIO APV - Valledupar - Estructura Metálica y Cubierta Colegio Chiriqui",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Valledupar",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xx0019sz9iq2tjvz7x",
+      "titulo": "OBANDO LODOÑO JHON - Laguna Seca - Estructura Metálica Casa",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1xz001bsz9i67a74a6o",
+      "titulo": "PELÁEZ HERNÁNDEZ MAURICIO - Popayán - Estructura Metálica Dispensario Popayán",
+      "fechaInicio": "2014-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ym001vsz9ijcnjztf4",
+      "titulo": "POLLOS BUCANERO 4a, ETAPA - Estructuras metálicas y cubiertas  para bodegas y cuartos fríos - Cali",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yo001zsz9if041q0uk",
+      "titulo": "ABRAHAM STRELECK & ILLIAN COHEN - Estructura metálica y cubierta edificio \"Portal Plaza\" en Cli",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yn001xsz9iekquamfq",
+      "titulo": "INGENIO MAYAGUEZ - Estructura metálica y cubierta para bodega Dúplex - altura 26 mts.",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yp0020sz9it5fshpb6",
+      "titulo": "Ing. MAURICIO HOLGUÍN & Arq. MAURICIO HERZ - Cubierta Dispensario Batallón Ejército en Popayán",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yq0021sz9i29q86iya",
+      "titulo": "Ing. LUIS CARLOS RIOS - P.Q.P PRODUCTOS QUÍMICOS PANAMERICANOS Estructura metálica y cubiertas en Cali",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yo001ysz9iih5me846",
+      "titulo": "ANDRÉS ARBOLEDA - Estructura metálica y cubierta para locales \"Cañas Gordas\" . Cali",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yj001qsz9i2tywwolm",
+      "titulo": "CONSORCIO A.P.V. - Estructura metálica y cubiertas para Colegio Chiriquí en Valledupar",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Valledupar",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ym001wsz9iwkgklv86",
+      "titulo": "INGENIO MAYAGUEZ - Estructura metálica y cubierta para edificio \"Torre Tacho\" -  seis niveles -  altura 30 mts.",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yk001ssz9i0dif90zu",
+      "titulo": "CENTRO COMERCIAL AUTOMOTRIZ - Estructura metálica y cubierta local en Cali",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yl001usz9i7knjsbgk",
+      "titulo": "CENTRO COMERCIAL ÚNICO - Estructuras metálicas , cubiertas y fachadas para ampliación en Cali",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yj001rsz9iflzqynid",
+      "titulo": "ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio \"Parque 102\" en Cali - ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio \"Parque 102\" en Cali",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yr0022sz9i2wxjxw1s",
+      "titulo": "CONSTRUCTORA PRODYGIO S.A.S. Estructura metálica y cubierta restaurante “La Lomita\" en Popayán - CONSTRUCTORA PRODYGIO S.A.S. Estructura metálica y cubierta restaurante “La Lomita\" en Popayán",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yi001psz9il3ng04yu",
+      "titulo": "MAJA S.A.S. - Estructura metálica y cubierta para el Coliseo Mundialista Korfball en Cali, Juegos Mundiales.",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yh001osz9ii22q0qn1",
+      "titulo": "CENTRO COMERCIAL ÚNICO - Diseño y construcción de centro comercial en Yumbo (Valle)",
+      "fechaInicio": "2013-01-01T12:00:00.000Z",
+      "ubicacion": "Yumbo",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yx002bsz9iggq8vit6",
+      "titulo": "FONDO MIXTO PARA PROMOCIÓN DEL DEPORTE- Diseño y construcción estructura metálica y cubierta para la - FONDO MIXTO PARA PROMOCIÓN DEL DEPORTE- Diseño y construcción estructura metálica y cubierta para la piscina olímpica, Juegos Nacionales de Popayán",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ys0024sz9iqvesa098",
+      "titulo": "Ing. ALBERTO VIDAL - Estructura metálica y cubierta par Morgue en Tuluá (Valle)",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Tuluá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yt0025sz9iz3u0gehz",
+      "titulo": "COLEGIO FRANCISCANAS - Diseño y construcción del Coliseo Cubierto No. 2 en Popayán",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yv0028sz9i6ciff1vk",
+      "titulo": "COMFACAUCA - Diseño y construcción de mezaninne para oficinas sede de Popayán",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ys0023sz9ifh3tr7pl",
+      "titulo": "CONSORCIO CORREDORES DE COMPETITIVIDAD - Diseño y construcción Puente Cusiyaco              Longitud 40 mts.",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yv0029sz9i5h6zu7i0",
+      "titulo": "CONSORCIO MJ 2011 - Coliseo de fútbol sala para los Juegos Nacionales de Popayán",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yx002csz9irh5ck3pg",
+      "titulo": "Ings. CELY y CAICEDO - Estructura metálica y cubierta edificio PRADO 2 en Popayán",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yy002dsz9i67x0k7rj",
+      "titulo": "INGENIO MANUELITA - Estructura metálica para edificio de 6 plantas, sector de mezclas en Palmira (Valle)",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Palmira",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yz002esz9i3x598gpr",
+      "titulo": "POLLOS BUCANERO 3A. ETAPA - Estructura metálica y  cubierta en ampliación",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z0002gsz9ipd3w8tty",
+      "titulo": "CENTRO COMERCIAL ÚNICO - Diseño y construcción de estructuras metálicas y cubiertas, en Villavicencio",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z0002hsz9i1dsmshe5",
+      "titulo": "CONSORCIO CORREDORES DE COMPETITIVIDAD - Diseño  y construcción puente vehicular en Arco,  Saraconcho     Longitud 150 mts.",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yu0027sz9ihtkgg66k",
+      "titulo": "ALMACEN CARREFOUR - Diseño uy construcción de mezaninne en Pasto (Nariño)",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yu0026sz9ipm5j0iuz",
+      "titulo": "COMFACAUCA - Diseño y construcción de estructuras y cubiertas par canchas Centro Recreativo Pisojé.",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yw002asz9iy0pnk9lp",
+      "titulo": "ARGEU S.A. - Coliseo de Artes Marciales para los Juegos Nacionales de Popayán",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1yz002fsz9is23k8q87",
+      "titulo": "COMFACAUCA - Diseño y construcción puente vehicular sobre rio Cauca Centro Recreativo Pisojé Longitud 40 mts.",
+      "fechaInicio": "2012-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z5002osz9ipfkp2vhl",
+      "titulo": "CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de - CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de Cali",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z6002psz9im6rab2dn",
+      "titulo": "CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Ca - CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Cali",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z8002qsz9ijr6cpriu",
+      "titulo": "COMFACAUCA - Cubierta en teja Standing Seam para el Colegio de Puerto Tejada (Cauca)",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z3002lsz9iqmxlosrj",
+      "titulo": "VARELA FIHOLL & CIA. LTDA. Estructura metálica, cubiertas y carpintería metálica Colegio Matamoros P - VARELA FIHOLL & CIA. LTDA. Estructura metálica, cubiertas y carpintería metálica Colegio Matamoros Popayán",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z3002msz9islw4hefs",
+      "titulo": "ODINSA S.A. - Diseño y construcción puente peatonal Romelia 1 en Risaralda - Autopistas del Café. Long. 130 mts.",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z9002rsz9ibofk6nvu",
+      "titulo": "CALIMA MOTORS - Estructura metálica y cubierta para bodegas en Buenaventura (Valle)",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z9002ssz9i41b0u35g",
+      "titulo": "CENTRO COMERCIAL ÚNICO PASTO - Estructuras metálicas y cubiertas en teja Standing Seam para sede de Pasto.",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z4002nsz9iszizeqc9",
+      "titulo": "ODINSA S.A. Diseño y construcción puente peatonal Romelia 2 en Dosquebradas Risaralda  Longitud 212  - ODINSA S.A. Diseño y construcción puente peatonal Romelia 2 en Dosquebradas Risaralda  Longitud 212 mts.",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z1002isz9iutihyb9i",
+      "titulo": "I.C.B.F. Estructuras metálicas y cubiertas en Guapi y El Bordo, Depto, del Cauca - I.C.B.F. Estructuras metálicas y cubiertas en Guapi y El Bordo, Depto, del Cauca",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z2002ksz9i37clb8ze",
+      "titulo": "FERRETERIA MARACAIBO - Estructura metálica mezaninne para bodega de cemento en Popayán",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1z2002jsz9i8bm39uyj",
+      "titulo": "EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali - EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1za002tsz9iyi7a9fiu",
+      "titulo": "COMFACAUCA - Estructura metálica y cubierta Colegio Jardín Social El Mirador, Popayán",
+      "fechaInicio": "2011-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zc002vsz9isnj0e8no",
+      "titulo": "CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts. - CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts.",
+      "fechaInicio": "2010-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zg002ysz9ixdnrdvog",
+      "titulo": "COLEGIO COLOMBO FRANCES - POPAYÁN Coliseo Cubierto para el Colegio",
+      "fechaInicio": "2010-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zf002xsz9i935utf4p",
+      "titulo": "CONSORCIO SANTANDER 3 - Estructuras metálicas varias Matadero de Santander de Quilichao",
+      "fechaInicio": "2010-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1ze002wsz9iosk7ybxo",
+      "titulo": "Ing. MANUEL MUÑOZ - Reparación y montaje puente peatonal Terminal de Transportes de Popayán  Longitud 70 mts.",
+      "fechaInicio": "2010-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zb002usz9ixclc4a2f",
+      "titulo": "COMFACAUCA - Estructura metálica y cubierta Obra Jardín Social en Popayán",
+      "fechaInicio": "2010-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zj0032sz9ihvs6gyxn",
+      "titulo": "CONSORCIO DEL CAUCA - Diseño y construcción Puente Vehicular \"Nolasco\" sobre el río Páez        Longitud 145 mts.",
+      "fechaInicio": "2009-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zk0034sz9iw7suaft6",
+      "titulo": "O.P.P. GRANELES - Estructuras metálicas para bodegas en Buenaventura (Valle del Cauca)",
+      "fechaInicio": "2009-01-01T12:00:00.000Z",
+      "ubicacion": "Buenaventura",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zh002zsz9idgc6ug11",
+      "titulo": "CENTRO COMERCIAL ÚNICO - BARRANQUILLA - Diseño y construcción estructura metálica y cubierta",
+      "fechaInicio": "2009-01-01T12:00:00.000Z",
+      "ubicacion": "Barranquilla",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zi0031sz9i4jn84ili",
+      "titulo": "CONSTRUCTORA CARPOL LTDA. - Estructuras metálicas y cubiertas Colegio Potrerogrande en Cali",
+      "fechaInicio": "2009-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zk0033sz9ixtcl63da",
+      "titulo": "ESTACIÓN MARBELLA -Estructura metálica para la Estación de Servicio en Cali. - ESTACIÓN MARBELLA -Estructura metálica para la Estación de Servicio en Cali.",
+      "fechaInicio": "2009-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zh0030sz9if12rpvu1",
+      "titulo": "ZONA FRANCA PALMASECA - Estructura metálica para cubierta de bodegas",
+      "fechaInicio": "2009-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zs003asz9i8bllgb3m",
+      "titulo": "DISCOTECA CUCARA-MACARA - Estructura metálica de cubierta en Yumbo (Valle)",
+      "fechaInicio": "2008-01-01T12:00:00.000Z",
+      "ubicacion": "Yumbo",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zm0036sz9iul6yvkb2",
+      "titulo": "TERMINAL DE TRNSPORTES POPAYÁN - Cubierta muelle de embarque",
+      "fechaInicio": "2008-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zq0039sz9iw6n0uppu",
+      "titulo": "CLINICA EXCELLENCE - Estructura metálica para ampliación de la Clínica en Cali",
+      "fechaInicio": "2008-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zq0038sz9io46oda9i",
+      "titulo": "NUTRIPLANTAS - Estructura metálica de cubierta en bodega de Tuluá",
+      "fechaInicio": "2008-01-01T12:00:00.000Z",
+      "ubicacion": "Tuluá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zo0037sz9ihe8vlodc",
+      "titulo": "COMITÉ CAFETEROS CAUCA - Estructura metálica Coliseo  Cubierto  Timbío",
+      "fechaInicio": "2008-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zv003csz9ixe4jsa4l",
+      "titulo": "CALDERON Y JARAMILLO INGS. - Estructura de Cubierta para Estación de Servicio en Manizales",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Manizales",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zx003fsz9ijimwgk2r",
+      "titulo": "POLLOS BUCANERO - 2A. Etapa. Estructuras metálicas varias",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zz003hsz9iuha9fi58",
+      "titulo": "CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa - Estructuras metálicas varias",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zs003bsz9i5axlpobp",
+      "titulo": "CONSTRUCTORA HERNANDEZ BOHMER - Estructura metálica edificio Campestre Towers Cali",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zw003dsz9ic9p5sgnf",
+      "titulo": "CONSTRUCTORA CARPOL - Estructuras metálicas varias Conjunto Residencial Campo Real en Popayán",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zy003gsz9i8pwrn1v3",
+      "titulo": "ALPICAL - Estructuras metálicas fábrica Caloto Cauca",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof1zw003esz9ilzf683ll",
+      "titulo": "VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali - VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali",
+      "fechaInicio": "2007-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof202003lsz9i1boiqpre",
+      "titulo": "Arq. JAIME CÁRDENAS Y ASOCS. Estructuras metálicas en Universidad San Buenaventura de Cali - Arq. JAIME CÁRDENAS Y ASOCS. Estructuras metálicas en Universidad San Buenaventura de Cali",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof200003jsz9ixbpsbsyg",
+      "titulo": "MUNICIPIO DE MIRNDA - CAUCA. Diseño y construcción Coliseo Cubierto Plaza Principal",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof203003osz9i1opfw9ts",
+      "titulo": "CLINICA EXCELLENCE CALI - Estructura básica de soporte edificio de 4 plantas",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof204003psz9id94c4wz9",
+      "titulo": "POLLOS BUCANERO - Estructura metálica mezaninne y escalera de acceso",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof202003msz9iygb6c6k7",
+      "titulo": "COLEGIO COLOMBO BRITÁNICO - Estructura de Cubierta en sede de Cali",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof201003ksz9i4kgw0vvh",
+      "titulo": "D.C.I. ARTE - Estructuras y cubierta sede Cali",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof203003nsz9ionyn9ir6",
+      "titulo": "CONSTRUCTORA MELENDEZ - Estructura metálica cubierta Clubhouse Urbanización Palmera Real de Cali.",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof205003qsz9iw9dvtk82",
+      "titulo": "INCICO LTDA. Diseño y construcción estructura metálica bodega Cementos Argos en Yumbo Valle del Cauc - INCICO LTDA. Diseño y construcción estructura metálica bodega Cementos Argos en Yumbo Valle del Cauca",
+      "fechaInicio": "2006-01-01T12:00:00.000Z",
+      "ubicacion": "Yumbo",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof207003ssz9iy75agi7o",
+      "titulo": "CONSORCIO ACUANORTE - Instalación 1.800 mts. Tubería de hierro dúctil acueducto del río Palacé y diseño y construcción de 5 viaductos metálicos.           Longitud 130 mts.",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20a003xsz9ion2qbzaa",
+      "titulo": "VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali - VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20b003zsz9iu8f6erzt",
+      "titulo": "MIRA TU SALUD EPS. Reforzamiento edificio de 5 plantas en Bogotá y obras metálicas varias - MIRA TU SALUD EPS. Reforzamiento edificio de 5 plantas en Bogotá y obras metálicas varias",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof207003tsz9iwxf0s58t",
+      "titulo": "Ing. JUAN CARLOS CANENCIO - Estructura metálica para Plaza de Mercado Villarrica Cauca",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof208003vsz9im6v8lkx0",
+      "titulo": "PROGRAMA TIERRADENTRO - UNIÓN EUROPEA - Diseño y construcción puentes peatonales y caballares en Mosoco, Calderas y Cohetando, Depto. Del Cauca.  Longitud 45 mts.",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof208003usz9ip7t2q0kw",
+      "titulo": "CONSTRUCTORA PIJAO LTDA. Construcción de 14 puentes metálicos en apartamentos - Cali.    Longitud 58.80 mts.",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20a003ysz9i6dxxmqvm",
+      "titulo": "COLEGIO STA. ISABEL DE HUNGRIA - Estructura básica y de cubierta , obra civil y acabados en Sede Cali Ciudad 2000",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof209003wsz9if3a3ykjh",
+      "titulo": "VELKAR S.A. - Diseño y construcción estructuras metálicas para fábrica TEXCINTAS S.A. en Cali",
+      "fechaInicio": "2005-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20c0041sz9ifpmzhgfk",
+      "titulo": "PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaqu - PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaquivá, Segovia, Carrizales y La Estrella (Cauca) Longitud 94 mts.",
+      "fechaInicio": "2004-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20d0042sz9iukfpdvfh",
+      "titulo": "CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación. - CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación.",
+      "fechaInicio": "2004-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20c0040sz9is6cq3mak",
+      "titulo": "ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC  - ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC de 1200 mm                                       Longitud 27,50 mts",
+      "fechaInicio": "2004-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20h0047sz9ib6fqy550",
+      "titulo": "IGLESIA DE DIOS MINISTERIAL - POPAYÁN - estructura metálica de cubierta.",
+      "fechaInicio": "2003-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20h0048sz9ik1gmusew",
+      "titulo": "UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto - UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto",
+      "fechaInicio": "2003-01-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20g0046sz9i29gj07v7",
+      "titulo": "FERTECNICA S.A. - Puente vehicular en vigas metálicas y losa de concreto sobre Metaldeck  carretera Tacueyó- López Depto. Del Cauca.                        Longitud 12 mts.",
+      "fechaInicio": "2003-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20g0045sz9ieq4w1zon",
+      "titulo": "Ing. ÁLVARO CARVAJAL - Estructura metálica de cubierta para Centro de Acopio en La Vega - Cauca.",
+      "fechaInicio": "2003-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20f0044sz9i1wf23fws",
+      "titulo": "CONSTRUCCIONES E INGENIERÍA LTDA. - Viaductos para soportar tuberías 500 mm Ingenio Providencia Valle del Cauca                                                      Longitud 70 mts.",
+      "fechaInicio": "2003-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20e0043sz9iszun5loc",
+      "titulo": "COLEGIO STA. ISABEL DE HUNGRÍA - CALI diseño y construcción de estructura metálica para Coliseo Deportivo Dúplex en la ciudad de Cali.",
+      "fechaInicio": "2003-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20j004asz9is0u52mz4",
+      "titulo": "CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P - CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en Puerto Tejada, Cauca",
+      "fechaInicio": "2002-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20k004csz9i8636ev04",
+      "titulo": "Ing. JESUS ALBEIRO VASQUEZ - Puente colgante sobre el río El Molino, Paispamba Cauca     Longitud 25 mts.",
+      "fechaInicio": "2002-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20m004esz9ij4oxg0x8",
+      "titulo": "Ing. HERNAN VALLEJO - estructura metálica Hospital de Timbiquí, Cauca.",
+      "fechaInicio": "2002-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20l004dsz9i5ihaodwk",
+      "titulo": "Ing. JORGE PALECHOR - Puente peatonal colgante río Dos Brazos en Popayán                          Longitud 28 mts.",
+      "fechaInicio": "2002-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20k004bsz9i5lweauco",
+      "titulo": "In. HERNAN VALLEJO - Puente peatonal \"Sesecito\" en Timbiquí Cauca.                                         Longitud 22 mts.",
+      "fechaInicio": "2002-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20i0049sz9i5vr25a8o",
+      "titulo": "Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos de - Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos del Plan Colombia en Almaguer,Cajibío, Morales, Caldono y Florencia- Depto. Del Cauca",
+      "fechaInicio": "2002-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20o004gsz9ii0vp4y34",
+      "titulo": "READY FRUIT COMPANY - Estructura metálica de cubierta  y entrepisos, Planta de La Unión, Valle del Cauca",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20n004fsz9i09xxyr8w",
+      "titulo": "GOBERNACIÓN DEL CAUCA - Dos esculturas “Tierradentro”",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20r004lsz9ib1xn7i8b",
+      "titulo": "CALDERON Y JARAMILLO INGS. - Refuerzo puente vehicular Cameguadua, Chinchiná, Caldas        longitud 10 mts.",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20t004msz9i2z04hqrc",
+      "titulo": "CONSORCIO Q.M. SAN ISIDRO - Construcción estructuras metálicas y rejas de seguridad, Penitenciaría San Isidro Popayán Cauca",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20r004ksz9imh8eyde3",
+      "titulo": "J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 2 - J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 20 mts.",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20u004nsz9ichyfswiw",
+      "titulo": "Ing. JUAN CARLOS CANENCIO - Estructura metálica para Plaza de Mercado en Corinto Cauca.",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20q004jsz9icdx7ef6u",
+      "titulo": "CORPORACIÓN NASA KIWE - Puente vehicular quebrada \"El Lucero\" Tierradentro Cauca.         Longitud : 16 mts.",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20p004isz9is7ujch1b",
+      "titulo": "VIDRIOS Y ALUMINIOS ELSOL - Estructura metálica para fábrica en Popayán.",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20p004hsz9i6zvr5ze7",
+      "titulo": "CALDERON Y JARAMILLO INGS. - Estructura metálica para fábrica de quesos Delvechio - Bogotá",
+      "fechaInicio": "2001-01-01T12:00:00.000Z",
+      "ubicacion": "Bogotá",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20v004psz9iaepzy0eq",
+      "titulo": "Ing. RICARDO ARBOLEDA - Estructuras metálicas para  bodegas C.I. Valle",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20x004ssz9ir8raj3u2",
+      "titulo": "Constructora Carpol - Carpintería metálica y cerramiento para Urbanización Villa del Viento - Popayán 400 viviendas",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20y004usz9iu4qvxmar",
+      "titulo": "Ing. JUAN CARLOS MEJÍA - Estructura metálica Plaza de Mercado en Guapi, Depto. Del Cauca",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20u004osz9i4zc7y8y6",
+      "titulo": "Ing. DIEGO CARVAJAL - Estructura metálica edificio Banco Coopdesarrollo en Jamundí",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Jamundí",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20w004rsz9izzmh01m2",
+      "titulo": "Ing. ANDRÉS CASTRILLÓN - Soportes metálicos para conducción acueducto Pílamo -Caloto  longitud 800 mts.",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20y004tsz9i9wve9s4b",
+      "titulo": "CALDERON & JARAMILLO - Estructuras básicas y de cubierta para el Condominio \"Costa Esmeralda\" en Panamá.",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20w004qsz9iuiipq2xn",
+      "titulo": "FONDO NAL. CAMINOS VECINALES - Diseño y construcción de dos puentes peatonales en San José del Palmar Departamento del Chocó               longitud : 37 mts.",
+      "fechaInicio": "2000-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof20z004vsz9ieww8z01l",
+      "titulo": "YAZAKI METREX S.A. - Estructura metálica cubierta para fábrica en el Parque Industrial Popayán",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof211004xsz9i0et48bmu",
+      "titulo": "MUNICIPIO DE GUAPI - Puente sobre el río Napi para conducción tubería  de acueducto       longitud 117 mts.",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof2130050sz9ii7smwzrk",
+      "titulo": "MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud - MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud 25 mts c/u.",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof2150052sz9i6jnm9gwd",
+      "titulo": "PARROQUIA NIÑO JESÚS DE PRAGA - Santander de Quilichao - Cubierta metálica iglesia Parroquial",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof210004wsz9irsanmrwl",
+      "titulo": "AROMA DEL CAUCA - Estructura metálica cubierta para fábrica en el Parque Industrial Popayán",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof2150051sz9iqbo27lkc",
+      "titulo": "CONSTRUCTORA AYACAR S.A - Estructuras metálicas de cubierta y entrepisos Edificio Droguería Humanitaria de Cali",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof212004zsz9i1v8lk58a",
+      "titulo": "MUNICIPIO DE POPAYÁN - Puente peatonal sobre el río Molino, sector Universidad-Hospital.    Longitud 18 mts.",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof211004ysz9iu5u8oz1t",
+      "titulo": "CORPORACIÓN NASA KIWE - Construcción de vigas, pen- dolones y suministro cables para puente colgante vehicular  La Troja en Tierradentro.         Longitud 103 mts.",
+      "fechaInicio": "1999-01-01T12:00:00.000Z",
+      "ubicacion": "Colombia",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof21b0057sz9ig7v7issf",
+      "titulo": "UNIVERSIDAD DEL CAUCA - Diseño y construcción Coliseo Cubierto en el Campus de Popayán",
+      "fechaInicio": "1998-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof2180054sz9i8q404k3c",
+      "titulo": "ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en San - ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en Santa Rosa, Piendamó, Corinto, La Sierra, Timbiquí y Santander de Quilichao (Cauca) y Tumaco (Nariño)",
+      "fechaInicio": "1998-01-01T12:00:00.000Z",
+      "ubicacion": "Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof2190055sz9ilji978y9",
+      "titulo": "GUIDO GAVILANES Y OSCAR RUIZ - Diseño y construcción de estructuras metálicas para tres bodegas  en el Parque Industrial de Popayán",
+      "fechaInicio": "1998-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof21a0056sz9ilhs4koyw",
+      "titulo": "LOTERÍA DEL CAUCA - Diseño y construcción estructuras  metálicas para el Edificio Edgar Negret Popayán",
+      "fechaInicio": "1998-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof2160053sz9icsqi23b5",
+      "titulo": "MUNICIPIO DE POPAYÁN, GOBERNACIÓN DEL CAUCA Y OTRAS ENTIDADES - Diseño y construcción de Coliseos Polideportivos en los barrios Palacé, Alfonso López, La Esmeralda, Pandiguando, Chuni, Colegio Negret, Berlín, Sauces, Independencia y La Paz",
+      "fechaInicio": "1998-01-01T12:00:00.000Z",
+      "ubicacion": "Popayán",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmhuof21b0058sz9ix6opxgj9",
+      "titulo": "FRIESLAND COLOMBIA S.A. - Diseño y construcción de la  estructura metálica y cubierta para planta de producción en Pasto",
+      "fechaInicio": "1996-01-01T12:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    }
+  ],
+  "soloEnPrincipales": [
+    {
+      "id": "cmbclqbrl00dskd27yglwxesj",
+      "titulo": "Tanques de Almacenamiento GLP",
+      "cliente": "Surcolombiana de Gas S.A E.S.P.",
+      "categoria": "OIL_AND_GAS",
+      "fechaInicio": "2019-09-01T00:00:00.000Z",
+      "ubicacion": "Pitalito, Huila",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbrc00d8kd27ygotu00z",
+      "titulo": "Coliseo Mayor Juegos Nacionales 2012",
+      "cliente": "MAJA S.A.S.",
+      "categoria": "ESCENARIOS_DEPORTIVOS",
+      "fechaInicio": "2011-06-01T00:00:00.000Z",
+      "ubicacion": "Popayán, Cauca",
+      "visible": true,
+      "destacado": true
+    },
+    {
+      "id": "cmbclqbr600cqkd279sr6oj3h",
+      "titulo": "Puente Peatonal Terminal Intermedio",
+      "cliente": "Consorcio Metrovial SB",
+      "categoria": "PUENTES_PEATONALES",
+      "fechaInicio": "2014-08-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle del Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbr100cgkd2744hbtlyi",
+      "titulo": "Puente Peatonal La Tertulia",
+      "cliente": "Harold Méndez",
+      "categoria": "PUENTES_PEATONALES",
+      "fechaInicio": "2013-05-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle del Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbqs00c6kd27li5cccw5",
+      "titulo": "Puente Peatonal Autopista Sur - Carrera 68",
+      "cliente": "CONSORCIO VÍAS DE CALI S.A.S.",
+      "categoria": "PUENTES_PEATONALES",
+      "fechaInicio": "2016-02-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle del Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbqk00bskd27scixr8s7",
+      "titulo": "Escalinata Curva - Río Cali",
+      "cliente": "UNIÓN TEMPORAL ESPACIO 2015",
+      "categoria": "PUENTES_PEATONALES",
+      "fechaInicio": "2015-08-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle del Cauca",
+      "visible": true,
+      "destacado": true
+    },
+    {
+      "id": "cmbclqbqh00bikd27k0re2sc0",
+      "titulo": "Puente Vehicular Saraconcho",
+      "cliente": "Cliente Público",
+      "categoria": "PUENTES_VEHICULARES",
+      "fechaInicio": "2013-09-01T00:00:00.000Z",
+      "ubicacion": "Bolívar, Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbpx00aqkd2762jd7nev",
+      "titulo": "Puente Vehicular Frisoles",
+      "cliente": "Cliente Público",
+      "categoria": "PUENTES_VEHICULARES",
+      "fechaInicio": "2016-10-01T00:00:00.000Z",
+      "ubicacion": "Pasto",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbpg009ukd273a5heofu",
+      "titulo": "Puente Vehicular Nolasco",
+      "cliente": "Consorcio del Cauca",
+      "categoria": "PUENTES_VEHICULARES",
+      "fechaInicio": "2018-05-01T00:00:00.000Z",
+      "ubicacion": "Nátaga, Huila",
+      "visible": true,
+      "destacado": true
+    },
+    {
+      "id": "cmbclqbp9009ekd27mcm87zpt",
+      "titulo": "Bodega Protecnica Etapa II",
+      "cliente": "Protecnica Ingenieria SAS",
+      "categoria": "INDUSTRIA",
+      "fechaInicio": "2015-09-01T00:00:00.000Z",
+      "ubicacion": "Yumbo, Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbof0092kd27n7go365t",
+      "titulo": "Edificio Omega",
+      "cliente": "Omega",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2018-06-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbnf008okd27kqmcjzeq",
+      "titulo": "Cinemateca Distrital",
+      "cliente": "Consorcio Cine Cultura Bogotá",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2020-03-01T00:00:00.000Z",
+      "ubicacion": "Bogotá, Cundinamarca",
+      "visible": true,
+      "destacado": true
+    },
+    {
+      "id": "cmbclqbn40084kd274fx0mk40",
+      "titulo": "Centro Comercial Bochalema Plaza",
+      "cliente": "Constructora Normandía",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2013-02-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle del Cauca",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbn0007ukd272webe8cv",
+      "titulo": "Centro Comercial Armenia Plaza",
+      "cliente": "ER Inversiones",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2014-05-01T00:00:00.000Z",
+      "ubicacion": "Armenia, Quindío",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbmx007okd27ffpr57vt",
+      "titulo": "Centro Comercial Unico Barranquilla",
+      "cliente": "Centros Comerciales de la Costa SAS",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2015-01-01T00:00:00.000Z",
+      "ubicacion": "Barranquilla, Atlántico",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbmr007ckd27l302x14e",
+      "titulo": "Centro Comercial Unico Neiva",
+      "cliente": "Constructora Colpatria SAS",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2016-08-01T00:00:00.000Z",
+      "ubicacion": "Neiva, Huila",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbmm0070kd27ijcjbbf3",
+      "titulo": "Centro Comercial Unico Cali",
+      "cliente": "Unitres SAS",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2017-04-01T00:00:00.000Z",
+      "ubicacion": "Cali, Valle",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbmg006kkd2769r2xq1b",
+      "titulo": "Centro Comercial Campanario",
+      "cliente": "ARINSA",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2020-01-01T00:00:00.000Z",
+      "ubicacion": "Popayán, Cauca",
+      "visible": true,
+      "destacado": true
+    },
+    {
+      "id": "cmbclqbm80060kd27j0k29tzk",
+      "titulo": "Torre Cogeneracion Propal",
+      "cliente": "Cliente",
+      "categoria": "INDUSTRIA",
+      "fechaInicio": "2025-05-31T17:59:25.642Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbm4005okd27544ryd4b",
+      "titulo": "Tecnofar",
+      "cliente": "Cliente",
+      "categoria": "INDUSTRIA",
+      "fechaInicio": "2025-05-31T17:59:25.635Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqblw005ekd27qs68dgrt",
+      "titulo": "Bodega Intera",
+      "cliente": "Cliente",
+      "categoria": "INDUSTRIA",
+      "fechaInicio": "2025-05-31T17:59:25.622Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqblu0056kd27qinjofdg",
+      "titulo": "Bodega Duplex",
+      "cliente": "Cliente",
+      "categoria": "INDUSTRIA",
+      "fechaInicio": "2025-05-31T17:59:25.616Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqblm004skd27jd3z19t6",
+      "titulo": "Ampliacion Cargill",
+      "cliente": "Cliente",
+      "categoria": "INDUSTRIA",
+      "fechaInicio": "2025-05-31T17:59:25.607Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqblh004gkd27r41p10tm",
+      "titulo": "Cecun",
+      "cliente": "Cliente",
+      "categoria": "ESCENARIOS_DEPORTIVOS",
+      "fechaInicio": "2025-05-31T17:59:25.507Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqblb003ykd271j3s6zkl",
+      "titulo": "Cancha Javeriana Cali",
+      "cliente": "Cliente",
+      "categoria": "ESCENARIOS_DEPORTIVOS",
+      "fechaInicio": "2025-05-31T17:59:25.494Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbl4003gkd27f9yryc3g",
+      "titulo": "Terminal Intermedio Mio Cali",
+      "cliente": "Cliente",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2025-05-31T17:59:25.330Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbkx002ykd275pfhnqld",
+      "titulo": "Tequendama Parking Cali",
+      "cliente": "Cliente",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2025-05-31T17:59:25.320Z",
+      "ubicacion": "Cali",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbkt002skd27xxja05xp",
+      "titulo": "Sena Santander",
+      "cliente": "Cliente",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2025-05-31T17:59:25.317Z",
+      "ubicacion": "Santander",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbkp002ikd2769a2q32e",
+      "titulo": "Modulos Medicos",
+      "cliente": "Cliente",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2025-05-31T17:59:25.300Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbki0024kd27l2xnc8k6",
+      "titulo": "Estacion Mio Guadalupe",
+      "cliente": "Cliente",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2025-05-31T17:59:25.292Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbkc001okd272toq4ypq",
+      "titulo": "Clinica Reina Victoria",
+      "cliente": "Cliente",
+      "categoria": "EDIFICIOS",
+      "fechaInicio": "2025-05-31T17:59:25.280Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    },
+    {
+      "id": "cmbclqbju0010kd27iue8epkd",
+      "titulo": "Centro Paseo Villa Del Rio",
+      "cliente": "Cliente",
+      "categoria": "CENTROS_COMERCIALES",
+      "fechaInicio": "2025-05-31T17:59:25.264Z",
+      "ubicacion": "No especificada",
+      "visible": true,
+      "destacado": false
+    }
+  ]
+}

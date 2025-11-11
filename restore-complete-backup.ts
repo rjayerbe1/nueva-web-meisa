@@ -104,7 +104,6 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
         }),
         clientes: await prisma.cliente.findMany(),
         servicios: await prisma.servicio.findMany(),
-        miembrosEquipo: await prisma.miembroEquipo.findMany(),
         formulariosContacto: await prisma.contactForm.findMany(),
         configuracion: await prisma.configuracionSitio.findMany(),
         categorias: await prisma.categoriaProyecto.findMany()
@@ -176,7 +175,6 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
           await prisma.contactForm.deleteMany({})
           await prisma.configuracionSitio.deleteMany({})
           await prisma.categoriaProyecto.deleteMany({})
-          await prisma.miembroEquipo.deleteMany({})
           await prisma.servicio.deleteMany({})
           await prisma.cliente.deleteMany({})
           
@@ -235,18 +233,8 @@ async function restoreCompleteBackup(backupPath: string): Promise<RestoreResult>
               await prisma.servicio.create({ data: servicioData })
             }
           }
-          
-          // 4. Miembros del equipo
-          const teamData = data.miembrosEquipo || data.team || []
-          if (teamData.length > 0) {
-            console.log(`   👥 Restaurando ${teamData.length} miembros del equipo...`)
-            for (const miembro of teamData) {
-              const { id, createdAt, updatedAt, ...miembroData } = miembro
-              await prisma.miembroEquipo.create({ data: miembroData })
-            }
-          }
 
-          // 5. Categorías
+          // 4. Categorías
           const categoriesData = data.categorias || data.categories || []
           if (categoriesData.length > 0) {
             console.log(`   🏷️  Restaurando ${categoriesData.length} categorías...`)

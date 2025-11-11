@@ -114,15 +114,13 @@ async function createEnhancedBackup(): Promise<BackupResult> {
       
       const services = await prisma.servicio.findMany()
       const clients = await prisma.cliente.findMany()
-      const team = await prisma.miembroEquipo.findMany()
       const categories = await prisma.categoriaProyecto.findMany()
-      
+
       const criticalData = {
         exportDate: new Date().toISOString(),
         projects,
         services,
         clients,
-        team,
         categories
       }
       

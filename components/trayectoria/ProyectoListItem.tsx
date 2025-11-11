@@ -15,7 +15,6 @@ interface Proyecto {
   pesoKg: number | null
   pesoKgProporcional?: number
   areaM2: number | null
-  nivelDetalle: 'BAJO' | 'MEDIO' | 'ALTO'
   imagenes: string[] | null
   destacado: boolean
 }

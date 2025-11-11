@@ -30,7 +30,6 @@ interface ProyectoHojaVida {
   departamento: string | null
   valorContrato: number
   moneda: string
-  nivelDetalle: 'BAJO' | 'MEDIO' | 'ALTO'
   imagenes: string[] | null
   visible: boolean
   destacado: boolean
@@ -55,7 +54,6 @@ export function ProyectoHojaVidaForm({ proyecto }: Props) {
     departamento: proyecto?.departamento || '',
     valorContrato: proyecto?.valorContrato.toString() || '',
     moneda: proyecto?.moneda || 'COP',
-    nivelDetalle: proyecto?.nivelDetalle || 'MEDIO',
     imagenes: proyecto?.imagenes || [],
     visible: proyecto?.visible ?? true,
     destacado: proyecto?.destacado ?? false,
@@ -227,34 +225,6 @@ export function ProyectoHojaVidaForm({ proyecto }: Props) {
               onChange={handleChange}
               placeholder="0"
             />
-          </div>
-
-          <div>
-            <Label htmlFor="nivelDetalle">Nivel de Detalle *</Label>
-            <Select
-              value={formData.nivelDetalle}
-              onValueChange={(value) =>
-                setFormData(prev => ({ ...prev, nivelDetalle: value as 'BAJO' | 'MEDIO' | 'ALTO' }))
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccione el nivel" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="BAJO">
-                  Bajo - Solo título y cliente
-                </SelectItem>
-                <SelectItem value="MEDIO">
-                  Medio - Incluye ubicación y fechas
-                </SelectItem>
-                <SelectItem value="ALTO">
-                  Alto - Incluye fotos, datos técnicos completos
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-slate-500 mt-1">
-              Controla cuánta información se muestra en la página pública
-            </p>
           </div>
         </div>
       </Card>

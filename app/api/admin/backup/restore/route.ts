@@ -66,7 +66,6 @@ export async function POST(request: NextRequest) {
           }),
           clientes: await prisma.cliente.findMany(),
           servicios: await prisma.servicio.findMany(),
-          miembrosEquipo: await prisma.miembroEquipo.findMany(),
           formulariosContacto: await prisma.contactForm.findMany(),
           configuracion: await prisma.configuracionSitio.findMany()
         }
@@ -110,7 +109,6 @@ export async function POST(request: NextRequest) {
       // Luego eliminar tablas independientes
       await prisma.contactForm.deleteMany({})
       await prisma.configuracionSitio.deleteMany({})
-      await prisma.miembroEquipo.deleteMany({})
       await prisma.servicio.deleteMany({})
       await prisma.cliente.deleteMany({})
       
@@ -140,14 +138,7 @@ export async function POST(request: NextRequest) {
           await prisma.servicio.create({ data: servicioData })
         }
       }
-      
-      if (backupData.data.miembrosEquipo?.length > 0) {
-        for (const miembro of backupData.data.miembrosEquipo) {
-          const { id, createdAt, updatedAt, ...miembroData } = miembro
-          await prisma.miembroEquipo.create({ data: miembroData })
-        }
-      }
-      
+
       if (backupData.data.proyectos?.length > 0) {
         for (const proyecto of backupData.data.proyectos) {
           const { id, imagenes, documentos, progreso, timeline, comentarios, clienteRel, createdAt, updatedAt, ...proyectoData } = proyecto

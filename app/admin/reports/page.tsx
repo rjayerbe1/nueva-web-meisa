@@ -3,11 +3,11 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { UserRole } from "@prisma/client"
-import { BarChart3, TrendingUp, Calendar, FileText, DollarSign, Building2, Users } from "lucide-react"
+import { BarChart3, TrendingUp, Calendar, FileText, DollarSign, Building2 } from "lucide-react"
 import ReportsExport from "@/components/admin/ReportsExport"
 
 async function getReportData() {
-  const [proyectos, servicios, contactos, equipo] = await Promise.all([
+  const [proyectos, servicios, contactos] = await Promise.all([
     prisma.proyecto.findMany({
       select: {
         estado: true,
@@ -25,7 +25,6 @@ async function getReportData() {
         leido: true,
       }
     }),
-    prisma.miembroEquipo.count(),
   ])
 
   // Calcular estadísticas
@@ -58,7 +57,6 @@ async function getReportData() {
     totalServicios: servicios,
     totalContactos: contactos.length,
     contactosNoLeidos: contactos.filter(c => !c.leido).length,
-    totalEquipo: equipo,
   }
 }
 
@@ -91,7 +89,7 @@ export default async function ReportsPage() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
           <div className="flex items-center justify-between">
             <div>
@@ -131,17 +129,6 @@ export default async function ReportsPage() {
               </p>
             </div>
             <FileText className="h-12 w-12 text-orange-500 opacity-20" />
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-purple-600 text-sm font-medium">Equipo</p>
-              <p className="text-3xl font-bold text-purple-900 mt-1">{data.totalEquipo}</p>
-              <p className="text-sm text-purple-600 mt-2">miembros activos</p>
-            </div>
-            <Users className="h-12 w-12 text-purple-500 opacity-20" />
           </div>
         </div>
       </div>

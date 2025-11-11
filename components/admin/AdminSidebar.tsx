@@ -9,13 +9,22 @@ import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Dashboard", href: "/admin" },
-  { 
-    name: "Gestión de Proyectos", 
+  {
+    name: "Gestión de Proyectos",
     href: "/admin/projects",
     subItems: [
       { name: "Proyectos", href: "/admin/projects" },
       { name: "Historias", href: "/admin/historias" },
       { name: "Categorías", href: "/admin/categories" }
+    ]
+  },
+  {
+    name: "Trayectoria",
+    href: "/admin/trayectoria",
+    subItems: [
+      { name: "Proyectos", href: "/admin/trayectoria" },
+      { name: "Agregar Proyecto", href: "/admin/trayectoria/nuevo" },
+      { name: "Resúmenes por Año", href: "/admin/trayectoria/resumenes" }
     ]
   },
   { name: "Clientes", href: "/admin/clientes" },
@@ -28,7 +37,7 @@ const navigation = [
       { name: "Contenido Detallado", href: "/admin/services/content" }
     ]
   },
-  { 
+  {
     name: "Páginas",
     href: "/admin/paginas",
     subItems: [
@@ -37,7 +46,6 @@ const navigation = [
       { name: "Empresa", href: "/admin/paginas/empresa" }
     ]
   },
-  { name: "Equipo", href: "/admin/team" },
   { name: "Usuarios", href: "/admin/users" },
   { name: "Contactos", href: "/admin/messages" },
   { name: "Media", href: "/admin/media" },
@@ -53,13 +61,13 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps) {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(['Gestión de Proyectos', 'Servicios', 'Páginas'])
+  const [expandedItems, setExpandedItems] = useState<string[]>([])
 
   const toggleExpansion = (itemName: string) => {
-    setExpandedItems(prev => 
-      prev.includes(itemName) 
-        ? prev.filter(name => name !== itemName)
-        : [...prev, itemName]
+    setExpandedItems(prev =>
+      prev.includes(itemName)
+        ? [] // Si ya está expandido, cerrarlo
+        : [itemName] // Si no está expandido, abrir solo ese y cerrar los demás
     )
   }
 
