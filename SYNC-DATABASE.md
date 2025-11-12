@@ -36,7 +36,36 @@ Sincroniza el schema de tu base de datos local a Neon.
 
 ---
 
-### 3. `check-neon-db.mjs` - Revisar base de datos específica
+### 3. `compare-data.mjs` - Comparar DATOS entre local y Neon
+Compara la cantidad de registros en cada tabla.
+
+```bash
+node compare-data.mjs
+```
+
+**Qué muestra:**
+- ✅ Tablas con los mismos datos
+- ⚠️ Tablas con diferencias (y cuántos registros faltan)
+- 📋 Listado de primeros proyectos en local
+
+---
+
+### 4. `copy-data-to-neon.mjs` - Copiar DATOS a producción
+Copia datos que faltan de local a Neon.
+
+```bash
+node copy-data-to-neon.mjs
+```
+
+**IMPORTANTE:**
+- ⚠️ Solo copia datos que NO existen en Neon
+- ✅ No sobrescribe datos existentes
+- 📊 Muestra progreso en tiempo real
+- 🔍 Verifica al final que todo quedó bien
+
+---
+
+### 5. `check-neon-db.mjs` - Revisar base de datos específica
 Revisa en detalle una base de datos.
 
 ```bash
@@ -51,7 +80,7 @@ DATABASE_URL="postgresql://..." node check-neon-db.mjs
 
 ## 🔧 Flujo de Trabajo Recomendado
 
-### Cuando hagas cambios en el schema:
+### Cuando hagas cambios en el SCHEMA (estructura):
 
 1. **Edita** `prisma/schema.prisma`
 
@@ -65,7 +94,7 @@ DATABASE_URL="postgresql://..." node check-neon-db.mjs
    ./check-db-diff.sh
    ```
 
-4. **Sincroniza a producción:**
+4. **Sincroniza schema a producción:**
    ```bash
    ./sync-db-to-neon.sh
    ```
@@ -74,6 +103,29 @@ DATABASE_URL="postgresql://..." node check-neon-db.mjs
    - Visita tu sitio en producción
    - Prueba las funcionalidades afectadas
    - Revisa los logs en Cloud Run
+
+---
+
+### Cuando agregues DATOS nuevos en local:
+
+1. **Compara datos:**
+   ```bash
+   node compare-data.mjs
+   ```
+
+2. **Si hay diferencias, copia a producción:**
+   ```bash
+   node copy-data-to-neon.mjs
+   ```
+
+3. **Verifica que se copió bien:**
+   ```bash
+   node compare-data.mjs
+   ```
+
+4. **Prueba en tu sitio:**
+   - Visita las páginas afectadas
+   - Verifica que los datos aparezcan correctamente
 
 ---
 
