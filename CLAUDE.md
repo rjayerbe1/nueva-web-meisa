@@ -113,6 +113,7 @@ Required in `.env.local`:
 - Hover states: transition from lighter to darker blue shades
 
 ### Deployment
-- **Vercel**: Automatic deployment on push to main
-- **Docker**: Use provided Dockerfile and docker-compose.yml
+- **Cloud Run (GCP)**: Automatic deployment on push to main (production)
+- **Docker**: Use provided Dockerfile and docker-compose.yml for local dev
 - **Manual**: Build with `npm run build`, serve with `npm start`
+- **Database**: Neon PostgreSQL (sync with `./sync-db-to-neon.sh`)
