@@ -14,7 +14,6 @@ interface ReportData {
   totalServicios: number
   totalContactos: number
   contactosNoLeidos: number
-  totalEquipo: number
 }
 
 interface ReportsExportProps {
@@ -41,7 +40,6 @@ export default function ReportsExport({ data }: ReportsExportProps) {
         ['Total de Servicios', data.totalServicios.toString()],
         ['Total de Contactos', data.totalContactos.toString()],
         ['Contactos No Leídos', data.contactosNoLeidos.toString()],
-        ['Total del Equipo', data.totalEquipo.toString()],
         [''],
         ['Proyectos por Categoría', ''],
         ...Object.entries(data.proyectosPorCategoria).map(([categoria, count]) => [
@@ -128,10 +126,6 @@ export default function ReportsExport({ data }: ReportsExportProps) {
               <div class="card">
                 <h3>Contactos</h3>
                 <p style="font-size: 24px; font-weight: bold; color: #dc2626;">${data.totalContactos}</p>
-              </div>
-              <div class="card">
-                <h3>Equipo</h3>
-                <p style="font-size: 24px; font-weight: bold; color: #7c3aed;">${data.totalEquipo}</p>
               </div>
             </div>
           </div>
