@@ -15,6 +15,7 @@ interface Proyecto {
   valorContrato: number
   pesoKg: number | null
   areaM2: number | null
+  imagenes: string[] | null
   visible: boolean
   destacado: boolean
 }

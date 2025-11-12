@@ -93,7 +93,6 @@ export async function POST(request: NextRequest) {
         departamento: body.departamento || null,
         valorContrato: parseFloat(body.valorContrato),
         moneda: body.moneda || 'COP',
-        nivelDetalle: body.nivelDetalle || 'MEDIO',
         imagenes: body.imagenes || null,
         destacado: body.destacado || false,
         visible: body.visible !== false,

@@ -21,11 +21,25 @@ async function getProyecto(id: string) {
   }
 
   // Convertir Decimal a número para el formulario
+  // Solo retornar las propiedades necesarias para el formulario
   return {
-    ...proyecto,
+    id: proyecto.id,
+    entidadContratante: proyecto.entidadContratante,
+    objetoContrato: proyecto.objetoContrato,
+    tituloDisplay: proyecto.tituloDisplay,
+    descripcionSecundaria: proyecto.descripcionSecundaria,
+    fechaInicio: proyecto.fechaInicio,
+    fechaFin: proyecto.fechaFin,
     pesoKg: proyecto.pesoKg ? Number(proyecto.pesoKg) : null,
     areaM2: proyecto.areaM2 ? Number(proyecto.areaM2) : null,
-    valorContrato: Number(proyecto.valorContrato)
+    ubicacion: proyecto.ubicacion,
+    departamento: proyecto.departamento,
+    valorContrato: Number(proyecto.valorContrato),
+    moneda: proyecto.moneda,
+    imagenes: proyecto.imagenes as string[] | null,
+    visible: proyecto.visible,
+    destacado: proyecto.destacado,
+    orden: proyecto.orden
   }
 }
 
