@@ -1,0 +1,1378 @@
+{
+  "fecha": "2025-11-12T12:55:57.454Z",
+  "total_años": 28,
+  "resultados": [
+    {
+      "año": 1996,
+      "totalProyectos": 1,
+      "propuesta": {
+        "titulo": "1996: FRIESLAND COLOMBIA S.A.",
+        "descripcion": "Año con 1 proyectos para FRIESLAND COLOMBIA S.A. en Pasto.",
+        "categorias": [
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 1"
+        ]
+      },
+      "actual": {
+        "titulo": "1996: Plantas Industriales - Proyecto Friesland en Pasto",
+        "descripcion": "Año fundacional con la construcción de planta de producción para FRIESLAND COLOMBIA en Pasto, marcando el inicio de la trayectoria de MEISA en proyectos de infraestructura industrial. Proyecto que estableció las bases técnicas y de calidad que caracterizarían a la empresa en las siguientes décadas.",
+        "categorias": [
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "FRIESLAND COLOMBIA S.A.",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 0,
+        "industrial": 1,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 1
+      }
+    },
+    {
+      "año": 1998,
+      "totalProyectos": 5,
+      "propuesta": {
+        "titulo": "1998: GUIDO GAVILANES Y OSCAR RUIZ y UNIVERSIDAD DEL CAUCA - 3 Bodegas",
+        "descripcion": "Año de guido gavilanes y oscar ruiz - 3 bodegas con GUIDO GAVILANES Y OSCAR RUIZ, trabajos con UNIVERSIDAD DEL CAUCA en Popayán, Cauca.",
+        "categorias": [
+          "Edificios: 1",
+          "Plantas Industriales: 1",
+          "Escenarios Deportivos: 3",
+          "Estructuras Metálicas: 5"
+        ]
+      },
+      "actual": {
+        "titulo": "1998: Coliseos Polideportivos - 17 Escenarios Deportivos en Popayán y Cauca",
+        "descripcion": "Año de gran volumen con múltiples coliseos polideportivos para ENTIDADES DEPARTAMENTALES en varios municipios del Cauca (Santa Rosa, Piendamó, Corinto, La Sierra, Timbiquí, Santander de Quilichao) y Tumaco en Nariño. Construcción masiva de coliseos en 10 barrios de Popayán con MUNICIPIO Y GOBERNACIÓN. Coliseo para UNIVERSIDAD DEL CAUCA, Edificio Edgar Negret para LOTERÍA DEL CAUCA, y bodegas en Parque Industrial. Consolidación como referente en infraestructura deportiva regional.",
+        "categorias": [
+          "Escenarios Deportivos: 3",
+          "Edificios: 1",
+          "Educación y Cultura: 1",
+          "Plantas Industriales: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "GUIDO GAVILANES Y OSCAR RUIZ",
+          "count": 1
+        },
+        {
+          "cliente": "UNIVERSIDAD DEL CAUCA",
+          "count": 1
+        },
+        {
+          "cliente": "ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en San",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 1,
+        "industrial": 1,
+        "comercial": 0,
+        "deportivo": 3,
+        "transporte": 0,
+        "cubiertas": 0
+      }
+    },
+    {
+      "año": 1999,
+      "totalProyectos": 8,
+      "propuesta": {
+        "titulo": "1999: YAZAKI METREX S.A. y MUNICIPIO DE POPAYÁN - Fábrica Parque Industrial",
+        "descripcion": "Año de yazaki metrex - fábrica parque industrial con YAZAKI METREX S.A., trabajos con MUNICIPIO DE POPAYÁN en Popayán, Cali, Colombia.",
+        "categorias": [
+          "Puentes: 4",
+          "Edificios: 1",
+          "Plantas Industriales: 2",
+          "Cubiertas y Fachadas: 4",
+          "Estructuras Metálicas: 8"
+        ]
+      },
+      "actual": {
+        "titulo": "1999: Puentes y Plantas Industriales - Expansión Regional",
+        "descripcion": "Año destacado en infraestructura vial con múltiples puentes: dos en carretera circunvalar Pasto con MADECONS, puente para acueducto en Guapi, puente peatonal en Popayán, y puente colgante vehicular en Tierradentro con CORPORACIÓN NASA KIWE. Desarrollo industrial con YAZAKI METREX y AROMA DEL CAUCA en Parque Industrial de Popayán. Cubierta para iglesia en Santander de Quilichao y edificio Droguería Humanitaria en Cali. Consolidación en el Cauca.",
+        "categorias": [
+          "Puentes: 4",
+          "Cubiertas y Fachadas: 4",
+          "Plantas Industriales: 2",
+          "Estructuras Metálicas: 2",
+          "Educación y Cultura: 1",
+          "Edificios: 1",
+          "Infraestructura Vial: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "YAZAKI METREX S.A.",
+          "count": 1
+        },
+        {
+          "cliente": "MUNICIPIO DE POPAYÁN",
+          "count": 1
+        },
+        {
+          "cliente": "CONSTRUCTORA AYACAR S.A",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 4,
+        "edificios": 1,
+        "industrial": 2,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 4
+      }
+    },
+    {
+      "año": 2000,
+      "totalProyectos": 7,
+      "propuesta": {
+        "titulo": "2000: Ing. JUAN CARLOS MEJÍA y Ing. DIEGO CARVAJAL - Bodegas C.I. Valle",
+        "descripcion": "Año de ing. ricardo arboleda - bodegas c.i. valle con Ing. RICARDO ARBOLEDA, trabajos con Ing. DIEGO CARVAJAL en Cauca, Jamundí, Colombia.",
+        "categorias": [
+          "Puentes: 1",
+          "Edificios: 1",
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 7"
+        ]
+      },
+      "actual": {
+        "titulo": "2000: Infraestructura Social - Bodegas, Plazas de Mercado y Vivienda",
+        "descripcion": "Año de expansión internacional con proyecto del Condominio Costa Esmeralda en Panamá con CALDERON & JARAMILLO. Desarrollo de grandes conjuntos residenciales con Constructora Carpol en Popayán (400 viviendas). Infraestructura comercial con bodegas C.I. Valle y Plaza de Mercado en Guapi. Proyectos de infraestructura vial y de servicios con puentes en Chocó y soportes para acueducto en Caloto. Primera incursión en proyectos internacionales.",
+        "categorias": [
+          "Estructuras Metálicas: 3",
+          "Cubiertas y Fachadas: 2",
+          "Puentes: 1",
+          "Edificios: 1",
+          "Plantas Industriales: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Ing. JUAN CARLOS MEJÍA",
+          "count": 1
+        },
+        {
+          "cliente": "Ing. DIEGO CARVAJAL",
+          "count": 1
+        },
+        {
+          "cliente": "Ing. RICARDO ARBOLEDA",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 1,
+        "edificios": 1,
+        "industrial": 1,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 1
+      }
+    },
+    {
+      "año": 2001,
+      "totalProyectos": 9,
+      "propuesta": {
+        "titulo": "2001: CALDERON Y JARAMILLO INGS. y VIDRIOS Y ALUMINIOS ELSOL - Plaza Mercado Corinto",
+        "descripcion": "Año de ing. juan carlos canencio - plaza mercado corinto con Ing. JUAN CARLOS CANENCIO, trabajos con VIDRIOS Y ALUMINIOS ELSOL en Popayán, Cauca, Colombia.",
+        "categorias": [
+          "Puentes: 3",
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 9"
+        ]
+      },
+      "actual": {
+        "titulo": "2001: Puentes e Industria Alimentaria - Proyectos en el Cauca",
+        "descripcion": "Año con alta diversificación: plantas industriales con CALDERON Y JARAMILLO en Bogotá y READY FRUIT en La Unión, infraestructura vial con puentes vehiculares para Cartón de Colombia y CORPORACIÓN NASA KIWE en Tierradentro, más refuerzo de puente en Chinchiná. Infraestructura penitenciaria con CONSORCIO Q.M. en Popayán, obras artísticas con esculturas Tierradentro para GOBERNACIÓN DEL CAUCA, y Plaza de Mercado en Corinto. Expansión geográfica hacia Bogotá y Caldas.",
+        "categorias": [
+          "Estructuras Metálicas: 6",
+          "Puentes: 3",
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CALDERON Y JARAMILLO INGS.",
+          "count": 2
+        },
+        {
+          "cliente": "VIDRIOS Y ALUMINIOS ELSOL",
+          "count": 1
+        },
+        {
+          "cliente": "CORPORACIÓN NASA KIWE",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 0,
+        "industrial": 1,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 1
+      }
+    },
+    {
+      "año": 2002,
+      "totalProyectos": 6,
+      "propuesta": {
+        "titulo": "2002: CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P y In. HERNAN VALLEJO - Planta Prefabricados",
+        "descripcion": "Año de concrecauca - planta prefabricados con CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P, trabajos con In. HERNAN VALLEJO en Cauca, Popayán.",
+        "categorias": [
+          "Puentes: 3",
+          "Plantas Industriales: 1",
+          "Escenarios Deportivos: 1",
+          "Estructuras Metálicas: 6"
+        ]
+      },
+      "actual": {
+        "titulo": "2002: Puentes Colgantes y Coliseos del Plan Colombia",
+        "descripcion": "Año marcado por el Plan Colombia con construcción de múltiples coliseos en Almaguer, Cajibío, Morales, Caldono y Florencia en el Cauca. Infraestructura de salud con hospital en Timbiquí y múltiples puentes peatonales y colgantes sobre ríos con ingenieros independientes. Planta de Prefabricados con CONCRECAUCA en Puerto Tejada. Consolidación en infraestructura social, vial y productiva en el departamento del Cauca.",
+        "categorias": [
+          "Puentes: 3",
+          "Plantas Industriales: 1",
+          "Escenarios Deportivos: 1",
+          "Estructuras Metálicas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P",
+          "count": 1
+        },
+        {
+          "cliente": "In. HERNAN VALLEJO",
+          "count": 1
+        },
+        {
+          "cliente": "Ing. JESUS ALBEIRO VASQUEZ",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 0,
+        "industrial": 1,
+        "comercial": 0,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 0
+      }
+    },
+    {
+      "año": 2003,
+      "totalProyectos": 6,
+      "propuesta": {
+        "titulo": "2003: IGLESIA DE DIOS MINISTERIAL y COLEGIO STA. ISABEL DE HUNGRÍA - Popayán",
+        "descripcion": "Año de iglesia de dios ministerial - popayán con IGLESIA DE DIOS MINISTERIAL, trabajos con COLEGIO STA. ISABEL DE HUNGRÍA en Popayán, Cali, Pasto.",
+        "categorias": [
+          "Puentes: 2",
+          "Centros Comerciales: 1",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 2",
+          "Estructuras Metálicas: 6"
+        ]
+      },
+      "actual": {
+        "titulo": "2003: Puentes, Cubiertas e Infraestructura Comercial",
+        "descripcion": "Año diversificado con cubierta para IGLESIA DE DIOS MINISTERIAL en Popayán, Centro de Acopio en La Vega con Ing. ÁLVARO CARVAJAL, y viaductos industriales para Ingenio Providencia. Infraestructura vial con puente vehicular FERTECNICA en Tacueyó-López. Desarrollo de Coliseo Deportivo Dúplex para COLEGIO STA. ISABEL en Cali y Centro Comercial en Pasto. Balance entre infraestructura religiosa, agrícola, industrial, vial, deportiva y comercial.",
+        "categorias": [
+          "Estructuras Metálicas: 3",
+          "Puentes: 2",
+          "Infraestructura Vial: 2",
+          "Cubiertas y Fachadas: 2",
+          "Centros Comerciales: 1",
+          "Escenarios Deportivos: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "IGLESIA DE DIOS MINISTERIAL",
+          "count": 1
+        },
+        {
+          "cliente": "COLEGIO STA. ISABEL DE HUNGRÍA",
+          "count": 1
+        },
+        {
+          "cliente": "UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 2,
+        "edificios": 0,
+        "industrial": 0,
+        "comercial": 1,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 2
+      }
+    },
+    {
+      "año": 2004,
+      "totalProyectos": 3,
+      "propuesta": {
+        "titulo": "2004: CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación. y ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC  - Almacén Éxito",
+        "descripcion": "Año de consorcio conconcreto - almacén éxito con CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación., trabajos con ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC  en Colombia, Popayán, Cauca.",
+        "categorias": [
+          "Puentes: 2",
+          "Estructuras Metálicas: 3"
+        ]
+      },
+      "actual": {
+        "titulo": "2004: Puentes Peatonales Programa Tierradentro",
+        "descripcion": "Año centrado en infraestructura con viaducto para acueducto de Popayán y múltiples puentes peatonales y caballares del PROGRAMA TIERRADENTRO UNIÓN EUROPEA en Yaquivá, Segovia, Carrizales y La Estrella en el Cauca. Ampliación comercial de ALMACEN ÉXITO. Consolidación en proyectos de infraestructura básica y accesibilidad en zonas rurales.",
+        "categorias": [
+          "Puentes: 2",
+          "Infraestructura Vial: 2",
+          "Estructuras Metálicas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CONTORCIÓ CONCONCRETO RAMON H. ALMACEN ÉXITO Estructura metálica y obras complementarias Ampliación.",
+          "count": 1
+        },
+        {
+          "cliente": "ACUEDUCTO Y ALCANTARILLADO DE POPAYÁN S.A. Diseño y construcción viaducto para soportar tubería PVC ",
+          "count": 1
+        },
+        {
+          "cliente": "PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaqu",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 2,
+        "edificios": 0,
+        "industrial": 0,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 0
+      }
+    },
+    {
+      "año": 2005,
+      "totalProyectos": 8,
+      "propuesta": {
+        "titulo": "2005: VELKAR S.A. y COLEGIO STA. ISABEL DE HUNGRIA - Sede Cali Ciudad 2000",
+        "descripcion": "Año de colegio santa isabel - sede cali ciudad 2000 con COLEGIO STA. ISABEL DE HUNGRIA, trabajos con COLEGIO STA. ISABEL DE HUNGRIA en Cali, Colombia, Cauca.",
+        "categorias": [
+          "Puentes: 3",
+          "Edificios: 2",
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 2",
+          "Estructuras Metálicas: 8"
+        ]
+      },
+      "actual": {
+        "titulo": "2005: Infraestructura de Acueductos y Edificaciones Comerciales",
+        "descripcion": "Año con proyectos industriales destacados con VELKAR en fábrica TEXCINTAS y cubiertas en Plazuela del Sur en Cali. Infraestructura vial con CONSTRUCTORA PIJAO en 14 puentes para apartamentos. Viaductos para acueducto del río Palacé con CONSORCIO ACUANORTE y puentes peatonales con PROGRAMA TIERRADENTRO UNIÓN EUROPEA en Cauca. Infraestructura educativa con COLEGIO STA. ISABEL y Plaza de Mercado en Villarrica. Reforzamiento de edificio en Bogotá con MIRA TU SALUD EPS.",
+        "categorias": [
+          "Edificios: 3",
+          "Estructuras Metálicas: 3",
+          "Cubiertas y Fachadas: 2",
+          "Puentes: 2",
+          "Plantas Industriales: 1",
+          "Infraestructura Vial: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "VELKAR S.A.",
+          "count": 1
+        },
+        {
+          "cliente": "COLEGIO STA. ISABEL DE HUNGRIA",
+          "count": 1
+        },
+        {
+          "cliente": "CONSTRUCTORA PIJAO LTDA. Construcción de 14 puentes metálicos en apartamentos",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 2,
+        "industrial": 1,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 2
+      }
+    },
+    {
+      "año": 2006,
+      "totalProyectos": 10,
+      "propuesta": {
+        "titulo": "2006: CONSTRUCTORA MELENDEZ y D.C.I. ARTE - CC Único Etapa 3 Cali",
+        "descripcion": "Año de velkar - cc único etapa 3 cali con VELKAR S.A.  Estructura metálica de cubierta y de soporte 3a. Etapa Centro Comercial Único, trabajos con D.C.I. ARTE en Cali, Colombia, Cauca.",
+        "categorias": [
+          "Edificios: 1",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 2",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 5",
+          "Estructuras Metálicas: 10"
+        ]
+      },
+      "actual": {
+        "titulo": "2006: Educación y Centros Comerciales - CC Único Etapa 3",
+        "descripcion": "Año de alta actividad con 3a etapa del Centro Comercial Único en Cali con VELKAR, edificio de 4 plantas para CLINICA EXCELLENCE, y Coliseo Cubierto en Miranda Cauca. Proyectos educativos con Universidad San Buenaventura y Colegio Colombo Británico, infraestructura comercial con SUPERMERCADOS POMONA en Ciudad Jardín, y bodega Cementos Argos con INCICO en Yumbo. Fuerte presencia en Cali con múltiples sectores.",
+        "categorias": [
+          "Estructuras Metálicas: 5",
+          "Edificios: 3",
+          "Cubiertas y Fachadas: 3",
+          "Plantas Industriales: 2",
+          "Escenarios Deportivos: 1",
+          "Educación y Cultura: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CONSTRUCTORA MELENDEZ",
+          "count": 1
+        },
+        {
+          "cliente": "D.C.I. ARTE",
+          "count": 1
+        },
+        {
+          "cliente": "COLEGIO COLOMBO BRITÁNICO",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 1,
+        "industrial": 2,
+        "comercial": 1,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 5
+      }
+    },
+    {
+      "año": 2007,
+      "totalProyectos": 7,
+      "propuesta": {
+        "titulo": "2007: CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa y CONSTRUCTORA HERNANDEZ BOHMER",
+        "descripcion": "Año con 1 proyectos para CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa, trabajos con CONSTRUCTORA HERNANDEZ BOHMER en Cali, Popayán, Cauca.",
+        "categorias": [
+          "Edificios: 1",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 2",
+          "Estructuras Metálicas: 7"
+        ]
+      },
+      "actual": {
+        "titulo": "2007: Edificios y Centros Comerciales - Proyectos en Cali y Popayán",
+        "descripcion": "Año con continuidad en el Centro Comercial Único con 4a etapa en Cali, proyectos industriales con VELKAR en bodega TEXCINTAS, y edificio Campestre Towers con CONSTRUCTORA HERNANDEZ BOHMER. Expansión industrial con POLLOS BUCANERO en 2a etapa y ALPICAL en Caloto. Infraestructura de servicios con estación en Manizales y proyectos residenciales en Popayán. Presencia fuerte en Cali y Valle del Cauca.",
+        "categorias": [
+          "Estructuras Metálicas: 6",
+          "Cubiertas y Fachadas: 2",
+          "Edificios: 1",
+          "Plantas Industriales: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa",
+          "count": 1
+        },
+        {
+          "cliente": "CONSTRUCTORA HERNANDEZ BOHMER",
+          "count": 1
+        },
+        {
+          "cliente": "CONSTRUCTORA CARPOL",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 1,
+        "industrial": 1,
+        "comercial": 1,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 2
+      }
+    },
+    {
+      "año": 2008,
+      "totalProyectos": 6,
+      "propuesta": {
+        "titulo": "2008: ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario y COMITÉ CAFETEROS CAUCA - CC Campanario Popayán",
+        "descripcion": "Año de arinsa - cc campanario popayán con ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario, trabajos con COMITÉ CAFETEROS CAUCA en Popayán, Cauca, Tuluá.",
+        "categorias": [
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 1",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 4",
+          "Estructuras Metálicas: 6"
+        ]
+      },
+      "actual": {
+        "titulo": "2008: Centro Comercial Campanario y Proyectos Industriales",
+        "descripcion": "Año marcado por el gran proyecto del Centro Comercial Campanario en Popayán con ARINSA, coliseo cubierto en Timbío con COMITÉ CAFETEROS CAUCA, y bodega industrial con NUTRIPLANTAS en Tuluá. Ampliación de CLINICA EXCELLENCE en Cali, Terminal de Transportes en Popayán, y proyectos de entretenimiento en Yumbo. Diversificación entre comercio, deporte, salud y logística en el suroccidente.",
+        "categorias": [
+          "Estructuras Metálicas: 5",
+          "Cubiertas y Fachadas: 3",
+          "Escenarios Deportivos: 1",
+          "Plantas Industriales: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario",
+          "count": 1
+        },
+        {
+          "cliente": "COMITÉ CAFETEROS CAUCA",
+          "count": 1
+        },
+        {
+          "cliente": "NUTRIPLANTAS",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 0,
+        "industrial": 1,
+        "comercial": 1,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 4
+      }
+    },
+    {
+      "año": 2009,
+      "totalProyectos": 6,
+      "propuesta": {
+        "titulo": "2009: O.P.P. GRANELES y ZONA FRANCA PALMASECA - Colegio Potrerogrande",
+        "descripcion": "Año de constructora carpol - colegio potrerogrande con CONSTRUCTORA CARPOL LTDA., trabajos con ZONA FRANCA PALMASECA en Buenaventura, Colombia, Cali.",
+        "categorias": [
+          "Puentes: 1",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 2",
+          "Cubiertas y Fachadas: 3",
+          "Estructuras Metálicas: 6"
+        ]
+      },
+      "actual": {
+        "titulo": "2009: Puente Nolasco y Bodegas en Buenaventura",
+        "descripcion": "Año destacado por el Centro Comercial Único en Barranquilla y el gran Puente Vehicular Nolasco de 145 metros sobre el río Páez con CONSORCIO DEL CAUCA. Infraestructura educativa con CONSTRUCTORA CARPOL en Colegio Potrerogrande de Cali, proyectos de bodegas con O.P.P. GRANELES en Buenaventura y ZONA FRANCA PALMASECA. Diversificación entre comercio, educación, infraestructura vial y logística.",
+        "categorias": [
+          "Cubiertas y Fachadas: 3",
+          "Estructuras Metálicas: 3",
+          "Plantas Industriales: 2",
+          "Puentes: 1",
+          "Educación y Cultura: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "O.P.P. GRANELES",
+          "count": 1
+        },
+        {
+          "cliente": "ZONA FRANCA PALMASECA",
+          "count": 1
+        },
+        {
+          "cliente": "CONSTRUCTORA CARPOL LTDA.",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 1,
+        "edificios": 0,
+        "industrial": 2,
+        "comercial": 1,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 3
+      }
+    },
+    {
+      "año": 2010,
+      "totalProyectos": 5,
+      "propuesta": {
+        "titulo": "2010: COMFACAUCA y Ing. MANUEL MUÑOZ - Jardín Social Popayán",
+        "descripcion": "Año de comfacauca - jardín social popayán con COMFACAUCA, trabajos con Ing. MANUEL MUÑOZ en Popayán, Colombia, Cauca.",
+        "categorias": [
+          "Puentes: 2",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 5"
+        ]
+      },
+      "actual": {
+        "titulo": "2010: Puentes Vehiculares y Coliseos Educativos",
+        "descripcion": "Año con proyectos de infraestructura vial incluyendo puente vehicular sobre río Mazamorras con CONSORCIO M.G. y reparación de puente peatonal en Terminal de Transportes de Popayán. Desarrollo de infraestructura educativa y deportiva con COLEGIO COLOMBO FRANCES en coliseo cubierto y COMFACAUCA en Jardín Social. Proyectos industriales con CONSORCIO SANTANDER en Matadero Santander de Quilichao. Consolidación en Popayán y Cauca.",
+        "categorias": [
+          "Puentes: 2",
+          "Estructuras Metálicas: 2",
+          "Infraestructura Vial: 1",
+          "Cubiertas y Fachadas: 1",
+          "Escenarios Deportivos: 1",
+          "Educación y Cultura: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "COMFACAUCA",
+          "count": 1
+        },
+        {
+          "cliente": "Ing. MANUEL MUÑOZ",
+          "count": 1
+        },
+        {
+          "cliente": "CONSORCIO SANTANDER 3",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 2,
+        "edificios": 0,
+        "industrial": 0,
+        "comercial": 0,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 1
+      }
+    },
+    {
+      "año": 2011,
+      "totalProyectos": 13,
+      "propuesta": {
+        "titulo": "2011: COMFACAUCA y MAJA S.A.S. - Puente Autopista Sur x Cra 63B",
+        "descripcion": "Año de consorcio vías cali - puente autopista sur x cra 63b con CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de, trabajos con MAJA S.A.S. en Popayán, Cauca, Cali, Popayán.",
+        "categorias": [
+          "Puentes: 4",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 2",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 6",
+          "Estructuras Metálicas: 13"
+        ]
+      },
+      "actual": {
+        "titulo": "2011: Puentes Peatonales y Proyectos Educativos con Comfacauca",
+        "descripcion": "Desarrollo de puentes peatonales en la Autopista Sur de Cali y Risaralda (ODINSA), proyectos educativos con COMFACAUCA en colegios de Popayán y Puerto Tejada, expansión industrial con EKA en Cali, y estructuras para Centro Comercial Único en Pasto. Año de diversificación entre infraestructura vial, educación y comercio en el suroccidente.",
+        "categorias": [
+          "Cubiertas y Fachadas: 6",
+          "Estructuras Metálicas: 5",
+          "Puentes: 4",
+          "Educación y Cultura: 3",
+          "Plantas Industriales: 2",
+          "Infraestructura Vial: 2",
+          "Edificios: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "COMFACAUCA",
+          "count": 2
+        },
+        {
+          "cliente": "MAJA S.A.S.",
+          "count": 1
+        },
+        {
+          "cliente": "EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 4,
+        "edificios": 0,
+        "industrial": 2,
+        "comercial": 1,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 6
+      }
+    },
+    {
+      "año": 2012,
+      "totalProyectos": 16,
+      "propuesta": {
+        "titulo": "2012: COMFACAUCA y CONSORCIO CORREDORES DE COMPETITIVIDAD - Coliseo Fútbol Sala",
+        "descripcion": "Año de consorcio mj 2011 - coliseo fútbol sala con CONSORCIO MJ 2011, trabajos con CONSORCIO CORREDORES DE COMPETITIVIDAD en Popayán, Cauca, Popayán, Colombia.",
+        "categorias": [
+          "Puentes: 3",
+          "Edificios: 2",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 1",
+          "Escenarios Deportivos: 5",
+          "Cubiertas y Fachadas: 6",
+          "Estructuras Metálicas: 16"
+        ]
+      },
+      "actual": {
+        "titulo": "2012: Piscina Olímpica Popayán - Juegos Nacionales y Coliseos",
+        "descripcion": "Año marcado por los Juegos Nacionales de Popayán con múltiples coliseos: fútbol sala (CONSORCIO MJ), artes marciales (ARGEU), piscina olímpica (FONDO MIXTO), y coliseo Colegio Franciscanas. Proyectos con COMFACAUCA en Centro Pisojé (cubiertas canchas y puente vehicular sobre río Cauca) y mezzanine oficinas. Infraestructura vial de gran envergadura con CONSORCIO CORREDORES en Puente Saraconcho en arco. Centro Comercial Único en Villavicencio y proyectos industriales con INGENIO MANUELITA y POLLOS BUCANERO.",
+        "categorias": [
+          "Cubiertas y Fachadas: 6",
+          "Estructuras Metálicas: 6",
+          "Escenarios Deportivos: 4",
+          "Edificios: 3",
+          "Puentes: 3",
+          "Plantas Industriales: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "COMFACAUCA",
+          "count": 3
+        },
+        {
+          "cliente": "CONSORCIO CORREDORES DE COMPETITIVIDAD",
+          "count": 2
+        },
+        {
+          "cliente": "MAJA S.A.S.",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 2,
+        "industrial": 1,
+        "comercial": 1,
+        "deportivo": 5,
+        "transporte": 0,
+        "cubiertas": 6
+      }
+    },
+    {
+      "año": 2013,
+      "totalProyectos": 17,
+      "propuesta": {
+        "titulo": "2013: CENTRO COMERCIAL ÚNICO y INGENIO MAYAGUEZ - Colegio Chiriquí Valledupar",
+        "descripcion": "Año de consorcio apv - colegio chiriquí valledupar con CONSORCIO A.P.V., trabajos con INGENIO MAYAGUEZ en Valledupar, Cali, Colombia.",
+        "categorias": [
+          "Puentes: 2",
+          "Edificios: 3",
+          "Centros Comerciales: 3",
+          "Plantas Industriales: 2",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 14",
+          "Estructuras Metálicas: 17"
+        ]
+      },
+      "actual": {
+        "titulo": "2013: Centro Comercial Único Yumbo y Pollos Bucanero Etapa 4",
+        "descripcion": "Año de gran actividad con ampliación de gran escala del CENTRO COMERCIAL ÚNICO en Cali, construcción del Coliseo Mundialista Korfball con MAJA para los Juegos Mundiales, y bodega Dúplex de alta complejidad con INGENIO MAYAGUEZ. Continuidad con POLLOS BUCANERO en 4a etapa en Cali y diversificación en infraestructura educativa con CONSORCIO A.P.V. en Colegio Chiriquí Valledupar. Múltiples proyectos de edificios y locales comerciales en Cali. Consolidación en el Valle del Cauca.",
+        "categorias": [
+          "Cubiertas y Fachadas: 13",
+          "Estructuras Metálicas: 11",
+          "Edificios: 3",
+          "Plantas Industriales: 2",
+          "Torres y Telecomunicaciones: 1",
+          "Educación y Cultura: 1",
+          "Centros Comerciales: 1",
+          "Escenarios Deportivos: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CENTRO COMERCIAL ÚNICO",
+          "count": 2
+        },
+        {
+          "cliente": "INGENIO MAYAGUEZ",
+          "count": 2
+        },
+        {
+          "cliente": "CONSORCIO A.P.V.",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 2,
+        "edificios": 3,
+        "industrial": 2,
+        "comercial": 3,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 14
+      }
+    },
+    {
+      "año": 2014,
+      "totalProyectos": 24,
+      "propuesta": {
+        "titulo": "2014: POLLOS BUCANERO y Harold Méndez - WTC Pacific",
+        "descripcion": "Año de constructora colpatria - wtc pacific con CONSTRUCTORA COLPATRIA, trabajos con Harold Méndez en Cali, Valle del Cauca, Bolívar, Cauca, Cauca.",
+        "categorias": [
+          "Puentes: 5",
+          "Edificios: 2",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 1",
+          "Cubiertas y Fachadas: 8",
+          "Estructuras Metálicas: 24"
+        ]
+      },
+      "actual": {
+        "titulo": "2014: Pollos Bucanero - Expansión Industrial y Consorcio del Cauca",
+        "descripcion": "Año con fuerte presencia en infraestructura vial con CONSORCIO CORREDORES en barandas para puentes en Cauca, construcción de puente vehicular Frisoles con Ing. Orlando Revelo, y 3 puentes peatonales en Municipio Paez. Continuidad industrial con POLLOS BUCANERO en Villagorgona con hangar y cuartos fríos. Desarrollo de edificio WTC Pacific con CONSTRUCTORA COLPATRIA y Centro Comercial Único en Yumbo. Balance entre infraestructura vial, industrial y comercial.",
+        "categorias": [
+          "Estructuras Metálicas: 14",
+          "Cubiertas y Fachadas: 8",
+          "Puentes: 3",
+          "Edificios: 2",
+          "Torres y Telecomunicaciones: 1",
+          "Centros Comerciales: 1",
+          "Educación y Cultura: 1",
+          "Plantas Industriales: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "POLLOS BUCANERO",
+          "count": 7
+        },
+        {
+          "cliente": "Harold Méndez",
+          "count": 1
+        },
+        {
+          "cliente": "Cliente Público",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 5,
+        "edificios": 2,
+        "industrial": 1,
+        "comercial": 1,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 8
+      }
+    },
+    {
+      "año": 2015,
+      "totalProyectos": 23,
+      "propuesta": {
+        "titulo": "2015: POLLOS BUCANERO y UNIÓN TEMPORAL ESPACIO 2015 - Parqueaderos y Cinemas",
+        "descripcion": "Año de cc único pasto - parqueaderos y cinemas con CENTRO COMERCIAL  ÚNICO, trabajos con UNIÓN TEMPORAL ESPACIO 2015 en Cali, Valle del Cauca, Armenia, Quindío, Villagorgona.",
+        "categorias": [
+          "Puentes: 2",
+          "Centros Comerciales: 4",
+          "Plantas Industriales: 5",
+          "Cubiertas y Fachadas: 4",
+          "Estructuras Metálicas: 23"
+        ]
+      },
+      "actual": {
+        "titulo": "2015: Centros Comerciales Único - Proyectos en Pasto y Cali",
+        "descripcion": "Año con alto volumen de proyectos industriales para POLLOS BUCANERO en Villagorgona y Barranquilla (cuartos fríos, planta de harinas, talleres). Grandes proyectos comerciales con ARINSA en ampliación CC Campanar Popayán y CONSTRUCTORA COLPATRIA con Centros Comerciales Único en Neiva y Barranquilla. Infraestructura vial con CONSORCIO REMIN en Puente Frisoles Nariño. Diversificación en sectores industrial, comercial y vial.",
+        "categorias": [
+          "Estructuras Metálicas: 17",
+          "Plantas Industriales: 4",
+          "Centros Comerciales: 3",
+          "Cubiertas y Fachadas: 3",
+          "Puentes: 2"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "POLLOS BUCANERO",
+          "count": 5
+        },
+        {
+          "cliente": "UNIÓN TEMPORAL ESPACIO 2015",
+          "count": 1
+        },
+        {
+          "cliente": "ER Inversiones",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 2,
+        "edificios": 0,
+        "industrial": 5,
+        "comercial": 4,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 4
+      }
+    },
+    {
+      "año": 2016,
+      "totalProyectos": 25,
+      "propuesta": {
+        "titulo": "2016: ROYAL FILMS SAS y ROYAL FILMS S.A.S - Proyectos Industriales",
+        "descripcion": "Año de estructura metálica para puente peatonal con CONSORCIO VÍAS DE CALI S.A.S., trabajos con ROYAL FILMS S.A.S y UNION TEMPORAL EYR en Cali, Valle del Cauca, Yumbo, Valle, Neiva.",
+        "categorias": [
+          "Puentes: 4",
+          "Transporte Urbano: 2",
+          "Edificios: 1",
+          "Plantas Industriales: 2",
+          "Cubiertas y Fachadas: 5",
+          "Estructuras Metálicas: 25"
+        ]
+      },
+      "actual": {
+        "titulo": "2016: Royal Films - Adecuaciones en Centros Comerciales",
+        "descripcion": "Año de expansión masiva con ROYAL FILMS en salas de cine para Centros Comerciales Único en Neiva, Cali, Barranquilla, Yumbo y Pasto, más proyectos en CC Jardín Plaza y La Estación. Construcción de la Cinemateca Distrital en Bogotá con Edgar Oliveros. Estructuras industriales con C.C. Construcciones para Postobon y múltiples proyectos de mezanines y locales comerciales. Consolidación como proveedor de infraestructura para entretenimiento y comercio en Colombia.",
+        "categorias": [
+          "Estructuras Metálicas: 16",
+          "Cubiertas y Fachadas: 3",
+          "Puentes: 2",
+          "Plantas Industriales: 1",
+          "Edificios: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "ROYAL FILMS SAS",
+          "count": 4
+        },
+        {
+          "cliente": "ROYAL FILMS S.A.S",
+          "count": 2
+        },
+        {
+          "cliente": "UNION TEMPORAL EYR",
+          "count": 2
+        }
+      ],
+      "tipos": {
+        "puentes": 4,
+        "edificios": 1,
+        "industrial": 2,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 2,
+        "cubiertas": 5
+      }
+    },
+    {
+      "año": 2017,
+      "totalProyectos": 7,
+      "propuesta": {
+        "titulo": "2017: CONSORCIO VÍAS DE CALI S.A.S. y Constructora Colpatria SAS - Proyectos Industriales",
+        "descripcion": "Año de estructura metálica para puente peatonal con CONSORCIO VÍAS DE CALI S.A.S., trabajos con Constructora Colpatria SAS en Cali, Valle del Cauca, Neiva, Huila, Pasto.",
+        "categorias": [
+          "Puentes: 3",
+          "Edificios: 1",
+          "Centros Comerciales: 1",
+          "Cubiertas y Fachadas: 3",
+          "Estructuras Metálicas: 7"
+        ]
+      },
+      "actual": {
+        "titulo": "2017: Edificio Omega - Nueva Sede de Seguridad",
+        "descripcion": "Año centrado en edificación con el proyecto de la nueva sede de Seguridad Omega en Cali. Inicio de infraestructura vial con el Puente Vehicular Cambrín en Rio Blanco-Tolima por Consorcio Cambrin, y desarrollo comercial con el Centro Comercial Monserrat en Popayán con Construcciones Adriana Rivera. Consolidación en proyectos de edificios corporativos y estructuras comerciales.",
+        "categorias": [
+          "Edificios: 1",
+          "Puentes: 1",
+          "Centros Comerciales: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "CONSORCIO VÍAS DE CALI S.A.S.",
+          "count": 1
+        },
+        {
+          "cliente": "Constructora Colpatria SAS",
+          "count": 1
+        },
+        {
+          "cliente": "Cliente Público",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 1,
+        "industrial": 0,
+        "comercial": 1,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 3
+      }
+    },
+    {
+      "año": 2018,
+      "totalProyectos": 8,
+      "propuesta": {
+        "titulo": "2018: Constructora Colpatria SAS y Unitres SAS - Proyectos Industriales",
+        "descripcion": "Año de estructura metálica y cubierta en neiva con Constructora Colpatria SAS, trabajos con Unitres SAS en Neiva, Huila, Cali, Valle, Rio Blanco-Tolima.",
+        "categorias": [
+          "Puentes: 3",
+          "Centros Comerciales: 2",
+          "Cubiertas y Fachadas: 3",
+          "Estructuras Metálicas: 8"
+        ]
+      },
+      "actual": {
+        "titulo": "2018: Puentes Vehiculares - Consorcio Metrovial y Proyectos Viales",
+        "descripcion": "Año de inicio de proyecto de gran escala Terminal Autopista Simón Bolívar con Consorcio Metrovial en Cali, Centro Comercial Paseo Villa del Río con Ménsula en Bogotá, y múltiples puentes vehiculares con Consorcio Islas y Orlando Revelo. Finalización del Puente Vehicular Cambrín en Rio Blanco-Tolima con Consorcio Cambrin y del Centro Comercial Monserrat en Popayán con Construcciones Adriana Rivera. Fortalecimiento en infraestructura vial y comercial.",
+        "categorias": [
+          "Puentes: 3",
+          "Estructuras Metálicas: 3",
+          "Centros Comerciales: 2",
+          "Cubiertas y Fachadas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Constructora Colpatria SAS",
+          "count": 1
+        },
+        {
+          "cliente": "Unitres SAS",
+          "count": 1
+        },
+        {
+          "cliente": "Consorcio Cambrin 2017",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 0,
+        "industrial": 0,
+        "comercial": 2,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 3
+      }
+    },
+    {
+      "año": 2019,
+      "totalProyectos": 7,
+      "propuesta": {
+        "titulo": "2019: Consorcio Metrovial Sb y Ménsula Ingenieros S.A.S - Terminal Intermedio",
+        "descripcion": "Año de consorcio metrovial sb - terminal intermedio con Consorcio Metrovial Sb, trabajos con Ménsula Ingenieros S.A.S en Cali-Valle, Bogotá, Villa Rica-Cauca.",
+        "categorias": [
+          "Puentes: 1",
+          "Transporte Urbano: 1",
+          "Edificios: 2",
+          "Centros Comerciales: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 7"
+        ]
+      },
+      "actual": {
+        "titulo": "2019: Proyectos Industriales - Consorcio Islas y Cargill",
+        "descripcion": "Año con finalización del Puente Vehicular Cra 100 en Cali por Consorcio Islas, ampliación industrial de Cargill en Villa Rica, e inicio de torre de cogeneración con Propal en Yumbo. Continuidad en grandes proyectos como el Terminal de la Autopista Simón Bolívar con Consorcio Metrovial y el Centro Comercial Paseo Villa del Río con Ménsula en Bogotá. Inicio de infraestructura para Cuerpo de Bomberos en Popayán.",
+        "categorias": [
+          "Estructuras Metálicas: 3",
+          "Edificios: 2",
+          "Centros Comerciales: 1",
+          "Puentes: 1",
+          "Cubiertas y Fachadas: 1",
+          "Torres y Telecomunicaciones: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Consorcio Metrovial Sb",
+          "count": 1
+        },
+        {
+          "cliente": "Ménsula Ingenieros S.A.S",
+          "count": 1
+        },
+        {
+          "cliente": "Consorcio Islas 2019",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 1,
+        "edificios": 2,
+        "industrial": 0,
+        "comercial": 1,
+        "deportivo": 0,
+        "transporte": 1,
+        "cubiertas": 1
+      }
+    },
+    {
+      "año": 2020,
+      "totalProyectos": 15,
+      "propuesta": {
+        "titulo": "2020: Tecnoquímicas S.A. y ARINSA - Proyectos Industriales",
+        "descripcion": "Año de cimentación, estructura metálica y cubiertas ampli con ARINSA, trabajos con ARINSA en Popayán, Cauca, Bogotá, Cundinamarca, Cali-Valle.",
+        "categorias": [
+          "Transporte Urbano: 1",
+          "Edificios: 4",
+          "Centros Comerciales: 1",
+          "Plantas Industriales: 3",
+          "Cubiertas y Fachadas: 2",
+          "Estructuras Metálicas: 15"
+        ]
+      },
+      "actual": {
+        "titulo": "2020: Centros Comerciales y Torres Industriales - Propal y Ménsula",
+        "descripcion": "Año de inicio de grandes proyectos industriales con Tecnoquímicas en Jamundí, Constructora Normandia con el Centro Comercial Bochalema Plaza en Cali, e Ingenio Providencia con el complejo Piedechinche en Cerrito. Finalización del Centro Comercial Paseo Villa del Río con Ménsula en Bogotá, torre de cogeneración Propal en Yumbo, y edificio del Cuerpo de Bomberos en Popayán. Inicio de proyectos educativos con Universidad Javeriana en Cali e infraestructura cafetera con Juan Tama en Inzá.",
+        "categorias": [
+          "Estructuras Metálicas: 9",
+          "Edificios: 4",
+          "Plantas Industriales: 3",
+          "Centros Comerciales: 1",
+          "Torres y Telecomunicaciones: 1",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Tecnoquímicas S.A.",
+          "count": 2
+        },
+        {
+          "cliente": "ARINSA",
+          "count": 1
+        },
+        {
+          "cliente": "Consorcio Cine Cultura Bogotá",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 4,
+        "industrial": 3,
+        "comercial": 1,
+        "deportivo": 0,
+        "transporte": 1,
+        "cubiertas": 2
+      }
+    },
+    {
+      "año": 2021,
+      "totalProyectos": 13,
+      "propuesta": {
+        "titulo": "2021: Tecnoquímicas S.A. y Ingenio Providencia S.A. - Proyectos Industriales",
+        "descripcion": "Año de cimentación, estructura metálica y cubiertas ampli con ARINSA, trabajos con Ingenio Providencia S.A. en Popayán, Cauca, Bogotá, Cundinamarca, Cali-Valle.",
+        "categorias": [
+          "Edificios: 2",
+          "Plantas Industriales: 4",
+          "Cubiertas y Fachadas: 2",
+          "Estructuras Metálicas: 13"
+        ]
+      },
+      "actual": {
+        "titulo": "2021: Tecnoquímicas y Autopista Simón Bolívar",
+        "descripcion": "Año de gran actividad con Tecnoquímicas finalizando múltiples edificios industriales en Jamundí (Bodega 3, Edificio Cápsulas Blandas) e iniciando Sólidos de Altos Volúmenes. Finalización del Terminal Intermedio de la Autopista Simón Bolívar con Consorcio Metrovial en Cali. Continuidad en proyectos industriales con Inverteq en Villa Rica y con Ingenio Providencia en el complejo Piedechinche. Proyectos comerciales y de parqueadero en Cali.",
+        "categorias": [
+          "Estructuras Metálicas: 9",
+          "Plantas Industriales: 4",
+          "Edificios: 2",
+          "Cubiertas y Fachadas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Tecnoquímicas S.A.",
+          "count": 3
+        },
+        {
+          "cliente": "Ingenio Providencia S.A.",
+          "count": 2
+        },
+        {
+          "cliente": "ARINSA",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 0,
+        "edificios": 2,
+        "industrial": 4,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 2
+      }
+    },
+    {
+      "año": 2022,
+      "totalProyectos": 11,
+      "propuesta": {
+        "titulo": "2022: Ingenio Providencia S.A. y Inverteq S.A.S. - Tecnosur - CC Bochalema Plaza",
+        "descripcion": "Año de constructora normandia - cc bochalema plaza con Constructora Normandia, trabajos con Inverteq S.A.S. - Tecnosur en Cali-Valle, Inza-Cauca, Cerrito-Valle.",
+        "categorias": [
+          "Puentes: 1",
+          "Edificios: 1",
+          "Plantas Industriales: 2",
+          "Cubiertas y Fachadas: 2",
+          "Estructuras Metálicas: 11"
+        ]
+      },
+      "actual": {
+        "titulo": "2022: Ingenio Providencia - Complejo Piedechinche y Proyectos Industriales",
+        "descripcion": "Año de consolidación industrial con Ingenio Providencia terminando el complejo Piedechinche y Bodega 5 en Cerrito, más el gran centro de distribución de Inverteq en Villa Rica. Finalización del proyecto Centro Comercial Bochalema Plaza con Constructora Normandia en Cali. Desarrollo de infraestructura educativa con Comfacauca en Santander de Quilichao y continuidad en proyectos con Sucroal, PAVCOL y Tecnoquímicas.",
+        "categorias": [
+          "Estructuras Metálicas: 8",
+          "Plantas Industriales: 2",
+          "Cubiertas y Fachadas: 2",
+          "Edificios: 2",
+          "Puentes: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Ingenio Providencia S.A.",
+          "count": 3
+        },
+        {
+          "cliente": "Inverteq S.A.S. - Tecnosur",
+          "count": 2
+        },
+        {
+          "cliente": "Constructora Normandia",
+          "count": 1
+        }
+      ],
+      "tipos": {
+        "puentes": 1,
+        "edificios": 1,
+        "industrial": 2,
+        "comercial": 0,
+        "deportivo": 0,
+        "transporte": 0,
+        "cubiertas": 2
+      }
+    },
+    {
+      "año": 2023,
+      "totalProyectos": 16,
+      "propuesta": {
+        "titulo": "2023: Ingenio Providencia S.A. y PAVCOL - Trilladora de Café",
+        "descripcion": "Año de juan tama - trilladora de café con Juan Tama, trabajos con PAVCOL y Sucroal S.A en Inza-Cauca, Villa Rica-Cauca, Jamundi-Valle.",
+        "categorias": [
+          "Puentes: 3",
+          "Edificios: 1",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 16"
+        ]
+      },
+      "actual": {
+        "titulo": "2023: Coliseos Deportivos Pereira y Tecnoquímicas",
+        "descripcion": "Año de culminación de grandes proyectos industriales con Tecnoquímicas en Jamundí e Ingenio Providencia en Cerrito. Desarrollo de infraestructura deportiva en Pereira con Complejo Acuático y Coliseo Menor. Continuidad con PAVCOL en infraestructura de Bogotá y Sucroal en Palmira. Proyectos puente con C.A.S.A. en Mondomo y estructuras comerciales con Construandes y Astrelec en el Valle.",
+        "categorias": [
+          "Estructuras Metálicas: 12",
+          "Puentes: 3",
+          "Edificios: 2",
+          "Centros Comerciales: 1",
+          "Escenarios Deportivos: 1",
+          "Cubiertas y Fachadas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Ingenio Providencia S.A.",
+          "count": 2
+        },
+        {
+          "cliente": "PAVCOL",
+          "count": 2
+        },
+        {
+          "cliente": "Sucroal S.A",
+          "count": 2
+        }
+      ],
+      "tipos": {
+        "puentes": 3,
+        "edificios": 1,
+        "industrial": 0,
+        "comercial": 0,
+        "deportivo": 1,
+        "transporte": 0,
+        "cubiertas": 1
+      }
+    },
+    {
+      "año": 2024,
+      "totalProyectos": 18,
+      "propuesta": {
+        "titulo": "2024: Sucroal S.A y PAVCOL - Trilladora de Café",
+        "descripcion": "Año de juan tama - trilladora de café con Juan Tama, trabajos con PAVCOL y Inverteq S.A.S. - Tecnosur en Inza-Cauca, Palmira - Valle, Jamundi-Valle.",
+        "categorias": [
+          "Puentes: 4",
+          "Transporte Urbano: 2",
+          "Edificios: 1",
+          "Centros Comerciales: 2",
+          "Cubiertas y Fachadas: 1",
+          "Estructuras Metálicas: 18"
+        ]
+      },
+      "actual": {
+        "titulo": "2024: Dollar City - Expansión Nacional y Proyectos en Bogotá",
+        "descripcion": "Año de expansión en infraestructura de transporte urbano en Bogotá con MHC en estaciones de Transmilenio y PAVCOL en ciclopuentes y puentes peatonales. Consolidación con Dollar City en estructuras comerciales para tiendas en Jamundí y Popayán, más proyectos industriales con Inverteq en Villa Rica y obras en Palmira con Sucroal y Construandes. Presencia destacada en Bogotá con infraestructura de movilidad sostenible.",
+        "categorias": [
+          "Estructuras Metálicas: 14",
+          "Puentes: 4",
+          "Edificios: 1",
+          "Centros Comerciales: 1",
+          "Cubiertas y Fachadas: 1"
+        ]
+      },
+      "topClientes": [
+        {
+          "cliente": "Sucroal S.A",
+          "count": 2
+        },
+        {
+          "cliente": "PAVCOL",
+          "count": 2
+        },
+        {
+          "cliente": "Inverteq S.A.S. - Tecnosur",
+          "count": 2
+        }
+      ],
+      "tipos": {
+        "puentes": 4,
+        "edificios": 1,
+        "industrial": 0,
+        "comercial": 2,
+        "deportivo": 0,
+        "transporte": 2,
+        "cubiertas": 1
+      }
+    }
+  ]
+}

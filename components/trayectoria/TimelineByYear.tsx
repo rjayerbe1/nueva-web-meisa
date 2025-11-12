@@ -187,8 +187,11 @@ export function TimelineByYear({ proyectos }: Props) {
                       {/* Proyectos destacados siempre se muestran primero */}
                       {(() => {
                         const isExpanded = expandedYears.has(año)
-                        const proyectosAMostrar = isExpanded ? proyectosAño : proyectosAño.slice(0, 4)
-                        const hayMas = proyectosAño.length > 4
+                        // Mostrar 7 proyectos si hay ResumenAnio con imágenes, 4 si no
+                        const hasResumenWithImages = resumenAnio && resumenAnio.imagenesFeatured && resumenAnio.imagenesFeatured.length > 0
+                        const defaultCount = hasResumenWithImages ? 7 : 4
+                        const proyectosAMostrar = isExpanded ? proyectosAño : proyectosAño.slice(0, defaultCount)
+                        const hayMas = proyectosAño.length > defaultCount
 
                         return (
                           <>
@@ -215,7 +218,7 @@ export function TimelineByYear({ proyectos }: Props) {
                                   </>
                                 ) : (
                                   <>
-                                    Mostrar más ({proyectosAño.length - 4} proyectos adicionales)
+                                    Mostrar más ({proyectosAño.length - defaultCount} proyectos adicionales)
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                     </svg>

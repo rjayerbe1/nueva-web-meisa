@@ -22,6 +22,8 @@ interface ProyectoHojaVida {
   id: string
   entidadContratante: string
   objetoContrato: string
+  tituloDisplay: string | null
+  descripcionSecundaria: string | null
   fechaInicio: string | Date
   fechaFin: string | Date
   pesoKg: number | null
@@ -46,6 +48,8 @@ export function ProyectoHojaVidaForm({ proyecto }: Props) {
   const [formData, setFormData] = useState({
     entidadContratante: proyecto?.entidadContratante || '',
     objetoContrato: proyecto?.objetoContrato || '',
+    tituloDisplay: proyecto?.tituloDisplay || '',
+    descripcionSecundaria: proyecto?.descripcionSecundaria || '',
     fechaInicio: proyecto ? formatDateForInput(proyecto.fechaInicio) : '',
     fechaFin: proyecto ? formatDateForInput(proyecto.fechaFin) : '',
     pesoKg: proyecto?.pesoKg?.toString() || '',
@@ -127,6 +131,35 @@ export function ProyectoHojaVidaForm({ proyecto }: Props) {
               rows={3}
               placeholder="Descripción completa del objeto del contrato"
             />
+          </div>
+
+          <div className="md:col-span-2">
+            <Label htmlFor="tituloDisplay">Título para Mostrar (Opcional)</Label>
+            <Input
+              id="tituloDisplay"
+              name="tituloDisplay"
+              value={formData.tituloDisplay}
+              onChange={handleChange}
+              placeholder="Ej: Dollar City - Río Negro Calle 100"
+            />
+            <p className="text-xs text-slate-500 mt-1">
+              Título limpio y corto para mostrar en lugar del nombre completo del contrato
+            </p>
+          </div>
+
+          <div className="md:col-span-2">
+            <Label htmlFor="descripcionSecundaria">Descripción Secundaria (Opcional)</Label>
+            <Textarea
+              id="descripcionSecundaria"
+              name="descripcionSecundaria"
+              value={formData.descripcionSecundaria}
+              onChange={handleChange}
+              rows={2}
+              placeholder="Ej: Construcción y montaje estructura metálica"
+            />
+            <p className="text-xs text-slate-500 mt-1">
+              Subtítulo o detalles técnicos adicionales que complementan el título
+            </p>
           </div>
 
           <div>

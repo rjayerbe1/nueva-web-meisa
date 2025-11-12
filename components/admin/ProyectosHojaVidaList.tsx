@@ -39,6 +39,8 @@ interface Proyecto {
   id: string
   entidadContratante: string
   objetoContrato: string
+  tituloDisplay: string | null
+  descripcionSecundaria: string | null
   fechaInicio: string
   fechaFin: string
   ubicacion: string
@@ -201,8 +203,7 @@ export function ProyectosHojaVidaList() {
         <Table>
           <TableHeader>
             <TableRow className="bg-slate-50">
-              <TableHead>Entidad</TableHead>
-              <TableHead>Proyecto</TableHead>
+              <TableHead>Proyecto y Cliente</TableHead>
               <TableHead>Ubicación</TableHead>
               <TableHead>Fechas</TableHead>
               <TableHead className="text-right">Valor</TableHead>
@@ -213,24 +214,55 @@ export function ProyectosHojaVidaList() {
           <TableBody>
             {proyectosFiltrados.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-slate-500">
+                <TableCell colSpan={6} className="text-center py-12 text-slate-500">
                   No se encontraron proyectos
                 </TableCell>
               </TableRow>
             ) : (
               proyectosFiltrados.map((proyecto) => (
                 <TableRow key={proyecto.id} className="hover:bg-slate-50">
-                  <TableCell className="font-medium">
-                    {proyecto.entidadContratante}
-                    {proyecto.destacado && (
-                      <Badge className="ml-2 bg-amber-100 text-amber-800 border-amber-300">
-                        Destacado
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="max-w-xs">
-                    <div className="truncate" title={proyecto.objetoContrato}>
-                      {proyecto.objetoContrato}
+                  <TableCell className="max-w-md">
+                    <div className="space-y-1">
+                      {proyecto.tituloDisplay ? (
+                        <>
+                          {/* Formato con título display (limpio) */}
+                          <div className="font-semibold text-slate-900 truncate" title={proyecto.tituloDisplay}>
+                            {proyecto.tituloDisplay}
+                          </div>
+                          {proyecto.descripcionSecundaria && (
+                            <div className="text-sm text-slate-600 truncate" title={proyecto.descripcionSecundaria}>
+                              {proyecto.descripcionSecundaria}
+                            </div>
+                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-slate-500">
+                              {proyecto.entidadContratante}
+                            </span>
+                            {proyecto.destacado && (
+                              <Badge className="bg-amber-100 text-amber-800 border-amber-300 text-xs">
+                                ⭐ Destacado
+                              </Badge>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Formato original (fallback) */}
+                          <div className="font-semibold text-slate-900 truncate" title={proyecto.objetoContrato}>
+                            {proyecto.objetoContrato}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-slate-600">
+                              {proyecto.entidadContratante}
+                            </span>
+                            {proyecto.destacado && (
+                              <Badge className="bg-amber-100 text-amber-800 border-amber-300 text-xs">
+                                ⭐ Destacado
+                              </Badge>
+                            )}
+                          </div>
+                        </>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
