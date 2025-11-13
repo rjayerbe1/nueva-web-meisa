@@ -44,22 +44,22 @@ export function UnifiedStatsCard({
   const getSuffixClasses = () => {
     switch (variant) {
       case 'large':
-        return 'text-4xl lg:text-5xl'
+        return 'text-3xl lg:text-4xl'
       case 'compact':
-        return 'text-xl lg:text-2xl'
+        return 'text-lg lg:text-xl'
       default:
-        return 'text-2xl lg:text-3xl'
+        return 'text-xl lg:text-2xl'
     }
   }
 
   const getBackgroundNumberClasses = () => {
     switch (variant) {
       case 'large':
-        return 'text-[140px]'
+        return 'text-[100px]'
       case 'compact':
-        return 'text-[80px]'
+        return 'text-[60px]'
       default:
-        return 'text-[120px]'
+        return 'text-[90px]'
     }
   }
 
@@ -94,19 +94,19 @@ export function UnifiedStatsCard({
           {/* Number container with background effect */}
           <div className="mb-6 relative">
             {/* Large background number */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-5">
+            <div className="absolute inset-0 flex items-center justify-center opacity-[0.07]">
               <span className={`${getBackgroundNumberClasses()} font-black text-gray-900`}>
                 {number}
               </span>
             </div>
 
             {/* Main number display */}
-            <div className="relative flex items-baseline justify-center gap-2">
+            <div className="relative flex flex-col items-center justify-center">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
               {suffix && (
-                <span className={`${getSuffixClasses()} font-bold text-gray-500 ml-1`}>
+                <span className={`${getSuffixClasses()} font-semibold text-gray-500 mt-1`}>
                   {suffix}
                 </span>
               )}
