@@ -701,3 +701,21 @@ model BrochureAnalytics {
 
   @@map("brochure_analytics")
 }
+
+model CustomFont {
+  id          String   @id @default(cuid())
+  nombre      String   @unique // Nombre de la fuente (ej: "Mi Fuente Custom")
+  fontFamily  String   // Nombre CSS de la familia de fuente
+  fileUrl     String   // URL del archivo de fuente en Uploadcare
+  fileName    String   // Nombre original del archivo
+  fileFormat  String   // ttf, otf, woff, woff2
+  fileSize    Int?     // Tamaño en bytes
+  description String?  // Descripción opcional
+  category    String?  // Sans-serif, Serif, Display, etc.
+  isActive    Boolean  @default(true)
+  uploadedBy  String   // Usuario que subió la fuente
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("custom_fonts")
+}

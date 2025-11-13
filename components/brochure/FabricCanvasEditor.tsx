@@ -87,8 +87,12 @@ import {
 import { ImageSelectorModal } from './ImageSelectorModal'
 import { PDFSelectorModal } from './PDFSelectorModal'
 import { PPTXSelectorModal } from './PPTXSelectorModal'
+import { FontSelector } from './FontSelector'
+import { FontUploader } from './FontUploader'
+import { FontDropdown } from './FontDropdown'
 import { addPolygonControls, removePolygonControls, setupPolygonPrototype, isPolygon } from '@/lib/polygonControls'
 import { PPTXSlide } from '@/lib/pptxProcessor'
+import { getAllFontNames, loadAllGoogleFonts, loadFontOnDemand, loadAllCustomFonts } from '@/lib/fonts'
 
 interface FabricCanvasEditorProps {
   initialData?: any // JSON de Fabric.js
@@ -439,6 +443,8 @@ export function FabricCanvasEditor({
   const [showLayers, setShowLayers] = useState(false)
   const [layers, setLayers] = useState<any[]>([])
   const [customFonts, setCustomFonts] = useState<string[]>([])
+  const [showFontSelector, setShowFontSelector] = useState(false)
+  const [showFontUploader, setShowFontUploader] = useState(false)
   const [fabricLoaded, setFabricLoaded] = useState(false)
   const fabricRef = useRef<any>(null)
   const initialLoadDoneRef = useRef(false)
@@ -488,6 +494,31 @@ export function FabricCanvasEditor({
   useEffect(() => {
     historyStepRef.current = historyStep
   }, [historyStep])
+
+  // Cargar fuentes populares de Google Fonts y fuentes personalizadas al inicializar
+  useEffect(() => {
+    console.log('📦 Cargando fuentes populares de Google Fonts...')
+    loadAllGoogleFonts()
+
+    // Cargar fuentes personalizadas guardadas
+    const loadCustomFonts = async () => {
+      try {
+        await loadAllCustomFonts()
+        // Obtener lista de nombres para el estado
+        const response = await fetch('/api/fonts/upload')
+        if (response.ok) {
+          const data = await response.json()
+          const fontNames = data.fonts.map((f: any) => f.fontFamily)
+          setCustomFonts(fontNames)
+          console.log(`✅ ${fontNames.length} fuentes personalizadas cargadas`)
+        }
+      } catch (error) {
+        console.error('❌ Error cargando fuentes personalizadas:', error)
+      }
+    }
+
+    loadCustomFonts()
+  }, [])
 
   // Estado para modal de selección de imágenes
   const [showImageSelector, setShowImageSelector] = useState(false)
@@ -3922,28 +3953,32 @@ export function FabricCanvasEditor({
                       <div>
                         <div className="flex items-center justify-between mb-1">
                           <label className="block text-[10px] font-medium text-gray-500">Fuente</label>
-                          <button
-                type="button"
-                            onClick={uploadFont}
-                            className="text-[10px] text-blue-600 hover:text-blue-700 font-medium"
-                          >
-                            + Subir
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setShowFontUploader(true)}
+                              className="text-[10px] text-green-600 hover:text-green-700 font-medium"
+                            >
+                              + Subir
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setShowFontSelector(true)}
+                              className="text-[10px] text-blue-600 hover:text-blue-700 font-medium"
+                            >
+                              Buscar...
+                            </button>
+                          </div>
                         </div>
-                        <select
+                        <FontDropdown
                           value={selectedObjectProps.fontFamily}
-                          onChange={(e) => updateObjectProperty('fontFamily', e.target.value)}
-                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        >
-                          <option value="Inter">Inter</option>
-                          <option value="Arial">Arial</option>
-                          <option value="Helvetica">Helvetica</option>
-                          <option value="Times New Roman">Times New Roman</option>
-                          <option value="Georgia">Georgia</option>
-                          {customFonts.map((font, index) => (
-                            <option key={index} value={font}>{font}</option>
-                          ))}
-                        </select>
+                          onChange={(fontName) => {
+                            updateObjectProperty('fontFamily', fontName)
+                            loadFontOnDemand(fontName)
+                          }}
+                          fonts={getAllFontNames()}
+                          customFonts={customFonts}
+                        />
                       </div>
 
                       {/* Estilos */}
@@ -4657,6 +4692,43 @@ export function FabricCanvasEditor({
           </div>
         </div>
       )}
+
+      {/* Modal de Selector de Fuentes */}
+      <FontSelector
+        isOpen={showFontSelector}
+        onClose={() => setShowFontSelector(false)}
+        onSelect={(fontName) => {
+          updateObjectProperty('fontFamily', fontName)
+          loadFontOnDemand(fontName)
+        }}
+        currentFont={selectedObjectProps.fontFamily}
+      />
+
+      {/* Modal de Subida de Fuentes */}
+      <FontUploader
+        isOpen={showFontUploader}
+        onClose={() => setShowFontUploader(false)}
+        onFontUploaded={async (fontFamily) => {
+          // Recargar lista de fuentes personalizadas
+          try {
+            const response = await fetch('/api/fonts/upload')
+            if (response.ok) {
+              const data = await response.json()
+              const fontNames = data.fonts.map((f: any) => f.fontFamily)
+              setCustomFonts(fontNames)
+              console.log('✅ Lista de fuentes actualizada')
+
+              // Aplicar la nueva fuente al objeto seleccionado
+              if (selectedObject) {
+                updateObjectProperty('fontFamily', fontFamily)
+                loadFontOnDemand(fontFamily)
+              }
+            }
+          } catch (error) {
+            console.error('❌ Error actualizando lista de fuentes:', error)
+          }
+        }}
+      />
     </div>
   )
 }
