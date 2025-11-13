@@ -82,12 +82,12 @@ export function UnifiedStatsCard({
       viewport={{ once: true }}
       className="relative"
     >
-      <div className={`relative bg-white rounded-3xl ${getCardClasses()} h-full group hover:scale-105 transition-all duration-300`}>
+      <div className={`relative bg-white rounded-3xl ${getCardClasses()} h-full group hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl`}>
         {/* Gradient overlay on hover */}
         <div className={`absolute inset-0 bg-gradient-to-br ${getGradientColors()} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-        
+
         {/* Inner white background */}
-        <div className="absolute inset-[2px] bg-white rounded-3xl" />
+        <div className="absolute inset-[2px] bg-white rounded-3xl shadow-inner" />
         
         {/* Content */}
         <div className="relative">
