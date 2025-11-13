@@ -194,14 +194,15 @@ export function ImageSelectorModal({
         return
       }
 
-      // Si es grande, subir al servidor
-      console.log('📤 [ImageSelector] Subiendo imagen al servidor...')
+      // Si es grande, subir a Google Cloud Storage
+      console.log('📤 [ImageSelector] Subiendo imagen a GCS...')
 
       const formData = new FormData()
       formData.append('file', optimizedResult.optimized.file)
+      formData.append('folder', 'brochures/images')
       formData.append('category', 'brochures')
 
-      const uploadResponse = await fetch('/api/admin/upload', {
+      const uploadResponse = await fetch('/api/admin/upload-to-gcs', {
         method: 'POST',
         body: formData,
       })
