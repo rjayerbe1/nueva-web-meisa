@@ -100,17 +100,21 @@ export function UnifiedStatsCard({
               </span>
             </div>
 
-            {/* Main number display */}
-            <div className="relative flex flex-col items-center justify-center">
+            {/* Main number display - centered with background */}
+            <div className="relative flex items-center justify-center min-h-[100px]">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
-              {suffix && (
-                <span className={`${getSuffixClasses()} font-semibold text-gray-500 mt-1`}>
+            </div>
+
+            {/* Suffix below - doesn't affect centering */}
+            {suffix && (
+              <div className="text-center -mt-2">
+                <span className={`${getSuffixClasses()} font-semibold text-gray-500`}>
                   {suffix}
                 </span>
-              )}
-            </div>
+              </div>
+            )}
           </div>
           
           {/* Label */}
