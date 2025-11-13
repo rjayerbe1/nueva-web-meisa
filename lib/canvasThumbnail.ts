@@ -80,10 +80,10 @@ export async function generateThumbnailFromJSON(
 }
 
 /**
- * Sube un thumbnail en base64 a Uploadcare y retorna la URL
+ * Sube un thumbnail en base64 a Google Cloud Storage y retorna la URL
  *
  * @param base64Data - Data URL en base64
- * @returns URL pública del thumbnail en Uploadcare
+ * @returns URL pública del thumbnail en GCS
  */
 export async function uploadThumbnailToUploadcare(base64Data: string): Promise<string> {
   try {
@@ -94,21 +94,22 @@ export async function uploadThumbnailToUploadcare(base64Data: string): Promise<s
     // Crear FormData
     const formData = new FormData()
     formData.append('file', blob, 'thumbnail.png')
+    formData.append('folder', 'brochures/thumbnails') // Carpeta en GCS
 
-    // Subir a tu API de upload
-    const uploadResponse = await fetch('/api/admin/upload', {
+    // Subir a Google Cloud Storage
+    const uploadResponse = await fetch('/api/admin/upload-to-gcs', {
       method: 'POST',
       body: formData
     })
 
     if (!uploadResponse.ok) {
-      throw new Error('Error al subir thumbnail')
+      throw new Error('Error al subir thumbnail a GCS')
     }
 
     const data = await uploadResponse.json()
     return data.url
   } catch (error) {
-    console.error('Error subiendo thumbnail:', error)
+    console.error('Error subiendo thumbnail a GCS:', error)
     throw error
   }
 }
