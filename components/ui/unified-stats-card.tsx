@@ -91,10 +91,17 @@ export function UnifiedStatsCard({
         
         {/* Content */}
         <div className="relative">
-          {/* Number container */}
+          {/* Number container with background effect */}
           <div className="mb-6 relative">
+            {/* Large background number */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-5">
+              <span className={`${getBackgroundNumberClasses()} font-black text-gray-900`}>
+                {number}
+              </span>
+            </div>
+
             {/* Main number display */}
-            <div className="flex items-baseline justify-center gap-2">
+            <div className="relative flex items-baseline justify-center gap-2">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
