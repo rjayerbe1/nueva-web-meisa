@@ -93,14 +93,15 @@ export function UnifiedStatsCard({
         <div className="relative">
           {/* Number container with background effect */}
           <div className="mb-6 relative h-28">
-            {/* Large background number - always centered */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-[0.07]">
+            {/* Large background number - with invisible suffix spacer for alignment */}
+            <div className="absolute inset-0 flex items-baseline justify-center gap-2 opacity-[0.07]">
+              {suffix && <span className={`${getSuffixClasses()} invisible`}>{suffix}</span>}
               <span className={`${getBackgroundNumberClasses()} font-black text-gray-900`}>
                 {number}
               </span>
             </div>
 
-            {/* Main number display with suffix - also absolute, perfectly centered */}
+            {/* Main number display with suffix */}
             <div className="absolute inset-0 flex items-baseline justify-center gap-2">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
