@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { uploadcare } from '@uploadcare/upload-client'
+import { Storage } from '@google-cloud/storage'
 
-const client = uploadcare({ publicKey: process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY! })
+// Inicializar cliente de Google Cloud Storage
+const storage = new Storage({
+  projectId: 'meisa-web-prod-2025'
+})
+const bucket = storage.bucket('meisa-imagenes')
 
 // Formatos de fuente permitidos
 const ALLOWED_FORMATS = ['ttf', 'otf', 'woff', 'woff2']
@@ -61,18 +65,35 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Subir archivo a Uploadcare
-    console.log('📤 Subiendo fuente a Uploadcare...', fileName)
+    // Subir archivo a Google Cloud Storage
+    console.log('📤 Subiendo fuente a Google Cloud Storage...', fileName)
 
-    const uploadResult = await client.uploadFile(file)
+    // Convertir archivo a buffer
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
 
-    if (!uploadResult.uuid) {
-      throw new Error('Error al subir el archivo a Uploadcare')
-    }
+    // Crear nombre único para el archivo
+    const timestamp = Date.now()
+    const randomString = Math.random().toString(36).substring(2, 8)
+    const gcsFileName = `${timestamp}-${randomString}.${fileExtension}`
 
-    const fileUrl = `https://ucarecdn.com/${uploadResult.uuid}/`
+    // Ruta en GCS
+    const gcsPath = `fonts/${gcsFileName}`
+    const gcsFile = bucket.file(gcsPath)
 
-    console.log('✅ Fuente subida a Uploadcare:', fileUrl)
+    // Subir a Google Cloud Storage
+    await gcsFile.save(buffer, {
+      metadata: {
+        contentType: file.type || 'font/woff2',
+        cacheControl: 'public, max-age=31536000', // 1 año
+      },
+      public: true
+    })
+
+    // URL pública del archivo
+    const fileUrl = `https://storage.googleapis.com/${bucket.name}/${gcsPath}`
+
+    console.log('✅ Fuente subida a Google Cloud Storage:', fileUrl)
 
     // Guardar en base de datos
     const customFont = await prisma.customFont.create({
