@@ -61,6 +61,8 @@ export default function BrochureViewerPage() {
   const [error, setError] = useState<string | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+  const [pdfProgress, setPdfProgress] = useState(0)
+  const [showPDFModal, setShowPDFModal] = useState(false)
 
   useEffect(() => {
     const urlAmigable = params.urlAmigable as string
@@ -121,28 +123,38 @@ export default function BrochureViewerPage() {
 
     try {
       setIsGeneratingPDF(true)
-      console.log('📄 [PDF] Iniciando generación de PDF...')
+      setShowPDFModal(true)
+      setPdfProgress(0)
+      console.log('📄 [PDF] Iniciando generación de PDF en background...')
 
-      // Importar jsPDF dinámicamente
+      // Importar librerías dinámicamente
       const { jsPDF } = await import('jspdf')
-      const html2canvas = (await import('html2canvas')).default
+      const fabricModule = await import('fabric')
+      const fabric = fabricModule as any
 
       const visiblePages = brochure.pages.filter(page => page.visible)
 
-      // Crear PDF con orientación landscape para páginas de brochure
+      // Crear PDF con orientación landscape
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'px',
         format: 'a4'
       })
 
-      console.log(`📄 [PDF] Procesando ${visiblePages.length} páginas...`)
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
 
+      console.log(`📄 [PDF] Procesando ${visiblePages.length} páginas en background...`)
+
+      // Procesar cada página
       for (let i = 0; i < visiblePages.length; i++) {
         const page = visiblePages[i]
         console.log(`📄 [PDF] Procesando página ${i + 1}/${visiblePages.length}: ${page.nombre}`)
 
-        // Si no es la primera página, agregar nueva página
+        // Actualizar progreso
+        setPdfProgress(Math.round(((i) / visiblePages.length) * 100))
+
+        // Si no es la primera página, agregar nueva página al PDF
         if (i > 0) {
           pdf.addPage()
         }
@@ -151,60 +163,89 @@ export default function BrochureViewerPage() {
           let imageData: string
 
           if (page.canvasData) {
-            // Método 1: Para páginas con canvas (más eficiente)
-            console.log(`  📐 [PDF] Página usa canvas, buscando elemento...`)
+            // Renderizar página con canvas en un canvas temporal fuera de pantalla
+            console.log(`  📐 [PDF] Renderizando canvas en background...`)
 
-            // Buscar el canvas en el DOM
-            const canvasElements = document.querySelectorAll('canvas')
-            let targetCanvas: HTMLCanvasElement | null = null
+            // Crear canvas temporal posicionado fuera de pantalla (no hidden)
+            const tempCanvas = document.createElement('canvas')
+            const canvasWidth = page.configuracion?.width || 1200
+            const canvasHeight = page.configuracion?.height || 800
 
-            // Si estamos viendo esta página actualmente, usar el canvas visible
-            if (i === currentPage && canvasElements.length > 0) {
-              targetCanvas = canvasElements[0] as HTMLCanvasElement
-              console.log(`  ✅ [PDF] Canvas encontrado en página actual`)
-            } else {
-              // Si no es la página actual, necesitamos renderizarla temporalmente
-              console.log(`  ⏭️ [PDF] Página no visible, cambiando a página ${i + 1}`)
-              setCurrentPage(i)
+            tempCanvas.width = canvasWidth
+            tempCanvas.height = canvasHeight
+            // Posicionar fuera de pantalla en lugar de ocultar
+            tempCanvas.style.position = 'fixed'
+            tempCanvas.style.left = '-9999px'
+            tempCanvas.style.top = '-9999px'
+            document.body.appendChild(tempCanvas)
 
-              // Esperar a que se renderice la página
-              await new Promise(resolve => setTimeout(resolve, 1000))
+            // Crear StaticCanvas de Fabric.js en el canvas temporal
+            const staticCanvas = new fabric.StaticCanvas(tempCanvas, {
+              width: canvasWidth,
+              height: canvasHeight,
+              renderOnAddRemove: true, // Habilitar renderizado automático
+              backgroundColor: page.canvasData.backgroundColor || '#ffffff'
+            })
 
-              const updatedCanvasElements = document.querySelectorAll('canvas')
-              if (updatedCanvasElements.length > 0) {
-                targetCanvas = updatedCanvasElements[0] as HTMLCanvasElement
-                console.log(`  ✅ [PDF] Canvas renderizado`)
-              }
-            }
+            // Cargar los datos del canvas y esperar a que todas las imágenes se carguen
+            await new Promise<void>((resolve, reject) => {
+              staticCanvas.loadFromJSON(page.canvasData, () => {
+                console.log(`  ✅ [PDF] Canvas temporal cargado con ${staticCanvas.getObjects().length} objetos`)
 
-            if (targetCanvas) {
-              imageData = targetCanvas.toDataURL('image/jpeg', 0.8)
-              console.log(`  ✅ [PDF] Imagen capturada desde canvas`)
-            } else {
-              console.warn(`  ⚠️ [PDF] No se encontró canvas, usando html2canvas como fallback`)
-              const pageElement = document.querySelector('.canvas-renderer')
-              if (pageElement) {
-                const canvas = await html2canvas(pageElement as HTMLElement, {
-                  scale: 1.5,
-                  useCORS: true,
-                  logging: false
-                })
-                imageData = canvas.toDataURL('image/jpeg', 0.8)
-              } else {
-                throw new Error('No se pudo capturar la página')
-              }
-            }
+                // Forzar renderizado
+                staticCanvas.renderAll()
+
+                // Esperar a que todas las imágenes se carguen
+                const objects = staticCanvas.getObjects()
+                const imageObjects = objects.filter((obj: any) => obj.type === 'image')
+
+                if (imageObjects.length > 0) {
+                  console.log(`  🖼️ [PDF] Esperando ${imageObjects.length} imágenes...`)
+
+                  // Dar tiempo extra para que las imágenes se carguen y rendericen
+                  setTimeout(() => {
+                    staticCanvas.renderAll()
+                    console.log(`  ✅ [PDF] Imágenes cargadas y renderizadas`)
+                    resolve()
+                  }, 500)
+                } else {
+                  console.log(`  ✅ [PDF] Sin imágenes, canvas listo`)
+                  resolve()
+                }
+              }, (error: any) => {
+                console.error(`  ❌ [PDF] Error cargando canvas:`, error)
+                reject(error)
+              })
+            })
+
+            // Renderizado final antes de capturar
+            staticCanvas.renderAll()
+
+            // Esperar un frame adicional para asegurar que el navegador ha pintado
+            await new Promise(resolve => requestAnimationFrame(resolve))
+
+            // Capturar imagen del canvas temporal
+            imageData = tempCanvas.toDataURL('image/jpeg', 0.95)
+            console.log(`  ✅ [PDF] Imagen capturada desde canvas temporal`)
+
+            // Limpiar
+            staticCanvas.dispose()
+            document.body.removeChild(tempCanvas)
+
           } else {
-            // Método 2: Para páginas con ComponentRenderer (legacy)
-            console.log(`  📦 [PDF] Página usa ComponentRenderer, capturando HTML...`)
+            // Para páginas legacy sin canvas, necesitamos html2canvas
+            console.log(`  📦 [PDF] Página legacy, requiere renderizado visible`)
 
-            // Cambiar a la página si no estamos en ella
+            // Solo para páginas legacy, cambiar temporalmente
+            const originalPage = currentPage
             if (i !== currentPage) {
               setCurrentPage(i)
-              await new Promise(resolve => setTimeout(resolve, 500))
+              await new Promise(resolve => setTimeout(resolve, 800))
             }
 
+            const html2canvas = (await import('html2canvas')).default
             const pageElement = document.querySelector('.bg-white.text-gray-900')
+
             if (!pageElement) {
               throw new Error('No se encontró el elemento de la página')
             }
@@ -214,13 +255,15 @@ export default function BrochureViewerPage() {
               useCORS: true,
               logging: false
             })
-            imageData = canvas.toDataURL('image/jpeg', 0.8)
+            imageData = canvas.toDataURL('image/jpeg', 0.85)
+
+            // Restaurar página original
+            if (i !== originalPage) {
+              setCurrentPage(originalPage)
+            }
+
             console.log(`  ✅ [PDF] HTML capturado con html2canvas`)
           }
-
-          // Obtener dimensiones del PDF
-          const pdfWidth = pdf.internal.pageSize.getWidth()
-          const pdfHeight = pdf.internal.pageSize.getHeight()
 
           // Agregar imagen al PDF manteniendo aspecto
           pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
@@ -232,6 +275,9 @@ export default function BrochureViewerPage() {
         }
       }
 
+      // Actualizar progreso al 100%
+      setPdfProgress(100)
+
       // Generar nombre de archivo
       const fileName = `${brochure.titulo.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`
 
@@ -239,11 +285,16 @@ export default function BrochureViewerPage() {
       pdf.save(fileName)
       console.log(`✅ [PDF] PDF generado y descargado: ${fileName}`)
 
+      // Esperar un momento antes de cerrar el modal
+      await new Promise(resolve => setTimeout(resolve, 500))
+
     } catch (error) {
       console.error('❌ [PDF] Error generando PDF:', error)
       alert('Error al generar el PDF. Por favor, intenta nuevamente.')
     } finally {
       setIsGeneratingPDF(false)
+      setShowPDFModal(false)
+      setPdfProgress(0)
     }
   }
 
@@ -468,6 +519,57 @@ export default function BrochureViewerPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal de Progreso de PDF */}
+      {showPDFModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-8">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                <Download className="w-8 h-8 text-blue-600 animate-bounce" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Generando PDF
+              </h3>
+              <p className="text-gray-600">
+                Por favor espera mientras procesamos las páginas...
+              </p>
+            </div>
+
+            {/* Barra de Progreso */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600 font-medium">Progreso</span>
+                <span className="text-blue-600 font-bold">{pdfProgress}%</span>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full transition-all duration-300 ease-out"
+                  style={{ width: `${pdfProgress}%` }}
+                >
+                  <div className="w-full h-full bg-white/20 animate-pulse"></div>
+                </div>
+              </div>
+
+              {/* Información adicional */}
+              <div className="text-center text-xs text-gray-500 mt-4">
+                {pdfProgress < 100 ? (
+                  <p>Renderizando páginas en segundo plano...</p>
+                ) : (
+                  <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    ¡PDF generado exitosamente!
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

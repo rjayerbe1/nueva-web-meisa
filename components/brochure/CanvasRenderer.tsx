@@ -41,65 +41,108 @@ export function CanvasRenderer({
     })
   }, [])
 
-  // Ajustar tamaño del canvas cuando cambia isFullscreen
+  // Función para ajustar el tamaño del canvas
+  const resizeCanvas = useRef<(() => void) | null>(null)
+
+  // Ajustar tamaño del canvas cuando cambia isFullscreen o el tamaño del contenedor
   useEffect(() => {
-    if (!fabricCanvasRef.current || !canvasRef.current) return
+    if (!fabricCanvasRef.current || !canvasRef.current || !canvasReady) return
 
     const canvas = fabricCanvasRef.current
     const canvasElement = canvasRef.current
 
-    if (isFullscreen) {
-      // En fullscreen, calcular dimensiones para llenar la pantalla
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
+    const resize = () => {
+      if (isFullscreen) {
+        // En fullscreen, calcular dimensiones para llenar la pantalla
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
 
-      // Calcular el tamaño máximo manteniendo la relación de aspecto original
-      const aspectRatio = width / height
-      let newWidth = viewportWidth
-      let newHeight = viewportWidth / aspectRatio
+        // Calcular el tamaño máximo manteniendo la relación de aspecto original
+        const aspectRatio = width / height
+        let newWidth = viewportWidth
+        let newHeight = viewportWidth / aspectRatio
 
-      // Si la altura es mayor que el viewport, ajustar por altura
-      if (newHeight > viewportHeight) {
-        newHeight = viewportHeight
-        newWidth = viewportHeight * aspectRatio
+        // Si la altura es mayor que el viewport, ajustar por altura
+        if (newHeight > viewportHeight) {
+          newHeight = viewportHeight
+          newWidth = viewportHeight * aspectRatio
+        }
+
+        console.log('🖥️ [CanvasRenderer] Ajustando canvas a fullscreen:', {
+          viewportWidth,
+          viewportHeight,
+          newWidth,
+          newHeight,
+          aspectRatio
+        })
+
+        // Ajustar dimensiones del canvas de Fabric.js
+        canvas.setDimensions({
+          width: newWidth,
+          height: newHeight
+        })
+
+        // Escalar el canvas y su contenido
+        const scale = Math.min(newWidth / width, newHeight / height)
+        canvas.setZoom(scale)
+
+        // Ajustar el elemento canvas
+        canvasElement.style.width = `${newWidth}px`
+        canvasElement.style.height = `${newHeight}px`
+
+        canvas.renderAll()
+      } else {
+        // En modo normal, ajustar al tamaño del contenedor
+        const container = canvasElement.parentElement
+        if (!container) return
+
+        const containerWidth = container.clientWidth
+        const containerHeight = container.clientHeight
+
+        console.log('📐 [CanvasRenderer] Ajustando canvas a contenedor:', {
+          containerWidth,
+          containerHeight,
+          originalWidth: width,
+          originalHeight: height
+        })
+
+        // Calcular escala para ajustar al contenedor manteniendo aspecto
+        const scaleX = containerWidth / width
+        const scaleY = containerHeight / height
+        const scale = Math.min(scaleX, scaleY)
+
+        // Calcular dimensiones finales
+        const scaledWidth = width * scale
+        const scaledHeight = height * scale
+
+        // Ajustar dimensiones del canvas de Fabric.js
+        canvas.setDimensions({
+          width: scaledWidth,
+          height: scaledHeight
+        })
+
+        // Escalar el contenido
+        canvas.setZoom(scale)
+
+        // Centrar el canvas en el contenedor si es necesario
+        canvasElement.style.width = `${scaledWidth}px`
+        canvasElement.style.height = `${scaledHeight}px`
+
+        canvas.renderAll()
       }
-
-      console.log('🖥️ [CanvasRenderer] Ajustando canvas a fullscreen:', {
-        viewportWidth,
-        viewportHeight,
-        newWidth,
-        newHeight,
-        aspectRatio
-      })
-
-      // Ajustar dimensiones del canvas de Fabric.js
-      canvas.setDimensions({
-        width: newWidth,
-        height: newHeight
-      })
-
-      // Escalar el canvas y su contenido
-      const scale = Math.min(newWidth / width, newHeight / height)
-      canvas.setZoom(scale)
-
-      // Ajustar el elemento canvas
-      canvasElement.style.width = `${newWidth}px`
-      canvasElement.style.height = `${newHeight}px`
-
-      canvas.renderAll()
-    } else {
-      // Restaurar tamaño original
-      console.log('📐 [CanvasRenderer] Restaurando canvas a tamaño original:', { width, height })
-
-      canvas.setDimensions({ width, height })
-      canvas.setZoom(1)
-
-      canvasElement.style.width = ''
-      canvasElement.style.height = ''
-
-      canvas.renderAll()
     }
-  }, [isFullscreen, width, height])
+
+    resizeCanvas.current = resize
+
+    // Resize inicial con pequeño delay para asegurar que el DOM está listo
+    setTimeout(resize, 50)
+
+    // Resize cuando cambia el tamaño de la ventana (solo en modo normal)
+    if (!isFullscreen) {
+      window.addEventListener('resize', resize)
+      return () => window.removeEventListener('resize', resize)
+    }
+  }, [isFullscreen, width, height, canvasReady])
 
   useEffect(() => {
     console.log('🔍 [CanvasRenderer] useEffect ejecutándose...')
