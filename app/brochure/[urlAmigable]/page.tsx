@@ -163,74 +163,80 @@ export default function BrochureViewerPage() {
           let imageData: string
 
           if (page.canvasData) {
-            // Renderizar página con canvas en un canvas temporal fuera de pantalla
+            // Renderizar página con canvas en background usando contenedor invisible
             console.log(`  📐 [PDF] Renderizando canvas en background...`)
 
-            // Crear canvas temporal posicionado fuera de pantalla (no hidden)
+            // Crear contenedor invisible para el canvas
+            const container = document.createElement('div')
+            container.style.position = 'fixed'
+            container.style.left = '-9999px'
+            container.style.top = '0'
+            container.style.width = '1200px'
+            container.style.height = '800px'
+            container.style.zIndex = '-1'
+            container.style.visibility = 'hidden'
+            document.body.appendChild(container)
+
+            // Crear canvas element
             const tempCanvas = document.createElement('canvas')
             const canvasWidth = page.configuracion?.width || 1200
             const canvasHeight = page.configuracion?.height || 800
 
-            tempCanvas.width = canvasWidth
-            tempCanvas.height = canvasHeight
-            // Posicionar fuera de pantalla en lugar de ocultar
-            tempCanvas.style.position = 'fixed'
-            tempCanvas.style.left = '-9999px'
-            tempCanvas.style.top = '-9999px'
-            document.body.appendChild(tempCanvas)
+            container.appendChild(tempCanvas)
 
-            // Crear StaticCanvas de Fabric.js en el canvas temporal
+            // Crear instancia de StaticCanvas de Fabric.js
             const staticCanvas = new fabric.StaticCanvas(tempCanvas, {
               width: canvasWidth,
               height: canvasHeight,
-              renderOnAddRemove: true, // Habilitar renderizado automático
-              backgroundColor: page.canvasData.backgroundColor || '#ffffff'
+              renderOnAddRemove: true,
+              backgroundColor: '#ffffff'
             })
 
-            // Cargar los datos del canvas y esperar a que todas las imágenes se carguen
-            await new Promise<void>((resolve, reject) => {
-              staticCanvas.loadFromJSON(page.canvasData, () => {
-                console.log(`  ✅ [PDF] Canvas temporal cargado con ${staticCanvas.getObjects().length} objetos`)
+            console.log(`  📦 [PDF] Canvas temporal creado: ${canvasWidth}x${canvasHeight}`)
+            console.log(`  📦 [PDF] Datos a cargar:`, page.canvasData)
 
-                // Forzar renderizado
-                staticCanvas.renderAll()
+            // Cargar el JSON del canvas
+            try {
+              await new Promise<void>((resolve, reject) => {
+                // Asegurarse de que canvasData es un objeto válido
+                const dataToLoad = typeof page.canvasData === 'string'
+                  ? JSON.parse(page.canvasData)
+                  : page.canvasData
 
-                // Esperar a que todas las imágenes se carguen
-                const objects = staticCanvas.getObjects()
-                const imageObjects = objects.filter((obj: any) => obj.type === 'image')
+                console.log(`  📦 [PDF] Tipo de datos:`, typeof dataToLoad)
+                console.log(`  📦 [PDF] Objetos en datos:`, dataToLoad?.objects?.length || 0)
 
-                if (imageObjects.length > 0) {
-                  console.log(`  🖼️ [PDF] Esperando ${imageObjects.length} imágenes...`)
+                staticCanvas.loadFromJSON(dataToLoad, () => {
+                  const objects = staticCanvas.getObjects()
+                  console.log(`  ✅ [PDF] Canvas cargado con ${objects.length} objetos`)
 
-                  // Dar tiempo extra para que las imágenes se carguen y rendericen
+                  // Forzar varios renders para asegurar que todo se dibuja
+                  staticCanvas.renderAll()
+
+                  // Dar tiempo para que las imágenes se carguen
                   setTimeout(() => {
                     staticCanvas.renderAll()
-                    console.log(`  ✅ [PDF] Imágenes cargadas y renderizadas`)
+                    console.log(`  ✅ [PDF] Canvas renderizado completamente`)
                     resolve()
-                  }, 500)
-                } else {
-                  console.log(`  ✅ [PDF] Sin imágenes, canvas listo`)
-                  resolve()
-                }
-              }, (error: any) => {
-                console.error(`  ❌ [PDF] Error cargando canvas:`, error)
-                reject(error)
+                  }, 300)
+                }, (error: any) => {
+                  console.error(`  ❌ [PDF] Error cargando JSON:`, error)
+                  reject(error)
+                })
               })
-            })
 
-            // Renderizado final antes de capturar
-            staticCanvas.renderAll()
+              // Capturar imagen
+              imageData = staticCanvas.toDataURL('image/jpeg', 0.95)
+              console.log(`  ✅ [PDF] Imagen capturada del canvas temporal`)
 
-            // Esperar un frame adicional para asegurar que el navegador ha pintado
-            await new Promise(resolve => requestAnimationFrame(resolve))
-
-            // Capturar imagen del canvas temporal
-            imageData = tempCanvas.toDataURL('image/jpeg', 0.95)
-            console.log(`  ✅ [PDF] Imagen capturada desde canvas temporal`)
-
-            // Limpiar
-            staticCanvas.dispose()
-            document.body.removeChild(tempCanvas)
+            } catch (error) {
+              console.error(`  ❌ [PDF] Error en renderizado background:`, error)
+              throw error
+            } finally {
+              // Limpiar
+              staticCanvas.dispose()
+              document.body.removeChild(container)
+            }
 
           } else {
             // Para páginas legacy sin canvas, necesitamos html2canvas
