@@ -532,10 +532,9 @@ export function FabricCanvasEditor({
     console.log('📦 [Fabric Load] Iniciando carga de Fabric.js...')
     import('fabric').then((fabricModule) => {
       console.log('✅ [Fabric Load] Fabric.js cargado:', fabricModule)
-      console.log('   - fabricModule.fabric:', fabricModule.fabric)
       console.log('   - fabricModule keys:', Object.keys(fabricModule))
       // Fabric.js puede exportarse de diferentes formas según la versión
-      fabricRef.current = fabricModule.fabric || fabricModule
+      fabricRef.current = fabricModule as any
       console.log('   - fabricRef asignado:', !!fabricRef.current)
 
       // Configurar prototipos para polygon controls

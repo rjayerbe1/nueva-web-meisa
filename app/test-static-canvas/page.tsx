@@ -11,7 +11,7 @@ export default function TestStaticCanvasPage() {
     let canvas: any = null
 
     import('fabric').then((fabricModule) => {
-      const fabric = fabricModule.fabric || fabricModule
+      const fabric = fabricModule as any
 
       canvas = new fabric.StaticCanvas(canvasRef.current!, {
         width: 800,

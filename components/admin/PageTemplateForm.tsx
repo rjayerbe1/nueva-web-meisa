@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Save, Loader2, ArrowLeft, Layout, AlertCircle } from 'lucide-react'
 import { FabricCanvasEditor } from '@/components/brochure/FabricCanvasEditor'
 import { generateAndUploadThumbnail } from '@/lib/canvasThumbnail'
-import { fabric } from 'fabric'
+import * as fabric from 'fabric'
 
 interface PageTemplateFormProps {
   template?: {
@@ -33,7 +33,7 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [canvasInstance, setCanvasInstance] = useState<fabric.Canvas | null>(null)
+  const [canvasInstance, setCanvasInstance] = useState<any | null>(null)
 
   const [formData, setFormData] = useState({
     nombre: template?.nombre || '',
@@ -46,7 +46,7 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
 
   const [canvasData, setCanvasData] = useState<any>(template?.canvasData || null)
 
-  const handleCanvasChange = useCallback((newCanvasData: any, canvas: fabric.Canvas) => {
+  const handleCanvasChange = useCallback((newCanvasData: any, canvas: any) => {
     setCanvasData(newCanvasData)
     setCanvasInstance(canvas)
   }, [])

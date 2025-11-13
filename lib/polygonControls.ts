@@ -43,7 +43,7 @@ export function addPolygonControls(polygon: Polygon, fabric: any) {
    * Calcula la posición del control en coordenadas canvas
    */
   function polygonPositionHandler(this: Control, dim: Point, finalMatrix: number[], fabricObject: Polygon) {
-    const point = fabricObject.points![this.pointIndex]
+    const point = fabricObject.points![(this as any).pointIndex]
 
     // Usar fabric.util.transformPoint con la matriz de transformación del polígono
     const transformedPoint = fabric.util.transformPoint(
@@ -68,7 +68,7 @@ export function addPolygonControls(polygon: Polygon, fabric: any) {
   ) {
     const poly = transform.target as Polygon
     const currentControl = poly.controls[poly.__corner as string]
-    const pointIndex = currentControl.pointIndex
+    const pointIndex = (currentControl as any).pointIndex
     const points = poly.points!
 
     // 1. Elegir un punto ancla (el primer punto que NO sea el que estamos arrastrando)

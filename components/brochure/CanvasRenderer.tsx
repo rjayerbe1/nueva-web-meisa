@@ -32,7 +32,7 @@ export function CanvasRenderer({
     import('fabric').then((fabricModule) => {
       console.log('✅ [CanvasRenderer] Fabric.js cargado')
       // Fabric.js v6 exports directly, no .fabric property
-      fabricRef.current = fabricModule.fabric || fabricModule
+      fabricRef.current = fabricModule as any
       setFabricLoaded(true)
     }).catch((error) => {
       console.error('❌ [CanvasRenderer] Error cargando Fabric.js:', error)

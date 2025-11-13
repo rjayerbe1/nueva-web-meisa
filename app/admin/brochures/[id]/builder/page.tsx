@@ -93,7 +93,7 @@ export default async function BrochureBuilderPage({ params }: { params: { id: st
           createdAt: brochure.createdAt.toISOString(),
           updatedAt: brochure.updatedAt.toISOString(),
           fechaPublicacion: brochure.fechaPublicacion?.toISOString() || null
-        }}
+        } as any}
       />
     </div>
   )

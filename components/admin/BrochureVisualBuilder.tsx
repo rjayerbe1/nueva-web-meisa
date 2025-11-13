@@ -40,7 +40,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { FabricCanvasEditor } from '@/components/brochure/FabricCanvasEditor'
 import { SaveAsTemplateModal } from '@/components/admin/SaveAsTemplateModal'
-import { fabric } from 'fabric'
+import * as fabric from 'fabric'
 import { PPTXSlide } from '@/lib/pptxProcessor'
 
 interface Page {

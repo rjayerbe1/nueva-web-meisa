@@ -4,13 +4,13 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, Save, Loader2, Bookmark, AlertCircle } from 'lucide-react'
 import { generateAndUploadThumbnail } from '@/lib/canvasThumbnail'
-import { fabric } from 'fabric'
+import * as fabric from 'fabric'
 
 interface SaveAsTemplateModalProps {
   isOpen: boolean
   onClose: () => void
   currentCanvasData: any
-  currentCanvas: fabric.Canvas | null
+  currentCanvas: any | null
   pageName: string
   canvasConfig?: {
     width: number

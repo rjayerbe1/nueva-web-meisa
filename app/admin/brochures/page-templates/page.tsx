@@ -25,7 +25,11 @@ async function getPageTemplates() {
     }
   })
 
-  return templates
+  // Convert Date to string for client component
+  return templates.map(t => ({
+    ...t,
+    createdAt: t.createdAt.toISOString()
+  }))
 }
 
 export default async function PageTemplatesPage() {
