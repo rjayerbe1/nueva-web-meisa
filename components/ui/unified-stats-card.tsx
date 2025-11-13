@@ -92,24 +92,24 @@ export function UnifiedStatsCard({
         {/* Content */}
         <div className="relative">
           {/* Number container with background effect */}
-          <div className="mb-6 relative">
-            {/* Large background number */}
+          <div className={`mb-3 relative ${suffix ? 'h-32' : 'h-28'}`}>
+            {/* Large background number - always centered */}
             <div className="absolute inset-0 flex items-center justify-center opacity-[0.07]">
               <span className={`${getBackgroundNumberClasses()} font-black text-gray-900`}>
                 {number}
               </span>
             </div>
 
-            {/* Main number display - centered with background */}
-            <div className="relative flex items-center justify-center min-h-[100px]">
+            {/* Main number display - also absolute, perfectly centered */}
+            <div className="absolute inset-0 flex items-center justify-center">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
             </div>
 
-            {/* Suffix below - doesn't affect centering */}
+            {/* Suffix below - positioned at bottom */}
             {suffix && (
-              <div className="text-center -mt-2">
+              <div className="absolute bottom-0 left-0 right-0 text-center">
                 <span className={`${getSuffixClasses()} font-semibold text-gray-500`}>
                   {suffix}
                 </span>
