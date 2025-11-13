@@ -92,7 +92,7 @@ import { FontUploader } from './FontUploader'
 import { FontDropdown } from './FontDropdown'
 import { addPolygonControls, removePolygonControls, setupPolygonPrototype, isPolygon } from '@/lib/polygonControls'
 import { PPTXSlide } from '@/lib/pptxProcessor'
-import { getAllFontNames, loadAllGoogleFonts, loadFontOnDemand, loadAllCustomFonts } from '@/lib/fonts'
+import { getAllFontNames, loadAllGoogleFonts, loadFontOnDemand, loadAllCustomFonts, preloadCriticalFonts } from '@/lib/fonts'
 
 interface FabricCanvasEditorProps {
   initialData?: any // JSON de Fabric.js
@@ -495,12 +495,19 @@ export function FabricCanvasEditor({
     historyStepRef.current = historyStep
   }, [historyStep])
 
-  // Cargar fuentes populares de Google Fonts y fuentes personalizadas al inicializar
+  // Cargar fuentes de Google Fonts y fuentes personalizadas al inicializar
   useEffect(() => {
-    console.log('📦 Cargando fuentes populares de Google Fonts...')
-    loadAllGoogleFonts()
+    console.log('⚡ Inicializando sistema de fuentes...')
 
-    // Cargar fuentes personalizadas guardadas
+    // 1. Precargar fuentes críticas con alta prioridad (inmediato)
+    preloadCriticalFonts()
+
+    // 2. Cargar todas las fuentes de Google Fonts en una sola petición (optimizado)
+    setTimeout(() => {
+      loadAllGoogleFonts()
+    }, 100)
+
+    // 3. Cargar fuentes personalizadas en paralelo
     const loadCustomFonts = async () => {
       try {
         await loadAllCustomFonts()
@@ -510,7 +517,6 @@ export function FabricCanvasEditor({
           const data = await response.json()
           const fontNames = data.fonts.map((f: any) => f.fontFamily)
           setCustomFonts(fontNames)
-          console.log(`✅ ${fontNames.length} fuentes personalizadas cargadas`)
         }
       } catch (error) {
         console.error('❌ Error cargando fuentes personalizadas:', error)

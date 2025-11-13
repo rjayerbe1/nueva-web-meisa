@@ -115,23 +115,45 @@ export function loadGoogleFont(fontName: string, variants: string[] = ['regular'
 }
 
 /**
- * Carga todas las fuentes de Google Fonts populares
- * Usar con precaución - puede ser lento
+ * Carga todas las fuentes de Google Fonts en una sola petición
+ * Más eficiente que cargar fuentes individualmente
  */
 export function loadAllGoogleFonts(): void {
-  console.log('📦 Cargando fuentes populares de Google Fonts...')
+  console.log('📦 Precargando TODAS las fuentes de Google Fonts...')
 
-  // Cargar solo las más populares para no sobrecargar
-  const popularFonts = GOOGLE_FONTS.filter(f =>
-    ['Inter', 'Roboto', 'Montserrat', 'Poppins', 'Open Sans', 'Lato',
-     'Merriweather', 'Playfair Display', 'Oswald', 'Bebas Neue'].includes(f.name)
-  )
+  // Evitar cargar múltiples veces
+  if (document.getElementById('all-google-fonts')) {
+    console.log('✅ Fuentes ya están cargadas')
+    return
+  }
 
-  popularFonts.forEach(font => {
-    if (font.googleFont && font.variants) {
-      loadGoogleFont(font.name, font.variants)
-    }
-  })
+  // Construir URL con todas las fuentes en una sola petición
+  const families = GOOGLE_FONTS.map(font => {
+    const family = font.name.replace(/\s+/g, '+')
+    const weights = font.variants
+      ?.map(v => {
+        if (v === 'regular') return '400'
+        if (v === 'italic') return '400i'
+        return v
+      })
+      .join(';') || '400'
+
+    return `family=${family}:wght@${weights}`
+  }).join('&')
+
+  const url = `https://fonts.googleapis.com/css2?${families}&display=swap`
+
+  // Crear elemento link único para todas las fuentes
+  const link = document.createElement('link')
+  link.id = 'all-google-fonts'
+  link.rel = 'stylesheet'
+  link.href = url
+  link.onload = () => {
+    console.log(`✅ ${GOOGLE_FONTS.length} fuentes de Google Fonts cargadas exitosamente`)
+  }
+  link.onerror = () => console.error('❌ Error cargando fuentes de Google Fonts')
+
+  document.head.appendChild(link)
 }
 
 /**
@@ -258,10 +280,57 @@ export async function loadAllCustomFonts(): Promise<void> {
 
     console.log(`📦 Cargando ${customFonts.length} fuentes personalizadas...`)
 
-    customFonts.forEach((font: any) => {
-      loadCustomFont(font.fontFamily, font.fileUrl, font.fileFormat)
+    // Cargar todas las fuentes en paralelo
+    const loadPromises = customFonts.map((font: any) => {
+      return new Promise<void>((resolve) => {
+        loadCustomFont(font.fontFamily, font.fileUrl, font.fileFormat)
+        // Dar un pequeño tiempo para que se cargue
+        setTimeout(() => resolve(), 100)
+      })
     })
+
+    await Promise.all(loadPromises)
+    console.log(`✅ ${customFonts.length} fuentes personalizadas cargadas`)
   } catch (error) {
     console.error('❌ Error cargando fuentes personalizadas:', error)
   }
+}
+
+/**
+ * Precargar fuentes críticas para el dropdown
+ * Usa preload para mayor prioridad
+ */
+export function preloadCriticalFonts(): void {
+  const criticalFonts = [
+    'Inter',
+    'Roboto',
+    'Montserrat',
+    'Poppins',
+    'Open Sans',
+    'Lato',
+    'Merriweather',
+    'Playfair Display'
+  ]
+
+  criticalFonts.forEach(fontName => {
+    const font = GOOGLE_FONTS.find(f => f.name === fontName)
+    if (font && font.variants) {
+      const family = fontName.replace(/\s+/g, '+')
+      const url = `https://fonts.googleapis.com/css2?family=${family}:wght@400;700&display=swap`
+
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = 'style'
+      link.href = url
+      link.onload = function() {
+        // @ts-ignore
+        this.onload = null
+        // @ts-ignore
+        this.rel = 'stylesheet'
+      }
+      document.head.appendChild(link)
+    }
+  })
+
+  console.log('⚡ Fuentes críticas precargadas con prioridad alta')
 }
