@@ -35,6 +35,9 @@ sync-db-to-neon.sh
 check-db-diff.sh
 copy-data-to-neon.mjs
 compare-data.mjs
+compare-all-data.mjs
+copy-missing-data.mjs
+check-neon-db.mjs
 
 # Vercel
 .vercel

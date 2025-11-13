@@ -28,8 +28,16 @@ const navigation = [
     ]
   },
   { name: "Clientes", href: "/admin/clientes" },
-  { 
-    name: "Servicios", 
+  {
+    name: "Brochures Digitales",
+    href: "/admin/brochures",
+    subItems: [
+      { name: "Todos los Brochures", href: "/admin/brochures" },
+      { name: "Plantillas de Páginas", href: "/admin/brochures/page-templates" }
+    ]
+  },
+  {
+    name: "Servicios",
     href: "/admin/services",
     subItems: [
       { name: "Lista de Servicios", href: "/admin/services" },

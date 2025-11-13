@@ -2,6 +2,33 @@
 
 Esta guía te ayudará a mantener sincronizada tu base de datos local con Neon (producción).
 
+## 🎯 Inicio Rápido
+
+**¿Necesitas sincronizar ahora?** Sigue estos 3 pasos:
+
+1. **Compara todo:**
+   ```bash
+   node compare-all-data.mjs
+   ```
+
+2. **Si hay diferencias, ejecuta los scripts de copia necesarios:**
+   ```bash
+   # Para trayectoria (proyectos_hoja_vida, resumenes, config)
+   node copy-data-to-neon.mjs
+
+   # Para proyectos principales, progreso, historias, secciones
+   node copy-missing-data.mjs
+   ```
+
+3. **Verifica:**
+   ```bash
+   node compare-all-data.mjs
+   ```
+
+✅ **Estado actual:** Base de datos COMPLETAMENTE sincronizada (2025-11-12)
+
+---
+
 ## 📋 Scripts Disponibles
 
 ### 1. `check-db-diff.sh` - Comparar bases de datos
@@ -78,6 +105,38 @@ DATABASE_URL="postgresql://..." node check-neon-db.mjs
 
 ---
 
+### 6. `compare-all-data.mjs` - Comparación completa de todas las tablas
+Compara TODAS las tablas (20 tablas) entre local y Neon.
+
+```bash
+node compare-all-data.mjs
+```
+
+**Qué muestra:**
+- ✅ Tabla con formato profesional
+- 📊 Conteo de registros en local vs Neon
+- ⚠️ Diferencias claramente marcadas
+- 💡 Sugerencia de qué hacer si hay diferencias
+
+---
+
+### 7. `copy-missing-data.mjs` - Copiar datos faltantes específicos
+Copia datos que faltan en tablas específicas (proyectos, progreso, historias, secciones).
+
+```bash
+node copy-missing-data.mjs
+```
+
+**Qué hace:**
+- ✅ Copia proyectos principales faltantes (con sus imágenes)
+- ✅ Copia registros de progreso
+- ✅ Copia historias de proyectos
+- ✅ Copia secciones de páginas
+- 🔒 Maneja foreign keys correctamente
+- 📊 Verifica el resultado al final
+
+---
+
 ## 🔧 Flujo de Trabajo Recomendado
 
 ### Cuando hagas cambios en el SCHEMA (estructura):
@@ -108,22 +167,27 @@ DATABASE_URL="postgresql://..." node check-neon-db.mjs
 
 ### Cuando agregues DATOS nuevos en local:
 
-1. **Compara datos:**
+1. **Compara TODOS los datos:**
    ```bash
-   node compare-data.mjs
+   node compare-all-data.mjs
    ```
 
-2. **Si hay diferencias, copia a producción:**
+2. **Si hay diferencias en trayectoria (proyectos_hoja_vida, resumenes, config):**
    ```bash
    node copy-data-to-neon.mjs
    ```
 
-3. **Verifica que se copió bien:**
+3. **Si hay diferencias en proyectos principales, progreso, historias o secciones:**
    ```bash
-   node compare-data.mjs
+   node copy-missing-data.mjs
    ```
 
-4. **Prueba en tu sitio:**
+4. **Verifica que se copió bien:**
+   ```bash
+   node compare-all-data.mjs
+   ```
+
+5. **Prueba en tu sitio:**
    - Visita las páginas afectadas
    - Verifica que los datos aparezcan correctamente
 
@@ -149,12 +213,21 @@ DATABASE_URL="postgresql://..." node check-neon-db.mjs
 ### Base de datos LOCAL:
 - **Conexión:** `postgresql://rjayerbe@localhost:5432/meisa_db`
 - **Tablas:** 20
+- **Registros totales:** ~910
 - **Estado:** ✅ Actualizada
 
 ### Base de datos NEON (Producción):
 - **Conexión:** `postgresql://neondb_owner:***@ep-young-wave-ae409lqp-pooler.c-2.us-east-2.aws.neon.tech/neondb`
 - **Tablas:** 20
-- **Estado:** ✅ Sincronizada (última actualización: 2025-11-12)
+- **Registros totales:** ~911 (1 usuario adicional)
+- **Estado:** ✅ **COMPLETAMENTE SINCRONIZADA** (última actualización: 2025-11-12)
+
+### Sincronización reciente:
+- ✅ 284 registros copiados (proyectos_hoja_vida, resumenes, configuracion)
+- ✅ 66 registros copiados (proyectos, progreso, secciones)
+- ✅ 4 historias_proyecto copiadas
+- ✅ **Total: 354 registros sincronizados**
+- ✅ 19/20 tablas idénticas (users tiene 1 usuario extra en producción)
 
 ---
 

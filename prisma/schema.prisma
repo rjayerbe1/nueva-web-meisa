@@ -330,6 +330,7 @@ model CategoriaProyecto {
   procesoTrabajo      Json?
   casosExitoIds       Json?
   imagenBanner        String?
+  brochure            Brochure? // Relación con el brochure digital de la categoría
 
   @@map("categorias_proyecto")
 }
@@ -477,6 +478,25 @@ enum TipoSeccion {
   FORMULARIO
 }
 
+enum TipoComponenteBrochure {
+  COVER_PAGE
+  PROJECT_CARD
+  PROJECT_GRID
+  STATS_BOX
+  STATS_GRID
+  IMAGE_GALLERY
+  HERO_SECTION
+  TEXT_BLOCK
+  TITLE_SECTION
+  CONTACT_INFO
+  TIMELINE
+  TECHNICAL_SPECS
+  CLIENT_LOGO
+  DIVIDER
+  SPACER
+  CUSTOM_HTML
+}
+
 model ProyectoHojaVida {
   id                   String        @id @default(cuid())
   entidadContratante   String
@@ -527,4 +547,157 @@ model ResumenAnio {
   updatedAt        DateTime @updatedAt
 
   @@map("resumenes_anio")
+}
+
+// ============================================
+// BROCHURE SYSTEM MODELS
+// ============================================
+
+model BrochureTemplate {
+  id                String     @id @default(cuid())
+  nombre            String
+  descripcion       String?
+  thumbnail         String?
+  tipoCategoria     CategoriaEnum? // Para filtrar templates por categoría
+  estructura        Json       // JSON con la estructura completa del template
+  componentsLibrary Json       // Biblioteca de componentes disponibles
+  estilosGlobales   Json?      // Estilos CSS globales del template
+  isPublic          Boolean    @default(false)
+  isDefault         Boolean    @default(false)
+  createdBy         String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  brochures         Brochure[]
+  pages             BrochureTemplatePage[]
+
+  @@map("brochure_templates")
+}
+
+model BrochureTemplatePage {
+  id          String            @id @default(cuid())
+  templateId  String
+  nombre      String
+  orden       Int               @default(0)
+  estructura  Json              // Layout y componentes de la página
+  estilos     Json?             // Estilos específicos de la página
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  template    BrochureTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@map("brochure_template_pages")
+}
+
+model Brochure {
+  id                String            @id @default(cuid())
+  titulo            String
+  descripcion       String?
+  templateId        String
+  categoriaId       String?           @unique // Una categoría puede tener un brochure
+  contenido         Json              // Contenido específico del brochure
+  datosPersonalizados Json?           // Datos que se inyectan en el template
+  configuracion     Json?             // Configuraciones específicas del brochure
+  activo            Boolean           @default(false)
+  publicado         Boolean           @default(false)
+  fechaPublicacion  DateTime?
+  urlAmigable       String            @unique
+  versionNumero     Int               @default(1)
+  thumbnail         String?
+  createdBy         String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  template          BrochureTemplate  @relation(fields: [templateId], references: [id])
+  categoria         CategoriaProyecto? @relation(fields: [categoriaId], references: [id])
+  pages             BrochurePage[]
+  analytics         BrochureAnalytics[]
+
+  @@map("brochures")
+}
+
+model BrochurePage {
+  id              String        @id @default(cuid())
+  brochureId      String
+  pageTemplateId  String?       // Referencia opcional a plantilla de página usada
+  nombre          String
+  orden           Int           @default(0)
+  canvasData      Json?         // JSON de Fabric.js con el diseño del canvas
+  contenido       Json?         // DEPRECATED: Mantener por compatibilidad (migrará a canvasData)
+  componentesData Json?         // DEPRECATED: Mantener por compatibilidad
+  configuracion   Json?         // Config adicional (ancho, alto canvas, etc.)
+  visible         Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  brochure        Brochure      @relation(fields: [brochureId], references: [id], onDelete: Cascade)
+  pageTemplate    PageTemplate? @relation(fields: [pageTemplateId], references: [id], onDelete: SetNull)
+
+  @@map("brochure_pages")
+}
+
+model PageTemplate {
+  id            String          @id @default(cuid())
+  nombre        String          // "Portada Estándar", "Proyecto 3 Fotos", etc.
+  descripcion   String?
+  thumbnail     String?         // Preview de la plantilla
+  categoria     String?         // "Portadas", "Proyectos", "Galerías"
+  canvasData    Json            // JSON de Fabric.js con el diseño completo
+  configuracion Json?           // Metadata (ancho, alto, colores sugeridos, etc.)
+  isPublic      Boolean         @default(true)
+  usageCount    Int             @default(0) // Contador de usos
+  createdBy     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  pages         BrochurePage[]  // Páginas que usan esta plantilla
+
+  @@map("page_templates")
+}
+
+model BrochureComponent {
+  id                String   @id @default(cuid())
+  nombre            String
+  tipo              TipoComponenteBrochure
+  descripcion       String?
+  thumbnail         String?
+  htmlTemplate      String   @db.Text // HTML template del componente
+  cssEstilos        String   @db.Text // CSS del componente
+  jsInteracciones   String?  @db.Text // JavaScript opcional para interacciones
+  propiedadesSchema Json     // JSON Schema que define las propiedades configurables
+  valorDefecto      Json?    // Valores por defecto de las propiedades
+  categoria         String?  // Para organizar componentes
+  tags              String[]
+  isPublic          Boolean  @default(true)
+  usageCount        Int      @default(0)
+  createdBy         String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("brochure_components")
+}
+
+model BrochureStyle {
+  id              String   @id @default(cuid())
+  nombre          String
+  descripcion     String?
+  coloresPrimarios Json    // {primary, secondary, accent, etc.}
+  tipografia      Json     // {headingFont, bodyFont, sizes, etc.}
+  espaciado       Json?    // {margins, paddings, gaps}
+  bordes          Json?    // {radius, widths, styles}
+  sombras         Json?    // {box shadows, text shadows}
+  efectos         Json?    // {transitions, animations}
+  cssCustom       String?  @db.Text
+  isDefault       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("brochure_styles")
+}
+
+model BrochureAnalytics {
+  id          String   @id @default(cuid())
+  brochureId  String   @unique // Hacer único para upsert
+  vistas      Int      @default(0)
+  descargas   Int      @default(0)
+  compartidos Int      @default(0)
+  fecha       DateTime @default(now())
+  brochure    Brochure @relation(fields: [brochureId], references: [id], onDelete: Cascade)
+
+  @@map("brochure_analytics")
 }

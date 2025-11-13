@@ -196,6 +196,62 @@ const mockMediaFiles = [
     size: 2681164,
     category: 'general',
     uploadedAt: '2024-06-02T12:37:00Z'
+  },
+
+  // Imágenes para Brochures
+  {
+    id: 'brochures-1',
+    url: '/images/servicios/construccion-industrial-1.jpg',
+    name: 'construccion-industrial.jpg',
+    type: 'image/jpeg',
+    size: 382434,
+    category: 'brochures',
+    uploadedAt: '2024-06-10T09:21:00Z'
+  },
+  {
+    id: 'brochures-2',
+    url: '/images/servicios/fabricacion-1.jpg',
+    name: 'fabricacion.jpg',
+    type: 'image/jpeg',
+    size: 313486,
+    category: 'brochures',
+    uploadedAt: '2024-06-05T08:48:00Z'
+  },
+  {
+    id: 'brochures-3',
+    url: '/images/hero/hero-construccion-industrial.jpg',
+    name: 'hero-construccion.jpg',
+    type: 'image/jpeg',
+    size: 559697,
+    category: 'brochures',
+    uploadedAt: '2024-06-10T09:22:00Z'
+  },
+  {
+    id: 'brochures-4',
+    url: '/images/tecnologia/tecnologia-industrial-1.jpg',
+    name: 'tecnologia-industrial.jpg',
+    type: 'image/jpeg',
+    size: 227531,
+    category: 'brochures',
+    uploadedAt: '2024-06-10T09:22:00Z'
+  },
+  {
+    id: 'brochures-5',
+    url: '/images/projects/edificios/tequendama/TEQUENDAMA-PARKING-CALI.jpg',
+    name: 'tequendama-parking.jpg',
+    type: 'image/jpeg',
+    size: 230502,
+    category: 'brochures',
+    uploadedAt: '2024-05-31T16:13:00Z'
+  },
+  {
+    id: 'brochures-6',
+    url: '/images/projects/industria/tecnofar/TECNOFAR-1.jpg',
+    name: 'tecnofar-planta.jpg',
+    type: 'image/jpeg',
+    size: 491277,
+    category: 'brochures',
+    uploadedAt: '2024-05-31T16:13:00Z'
   }
 ]
 
@@ -235,6 +291,43 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const contentType = request.headers.get('content-type') || ''
+
+    // Caso 1: JSON - Registrar archivo ya subido
+    if (contentType.includes('application/json')) {
+      const body = await request.json()
+      const { url, name, type, size, category } = body
+
+      if (!url || !name) {
+        return NextResponse.json(
+          { success: false, error: 'URL y nombre son requeridos' },
+          { status: 400 }
+        )
+      }
+
+      const newFile = {
+        id: Date.now().toString() + Math.random(),
+        url,
+        name,
+        type: type || 'image/unknown',
+        size: size || 0,
+        category: category || 'general',
+        uploadedAt: new Date().toISOString()
+      }
+
+      // Agregar al array de archivos para que persista
+      mockMediaFiles.push(newFile)
+
+      console.log('✅ [Media API] Archivo registrado:', newFile.name, 'Total archivos:', mockMediaFiles.length)
+
+      return NextResponse.json({
+        success: true,
+        file: newFile,
+        message: 'Archivo registrado correctamente'
+      })
+    }
+
+    // Caso 2: FormData - Subir archivos directamente
     const formData = await request.formData()
     const files = formData.getAll('files') as File[]
     const category = formData.get('category') as string || 'general'
@@ -271,7 +364,10 @@ export async function POST(request: NextRequest) {
       }
 
       uploadedFiles.push(newFile)
+      mockMediaFiles.push(newFile) // Agregar al array global
     }
+
+    console.log('✅ [Media API] Archivos subidos:', uploadedFiles.length, 'Total archivos:', mockMediaFiles.length)
 
     return NextResponse.json({
       success: true,

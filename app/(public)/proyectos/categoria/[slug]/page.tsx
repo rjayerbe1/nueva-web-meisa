@@ -5,8 +5,16 @@ import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ExternalLink, Building, Calendar, MapPin, User } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Building, Calendar, MapPin, User, BookOpen } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
+
+interface Brochure {
+  id: string
+  titulo: string
+  urlAmigable: string
+  publicado: boolean
+  activo: boolean
+}
 
 interface Proyecto {
   id: string
@@ -60,6 +68,7 @@ export default function CategoryProjectsPage() {
   const params = useParams()
   const [categoria, setCategoria] = useState<Categoria | null>(null)
   const [proyectos, setProyectos] = useState<Proyecto[]>([])
+  const [brochure, setBrochure] = useState<Brochure | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -108,7 +117,24 @@ export default function CategoryProjectsPage() {
           console.log('Projects fetch failed, but continuing...')
           setProyectos([])
         }
-        
+
+        // Fetch brochure for this category
+        console.log('Fetching brochure for category id:', categoryData.id)
+        try {
+          const brochureResponse = await fetch(`/api/brochures/by-category/${categoryData.id}`)
+          if (brochureResponse.ok) {
+            const brochureData = await brochureResponse.json()
+            console.log('Brochure data received:', brochureData)
+            setBrochure(brochureData)
+          } else {
+            console.log('No brochure found for this category')
+            setBrochure(null)
+          }
+        } catch (brochureError) {
+          console.log('Error fetching brochure, but continuing...', brochureError)
+          setBrochure(null)
+        }
+
         console.log('=== FETCH COMPLETED SUCCESSFULLY ===')
       } catch (error) {
         console.error('=== ERROR IN FETCH ===', error)
@@ -239,12 +265,24 @@ export default function CategoryProjectsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 }}
-                  className="mt-4 flex items-center gap-4 text-white/80"
+                  className="mt-6 flex flex-wrap items-center gap-4"
                 >
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-2 text-white/80">
                     <Building className="w-4 h-4" />
                     {proyectos.length} proyecto{proyectos.length !== 1 ? 's' : ''}
                   </span>
+
+                  {/* Brochure Digital Button */}
+                  {brochure && brochure.publicado && brochure.activo && (
+                    <Link
+                      href={`/brochure/${brochure.urlAmigable}`}
+                      className="inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      <BookOpen className="w-5 h-5" />
+                      <span className="font-medium">Ver Brochure Digital</span>
+                      <ExternalLink className="w-4 h-4" />
+                    </Link>
+                  )}
                 </motion.div>
               </div>
             </div>

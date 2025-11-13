@@ -11,6 +11,17 @@ const nextConfig = {
   generateBuildId: async () => {
     return 'build-' + Date.now()
   },
+  webpack: (config, { isServer }) => {
+    // Configuración para pdfjs-dist
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        canvas: false,
+        fs: false,
+      }
+    }
+    return config
+  },
   images: {
     remotePatterns: [
       {
