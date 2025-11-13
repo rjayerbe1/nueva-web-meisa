@@ -8,6 +8,7 @@ interface CanvasRendererProps {
   width?: number
   height?: number
   className?: string
+  isFullscreen?: boolean
 }
 
 /**
@@ -18,7 +19,8 @@ export function CanvasRenderer({
   canvasData,
   width = 1200,
   height = 800,
-  className = ''
+  className = '',
+  isFullscreen = false
 }: CanvasRendererProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fabricCanvasRef = useRef<any>(null)
@@ -38,6 +40,66 @@ export function CanvasRenderer({
       console.error('❌ [CanvasRenderer] Error cargando Fabric.js:', error)
     })
   }, [])
+
+  // Ajustar tamaño del canvas cuando cambia isFullscreen
+  useEffect(() => {
+    if (!fabricCanvasRef.current || !canvasRef.current) return
+
+    const canvas = fabricCanvasRef.current
+    const canvasElement = canvasRef.current
+
+    if (isFullscreen) {
+      // En fullscreen, calcular dimensiones para llenar la pantalla
+      const viewportWidth = window.innerWidth
+      const viewportHeight = window.innerHeight
+
+      // Calcular el tamaño máximo manteniendo la relación de aspecto original
+      const aspectRatio = width / height
+      let newWidth = viewportWidth
+      let newHeight = viewportWidth / aspectRatio
+
+      // Si la altura es mayor que el viewport, ajustar por altura
+      if (newHeight > viewportHeight) {
+        newHeight = viewportHeight
+        newWidth = viewportHeight * aspectRatio
+      }
+
+      console.log('🖥️ [CanvasRenderer] Ajustando canvas a fullscreen:', {
+        viewportWidth,
+        viewportHeight,
+        newWidth,
+        newHeight,
+        aspectRatio
+      })
+
+      // Ajustar dimensiones del canvas de Fabric.js
+      canvas.setDimensions({
+        width: newWidth,
+        height: newHeight
+      })
+
+      // Escalar el canvas y su contenido
+      const scale = Math.min(newWidth / width, newHeight / height)
+      canvas.setZoom(scale)
+
+      // Ajustar el elemento canvas
+      canvasElement.style.width = `${newWidth}px`
+      canvasElement.style.height = `${newHeight}px`
+
+      canvas.renderAll()
+    } else {
+      // Restaurar tamaño original
+      console.log('📐 [CanvasRenderer] Restaurando canvas a tamaño original:', { width, height })
+
+      canvas.setDimensions({ width, height })
+      canvas.setZoom(1)
+
+      canvasElement.style.width = ''
+      canvasElement.style.height = ''
+
+      canvas.renderAll()
+    }
+  }, [isFullscreen, width, height])
 
   useEffect(() => {
     console.log('🔍 [CanvasRenderer] useEffect ejecutándose...')
@@ -149,22 +211,33 @@ export function CanvasRenderer({
   })
 
   return (
-    <div className={`canvas-renderer relative w-full bg-white ${className}`}>
+    <div className={`canvas-renderer relative w-full ${isFullscreen ? 'h-screen bg-black' : className ? 'bg-white' : 'bg-black'} ${className}`}>
       {/* Canvas Container - Responsive wrapper */}
-      <div className="relative w-full" style={{ paddingBottom: `${(height / width) * 100}%` }}>
+      <div
+        className={`relative w-full ${isFullscreen ? 'h-full flex items-center justify-center' : ''}`}
+        style={isFullscreen ? undefined : { paddingBottom: `${(height / width) * 100}%` }}
+      >
         {/* Canvas - ALWAYS rendered */}
         <canvas
           ref={canvasRef}
-          className="absolute top-0 left-0 w-full h-full border-2 border-gray-300 shadow-lg"
-          style={{ display: 'block' }}
+          className={`${isFullscreen ? 'max-w-full max-h-full' : 'absolute top-0 left-0 w-full h-full'} ${
+            className ? 'border-2 border-gray-300 shadow-lg' : ''
+          }`}
+          style={{ display: 'block', objectFit: 'contain' }}
         />
 
         {/* Loading Overlay - ENCIMA del canvas */}
         {!isReady && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 z-10">
+          <div className={`absolute inset-0 flex items-center justify-center z-10 ${
+            className ? 'bg-white bg-opacity-90' : 'bg-black bg-opacity-90'
+          }`}>
             <div className="text-center">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-2" />
-              <p className="text-sm text-gray-600 font-medium">
+              <Loader2 className={`w-8 h-8 animate-spin mx-auto mb-2 ${
+                className ? 'text-blue-600' : 'text-white'
+              }`} />
+              <p className={`text-sm font-medium ${
+                className ? 'text-gray-600' : 'text-gray-300'
+              }`}>
                 {!fabricLoaded ? 'Cargando Fabric.js...' : 'Renderizando canvas...'}
               </p>
             </div>

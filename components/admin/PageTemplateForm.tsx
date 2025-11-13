@@ -137,17 +137,20 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start gap-2">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="font-medium">Error al guardar</p>
-            <p className="text-sm">{error}</p>
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium">Error al guardar</p>
+              <p className="text-sm">{error}</p>
+            </div>
           </div>
         </div>
       )}
 
       {/* Información Básica */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
           <Layout className="w-5 h-5" />
           Información de la Plantilla
@@ -223,10 +226,12 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
             </label>
           </div>
         </div>
+        </div>
       </div>
 
       {/* Configuración del Canvas */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">
           Dimensiones del Canvas
         </h2>
@@ -276,9 +281,10 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
         <p className="mt-4 text-sm text-gray-500">
           💡 Tip: Recomendamos 1200×800 para layouts horizontales y 800×1200 para verticales
         </p>
+        </div>
       </div>
 
-      {/* Editor Visual */}
+      {/* Editor Visual - Ancho completo */}
       <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">
           Editor Visual
@@ -302,7 +308,8 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
       </div>
 
       {/* Botones de Acción */}
-      <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between pt-6 border-t border-gray-200">
         <Link
           href="/admin/brochures/page-templates"
           className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 rounded-lg transition-colors"
@@ -328,6 +335,7 @@ export function PageTemplateForm({ template }: PageTemplateFormProps) {
             </>
           )}
         </button>
+        </div>
       </div>
     </form>
   )

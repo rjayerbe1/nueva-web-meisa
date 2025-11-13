@@ -16,8 +16,8 @@ export default async function NewPageTemplatePage() {
   }
 
   return (
-    <div className="space-y-8 max-w-6xl">
-      <div>
+    <div className="space-y-8">
+      <div className="max-w-7xl">
         <h1 className="text-3xl font-bold text-gray-900">Crear Nueva Plantilla</h1>
         <p className="mt-2 text-lg text-gray-600">
           Diseña una plantilla de página que podrás reutilizar en tus brochures
