@@ -92,7 +92,7 @@ export function UnifiedStatsCard({
         {/* Content */}
         <div className="relative">
           {/* Number container with background effect */}
-          <div className={`mb-3 relative ${suffix ? 'h-32' : 'h-28'}`}>
+          <div className="mb-6 relative h-28">
             {/* Large background number - always centered */}
             <div className="absolute inset-0 flex items-center justify-center opacity-[0.07]">
               <span className={`${getBackgroundNumberClasses()} font-black text-gray-900`}>
@@ -100,21 +100,17 @@ export function UnifiedStatsCard({
               </span>
             </div>
 
-            {/* Main number display - also absolute, perfectly centered */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            {/* Main number display with suffix - also absolute, perfectly centered */}
+            <div className="absolute inset-0 flex items-baseline justify-center gap-2">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
-            </div>
-
-            {/* Suffix below - positioned at bottom */}
-            {suffix && (
-              <div className="absolute bottom-0 left-0 right-0 text-center">
+              {suffix && (
                 <span className={`${getSuffixClasses()} font-semibold text-gray-500`}>
                   {suffix}
                 </span>
-              </div>
-            )}
+              )}
+            </div>
           </div>
           
           {/* Label */}
