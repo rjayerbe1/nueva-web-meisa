@@ -46,11 +46,11 @@ export function ClientesSection() {
     }
   }
 
-  // Obtener clientes destacados con proyecto
+  // Obtener clientes destacados con proyecto (máximo 3 para homepage)
   const clientesDestacados = clientes
     .filter(c => c.destacado && c.proyectoDestacado)
     .sort((a, b) => a.orden - b.orden)
-    .slice(0, 4)
+    .slice(0, 3)
 
   if (loading) {
     return (
@@ -164,8 +164,8 @@ export function ClientesSection() {
             className="mb-16"
           >
             <h4 className="text-2xl font-bold text-gray-900 text-center mb-8">Proyectos Destacados</h4>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {clientesDestacados.map((cliente, index) => (
                 <motion.div
                   key={cliente.id}

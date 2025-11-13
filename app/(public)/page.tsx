@@ -62,11 +62,8 @@ const homeSections = [
   { id: 'capacidades', titulo: 'Números', icon: 'BarChart3' },
   { id: 'nosotros', titulo: 'Nosotros', icon: 'Users' },
   { id: 'servicios', titulo: 'Servicios', icon: 'Settings' },
-  { id: 'tecnologia', titulo: 'Tecnología', icon: 'Monitor' },
-  { id: 'infraestructura', titulo: 'Infraestructura', icon: 'Factory' },
   { id: 'proyectos', titulo: 'Proyectos', icon: 'Award' },
   { id: 'clientes', titulo: 'Clientes', icon: 'UserCheck' },
-  { id: 'valores', titulo: 'Valores', icon: 'Heart' },
   { id: 'contacto', titulo: 'Contacto', icon: 'MessageSquare' }
 ]
 

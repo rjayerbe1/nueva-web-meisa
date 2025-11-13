@@ -602,6 +602,7 @@ model Brochure {
   urlAmigable       String            @unique
   versionNumero     Int               @default(1)
   thumbnail         String?
+  pdfUrl            String?           // URL del PDF completo del brochure en Google Cloud Storage
   createdBy         String
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt

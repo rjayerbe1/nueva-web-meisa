@@ -16,9 +16,29 @@ export async function GET(
       select: {
         id: true,
         titulo: true,
+        descripcion: true,
         urlAmigable: true,
+        thumbnail: true,
+        pdfUrl: true,
         publicado: true,
-        activo: true
+        activo: true,
+        fechaPublicacion: true,
+        pages: {
+          where: {
+            visible: true
+          },
+          select: {
+            id: true,
+            nombre: true,
+            canvasData: true,
+            configuracion: true,
+            orden: true
+          },
+          orderBy: {
+            orden: 'asc'
+          },
+          take: 1 // Solo la primera página para preview
+        }
       }
     })
 
@@ -26,7 +46,20 @@ export async function GET(
       return NextResponse.json({ error: "Brochure no encontrado" }, { status: 404 })
     }
 
-    return NextResponse.json(brochure)
+    // Contar total de páginas visibles
+    const totalPages = await prisma.brochurePage.count({
+      where: {
+        brochureId: brochure.id,
+        visible: true
+      }
+    })
+
+    // Retornar datos completos
+    return NextResponse.json({
+      ...brochure,
+      totalPages,
+      primeraPagePreview: brochure.pages[0] || null
+    })
 
   } catch (error) {
     console.error('Error obteniendo brochure por categoría:', error)

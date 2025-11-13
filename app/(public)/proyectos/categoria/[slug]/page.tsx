@@ -7,13 +7,34 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ExternalLink, Building, Calendar, MapPin, User, BookOpen } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
+import { UnifiedStatsCard } from '@/components/ui/unified-stats-card'
+import { CanvasRenderer } from '@/components/brochure/CanvasRenderer'
 
 interface Brochure {
   id: string
   titulo: string
+  descripcion: string | null
   urlAmigable: string
+  thumbnail: string | null
+  pdfUrl: string | null
   publicado: boolean
   activo: boolean
+  fechaPublicacion: string | null
+  totalPages: number
+  primeraPagePreview: {
+    id: string
+    nombre: string
+    canvasData: any
+    configuracion: any
+    orden: number
+  } | null
+  pages: Array<{
+    id: string
+    nombre: string
+    canvasData: any
+    configuracion: any
+    orden: number
+  }>
 }
 
 interface Proyecto {
@@ -71,8 +92,41 @@ export default function CategoryProjectsPage() {
   const [brochure, setBrochure] = useState<Brochure | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [downloadingPDF, setDownloadingPDF] = useState(false)
 
   console.log('Component rendered, params:', params)
+
+  const handleDownloadPDF = async () => {
+    if (!brochure || downloadingPDF) return
+
+    try {
+      setDownloadingPDF(true)
+
+      // Si existe un PDF pregenerado, descargarlo directamente
+      if (brochure.pdfUrl && brochure.pdfUrl.trim() !== '') {
+        console.log('📥 Descargando PDF pregenerado:', brochure.pdfUrl)
+
+        // Crear un enlace temporal para descargar el archivo
+        const link = document.createElement('a')
+        link.href = brochure.pdfUrl
+        link.download = `${brochure.titulo.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`
+        link.target = '_blank'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+
+        console.log('✅ PDF descargado exitosamente')
+      } else {
+        // Si no existe PDF pregenerado, mostrar mensaje
+        alert('El PDF aún no ha sido generado. Por favor, contacta al administrador para generar el PDF del brochure.')
+      }
+    } catch (error) {
+      console.error('Error al descargar PDF:', error)
+      alert('Error al descargar el PDF')
+    } finally {
+      setDownloadingPDF(false)
+    }
+  }
 
   useEffect(() => {
     const slug = params.slug as string
@@ -180,7 +234,7 @@ export default function CategoryProjectsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative h-80 bg-gray-900 overflow-hidden">
+      <section className="relative h-96 bg-gray-900 overflow-hidden pt-32">
         {/* Background Image - Usar banner si existe, sino cover */}
         {(categoria.imagenBanner || categoria.imagenCover) && (
           <div className="absolute inset-0">
@@ -271,18 +325,6 @@ export default function CategoryProjectsPage() {
                     <Building className="w-4 h-4" />
                     {proyectos.length} proyecto{proyectos.length !== 1 ? 's' : ''}
                   </span>
-
-                  {/* Brochure Digital Button */}
-                  {brochure && brochure.publicado && brochure.activo && (
-                    <Link
-                      href={`/brochure/${brochure.urlAmigable}`}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-                    >
-                      <BookOpen className="w-5 h-5" />
-                      <span className="font-medium">Ver Brochure Digital</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </Link>
-                  )}
                 </motion.div>
               </div>
             </div>
@@ -290,10 +332,11 @@ export default function CategoryProjectsPage() {
         </div>
       </section>
 
-      {/* Sección "Sobre esta especialidad" */}
-      {categoria.descripcionAmpliada && (
+      {/* Sección Unificada: Sobre esta especialidad + Estadísticas + Brochure */}
+      {(categoria.descripcionAmpliada || categoria.estadisticas || brochure) && (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Título de Sección */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -307,193 +350,247 @@ export default function CategoryProjectsPage() {
               <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-blue-700 mx-auto"></div>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Descripción ampliada */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className="prose prose-lg max-w-none">
-                  <p className="text-gray-700 leading-relaxed text-lg">
-                    {categoria.descripcionAmpliada}
-                  </p>
-                </div>
+            {/* Layout de 2 columnas */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {/* Beneficios */}
-                {categoria.beneficios && categoria.beneficios.length > 0 && (
-                  <div className="mt-8">
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">
-                      ¿Por qué elegir MEISA para {categoria.nombre}?
-                    </h3>
-                    <ul className="space-y-3">
-                      {categoria.beneficios.map((beneficio: any, index: number) => (
-                        <motion.li
-                          key={index}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.4, delay: 0.1 * index }}
-                          viewport={{ once: true }}
-                          className="flex items-start gap-3"
-                        >
-                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
+              {/* COLUMNA 1: Descripción y Beneficios (60% = 7 cols) */}
+              {categoria.descripcionAmpliada && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="lg:col-span-7"
+                >
+                  <div className="prose prose-lg max-w-none mb-8">
+                    <p className="text-gray-700 leading-relaxed text-lg text-justify">
+                      {categoria.descripcionAmpliada}
+                    </p>
+                  </div>
+
+                  {/* Beneficios */}
+                  {categoria.beneficios && categoria.beneficios.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-4">
+                        ¿Por qué elegir MEISA?
+                      </h3>
+                      <ul className="space-y-3">
+                        {categoria.beneficios.slice(0, 5).map((beneficio: any, index: number) => (
+                          <motion.li
+                            key={index}
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.4, delay: 0.1 * index }}
+                            viewport={{ once: true }}
+                            className="flex items-start gap-3"
+                          >
+                            <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            <span className="text-gray-700">{beneficio}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Proceso de trabajo compacto */}
+                  {categoria.procesoTrabajo && categoria.procesoTrabajo.length > 0 && (
+                    <div className="mt-8">
+                      <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <div className="w-6 h-6 bg-blue-600 rounded-lg flex items-center justify-center">
+                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                          </svg>
+                        </div>
+                        Nuestro Proceso
+                      </h3>
+                      <div className="space-y-2">
+                        {categoria.procesoTrabajo.slice(0, 4).map((paso: any, index: number) => (
+                          <div key={index} className="flex items-start gap-2 text-sm">
+                            <span className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+                              {index + 1}
+                            </span>
+                            <span className="text-gray-600">{paso}</span>
                           </div>
-                          <span className="text-gray-700">{beneficio}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* COLUMNA 2: Estadísticas + Brochure (40% = 5 cols) */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+                className="lg:col-span-5 space-y-6"
+              >
+                {/* Estadísticas Grid 2x2 */}
+                {categoria.estadisticas && (
+                  <div className="grid grid-cols-2 gap-4">
+                    {categoria.estadisticas.toneladasTotal && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-shadow"
+                      >
+                        <div className="text-center">
+                          <div className="text-3xl font-black bg-gradient-to-br from-blue-600 to-blue-800 bg-clip-text text-transparent mb-1">
+                            {categoria.estadisticas.toneladasTotal.toLocaleString()}
+                          </div>
+                          <p className="text-gray-600 font-semibold text-sm">Toneladas</p>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {categoria.estadisticas.proyectosCompletados && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-shadow"
+                      >
+                        <div className="text-center">
+                          <div className="text-3xl font-black bg-gradient-to-br from-blue-600 to-blue-800 bg-clip-text text-transparent mb-1">
+                            {categoria.estadisticas.proyectosCompletados}+
+                          </div>
+                          <p className="text-gray-600 font-semibold text-sm">Proyectos</p>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {categoria.estadisticas.anosExperiencia && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                        viewport={{ once: true }}
+                        className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-shadow"
+                      >
+                        <div className="text-center">
+                          <div className="text-3xl font-black bg-gradient-to-br from-blue-600 to-blue-800 bg-clip-text text-transparent mb-1">
+                            {categoria.estadisticas.anosExperiencia}+
+                          </div>
+                          <p className="text-gray-600 font-semibold text-sm">Años</p>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {categoria.estadisticas.tiempoPromedioEntrega && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.4 }}
+                        viewport={{ once: true }}
+                        className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-shadow"
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl font-black bg-gradient-to-br from-blue-600 to-blue-800 bg-clip-text text-transparent mb-1">
+                            {categoria.estadisticas.tiempoPromedioEntrega}
+                          </div>
+                          <p className="text-gray-600 font-semibold text-xs line-clamp-2">Tiempo Promedio</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+
+                {/* Brochure Digital Card */}
+                {brochure && brochure.publicado && brochure.activo && (
+                  <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl overflow-hidden shadow-2xl">
+                    {/* Preview del Brochure */}
+                    <div className="relative aspect-video bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden group">
+                      {brochure.thumbnail && brochure.thumbnail.trim() !== '' ? (
+                        <Image
+                          src={brochure.thumbnail}
+                          alt={brochure.titulo}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-800 to-blue-900 relative">
+                          {/* Fondo decorativo */}
+                          <div className="absolute inset-0 opacity-10">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl transform -translate-x-32 translate-y-32"></div>
+                          </div>
+
+                          {/* Icono y texto centrados */}
+                          <div className="relative z-10 text-center">
+                            <div className="mb-4 inline-flex items-center justify-center w-24 h-24 bg-white/10 backdrop-blur-sm rounded-2xl">
+                              <BookOpen className="w-12 h-12 text-white" />
+                            </div>
+                            <p className="text-white/80 text-lg font-semibold">
+                              Brochure Digital
+                            </p>
+                            <p className="text-white/60 text-sm mt-1">
+                              {brochure.totalPages} páginas disponibles
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-blue-700/40 to-transparent pointer-events-none"></div>
+
+                      {/* Badge de páginas */}
+                      <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold z-10">
+                        {brochure.totalPages} página{brochure.totalPages !== 1 ? 's' : ''}
+                      </div>
+                    </div>
+
+                    {/* Contenido */}
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <BookOpen className="w-5 h-5 text-white" />
+                        <span className="text-xs uppercase tracking-wider text-blue-200 font-semibold">
+                          Brochure Digital
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        {brochure.titulo}
+                      </h3>
+
+                      {brochure.descripcion && (
+                        <p className="text-blue-100 text-sm mb-4 line-clamp-2">
+                          {brochure.descripcion}
+                        </p>
+                      )}
+
+                      <div className="space-y-2">
+                        <Link
+                          href={`/brochure/${brochure.urlAmigable}`}
+                          className="block w-full bg-white hover:bg-blue-50 text-blue-700 font-semibold py-3 px-4 rounded-lg transition-colors text-center"
+                        >
+                          Ver Brochure Completo
+                        </Link>
+                        <button
+                          onClick={handleDownloadPDF}
+                          disabled={downloadingPDF}
+                          className="block w-full bg-blue-800/50 hover:bg-blue-800/70 backdrop-blur-sm text-white font-medium py-2 px-4 rounded-lg transition-colors text-center text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {downloadingPDF ? 'Preparando...' : 'Descargar PDF'}
+                        </button>
+                      </div>
+
+                      {brochure.fechaPublicacion && (
+                        <div className="mt-3 text-xs text-blue-200 text-center">
+                          Actualizado: {new Date(brochure.fechaPublicacion).toLocaleDateString('es-CO')}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </motion.div>
 
-              {/* Proceso de trabajo */}
-              {categoria.procesoTrabajo && categoria.procesoTrabajo.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-50 rounded-2xl p-8"
-                >
-                  <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                      </svg>
-                    </div>
-                    Nuestro Proceso
-                  </h3>
-                  <div className="space-y-4">
-                    {categoria.procesoTrabajo.map((paso: any, index: number) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.1 * index }}
-                        viewport={{ once: true }}
-                        className="flex items-start gap-4"
-                      >
-                        <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
-                          {index + 1}
-                        </div>
-                        <p className="text-gray-700 mt-1">{paso}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Estadísticas */}
-      {categoria.estadisticas && (
-        <section className="py-16 bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Nuestra Experiencia en {categoria.nombre}
-              </h2>
-              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-                Cifras que respaldan nuestra trayectoria y excelencia en esta especialidad
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {categoria.estadisticas.toneladasTotal && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-                >
-                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                  </div>
-                  <div className="text-3xl font-bold text-white mb-2">
-                    {categoria.estadisticas.toneladasTotal.toLocaleString()}
-                  </div>
-                  <div className="text-blue-300 font-semibold">Toneladas</div>
-                  <div className="text-gray-400 text-sm">Fabricadas</div>
-                </motion.div>
-              )}
-
-              {categoria.estadisticas.proyectosCompletados && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-                >
-                  <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                  </div>
-                  <div className="text-3xl font-bold text-white mb-2">
-                    {categoria.estadisticas.proyectosCompletados}+
-                  </div>
-                  <div className="text-green-300 font-semibold">Proyectos</div>
-                  <div className="text-gray-400 text-sm">Completados</div>
-                </motion.div>
-              )}
-
-              {categoria.estadisticas.anosExperiencia && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  viewport={{ once: true }}
-                  className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-                >
-                  <div className="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="text-3xl font-bold text-white mb-2">
-                    {categoria.estadisticas.anosExperiencia}+
-                  </div>
-                  <div className="text-yellow-300 font-semibold">Años</div>
-                  <div className="text-gray-400 text-sm">de Experiencia</div>
-                </motion.div>
-              )}
-
-              {categoria.estadisticas.tiempoPromedioEntrega && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-                >
-                  <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <div className="text-2xl font-bold text-white mb-2">
-                    {categoria.estadisticas.tiempoPromedioEntrega}
-                  </div>
-                  <div className="text-purple-300 font-semibold">Tiempo</div>
-                  <div className="text-gray-400 text-sm">Promedio</div>
-                </motion.div>
-              )}
             </div>
           </div>
         </section>
