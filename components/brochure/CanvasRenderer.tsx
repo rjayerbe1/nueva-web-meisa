@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
+import { loadAllCustomFonts } from '@/lib/fonts'
 
 interface CanvasRendererProps {
   canvasData: any
@@ -26,7 +27,21 @@ export function CanvasRenderer({
   const fabricCanvasRef = useRef<any>(null)
   const fabricRef = useRef<any>(null)
   const [fabricLoaded, setFabricLoaded] = useState(false)
+  const [fontsLoaded, setFontsLoaded] = useState(false)
   const [canvasReady, setCanvasReady] = useState(false)
+
+  // Cargar fuentes personalizadas primero
+  useEffect(() => {
+    console.log('📦 [CanvasRenderer] Cargando fuentes personalizadas...')
+    loadAllCustomFonts().then(() => {
+      console.log('✅ [CanvasRenderer] Fuentes personalizadas cargadas')
+      setFontsLoaded(true)
+    }).catch((error) => {
+      console.error('❌ [CanvasRenderer] Error cargando fuentes:', error)
+      // Continuar sin fuentes personalizadas
+      setFontsLoaded(true)
+    })
+  }, [])
 
   // Cargar Fabric.js dinámicamente
   useEffect(() => {
@@ -148,10 +163,11 @@ export function CanvasRenderer({
     console.log('🔍 [CanvasRenderer] useEffect ejecutándose...')
     console.log('   - canvasRef.current:', !!canvasRef.current)
     console.log('   - fabricLoaded:', fabricLoaded)
+    console.log('   - fontsLoaded:', fontsLoaded)
     console.log('   - fabricRef.current:', !!fabricRef.current)
 
-    if (!canvasRef.current || !fabricLoaded || !fabricRef.current) {
-      console.log('❌ [CanvasRenderer] Condiciones no cumplidas')
+    if (!canvasRef.current || !fabricLoaded || !fontsLoaded || !fabricRef.current) {
+      console.log('❌ [CanvasRenderer] Condiciones no cumplidas - esperando fuentes y Fabric.js')
       return
     }
 
@@ -242,12 +258,13 @@ export function CanvasRenderer({
     } catch (error) {
       console.error('❌ [CanvasRenderer] Error:', error)
     }
-  }, [canvasData, width, height, fabricLoaded])
+  }, [canvasData, width, height, fabricLoaded, fontsLoaded])
 
-  const isReady = fabricLoaded && canvasReady
+  const isReady = fabricLoaded && fontsLoaded && canvasReady
 
   console.log('🎨 [CanvasRenderer] Render:', {
     fabricLoaded,
+    fontsLoaded,
     canvasReady,
     isReady,
     showOverlay: !isReady
@@ -281,7 +298,7 @@ export function CanvasRenderer({
               <p className={`text-sm font-medium ${
                 className ? 'text-gray-600' : 'text-gray-300'
               }`}>
-                {!fabricLoaded ? 'Cargando Fabric.js...' : 'Renderizando canvas...'}
+                {!fontsLoaded ? 'Cargando fuentes...' : !fabricLoaded ? 'Cargando Fabric.js...' : 'Renderizando canvas...'}
               </p>
             </div>
           </div>

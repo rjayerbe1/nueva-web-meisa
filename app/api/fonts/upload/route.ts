@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
         nombre: customFont.nombre,
         fontFamily: customFont.fontFamily,
         fileUrl: customFont.fileUrl,
+        fileFormat: customFont.fileFormat,
         category: customFont.category
       }
     }, { status: 201 })
@@ -157,6 +158,64 @@ export async function GET() {
     console.error('❌ Error obteniendo fuentes:', error)
     return NextResponse.json(
       { error: 'Error al obtener las fuentes' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE: Eliminar una fuente personalizada
+export async function DELETE(request: NextRequest) {
+  try {
+    // Verificar autenticación
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    // Obtener ID de la fuente desde query params
+    const { searchParams } = new URL(request.url)
+    const fontId = searchParams.get('id')
+
+    if (!fontId) {
+      return NextResponse.json({ error: 'ID de fuente no proporcionado' }, { status: 400 })
+    }
+
+    // Buscar la fuente
+    const font = await prisma.customFont.findUnique({
+      where: { id: fontId }
+    })
+
+    if (!font) {
+      return NextResponse.json({ error: 'Fuente no encontrada' }, { status: 404 })
+    }
+
+    // Eliminar archivo de Google Cloud Storage
+    try {
+      const urlParts = font.fileUrl.split('/')
+      const gcsPath = urlParts.slice(4).join('/') // Extraer la ruta después del bucket
+      const gcsFile = bucket.file(gcsPath)
+      await gcsFile.delete()
+      console.log('✅ Archivo eliminado de GCS:', gcsPath)
+    } catch (gcsError) {
+      console.warn('⚠️ No se pudo eliminar el archivo de GCS:', gcsError)
+      // Continuar con la eliminación de la BD aunque falle GCS
+    }
+
+    // Eliminar de la base de datos
+    await prisma.customFont.delete({
+      where: { id: fontId }
+    })
+
+    console.log('✅ Fuente eliminada de BD:', fontId)
+
+    return NextResponse.json({
+      message: 'Fuente eliminada exitosamente'
+    }, { status: 200 })
+
+  } catch (error: any) {
+    console.error('❌ Error eliminando fuente:', error)
+    return NextResponse.json(
+      { error: error.message || 'Error al eliminar la fuente' },
       { status: 500 }
     )
   }

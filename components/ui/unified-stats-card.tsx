@@ -44,22 +44,22 @@ export function UnifiedStatsCard({
   const getSuffixClasses = () => {
     switch (variant) {
       case 'large':
-        return 'text-3xl lg:text-4xl'
+        return 'text-4xl lg:text-5xl'
       case 'compact':
-        return 'text-lg lg:text-xl'
-      default:
         return 'text-xl lg:text-2xl'
+      default:
+        return 'text-2xl lg:text-3xl'
     }
   }
 
   const getBackgroundNumberClasses = () => {
     switch (variant) {
       case 'large':
-        return 'text-[100px]'
+        return 'text-[140px]'
       case 'compact':
-        return 'text-[60px]'
+        return 'text-[80px]'
       default:
-        return 'text-[90px]'
+        return 'text-[120px]'
     }
   }
 
@@ -82,32 +82,24 @@ export function UnifiedStatsCard({
       viewport={{ once: true }}
       className="relative"
     >
-      <div className={`relative bg-white rounded-3xl ${getCardClasses()} h-full group hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl`}>
+      <div className={`relative bg-white rounded-3xl ${getCardClasses()} h-full group hover:scale-105 transition-all duration-300`}>
         {/* Gradient overlay on hover */}
         <div className={`absolute inset-0 bg-gradient-to-br ${getGradientColors()} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-
+        
         {/* Inner white background */}
-        <div className="absolute inset-[2px] bg-white rounded-3xl shadow-inner" />
+        <div className="absolute inset-[2px] bg-white rounded-3xl" />
         
         {/* Content */}
         <div className="relative">
-          {/* Number container with background effect */}
-          <div className="mb-6 relative h-28">
-            {/* Large background number - with invisible suffix spacer for alignment */}
-            <div className="absolute inset-0 flex items-baseline justify-center gap-2 opacity-[0.07]">
-              {suffix && <span className={`${getSuffixClasses()} invisible`}>{suffix}</span>}
-              <span className={`${getBackgroundNumberClasses()} font-black text-gray-900`}>
-                {number}
-              </span>
-            </div>
-
-            {/* Main number display with suffix */}
-            <div className="absolute inset-0 flex items-baseline justify-center gap-2">
+          {/* Number container */}
+          <div className="mb-6 relative">
+            {/* Main number display */}
+            <div className="flex items-baseline justify-center gap-2">
               <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
               {suffix && (
-                <span className={`${getSuffixClasses()} font-semibold text-gray-500`}>
+                <span className={`${getSuffixClasses()} font-bold text-gray-500 ml-1`}>
                   {suffix}
                 </span>
               )}

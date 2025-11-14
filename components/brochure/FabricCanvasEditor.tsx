@@ -92,7 +92,7 @@ import { FontUploader } from './FontUploader'
 import { FontDropdown } from './FontDropdown'
 import { addPolygonControls, removePolygonControls, setupPolygonPrototype, isPolygon } from '@/lib/polygonControls'
 import { PPTXSlide } from '@/lib/pptxProcessor'
-import { getAllFontNames, loadAllGoogleFonts, loadFontOnDemand, loadAllCustomFonts, preloadCriticalFonts } from '@/lib/fonts'
+import { getAllFontNames, loadAllGoogleFonts, loadFontOnDemand, loadAllCustomFonts, preloadCriticalFonts, loadCustomFont, addCustomFontToCache } from '@/lib/fonts'
 
 interface FabricCanvasEditorProps {
   initialData?: any // JSON de Fabric.js
@@ -4714,7 +4714,7 @@ export function FabricCanvasEditor({
       <FontUploader
         isOpen={showFontUploader}
         onClose={() => setShowFontUploader(false)}
-        onFontUploaded={async (fontFamily) => {
+        onFontUploaded={async (fontData) => {
           // Recargar lista de fuentes personalizadas
           try {
             const response = await fetch('/api/fonts/upload')
@@ -4722,12 +4722,23 @@ export function FabricCanvasEditor({
               const data = await response.json()
               const fontNames = data.fonts.map((f: any) => f.fontFamily)
               setCustomFonts(fontNames)
-              console.log('✅ Lista de fuentes actualizada')
+              console.log('✅ Lista de fuentes actualizada:', fontNames)
+
+              // Agregar la fuente al cache para que loadFontOnDemand la encuentre
+              addCustomFontToCache(fontData.fontFamily, fontData.fileUrl, fontData.fileFormat)
+
+              // Cargar la nueva fuente dinámicamente con @font-face
+              console.log('🔄 Cargando fuente personalizada:', fontData)
+              loadCustomFont(fontData.fontFamily, fontData.fileUrl, fontData.fileFormat)
+
+              // Esperar un momento para que la fuente se cargue
+              await new Promise(resolve => setTimeout(resolve, 500))
 
               // Aplicar la nueva fuente al objeto seleccionado
-              if (selectedObject) {
-                updateObjectProperty('fontFamily', fontFamily)
-                loadFontOnDemand(fontFamily)
+              if (selectedObject && fabricRef.current) {
+                updateObjectProperty('fontFamily', fontData.fontFamily)
+                fabricRef.current.renderAll()
+                console.log('✅ Fuente aplicada al texto seleccionado')
               }
             }
           } catch (error) {

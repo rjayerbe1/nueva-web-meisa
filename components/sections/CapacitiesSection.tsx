@@ -48,7 +48,7 @@ const capacities = [
 
 export function CapacitiesSection() {
   return (
-    <section id="capacidades" className="py-20 bg-gradient-to-br from-gray-50 to-white">
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="relative z-10">
         <UnifiedStatsGrid
           title="Números que Respaldan la Excelencia"

@@ -80,6 +80,13 @@ export const GOOGLE_FONTS: FontFamily[] = [
 // Todas las fuentes disponibles
 export const ALL_FONTS = [...SYSTEM_FONTS, ...GOOGLE_FONTS]
 
+// Cache de fuentes personalizadas cargadas desde la API
+let customFontsCache: Array<{
+  fontFamily: string
+  fileUrl: string
+  fileFormat: string
+}> = []
+
 /**
  * Carga una fuente de Google Fonts dinámicamente
  */
@@ -158,18 +165,29 @@ export function loadAllGoogleFonts(): void {
 
 /**
  * Carga fuentes bajo demanda
+ * Busca primero en fuentes del sistema/Google, luego en personalizadas
  */
 export function loadFontOnDemand(fontName: string): void {
+  // Buscar en fuentes del sistema y Google Fonts
   const font = ALL_FONTS.find(f => f.name === fontName)
 
-  if (!font) {
-    console.warn(`⚠️ Fuente "${fontName}" no encontrada`)
+  if (font) {
+    if (font.googleFont && font.variants) {
+      loadGoogleFont(fontName, font.variants)
+    }
     return
   }
 
-  if (font.googleFont && font.variants) {
-    loadGoogleFont(fontName, font.variants)
+  // Buscar en fuentes personalizadas (cache)
+  const customFont = customFontsCache.find(f => f.fontFamily === fontName)
+
+  if (customFont) {
+    console.log(`🔄 Cargando fuente personalizada bajo demanda: ${fontName}`)
+    loadCustomFont(customFont.fontFamily, customFont.fileUrl, customFont.fileFormat)
+    return
   }
+
+  console.warn(`⚠️ Fuente "${fontName}" no encontrada en sistema, Google Fonts ni personalizadas`)
 }
 
 /**
@@ -210,35 +228,54 @@ export function getFontsGroupedByCategory() {
 
 /**
  * Cargar fuente personalizada usando @font-face
+ * Retorna una promesa que se resuelve cuando la fuente está lista
  */
-export function loadCustomFont(fontFamily: string, fontUrl: string, format: string): void {
-  // Evitar cargar la misma fuente múltiples veces
-  const id = `custom-font-${fontFamily.replace(/\s+/g, '-').toLowerCase()}`
-  if (document.getElementById(id)) {
-    console.log(`✅ Fuente personalizada "${fontFamily}" ya está cargada`)
-    return
-  }
-
-  // Determinar el formato correcto para @font-face
-  let fontFormat = format
-  if (format === 'ttf') fontFormat = 'truetype'
-  else if (format === 'otf') fontFormat = 'opentype'
-
-  // Crear elemento style con @font-face
-  const style = document.createElement('style')
-  style.id = id
-  style.textContent = `
-    @font-face {
-      font-family: '${fontFamily}';
-      src: url('${fontUrl}') format('${fontFormat}');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
+export function loadCustomFont(fontFamily: string, fontUrl: string, format: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    // Evitar cargar la misma fuente múltiples veces
+    const id = `custom-font-${fontFamily.replace(/\s+/g, '-').toLowerCase()}`
+    if (document.getElementById(id)) {
+      console.log(`✅ Fuente personalizada "${fontFamily}" ya está cargada`)
+      resolve()
+      return
     }
-  `
 
-  document.head.appendChild(style)
-  console.log(`✅ Fuente personalizada "${fontFamily}" cargada desde ${fontUrl}`)
+    // Determinar el formato correcto para @font-face
+    let fontFormat = format
+    if (format === 'ttf') fontFormat = 'truetype'
+    else if (format === 'otf') fontFormat = 'opentype'
+
+    // Crear elemento style con @font-face
+    const style = document.createElement('style')
+    style.id = id
+    style.textContent = `
+      @font-face {
+        font-family: '${fontFamily}';
+        src: url('${fontUrl}') format('${fontFormat}');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+    `
+
+    document.head.appendChild(style)
+    console.log(`✅ Fuente personalizada "${fontFamily}" cargada desde ${fontUrl}`)
+
+    // Usar Font Loading API para esperar a que la fuente esté lista
+    if ('fonts' in document) {
+      document.fonts.load(`16px "${fontFamily}"`).then(() => {
+        console.log(`🎨 Fuente "${fontFamily}" lista para usar`)
+        resolve()
+      }).catch((error) => {
+        console.warn(`⚠️ Error cargando fuente "${fontFamily}":`, error)
+        // Resolver de todos modos después de un delay
+        setTimeout(() => resolve(), 500)
+      })
+    } else {
+      // Fallback para navegadores viejos
+      setTimeout(() => resolve(), 500)
+    }
+  })
 }
 
 /**
@@ -280,19 +317,35 @@ export async function loadAllCustomFonts(): Promise<void> {
 
     console.log(`📦 Cargando ${customFonts.length} fuentes personalizadas...`)
 
-    // Cargar todas las fuentes en paralelo
-    const loadPromises = customFonts.map((font: any) => {
-      return new Promise<void>((resolve) => {
-        loadCustomFont(font.fontFamily, font.fileUrl, font.fileFormat)
-        // Dar un pequeño tiempo para que se cargue
-        setTimeout(() => resolve(), 100)
-      })
-    })
+    // Actualizar cache de fuentes personalizadas
+    customFontsCache = customFonts.map((font: any) => ({
+      fontFamily: font.fontFamily,
+      fileUrl: font.fileUrl,
+      fileFormat: font.fileFormat
+    }))
+
+    // Cargar todas las fuentes en paralelo y esperar a que estén listas
+    const loadPromises = customFonts.map((font: any) =>
+      loadCustomFont(font.fontFamily, font.fileUrl, font.fileFormat)
+    )
 
     await Promise.all(loadPromises)
-    console.log(`✅ ${customFonts.length} fuentes personalizadas cargadas`)
+    console.log(`✅ ${customFonts.length} fuentes personalizadas cargadas y listas`)
   } catch (error) {
     console.error('❌ Error cargando fuentes personalizadas:', error)
+  }
+}
+
+/**
+ * Agregar una fuente personalizada al cache
+ * Útil cuando se sube una nueva fuente sin recargar todas
+ */
+export function addCustomFontToCache(fontFamily: string, fileUrl: string, fileFormat: string): void {
+  // Verificar si ya existe
+  const exists = customFontsCache.find(f => f.fontFamily === fontFamily)
+  if (!exists) {
+    customFontsCache.push({ fontFamily, fileUrl, fileFormat })
+    console.log(`✅ Fuente "${fontFamily}" agregada al cache`)
   }
 }
 

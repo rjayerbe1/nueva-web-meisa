@@ -6,7 +6,7 @@ import { Upload, X, File, Loader2, CheckCircle, AlertCircle } from 'lucide-react
 interface FontUploaderProps {
   isOpen: boolean
   onClose: () => void
-  onFontUploaded?: (fontFamily: string) => void
+  onFontUploaded?: (fontData: { fontFamily: string; fileUrl: string; fileFormat: string }) => void
 }
 
 export function FontUploader({ isOpen, onClose, onFontUploaded }: FontUploaderProps) {
@@ -85,9 +85,13 @@ export function FontUploader({ isOpen, onClose, onFontUploaded }: FontUploaderPr
       console.log('✅ Fuente subida:', data.font)
       setSuccess(true)
 
-      // Notificar al componente padre
+      // Notificar al componente padre con todos los datos de la fuente
       if (onFontUploaded) {
-        onFontUploaded(data.font.fontFamily)
+        onFontUploaded({
+          fontFamily: data.font.fontFamily,
+          fileUrl: data.font.fileUrl,
+          fileFormat: data.font.fileFormat || file.name.split('.').pop()?.toLowerCase() || 'woff2'
+        })
       }
 
       // Cerrar modal después de 1.5 segundos

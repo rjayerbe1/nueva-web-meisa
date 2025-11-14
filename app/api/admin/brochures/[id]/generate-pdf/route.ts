@@ -22,7 +22,7 @@ export async function POST(
     const body = await req.json()
     const { pdfDataUrl } = body
 
-    if (!pdfDataUrl || !pdfDataUrl.startsWith('data:application/pdf')) {
+    if (!pdfDataUrl || !pdfDataUrl.startsWith('data:')) {
       return NextResponse.json({ error: "URL de PDF inválida" }, { status: 400 })
     }
 

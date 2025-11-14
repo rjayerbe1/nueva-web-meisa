@@ -13,8 +13,11 @@ import * as Icons from 'lucide-react'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
 import { ServicesSection } from '@/components/sections/ServicesSectionNew'
+import { TecnologiasSection } from '@/components/sections/TecnologiasSection'
+import { InfraestructuraSection } from '@/components/sections/InfraestructuraSection'
 import { ProjectsByCategorySection } from '@/components/sections/ProjectsByCategorySection'
 import { ClientesSection } from '@/components/sections/ClientesSection'
+import { ValoresSection } from '@/components/sections/ValoresSection'
 import { AboutSection } from '@/components/sections/AboutSectionNew'
 import { ContactSection } from '@/components/sections/ContactSection'
 
@@ -351,28 +354,49 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
         <AboutSection />
       </section>
       
-      <section
+      <section 
         id="servicios"
         ref={(el) => { sectionsRef.current['servicios'] = el }}
       >
         <ServicesSection />
       </section>
-
-      <section
+      
+      <section 
+        id="tecnologia"
+        ref={(el) => { sectionsRef.current['tecnologia'] = el }}
+      >
+        <TecnologiasSection />
+      </section>
+      
+      <section 
+        id="infraestructura"
+        ref={(el) => { sectionsRef.current['infraestructura'] = el }}
+      >
+        <InfraestructuraSection />
+      </section>
+      
+      <section 
         id="proyectos"
         ref={(el) => { sectionsRef.current['proyectos'] = el }}
       >
         <ProjectsByCategorySection projectsByCategory={projectsByCategory} />
       </section>
-
-      <section
+      
+      <section 
         id="clientes"
         ref={(el) => { sectionsRef.current['clientes'] = el }}
       >
         <ClientesSection />
       </section>
-
-      <section
+      
+      <section 
+        id="valores"
+        ref={(el) => { sectionsRef.current['valores'] = el }}
+      >
+        <ValoresSection />
+      </section>
+      
+      <section 
         id="contacto"
         ref={(el) => { sectionsRef.current['contacto'] = el }}
       >
