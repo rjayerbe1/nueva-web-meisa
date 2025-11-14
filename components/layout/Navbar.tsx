@@ -1,315 +1,346 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Building2, Cpu, Award, History } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { siteConfig } from "@/lib/site-config"
+import { X } from "lucide-react"
 
-const navigation = [
+const menuItems = [
   { name: "Inicio", href: "/" },
-  { name: "Servicios", href: "/servicios" },
   { name: "Proyectos", href: "/proyectos" },
-  {
-    name: "Nosotros",
-    href: "#",
-    children: [
-      {
-        name: "Nuestra Empresa",
-        href: "/empresa",
-        description: "Desde 1996 en Popayán, 320 colaboradores",
-        icon: "Building2"
-      },
-      {
-        name: "Trayectoria",
-        href: "/trayectoria",
-        description: "Nuestra historia y proyectos ejecutados",
-        icon: "History"
-      },
-      {
-        name: "Tecnología e Infraestructura",
-        href: "/tecnologia",
-        description: "10,400 m² de capacidad productiva",
-        icon: "Cpu"
-      },
-      {
-        name: "Políticas",
-        href: "/calidad",
-        description: "SIG - Calidad, seguridad y cumplimiento",
-        icon: "Award"
-      },
-    ]
-  },
+  { name: "Servicios", href: "/servicios" },
+  { name: "Empresa", href: "/empresa" },
+  { name: "Trayectoria", href: "/trayectoria" },
+  { name: "Tecnología", href: "/tecnologia" },
+  { name: "Políticas", href: "/calidad" },
   { name: "Contacto", href: "/contacto" },
 ]
 
 export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const pathname = usePathname()
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   return (
     <>
-      {/* Main Navigation */}
-      <nav className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white shadow-lg"
-          : "bg-white shadow-md"
-      )}>
-        <div className="container mx-auto px-4 relative">
-          <div className="flex items-center justify-start h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center group py-1">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-              >
-                <Image
-                  src="/images/logo/logo-meisa.png"
-                  alt="MEISA - Metálicas e Ingeniería"
-                  width={135}
-                  height={38}
-                  priority
-                  unoptimized
-                />
-              </motion.div>
-            </Link>
+      {/* Navbar minimal - botón MENU mejorado con hamburguesa */}
+      <nav className="fixed top-8 right-8 z-50">
+        <button
+          onClick={() => setMenuOpen(true)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="group flex items-center gap-2 bg-white px-3 py-2.5 text-xs hover:bg-gray-900 transition-all duration-300 tracking-wider uppercase font-lato font-bold shadow-lg border border-gray-200 hover:border-gray-900"
+        >
+          {/* Icono hamburguesa animado */}
+          <div className="flex flex-col gap-1 w-4">
+            <motion.span
+              animate={{
+                rotate: isHovered ? 45 : 0,
+                y: isHovered ? 4 : 0,
+              }}
+              transition={{ duration: 0.3 }}
+              className="h-0.5 w-full bg-gray-900 group-hover:bg-white transition-colors duration-300"
+            />
+            <motion.span
+              animate={{
+                opacity: isHovered ? 0 : 1,
+                scaleX: isHovered ? 0 : 1,
+              }}
+              transition={{ duration: 0.3 }}
+              className="h-0.5 w-full bg-gray-900 group-hover:bg-white transition-colors duration-300"
+            />
+            <motion.span
+              animate={{
+                rotate: isHovered ? -45 : 0,
+                y: isHovered ? -4 : 0,
+              }}
+              transition={{ duration: 0.3 }}
+              className="h-0.5 w-full bg-gray-900 group-hover:bg-white transition-colors duration-300"
+            />
+          </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1 ml-8">
-              {navigation.map((item, index) => (
-                <motion.div 
-                  key={item.name} 
-                  className="relative"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  {item.children ? (
-                    <motion.div
-                      className="relative"
-                      whileHover="hover"
-                      onMouseEnter={() => setDropdownOpen(true)}
-                      onMouseLeave={() => setDropdownOpen(false)}
-                    >
-                      <button className={cn(
-                        "text-gray-700 hover:text-blue-700 transition-all duration-300 font-lato font-bold uppercase text-base py-2 px-4 rounded-lg relative",
-                        item.children.some(child => pathname.startsWith(child.href)) && "text-blue-700"
-                      )}>
-                        {item.name}
-                      </button>
-                      
-                      <AnimatePresence>
-                        {dropdownOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, scaleY: 0 }}
-                            animate={{ opacity: 1, scaleY: 1 }}
-                            exit={{ opacity: 0, scaleY: 0 }}
-                            transition={{ duration: 0.25, ease: "easeOut" }}
-                            style={{ originY: 0 }}
-                            className="absolute top-full left-4 w-64 bg-white rounded-b-xl shadow-lg border-x border-b border-gray-200 overflow-visible -mt-2"
-                          >
-                            {/* Borde superior animado */}
-                            <motion.div
-                              initial={{ scaleX: 0 }}
-                              animate={{ scaleX: 1 }}
-                              exit={{ scaleX: 0 }}
-                              transition={{ duration: 0.3, ease: "easeInOut" }}
-                              style={{ originX: 0 }}
-                              className="absolute top-0 left-0 right-0 h-1 bg-blue-700"
-                            />
-                            <div className="px-4 py-3 border-b border-gray-100 mt-2">
-                              <h3 className="text-gray-700 font-lato font-bold text-sm uppercase tracking-wide">Conócenos</h3>
-                            </div>
-                            
-                            <div className="p-2">
-                              {item.children.map((child, childIndex) => {
-                                const IconComponent = child.icon === 'Building2' ? Building2 :
-                                                     child.icon === 'Cpu' ? Cpu :
-                                                     child.icon === 'Award' ? Award :
-                                                     child.icon === 'History' ? History : Building2;
+          <span className="text-gray-900 group-hover:text-white transition-colors duration-300">
+            menu
+          </span>
+        </button>
+      </nav>
 
-                                return (
-                                  <motion.div
-                                    key={child.name}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: childIndex * 0.05 }}
-                                  >
-                                    <Link
-                                      href={child.href}
-                                      className={cn(
-                                        "relative flex items-center gap-3 px-3 py-3 text-gray-700 rounded-lg transition-all duration-300 group overflow-visible",
-                                        "hover:text-blue-700 hover:scale-105 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100/60 hover:shadow-md",
-                                        pathname.startsWith(child.href) && "bg-gradient-to-r from-blue-50 to-blue-100/60 text-blue-700 shadow-md"
-                                      )}
-                                      onClick={() => setDropdownOpen(false)}
-                                    >
-                                      {/* Efecto ping/radar en hover */}
-                                      <div className="absolute inset-0 bg-blue-500 rounded-lg animate-ping opacity-0 group-hover:opacity-20 -z-10"></div>
-
-                                      <IconComponent className="w-5 h-5 text-gray-500 group-hover:text-blue-600 transition-all duration-300 flex-shrink-0" />
-                                      <div className="font-lato font-semibold text-sm transition-all duration-300">
-                                        {child.name}
-                                      </div>
-                                    </Link>
-                                  </motion.div>
-                                );
-                              })}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ) : (
-                    <motion.div whileHover="hover" className="inline-block">
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          "text-gray-700 hover:text-blue-700 transition-all duration-300 font-lato font-bold uppercase text-base py-2 px-4 rounded-lg relative block",
-                          (pathname === item.href ||
-                           (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "text-blue-700"
-                        )}
-                      >
-                        <span className="relative inline-block">
-                          {item.name}
-                          {/* Underline hover effect - grows from left to right */}
-                          {!(pathname === item.href || (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
-                            <motion.span
-                              className="absolute -bottom-1 left-0 right-0 h-1 bg-blue-700"
-                              initial={{ scaleX: 0 }}
-                              variants={{
-                                hover: { scaleX: 1 }
-                              }}
-                              transition={{ duration: 0.3, ease: "easeInOut" }}
-                              style={{ originX: 0 }}
-                            />
-                          )}
-                          {/* Active state underline */}
-                          {(pathname === item.href ||
-                            (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
-                            <motion.span
-                              className="absolute -bottom-1 left-0 right-0 h-1 bg-blue-700"
-                              layoutId="activeNavTab"
-                            />
-                          )}
-                        </span>
-                      </Link>
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
+      {/* Menú Fullscreen - Estilo Arqui9 con imagen decorativa */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-white z-50 overflow-hidden"
+          >
+            {/* Logo centrado arriba - SOLO DESKTOP */}
+            <div className="hidden md:block absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
+              <Image
+                src="/images/logo/logo-meisa.png"
+                alt="MEISA"
+                width={180}
+                height={51}
+                unoptimized
+              />
             </div>
 
-            {/* Mobile menu button */}
-            <motion.button
-              className="lg:hidden ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors shadow-sm border border-gray-200 bg-white/90"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            {/* Botón Close - Mismo estilo y posición que el botón MENU */}
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="absolute top-8 right-8 z-10 group flex items-center gap-2 bg-white px-3 py-2.5 text-xs hover:bg-gray-900 transition-all duration-300 tracking-wider uppercase font-lato font-bold shadow-lg border border-gray-200 hover:border-gray-900"
             >
-              <AnimatePresence mode="wait">
-                {mobileMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="h-6 w-6 text-gray-700" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="h-6 w-6 text-gray-700" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-          </div>
-        </div>
+              {/* Icono X animado */}
+              <div className="flex items-center justify-center w-4 h-4">
+                <svg className="w-full h-full" viewBox="0 0 16 16" fill="none">
+                  <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" strokeWidth="2" className="text-gray-900 group-hover:text-white transition-colors duration-300"/>
+                  <line x1="14" y1="2" x2="2" y2="14" stroke="currentColor" strokeWidth="2" className="text-gray-900 group-hover:text-white transition-colors duration-300"/>
+                </svg>
+              </div>
+              <span className="text-gray-900 group-hover:text-white transition-colors duration-300">
+                close
+              </span>
+            </button>
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white border-t border-gray-200"
-            >
-              <div className="px-4 py-6 space-y-4">
+            <div className="h-full flex flex-col md:flex-row">
+              {/* Izquierda - Contenedor Visual con formas decorativas - SOLO DESKTOP */}
+              <div className="hidden md:flex w-1/2 relative items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-white p-12">
+                {/* Contenedor principal - Tamaño reducido */}
+                <div className="relative w-full h-full max-w-[500px] max-h-[600px]">
+                  {/* Marco cuadrado decorativo exterior - con rotación sutil */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+                    className="absolute inset-0 border border-gray-200"
+                  />
 
-                {navigation.map((item, index) => (
-                  <motion.div 
-                    key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                  {/* Línea diagonal 1 - con animación de dibujo */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                    className="absolute inset-0 pointer-events-none"
                   >
-                    {item.children ? (
-                      <div className="space-y-2">
-                        <div className="font-lato font-bold uppercase text-gray-900 text-lg border-b border-gray-200 pb-2">
-                          {item.name}
-                        </div>
-                        <div className="grid grid-cols-1 gap-2 pl-4">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.name}
-                              href={child.href}
-                              className={cn(
-                                "block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200",
-                                pathname.startsWith(child.href) && "bg-blue-50 text-blue-600"
-                              )}
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              <div className="font-lato font-bold uppercase text-base">{child.name}</div>
-                              <div className="text-xs text-gray-500 mt-1 font-lato">{child.description}</div>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
+                    <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
+                      <motion.line
+                        x1="0" y1="100" x2="100" y2="0"
+                        stroke="currentColor"
+                        strokeWidth="0.2"
+                        className="text-gray-300"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
+                      />
+                    </svg>
+                  </motion.div>
+
+                  {/* Línea diagonal 2 - con animación de dibujo inversa */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="absolute inset-0 pointer-events-none"
+                  >
+                    <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
+                      <motion.line
+                        x1="0" y1="0" x2="100" y2="100"
+                        stroke="currentColor"
+                        strokeWidth="0.2"
+                        className="text-gray-300"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ delay: 0.6, duration: 1, ease: "easeInOut" }}
+                      />
+                    </svg>
+                  </motion.div>
+
+                  {/* Imagen de fondo dentro del contenedor - Más pequeña con inset-16 */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.7, duration: 1, ease: "easeOut" }}
+                    whileHover={{ scale: 1.02 }}
+                    className="absolute inset-16 overflow-hidden cursor-pointer"
+                  >
+                    <Image
+                      src="/images/hero/centro-comercial.webp"
+                      alt="MEISA Proyectos"
+                      fill
+                      className="object-cover transition-transform duration-700"
+                    />
+                    {/* Overlay sutil con animación de hover */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-blue-900/10"
+                      whileHover={{ opacity: 0.7 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </motion.div>
+
+                  {/* Pequeño marco decorativo en esquina superior - animado desde fuera */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -30, y: -30 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ delay: 0.8, duration: 0.6, type: "spring", bounce: 0.4 }}
+                    className="absolute -top-3 -left-3 w-16 h-16 border-l-2 border-t-2 border-blue-700"
+                  />
+
+                  {/* Pequeño marco decorativo en esquina inferior - animado desde fuera */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 30, y: 30 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ delay: 0.9, duration: 0.6, type: "spring", bounce: 0.4 }}
+                    className="absolute -bottom-3 -right-3 w-16 h-16 border-r-2 border-b-2 border-blue-700"
+                  />
+
+                  {/* Punto decorativo animado en esquina superior derecha */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1, duration: 0.4 }}
+                    className="absolute -top-1 -right-1 w-3 h-3 bg-blue-700 rounded-full"
+                  />
+
+                  {/* Punto decorativo animado en esquina inferior izquierda */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.1, duration: 0.4 }}
+                    className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-700 rounded-full"
+                  />
+                </div>
+              </div>
+
+              {/* Derecha - Menú */}
+              <div className="w-full md:w-1/2 flex flex-col justify-between md:justify-center px-8 md:px-20 py-20 md:py-0">
+                {/* Logo en móvil - arriba */}
+                <div className="md:hidden flex justify-center mb-8">
+                  <Image
+                    src="/images/logo/logo-meisa.png"
+                    alt="MEISA"
+                    width={160}
+                    height={46}
+                    unoptimized
+                  />
+                </div>
+
+                {/* Items del menú */}
+                <div className="space-y-4 md:space-y-4 flex-1 md:flex-initial flex flex-col justify-center">
+                  {menuItems.map((item, i) => (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.1 }}
+                    >
                       <Link
                         href={item.href}
-                        className={cn(
-                          "block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 font-lato font-bold uppercase text-base",
-                          (pathname === item.href ||
-                           (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "bg-blue-50 text-blue-600"
-                        )}
-                        onClick={() => setMobileMenuOpen(false)}
+                        className={`group flex items-center gap-3 md:gap-4 text-gray-900 text-3xl md:text-6xl font-bold hover:text-blue-700 transition-all duration-300 font-lato ${
+                          pathname === item.href ? 'text-blue-700' : ''
+                        }`}
+                        onClick={() => setMenuOpen(false)}
                       >
+                        {/* Icono decorativo pequeño */}
+                        <span className="w-5 h-6 md:w-8 md:h-10 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <svg viewBox="0 0 32 40" fill="none" className="w-full h-full">
+                            <path d="M16 0L32 10V30L16 40L0 30V10L16 0Z" fill="currentColor" fillOpacity="0.1" />
+                            <path d="M16 0L32 10M16 0L0 10M16 0V40M32 10V30M32 10L0 10M0 10V30M32 30L16 40M32 30L0 30M0 30L16 40" stroke="currentColor" strokeWidth="1" />
+                          </svg>
+                        </span>
                         {item.name}
                       </Link>
-                    )}
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Info de contacto abajo - SOLO DESKTOP */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="hidden md:block absolute bottom-12 right-20"
+                >
+                  <a
+                    href="mailto:contacto@meisa.com.co"
+                    className="text-gray-500 hover:text-blue-700 text-sm font-lato uppercase tracking-wide transition-colors duration-300"
+                  >
+                    contacto@meisa.com.co
+                  </a>
+                </motion.div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+            </div>
+
+            {/* Forma decorativa de fondo para móvil - Diseño estructural */}
+            <div className="md:hidden absolute bottom-0 left-0 right-0 h-56 pointer-events-none overflow-hidden">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="absolute inset-0"
+              >
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 375 224"
+                  fill="none"
+                  preserveAspectRatio="xMidYMax meet"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Cuadrícula de fondo */}
+                  <defs>
+                    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
+                    </pattern>
+                  </defs>
+
+                  {/* Aplicar cuadrícula */}
+                  <rect width="375" height="224" fill="url(#grid)" />
+
+                  {/* Líneas estructurales horizontales */}
+                  <line x1="0" y1="180" x2="375" y2="180" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
+                  <line x1="0" y1="140" x2="375" y2="140" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
+
+                  {/* Líneas verticales principales */}
+                  <line x1="50" y1="100" x2="50" y2="224" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
+                  <line x1="187.5" y1="80" x2="187.5" y2="224" stroke="#1e40af" strokeWidth="1.5" opacity="0.2"/>
+                  <line x1="325" y1="100" x2="325" y2="224" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
+
+                  {/* Rectángulos estructurales */}
+                  <rect x="30" y="160" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.12"/>
+                  <rect x="157.5" y="120" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
+                  <rect x="285" y="160" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.12"/>
+
+                  {/* Pequeños cuadrados de detalle */}
+                  <rect x="100" y="190" width="20" height="20" fill="#1e40af" opacity="0.08"/>
+                  <rect x="255" y="190" width="20" height="20" fill="#1e40af" opacity="0.08"/>
+
+                  {/* Líneas diagonales de soporte */}
+                  <line x1="90" y1="180" x2="120" y2="140" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
+                  <line x1="255" y1="180" x2="285" y2="140" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
+
+                  {/* Gradiente de fondo */}
+                  <rect width="375" height="224" fill="url(#structural_gradient)" />
+
+                  <defs>
+                    <linearGradient
+                      id="structural_gradient"
+                      x1="187.5"
+                      y1="0"
+                      x2="187.5"
+                      y2="224"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop offset="0" stopColor="#ffffff" stopOpacity="0.9"/>
+                      <stop offset="1" stopColor="#ffffff" stopOpacity="0"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

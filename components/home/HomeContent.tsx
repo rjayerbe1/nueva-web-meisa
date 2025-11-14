@@ -52,7 +52,8 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       const windowHeight = window.innerHeight
 
       // Definir límites específicos para cada tipo de pantalla
-      const heroThreshold = isMobile ? windowHeight * 0.8 : windowHeight * 0.7 // 80% en móvil, 70% en desktop
+      // Ajustado para que aparezca después de que termine la animación del hero (350vh)
+      const heroThreshold = isMobile ? windowHeight * 0.8 : windowHeight * 3.3 // 3.3 pantallas en desktop
 
       // Mostrar navegación lateral cuando pasamos el hero (solo desktop)
       if (!isMobile) {
@@ -198,73 +199,21 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
   }
 
   return (
-    <div className="w-full bg-gradient-to-b from-gray-50 to-white" style={{ overflowX: 'hidden', overflowY: 'visible' }}>
-      {/* Hero Section - Original que te gustaba */}
-      <motion.section
+    <div className="w-full bg-white">
+      {/* Hero Section - DHK Style con sticky */}
+      <section
         id="inicio"
         ref={(el) => { sectionsRef.current['inicio'] = el }}
-        className="w-full overflow-hidden"
+        className="w-full"
       >
         <HeroSection />
-      </motion.section>
+      </section>
 
-      {/* Navegación horizontal sticky - Visible al inicio, se oculta al pasar el hero */}
-      <div
-        className={`hidden sm:block sticky top-20 z-40 transition-all duration-500 ${
-          showSideNav ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0'
-        }`}
-      >
-        <div className="bg-white/95 backdrop-blur-lg border-b border-gray-200/60 shadow-xl"
-          style={{
-            background: 'linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(255,255,255,0.95))',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 16px rgba(0,0,0,0.08)'
-          }}
-        >
-          <div className="w-full px-3">
-            <div className="flex items-center justify-center gap-1.5 py-3">
-              {sections.map((section) => {
-                const IconComponent = getIcon(section.icon)
-                const isActive = activeSection === section.id
-
-                return (
-                  <button
-                    key={section.id}
-                    data-section-id={section.id}
-                    onClick={() => scrollToSection(section.id)}
-                    className={`
-                      group relative flex items-center gap-2 px-3.5 py-2.5 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap text-sm
-                      ${isActive
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg scale-105 border border-blue-500/20'
-                        : 'text-gray-700 hover:bg-gray-50/80 hover:text-blue-600 hover:shadow-md border border-transparent hover:border-blue-200/50'
-                      }
-                    `}
-                  >
-                    <div className={`
-                      w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-300
-                      ${isActive ? 'bg-white/20 shadow-inner' : 'bg-gray-100 group-hover:bg-blue-50'}
-                    `}>
-                      <IconComponent className={`w-4 h-4 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}`} />
-                    </div>
-                    <span className="leading-none">{section.titulo}</span>
-
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeIndicatorHorizontal"
-                        className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-600 rounded-full"
-                      />
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Navegación lateral - Similar a móvil, aparece después del hero */}
       <div
         ref={navRef}
-        className={`hidden sm:block fixed right-3 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-500 ${
+        className={`hidden sm:block fixed right-3 top-1/2 transform -translate-y-1/2 z-40 transition-all duration-500 ${
           showSideNav ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 pointer-events-none'
         }`}
       >
@@ -304,7 +253,7 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       </div>
 
       {/* Indicador lateral móvil - Simplificado y visible */}
-      <div className="sm:hidden fixed right-3 top-1/2 transform -translate-y-1/2 z-50">
+      <div className="sm:hidden fixed right-3 top-1/2 transform -translate-y-1/2 z-40">
         <div className="bg-white/90 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 py-3 px-2">
           <div className="flex flex-col space-y-2">
             {sections.map((section, index) => {
@@ -339,10 +288,11 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
         </div>
       </div>
 
-      {/* Secciones con referencias para scroll spy */}
+      {/* Secciones con referencias para scroll spy - Con fondo blanco y z-index superior al hero */}
       <section
         id="capacidades"
         ref={(el) => { sectionsRef.current['capacidades'] = el }}
+        className="relative z-40 bg-white"
       >
         <CapacitiesSection />
       </section>
@@ -350,55 +300,63 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       <section
         id="nosotros"
         ref={(el) => { sectionsRef.current['nosotros'] = el }}
+        className="relative z-40 bg-white"
       >
         <AboutSection />
       </section>
-      
-      <section 
+
+      <section
         id="servicios"
         ref={(el) => { sectionsRef.current['servicios'] = el }}
+        className="relative z-40 bg-white"
       >
         <ServicesSection />
       </section>
-      
-      <section 
+
+      <section
         id="tecnologia"
         ref={(el) => { sectionsRef.current['tecnologia'] = el }}
+        className="relative z-40 bg-white"
       >
         <TecnologiasSection />
       </section>
-      
-      <section 
+
+      <section
         id="infraestructura"
         ref={(el) => { sectionsRef.current['infraestructura'] = el }}
+        className="relative z-40 bg-white"
       >
         <InfraestructuraSection />
       </section>
-      
-      <section 
+
+      <section
         id="proyectos"
         ref={(el) => { sectionsRef.current['proyectos'] = el }}
+        className="relative z-40 bg-white"
       >
         <ProjectsByCategorySection projectsByCategory={projectsByCategory} />
       </section>
-      
-      <section 
+
+      <section
         id="clientes"
         ref={(el) => { sectionsRef.current['clientes'] = el }}
+        className="relative z-40 bg-white"
       >
         <ClientesSection />
       </section>
-      
-      <section 
+
+      <section
         id="valores"
         ref={(el) => { sectionsRef.current['valores'] = el }}
+        className="relative z-40 bg-white"
       >
         <ValoresSection />
       </section>
-      
-      <section 
+
+      <section
         id="contacto"
         ref={(el) => { sectionsRef.current['contacto'] = el }}
+        className="relative z-40 bg-white"
       >
         <ContactSection />
       </section>
