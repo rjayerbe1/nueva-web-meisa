@@ -86,7 +86,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 rounded-full text-slate-200 text-sm font-medium mb-4"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 rounded-full text-slate-200 text-base font-bebas uppercase mb-4"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -102,7 +102,7 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="mb-6"
             >
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white mb-2 leading-none tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bebas text-white mb-2 leading-none tracking-tight">
                 <div className="block h-20 sm:h-24 md:h-32 lg:h-36 relative overflow-hidden">
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -120,7 +120,7 @@ export function HeroSection() {
               </h1>
               <div className="flex items-center gap-4 mt-4">
                 <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-slate-400"></div>
-                <span className="text-blue-400 font-semibold text-lg tracking-widest">MEISA</span>
+                <span className="text-blue-400 font-bebas uppercase text-2xl tracking-widest">MEISA</span>
               </div>
             </motion.div>
 
@@ -131,13 +131,13 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="mb-8"
             >
-              <p className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
+              <p className="text-3xl md:text-4xl font-bebas uppercase text-white mb-4 leading-tight">
                 Construimos el futuro de Colombia
               </p>
-              <p className="text-xl text-slate-300 max-w-2xl leading-relaxed">
-                Desde <span className="text-blue-400 font-semibold">1996</span> desarrollando soluciones integrales con 
-                <span className="text-blue-400 font-semibold"> 320 profesionales</span> especializados en 
-                <span className="text-blue-400 font-semibold"> múltiples disciplinas</span> de la ingeniería.
+              <p className="text-xl font-lato text-slate-300 max-w-2xl leading-relaxed">
+                Desde <span className="text-blue-400 font-lato font-semibold">1996</span> desarrollando soluciones integrales con
+                <span className="text-blue-400 font-lato font-semibold"> 320 profesionales</span> especializados en
+                <span className="text-blue-400 font-lato font-semibold"> múltiples disciplinas</span> de la ingeniería.
               </p>
             </motion.div>
 
@@ -150,15 +150,15 @@ export function HeroSection() {
             >
               <Link
                 href="/proyectos"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-lato font-bold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
               >
                 Ver proyectos
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              
+
               <Link
                 href="/contacto"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-lato font-bold rounded-lg hover:bg-white/20 transition-all duration-300"
               >
                 Solicitar cotización
               </Link>

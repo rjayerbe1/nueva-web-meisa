@@ -99,13 +99,13 @@ export function TecnologiasSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-blue-400 font-semibold text-lg mb-2">Tecnología de Vanguardia</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-blue-400 font-bebas uppercase text-xl mb-2">Tecnología de Vanguardia</h2>
+          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-white mb-4">
             Software
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-slate-300"> Especializado</span>
           </h3>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            8 herramientas tecnológicas de clase mundial que nos permiten ofrecer diseños precisos, 
+          <p className="text-xl font-lato text-gray-300 max-w-3xl mx-auto">
+            8 herramientas tecnológicas de clase mundial que nos permiten ofrecer diseños precisos,
             fabricación eficiente y gestión integral de proyectos
           </p>
         </motion.div>
@@ -130,18 +130,18 @@ export function TecnologiasSection() {
                     <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${tech.color} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className="text-xs font-medium text-gray-300 bg-gray-700 px-2 py-1 rounded-full">
+                    <span className="text-xs font-bebas uppercase text-gray-300 bg-gray-700 px-2 py-1 rounded-full">
                       {tech.categoria}
                     </span>
                   </div>
 
                   {/* Nombre del software */}
-                  <h4 className="text-lg font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-300 group-hover:to-blue-400 transition-all">
+                  <h4 className="text-xl font-bebas uppercase text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-300 group-hover:to-blue-400 transition-all">
                     {tech.nombre}
                   </h4>
 
                   {/* Descripción */}
-                  <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                  <p className="text-gray-300 font-lato text-sm leading-relaxed mb-4">
                     {tech.descripcion}
                   </p>
 
@@ -150,7 +150,7 @@ export function TecnologiasSection() {
                     {tech.features.slice(0, 3).map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
                         <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${tech.color}`} />
-                        <span className="text-xs text-gray-400">{feature}</span>
+                        <span className="text-xs font-lato text-gray-400">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -184,9 +184,9 @@ export function TecnologiasSection() {
           className="bg-gradient-to-r from-gray-700 to-gray-600 rounded-2xl p-8 border border-gray-600"
         >
           <div className="text-center mb-8">
-            <h4 className="text-2xl font-bold text-white mb-4">Flujo de Trabajo Integrado</h4>
-            <p className="text-gray-300">
-              Desde el diseño conceptual hasta la fabricación final, nuestro stack tecnológico 
+            <h4 className="text-3xl font-bebas uppercase text-white mb-4">Flujo de Trabajo Integrado</h4>
+            <p className="text-gray-300 font-lato">
+              Desde el diseño conceptual hasta la fabricación final, nuestro stack tecnológico
               garantiza precisión y eficiencia en cada etapa
             </p>
           </div>
@@ -196,32 +196,32 @@ export function TecnologiasSection() {
               <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Monitor className="w-6 h-6 text-white" />
               </div>
-              <h5 className="font-semibold text-white mb-2">1. Diseño BIM</h5>
-              <p className="text-sm text-gray-300">Tekla Structures para modelado 3D completo</p>
+              <h5 className="font-bebas uppercase text-lg text-white mb-2">1. Diseño BIM</h5>
+              <p className="text-sm font-lato text-gray-300">Tekla Structures para modelado 3D completo</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Settings className="w-6 h-6 text-white" />
               </div>
-              <h5 className="font-semibold text-white mb-2">2. Análisis</h5>
-              <p className="text-sm text-gray-300">Suite RISA para cálculos estructurales</p>
+              <h5 className="font-bebas uppercase text-lg text-white mb-2">2. Análisis</h5>
+              <p className="text-sm font-lato text-gray-300">Suite RISA para cálculos estructurales</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Cpu className="w-6 h-6 text-white" />
               </div>
-              <h5 className="font-semibold text-white mb-2">3. Gestión</h5>
-              <p className="text-sm text-gray-300">StruM.I.S para control de producción</p>
+              <h5 className="font-bebas uppercase text-lg text-white mb-2">3. Gestión</h5>
+              <p className="text-sm font-lato text-gray-300">StruM.I.S para control de producción</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Scissors className="w-6 h-6 text-white" />
               </div>
-              <h5 className="font-semibold text-white mb-2">4. Fabricación</h5>
-              <p className="text-sm text-gray-300">FastCAM para corte CNC preciso</p>
+              <h5 className="font-bebas uppercase text-lg text-white mb-2">4. Fabricación</h5>
+              <p className="text-sm font-lato text-gray-300">FastCAM para corte CNC preciso</p>
             </div>
           </div>
         </motion.div>

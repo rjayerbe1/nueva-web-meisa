@@ -88,19 +88,19 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-blue-400 font-semibold text-lg mb-2">Nuestro Portafolio</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-blue-400 font-bebas uppercase text-xl mb-2">Nuestro Portafolio</h2>
+          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-white mb-4">
             Proyectos por
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-slate-400"> Categoría</span>
           </h3>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl font-lato text-gray-300 max-w-3xl mx-auto">
             Descubre nuestros proyectos más destacados organizados por especialidad
           </p>
         </motion.div>
 
         {/* Grid de categorías */}
         {loading ? (
-          <div className="text-center text-white">Cargando categorías...</div>
+          <div className="text-center text-white font-lato">Cargando categorías...</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {categoriesWithProjects.map((categoria, index) => {
@@ -126,24 +126,24 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                           alt={`Cover de ${categoria.nombre}`}
                           className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        
+
                         {/* Overlay personalizable para el ícono */}
                         {categoria.overlayOpacity && categoria.overlayOpacity > 0 && (
-                          <div 
+                          <div
                             className="absolute inset-0"
-                            style={{ 
+                            style={{
                               backgroundColor: categoria.overlayColor || '#000000',
                               opacity: categoria.overlayOpacity
                             }}
                           />
                         )}
-                        
+
                         {/* Overlay oscuro para legibilidad del texto */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                        
+
                         {/* Ícono centrado */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div 
+                          <div
                             className="w-32 h-32 flex items-center justify-center opacity-80 transform -translate-y-4"
                             style={{ color: categoria.color || '#3b82f6' }}
                           >
@@ -153,13 +153,13 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
 
                         {/* Texto superpuesto en la parte inferior */}
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                          <h3 className="text-xl font-bold mb-1 drop-shadow-lg">
+                          <h3 className="text-2xl font-bebas uppercase mb-1 drop-shadow-lg">
                             {categoria.nombre}
                           </h3>
-                          <p className="text-sm text-white/90 mb-2 drop-shadow">
+                          <p className="text-sm font-lato text-white/90 mb-2 drop-shadow">
                             {projectCount} proyecto{projectCount !== 1 ? 's' : ''}
                           </p>
-                          <p className="text-xs text-white/70 drop-shadow line-clamp-2">
+                          <p className="text-xs font-lato text-white/70 drop-shadow line-clamp-2">
                             {categoria.descripcion}
                           </p>
                         </div>
@@ -170,7 +170,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                       </div>
                     ) : (
                       <div className="w-full aspect-[4/3] bg-gray-800 flex items-center justify-center">
-                        <span className="text-white">Sin imagen</span>
+                        <span className="text-white font-lato">Sin imagen</span>
                       </div>
                     )}
                   </div>
@@ -191,7 +191,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
         >
           <Link
             href="/proyectos"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold rounded-lg transition-colors"
           >
             Ver todos los proyectos
             <ExternalLink className="w-5 h-5" />

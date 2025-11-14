@@ -82,12 +82,12 @@ export function ValoresSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-blue-600 font-semibold text-lg mb-2">Nuestros Principios</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-blue-600 font-bebas uppercase text-xl mb-2">Nuestros Principios</h2>
+          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-gray-900 mb-4">
             Valores
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-slate-600"> Corporativos</span>
           </h3>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl font-lato text-gray-600 max-w-3xl mx-auto">
             8 valores fundamentales que guían nuestro actuar diario y definen la cultura organizacional de MEISA
           </p>
         </motion.div>
@@ -119,11 +119,11 @@ export function ValoresSection() {
                   </motion.div>
 
                   {/* Contenido */}
-                  <h4 className="text-xl font-bold text-gray-900 mb-3">
+                  <h4 className="text-2xl font-bebas uppercase text-gray-900 mb-3">
                     {valor.nombre}
                   </h4>
-                  
-                  <p className="text-gray-600 text-sm leading-relaxed">
+
+                  <p className="text-gray-600 text-sm font-lato leading-relaxed">
                     {valor.descripcion}
                   </p>
 
@@ -164,8 +164,8 @@ export function ValoresSection() {
                 />
               ))}
             </div>
-            <p className="text-gray-700">
-              Estos valores guían cada decisión y acción en <span className="font-semibold text-blue-700">MEISA</span>
+            <p className="text-gray-700 font-lato">
+              Estos valores guían cada decisión y acción en <span className="font-lato font-semibold text-blue-700">MEISA</span>
             </p>
           </div>
         </motion.div>

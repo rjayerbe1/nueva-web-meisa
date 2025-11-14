@@ -109,18 +109,18 @@ export function ContactSection() {
             className="inline-block mb-4"
           >
             <div className="bg-blue-600/20 backdrop-blur-sm px-6 py-2 rounded-full border border-blue-500/30">
-              <p className="text-blue-400 font-semibold text-sm">Estamos listos para tu proyecto</p>
+              <p className="text-blue-400 font-lato font-semibold text-sm">Estamos listos para tu proyecto</p>
             </div>
           </motion.div>
 
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+          <h2 className="text-6xl md:text-7xl font-bebas uppercase text-white mb-6">
             Hablemos de tu{' '}
             <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
               Proyecto
             </span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
+          <p className="text-xl font-lato text-gray-300 max-w-3xl mx-auto mb-10">
             Más de 20 años de experiencia respaldándonos. Contáctanos para recibir una cotización personalizada.
           </p>
 
@@ -128,14 +128,14 @@ export function ContactSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="#formulario-cotizacion"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold shadow-xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-lato font-bold shadow-xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
             >
               <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               Solicitar Cotización
             </a>
             <a
               href="tel:+573104327227"
-              className="group px-8 py-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-xl font-semibold border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+              className="group px-8 py-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-xl font-lato font-bold border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
             >
               <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               Llamar Ahora
@@ -152,7 +152,7 @@ export function ContactSection() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-3xl font-bold text-white mb-8">Contacto Directo</h3>
+            <h3 className="text-4xl font-bebas uppercase text-white mb-8">Contacto Directo</h3>
 
             <div className="space-y-6">
               {/* Teléfonos */}
@@ -169,13 +169,13 @@ export function ContactSection() {
                       <Phone className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-white font-semibold mb-2 text-lg">Teléfonos</h4>
+                      <h4 className="text-white font-bebas uppercase mb-2 text-xl">Teléfonos</h4>
                       <div className="space-y-1">
-                        <p className="text-gray-300">PBX: +57 (2) 312 0050-51-52-53</p>
-                        <p className="text-gray-300">Móvil: +57 (310) 432 7227</p>
+                        <p className="text-gray-300 font-lato">PBX: +57 (2) 312 0050-51-52-53</p>
+                        <p className="text-gray-300 font-lato">Móvil: +57 (310) 432 7227</p>
                         <a
                           href="tel:+573104327227"
-                          className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm mt-2 transition-colors font-medium group/link"
+                          className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm mt-2 transition-colors font-lato font-bold group/link"
                         >
                           Llamar ahora
                           <span className="group-hover/link:translate-x-1 transition-transform">→</span>
@@ -200,11 +200,11 @@ export function ContactSection() {
                       <Mail className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-white font-semibold mb-2 text-lg">Email</h4>
-                      <p className="text-gray-300 mb-2">contacto@meisa.com.co</p>
+                      <h4 className="text-white font-bebas uppercase mb-2 text-xl">Email</h4>
+                      <p className="text-gray-300 font-lato mb-2">contacto@meisa.com.co</p>
                       <a
                         href="mailto:contacto@meisa.com.co"
-                        className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm transition-colors font-medium group/link"
+                        className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm transition-colors font-lato font-bold group/link"
                       >
                         Enviar email
                         <span className="group-hover/link:translate-x-1 transition-transform">→</span>
@@ -228,10 +228,10 @@ export function ContactSection() {
                       <Clock className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-white font-semibold mb-2 text-lg">Horario de Atención</h4>
+                      <h4 className="text-white font-bebas uppercase mb-2 text-xl">Horario de Atención</h4>
                       <div className="space-y-1">
-                        <p className="text-gray-300">Lunes a Viernes: 7:00 AM - 5:00 PM</p>
-                        <p className="text-gray-300">Sábados: 8:00 AM - 12:00 PM</p>
+                        <p className="text-gray-300 font-lato">Lunes a Viernes: 7:00 AM - 5:00 PM</p>
+                        <p className="text-gray-300 font-lato">Sábados: 8:00 AM - 12:00 PM</p>
                       </div>
                     </div>
                   </div>
@@ -254,8 +254,8 @@ export function ContactSection() {
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white">Solicitar Cotización</h3>
-                  <p className="text-gray-400 text-sm">Cuéntanos sobre tu proyecto</p>
+                  <h3 className="text-3xl font-bebas uppercase text-white">Solicitar Cotización</h3>
+                  <p className="text-gray-400 text-sm font-lato">Cuéntanos sobre tu proyecto</p>
                 </div>
               </div>
 
@@ -263,7 +263,7 @@ export function ContactSection() {
                 {/* Datos de contacto */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-200 mb-2">
+                    <label htmlFor="nombre" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                       Nombre Completo *
                     </label>
                     <input
@@ -279,7 +279,7 @@ export function ContactSection() {
                   </div>
 
                   <div>
-                    <label htmlFor="empresa" className="block text-sm font-medium text-gray-200 mb-2">
+                    <label htmlFor="empresa" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                       Empresa
                     </label>
                     <input
@@ -294,7 +294,7 @@ export function ContactSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
+                    <label htmlFor="email" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                       Email *
                     </label>
                     <input
@@ -310,7 +310,7 @@ export function ContactSection() {
                   </div>
 
                   <div>
-                    <label htmlFor="telefono" className="block text-sm font-medium text-gray-200 mb-2">
+                    <label htmlFor="telefono" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                       Teléfono *
                     </label>
                     <input
@@ -327,7 +327,7 @@ export function ContactSection() {
                 </div>
 
                 <div>
-                  <label htmlFor="ciudad" className="block text-sm font-medium text-gray-200 mb-2">
+                  <label htmlFor="ciudad" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                     Ciudad *
                   </label>
                   <input
@@ -344,7 +344,7 @@ export function ContactSection() {
 
                 {/* Información del proyecto */}
                 <div>
-                  <label htmlFor="tipoProyecto" className="block text-sm font-medium text-gray-200 mb-2">
+                  <label htmlFor="tipoProyecto" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                     Tipo de Proyecto *
                   </label>
                   <select
@@ -364,7 +364,7 @@ export function ContactSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="ubicacionProyecto" className="block text-sm font-medium text-gray-200 mb-2">
+                    <label htmlFor="ubicacionProyecto" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                       Ubicación del Proyecto
                     </label>
                     <input
@@ -377,7 +377,7 @@ export function ContactSection() {
                   </div>
 
                   <div>
-                    <label htmlFor="tamanoProyecto" className="block text-sm font-medium text-gray-200 mb-2">
+                    <label htmlFor="tamanoProyecto" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                       Tamaño Aproximado
                     </label>
                     <input
@@ -404,7 +404,7 @@ export function ContactSection() {
                           {...register('serviciosRequeridos')}
                           className="w-4 h-4 rounded border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500 focus:ring-offset-gray-900"
                         />
-                        <span className="text-gray-300 text-sm group-hover:text-white transition-colors">
+                        <span className="text-gray-300 text-sm font-lato group-hover:text-white transition-colors">
                           {servicio}
                         </span>
                       </label>
@@ -413,7 +413,7 @@ export function ContactSection() {
                 </div>
 
                 <div>
-                  <label htmlFor="plazoDeseado" className="block text-sm font-medium text-gray-200 mb-2">
+                  <label htmlFor="plazoDeseado" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                     Plazo Deseado
                   </label>
                   <select
@@ -431,7 +431,7 @@ export function ContactSection() {
                 </div>
 
                 <div>
-                  <label htmlFor="descripcion" className="block text-sm font-medium text-gray-200 mb-2">
+                  <label htmlFor="descripcion" className="block text-sm font-lato font-medium text-gray-200 mb-2">
                     Descripción del Proyecto *
                   </label>
                   <textarea
@@ -458,7 +458,7 @@ export function ContactSection() {
                         {...register('tienePlanos')}
                         className="w-4 h-4 border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-gray-300">Sí</span>
+                      <span className="text-gray-300 font-lato">Sí</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -467,7 +467,7 @@ export function ContactSection() {
                         {...register('tienePlanos')}
                         className="w-4 h-4 border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-gray-300">No</span>
+                      <span className="text-gray-300 font-lato">No</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -476,7 +476,7 @@ export function ContactSection() {
                         {...register('tienePlanos')}
                         className="w-4 h-4 border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-gray-300">Parcialmente</span>
+                      <span className="text-gray-300 font-lato">Parcialmente</span>
                     </label>
                   </div>
                 </div>
@@ -487,7 +487,7 @@ export function ContactSection() {
                     type="submit"
                     disabled={isSubmitting}
                     className={`
-                      w-full px-6 py-4 rounded-xl font-semibold text-white
+                      w-full px-6 py-4 rounded-xl font-lato font-bold text-white
                       transition-all duration-300 transform flex items-center justify-center gap-2
                       ${isSubmitting
                         ? 'bg-gray-400 cursor-not-allowed'
@@ -517,7 +517,7 @@ export function ContactSection() {
                     className="p-4 bg-green-500/20 border border-green-500/50 rounded-xl flex items-start gap-3"
                   >
                     <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-green-400">
+                    <p className="text-green-400 font-lato">
                       ¡Cotización enviada exitosamente! Nos pondremos en contacto contigo pronto.
                     </p>
                   </motion.div>
@@ -529,7 +529,7 @@ export function ContactSection() {
                     animate={{ opacity: 1, y: 0 }}
                     className="p-4 bg-red-500/20 border border-red-500/50 rounded-xl"
                   >
-                    <p className="text-red-400 text-center">
+                    <p className="text-red-400 font-lato text-center">
                       Hubo un error al enviar la cotización. Por favor, intenta nuevamente o contáctanos directamente.
                     </p>
                   </motion.div>

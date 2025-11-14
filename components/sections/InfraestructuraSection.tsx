@@ -94,12 +94,12 @@ export function InfraestructuraSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-blue-600 font-semibold text-lg mb-2">Nuestra Infraestructura</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-blue-600 font-bebas uppercase text-xl mb-2">Nuestra Infraestructura</h2>
+          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-gray-900 mb-4">
             Plantas
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Industriales</span>
           </h3>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl font-lato text-gray-600 max-w-3xl mx-auto">
             3 plantas estratégicamente ubicadas con capacidad total de 600 toneladas/mes
           </p>
         </motion.div>
@@ -144,8 +144,8 @@ export function InfraestructuraSection() {
                   {/* Badge flotante con glassmorphism - Ancho completo */}
                   <div className="absolute top-0 left-0 right-0">
                     <div className={`bg-gradient-to-br ${planta.color} backdrop-blur-md bg-opacity-95 px-6 py-4 shadow-2xl`}>
-                      <h4 className="text-xl font-bold text-white mb-0.5">{planta.nombre}</h4>
-                      <p className="text-white/90 text-xs font-medium">{planta.tipo}</p>
+                      <h4 className="text-2xl font-bebas uppercase text-white mb-0.5">{planta.nombre}</h4>
+                      <p className="text-white/90 text-xs font-bebas uppercase">{planta.tipo}</p>
                     </div>
                   </div>
 
@@ -153,7 +153,7 @@ export function InfraestructuraSection() {
                   <div className="absolute bottom-4 left-4 right-4">
                     <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md rounded-xl px-4 py-2.5 shadow-lg">
                       <MapPin className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                      <p className="text-gray-700 text-xs font-medium line-clamp-2">{planta.ubicacion}</p>
+                      <p className="text-gray-700 text-xs font-lato line-clamp-2">{planta.ubicacion}</p>
                     </div>
                   </div>
                 </div>
@@ -166,8 +166,8 @@ export function InfraestructuraSection() {
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${planta.color} flex items-center justify-center mb-2 group-hover/stat:scale-110 transition-transform duration-300`}>
                         <Gauge className="w-5 h-5 text-white" />
                       </div>
-                      <p className="text-lg font-black text-gray-900 leading-none mb-1 text-center">{planta.capacidad.split(' ')[0]}</p>
-                      <p className="text-[9px] text-gray-500 font-semibold uppercase tracking-wide text-center whitespace-nowrap">{planta.capacidad.includes('ton') ? 'ton/mes' : planta.capacidad}</p>
+                      <p className="text-xl font-bebas text-gray-900 leading-none mb-1 text-center">{planta.capacidad.split(' ')[0]}</p>
+                      <p className="text-[9px] text-gray-500 font-bebas uppercase tracking-wide text-center whitespace-nowrap">{planta.capacidad.includes('ton') ? 'ton/mes' : planta.capacidad}</p>
                     </div>
 
                     <div className="w-px h-14 bg-gray-200"></div>
@@ -177,8 +177,8 @@ export function InfraestructuraSection() {
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${planta.color} flex items-center justify-center mb-2 group-hover/stat:scale-110 transition-transform duration-300`}>
                         <Ruler className="w-5 h-5 text-white" />
                       </div>
-                      <p className="text-lg font-black text-gray-900 leading-none mb-1 text-center">{planta.area.split(' ')[0]}</p>
-                      <p className="text-[9px] text-gray-500 font-semibold uppercase tracking-wide text-center whitespace-nowrap">{planta.area.includes('m²') ? 'm²' : planta.area}</p>
+                      <p className="text-xl font-bebas text-gray-900 leading-none mb-1 text-center">{planta.area.split(' ')[0]}</p>
+                      <p className="text-[9px] text-gray-500 font-bebas uppercase tracking-wide text-center whitespace-nowrap">{planta.area.includes('m²') ? 'm²' : planta.area}</p>
                     </div>
 
                     <div className="w-px h-14 bg-gray-200"></div>
@@ -188,8 +188,8 @@ export function InfraestructuraSection() {
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${planta.color} flex items-center justify-center mb-2 group-hover/stat:scale-110 transition-transform duration-300`}>
                         <Home className="w-5 h-5 text-white" />
                       </div>
-                      <p className="text-lg font-black text-gray-900 leading-none mb-1 text-center">{planta.naves}</p>
-                      <p className="text-[9px] text-gray-500 font-semibold uppercase tracking-wide text-center">Naves</p>
+                      <p className="text-xl font-bebas text-gray-900 leading-none mb-1 text-center">{planta.naves}</p>
+                      <p className="text-[9px] text-gray-500 font-bebas uppercase tracking-wide text-center">Naves</p>
                     </div>
 
                     <div className="w-px h-14 bg-gray-200"></div>
@@ -199,8 +199,8 @@ export function InfraestructuraSection() {
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${planta.color} flex items-center justify-center mb-2 group-hover/stat:scale-110 transition-transform duration-300`}>
                         <Construction className="w-5 h-5 text-white" />
                       </div>
-                      <p className="text-lg font-black text-gray-900 leading-none mb-1 text-center">{planta.puentesGrua}</p>
-                      <p className="text-[9px] text-gray-500 font-semibold uppercase tracking-wide text-center">Grúas</p>
+                      <p className="text-xl font-bebas text-gray-900 leading-none mb-1 text-center">{planta.puentesGrua}</p>
+                      <p className="text-[9px] text-gray-500 font-bebas uppercase tracking-wide text-center">Grúas</p>
                     </div>
                   </div>
                 </div>
@@ -217,8 +217,8 @@ export function InfraestructuraSection() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h4 className="text-2xl font-bold text-gray-900 text-center mb-12">Equipos y Maquinaria Especializada</h4>
-          
+          <h4 className="text-3xl font-bebas uppercase text-gray-900 text-center mb-12">Equipos y Maquinaria Especializada</h4>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {equiposGenerales.map((categoria, index) => {
               const Icon = categoria.icon
@@ -234,15 +234,15 @@ export function InfraestructuraSection() {
                   <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${categoria.color} flex items-center justify-center mb-4`}>
                     <Icon className="w-6 h-6 text-white" />
                   </div>
-                  
-                  <h5 className="text-lg font-semibold text-gray-900 mb-3">{categoria.categoria}</h5>
-                  <p className="text-gray-600 text-sm mb-4">{categoria.descripcion}</p>
-                  
+
+                  <h5 className="text-xl font-bebas uppercase text-gray-900 mb-3">{categoria.categoria}</h5>
+                  <p className="text-gray-600 font-lato text-sm mb-4">{categoria.descripcion}</p>
+
                   <div className="space-y-2">
                     {categoria.equipos.map((equipo, idx) => (
                       <div key={idx} className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-                        <span className="text-gray-600 text-sm">{equipo}</span>
+                        <span className="text-gray-600 font-lato text-sm">{equipo}</span>
                       </div>
                     ))}
                   </div>
@@ -299,11 +299,11 @@ export function InfraestructuraSection() {
 
               {/* Header con gradiente */}
               <div className={`relative bg-gradient-to-br ${selectedPlanta.color} px-8 py-8`}>
-                <h3 className="text-3xl font-bold text-white mb-2">{selectedPlanta.nombre}</h3>
-                <p className="text-white/90 text-lg">{selectedPlanta.tipo}</p>
+                <h3 className="text-4xl font-bebas uppercase text-white mb-2">{selectedPlanta.nombre}</h3>
+                <p className="text-white/90 font-bebas uppercase text-lg">{selectedPlanta.tipo}</p>
                 <div className="flex items-center gap-2 mt-4 text-white/90">
                   <MapPin className="w-5 h-5" />
-                  <p className="text-sm">{selectedPlanta.ubicacion}</p>
+                  <p className="text-sm font-lato">{selectedPlanta.ubicacion}</p>
                 </div>
               </div>
 
@@ -329,32 +329,32 @@ export function InfraestructuraSection() {
                     <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${selectedPlanta.color} flex items-center justify-center`}>
                       <Gauge className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mb-1">{selectedPlanta.capacidad}</p>
-                    <p className="text-xs text-gray-600 font-semibold uppercase">Capacidad</p>
+                    <p className="text-3xl font-bebas text-gray-900 mb-1">{selectedPlanta.capacidad}</p>
+                    <p className="text-xs text-gray-600 font-bebas uppercase">Capacidad</p>
                   </div>
 
                   <div className="text-center p-4 bg-gray-50 rounded-xl">
                     <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${selectedPlanta.color} flex items-center justify-center`}>
                       <Ruler className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mb-1">{selectedPlanta.area}</p>
-                    <p className="text-xs text-gray-600 font-semibold uppercase">Área Total</p>
+                    <p className="text-3xl font-bebas text-gray-900 mb-1">{selectedPlanta.area}</p>
+                    <p className="text-xs text-gray-600 font-bebas uppercase">Área Total</p>
                   </div>
 
                   <div className="text-center p-4 bg-gray-50 rounded-xl">
                     <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${selectedPlanta.color} flex items-center justify-center`}>
                       <Home className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mb-1">{selectedPlanta.naves}</p>
-                    <p className="text-xs text-gray-600 font-semibold uppercase">Naves Industriales</p>
+                    <p className="text-3xl font-bebas text-gray-900 mb-1">{selectedPlanta.naves}</p>
+                    <p className="text-xs text-gray-600 font-bebas uppercase">Naves Industriales</p>
                   </div>
 
                   <div className="text-center p-4 bg-gray-50 rounded-xl">
                     <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${selectedPlanta.color} flex items-center justify-center`}>
                       <Construction className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mb-1">{selectedPlanta.puentesGrua}</p>
-                    <p className="text-xs text-gray-600 font-semibold uppercase">Puentes Grúa</p>
+                    <p className="text-3xl font-bebas text-gray-900 mb-1">{selectedPlanta.puentesGrua}</p>
+                    <p className="text-xs text-gray-600 font-bebas uppercase">Puentes Grúa</p>
                   </div>
                 </div>
 
@@ -363,7 +363,7 @@ export function InfraestructuraSection() {
                   href={selectedPlanta.googleMaps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-full flex items-center justify-center gap-3 bg-gradient-to-r ${selectedPlanta.color} hover:shadow-xl text-white px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 group`}
+                  className={`w-full flex items-center justify-center gap-3 bg-gradient-to-r ${selectedPlanta.color} hover:shadow-xl text-white px-6 py-4 rounded-xl font-lato font-bold transition-all duration-300 group`}
                 >
                   <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   Abrir en Google Maps

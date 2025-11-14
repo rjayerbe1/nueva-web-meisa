@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock, Building2, Cpu, Award, History } from "lucide-react"
+import { Menu, X, Building2, Cpu, Award, History } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { siteConfig } from "@/lib/site-config"
@@ -37,7 +37,7 @@ const navigation = [
         icon: "Cpu"
       },
       {
-        name: "Sistema Integrado de Gestión",
+        name: "Políticas",
         href: "/calidad",
         description: "SIG - Calidad, seguridad y cumplimiento",
         icon: "Award"
@@ -63,86 +63,34 @@ export function Navbar() {
 
   return (
     <>
-      {/* Top Info Bar - Visible on all devices when not scrolled */}
-      <div className={cn(
-        "bg-gradient-to-r from-gray-900 to-gray-800 text-white text-sm transition-all duration-300 fixed top-0 left-0 right-0 z-40",
-        scrolled ? "transform -translate-y-full opacity-0" : "transform translate-y-0 opacity-100"
-      )}>
-        <div className="container mx-auto px-4 py-2">
-          <div className="flex items-center justify-between">
-            {/* Desktop Layout */}
-            <div className="hidden lg:flex items-center space-x-6">
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-blue-400" />
-                <span>+57 (2) 312 0050</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-blue-400" />
-                <span>contacto@meisa.com.co</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-400" />
-                <span>Lun-Vie: 7AM-5PM</span>
-              </div>
-            </div>
-            <div className="hidden lg:flex items-center space-x-4 text-xs">
-              <span className="text-blue-400 font-semibold">600 TON/MES</span>
-              <span className="text-gray-400">|</span>
-              <span className="text-blue-400 font-semibold">{siteConfig.empresa.aniosExperiencia}+ AÑOS</span>
-              <span className="text-gray-400">|</span>
-              <span className="text-blue-400 font-semibold">3 PLANTAS</span>
-            </div>
-            
-            {/* Mobile Layout */}
-            <div className="lg:hidden flex items-center justify-between w-full">
-              <div className="flex items-center gap-2 text-xs">
-                <div className="flex items-center gap-1">
-                  <Phone className="w-3 h-3 text-blue-400" />
-                  <span>+57 (2) 312 0050</span>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <span className="text-blue-400 font-semibold">600 TON/MES</span>
-                <span className="text-gray-400">|</span>
-                <span className="text-blue-400 font-semibold">{siteConfig.empresa.aniosExperiencia}+ AÑOS</span>
-                <span className="text-gray-400">|</span>
-                <span className="text-blue-400 font-semibold">3 PLANTAS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navigation */}
       <nav className={cn(
-        "fixed left-0 right-0 z-50 transition-all duration-300",
-        scrolled 
-          ? "top-0 bg-white/95 backdrop-blur-lg shadow-lg" 
-          : "top-8 lg:top-10 bg-white/90 backdrop-blur-md shadow-md"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled
+          ? "bg-white shadow-lg"
+          : "bg-white shadow-md"
       )}>
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
+        <div className="container mx-auto px-4 relative">
+          <div className="flex items-center justify-start h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center group">
+            <Link href="/" className="flex items-center group py-1">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                whileHover={{ scale: 1.05 }}
-                className="relative h-14 w-48"
               >
                 <Image
                   src="/images/logo/logo-meisa.png"
                   alt="MEISA - Metálicas e Ingeniería"
-                  fill
-                  sizes="192px"
-                  className="object-contain transition-transform group-hover:scale-105"
+                  width={135}
+                  height={38}
                   priority
+                  unoptimized
                 />
               </motion.div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-1 ml-8">
               {navigation.map((item, index) => (
                 <motion.div 
                   key={item.name} 
@@ -152,34 +100,43 @@ export function Navbar() {
                   transition={{ delay: index * 0.1 }}
                 >
                   {item.children ? (
-                    <div
-                      className="relative group"
+                    <motion.div
+                      className="relative"
+                      whileHover="hover"
                       onMouseEnter={() => setDropdownOpen(true)}
                       onMouseLeave={() => setDropdownOpen(false)}
                     >
                       <button className={cn(
-                        "flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-blue-50",
-                        item.children.some(child => pathname.startsWith(child.href)) && "text-blue-600 bg-blue-50"
+                        "text-gray-700 hover:text-blue-700 transition-all duration-300 font-lato font-bold uppercase text-base py-2 px-4 rounded-lg relative",
+                        item.children.some(child => pathname.startsWith(child.href)) && "text-blue-700"
                       )}>
-                        <span>{item.name}</span>
-                        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                        {item.name}
                       </button>
                       
                       <AnimatePresence>
                         {dropdownOpen && (
                           <motion.div
-                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+                            initial={{ opacity: 0, scaleY: 0 }}
+                            animate={{ opacity: 1, scaleY: 1 }}
+                            exit={{ opacity: 0, scaleY: 0 }}
+                            transition={{ duration: 0.25, ease: "easeOut" }}
+                            style={{ originY: 0 }}
+                            className="absolute top-full left-4 w-64 bg-white rounded-b-xl shadow-lg border-x border-b border-gray-200 overflow-visible -mt-2"
                           >
-                            <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6">
-                              <h3 className="text-white font-bold text-xl mb-1">Conócenos</h3>
-                              <p className="text-blue-100 text-sm">{siteConfig.empresa.aniosExperiencia}+ años construyendo el futuro de Colombia</p>
+                            {/* Borde superior animado */}
+                            <motion.div
+                              initial={{ scaleX: 0 }}
+                              animate={{ scaleX: 1 }}
+                              exit={{ scaleX: 0 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                              style={{ originX: 0 }}
+                              className="absolute top-0 left-0 right-0 h-1 bg-blue-700"
+                            />
+                            <div className="px-4 py-3 border-b border-gray-100 mt-2">
+                              <h3 className="text-gray-700 font-lato font-bold text-sm uppercase tracking-wide">Conócenos</h3>
                             </div>
                             
-                            <div className="p-3">
+                            <div className="p-2">
                               {item.children.map((child, childIndex) => {
                                 const IconComponent = child.icon === 'Building2' ? Building2 :
                                                      child.icon === 'Cpu' ? Cpu :
@@ -196,90 +153,71 @@ export function Navbar() {
                                     <Link
                                       href={child.href}
                                       className={cn(
-                                        "flex items-start gap-4 px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100/50 hover:text-blue-700 rounded-xl transition-all duration-200 group",
-                                        pathname.startsWith(child.href) && "bg-gradient-to-r from-blue-50 to-blue-100/50 text-blue-700"
+                                        "relative flex items-center gap-3 px-3 py-3 text-gray-700 rounded-lg transition-all duration-300 group overflow-visible",
+                                        "hover:text-blue-700 hover:scale-105 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100/60 hover:shadow-md",
+                                        pathname.startsWith(child.href) && "bg-gradient-to-r from-blue-50 to-blue-100/60 text-blue-700 shadow-md"
                                       )}
                                       onClick={() => setDropdownOpen(false)}
                                     >
-                                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors">
-                                        <IconComponent className="w-5 h-5 text-blue-600" />
-                                      </div>
-                                      <div className="flex-1">
-                                        <div className="font-semibold group-hover:translate-x-1 transition-transform">
-                                          {child.name}
-                                        </div>
-                                        <div className="text-sm text-gray-600 mt-0.5">
-                                          {child.description}
-                                        </div>
+                                      {/* Efecto ping/radar en hover */}
+                                      <div className="absolute inset-0 bg-blue-500 rounded-lg animate-ping opacity-0 group-hover:opacity-20 -z-10"></div>
+
+                                      <IconComponent className="w-5 h-5 text-gray-500 group-hover:text-blue-600 transition-all duration-300 flex-shrink-0" />
+                                      <div className="font-lato font-semibold text-sm transition-all duration-300">
+                                        {child.name}
                                       </div>
                                     </Link>
                                   </motion.div>
                                 );
                               })}
                             </div>
-                            
-                            <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-t">
-                              <div className="flex items-center justify-center gap-6 text-sm">
-                                <div className="text-center">
-                                  <p className="text-2xl font-bold text-blue-600">600</p>
-                                  <p className="text-xs text-gray-600">ton/mes</p>
-                                </div>
-                                <div className="w-px h-10 bg-gray-300"></div>
-                                <div className="text-center">
-                                  <p className="text-2xl font-bold text-blue-600">{siteConfig.empresa.aniosExperiencia}+</p>
-                                  <p className="text-xs text-gray-600">años</p>
-                                </div>
-                                <div className="w-px h-10 bg-gray-300"></div>
-                                <div className="text-center">
-                                  <p className="text-2xl font-bold text-blue-600">3</p>
-                                  <p className="text-xs text-gray-600">plantas</p>
-                                </div>
-                              </div>
-                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
-                    </div>
+                    </motion.div>
                   ) : (
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-blue-50 relative",
-                        (pathname === item.href ||
-                         (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "text-blue-600 bg-blue-50"
-                      )}
-                    >
-                      {item.name}
-                      {(pathname === item.href ||
-                        (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
-                        <motion.div
-                          layoutId="activeTab"
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full"
-                        />
-                      )}
-                    </Link>
+                    <motion.div whileHover="hover" className="inline-block">
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "text-gray-700 hover:text-blue-700 transition-all duration-300 font-lato font-bold uppercase text-base py-2 px-4 rounded-lg relative block",
+                          (pathname === item.href ||
+                           (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "text-blue-700"
+                        )}
+                      >
+                        <span className="relative inline-block">
+                          {item.name}
+                          {/* Underline hover effect - grows from left to right */}
+                          {!(pathname === item.href || (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
+                            <motion.span
+                              className="absolute -bottom-1 left-0 right-0 h-1 bg-blue-700"
+                              initial={{ scaleX: 0 }}
+                              variants={{
+                                hover: { scaleX: 1 }
+                              }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                              style={{ originX: 0 }}
+                            />
+                          )}
+                          {/* Active state underline */}
+                          {(pathname === item.href ||
+                            (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && (
+                            <motion.span
+                              className="absolute -bottom-1 left-0 right-0 h-1 bg-blue-700"
+                              layoutId="activeNavTab"
+                            />
+                          )}
+                        </span>
+                      </Link>
+                    </motion.div>
                   )}
                 </motion.div>
               ))}
-              
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                <Link href="/contacto">
-                  <Button 
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-                  >
-                    Cotizar Proyecto
-                  </Button>
-                </Link>
-              </motion.div>
             </div>
 
             {/* Mobile menu button */}
             <motion.button
-              className="lg:hidden p-3 rounded-lg hover:bg-gray-100 transition-colors shadow-sm border border-gray-200 bg-white/90"
+              className="lg:hidden ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors shadow-sm border border-gray-200 bg-white/90"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -319,7 +257,7 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200"
+              className="lg:hidden bg-white border-t border-gray-200"
             >
               <div className="px-4 py-6 space-y-4">
 
@@ -332,7 +270,7 @@ export function Navbar() {
                   >
                     {item.children ? (
                       <div className="space-y-2">
-                        <div className="font-semibold text-gray-900 text-lg border-b border-gray-200 pb-2">
+                        <div className="font-lato font-bold uppercase text-gray-900 text-lg border-b border-gray-200 pb-2">
                           {item.name}
                         </div>
                         <div className="grid grid-cols-1 gap-2 pl-4">
@@ -346,8 +284,8 @@ export function Navbar() {
                               )}
                               onClick={() => setMobileMenuOpen(false)}
                             >
-                              <div className="font-medium">{child.name}</div>
-                              <div className="text-xs text-gray-500 mt-1">{child.description}</div>
+                              <div className="font-lato font-bold uppercase text-base">{child.name}</div>
+                              <div className="text-xs text-gray-500 mt-1 font-lato">{child.description}</div>
                             </Link>
                           ))}
                         </div>
@@ -356,7 +294,7 @@ export function Navbar() {
                       <Link
                         href={item.href}
                         className={cn(
-                          "block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 font-medium",
+                          "block py-3 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 font-lato font-bold uppercase text-base",
                           (pathname === item.href ||
                            (item.href === "/proyectos" && pathname.startsWith("/proyectos"))) && "bg-blue-50 text-blue-600"
                         )}
@@ -367,19 +305,6 @@ export function Navbar() {
                     )}
                   </motion.div>
                 ))}
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="pt-4 border-t border-gray-200"
-                >
-                  <Link href="/contacto" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 rounded-xl">
-                      Cotizar Proyecto
-                    </Button>
-                  </Link>
-                </motion.div>
               </div>
             </motion.div>
           )}

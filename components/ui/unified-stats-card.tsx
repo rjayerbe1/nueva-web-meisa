@@ -95,19 +95,19 @@ export function UnifiedStatsCard({
           <div className="mb-6 relative">
             {/* Main number display */}
             <div className="flex items-baseline justify-center gap-2">
-              <span className={`${getNumberClasses()} font-black bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
+              <span className={`${getNumberClasses()} font-bebas bg-gradient-to-br ${getGradientColors()} bg-clip-text text-transparent`}>
                 {number}
               </span>
               {suffix && (
-                <span className={`${getSuffixClasses()} font-bold text-gray-500 ml-1`}>
+                <span className={`${getSuffixClasses()} font-bebas text-gray-500 ml-1`}>
                   {suffix}
                 </span>
               )}
             </div>
           </div>
-          
+
           {/* Label */}
-          <p className="text-gray-700 font-semibold text-lg text-center leading-snug">
+          <p className="text-gray-700 font-lato font-semibold text-lg text-center leading-snug">
             {label}
           </p>
           
@@ -165,12 +165,12 @@ export function UnifiedStatsGrid({
           className="text-center mb-20"
         >
           {title && (
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-6xl font-bebas uppercase text-gray-900 mb-6">
               {title}
             </h2>
           )}
           {subtitle && (
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
+            <p className="text-xl font-lato text-gray-600 max-w-3xl mx-auto mb-6">
               {subtitle}
             </p>
           )}

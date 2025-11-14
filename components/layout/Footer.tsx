@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react"
 import { siteConfig } from "@/lib/site-config"
 
@@ -9,7 +10,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Información de la empresa */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">MEISA</h3>
+            <div className="mb-6">
+              <Image
+                src="/images/logo/logo-meisa-white.png"
+                alt="MEISA"
+                width={135}
+                height={38}
+                unoptimized
+              />
+            </div>
             <p className="text-gray-400 mb-4">
               Metálicas e Ingeniería S.A.S. - Líderes en diseño, fabricación y montaje de estructuras metálicas.
               <span className="text-blue-400 font-semibold"> Más de {siteConfig.empresa.aniosExperiencia} años</span> construyendo el futuro de Colombia.

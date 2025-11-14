@@ -58,7 +58,7 @@ export function ClientesSection() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Cargando clientes...</p>
+            <p className="mt-4 text-gray-600 font-lato">Cargando clientes...</p>
           </div>
         </div>
       </section>
@@ -70,7 +70,7 @@ export function ClientesSection() {
       <section id="clientes" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-red-600">{error}</p>
+            <p className="text-red-600 font-lato">{error}</p>
           </div>
         </div>
       </section>
@@ -88,12 +88,12 @@ export function ClientesSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-blue-600 font-semibold text-lg mb-2">Nuestros Aliados</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-blue-600 font-bebas uppercase text-xl mb-2">Nuestros Aliados</h2>
+          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-gray-900 mb-4">
             Clientes
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Destacados</span>
           </h3>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl font-lato text-gray-600 max-w-3xl mx-auto">
             Empresas líderes en Colombia confían en MEISA para sus proyectos más importantes
           </p>
         </motion.div>
@@ -163,8 +163,8 @@ export function ClientesSection() {
             viewport={{ once: true }}
             className="mb-16"
           >
-            <h4 className="text-2xl font-bold text-gray-900 text-center mb-8">Proyectos Destacados</h4>
-            
+            <h4 className="text-3xl font-bebas uppercase text-gray-900 text-center mb-8">Proyectos Destacados</h4>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {clientesDestacados.map((cliente, index) => (
                 <motion.div
@@ -187,26 +187,26 @@ export function ClientesSection() {
                             className="object-contain max-w-full max-h-full"
                           />
                         ) : (
-                          <div className="text-gray-600 text-xs font-medium text-center">
+                          <div className="text-gray-600 text-xs font-lato font-medium text-center">
                             {cliente.nombre.split(' ').map(word => word[0]).join('').slice(0, 2)}
                           </div>
                         )}
                       </div>
                       <div>
-                        <h5 className="text-lg font-semibold text-gray-900">{cliente.nombre}</h5>
-                        <p className="text-blue-600 text-sm">{cliente.proyectoDestacado}</p>
+                        <h5 className="text-xl font-bebas uppercase text-gray-900">{cliente.nombre}</h5>
+                        <p className="text-blue-600 text-sm font-lato">{cliente.proyectoDestacado}</p>
                       </div>
                     </div>
                     {cliente.capacidadProyecto && (
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-gray-900">{cliente.capacidadProyecto}</p>
-                        <p className="text-xs text-gray-500">de estructura</p>
+                        <p className="text-3xl font-bebas text-gray-900">{cliente.capacidadProyecto}</p>
+                        <p className="text-xs font-lato text-gray-500">de estructura</p>
                       </div>
                     )}
                   </div>
-                  
+
                   {cliente.ubicacionProyecto && (
-                    <div className="flex items-center gap-2 text-gray-600 text-sm">
+                    <div className="flex items-center gap-2 text-gray-600 text-sm font-lato">
                       <div className="w-4 h-4 rounded bg-blue-100 flex items-center justify-center">
                         <div className="w-2 h-2 bg-blue-600 rounded" />
                       </div>
@@ -229,16 +229,16 @@ export function ClientesSection() {
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <p className="text-4xl font-bold text-blue-600 mb-2">{clientes.length}+</p>
-              <p className="text-gray-600">Clientes activos en todo Colombia</p>
+              <p className="text-5xl font-bebas text-blue-600 mb-2">{clientes.length}+</p>
+              <p className="text-gray-600 font-lato">Clientes activos en todo Colombia</p>
             </div>
             <div>
-              <p className="text-4xl font-bold text-blue-600 mb-2">9</p>
-              <p className="text-gray-600">Sectores industriales atendidos</p>
+              <p className="text-5xl font-bebas text-blue-600 mb-2">9</p>
+              <p className="text-gray-600 font-lato">Sectores industriales atendidos</p>
             </div>
             <div>
-              <p className="text-4xl font-bold text-blue-600 mb-2">29+</p>
-              <p className="text-gray-600">Años construyendo confianza</p>
+              <p className="text-5xl font-bebas text-blue-600 mb-2">29+</p>
+              <p className="text-gray-600 font-lato">Años construyendo confianza</p>
             </div>
           </div>
         </motion.div>

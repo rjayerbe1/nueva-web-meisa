@@ -1,11 +1,25 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Bebas_Neue, Lato } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+// Bebas Neue para títulos - alto impacto, condensada
+const bebasNeue = Bebas_Neue({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-bebas',
+  display: 'swap',
+})
+
+// Lato para cuerpo - excelente legibilidad
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  variable: '--font-lato',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'MEISA - Metálicas e Ingeniería S.A.',
@@ -35,7 +49,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.className}>
+      <body className={`${lato.variable} ${bebasNeue.variable} font-sans`}>
         <SessionProvider>
           {children}
         </SessionProvider>
