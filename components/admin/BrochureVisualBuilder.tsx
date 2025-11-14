@@ -58,6 +58,7 @@ interface Brochure {
   id: string
   titulo: string
   urlAmigable: string
+  pdfUrl: string | null
   pages: Page[]
   template: {
     nombre: string
@@ -312,6 +313,8 @@ export function BrochureVisualBuilder({ brochure }: BrochureVisualBuilderProps) 
   const [templates, setTemplates] = useState<any[]>([])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [currentCanvasInstance, setCurrentCanvasInstance] = useState<fabric.Canvas | null>(null)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+  const [pdfProgress, setPdfProgress] = useState(0)
 
   // Ref para el timeout de auto-guardado (debouncing)
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -826,6 +829,177 @@ export function BrochureVisualBuilder({ brochure }: BrochureVisualBuilderProps) 
     }
   }
 
+  const handleGeneratePDF = async () => {
+    if (isGeneratingPDF || pages.length === 0) return
+
+    try {
+      setIsGeneratingPDF(true)
+      setPdfProgress(0)
+
+      const jsPDF = (await import('jspdf')).default
+
+      console.log('📄 [PDF] Iniciando generación de PDF del brochure...')
+
+      const visiblePages = pages.filter(p => p.visible).sort((a, b) => a.orden - b.orden)
+
+      if (visiblePages.length === 0) {
+        alert('No hay páginas visibles para generar el PDF')
+        return
+      }
+
+      // Crear PDF
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: 'a4'
+      })
+
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
+
+      console.log(`📄 [PDF] Procesando ${visiblePages.length} páginas...`)
+
+      // Procesar cada página
+      for (let i = 0; i < visiblePages.length; i++) {
+        const page = visiblePages[i]
+        console.log(`📄 [PDF] Procesando página ${i + 1}/${visiblePages.length}: ${page.nombre}`)
+
+        // Actualizar progreso
+        setPdfProgress(Math.round(((i) / visiblePages.length) * 100))
+
+        // Si no es la primera página, agregar nueva página al PDF
+        if (i > 0) {
+          pdf.addPage()
+        }
+
+        try {
+          let imageData: string
+
+          if (page.canvasData) {
+            // Renderizar página con canvas en background
+            console.log(`  📐 [PDF] Renderizando canvas en background...`)
+
+            // Crear contenedor invisible para el canvas
+            const container = document.createElement('div')
+            container.style.position = 'fixed'
+            container.style.left = '-9999px'
+            container.style.top = '0'
+            container.style.width = '1200px'
+            container.style.height = '800px'
+            container.style.zIndex = '-1'
+            container.style.visibility = 'hidden'
+            document.body.appendChild(container)
+
+            // Crear canvas element
+            const tempCanvas = document.createElement('canvas')
+            const canvasWidth = page.configuracion?.width || 1200
+            const canvasHeight = page.configuracion?.height || 800
+
+            container.appendChild(tempCanvas)
+
+            // Crear instancia de StaticCanvas de Fabric.js
+            const staticCanvas = new fabric.StaticCanvas(tempCanvas, {
+              width: canvasWidth,
+              height: canvasHeight,
+              renderOnAddRemove: true,
+              backgroundColor: '#ffffff'
+            })
+
+            console.log(`  📦 [PDF] Canvas temporal creado: ${canvasWidth}x${canvasHeight}`)
+
+            // Cargar el JSON del canvas
+            try {
+              await new Promise<void>((resolve, reject) => {
+                const dataToLoad = typeof page.canvasData === 'string'
+                  ? JSON.parse(page.canvasData)
+                  : page.canvasData
+
+                staticCanvas.loadFromJSON(dataToLoad, () => {
+                  const objects = staticCanvas.getObjects()
+                  console.log(`  ✅ [PDF] Canvas cargado con ${objects.length} objetos`)
+
+                  // Forzar renders
+                  staticCanvas.renderAll()
+
+                  // Dar tiempo para que las imágenes se carguen
+                  setTimeout(() => {
+                    staticCanvas.renderAll()
+                    console.log(`  ✅ [PDF] Canvas renderizado completamente`)
+                    resolve()
+                  }, 300)
+                }, (error: any) => {
+                  console.error(`  ❌ [PDF] Error cargando JSON:`, error)
+                  reject(error)
+                })
+              })
+
+              // Capturar imagen
+              imageData = staticCanvas.toDataURL('image/jpeg', 0.95)
+              console.log(`  ✅ [PDF] Imagen capturada del canvas temporal`)
+
+            } catch (error) {
+              console.error(`  ❌ [PDF] Error en renderizado background:`, error)
+              throw error
+            } finally {
+              // Limpiar
+              staticCanvas.dispose()
+              document.body.removeChild(container)
+            }
+          } else {
+            // Página sin canvas, crear página en blanco
+            console.log(`  📦 [PDF] Página sin canvasData, agregando página en blanco`)
+            imageData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
+          }
+
+          // Agregar imagen al PDF manteniendo aspecto
+          pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
+          console.log(`  ✅ [PDF] Página ${i + 1} agregada al PDF`)
+
+        } catch (pageError) {
+          console.error(`  ❌ [PDF] Error procesando página ${i + 1}:`, pageError)
+        }
+      }
+
+      // Actualizar progreso al 100%
+      setPdfProgress(100)
+
+      // Convertir PDF a data URL
+      const pdfBlob = pdf.output('blob')
+      const reader = new FileReader()
+
+      reader.onloadend = async () => {
+        const pdfDataUrl = reader.result as string
+
+        console.log('📤 [PDF] Subiendo PDF a Google Cloud Storage...')
+
+        // Enviar al endpoint
+        const response = await fetch(`/api/admin/brochures/${brochure.id}/generate-pdf`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pdfDataUrl })
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          console.log('✅ [PDF] PDF generado y guardado:', result.pdfUrl)
+          alert('✅ PDF generado y guardado exitosamente')
+          router.refresh()
+        } else {
+          throw new Error('Error al subir el PDF')
+        }
+      }
+
+      reader.readAsDataURL(pdfBlob)
+
+    } catch (error) {
+      console.error('❌ [PDF] Error generando PDF:', error)
+      alert('Error al generar el PDF. Por favor, intenta nuevamente.')
+    } finally {
+      setIsGeneratingPDF(false)
+      setPdfProgress(0)
+    }
+  }
+
   return (
     <div className="flex h-screen bg-gray-100 relative">
       {/* Sidebar - Pages List */}
@@ -904,6 +1078,39 @@ export function BrochureVisualBuilder({ brochure }: BrochureVisualBuilderProps) 
             <Eye className="w-4 h-4" />
             Vista Previa
           </Link>
+
+          {/* Generate PDF Button */}
+          <button
+            onClick={handleGeneratePDF}
+            disabled={isGeneratingPDF || pages.length === 0}
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-sm border border-green-300 text-green-700 bg-white hover:bg-green-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGeneratingPDF ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Generando PDF {pdfProgress > 0 && `(${pdfProgress}%)`}
+              </>
+            ) : (
+              <>
+                <FileText className="w-4 h-4" />
+                Generar PDF
+              </>
+            )}
+          </button>
+
+          {/* PDF Download Link */}
+          {brochure.pdfUrl && brochure.pdfUrl.trim() !== '' && (
+            <a
+              href={brochure.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              download={`${brochure.titulo.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-sm text-green-700 hover:text-green-800 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Descargar PDF Generado
+            </a>
+          )}
 
           {/* Template Buttons */}
           <div className="flex gap-2">
