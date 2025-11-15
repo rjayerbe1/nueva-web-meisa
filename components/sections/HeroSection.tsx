@@ -5,7 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ChevronDown } from "lucide-react"
-import { useHeroImages } from "@/hooks/useHeroImages"
+import { HeroImageConfig } from "@/lib/hero-config"
+import { LogoHoverEffect } from "@/components/logo/LogoHoverEffect"
 
 const specialties = [
   'DISEÑO\nESTRUCTURAL',
@@ -14,11 +15,14 @@ const specialties = [
   'GESTIÓN DE\nPROYECTOS'
 ]
 
-export function HeroSection() {
+interface HeroSectionProps {
+  heroImages: HeroImageConfig
+}
+
+export function HeroSection({ heroImages }: HeroSectionProps) {
   const [currentSpecialty, setCurrentSpecialty] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
-  const { images: heroImages } = useHeroImages()
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -63,6 +67,19 @@ export function HeroSection() {
     ["polygon(-5% 100%, 105% 100%, 105% 100%, -5% 100%)", "polygon(-5% 0%, 105% 0%, 105% 100%, -5% 100%)"]
   )
 
+  // Transformaciones para versión móvil
+  const mobileRow2ClipPath = useTransform(
+    scrollYProgress,
+    [0, 0.3],
+    ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
+  )
+
+  const mobileRow3ClipPath = useTransform(
+    scrollYProgress,
+    [0.15, 0.5],
+    ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
+  )
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSpecialty((prev) => (prev + 1) % specialties.length)
@@ -84,14 +101,11 @@ export function HeroSection() {
           <div className="h-1/3 bg-white flex flex-col justify-center items-center px-6 py-4 border-b border-gray-200">
             <div className="space-y-3 flex flex-col items-center w-full">
               <div className="w-44">
-                <Image
-                  src="/images/logo/logo-meisa.png"
-                  alt="MEISA"
+                <LogoHoverEffect
+                  variant="3d-tilt"
                   width={280}
                   height={79}
-                  unoptimized
-                  priority
-                  className="w-full h-auto"
+                  className="w-full"
                 />
               </div>
 
@@ -141,11 +155,7 @@ export function HeroSection() {
             <motion.div
               className="absolute inset-0"
               style={{
-                clipPath: useTransform(
-                  scrollYProgress,
-                  [0, 0.3],
-                  ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
-                )
+                clipPath: mobileRow2ClipPath
               }}
             >
               <Image
@@ -173,11 +183,7 @@ export function HeroSection() {
             <motion.div
               className="absolute inset-0"
               style={{
-                clipPath: useTransform(
-                  scrollYProgress,
-                  [0.15, 0.5],
-                  ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
-                )
+                clipPath: mobileRow3ClipPath
               }}
             >
               <Image
@@ -214,15 +220,12 @@ export function HeroSection() {
         {/* VERSIÓN DESKTOP - Grid de 3 columnas */}
         {/* Columna Izquierda - Logo centrado con Scroll Reveal */}
         <div className="hidden md:block w-1/3 bg-white border-r border-gray-200 relative">
-          {/* Fondo blanco con logo */}
+          {/* Fondo blanco con logo con efecto 3D Tilt */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <Image
-              src="/images/logo/logo-meisa.png"
-              alt="MEISA"
+            <LogoHoverEffect
+              variant="3d-tilt"
               width={300}
               height={85}
-              unoptimized
-              priority
             />
           </div>
 

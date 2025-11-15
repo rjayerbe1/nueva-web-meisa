@@ -44,15 +44,15 @@ export async function POST(request: NextRequest) {
     }
     const gcsPath = urlParts[1]
 
-    // Llamar a Replicate Real-ESRGAN 4x
-    console.log('⚡ [Upscale] Enviando a Replicate Real-ESRGAN 4x...')
+    // Llamar a Bria Increase-Resolution 4x (soporta hasta 8192x8192)
+    console.log('⚡ [Upscale] Enviando a Bria Increase-Resolution 4x...')
     const output = await replicate.run(
-      "nightmareai/real-esrgan:42fed1c4974146d4d2414e2be2c5277c7fcf05fcc3a73abf41610695738c1d7b",
+      "bria/increase-resolution:19266ced4be9ec28f269ab20a2622104cac9c518158b7761e7edeb30954bd01a",
       {
         input: {
-          image: imageUrl,
-          scale: 4,
-          face_enhance: false
+          image_url: imageUrl,
+          desired_increase: 4,
+          preserve_alpha: true
         }
       }
     ) as string
@@ -98,17 +98,52 @@ export async function POST(request: NextRequest) {
       success: true,
       originalUrl: imageUrl,
       upscaledUrl,
-      message: 'Imagen upscaled exitosamente con Real-ESRGAN 4x'
+      method: 'bria-increase-resolution',
+      cost: 0.04,
+      message: 'Imagen upscaled exitosamente con Bria Increase-Resolution 4x'
     })
   } catch (error) {
     console.error('❌ [Upscale] Error:', error)
 
     // Manejar errores específicos de Replicate
     if (error instanceof Error) {
+      // Error de API token no configurado
       if (error.message.includes('API token')) {
         return NextResponse.json({
           error: 'Token de Replicate no configurado. Agrega REPLICATE_API_TOKEN al archivo .env'
         }, { status: 500 })
+      }
+
+      // Error 402: Sin crédito suficiente
+      if (error.message.includes('402') || error.message.includes('Insufficient credit')) {
+        return NextResponse.json({
+          error: 'Sin crédito en Replicate',
+          details: 'Tu cuenta de Replicate no tiene crédito suficiente. Ve a https://replicate.com/account/billing para agregar crédito o una tarjeta de crédito. Costo: ~$0.002 USD por imagen.'
+        }, { status: 402 })
+      }
+
+      // Error de rate limit
+      if (error.message.includes('429') || error.message.includes('rate limit')) {
+        return NextResponse.json({
+          error: 'Límite de uso excedido',
+          details: 'Has alcanzado el límite de uso de Replicate. Espera unos minutos e intenta de nuevo.'
+        }, { status: 429 })
+      }
+
+      // Error de imagen demasiado grande
+      if (error.message.includes('exceed maximum size') || error.message.includes('8K UHD')) {
+        return NextResponse.json({
+          error: 'Imagen demasiado grande para upscaling',
+          details: 'Esta imagen excedería el límite máximo de 8K UHD (67 megapixels) al hacer upscale 4x. La imagen es demasiado grande para procesarse. Intenta con una imagen más pequeña o que no haya sido upscaled previamente.'
+        }, { status: 400 })
+      }
+
+      // Error de imagen muy grande (Real-ESRGAN legacy)
+      if (error.message.includes('total number of pixels') || error.message.includes('greater than the max size')) {
+        return NextResponse.json({
+          error: 'Imagen demasiado grande',
+          details: 'La imagen es demasiado grande para procesarse. Intenta con una imagen más pequeña.'
+        }, { status: 400 })
       }
     }
 

@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { 
+import {
   ChevronLeft, ChevronRight, ArrowDown,
   Home, Building2, BarChart3, Users, Settings,
   Monitor, Factory, Award, UserCheck, Heart, MessageSquare
 } from 'lucide-react'
 import * as Icons from 'lucide-react'
+import { HeroImageConfig } from '@/lib/hero-config'
 
 // Importaciones de componentes
 import { HeroSection } from '@/components/sections/HeroSection'
@@ -30,9 +31,10 @@ interface HomeSection {
 interface HomeContentProps {
   projectsByCategory: Record<string, any[]>
   sections: HomeSection[]
+  heroImages: HeroImageConfig
 }
 
-export function HomeContent({ projectsByCategory, sections }: HomeContentProps) {
+export function HomeContent({ projectsByCategory, sections, heroImages }: HomeContentProps) {
   const [activeSection, setActiveSection] = useState('inicio') // Inicializar con 'inicio'
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(false)
@@ -199,15 +201,16 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
   }
 
   return (
-    <div className="w-full bg-white">
-      {/* Hero Section - DHK Style con sticky */}
-      <section
-        id="inicio"
-        ref={(el) => { sectionsRef.current['inicio'] = el }}
-        className="w-full"
-      >
-        <HeroSection />
-      </section>
+    <>
+      <div className="w-full bg-white">
+        {/* Hero Section - DHK Style con sticky */}
+        <section
+          id="inicio"
+          ref={(el) => { sectionsRef.current['inicio'] = el }}
+          className="w-full"
+        >
+          <HeroSection heroImages={heroImages} />
+        </section>
 
 
       {/* Navegación lateral - Similar a móvil, aparece después del hero */}
@@ -360,6 +363,7 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       >
         <ContactSection />
       </section>
-    </div>
+      </div>
+    </>
   )
 }

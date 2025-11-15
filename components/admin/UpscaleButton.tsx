@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { BeforeAfterComparison } from './BeforeAfterComparison'
 
 interface UpscaleButtonProps {
   imageUrl: string
@@ -25,6 +26,8 @@ export function UpscaleButton({
   showLabel = true
 }: UpscaleButtonProps) {
   const [isUpscaling, setIsUpscaling] = useState(false)
+  const [showComparison, setShowComparison] = useState(false)
+  const [upscaledUrl, setUpscaledUrl] = useState<string | null>(null)
 
   const handleUpscale = async () => {
     if (!imageUrl) {
@@ -50,9 +53,10 @@ export function UpscaleButton({
         throw new Error(data.error || 'Error al upscalear imagen')
       }
 
-      // Éxito
-      toast.success('Imagen upscaled exitosamente (4x mejor calidad)', { id: toastId })
-      onUpscaleComplete(data.upscaledUrl)
+      // Éxito - Mostrar modal de comparación
+      toast.success('Imagen upscaled exitosamente. Compara y decide', { id: toastId })
+      setUpscaledUrl(data.upscaledUrl)
+      setShowComparison(true)
     } catch (error) {
       console.error('Error upscaleando imagen:', error)
       toast.error(
@@ -64,25 +68,62 @@ export function UpscaleButton({
     }
   }
 
+  const handleAccept = () => {
+    if (upscaledUrl) {
+      onUpscaleComplete(upscaledUrl)
+      setShowComparison(false)
+      setUpscaledUrl(null)
+      toast.success('Imagen upscaled aplicada')
+    }
+  }
+
+  const handleDiscard = () => {
+    setShowComparison(false)
+    setUpscaledUrl(null)
+    toast.info('Imagen upscaled descartada')
+  }
+
   return (
-    <Button
-      size={size}
-      variant={variant}
-      onClick={handleUpscale}
-      disabled={disabled || isUpscaling || !imageUrl}
-      className={className}
-    >
-      {isUpscaling ? (
-        <>
-          <Loader2 className="h-4 w-4 animate-spin" />
-          {showLabel && <span className="ml-2">Upscaling...</span>}
-        </>
-      ) : (
-        <>
-          <Sparkles className="h-4 w-4" />
-          {showLabel && <span className="ml-2">Upscale 4x</span>}
-        </>
+    <>
+      <Button
+        size={size}
+        variant={variant}
+        onClick={handleUpscale}
+        disabled={disabled || isUpscaling || !imageUrl}
+        className={className}
+        title="~$0.04 USD por imagen"
+      >
+        {isUpscaling ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {showLabel && <span className="ml-2">Upscaling...</span>}
+          </>
+        ) : (
+          <>
+            <Sparkles className="h-4 w-4" />
+            {showLabel && (
+              <span className="ml-2 flex flex-col items-start">
+                <span className="font-medium">Upscale 4x</span>
+                <span className="text-xs opacity-70">~$0.04 USD</span>
+              </span>
+            )}
+          </>
+        )}
+      </Button>
+
+      {/* Modal de comparación */}
+      {showComparison && upscaledUrl && (
+        <BeforeAfterComparison
+          beforeUrl={imageUrl}
+          afterUrl={upscaledUrl}
+          beforeLabel="Original"
+          afterLabel="Upscaled 4x"
+          onAccept={handleAccept}
+          onDiscard={handleDiscard}
+          title="Comparación: Upscale 4x"
+          description="Arrastra el divisor para comparar la calidad. ¿Notas la mejora?"
+        />
       )}
-    </Button>
+    </>
   )
 }

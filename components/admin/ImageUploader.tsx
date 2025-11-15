@@ -4,6 +4,7 @@ import { useState, useCallback } from "react"
 import { Upload, X, Image as ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { UpscaleButton } from "@/components/admin/UpscaleButton"
+import { ExpandImageButton } from "@/components/admin/ExpandImageButton"
 import Image from "next/image"
 
 interface ImageUploaderProps {
@@ -80,6 +81,16 @@ export function ImageUploader({
       onImagesChange(updatedImages)
     } else if (onUpload) {
       onUpload([upscaledUrl])
+    }
+  }, [currentImages, onImagesChange, onUpload])
+
+  const handleExpandComplete = useCallback((index: number, expandedUrl: string) => {
+    if (onImagesChange) {
+      const updatedImages = [...currentImages]
+      updatedImages[index] = expandedUrl
+      onImagesChange(updatedImages)
+    } else if (onUpload) {
+      onUpload([expandedUrl])
     }
   }, [currentImages, onImagesChange, onUpload])
 
@@ -177,15 +188,24 @@ export function ImageUploader({
                   )}
                 </div>
 
-                {/* Fila inferior: Upscale (solo para imágenes de GCS) */}
+                {/* Fila inferior: AI Tools (solo para imágenes de GCS) */}
                 {image.includes('storage.googleapis.com') && (
-                  <UpscaleButton
-                    imageUrl={image}
-                    onUpscaleComplete={(upscaledUrl) => handleUpscaleComplete(index, upscaledUrl)}
-                    size="sm"
-                    variant="secondary"
-                    showLabel={false}
-                  />
+                  <div className="flex gap-2">
+                    <ExpandImageButton
+                      imageUrl={image}
+                      onExpandComplete={(expandedUrl) => handleExpandComplete(index, expandedUrl)}
+                      size="sm"
+                      variant="secondary"
+                      showLabel={false}
+                    />
+                    <UpscaleButton
+                      imageUrl={image}
+                      onUpscaleComplete={(upscaledUrl) => handleUpscaleComplete(index, upscaledUrl)}
+                      size="sm"
+                      variant="secondary"
+                      showLabel={false}
+                    />
+                  </div>
                 )}
               </div>
               

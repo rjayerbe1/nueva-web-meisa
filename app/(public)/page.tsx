@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { HeroImageConfig, defaultHeroImages } from '@/lib/hero-config'
 
 // Importaciones de componentes mejoradas con estilo de servicios
 import { HomeContent } from '@/components/home/HomeContent'
@@ -6,6 +7,23 @@ import { HomeContent } from '@/components/home/HomeContent'
 // Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+async function getHeroImages(): Promise<HeroImageConfig> {
+  try {
+    const config = await prisma.configuracionSitio.findUnique({
+      where: { clave: 'hero_images' }
+    })
+
+    if (!config) {
+      return defaultHeroImages
+    }
+
+    return JSON.parse(config.valor) as HeroImageConfig
+  } catch (error) {
+    console.error('Error cargando imágenes del hero:', error)
+    return defaultHeroImages
+  }
+}
 
 async function getProjectsByCategory() {
   const projects = await prisma.proyecto.findMany({
@@ -71,12 +89,16 @@ const homeSections = [
 ]
 
 export default async function HomePage() {
-  const projectsByCategory = await getProjectsByCategory()
+  const [projectsByCategory, heroImages] = await Promise.all([
+    getProjectsByCategory(),
+    getHeroImages()
+  ])
 
   return (
-    <HomeContent 
+    <HomeContent
       projectsByCategory={projectsByCategory}
       sections={homeSections}
+      heroImages={heroImages}
     />
   )
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { HeroImageConfig, defaultHeroImages } from '@/lib/hero-config'
 
 export function useHeroImages() {
-  const [images, setImages] = useState<HeroImageConfig>(defaultHeroImages)
+  const [images, setImages] = useState<HeroImageConfig | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -11,8 +11,11 @@ export function useHeroImages() {
         const response = await fetch('/api/admin/hero-images')
         const result = await response.json()
 
-        if (result.success) {
+        if (result.success && result.data) {
           setImages(result.data)
+        } else {
+          // Solo usar imágenes por defecto si no hay datos configurados
+          setImages(defaultHeroImages)
         }
       } catch (error) {
         console.error('Error cargando imágenes del hero:', error)
@@ -26,5 +29,5 @@ export function useHeroImages() {
     fetchImages()
   }, [])
 
-  return { images, loading }
+  return { images: images || defaultHeroImages, loading }
 }

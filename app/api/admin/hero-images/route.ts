@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { defaultHeroImages, HeroImageConfig } from '@/lib/hero-config'
@@ -80,6 +81,9 @@ export async function POST(request: NextRequest) {
         updatedAt: new Date()
       }
     })
+
+    // Revalidar la página principal para reflejar los cambios inmediatamente
+    revalidatePath('/', 'page')
 
     return NextResponse.json({
       success: true,

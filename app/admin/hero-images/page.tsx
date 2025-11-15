@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone, Crop } from 'lucide-react'
+import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone, Crop, History, ChevronDown, ChevronUp } from 'lucide-react'
 import { HeroImageConfig } from '@/lib/hero-config'
 import { UpscaleButton } from '@/components/admin/UpscaleButton'
+import { ExpandImageButton } from '@/components/admin/ExpandImageButton'
+import { InpaintButton } from '@/components/admin/InpaintButton'
 import ImageCropModal from '@/components/admin/ImageCropModal'
 
 type ViewMode = 'desktop' | 'mobile'
@@ -35,6 +37,11 @@ export default function HeroImagesAdminPage() {
 
   const [originalImages, setOriginalImages] = useState<HeroImageConfig>(heroImages)
 
+  // Estado para galería de imágenes históricas
+  const [historicalImages, setHistoricalImages] = useState<Array<{name: string, url: string, uploadedAt: string}>>([])
+  const [showGallery, setShowGallery] = useState(false)
+  const [loadingGallery, setLoadingGallery] = useState(false)
+
   // Verificar autenticación
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -49,6 +56,13 @@ export default function HeroImagesAdminPage() {
   useEffect(() => {
     fetchHeroImages()
   }, [])
+
+  // Cargar imágenes históricas cuando se abre la galería
+  useEffect(() => {
+    if (showGallery && historicalImages.length === 0) {
+      fetchHistoricalImages()
+    }
+  }, [showGallery])
 
   const fetchHeroImages = async () => {
     try {
@@ -70,6 +84,22 @@ export default function HeroImagesAdminPage() {
       setMessage('Error cargando configuración')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchHistoricalImages = async () => {
+    try {
+      setLoadingGallery(true)
+      const response = await fetch('/api/admin/list-hero-images')
+      const result = await response.json()
+
+      if (result.success) {
+        setHistoricalImages(result.images)
+      }
+    } catch (error) {
+      console.error('Error cargando galería:', error)
+    } finally {
+      setLoadingGallery(false)
     }
   }
 
@@ -362,6 +392,101 @@ export default function HeroImagesAdminPage() {
             </div>
           </div>
         </div>
+
+        {/* Galería de Imágenes Históricas */}
+        <div className="mt-6 bg-white rounded-lg shadow-md overflow-hidden">
+          <button
+            onClick={() => setShowGallery(!showGallery)}
+            className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <History className="w-5 h-5 text-blue-700" />
+              <div className="text-left">
+                <h3 className="font-bold text-gray-900">Galería de Imágenes Históricas</h3>
+                <p className="text-sm text-gray-600">
+                  Ver todas las imágenes subidas anteriormente ({historicalImages.length > 0 ? historicalImages.length : '...'})
+                </p>
+              </div>
+            </div>
+            {showGallery ? (
+              <ChevronUp className="w-5 h-5 text-gray-400" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-400" />
+            )}
+          </button>
+
+          {showGallery && (
+            <div className="border-t border-gray-200 p-6">
+              {loadingGallery ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Cargando galería...</p>
+                </div>
+              ) : historicalImages.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <History className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                  <p>No hay imágenes históricas disponibles</p>
+                </div>
+              ) : (
+                <div>
+                  <div className="mb-4 flex items-center justify-between">
+                    <p className="text-sm text-gray-600">
+                      Haz clic en una imagen para copiar su URL
+                    </p>
+                    <button
+                      onClick={fetchHistoricalImages}
+                      className="text-sm text-blue-700 hover:text-blue-800 font-medium"
+                    >
+                      Actualizar
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {historicalImages.map((image, index) => (
+                      <div
+                        key={index}
+                        className="group relative bg-gray-100 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all cursor-pointer"
+                        onClick={() => {
+                          navigator.clipboard.writeText(image.url)
+                          setMessage(`✓ URL copiada al portapapeles: ${image.name}`)
+                          setTimeout(() => setMessage(''), 3000)
+                        }}
+                      >
+                        <div className="aspect-square relative">
+                          <Image
+                            src={image.url}
+                            alt={image.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform"
+                            unoptimized
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity flex items-center justify-center">
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center p-2">
+                              <p className="text-xs font-bold mb-1">Copiar URL</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-2 bg-white">
+                          <p className="text-xs font-medium text-gray-900 truncate" title={image.name}>
+                            {image.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(image.uploadedAt).toLocaleDateString('es-ES', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -563,15 +688,40 @@ function ImageUploadCard({
               </span>
             </button>
 
-            {/* Botón Upscale (solo para imágenes de GCS) */}
+            {/* Botones AI (solo para imágenes de GCS) */}
             {imageUrl.includes('storage.googleapis.com') && (
-              <UpscaleButton
-                imageUrl={imageUrl}
-                onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
-                size="default"
-                variant="outline"
-                className="w-full"
-              />
+              <div className="grid grid-cols-3 gap-2">
+                {/* Botón Editar con IA */}
+                <InpaintButton
+                  imageUrl={imageUrl}
+                  onInpaintComplete={(editedUrl) => onChange(editedUrl)}
+                  size="default"
+                  variant="outline"
+                  className="w-full"
+                  showLabel={false}
+                />
+
+                {/* Botón Expand */}
+                <ExpandImageButton
+                  imageUrl={imageUrl}
+                  onExpandComplete={(expandedUrl) => onChange(expandedUrl)}
+                  size="default"
+                  variant="outline"
+                  className="w-full"
+                  showLabel={false}
+                  suggestedRatio={aspectRatio.replace('/', ':')} // Convertir "3/5" a "3:5"
+                />
+
+                {/* Botón Upscale */}
+                <UpscaleButton
+                  imageUrl={imageUrl}
+                  onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
+                  size="default"
+                  variant="outline"
+                  className="w-full"
+                  showLabel={false}
+                />
+              </div>
             )}
           </div>
         )}
