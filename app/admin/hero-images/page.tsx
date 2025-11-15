@@ -391,16 +391,28 @@ function ImageUploadCard({
     try {
       setUploading(true)
 
-      const fileName = `hero-${Date.now()}-${file.name}`
-      const publicUrl = `/images/hero/${fileName}`
+      // Subir a Google Cloud Storage
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'hero') // Carpeta 'hero' en GCS
 
-      // Simular subida (en producción, esto sería una llamada real al servidor)
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch('/api/admin/upload-to-gcs', {
+        method: 'POST',
+        body: formData
+      })
 
-      onChange(publicUrl)
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Error subiendo imagen')
+      }
+
+      const data = await response.json()
+
+      // URL pública de Google Cloud Storage
+      onChange(data.url)
     } catch (error) {
       console.error('Error subiendo imagen:', error)
-      alert('Error subiendo la imagen')
+      alert(error instanceof Error ? error.message : 'Error subiendo la imagen')
     } finally {
       setUploading(false)
     }
