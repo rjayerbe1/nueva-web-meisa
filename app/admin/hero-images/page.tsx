@@ -388,7 +388,10 @@ function ImageUploadCard({
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   // Convertir aspectRatio string "3/5" a número
-  const aspectRatioNumber = eval(aspectRatio) as number
+  const aspectRatioNumber = (() => {
+    const parts = aspectRatio.split('/')
+    return parseFloat(parts[0]) / parseFloat(parts[1])
+  })()
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
