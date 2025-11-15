@@ -174,9 +174,9 @@ export default function ImageCropModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden">
+      <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
           <h3 className="text-lg font-semibold text-gray-900">
             Ajustar Imagen
           </h3>
@@ -188,12 +188,12 @@ export default function ImageCropModal({
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-4">
+        {/* Content - Scrollable */}
+        <div className="p-4 overflow-y-auto flex-1">
           <p className="text-sm text-gray-600 mb-4">
             Arrastra para seleccionar el área que quieres mantener. La imagen se recortará con proporción {aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`}.
           </p>
-          
+
           <div className="flex justify-center mb-4">
             <ReactCrop
               crop={crop}
@@ -206,7 +206,7 @@ export default function ImageCropModal({
                 ref={imgRef}
                 src={imageUrl}
                 alt="Crop preview"
-                className="max-w-full max-h-96 object-contain"
+                className="max-w-full max-h-[50vh] object-contain"
                 onLoad={() => {
                   // Inicializar el crop cuando la imagen se carga
                   const { width, height } = imgRef.current!
@@ -270,11 +270,12 @@ export default function ImageCropModal({
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between p-4 bg-gray-50 border-t border-gray-200">
+        {/* Footer - Always visible */}
+        <div className="flex items-center justify-between p-4 bg-gray-50 border-t border-gray-200 flex-shrink-0">
           <button
             onClick={resetCrop}
-            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+            disabled={uploading}
+            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
           >
             <RotateCcw className="h-4 w-4" />
             Restablecer
