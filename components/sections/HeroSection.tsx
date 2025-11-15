@@ -43,7 +43,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
     if (displayProgress < targetProgress) {
       // Si el salto es muy grande (ej: todo en caché), usar más tiempo
       const progressJump = targetProgress - displayProgress
-      const baseDuration = progressJump > 80 ? 800 : 200 // Si salta >80%, animar por 800ms
+      const baseDuration = progressJump > 80 ? 500 : 150 // Si salta >80%, animar por 500ms
       const steps = 25
       const stepValue = progressJump / steps
       const stepDuration = baseDuration / steps
@@ -85,16 +85,16 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Tiempo mínimo de visualización del loader: 1 segundo
+  // Tiempo mínimo de visualización del loader: 700ms
   useEffect(() => {
     const minTimeout = setTimeout(() => {
       setMinTimeElapsed(true)
       console.log('⏱️ Tiempo mínimo de loader transcurrido')
-    }, 1000)
+    }, 700)
     return () => clearTimeout(minTimeout)
   }, [])
 
-  // Timeout de seguridad: forzar carga completa después de 2 segundos
+  // Timeout de seguridad: forzar carga completa después de 1.5 segundos
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (!allImagesLoaded) {
@@ -102,7 +102,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
         setLoadedCount(totalImages)
         setMinTimeElapsed(true)
       }
-    }, 2000)
+    }, 1500)
     return () => clearTimeout(timeout)
   }, [allImagesLoaded, totalImages])
 
