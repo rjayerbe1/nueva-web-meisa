@@ -3,7 +3,8 @@
 import React, { useState, useRef } from 'react'
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { X, Check, RotateCcw } from 'lucide-react'
+import { X, Check, RotateCcw, Upload } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface ImageCropModalProps {
   isOpen: boolean
@@ -11,14 +12,16 @@ interface ImageCropModalProps {
   onCropComplete: (croppedImageUrl: string) => void
   imageFile: File | null
   aspectRatio?: number // Nuevo prop para aspect ratio (ancho/alto)
+  folder?: string // Carpeta en GCS donde subir la imagen
 }
 
-export default function ImageCropModal({ 
-  isOpen, 
-  onClose, 
-  onCropComplete, 
+export default function ImageCropModal({
+  isOpen,
+  onClose,
+  onCropComplete,
   imageFile,
-  aspectRatio = 1 // Default 1:1 (cuadrado)
+  aspectRatio = 1, // Default 1:1 (cuadrado)
+  folder = 'hero' // Default folder
 }: ImageCropModalProps) {
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -28,6 +31,7 @@ export default function ImageCropModal({
     y: 5,
   })
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [uploading, setUploading] = useState(false)
   const imgRef = useRef<HTMLImageElement>(null)
 
   React.useEffect(() => {
@@ -41,7 +45,7 @@ export default function ImageCropModal({
   const getCroppedImg = async (
     image: HTMLImageElement,
     crop: PixelCrop
-  ): Promise<string> => {
+  ): Promise<Blob> => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
 
@@ -52,20 +56,20 @@ export default function ImageCropModal({
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
-    // Set canvas size based on aspect ratio
+    // Set canvas size based on aspect ratio - mejor calidad
     let canvasWidth: number
     let canvasHeight: number
-    
+
     if (aspectRatio >= 1) {
       // Landscape or square
-      canvasWidth = 800
-      canvasHeight = Math.round(800 / aspectRatio)
+      canvasWidth = 1600
+      canvasHeight = Math.round(1600 / aspectRatio)
     } else {
       // Portrait
-      canvasHeight = 800
-      canvasWidth = Math.round(800 * aspectRatio)
+      canvasHeight = 2000
+      canvasWidth = Math.round(2000 * aspectRatio)
     }
-    
+
     canvas.width = canvasWidth
     canvas.height = canvasHeight
 
@@ -81,14 +85,14 @@ export default function ImageCropModal({
       canvasHeight
     )
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (!blob) {
-          throw new Error('Canvas is empty')
+          reject(new Error('Canvas is empty'))
+          return
         }
-        const url = URL.createObjectURL(blob)
-        resolve(url)
-      }, 'image/jpeg', 0.9)
+        resolve(blob)
+      }, 'image/jpeg', 0.95)
     })
   }
 
@@ -96,18 +100,45 @@ export default function ImageCropModal({
     if (!imgRef.current || !crop.width || !crop.height) return
 
     try {
-      const croppedImageUrl = await getCroppedImg(imgRef.current, {
+      setUploading(true)
+      const toastId = toast.loading('Recortando y subiendo imagen...')
+
+      // Obtener blob de la imagen cropped
+      const croppedBlob = await getCroppedImg(imgRef.current, {
         x: crop.x,
         y: crop.y,
         width: crop.width,
         height: crop.height,
         unit: 'px'
       } as PixelCrop)
-      
-      onCropComplete(croppedImageUrl)
+
+      // Subir a Google Cloud Storage
+      const formData = new FormData()
+      const fileName = `cropped-${Date.now()}.jpg`
+      formData.append('file', croppedBlob, fileName)
+      formData.append('folder', folder)
+
+      const response = await fetch('/api/admin/upload-to-gcs', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Error subiendo imagen')
+      }
+
+      const data = await response.json()
+
+      toast.success('Imagen recortada y subida exitosamente', { id: toastId })
+      onCropComplete(data.url)
       onClose()
+
     } catch (error) {
       console.error('Error cropping image:', error)
+      toast.error(error instanceof Error ? error.message : 'Error procesando imagen')
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -251,16 +282,27 @@ export default function ImageCropModal({
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              disabled={uploading}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancelar
             </button>
             <button
               onClick={handleCropComplete}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+              disabled={uploading}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Check className="h-4 w-4" />
-              Aplicar
+              {uploading ? (
+                <>
+                  <Upload className="h-4 w-4 animate-pulse" />
+                  Subiendo...
+                </>
+              ) : (
+                <>
+                  <Check className="h-4 w-4" />
+                  Aplicar y Subir
+                </>
+              )}
             </button>
           </div>
         </div>

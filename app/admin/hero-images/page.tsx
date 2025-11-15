@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone } from 'lucide-react'
+import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone, Crop } from 'lucide-react'
 import { HeroImageConfig } from '@/lib/hero-config'
 import { UpscaleButton } from '@/components/admin/UpscaleButton'
+import ImageCropModal from '@/components/admin/ImageCropModal'
 
 type ViewMode = 'desktop' | 'mobile'
 
@@ -383,18 +384,38 @@ function ImageUploadCard({
   placeholder?: string
 }) {
   const [uploading, setUploading] = useState(false)
+  const [showCropModal, setShowCropModal] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+  // Convertir aspectRatio string "3/5" a número
+  const aspectRatioNumber = eval(aspectRatio) as number
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Abrir modal de crop
+    setSelectedFile(file)
+    setShowCropModal(true)
+  }
+
+  const handleCropComplete = (croppedUrl: string) => {
+    // La URL ya viene de GCS desde el modal
+    onChange(croppedUrl)
+    setSelectedFile(null)
+  }
+
+  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
     try {
       setUploading(true)
 
-      // Subir a Google Cloud Storage
+      // Subir directamente sin crop
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('folder', 'hero') // Carpeta 'hero' en GCS
+      formData.append('folder', 'hero')
 
       const response = await fetch('/api/admin/upload-to-gcs', {
         method: 'POST',
@@ -407,8 +428,6 @@ function ImageUploadCard({
       }
 
       const data = await response.json()
-
-      // URL pública de Google Cloud Storage
       onChange(data.url)
     } catch (error) {
       console.error('Error subiendo imagen:', error)
@@ -464,9 +483,9 @@ function ImageUploadCard({
         </div>
 
         {/* Botones de acción */}
-        <div className="flex gap-2 mb-3">
-          {/* Botón subir archivo */}
-          <label className="flex-1">
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          {/* Botón con Recorte */}
+          <label className="w-full">
             <input
               type="file"
               accept="image/*"
@@ -474,30 +493,62 @@ function ImageUploadCard({
               className="hidden"
               disabled={uploading}
             />
-            <div className={`w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors ${
+            <div className={`w-full px-3 py-2 border-2 border-blue-500 bg-blue-50 rounded-lg text-center cursor-pointer hover:bg-blue-100 transition-colors ${
               uploading ? 'opacity-50 cursor-not-allowed' : ''
             }`}>
-              <Upload className="w-5 h-5 mx-auto mb-1 text-gray-400" />
-              <span className="text-sm text-gray-600">
-                {uploading ? 'Subiendo...' : 'Seleccionar archivo'}
+              <Crop className="w-4 h-4 mx-auto mb-1 text-blue-600" />
+              <span className="text-xs font-medium text-blue-700">
+                Con Recorte
               </span>
             </div>
           </label>
 
-          {/* Botón Upscale */}
-          {imageUrl && (
-            <div className="flex items-center">
-              <UpscaleButton
-                imageUrl={imageUrl}
-                onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
-                size="default"
-                variant="outline"
-                className="h-full whitespace-nowrap"
-              />
+          {/* Botón sin recorte (directo) */}
+          <label className="w-full">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleDirectUpload}
+              className="hidden"
+              disabled={uploading}
+            />
+            <div className={`w-full px-3 py-2 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors ${
+              uploading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}>
+              <Upload className="w-4 h-4 mx-auto mb-1 text-gray-400" />
+              <span className="text-xs text-gray-600">
+                {uploading ? 'Subiendo...' : 'Subir Directo'}
+              </span>
             </div>
-          )}
+          </label>
         </div>
+
+        {/* Botón Upscale */}
+        {imageUrl && imageUrl.includes('storage.googleapis.com') && (
+          <div className="mb-3">
+            <UpscaleButton
+              imageUrl={imageUrl}
+              onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
+              size="default"
+              variant="outline"
+              className="w-full"
+            />
+          </div>
+        )}
       </div>
+
+      {/* Modal de Crop */}
+      <ImageCropModal
+        isOpen={showCropModal}
+        onClose={() => {
+          setShowCropModal(false)
+          setSelectedFile(null)
+        }}
+        onCropComplete={handleCropComplete}
+        imageFile={selectedFile}
+        aspectRatio={aspectRatioNumber}
+        folder="hero"
+      />
     </div>
   )
 }
