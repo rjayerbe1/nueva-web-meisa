@@ -90,7 +90,7 @@ export function Navbar() {
             {/* Botón Close - Mismo estilo y posición que el botón MENU */}
             <button
               onClick={() => setMenuOpen(false)}
-              className="absolute top-8 right-8 z-10 group flex items-center gap-2 bg-white px-3 py-2.5 text-xs hover:bg-gray-900 transition-all duration-300 tracking-wider uppercase font-lato font-bold shadow-lg border border-gray-200 hover:border-gray-900"
+              className="absolute top-8 right-8 z-50 group flex items-center gap-2 bg-white px-3 py-2.5 text-xs hover:bg-gray-900 transition-all duration-300 tracking-wider uppercase font-lato font-bold shadow-lg border border-gray-200 hover:border-gray-900"
             >
               {/* Icono X animado */}
               <div className="flex items-center justify-center w-4 h-4">
@@ -214,7 +214,7 @@ export function Navbar() {
               </div>
 
               {/* Derecha - Menú */}
-              <div className="w-full md:w-1/2 flex flex-col justify-between md:justify-center px-8 md:px-20 py-20 md:py-0">
+              <div className="w-full md:w-1/2 flex flex-col justify-between md:justify-center px-8 md:px-20 py-20 md:py-0 relative z-10">
                 {/* Logo en móvil - arriba */}
                 <div className="md:hidden flex justify-center mb-8">
                   <Image
@@ -270,6 +270,86 @@ export function Navbar() {
                   </a>
                 </motion.div>
               </div>
+            </div>
+
+            {/* Forma decorativa de fondo para desktop - Diseño estructural */}
+            <div className="hidden md:block absolute bottom-0 right-0 w-1/2 h-64 pointer-events-none overflow-hidden">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="absolute inset-0"
+              >
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 600 256"
+                  fill="none"
+                  preserveAspectRatio="xMaxYMax meet"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Cuadrícula de fondo */}
+                  <defs>
+                    <pattern id="grid-desktop" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
+                    </pattern>
+                  </defs>
+
+                  {/* Aplicar cuadrícula */}
+                  <rect width="600" height="256" fill="url(#grid-desktop)" />
+
+                  {/* Líneas estructurales horizontales */}
+                  <line x1="0" y1="200" x2="600" y2="200" stroke="#1e40af" strokeWidth="1" opacity="0.12"/>
+                  <line x1="0" y1="150" x2="600" y2="150" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
+                  <line x1="0" y1="100" x2="600" y2="100" stroke="#1e40af" strokeWidth="0.5" opacity="0.06"/>
+
+                  {/* Líneas verticales principales */}
+                  <line x1="100" y1="120" x2="100" y2="256" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
+                  <line x1="250" y1="80" x2="250" y2="256" stroke="#1e40af" strokeWidth="1.5" opacity="0.15"/>
+                  <line x1="400" y1="100" x2="400" y2="256" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
+                  <line x1="550" y1="120" x2="550" y2="256" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
+
+                  {/* Rectángulos estructurales grandes */}
+                  <rect x="60" y="170" width="80" height="80" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
+                  <rect x="210" y="130" width="80" height="80" fill="none" stroke="#1e40af" strokeWidth="1.5" opacity="0.12"/>
+                  <rect x="360" y="170" width="80" height="80" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
+                  <rect x="510" y="190" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.08"/>
+
+                  {/* Pequeños cuadrados de detalle */}
+                  <rect x="150" y="210" width="30" height="30" fill="#1e40af" opacity="0.06"/>
+                  <rect x="320" y="210" width="30" height="30" fill="#1e40af" opacity="0.06"/>
+                  <rect x="480" y="220" width="25" height="25" fill="#1e40af" opacity="0.05"/>
+
+                  {/* Líneas diagonales de soporte */}
+                  <line x1="140" y1="200" x2="180" y2="150" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
+                  <line x1="290" y1="200" x2="330" y2="130" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
+                  <line x1="440" y1="200" x2="480" y2="150" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
+
+                  {/* Marco decorativo grande en esquina */}
+                  <rect x="450" y="40" width="120" height="120" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.08"/>
+
+                  {/* Círculos técnicos pequeños */}
+                  <circle cx="250" cy="80" r="4" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
+                  <circle cx="540" cy="100" r="3" fill="#1e40af" opacity="0.06"/>
+
+                  {/* Gradiente de fondo para fade out */}
+                  <rect width="600" height="256" fill="url(#structural_gradient_desktop)" />
+
+                  <defs>
+                    <linearGradient
+                      id="structural_gradient_desktop"
+                      x1="300"
+                      y1="0"
+                      x2="300"
+                      y2="256"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop offset="0" stopColor="#ffffff" stopOpacity="0.95"/>
+                      <stop offset="0.5" stopColor="#ffffff" stopOpacity="0.3"/>
+                      <stop offset="1" stopColor="#ffffff" stopOpacity="0"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </motion.div>
             </div>
 
             {/* Forma decorativa de fondo para móvil - Diseño estructural */}

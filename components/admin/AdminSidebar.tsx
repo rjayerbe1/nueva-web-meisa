@@ -57,6 +57,7 @@ const navigation = [
   { name: "Usuarios", href: "/admin/users" },
   { name: "Contactos", href: "/admin/messages" },
   { name: "Media", href: "/admin/media" },
+  { name: "Imágenes Hero", href: "/admin/hero-images" },
   { name: "Backups", href: "/admin/backup" },
   { name: "Reportes", href: "/admin/reports" },
   { name: "Configuración", href: "/admin/configuracion" },

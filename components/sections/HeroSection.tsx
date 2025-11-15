@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ChevronDown } from "lucide-react"
+import { useHeroImages } from "@/hooks/useHeroImages"
 
 const specialties = [
   'DISEÑO\nESTRUCTURAL',
@@ -17,6 +18,7 @@ export function HeroSection() {
   const [currentSpecialty, setCurrentSpecialty] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
+  const { images: heroImages } = useHeroImages()
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -39,18 +41,25 @@ export function HeroSection() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Transformaciones para las columnas de imágenes - efecto escalonado DHK
-  // Columna central: empieza a revelarse desde el inicio (0-50% del scroll)
-  const centerClipPath = useTransform(
+  // Transformaciones para las columnas de imágenes - efecto secuencial superpuesto izquierda → centro → derecha
+  // Columna izquierda: primera en revelarse (0-30% del scroll)
+  const leftClipPath = useTransform(
     scrollYProgress,
-    [0, 0.5],
+    [0, 0.3],
     ["polygon(-5% 100%, 105% 100%, 105% 100%, -5% 100%)", "polygon(-5% 0%, 105% 0%, 105% 100%, -5% 100%)"]
   )
 
-  // Columna derecha: empieza a revelarse más tarde (25-85% del scroll)
+  // Columna central: segunda en revelarse (10-40% del scroll) - empieza cuando izquierda va al 33%
+  const centerClipPath = useTransform(
+    scrollYProgress,
+    [0.1, 0.4],
+    ["polygon(-5% 100%, 105% 100%, 105% 100%, -5% 100%)", "polygon(-5% 0%, 105% 0%, 105% 100%, -5% 100%)"]
+  )
+
+  // Columna derecha: última en revelarse (20-50% del scroll) - empieza cuando central va al 33%
   const rightClipPath = useTransform(
     scrollYProgress,
-    [0.25, 0.85],
+    [0.2, 0.5],
     ["polygon(-5% 100%, 105% 100%, 105% 100%, -5% 100%)", "polygon(-5% 0%, 105% 0%, 105% 100%, -5% 100%)"]
   )
 
@@ -62,7 +71,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section ref={containerRef} className="relative h-[250vh] md:h-[350vh]">
+    <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]">
       {/* Grid de 3 columnas en DESKTOP - permanece FIJO mientras se anima, se oculta al salir */}
       <div
         className={`fixed top-0 left-0 w-full h-screen flex z-30 transition-opacity duration-300 ${
@@ -120,8 +129,8 @@ export function HeroSection() {
             {/* Imagen de fondo */}
             <div className="absolute inset-0">
               <Image
-                src="/images/hero/centro-comercial.webp"
-                alt="MEISA - Centro Comercial"
+                src={heroImages.centerTop}
+                alt="MEISA - Ciclopuente al atardecer"
                 fill
                 className="object-cover"
                 priority
@@ -140,8 +149,8 @@ export function HeroSection() {
               }}
             >
               <Image
-                src="/images/hero/puente-metalico.jpg"
-                alt="MEISA - Puente Metálico"
+                src={heroImages.centerBottom}
+                alt="MEISA - Estructura metálica perspectiva"
                 fill
                 className="object-cover"
               />
@@ -153,8 +162,8 @@ export function HeroSection() {
             {/* Imagen de fondo */}
             <div className="absolute inset-0">
               <Image
-                src="/images/hero/edificios.jpg"
-                alt="MEISA - Edificios"
+                src={heroImages.rightTop}
+                alt="MEISA - Coliseo estructuras rojas"
                 fill
                 className="object-cover"
               />
@@ -172,8 +181,8 @@ export function HeroSection() {
               }}
             >
               <Image
-                src="/images/hero/centro-comercial.webp"
-                alt="MEISA - Proyecto"
+                src={heroImages.rightBottom}
+                alt="MEISA - Montaje con grúa"
                 fill
                 className="object-cover"
               />
@@ -203,91 +212,32 @@ export function HeroSection() {
         </div>
 
         {/* VERSIÓN DESKTOP - Grid de 3 columnas */}
-        {/* Columna Izquierda - Logo + Contenido (FONDO BLANCO) */}
-        <div className="hidden md:flex w-1/3 bg-white flex-col justify-between p-16 border-r border-gray-200">
-          <div className="flex-1 flex flex-col justify-center space-y-8">
-            {/* Logo Centrado */}
-            <div className="flex justify-center mb-4">
-              <Image
-                src="/images/logo/logo-meisa.png"
-                alt="MEISA"
-                width={260}
-                height={74}
-                unoptimized
-                priority
-              />
-            </div>
-
-            {/* Badge */}
-            <div className="flex justify-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-xs font-lato font-semibold tracking-wider">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                </span>
-                LÍDER EN COLOMBIA • DESDE 1996
-              </div>
-            </div>
-
-            {/* Título Animado */}
-            <div className="h-28 relative overflow-hidden my-2">
-              <AnimatePresence mode="wait">
-                <motion.h2
-                  key={currentSpecialty}
-                  initial={{ y: 100, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -100, opacity: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="absolute inset-0 flex items-center justify-center text-center text-3xl font-bold text-gray-900 whitespace-pre-line leading-tight font-lato"
-                >
-                  {specialties[currentSpecialty]}
-                </motion.h2>
-              </AnimatePresence>
-            </div>
-
-            {/* Descripción */}
-            <div className="text-center space-y-3">
-              <h1 className="text-2xl font-bold text-gray-900 font-lato leading-snug">
-                Construimos el futuro<br/>de Colombia
-              </h1>
-              <p className="text-sm text-gray-600 font-lato leading-relaxed">
-                Desde <span className="text-blue-700 font-semibold">1996</span> con{" "}
-                <span className="text-blue-700 font-semibold">320 profesionales</span><br/>especializados.
-              </p>
-            </div>
-
-            {/* CTAs Modernos - Estilo minimalista */}
-            <div className="flex flex-col gap-4 pt-6">
-              <Link
-                href="/proyectos"
-                className="group relative inline-flex items-center justify-between px-8 py-4 bg-gray-900 text-white font-bold transition-all duration-300 hover:bg-blue-700 font-lato overflow-hidden"
-              >
-                <span className="relative z-10">Ver proyectos</span>
-                <ArrowRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
-                <div className="absolute inset-0 bg-blue-700 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </Link>
-
-              <Link
-                href="/contacto"
-                className="group relative inline-flex items-center justify-between px-8 py-4 border border-gray-900 text-gray-900 font-bold transition-all duration-300 hover:border-blue-700 hover:text-blue-700 font-lato"
-              >
-                <span>Solicitar cotización</span>
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
+        {/* Columna Izquierda - Logo centrado con Scroll Reveal */}
+        <div className="hidden md:block w-1/3 bg-white border-r border-gray-200 relative">
+          {/* Fondo blanco con logo */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image
+              src="/images/logo/logo-meisa.png"
+              alt="MEISA"
+              width={300}
+              height={85}
+              unoptimized
+              priority
+            />
           </div>
 
-          {/* Indicador de scroll - Abajo */}
-          <div className="flex justify-center">
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="flex flex-col items-center gap-2 text-gray-400"
-            >
-              <span className="text-xs font-lato uppercase tracking-wide">Scroll</span>
-              <ChevronDown className="w-4 h-4" />
-            </motion.div>
-          </div>
+          {/* Imagen que se revela al hacer scroll - Tapa el logo */}
+          <motion.div
+            className="absolute inset-0"
+            style={{ clipPath: leftClipPath }}
+          >
+            <Image
+              src={heroImages.leftColumn}
+              alt="Estructura metálica de techo - MEISA"
+              fill
+              className="object-cover"
+            />
+          </motion.div>
         </div>
 
         {/* Columna Central - Imágenes con Scroll Reveal - SOLO DESKTOP */}
@@ -295,8 +245,8 @@ export function HeroSection() {
           {/* Imagen Top */}
           <div className="absolute inset-0">
             <Image
-              src="/images/hero/centro-comercial.webp"
-              alt="Centro Comercial Campanario - Estructura metálica moderna"
+              src={heroImages.centerTop}
+              alt="Ciclopuente al atardecer - Estructura metálica MEISA"
               fill
               className="object-cover"
               priority
@@ -309,8 +259,8 @@ export function HeroSection() {
             style={{ clipPath: centerClipPath }}
           >
             <Image
-              src="/images/hero/puente-metalico.jpg"
-              alt="Puente Carrera 100 - Infraestructura vial"
+              src={heroImages.centerBottom}
+              alt="Vista interior de estructura metálica - Perspectiva"
               fill
               className="object-cover"
             />
@@ -322,8 +272,8 @@ export function HeroSection() {
           {/* Imagen Top */}
           <div className="absolute inset-0">
             <Image
-              src="/images/hero/edificios.jpg"
-              alt="Edificios con estructuras metálicas de MEISA"
+              src={heroImages.rightTop}
+              alt="Coliseo con estructuras metálicas rojas MEISA"
               fill
               className="object-cover"
             />
@@ -335,8 +285,8 @@ export function HeroSection() {
             style={{ clipPath: rightClipPath }}
           >
             <Image
-              src="/images/hero/centro-comercial.webp"
-              alt="MEISA Proyecto - Arquitectura"
+              src={heroImages.rightBottom}
+              alt="Montaje de viga metálica con grúa - MEISA en acción"
               fill
               className="object-cover"
             />

@@ -93,3 +93,5 @@ credentials.json
 service-account*.json
 *-key.json
 *-keys.json
+# Imágenes archived (se sirven desde ubicación externa)
+public/images/archived/

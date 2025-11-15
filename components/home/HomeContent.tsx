@@ -52,8 +52,8 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       const windowHeight = window.innerHeight
 
       // Definir límites específicos para cada tipo de pantalla
-      // Ajustado para que aparezca después de que termine la animación del hero (350vh)
-      const heroThreshold = isMobile ? windowHeight * 0.8 : windowHeight * 3.3 // 3.3 pantallas en desktop
+      // Ajustado para que aparezca después de que termine la animación del hero (180vh)
+      const heroThreshold = isMobile ? windowHeight * 0.8 : windowHeight * 1.6 // 1.6 pantallas en desktop
 
       // Mostrar navegación lateral cuando pasamos el hero (solo desktop)
       if (!isMobile) {
@@ -213,7 +213,7 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       {/* Navegación lateral - Similar a móvil, aparece después del hero */}
       <div
         ref={navRef}
-        className={`hidden sm:block fixed right-3 top-1/2 transform -translate-y-1/2 z-40 transition-all duration-500 ${
+        className={`hidden sm:block fixed right-3 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-500 ${
           showSideNav ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 pointer-events-none'
         }`}
       >
@@ -253,7 +253,7 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
       </div>
 
       {/* Indicador lateral móvil - Simplificado y visible */}
-      <div className="sm:hidden fixed right-3 top-1/2 transform -translate-y-1/2 z-40">
+      <div className="sm:hidden fixed right-3 top-1/2 transform -translate-y-1/2 z-50">
         <div className="bg-white/90 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 py-3 px-2">
           <div className="flex flex-col space-y-2">
             {sections.map((section, index) => {
@@ -290,19 +290,19 @@ export function HomeContent({ projectsByCategory, sections }: HomeContentProps) 
 
       {/* Secciones con referencias para scroll spy - Con fondo blanco y z-index superior al hero */}
       <section
-        id="capacidades"
-        ref={(el) => { sectionsRef.current['capacidades'] = el }}
-        className="relative z-40 bg-white"
-      >
-        <CapacitiesSection />
-      </section>
-
-      <section
         id="nosotros"
         ref={(el) => { sectionsRef.current['nosotros'] = el }}
         className="relative z-40 bg-white"
       >
         <AboutSection />
+      </section>
+
+      <section
+        id="capacidades"
+        ref={(el) => { sectionsRef.current['capacidades'] = el }}
+        className="relative z-40 bg-white"
+      >
+        <CapacitiesSection />
       </section>
 
       <section
