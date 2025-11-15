@@ -46,12 +46,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { leftColumn, centerTop, centerBottom, rightTop, rightBottom } = body
+    const { leftColumn, centerTop, centerBottom, rightTop, rightBottom, mobile } = body
 
-    // Validar que todas las imágenes estén presentes
+    // Validar que todas las imágenes de desktop estén presentes
     if (!leftColumn || !centerTop || !centerBottom || !rightTop || !rightBottom) {
       return NextResponse.json(
-        { success: false, error: 'Todas las imágenes son requeridas' },
+        { success: false, error: 'Todas las imágenes de desktop son requeridas' },
         { status: 400 }
       )
     }
@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
       centerBottom,
       rightTop,
       rightBottom,
+      mobile: mobile || undefined, // Imágenes móviles son opcionales
     }
 
     // Guardar o actualizar en la base de datos

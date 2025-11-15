@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react"
 import { Upload, X, Image as ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { UpscaleButton } from "@/components/admin/UpscaleButton"
 import Image from "next/image"
 
 interface ImageUploaderProps {
@@ -72,6 +73,16 @@ export function ImageUploader({
     }
   }, [currentImages, onImagesChange])
 
+  const handleUpscaleComplete = useCallback((index: number, upscaledUrl: string) => {
+    if (onImagesChange) {
+      const updatedImages = [...currentImages]
+      updatedImages[index] = upscaledUrl
+      onImagesChange(updatedImages)
+    } else if (onUpload) {
+      onUpload([upscaledUrl])
+    }
+  }, [currentImages, onImagesChange, onUpload])
+
   const showImages = currentImages.length > 0 || (onUpload && currentImages.length === 0)
 
   return (
@@ -131,36 +142,50 @@ export function ImageUploader({
               )}
               
               {/* Overlay con opciones */}
-              <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                {/* Mover izquierda */}
-                {maxCount > 1 && index > 0 && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
+                {/* Fila superior: botones de movimiento */}
+                <div className="flex gap-2">
+                  {/* Mover izquierda */}
+                  {maxCount > 1 && index > 0 && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => moveImage(index, index - 1)}
+                    >
+                      ←
+                    </Button>
+                  )}
+
+                  {/* Eliminar */}
                   <Button
                     size="sm"
-                    variant="secondary"
-                    onClick={() => moveImage(index, index - 1)}
+                    variant="destructive"
+                    onClick={() => removeImage(index)}
                   >
-                    ←
+                    <X className="h-4 w-4" />
                   </Button>
-                )}
-                
-                {/* Eliminar */}
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => removeImage(index)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-                
-                {/* Mover derecha */}
-                {maxCount > 1 && index < currentImages.length - 1 && (
-                  <Button
+
+                  {/* Mover derecha */}
+                  {maxCount > 1 && index < currentImages.length - 1 && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => moveImage(index, index + 1)}
+                    >
+                      →
+                    </Button>
+                  )}
+                </div>
+
+                {/* Fila inferior: Upscale (solo para imágenes de GCS) */}
+                {image.includes('storage.googleapis.com') && (
+                  <UpscaleButton
+                    imageUrl={image}
+                    onUpscaleComplete={(upscaledUrl) => handleUpscaleComplete(index, upscaledUrl)}
                     size="sm"
                     variant="secondary"
-                    onClick={() => moveImage(index, index + 1)}
-                  >
-                    →
-                  </Button>
+                    showLabel={false}
+                  />
                 )}
               </div>
               

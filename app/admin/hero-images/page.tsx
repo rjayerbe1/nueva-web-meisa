@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Upload, Save, RotateCcw, Eye } from 'lucide-react'
+import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone } from 'lucide-react'
 import { HeroImageConfig } from '@/lib/hero-config'
+import { UpscaleButton } from '@/components/admin/UpscaleButton'
+
+type ViewMode = 'desktop' | 'mobile'
 
 export default function HeroImagesAdminPage() {
   const { data: session, status } = useSession()
@@ -13,6 +16,7 @@ export default function HeroImagesAdminPage() {
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+  const [viewMode, setViewMode] = useState<ViewMode>('desktop')
 
   const [heroImages, setHeroImages] = useState<HeroImageConfig>({
     leftColumn: '',
@@ -20,15 +24,15 @@ export default function HeroImagesAdminPage() {
     centerBottom: '',
     rightTop: '',
     rightBottom: '',
+    mobile: {
+      row2Top: undefined,
+      row2Bottom: undefined,
+      row3Top: undefined,
+      row3Bottom: undefined,
+    }
   })
 
-  const [originalImages, setOriginalImages] = useState<HeroImageConfig>({
-    leftColumn: '',
-    centerTop: '',
-    centerBottom: '',
-    rightTop: '',
-    rightBottom: '',
-  })
+  const [originalImages, setOriginalImages] = useState<HeroImageConfig>(heroImages)
 
   // Verificar autenticación
   useEffect(() => {
@@ -52,8 +56,13 @@ export default function HeroImagesAdminPage() {
       const result = await response.json()
 
       if (result.success) {
-        setHeroImages(result.data)
-        setOriginalImages(result.data)
+        const data = result.data
+        // Asegurar que mobile existe
+        if (!data.mobile) {
+          data.mobile = {}
+        }
+        setHeroImages(data)
+        setOriginalImages(data)
       }
     } catch (error) {
       console.error('Error cargando imágenes:', error)
@@ -63,10 +72,20 @@ export default function HeroImagesAdminPage() {
     }
   }
 
-  const handleImageChange = (position: keyof HeroImageConfig, url: string) => {
+  const handleImageChange = (position: keyof Omit<HeroImageConfig, 'mobile'>, url: string) => {
     setHeroImages(prev => ({
       ...prev,
       [position]: url
+    }))
+  }
+
+  const handleMobileImageChange = (position: keyof NonNullable<HeroImageConfig['mobile']>, url: string) => {
+    setHeroImages(prev => ({
+      ...prev,
+      mobile: {
+        ...prev.mobile,
+        [position]: url || undefined
+      }
     }))
   }
 
@@ -121,13 +140,13 @@ export default function HeroImagesAdminPage() {
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-start mb-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
                 Gestionar Imágenes del Hero
               </h1>
               <p className="text-gray-600 mt-1">
-                Configura las 5 imágenes que se muestran en la sección Hero de la página principal
+                Configura las imágenes que se muestran en la sección Hero (Desktop y Mobile)
               </p>
             </div>
             <div className="flex gap-3">
@@ -163,6 +182,32 @@ export default function HeroImagesAdminPage() {
             </div>
           </div>
 
+          {/* Tabs Desktop/Mobile */}
+          <div className="flex gap-2 border-b border-gray-200">
+            <button
+              onClick={() => setViewMode('desktop')}
+              className={`inline-flex items-center gap-2 px-4 py-3 font-medium transition-colors border-b-2 ${
+                viewMode === 'desktop'
+                  ? 'border-blue-700 text-blue-700'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Monitor className="w-4 h-4" />
+              Desktop (3:5 Vertical)
+            </button>
+            <button
+              onClick={() => setViewMode('mobile')}
+              className={`inline-flex items-center gap-2 px-4 py-3 font-medium transition-colors border-b-2 ${
+                viewMode === 'mobile'
+                  ? 'border-blue-700 text-blue-700'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Smartphone className="w-4 h-4" />
+              Mobile (5:3 Landscape)
+            </button>
+          </div>
+
           {/* Mensaje de estado */}
           {message && (
             <div className={`mt-4 p-3 rounded-lg ${
@@ -175,64 +220,146 @@ export default function HeroImagesAdminPage() {
           )}
         </div>
 
-        {/* Grid de imágenes */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Columna Izquierda */}
-          <ImageUploadCard
-            title="Columna Izquierda"
-            description="Imagen que cubre el logo al hacer scroll (Desktop)"
-            imageUrl={heroImages.leftColumn}
-            onChange={(url) => handleImageChange('leftColumn', url)}
-            aspectRatio="3/5"
-          />
+        {/* Desktop View */}
+        {viewMode === 'desktop' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Columna Izquierda */}
+            <ImageUploadCard
+              title="Columna Izquierda"
+              description="Imagen que cubre el logo al hacer scroll (Desktop)"
+              imageUrl={heroImages.leftColumn}
+              onChange={(url) => handleImageChange('leftColumn', url)}
+              aspectRatio="3/5"
+            />
 
-          {/* Columna Central */}
-          <div className="space-y-6">
-            <ImageUploadCard
-              title="Columna Central - Superior"
-              description="Imagen de fondo de la columna central"
-              imageUrl={heroImages.centerTop}
-              onChange={(url) => handleImageChange('centerTop', url)}
-              aspectRatio="3/5"
-            />
-            <ImageUploadCard
-              title="Columna Central - Inferior"
-              description="Imagen que se revela con scroll en centro"
-              imageUrl={heroImages.centerBottom}
-              onChange={(url) => handleImageChange('centerBottom', url)}
-              aspectRatio="3/5"
-            />
-          </div>
+            {/* Columna Central */}
+            <div className="space-y-6">
+              <ImageUploadCard
+                title="Columna Central - Superior"
+                description="Imagen de fondo de la columna central"
+                imageUrl={heroImages.centerTop}
+                onChange={(url) => handleImageChange('centerTop', url)}
+                aspectRatio="3/5"
+              />
+              <ImageUploadCard
+                title="Columna Central - Inferior"
+                description="Imagen que se revela con scroll en centro"
+                imageUrl={heroImages.centerBottom}
+                onChange={(url) => handleImageChange('centerBottom', url)}
+                aspectRatio="3/5"
+              />
+            </div>
 
-          {/* Columna Derecha */}
-          <div className="space-y-6">
-            <ImageUploadCard
-              title="Columna Derecha - Superior"
-              description="Imagen de fondo de la columna derecha"
-              imageUrl={heroImages.rightTop}
-              onChange={(url) => handleImageChange('rightTop', url)}
-              aspectRatio="3/5"
-            />
-            <ImageUploadCard
-              title="Columna Derecha - Inferior"
-              description="Imagen que se revela con scroll a la derecha"
-              imageUrl={heroImages.rightBottom}
-              onChange={(url) => handleImageChange('rightBottom', url)}
-              aspectRatio="3/5"
-            />
+            {/* Columna Derecha */}
+            <div className="space-y-6">
+              <ImageUploadCard
+                title="Columna Derecha - Superior"
+                description="Imagen de fondo de la columna derecha"
+                imageUrl={heroImages.rightTop}
+                onChange={(url) => handleImageChange('rightTop', url)}
+                aspectRatio="3/5"
+              />
+              <ImageUploadCard
+                title="Columna Derecha - Inferior"
+                description="Imagen que se revela con scroll a la derecha"
+                imageUrl={heroImages.rightBottom}
+                onChange={(url) => handleImageChange('rightBottom', url)}
+                aspectRatio="3/5"
+              />
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Mobile View */}
+        {viewMode === 'mobile' && (
+          <div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-blue-800 mb-3">
+                💡 <strong>Opcional:</strong> Si no configuras imágenes específicas para móvil, se usarán las de desktop automáticamente.
+                <br />
+                La Fila 1 en móvil muestra el logo + contenido (sin imagen).
+              </p>
+              <div className="bg-white rounded-lg p-3 mt-3 border border-blue-300">
+                <p className="text-xs text-blue-900 font-bold mb-2">📱 ¿Cuándo se usan estas imágenes?</p>
+                <ul className="text-xs text-blue-800 space-y-1 ml-4">
+                  <li>✅ <strong>Celular en Portrait (vertical):</strong> Usa estas imágenes 5:3 landscape</li>
+                  <li>✅ <strong>Celular en Landscape (rotado):</strong> Usa las imágenes Desktop 3:5 vertical</li>
+                  <li>• El breakpoint es 768px de ancho (Tailwind md:)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {/* Fila 2 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Fila 2 (Segunda fila en móvil)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <ImageUploadCard
+                    title="Fila 2 - Fondo"
+                    description="Imagen de fondo (usa centerTop si está vacío)"
+                    imageUrl={heroImages.mobile?.row2Top || heroImages.centerTop}
+                    onChange={(url) => handleMobileImageChange('row2Top', url)}
+                    aspectRatio="5/3"
+                    placeholder={`Por defecto: ${heroImages.centerTop}`}
+                  />
+                  <ImageUploadCard
+                    title="Fila 2 - Reveal"
+                    description="Imagen que se revela con scroll (usa centerBottom si está vacío)"
+                    imageUrl={heroImages.mobile?.row2Bottom || heroImages.centerBottom}
+                    onChange={(url) => handleMobileImageChange('row2Bottom', url)}
+                    aspectRatio="5/3"
+                    placeholder={`Por defecto: ${heroImages.centerBottom}`}
+                  />
+                </div>
+              </div>
+
+              {/* Fila 3 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Fila 3 (Tercera fila en móvil)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <ImageUploadCard
+                    title="Fila 3 - Fondo"
+                    description="Imagen de fondo (usa rightTop si está vacío)"
+                    imageUrl={heroImages.mobile?.row3Top || heroImages.rightTop}
+                    onChange={(url) => handleMobileImageChange('row3Top', url)}
+                    aspectRatio="5/3"
+                    placeholder={`Por defecto: ${heroImages.rightTop}`}
+                  />
+                  <ImageUploadCard
+                    title="Fila 3 - Reveal"
+                    description="Imagen que se revela con scroll (usa rightBottom si está vacío)"
+                    imageUrl={heroImages.mobile?.row3Bottom || heroImages.rightBottom}
+                    onChange={(url) => handleMobileImageChange('row3Bottom', url)}
+                    aspectRatio="5/3"
+                    placeholder={`Por defecto: ${heroImages.rightBottom}`}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Info adicional */}
         <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h3 className="font-bold text-blue-900 mb-2">📐 Dimensiones Recomendadas</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• <strong>Aspect Ratio:</strong> 3:5 (Vertical/Retrato)</li>
-            <li>• <strong>Dimensiones ideales:</strong> 1200 x 2000 px</li>
-            <li>• <strong>Peso:</strong> 200-500 KB por imagen</li>
-            <li>• <strong>Formato:</strong> JPG o PNG</li>
-            <li>• <strong>Tip:</strong> El contenido importante debe estar en el centro de la imagen</li>
-          </ul>
+          <div className="grid md:grid-cols-2 gap-4 text-sm text-blue-800">
+            <div>
+              <h4 className="font-bold mb-1">Desktop (3:5 Vertical):</h4>
+              <ul className="space-y-1 ml-4">
+                <li>• Aspect Ratio: 3:5 (Vertical/Retrato)</li>
+                <li>• Dimensiones: 1200 x 2000 px</li>
+                <li>• Formato: JPG o PNG</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-1">Mobile (5:3 Landscape):</h4>
+              <ul className="space-y-1 ml-4">
+                <li>• Aspect Ratio: 5:3 (Landscape - más ancho que alto)</li>
+                <li>• Dimensiones: 1000 x 600 px</li>
+                <li>• Formato: JPG o PNG</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -245,13 +372,15 @@ function ImageUploadCard({
   description,
   imageUrl,
   onChange,
-  aspectRatio
+  aspectRatio,
+  placeholder
 }: {
   title: string
   description: string
   imageUrl: string
   onChange: (url: string) => void
   aspectRatio: string
+  placeholder?: string
 }) {
   const [uploading, setUploading] = useState(false)
 
@@ -262,16 +391,6 @@ function ImageUploadCard({
     try {
       setUploading(true)
 
-      // Subir a /public/images/hero/
-      const formData = new FormData()
-      formData.append('file', file)
-
-      // Crear URL temporal para mostrar mientras sube
-      const tempUrl = URL.createObjectURL(file)
-      onChange(tempUrl)
-
-      // Aquí podrías implementar la subida real a Uploadcare o al servidor
-      // Por ahora, simplificado para usar archivos locales
       const fileName = `hero-${Date.now()}-${file.name}`
       const publicUrl = `/images/hero/${fileName}`
 
@@ -309,8 +428,11 @@ function ImageUploadCard({
               unoptimized
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-              <Upload className="w-12 h-12" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-4">
+              <Upload className="w-8 h-8 mb-2" />
+              {placeholder && (
+                <p className="text-xs text-center">{placeholder}</p>
+              )}
             </div>
           )}
         </div>
@@ -329,24 +451,40 @@ function ImageUploadCard({
           />
         </div>
 
-        {/* Botón subir archivo */}
-        <label className="block">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileSelect}
-            className="hidden"
-            disabled={uploading}
-          />
-          <div className={`w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors ${
-            uploading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}>
-            <Upload className="w-5 h-5 mx-auto mb-1 text-gray-400" />
-            <span className="text-sm text-gray-600">
-              {uploading ? 'Subiendo...' : 'Seleccionar archivo'}
-            </span>
-          </div>
-        </label>
+        {/* Botones de acción */}
+        <div className="flex gap-2 mb-3">
+          {/* Botón subir archivo */}
+          <label className="flex-1">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+              disabled={uploading}
+            />
+            <div className={`w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors ${
+              uploading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}>
+              <Upload className="w-5 h-5 mx-auto mb-1 text-gray-400" />
+              <span className="text-sm text-gray-600">
+                {uploading ? 'Subiendo...' : 'Seleccionar archivo'}
+              </span>
+            </div>
+          </label>
+
+          {/* Botón Upscale */}
+          {imageUrl && (
+            <div className="flex items-center">
+              <UpscaleButton
+                imageUrl={imageUrl}
+                onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
+                size="default"
+                variant="outline"
+                className="h-full whitespace-nowrap"
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

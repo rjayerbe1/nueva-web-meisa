@@ -129,7 +129,7 @@ export function HeroSection() {
             {/* Imagen de fondo */}
             <div className="absolute inset-0">
               <Image
-                src={heroImages.centerTop}
+                src={heroImages.mobile?.row2Top || heroImages.centerTop}
                 alt="MEISA - Ciclopuente al atardecer"
                 fill
                 className="object-cover"
@@ -149,7 +149,7 @@ export function HeroSection() {
               }}
             >
               <Image
-                src={heroImages.centerBottom}
+                src={heroImages.mobile?.row2Bottom || heroImages.centerBottom}
                 alt="MEISA - Estructura metálica perspectiva"
                 fill
                 className="object-cover"
@@ -162,7 +162,7 @@ export function HeroSection() {
             {/* Imagen de fondo */}
             <div className="absolute inset-0">
               <Image
-                src={heroImages.rightTop}
+                src={heroImages.mobile?.row3Top || heroImages.rightTop}
                 alt="MEISA - Coliseo estructuras rojas"
                 fill
                 className="object-cover"
@@ -181,7 +181,7 @@ export function HeroSection() {
               }}
             >
               <Image
-                src={heroImages.rightBottom}
+                src={heroImages.mobile?.row3Bottom || heroImages.rightBottom}
                 alt="MEISA - Montaje con grúa"
                 fill
                 className="object-cover"

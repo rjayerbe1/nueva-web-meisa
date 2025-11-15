@@ -1,10 +1,19 @@
 // Configuración de imágenes del Hero Section
 export interface HeroImageConfig {
+  // Desktop (3 columnas verticales - aspect ratio 3:5)
   leftColumn: string
   centerTop: string
   centerBottom: string
   rightTop: string
   rightBottom: string
+
+  // Mobile (3 filas en portrait - aspect ratio ~5:3 landscape) - Opcionales
+  mobile?: {
+    row2Top?: string      // Fila 2 fondo (si no está, usa centerTop)
+    row2Bottom?: string   // Fila 2 reveal (si no está, usa centerBottom)
+    row3Top?: string      // Fila 3 fondo (si no está, usa rightTop)
+    row3Bottom?: string   // Fila 3 reveal (si no está, usa rightBottom)
+  }
 }
 
 // Configuración por defecto
@@ -14,4 +23,11 @@ export const defaultHeroImages: HeroImageConfig = {
   centerBottom: '/images/hero/estructura-perspectiva.jpg',
   rightTop: '/images/hero/coliseo-estructuras-rojas.jpg',
   rightBottom: '/images/hero/montaje-grua.jpg',
+  mobile: {
+    // Por defecto, usa las mismas imágenes de desktop
+    row2Top: undefined,
+    row2Bottom: undefined,
+    row3Top: undefined,
+    row3Bottom: undefined,
+  }
 }
