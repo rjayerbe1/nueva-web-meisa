@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
           preserve_alpha: true
         }
       }
-    ) as string
+    ) as unknown as string
 
     console.log('✅ [Expand] Bria Expand completado')
 

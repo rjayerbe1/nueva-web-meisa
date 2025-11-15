@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
             mask: maskBase64
           }
         }
-      ) as string
+      ) as unknown as string
 
       output = result
 
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
             negative_prompt: 'blurry, low quality, artifacts'
           }
         }
-      ) as string
+      ) as unknown as string
 
       output = result
     }

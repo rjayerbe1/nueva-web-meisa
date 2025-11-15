@@ -927,14 +927,14 @@ export function BrochureVisualBuilder({ brochure }: BrochureVisualBuilderProps) 
                     console.log(`  ✅ [PDF] Canvas renderizado completamente`)
                     resolve()
                   }, 300)
-                }, (error: any) => {
+                }).catch((error: any) => {
                   console.error(`  ❌ [PDF] Error cargando JSON:`, error)
                   reject(error)
                 })
               })
 
               // Capturar imagen
-              imageData = staticCanvas.toDataURL('image/jpeg', 0.95)
+              imageData = staticCanvas.toDataURL({ format: 'jpeg', quality: 0.95, multiplier: 1 })
               console.log(`  ✅ [PDF] Imagen capturada del canvas temporal`)
 
             } catch (error) {

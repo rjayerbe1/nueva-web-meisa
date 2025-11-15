@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Image from 'next/image'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
 
 interface ProjectImage {
@@ -43,6 +42,35 @@ interface ProjectsByCategorySectionProps {
   projectsByCategory: Record<string, Proyecto[]>
 }
 
+// Componente para el título animado con letras individuales
+const AnimatedTitle = ({ text, className = "" }: { text: string; className?: string }) => {
+  const words = text.split(' ')
+
+  return (
+    <h1 className={className}>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block mr-3">
+          {word.split('').map((char, charIndex) => (
+            <motion.span
+              key={`${wordIndex}-${charIndex}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: (wordIndex * word.length + charIndex) * 0.02,
+                ease: "easeOut"
+              }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  )
+}
 
 export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCategorySectionProps) {
   const [categorias, setCategorias] = useState<Categoria[]>([])
@@ -68,25 +96,20 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
   }, [])
 
   // Filtrar solo las categorías que tienen proyectos
-  const categoriesWithProjects = categorias.filter(categoria => 
+  const categoriesWithProjects = categorias.filter(categoria =>
     projectsByCategory[categoria.key] && projectsByCategory[categoria.key].length > 0
   )
 
-  const handleCategoryClick = (categoria: Categoria) => {
-    // Navegar directamente a la página de la categoría
-    window.location.href = `/proyectos/categoria/${categoria.slug}`
-  }
-
   return (
-    <section id="proyectos-categorias" className="py-20 bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section id="proyectos-categorias" className="bg-gray-900">
+      {/* Header de sección */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center"
         >
           <h2 className="text-blue-400 font-bebas uppercase text-xl mb-2">Nuestro Portafolio</h2>
           <h3 className="text-5xl md:text-6xl font-bebas uppercase text-white mb-4">
@@ -97,104 +120,135 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
             Descubre nuestros proyectos más destacados organizados por especialidad
           </p>
         </motion.div>
+      </div>
 
-        {/* Grid de categorías */}
-        {loading ? (
-          <div className="text-center text-white font-lato">Cargando categorías...</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {categoriesWithProjects.map((categoria, index) => {
-              const projectCount = projectsByCategory[categoria.key]?.length || 0
+      {/* Grid de categorías estilo Ferrari - 2 columnas */}
+      {loading ? (
+        <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+          {categoriesWithProjects.map((categoria, index) => {
+            const projectCount = projectsByCategory[categoria.key]?.length || 0
 
-              return (
+            return (
+              <Link
+                key={categoria.id}
+                href={`/proyectos/categoria/${categoria.slug}`}
+                className="group block"
+              >
                 <motion.div
-                  key={categoria.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02 }}
-                  className="relative group cursor-pointer"
-                  onClick={() => handleCategoryClick(categoria)}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="relative h-[85vh] lg:h-[75vh] overflow-hidden"
                 >
-                  <div className="relative rounded-2xl overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl hover:ring-2 hover:ring-blue-400/30">
-                    {/* Imagen de fondo */}
-                    {categoria.imagenCover ? (
-                      <div className="relative">
-                        <img
-                          src={categoria.imagenCover}
-                          alt={`Cover de ${categoria.nombre}`}
-                          className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
+                  {/* Imagen de fondo */}
+                  {categoria.imagenCover ? (
+                    <div className="absolute inset-0">
+                      <img
+                        src={categoria.imagenCover}
+                        alt={`Cover de ${categoria.nombre}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
+                  )}
 
-                        {/* Overlay personalizable para el ícono */}
-                        {categoria.overlayOpacity && categoria.overlayOpacity > 0 && (
-                          <div
-                            className="absolute inset-0"
-                            style={{
-                              backgroundColor: categoria.overlayColor || '#000000',
-                              opacity: categoria.overlayOpacity
-                            }}
-                          />
-                        )}
+                  {/* Overlay oscuro con gradiente */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-900/60 to-black/70" />
 
-                        {/* Overlay oscuro para legibilidad del texto */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  {/* Overlay hover - efecto azul MEISA */}
+                  <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-500" />
 
-                        {/* Ícono centrado */}
+                  {/* Contenido centrado */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center px-6 lg:px-12 text-center">
+                    {/* Ícono de categoría */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 0.3, scale: 1 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
+                      viewport={{ once: true }}
+                      className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
+                      style={{ color: categoria.color || '#3b82f6' }}
+                    >
+                      {getCategoryIconComponent(categoria.icono, "w-20 h-20 lg:w-24 lg:h-24")}
+                    </motion.div>
+
+                    {/* Subtítulo */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+                      viewport={{ once: true }}
+                      className="mb-3"
+                    >
+                      <span className="text-blue-400 font-lato uppercase text-sm tracking-wider">
+                        Especialidad
+                      </span>
+                    </motion.div>
+
+                    {/* Título animado con letras */}
+                    <AnimatedTitle
+                      text={categoria.nombre.toUpperCase()}
+                      className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight"
+                    />
+
+                    {/* Botón Descubrir estilo Ferrari */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
+                      viewport={{ once: true }}
+                      className="inline-flex items-center gap-3 group/btn"
+                    >
+                      <span className="text-white font-lato uppercase tracking-wider text-sm lg:text-base font-semibold">
+                        Descubrir
+                      </span>
+
+                      {/* Círculo con flecha estilo Ferrari */}
+                      <div className="relative w-10 h-10 lg:w-12 lg:h-12">
+                        {/* Círculo exterior */}
+                        <div className="absolute inset-0 rounded-full border-2 border-white/80 group-hover/btn:border-white transition-all duration-300 group-hover/btn:scale-110" />
+
+                        {/* Círculo interior animado en hover */}
+                        <div className="absolute inset-0 rounded-full bg-white/0 group-hover/btn:bg-white transition-all duration-300" />
+
+                        {/* Flecha */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div
-                            className="w-32 h-32 flex items-center justify-center opacity-80 transform -translate-y-4"
-                            style={{ color: categoria.color || '#3b82f6' }}
-                          >
-                            {getCategoryIconComponent(categoria.icono, "w-40 h-40")}
-                          </div>
+                          <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover/btn:text-blue-600 transition-all duration-300 transform group-hover/btn:translate-x-1" />
                         </div>
-
-                        {/* Texto superpuesto en la parte inferior */}
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                          <h3 className="text-2xl font-bebas uppercase mb-1 drop-shadow-lg">
-                            {categoria.nombre}
-                          </h3>
-                          <p className="text-sm font-lato text-white/90 mb-2 drop-shadow">
-                            {projectCount} proyecto{projectCount !== 1 ? 's' : ''}
-                          </p>
-                          <p className="text-xs font-lato text-white/70 drop-shadow line-clamp-2">
-                            {categoria.descripcion}
-                          </p>
-                        </div>
-
-
-                        {/* Efecto hover overlay */}
-                        <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-all duration-300" />
                       </div>
-                    ) : (
-                      <div className="w-full aspect-[4/3] bg-gray-800 flex items-center justify-center">
-                        <span className="text-white font-lato">Sin imagen</span>
-                      </div>
-                    )}
+                    </motion.div>
                   </div>
+
+                  {/* Línea divisoria inferior (excepto en la última categoría) */}
+                  {index < categoriesWithProjects.length - 1 && (
+                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
+                  )}
                 </motion.div>
-              )
-            })}
-          </div>
-        )}
+              </Link>
+            )
+          })}
+        </div>
+      )}
 
-
-        {/* Call to action */}
+      {/* Call to action final */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="text-center"
         >
           <Link
             href="/proyectos"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold rounded-lg transition-colors"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
           >
             Ver todos los proyectos
-            <ExternalLink className="w-5 h-5" />
+            <ArrowRight className="w-5 h-5" />
           </Link>
         </motion.div>
       </div>
