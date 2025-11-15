@@ -440,6 +440,28 @@ function ImageUploadCard({
     }
   }
 
+  const handleCropExisting = async () => {
+    if (!imageUrl) return
+
+    try {
+      setUploading(true)
+
+      // Descargar la imagen actual como File
+      const response = await fetch(imageUrl)
+      const blob = await response.blob()
+      const file = new File([blob], 'current-image.jpg', { type: blob.type })
+
+      // Abrir modal de crop con la imagen actual
+      setSelectedFile(file)
+      setShowCropModal(true)
+    } catch (error) {
+      console.error('Error cargando imagen para crop:', error)
+      alert('Error cargando la imagen')
+    } finally {
+      setUploading(false)
+    }
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-4 border-b border-gray-200">
@@ -526,16 +548,31 @@ function ImageUploadCard({
           </label>
         </div>
 
-        {/* Botón Upscale */}
-        {imageUrl && imageUrl.includes('storage.googleapis.com') && (
-          <div className="mb-3">
-            <UpscaleButton
-              imageUrl={imageUrl}
-              onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
-              size="default"
-              variant="outline"
-              className="w-full"
-            />
+        {/* Botones para imagen ya subida */}
+        {imageUrl && (
+          <div className="space-y-2">
+            {/* Botón Recortar imagen actual */}
+            <button
+              onClick={handleCropExisting}
+              disabled={uploading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-blue-500 text-blue-700 bg-white rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Crop className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {uploading ? 'Cargando...' : 'Recortar Imagen Actual'}
+              </span>
+            </button>
+
+            {/* Botón Upscale (solo para imágenes de GCS) */}
+            {imageUrl.includes('storage.googleapis.com') && (
+              <UpscaleButton
+                imageUrl={imageUrl}
+                onUpscaleComplete={(upscaledUrl) => onChange(upscaledUrl)}
+                size="default"
+                variant="outline"
+                className="w-full"
+              />
+            )}
           </div>
         )}
       </div>
