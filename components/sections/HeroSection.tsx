@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ChevronDown } from "lucide-react"
 import { HeroImageConfig } from "@/lib/hero-config"
 import { LogoHoverEffect } from "@/components/logo/LogoHoverEffect"
+import { HeroImageLoader } from "@/components/loading/HeroImageLoader"
 
 const specialties = [
   'DISEÑO\nESTRUCTURAL',
@@ -22,7 +23,88 @@ interface HeroSectionProps {
 export function HeroSection({ heroImages }: HeroSectionProps) {
   const [currentSpecialty, setCurrentSpecialty] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+  const [loadedCount, setLoadedCount] = useState(0)
+  const [displayProgress, setDisplayProgress] = useState(0)
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const loadedImagesSet = useRef<Set<string>>(new Set())
+
+  // Determinar número total de imágenes según el dispositivo
+  const totalImages = isMobile ? 4 : 5
+
+  // Calcular progreso real de carga basado en imágenes únicas
+  const targetProgress = (loadedCount / totalImages) * 100
+  // Solo mostrar como cargado si TODO está listo: imágenes cargadas, tiempo mínimo Y animación llegó a 100%
+  const allImagesLoaded = loadedCount >= totalImages && minTimeElapsed && displayProgress >= 99.9
+
+  // Animar el progreso mostrado para que siempre se vea crecer suavemente
+  useEffect(() => {
+    if (displayProgress < targetProgress) {
+      // Si el salto es muy grande (ej: todo en caché), usar más tiempo
+      const progressJump = targetProgress - displayProgress
+      const baseDuration = progressJump > 80 ? 800 : 200 // Si salta >80%, animar por 800ms
+      const steps = 25
+      const stepValue = progressJump / steps
+      const stepDuration = baseDuration / steps
+
+      let currentStep = 0
+      const interval = setInterval(() => {
+        currentStep++
+        setDisplayProgress(prev => {
+          const next = prev + stepValue
+          if (next >= targetProgress || currentStep >= steps) {
+            clearInterval(interval)
+            return targetProgress
+          }
+          return next
+        })
+      }, stepDuration)
+
+      return () => clearInterval(interval)
+    }
+  }, [targetProgress, displayProgress])
+
+  // Handler para cuando una imagen carga - recibe la URL para evitar duplicados
+  const handleImageLoad = (imageUrl: string) => {
+    if (!loadedImagesSet.current.has(imageUrl)) {
+      loadedImagesSet.current.add(imageUrl)
+      const newCount = loadedImagesSet.current.size
+      setLoadedCount(newCount)
+      console.log(`🖼️ Imagen única cargada: ${newCount}/${totalImages}`, imageUrl)
+    }
+  }
+
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Tiempo mínimo de visualización del loader: 1 segundo
+  useEffect(() => {
+    const minTimeout = setTimeout(() => {
+      setMinTimeElapsed(true)
+      console.log('⏱️ Tiempo mínimo de loader transcurrido')
+    }, 1000)
+    return () => clearTimeout(minTimeout)
+  }, [])
+
+  // Timeout de seguridad: forzar carga completa después de 2 segundos
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!allImagesLoaded) {
+        console.log('⚠️ Timeout de seguridad: forzando carga completa')
+        setLoadedCount(totalImages)
+        setMinTimeElapsed(true)
+      }
+    }, 2000)
+    return () => clearTimeout(timeout)
+  }, [allImagesLoaded, totalImages])
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -88,7 +170,11 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
   }, [])
 
   return (
-    <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]">
+    <>
+      {/* Loader de imágenes del Hero */}
+      <HeroImageLoader isVisible={!allImagesLoaded} progress={displayProgress} />
+
+      <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]">
       {/* Grid de 3 columnas en DESKTOP - permanece FIJO mientras se anima, se oculta al salir */}
       <div
         className={`fixed top-0 left-0 w-full h-screen flex z-30 transition-opacity duration-300 ${
@@ -148,6 +234,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 fill
                 className="object-cover"
                 priority
+                onLoad={() => handleImageLoad(heroImages.mobile?.row2Top || heroImages.centerTop)}
               />
             </div>
 
@@ -163,6 +250,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 alt="MEISA - Estructura metálica perspectiva"
                 fill
                 className="object-cover"
+                priority
+                onLoad={() => handleImageLoad(heroImages.mobile?.row2Bottom || heroImages.centerBottom)}
               />
             </motion.div>
           </div>
@@ -176,6 +265,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 alt="MEISA - Coliseo estructuras rojas"
                 fill
                 className="object-cover"
+                priority
+                onLoad={() => handleImageLoad(heroImages.mobile?.row3Top || heroImages.rightTop)}
               />
             </div>
 
@@ -191,6 +282,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 alt="MEISA - Montaje con grúa"
                 fill
                 className="object-cover"
+                priority
+                onLoad={() => handleImageLoad(heroImages.mobile?.row3Bottom || heroImages.rightBottom)}
               />
             </motion.div>
 
@@ -239,6 +332,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Estructura metálica de techo - MEISA"
               fill
               className="object-cover"
+              priority
+              onLoad={() => handleImageLoad(heroImages.leftColumn)}
             />
           </motion.div>
         </div>
@@ -253,6 +348,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               fill
               className="object-cover"
               priority
+              onLoad={() => handleImageLoad(heroImages.centerTop)}
             />
           </div>
 
@@ -266,6 +362,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Vista interior de estructura metálica - Perspectiva"
               fill
               className="object-cover"
+              priority
+              onLoad={() => handleImageLoad(heroImages.centerBottom)}
             />
           </motion.div>
         </div>
@@ -279,6 +377,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Coliseo con estructuras metálicas rojas MEISA"
               fill
               className="object-cover"
+              priority
+              onLoad={() => handleImageLoad(heroImages.rightTop)}
             />
           </div>
 
@@ -292,10 +392,13 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Montaje de viga metálica con grúa - MEISA en acción"
               fill
               className="object-cover"
+              priority
+              onLoad={() => handleImageLoad(heroImages.rightBottom)}
             />
           </motion.div>
         </div>
       </div>
     </section>
+    </>
   )
 }

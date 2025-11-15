@@ -324,6 +324,10 @@ model CategoriaProyecto {
   updatedAt           DateTime      @updatedAt
   overlayColor        String?
   overlayOpacity      Float?        @default(0.0)
+  // Nuevos campos para overlay hover configurable
+  hoverOverlayColor   String?       @default("#1e40af")
+  hoverOverlayOpacity Float?        @default(0.2)
+  enableHoverOverlay  Boolean       @default(true)
   beneficios          Json?
   descripcionAmpliada String?
   estadisticas        Json?

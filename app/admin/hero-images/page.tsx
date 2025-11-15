@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone, Crop, History, ChevronDown, ChevronUp } from 'lucide-react'
+import { Upload, Save, RotateCcw, Eye, Monitor, Smartphone, Crop, History, ChevronDown, ChevronUp, Download } from 'lucide-react'
 import { HeroImageConfig } from '@/lib/hero-config'
 import { UpscaleButton } from '@/components/admin/UpscaleButton'
 import { ExpandImageButton } from '@/components/admin/ExpandImageButton'
@@ -154,6 +154,27 @@ export default function HeroImagesAdminPage() {
   }
 
   const hasChanges = JSON.stringify(heroImages) !== JSON.stringify(originalImages)
+
+  const handleDownload = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(blobUrl)
+      setMessage(`✓ Descargando: ${filename}`)
+      setTimeout(() => setMessage(''), 3000)
+    } catch (error) {
+      console.error('Error descargando imagen:', error)
+      setMessage('Error descargando la imagen')
+      setTimeout(() => setMessage(''), 3000)
+    }
+  }
 
   if (status === 'loading' || loading) {
     return (
@@ -431,7 +452,7 @@ export default function HeroImagesAdminPage() {
                 <div>
                   <div className="mb-4 flex items-center justify-between">
                     <p className="text-sm text-gray-600">
-                      Haz clic en una imagen para copiar su URL
+                      Pasa el cursor sobre una imagen para descargar o copiar su URL
                     </p>
                     <button
                       onClick={fetchHistoricalImages}
@@ -445,12 +466,7 @@ export default function HeroImagesAdminPage() {
                     {historicalImages.map((image, index) => (
                       <div
                         key={index}
-                        className="group relative bg-gray-100 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all cursor-pointer"
-                        onClick={() => {
-                          navigator.clipboard.writeText(image.url)
-                          setMessage(`✓ URL copiada al portapapeles: ${image.name}`)
-                          setTimeout(() => setMessage(''), 3000)
-                        }}
+                        className="group relative bg-gray-100 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 transition-all"
                       >
                         <div className="aspect-square relative">
                           <Image
@@ -460,9 +476,30 @@ export default function HeroImagesAdminPage() {
                             className="object-cover group-hover:scale-105 transition-transform"
                             unoptimized
                           />
-                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity flex items-center justify-center">
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center p-2">
-                              <p className="text-xs font-bold mb-1">Copiar URL</p>
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-opacity flex items-center justify-center">
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleDownload(image.url, image.name)
+                                }}
+                                className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                                title="Descargar imagen"
+                              >
+                                <Download className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  navigator.clipboard.writeText(image.url)
+                                  setMessage(`✓ URL copiada al portapapeles: ${image.name}`)
+                                  setTimeout(() => setMessage(''), 3000)
+                                }}
+                                className="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                                title="Copiar URL"
+                              >
+                                <Upload className="w-4 h-4 rotate-180" />
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -686,6 +723,27 @@ function ImageUploadCard({
               <span className="text-sm font-medium">
                 {uploading ? 'Cargando...' : 'Recortar Imagen Actual'}
               </span>
+            </button>
+
+            {/* Botón Descargar imagen */}
+            <button
+              onClick={async () => {
+                const filename = imageUrl.split('/').pop() || 'imagen.jpg'
+                const response = await fetch(imageUrl)
+                const blob = await response.blob()
+                const blobUrl = URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.href = blobUrl
+                link.download = filename
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+                URL.revokeObjectURL(blobUrl)
+              }}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              <span className="text-sm font-medium">Descargar Imagen</span>
             </button>
 
             {/* Botones AI (solo para imágenes de GCS) */}

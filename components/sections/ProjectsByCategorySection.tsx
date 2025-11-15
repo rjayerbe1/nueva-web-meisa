@@ -34,6 +34,9 @@ interface Categoria {
   colorSecundario: string | null
   overlayColor: string | null
   overlayOpacity: number | null
+  hoverOverlayColor: string | null
+  hoverOverlayOpacity: number | null
+  enableHoverOverlay: boolean
   visible: boolean
   destacada: boolean
 }
@@ -156,37 +159,49 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                     <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
                   )}
 
-                  {/* Overlay oscuro con gradiente */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-900/60 to-black/70" />
+                  {/* Overlay configurable desde BD */}
+                  {categoria.overlayOpacity && categoria.overlayOpacity > 0 ? (
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundColor: categoria.overlayColor || '#000000',
+                        opacity: categoria.overlayOpacity
+                      }}
+                    />
+                  ) : (
+                    // Overlay por defecto si no está configurado
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40" />
+                  )}
 
-                  {/* Overlay hover - efecto azul MEISA */}
-                  <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-500" />
+                  {/* Overlay hover - configurable desde BD */}
+                  {categoria.enableHoverOverlay && (
+                    <style jsx>{`
+                      .hover-overlay-${categoria.id} {
+                        background-color: ${categoria.hoverOverlayColor || '#1e40af'};
+                        opacity: 0;
+                        transition: opacity 500ms;
+                      }
+                      .group:hover .hover-overlay-${categoria.id} {
+                        opacity: ${categoria.hoverOverlayOpacity ?? 0.2};
+                      }
+                    `}</style>
+                  )}
+                  {categoria.enableHoverOverlay && (
+                    <div className={`absolute inset-0 hover-overlay-${categoria.id}`} />
+                  )}
 
-                  {/* Contenido centrado */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center px-6 lg:px-12 text-center">
-                    {/* Ícono de categoría */}
+                  {/* Contenido en la parte inferior */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-end px-6 lg:px-12 pb-8 lg:pb-12 text-center">
+                    {/* Ícono de categoría - MUCHO MÁS GRANDE */}
                     <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 0.3, scale: 1 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
                       viewport={{ once: true }}
                       className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
                       style={{ color: categoria.color || '#3b82f6' }}
                     >
-                      {getCategoryIconComponent(categoria.icono, "w-20 h-20 lg:w-24 lg:h-24")}
-                    </motion.div>
-
-                    {/* Subtítulo */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-                      viewport={{ once: true }}
-                      className="mb-3"
-                    >
-                      <span className="text-blue-400 font-lato uppercase text-sm tracking-wider">
-                        Especialidad
-                      </span>
+                      {getCategoryIconComponent(categoria.icono, "w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40")}
                     </motion.div>
 
                     {/* Título animado con letras */}
@@ -199,7 +214,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
                       viewport={{ once: true }}
                       className="inline-flex items-center gap-3 group/btn"
                     >

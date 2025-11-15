@@ -3,14 +3,17 @@
 import { useState, useEffect } from "react"
 import { X, Upload, Palette, Eye, Star, EyeOff } from "lucide-react"
 import { CategoriaEnum } from "@prisma/client"
-import { 
-  getAllAvailableIcons, 
-  getAllCategoryCovers, 
+import {
+  getAllAvailableIcons,
+  getAllCategoryCovers,
   parseIconValue,
   getRecommendedIcon,
   getRecommendedCover
 } from "@/lib/category-assets"
 import ImageCropModal from "./ImageCropModal"
+import { UpscaleButton } from "./UpscaleButton"
+import { ExpandImageButton } from "./ExpandImageButton"
+import { InpaintButton } from "./InpaintButton"
 
 // Iconos disponibles de Lucide
 import { 
@@ -64,6 +67,9 @@ interface Categoria {
   colorSecundario: string | null
   overlayColor: string | null
   overlayOpacity: number | null
+  hoverOverlayColor: string | null
+  hoverOverlayOpacity: number | null
+  enableHoverOverlay: boolean
   metaTitle: string | null
   metaDescription: string | null
   orden: number
@@ -113,6 +119,9 @@ export default function CategoryEditModal({
     colorSecundario: categoria?.colorSecundario || '',
     overlayColor: categoria?.overlayColor || '#000000',
     overlayOpacity: categoria?.overlayOpacity || 0,
+    hoverOverlayColor: categoria?.hoverOverlayColor || '#1e40af',
+    hoverOverlayOpacity: categoria?.hoverOverlayOpacity ?? 0.2,
+    enableHoverOverlay: categoria?.enableHoverOverlay ?? true,
     metaTitle: categoria?.metaTitle || '',
     metaDescription: categoria?.metaDescription || '',
     orden: categoria?.orden || 0,
@@ -140,6 +149,9 @@ export default function CategoryEditModal({
         colorSecundario: categoria.colorSecundario || '',
         overlayColor: categoria.overlayColor || '#000000',
         overlayOpacity: categoria.overlayOpacity || 0,
+        hoverOverlayColor: categoria.hoverOverlayColor || '#1e40af',
+        hoverOverlayOpacity: categoria.hoverOverlayOpacity ?? 0.2,
+        enableHoverOverlay: categoria.enableHoverOverlay ?? true,
         metaTitle: categoria.metaTitle || '',
         metaDescription: categoria.metaDescription || '',
         orden: categoria.orden,
@@ -312,6 +324,9 @@ export default function CategoryEditModal({
         colorSecundario: formData.colorSecundario,
         overlayColor: formData.overlayColor,
         overlayOpacity: formData.overlayOpacity,
+        hoverOverlayColor: formData.hoverOverlayColor,
+        hoverOverlayOpacity: formData.hoverOverlayOpacity,
+        enableHoverOverlay: formData.enableHoverOverlay,
         metaTitle: formData.metaTitle,
         metaDescription: formData.metaDescription,
         orden: formData.orden,
@@ -560,24 +575,51 @@ export default function CategoryEditModal({
                               alt="Cover preview"
                               className="w-80 h-60 object-cover rounded-lg border border-gray-300"
                             />
-                            <div className="flex space-x-2 justify-center">
-                              <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                                {uploading ? 'Subiendo...' : 'Cambiar Imagen'}
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleImageUpload}
-                                  className="sr-only"
-                                  disabled={uploading}
-                                />
-                              </label>
-                              <button
-                                type="button"
-                                onClick={() => setFormData(prev => ({ ...prev, imagenCover: '' }))}
-                                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
-                              >
-                                Eliminar
-                              </button>
+                            <div className="space-y-3">
+                              {/* Botones principales */}
+                              <div className="flex space-x-2 justify-center">
+                                <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                  {uploading ? 'Subiendo...' : 'Cambiar Imagen'}
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    className="sr-only"
+                                    disabled={uploading}
+                                  />
+                                </label>
+                                <button
+                                  type="button"
+                                  onClick={() => setFormData(prev => ({ ...prev, imagenCover: '' }))}
+                                  className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                                >
+                                  Eliminar
+                                </button>
+                              </div>
+
+                              {/* Herramientas de IA */}
+                              <div className="border-t pt-3">
+                                <p className="text-xs font-medium text-gray-600 mb-2 text-center">
+                                  Herramientas de IA
+                                </p>
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                  <UpscaleButton
+                                    imageUrl={formData.imagenCover}
+                                    onImageProcessed={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    buttonSize="sm"
+                                  />
+                                  <ExpandImageButton
+                                    imageUrl={formData.imagenCover}
+                                    onImageProcessed={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    buttonSize="sm"
+                                  />
+                                  <InpaintButton
+                                    imageUrl={formData.imagenCover}
+                                    onImageProcessed={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    buttonSize="sm"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         ) : (
@@ -719,32 +761,82 @@ export default function CategoryEditModal({
                       </div>
                       
                       {/* Controles del overlay justo debajo del preview */}
-                      <div className="space-y-3">
-                        {/* Color del overlay */}
-                        <div>
-                          <label className="block text-xs text-gray-600 mb-1">Color del Overlay</label>
-                          <input
-                            type="color"
-                            value={formData.overlayColor}
-                            onChange={(e) => setFormData(prev => ({ ...prev, overlayColor: e.target.value }))}
-                            className="w-full h-6 rounded border border-gray-300"
-                          />
+                      <div className="space-y-4">
+                        <div className="space-y-3 pb-3 border-b border-gray-200">
+                          <h4 className="text-xs font-semibold text-gray-700">Overlay Base</h4>
+                          {/* Color del overlay */}
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">Color del Overlay</label>
+                            <input
+                              type="color"
+                              value={formData.overlayColor}
+                              onChange={(e) => setFormData(prev => ({ ...prev, overlayColor: e.target.value }))}
+                              className="w-full h-6 rounded border border-gray-300"
+                            />
+                          </div>
+
+                          {/* Opacidad del overlay */}
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">
+                              Opacidad: {Math.round(formData.overlayOpacity * 100)}%
+                            </label>
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step="0.1"
+                              value={formData.overlayOpacity}
+                              onChange={(e) => setFormData(prev => ({ ...prev, overlayOpacity: parseFloat(e.target.value) }))}
+                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            />
+                          </div>
                         </div>
-                        
-                        {/* Opacidad del overlay */}
-                        <div>
-                          <label className="block text-xs text-gray-600 mb-1">
-                            Opacidad: {Math.round(formData.overlayOpacity * 100)}%
-                          </label>
-                          <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.1"
-                            value={formData.overlayOpacity}
-                            onChange={(e) => setFormData(prev => ({ ...prev, overlayOpacity: parseFloat(e.target.value) }))}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                          />
+
+                        {/* Controles del overlay hover */}
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-xs font-semibold text-gray-700">Overlay Hover</h4>
+                            <label className="flex items-center text-xs">
+                              <input
+                                type="checkbox"
+                                checked={formData.enableHoverOverlay}
+                                onChange={(e) => setFormData(prev => ({ ...prev, enableHoverOverlay: e.target.checked }))}
+                                className="mr-1.5 w-3 h-3"
+                              />
+                              <span className="text-gray-600">Activar</span>
+                            </label>
+                          </div>
+
+                          {formData.enableHoverOverlay && (
+                            <>
+                              {/* Color del overlay hover */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">Color Hover</label>
+                                <input
+                                  type="color"
+                                  value={formData.hoverOverlayColor}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, hoverOverlayColor: e.target.value }))}
+                                  className="w-full h-6 rounded border border-gray-300"
+                                />
+                              </div>
+
+                              {/* Opacidad del overlay hover */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">
+                                  Opacidad Hover: {Math.round(formData.hoverOverlayOpacity * 100)}%
+                                </label>
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="1"
+                                  step="0.05"
+                                  value={formData.hoverOverlayOpacity}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, hoverOverlayOpacity: parseFloat(e.target.value) }))}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
