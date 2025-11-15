@@ -605,18 +605,18 @@ export default function CategoryEditModal({
                                 <div className="flex flex-wrap gap-2 justify-center">
                                   <UpscaleButton
                                     imageUrl={formData.imagenCover}
-                                    onImageProcessed={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
-                                    buttonSize="sm"
+                                    onUpscaleComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
                                   />
                                   <ExpandImageButton
                                     imageUrl={formData.imagenCover}
-                                    onImageProcessed={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
-                                    buttonSize="sm"
+                                    onExpandComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
                                   />
                                   <InpaintButton
                                     imageUrl={formData.imagenCover}
-                                    onImageProcessed={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
-                                    buttonSize="sm"
+                                    onInpaintComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
                                   />
                                 </div>
                               </div>

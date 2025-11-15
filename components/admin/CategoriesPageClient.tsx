@@ -24,6 +24,9 @@ interface Categoria {
   colorSecundario: string | null
   overlayColor: string | null
   overlayOpacity: number | null
+  hoverOverlayColor: string | null
+  hoverOverlayOpacity: number | null
+  enableHoverOverlay: boolean
   metaTitle: string | null
   metaDescription: string | null
   orden: number
