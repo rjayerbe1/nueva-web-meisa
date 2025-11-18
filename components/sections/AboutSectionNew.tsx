@@ -142,7 +142,7 @@ export function AboutSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-[13px] max-h-[500px]:text-[10px] sm:text-sm md:text-base lg:text-lg text-gray-200 font-lato leading-relaxed mb-4 max-h-[500px]:mb-2 bg-black/40 px-1 py-2 max-h-[500px]:px-0.5 max-h-[500px]:py-1 rounded-lg max-w-[280px] sm:max-w-md md:max-w-lg lg:max-w-xl"
+            className="text-[13px] max-h-[500px]:text-[10px] sm:text-sm md:text-base lg:text-lg text-gray-200 font-lato leading-relaxed mb-4 max-h-[500px]:mb-2 bg-black/40 px-1 py-2 max-h-[500px]:px-0.5 max-h-[500px]:py-1 rounded-lg max-w-[280px] sm:max-w-md whitespace-normal md:whitespace-nowrap md:max-w-4xl lg:max-w-5xl xl:max-w-6xl"
           >
             Cada proyecto es <span className="text-red-600 font-bold">único</span>. Nuestra <span className="text-red-600 font-bold">excelencia</span> en <span className="text-red-600 font-bold">diseño, fabricación y montaje</span>, una constante
           </motion.p>

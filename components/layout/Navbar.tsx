@@ -13,7 +13,7 @@ const menuItems = [
   { name: "Servicios", href: "/servicios" },
   { name: "Empresa", href: "/empresa" },
   { name: "Trayectoria", href: "/trayectoria" },
-  { name: "Tecnología", href: "/tecnologia" },
+  { name: "Procesos & Tecnologías", href: "/tecnologia" },
   { name: "Políticas", href: "/calidad" },
   { name: "Contacto", href: "/contacto" },
 ]

@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
 import { COMPANY_STATS } from '@/lib/company-data'
 import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
+import { InfraestructuraSection } from '@/components/sections/InfraestructuraSection'
+import { ValoresSection } from '@/components/sections/ValoresSection'
 import {
   Building2,
   Target,
@@ -405,6 +407,11 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
               </p>
             </motion.div>
           </div>
+
+          {/* Sección de Valores Corporativos */}
+          <div className="mt-16">
+            <ValoresSection />
+          </div>
         </div>
       </section>
 
@@ -764,6 +771,9 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
           </div>
         </div>
       </section>
+
+      {/* Sección Nuestra Infraestructura */}
+      <InfraestructuraSection />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-700">

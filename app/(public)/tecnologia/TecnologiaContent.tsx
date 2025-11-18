@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
 import { siteConfig } from '@/lib/site-config'
+import { TecnologiasSection } from '@/components/sections/TecnologiasSection'
 import {
   Monitor,
   Settings,
@@ -363,16 +364,16 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
             transition={{ duration: 1, delay: 0.2 }}
             className="inline-block px-4 py-2 bg-blue-100/90 text-blue-600 text-sm font-semibold rounded-full mb-8 backdrop-blur-sm"
           >
-{getText('TECNOLOGÍA E INNOVACIÓN', 'heroTag')}
+{getText('PROCESOS & TECNOLOGÍAS', 'heroTag')}
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
             className="text-6xl md:text-8xl font-bold text-white mb-6"
           >
-            {getText('Tecnología e Innovación', 'heroTitle')}
+            {getText('Procesos & Tecnologías', 'heroTitle')}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-4">
 {getText('de Vanguardia', 'heroTitleHighlight')}
             </span>
@@ -431,6 +432,158 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
           </motion.div>
         </motion.div>
       </motion.section>
+
+      {/* Nueva Sección: Nuestro Proceso Integral - 8 Etapas */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Nuestro Proceso Integral
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              De la planificación al montaje: 8 etapas que garantizan excelencia en cada proyecto de estructuras metálicas
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Columna 1 - Fase de Diseño */}
+            <div className="space-y-6">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bebas uppercase text-blue-600 mb-2">Fase de Diseño</h3>
+                <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto rounded-full"></div>
+              </div>
+
+              {[
+                {
+                  number: '01',
+                  titleEn: 'Pre-Construction',
+                  titleEs: 'Pre-Construcción',
+                  description: 'Planificación estratégica, estudios de factibilidad y análisis preliminares del proyecto',
+                  color: 'from-blue-500 to-blue-600'
+                },
+                {
+                  number: '02',
+                  titleEn: 'BIM Implementation',
+                  titleEs: 'Implementación BIM',
+                  description: 'Modelado 3D inteligente con Tekla Structures y coordinación multidisciplinaria',
+                  color: 'from-blue-600 to-blue-700'
+                },
+                {
+                  number: '03',
+                  titleEn: 'Estimating',
+                  titleEs: 'Estimación',
+                  description: 'Análisis detallado de costos, presupuestos precisos y optimización de recursos',
+                  color: 'from-cyan-500 to-cyan-600'
+                },
+                {
+                  number: '04',
+                  titleEn: 'Engineering',
+                  titleEs: 'Ingeniería',
+                  description: 'Cálculos estructurales avanzados con ETABS, SAP2000 y diseño sísmico',
+                  color: 'from-cyan-600 to-cyan-700'
+                }
+              ].map((etapa, index) => (
+                <motion.div
+                  key={etapa.number}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border-l-4 border-blue-500 hover:shadow-lg transition-all duration-300 group"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br ${etapa.color} flex items-center justify-center text-white font-bold text-lg shadow-md`}>
+                      {etapa.number}
+                    </div>
+                    <div className="flex-1">
+                      <div className="mb-2">
+                        <h4 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                          {etapa.titleEn}
+                        </h4>
+                        <p className="text-sm font-medium text-gray-500">{etapa.titleEs}</p>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {etapa.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Columna 2 - Fase de Ejecución */}
+            <div className="space-y-6">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bebas uppercase text-green-600 mb-2">Fase de Ejecución</h3>
+                <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-green-600 mx-auto rounded-full"></div>
+              </div>
+
+              {[
+                {
+                  number: '05',
+                  titleEn: 'Connection Design',
+                  titleEs: 'Diseño de Conexiones',
+                  description: 'Diseño detallado de conexiones complejas con IDEA StatiCa y análisis CBFEM',
+                  color: 'from-green-500 to-green-600'
+                },
+                {
+                  number: '06',
+                  titleEn: 'Detailing',
+                  titleEs: 'Detallado',
+                  description: 'Planos de fabricación precisos, listas de corte y documentación técnica completa',
+                  color: 'from-green-600 to-green-700'
+                },
+                {
+                  number: '07',
+                  titleEn: 'Fabrication',
+                  titleEs: 'Fabricación',
+                  description: 'Producción con CNC de precisión, control de calidad y trazabilidad QR en 3 plantas',
+                  color: 'from-emerald-500 to-emerald-600'
+                },
+                {
+                  number: '08',
+                  titleEn: 'Steel Erection',
+                  titleEs: 'Montaje de Acero',
+                  description: 'Instalación profesional en obra con equipos certificados y personal experto en alturas',
+                  color: 'from-emerald-600 to-emerald-700'
+                }
+              ].map((etapa, index) => (
+                <motion.div
+                  key={etapa.number}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-500 hover:shadow-lg transition-all duration-300 group"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br ${etapa.color} flex items-center justify-center text-white font-bold text-lg shadow-md`}>
+                      {etapa.number}
+                    </div>
+                    <div className="flex-1">
+                      <div className="mb-2">
+                        <h4 className="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors">
+                          {etapa.titleEn}
+                        </h4>
+                        <p className="text-sm font-medium text-gray-500">{etapa.titleEs}</p>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {etapa.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Proceso Integral Section */}
       <section className="py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
@@ -988,6 +1141,9 @@ export default function TecnologiaContent({ paginaData }: TecnologiaContentProps
           </div>
         </section>
       ))}
+
+      {/* Sección Software Especializado */}
+      <TecnologiasSection />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-700">

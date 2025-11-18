@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
 interface Cliente {
   id: string
@@ -79,8 +81,8 @@ export function ClientesSection() {
 
   return (
     <section id="clientes" className="py-20 bg-white">
+      {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -88,31 +90,41 @@ export function ClientesSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-blue-600 font-bebas uppercase text-xl mb-2">Nuestros Aliados</h2>
-          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-gray-900 mb-4">
-            Clientes
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Destacados</span>
+          <h2 className="text-blue-600 font-bebas uppercase text-2xl md:text-3xl lg:text-4xl mb-4">Nuestros Clientes</h2>
+          <h3 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase text-gray-900 mb-6">
+            30+ Años
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Construyendo Confianza</span>
           </h3>
-          <p className="text-xl font-lato text-gray-600 max-w-3xl mx-auto">
-            Empresas líderes en Colombia confían en MEISA para sus proyectos más importantes
+          <p className="text-lg md:text-xl font-lato text-gray-600 whitespace-nowrap">
+            Las empresas más importantes confían en MEISA para sus proyectos estructurales más exigentes
           </p>
         </motion.div>
+      </div>
 
-        {/* Carrusel de logos automático */}
-        {clientes.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="mb-16 overflow-hidden"
-          >
-            <div className="flex space-x-16 animate-scroll">
+      {/* Carrusel de logos automático - Ancho completo */}
+      {clientes.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-16 relative w-full"
+        >
+          {/* Contenedor con overflow y gradientes */}
+          <div className="overflow-hidden relative">
+            {/* Gradiente izquierdo */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+
+            {/* Gradiente derecho */}
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+            {/* Carrusel */}
+            <div className="flex space-x-12 md:space-x-16 animate-scroll py-8">
               {/* Primera copia del array */}
               {clientes.filter(c => c.logo).map((cliente) => (
                 <div
                   key={`logo-1-${cliente.id}`}
-                  className="flex-shrink-0 w-40 h-20 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                  className="flex-shrink-0 w-32 md:w-40 h-16 md:h-20 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
                 >
                   {cliente.logo ? (
                     <Image
@@ -120,7 +132,7 @@ export function ClientesSection() {
                       alt={cliente.nombre}
                       width={120}
                       height={60}
-                      className="object-contain max-w-full max-h-full filter grayscale hover:grayscale-0 transition-all duration-300"
+                      className="object-contain max-w-full max-h-full transition-all duration-300"
                     />
                   ) : (
                     <div className="text-gray-600 text-xs font-medium text-center">
@@ -133,7 +145,7 @@ export function ClientesSection() {
               {clientes.filter(c => c.logo).map((cliente) => (
                 <div
                   key={`logo-2-${cliente.id}`}
-                  className="flex-shrink-0 w-40 h-20 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                  className="flex-shrink-0 w-32 md:w-40 h-16 md:h-20 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
                 >
                   {cliente.logo ? (
                     <Image
@@ -141,7 +153,7 @@ export function ClientesSection() {
                       alt={cliente.nombre}
                       width={120}
                       height={60}
-                      className="object-contain max-w-full max-h-full filter grayscale hover:grayscale-0 transition-all duration-300"
+                      className="object-contain max-w-full max-h-full transition-all duration-300"
                     />
                   ) : (
                     <div className="text-gray-600 text-xs font-medium text-center">
@@ -151,8 +163,34 @@ export function ClientesSection() {
                 </div>
               ))}
             </div>
-          </motion.div>
-        )}
+          </div>
+        </motion.div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* CTA Trayectoria */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <Link
+            href="/trayectoria"
+            className="group relative inline-block overflow-hidden"
+          >
+            {/* Barra azul que se expande en hover */}
+            <span className="absolute left-0 top-0 h-full w-1.5 bg-blue-600 transition-all duration-500 ease-out group-hover:w-full z-0"></span>
+
+            {/* Texto del botón */}
+            <span className="relative z-10 inline-flex items-center gap-2 px-8 py-3 text-gray-900 font-lato font-bold text-base md:text-lg transition-colors duration-500 group-hover:text-white whitespace-nowrap">
+              Conoce Nuestra Trayectoria
+              <ArrowRight className="w-5 h-5 md:w-6 md:h-6 opacity-0 transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-1" />
+            </span>
+          </Link>
+        </motion.div>
 
         {/* Proyectos destacados con logos */}
         {clientesDestacados.length > 0 && (
@@ -219,29 +257,6 @@ export function ClientesSection() {
           </motion.div>
         )}
 
-        {/* Estadística final */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-blue-50 to-gray-50 border border-gray-200 rounded-2xl p-8 text-center"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <p className="text-5xl font-bebas text-blue-600 mb-2">{clientes.length}+</p>
-              <p className="text-gray-600 font-lato">Clientes activos en todo Colombia</p>
-            </div>
-            <div>
-              <p className="text-5xl font-bebas text-blue-600 mb-2">9</p>
-              <p className="text-gray-600 font-lato">Sectores industriales atendidos</p>
-            </div>
-            <div>
-              <p className="text-5xl font-bebas text-blue-600 mb-2">29+</p>
-              <p className="text-gray-600 font-lato">Años construyendo confianza</p>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       <style jsx>{`

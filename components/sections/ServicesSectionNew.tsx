@@ -238,25 +238,6 @@ export function ServicesSection() {
           <ServiceCard key={servicio.id} servicio={servicio} index={index} />
         ))}
       </div>
-
-      {/* Call to action final */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <Link
-            href="/servicios"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
-          >
-            Ver detalles de servicios
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </motion.div>
-      </div>
     </section>
   )
 }
