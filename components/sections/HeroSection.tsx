@@ -31,7 +31,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
   const loadedImagesSet = useRef<Set<string>>(new Set())
 
   // Determinar número total de imágenes según el dispositivo
-  const totalImages = isMobile ? 4 : 5
+  const totalImages = 5
 
   // Calcular progreso real de carga basado en imágenes únicas
   const targetProgress = (loadedCount / totalImages) * 100
@@ -149,16 +149,22 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
     ["polygon(-5% 100%, 105% 100%, 105% 100%, -5% 100%)", "polygon(-5% 0%, 105% 0%, 105% 100%, -5% 100%)"]
   )
 
-  // Transformaciones para versión móvil
+  // Transformaciones para versión móvil - Orden invertido: abajo → medio → arriba
+  const mobileRow1ClipPath = useTransform(
+    scrollYProgress,
+    [0.2, 0.5],
+    ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
+  )
+
   const mobileRow2ClipPath = useTransform(
     scrollYProgress,
-    [0, 0.3],
+    [0.1, 0.4],
     ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
   )
 
   const mobileRow3ClipPath = useTransform(
     scrollYProgress,
-    [0.15, 0.5],
+    [0, 0.3],
     ["polygon(0 0, 0 0, 0 100%, 0% 100%)", "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"]
   )
 
@@ -183,45 +189,36 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
       >
         {/* VERSIÓN MÓVIL - 3 filas con scroll horizontal */}
         <div className="md:hidden w-full h-screen relative flex flex-col">
-          {/* Fila 1 - Logo y Contenido */}
-          <div className="h-1/3 bg-white flex flex-col justify-center items-center px-6 py-4 border-b border-gray-200">
-            <div className="space-y-3 flex flex-col items-center w-full">
-              <div className="w-44">
+          {/* Fila 1 - Logo con Scroll Reveal */}
+          <div className="h-1/3 bg-white relative border-b border-gray-200 overflow-hidden">
+            {/* Logo centrado */}
+            <div className="absolute inset-0 flex items-center justify-center z-10 px-6">
+              <div className="w-64">
                 <LogoHoverEffect
                   variant="3d-tilt"
                   width={280}
                   height={79}
-                  className="w-full"
+                  className="w-full h-auto"
                 />
               </div>
-
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-[10px] font-lato font-semibold tracking-wider">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-600"></span>
-                </span>
-                LÍDER EN COLOMBIA
-              </div>
-
-              <div className="h-16 relative overflow-hidden w-full">
-                <AnimatePresence mode="wait">
-                  <motion.h2
-                    key={currentSpecialty}
-                    initial={{ y: 100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -100, opacity: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="absolute inset-0 flex items-center justify-center text-center text-lg font-bold text-gray-900 whitespace-pre-line leading-tight font-lato"
-                  >
-                    {specialties[currentSpecialty]}
-                  </motion.h2>
-                </AnimatePresence>
-              </div>
-
-              <p className="text-sm font-bold text-gray-900 font-lato text-center leading-tight">
-                Construimos el futuro de Colombia
-              </p>
             </div>
+
+            {/* Imagen que se revela con scroll horizontal */}
+            <motion.div
+              className="absolute inset-0 z-20"
+              style={{
+                clipPath: mobileRow1ClipPath
+              }}
+            >
+              <Image
+                src={heroImages.leftColumn}
+                alt="MEISA - Estructura metálica de techo"
+                fill
+                className="object-cover"
+                priority
+                onLoad={() => handleImageLoad(heroImages.leftColumn)}
+              />
+            </motion.div>
           </div>
 
           {/* Fila 2 - Primera Imagen con Scroll Reveal */}
@@ -286,27 +283,6 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Bottom || heroImages.rightBottom)}
               />
             </motion.div>
-
-            {/* CTAs superpuestos */}
-            <div className="absolute inset-0 flex flex-col justify-end items-center pb-8 px-6 bg-gradient-to-t from-black/60 to-transparent">
-              <div className="flex flex-col gap-2 w-full max-w-xs">
-                <Link
-                  href="/proyectos"
-                  className="group inline-flex items-center justify-between px-6 py-3 bg-white text-gray-900 font-bold transition-all duration-300 hover:bg-blue-700 hover:text-white font-lato text-sm"
-                >
-                  <span>Ver proyectos</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-
-                <Link
-                  href="/contacto"
-                  className="group inline-flex items-center justify-between px-6 py-3 border border-white text-white font-bold transition-all duration-300 hover:bg-white hover:text-gray-900 font-lato text-sm"
-                >
-                  <span>Solicitar cotización</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
 

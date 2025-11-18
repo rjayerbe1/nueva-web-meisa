@@ -6,13 +6,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { UnifiedStatsGrid } from '@/components/ui/unified-stats-card'
 import { COMPANY_STATS } from '@/lib/company-data'
-import { 
-  Building2, 
-  Target, 
-  Eye, 
-  Heart, 
-  Shield, 
-  FileText, 
+import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
+import {
+  Building2,
+  Target,
+  Eye,
+  Heart,
+  Shield,
+  FileText,
   AlertCircle,
   CheckCircle2,
   ArrowRight,
@@ -200,129 +201,8 @@ export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Hero Section with Parallax */}
-      <motion.section 
-        style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center overflow-hidden"
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src={getImage('/images/empresa/instalaciones-planta.jpg', 'heroImage')}
-            alt="Instalaciones MEISA"
-            fill
-            className="object-cover opacity-20"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-900/70 to-slate-800/80" />
-        </div>
-        
-        {/* Floating Elements */}
-        <motion.div 
-          animate={{ 
-            y: [0, -20, 0],
-            rotate: [0, 5, 0]
-          }}
-          transition={{ 
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-20 left-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"
-        />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="inline-block px-4 py-2 bg-blue-100/90 text-blue-600 text-sm font-semibold rounded-full mb-8 backdrop-blur-sm"
-          >
-{getText('NUESTRA EMPRESA', 'heroTag')}
-          </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="text-6xl md:text-8xl font-bold text-white mb-6"
-          >
-            {getText('Nuestra Empresa', 'heroTitle')}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-4">
-{getText('Líderes en Estructuras Metálicas', 'heroTitleHighlight')}
-            </span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed"
-          >
-            {getText(`Líderes en estructuras metálicas con más de ${siteConfig.empresa.aniosExperiencia} años de experiencia`, 'heroSubtitle')}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center"
-          >
-            <Link
-              href="/contacto"
-              className="group px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
-            >
-              <span className="flex items-center gap-2">
-                {getText('Hablemos de tu Proyecto', 'heroCta1')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </Link>
-            <Link
-              href="/proyectos"
-              className="group px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300 transform hover:scale-105"
-            >
-{getText('Ver Nuestros Proyectos', 'heroCta2')}
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* Numbers Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-        <div className="relative z-10">
-          <UnifiedStatsGrid
-            title={getText('MEISA en Números', 'numeros.title')}
-            subtitle={getText(`Más de ${siteConfig.empresa.aniosExperiencia} años de experiencia nos han posicionado como líderes en el sector metalmecánico.`, 'numeros.subtitle')}
-            stats={[
-              { 
-                number: COMPANY_STATS.YEARS_EXPERIENCE.toString(), 
-                label: getText("Años de Experiencia", 'numeroStats.0.label'), 
-                suffix: "" 
-              },
-              { 
-                number: COMPANY_STATS.MONTHLY_CAPACITY.toString(), 
-                label: getText("Toneladas/Mes", 'numeroStats.1.label'), 
-                suffix: "" 
-              },
-              { 
-                number: COMPANY_STATS.PLANTS.toString(), 
-                label: getText("Plantas Industriales", 'numeroStats.2.label'), 
-                suffix: "" 
-              },
-              { 
-                number: COMPANY_STATS.TOTAL_TEAM.toString(), 
-                label: getText("Colaboradores", 'numeroStats.3.label'), 
-                suffix: "+" 
-              }
-            ]}
-            variant="default"
-            colorScheme="blue"
-            columns={4}
-            showDecorator={true}
-          />
-        </div>
-      </section>
+      {/* Sección Construyendo Legado */}
+      <CapacitiesSection />
 
       {/* Sticky Navigation */}
       <div 

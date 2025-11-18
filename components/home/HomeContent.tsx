@@ -12,7 +12,6 @@ import { HeroImageConfig } from '@/lib/hero-config'
 
 // Importaciones de componentes
 import { HeroSection } from '@/components/sections/HeroSection'
-import { CapacitiesSection } from '@/components/sections/CapacitiesSection'
 import { ServicesSection } from '@/components/sections/ServicesSectionNew'
 import { TecnologiasSection } from '@/components/sections/TecnologiasSection'
 import { InfraestructuraSection } from '@/components/sections/InfraestructuraSection'
@@ -57,10 +56,8 @@ export function HomeContent({ projectsByCategory, sections, heroImages }: HomeCo
       // Ajustado para que aparezca después de que termine la animación del hero (180vh)
       const heroThreshold = isMobile ? windowHeight * 0.8 : windowHeight * 1.6 // 1.6 pantallas en desktop
 
-      // Mostrar navegación lateral cuando pasamos el hero (solo desktop)
-      if (!isMobile) {
-        setShowSideNav(scrollY > heroThreshold)
-      }
+      // Mostrar navegación lateral cuando pasamos el hero (móvil y desktop)
+      setShowSideNav(scrollY > heroThreshold)
 
       // Si estamos en la sección hero (primera pantalla)
       if (scrollY < heroThreshold) {
@@ -255,8 +252,12 @@ export function HomeContent({ projectsByCategory, sections, heroImages }: HomeCo
         </div>
       </div>
 
-      {/* Indicador lateral móvil - Simplificado y visible */}
-      <div className="sm:hidden fixed right-3 top-1/2 transform -translate-y-1/2 z-50">
+      {/* Indicador lateral móvil - Oculto durante hero section */}
+      <div
+        className={`sm:hidden fixed right-3 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-500 ${
+          showSideNav ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20 pointer-events-none'
+        }`}
+      >
         <div className="bg-white/90 backdrop-blur-md rounded-full shadow-xl border border-gray-200/50 py-3 px-2">
           <div className="flex flex-col space-y-2">
             {sections.map((section, index) => {
@@ -298,14 +299,6 @@ export function HomeContent({ projectsByCategory, sections, heroImages }: HomeCo
         className="relative z-40 bg-white"
       >
         <AboutSection />
-      </section>
-
-      <section
-        id="capacidades"
-        ref={(el) => { sectionsRef.current['capacidades'] = el }}
-        className="relative z-40 bg-white"
-      >
-        <CapacitiesSection />
       </section>
 
       <section

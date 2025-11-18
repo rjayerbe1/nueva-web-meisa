@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
@@ -30,10 +30,12 @@ export function LogoHoverEffect({
   )
 }
 
-// Efecto 1: 3D Tilt - El logo se inclina siguiendo el mouse
+// Efecto 1: 3D Tilt - El logo se inclina siguiendo el mouse (desktop) o giroscopio (móvil)
 function TiltEffect({ width, height }: { width: number; height: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [gyroActive, setGyroActive] = useState(false)
 
   const x = useMotionValue(0)
   const y = useMotionValue(0)
@@ -47,7 +49,57 @@ function TiltEffect({ width, height }: { width: number; height: number }) {
     damping: 20
   })
 
+  // Detectar si es móvil y activar giroscopio
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+
+      // Si es móvil, solicitar permisos de giroscopio (iOS 13+)
+      if (mobile && typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+        ;(DeviceOrientationEvent as any).requestPermission()
+          .then((response: string) => {
+            if (response === 'granted') {
+              setGyroActive(true)
+            }
+          })
+          .catch(console.error)
+      } else if (mobile) {
+        // Android y navegadores que no requieren permiso
+        setGyroActive(true)
+      }
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Listener para giroscopio en móvil
+  useEffect(() => {
+    if (!isMobile || !gyroActive) return
+
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      // beta: inclinación adelante-atrás (-180 a 180)
+      // gamma: inclinación izquierda-derecha (-90 a 90)
+      const beta = event.beta || 0  // adelante-atrás
+      const gamma = event.gamma || 0 // izquierda-derecha
+
+      // Normalizar valores para el efecto tilt
+      // Limitamos el rango para que sea sutil
+      const normalizedX = Math.max(-0.5, Math.min(0.5, gamma / 30))
+      const normalizedY = Math.max(-0.5, Math.min(0.5, (beta - 90) / 30)) // Restar 90 porque beta=90 es posición plana
+
+      x.set(normalizedX)
+      y.set(normalizedY)
+    }
+
+    window.addEventListener('deviceorientation', handleOrientation)
+    return () => window.removeEventListener('deviceorientation', handleOrientation)
+  }, [isMobile, gyroActive, x, y])
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return // No usar mouse en móvil
     if (!ref.current) return
     const rect = ref.current.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
@@ -57,6 +109,7 @@ function TiltEffect({ width, height }: { width: number; height: number }) {
   }
 
   const handleMouseLeave = () => {
+    if (isMobile) return // No resetear en móvil
     setIsHovered(false)
     x.set(0)
     y.set(0)
@@ -66,7 +119,7 @@ function TiltEffect({ width, height }: { width: number; height: number }) {
     <div
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={{
         perspective: 1000,

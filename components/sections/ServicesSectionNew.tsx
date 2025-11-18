@@ -1,317 +1,260 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import Image from 'next/image'
 import Link from 'next/link'
-import {
-  Cpu,
-  Hammer,
-  Building2,
-  Settings,
-  ArrowRight,
-  CheckCircle2,
-  Zap,
-  Shield,
-  Timer,
-  Award
-} from 'lucide-react'
-import { siteConfig } from '@/lib/site-config'
+import { ArrowRight, Cpu, Hammer, Building2, Settings } from 'lucide-react'
+
+// Componente para el título animado con letras individuales
+const AnimatedTitle = ({ text, className = "" }: { text: string; className?: string }) => {
+  const words = text.split(' ')
+
+  return (
+    <h2 className={className}>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block mr-3">
+          {word.split('').map((char, charIndex) => (
+            <motion.span
+              key={`${wordIndex}-${charIndex}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: (wordIndex * word.length + charIndex) * 0.02,
+                ease: "easeOut"
+              }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </h2>
+  )
+}
 
 const services = [
   {
     id: 'diseno',
-    title: 'Consultoría en Diseño Estructural',
-    subtitle: 'Ingeniería de precisión',
-    description: 'Gracias a un equipo de ingenieros altamente calificado y a la mejor tecnología en análisis estructural, brindamos soluciones óptimas de diseño conforme a los requerimientos del cliente.',
-    icon: Cpu,
-    image: '/images/services/diseno-estructural.jpg',
-    capabilities: [
-      'Análisis y optimización de cargas estructurales',
-      'Diseño según normas sismo resistentes NSR-10',
-      'Modelado 3D con tecnología BIM - Tekla Structures',
-      'Software especializado: RISA-3D, RISAFloor, RISAConnection'
-    ],
-    stats: { value: '5+', label: 'Software BIM especializados' },
-    color: 'from-blue-500 to-cyan-500',
-    bgColor: 'from-blue-500/10 to-cyan-500/10'
+    nombre: 'Diseño Estructural',
+    subtitulo: 'Ingeniería de precisión BIM',
+    descripcion: 'Análisis y diseño de estructuras metálicas con tecnología avanzada',
+    video: '/videos/diseno-estructural.mp4',
+    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80', // fallback
+    color: '#3b82f6', // blue-500
+    overlayColor: '#1e3a8a', // blue-800
+    overlayOpacity: 0.4
   },
   {
     id: 'fabricacion',
-    title: 'Fabricación de Estructuras Metálicas',
-    subtitle: 'Producción industrial de 600 ton/mes',
-    description: 'Con 3 plantas industriales y capacidad de 600 toneladas/mes, contamos con personal capacitado y equipos modernos para la fabricación de estructuras metálicas.',
-    icon: Hammer,
-    image: '/images/services/industria.jpg',
-    capabilities: [
-      'Corte con mesas CNC de alta precisión',
-      'Soldadura con personal certificado AWS',
-      'Limpieza por granallado y pintura anticorrosiva',
-      '8 Puentes grúa distribuidos en 3 plantas'
-    ],
-    stats: { value: '600', label: 'Ton/mes capacidad total' },
-    color: 'from-slate-500 to-slate-700',
-    bgColor: 'from-slate-500/10 to-slate-700/10'
+    nombre: 'Fabricación Metálica',
+    subtitulo: 'Producción 600 ton/mes',
+    descripcion: '3 plantas industriales con equipos de última generación',
+    video: '/videos/fabricacion-metalica.mp4',
+    image: 'https://images.unsplash.com/photo-1565131568475-d4004fb1be6e?w=1200&q=80', // fallback
+    color: '#64748b', // slate-500
+    overlayColor: '#1e293b', // slate-800
+    overlayOpacity: 0.4
   },
   {
     id: 'montaje',
-    title: 'Montaje de Estructuras Metálicas',
-    subtitle: 'Instalación profesional certificada',
-    description: 'Contamos con personal experimentado que, siguiendo estrictos protocolos de seguridad de trabajo en alturas y utilizando equipos de izaje especializados, logra terminar los proyectos exitosamente.',
-    icon: Building2,
-    image: '/images/services/montaje.jpg',
-    capabilities: [
-      'Grúas y equipos de izaje certificados',
-      'Personal con certificación en alturas',
-      'Supervisión por inspectores SIG',
-      'Experiencia: puentes hasta 180m (Puente La Floresta)'
-    ],
-    stats: { value: '62+', label: 'Proyectos ejecutados' },
-    color: 'from-green-600 to-green-700',
-    bgColor: 'from-green-600/10 to-green-700/10'
+    nombre: 'Montaje Especializado',
+    subtitulo: 'Instalación profesional',
+    descripcion: 'Equipos certificados y personal experto en alturas',
+    video: '/videos/montaje-especializado.mp4',
+    image: 'https://images.unsplash.com/photo-1577705998148-6da4f3963bc8?w=1200&q=80', // fallback
+    color: '#16a34a', // green-600
+    overlayColor: '#15803d', // green-700
+    overlayOpacity: 0.4
   },
   {
     id: 'construccion',
-    title: 'Construcción de Obra Civil',
-    subtitle: 'Servicio integral llave en mano',
-    description: 'Para brindar un servicio integral, realizamos todas las obras civiles complementarias que requiera el cliente, desde la cimentación hasta los acabados.',
-    icon: Settings,
-    image: '/images/services/industria.jpg',
-    capabilities: [
-      'Estudios de suelos y cimentaciones',
-      'Construcción de bases y pedestales',
-      'Obras de concreto reforzado',
-      'Coordinación integral de proyectos'
-    ],
-    stats: { value: `${siteConfig.empresa.aniosExperiencia}+`, label: 'Años experiencia' },
-    color: 'from-purple-500 to-violet-500',
-    bgColor: 'from-purple-500/10 to-violet-500/10'
-  },
+    nombre: 'Construcción Civil',
+    subtitulo: 'Servicio integral',
+    descripcion: 'Obras complementarias desde cimentación hasta acabados',
+    video: '/videos/construccion-civil.mp4',
+    image: 'https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=1200&q=80', // fallback
+    color: '#a855f7', // purple-500
+    overlayColor: '#7e22ce', // purple-700
+    overlayOpacity: 0.4
+  }
 ]
 
-const benefits = [
-  { icon: Shield, title: 'Calidad Garantizada', desc: 'Normas internacionales' },
-  { icon: Timer, title: 'Entregas Puntuales', desc: 'Cumplimiento 100%' },
-  { icon: Award, title: 'Experiencia Comprobada', desc: `${siteConfig.empresa.aniosExperiencia}+ años` },
-  { icon: Zap, title: 'Tecnología Avanzada', desc: 'Equipos modernos' }
-]
-
-export function ServicesSection() {
-  const [activeService, setActiveService] = useState(0)
+// Componente individual para cada servicio con parallax
+function ServiceCard({ servicio, index }: { servicio: typeof services[0]; index: number }) {
   const containerRef = useRef<HTMLDivElement>(null)
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
 
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50])
+  // Efecto parallax para el contenido - se mueve más lento que el scroll
+  const contentY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
 
   return (
-    <section 
-      ref={containerRef}
-      id="servicios"
-      className="py-20 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden"
+    <Link
+      href={`/servicios#${servicio.id}`}
+      className="group block"
     >
-      {/* Patrón de fondo */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                           radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)`
-        }} />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header mejorado */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-base font-bebas uppercase mb-6"
-          >
-            <Zap className="w-4 h-4" />
-            Nuestros Servicios
-          </motion.div>
-
-          <h2 className="text-6xl md:text-7xl font-bebas uppercase text-white mb-6 leading-tight">
-            Soluciones integrales en
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-slate-300 via-blue-200 to-slate-400">
-              acero
-            </span>
-          </h2>
-
-          <p className="text-xl font-lato text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Ofrecemos servicios completos desde el diseño hasta el mantenimiento,
-            garantizando la <span className="text-blue-400 font-lato font-semibold">excelencia en cada etapa</span> del proyecto.
-          </p>
-        </motion.div>
-
-        {/* Beneficios principales */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
-        >
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={benefit.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -5 }}
-              className="text-center group"
+      <motion.div
+        ref={containerRef}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: index * 0.1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        className="relative h-screen overflow-hidden"
+      >
+        {/* Imagen o Video de fondo */}
+        <div className="absolute inset-0">
+          {servicio.video ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              style={
+                servicio.id === 'diseno'
+                  ? { objectPosition: '15% 70%', transform: 'scale(1.30)' }
+                  : servicio.id === 'construccion'
+                  ? { transform: 'scale(1.60)' }
+                  : undefined
+              }
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl mb-4 group-hover:border-blue-500/50 transition-all">
-                <benefit.icon className="w-8 h-8 text-blue-400 group-hover:scale-110 transition-transform" />
-              </div>
-              <h4 className="text-white font-bebas uppercase text-lg mb-1">{benefit.title}</h4>
-              <p className="text-gray-400 font-lato text-sm">{benefit.desc}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Servicios principales - Diseño tipo tarjetas */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -8 }}
-              className="relative group"
-            >
-              {/* Tarjeta principal */}
-              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden hover:border-gray-600/50 transition-all duration-300">
-                {/* Header con imagen */}
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent" />
-                  
-                  {/* Icono flotante */}
-                  <div className={`absolute top-4 left-4 p-3 bg-gradient-to-br ${service.color} rounded-xl shadow-lg`}>
-                    <service.icon className="w-6 h-6 text-white" />
-                  </div>
-                  
-                  {/* Estadística */}
-                  <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-sm rounded-lg px-3 py-1">
-                    <div className="text-white font-bebas text-xl">{service.stats.value}</div>
-                    <div className="text-gray-300 font-lato text-xs">{service.stats.label}</div>
-                  </div>
-                </div>
-
-                {/* Contenido */}
-                <div className="p-6">
-                  <div className="mb-4">
-                    <div className="text-blue-400 text-sm font-bebas uppercase mb-1">{service.subtitle}</div>
-                    <h3 className="text-2xl font-bebas uppercase text-white mb-3">{service.title}</h3>
-                    <p className="text-gray-300 font-lato leading-relaxed">{service.description}</p>
-                  </div>
-
-                  {/* Capacidades */}
-                  <div className="space-y-2 mb-6">
-                    {service.capabilities.map((capability, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.5 + idx * 0.1 }}
-                        viewport={{ once: true }}
-                        className="flex items-center gap-3"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" />
-                        <span className="text-gray-400 font-lato text-sm">{capability}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <Link
-                    href={`/servicios#${service.id}`}
-                    className="inline-flex items-center gap-2 text-blue-400 font-lato font-bold hover:text-blue-300 transition-colors group/link"
-                  >
-                    Conocer más detalles
-                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Efecto de brillo en hover */}
-              <div className={`absolute inset-0 bg-gradient-to-r ${service.bgColor} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl`} />
-            </motion.div>
-          ))}
+              <source src={servicio.video} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              src={servicio.image}
+              alt={servicio.nombre}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          )}
         </div>
 
-        {/* CTA Section rediseñada */}
+        {/* Overlay oscuro */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundColor: '#000000',
+            opacity: servicio.overlayOpacity
+          }}
+        />
+
+        {/* Overlay hover con color del servicio */}
+        <style jsx>{`
+          .hover-overlay-${servicio.id} {
+            background-color: ${servicio.overlayColor};
+            opacity: 0;
+            transition: opacity 500ms;
+          }
+          .group:hover .hover-overlay-${servicio.id} {
+            opacity: 0.2;
+          }
+        `}</style>
+        <div className={`absolute inset-0 hover-overlay-${servicio.id}`} />
+
+        {/* Contenido en la parte inferior con efecto parallax */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative"
+          style={{ y: contentY }}
+          className="absolute inset-0 flex flex-col items-center justify-end px-6 lg:px-12 pb-8 lg:pb-12 text-center"
         >
-          <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 backdrop-blur-sm border border-gray-700/50 rounded-3xl p-12 text-center relative overflow-hidden">
-            {/* Patrón de fondo */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)`,
-              }} />
-            </div>
+          {/* Subtítulo pequeño */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
+            viewport={{ once: true }}
+            className="text-gray-300 font-lato text-sm lg:text-base mb-2 uppercase tracking-wider"
+          >
+            {servicio.subtitulo}
+          </motion.p>
 
-            <div className="relative z-10">
-              <motion.div
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl mb-6"
-              >
-                <Building2 className="w-10 h-10 text-white" />
-              </motion.div>
-              
-              <h3 className="text-4xl md:text-5xl font-bebas uppercase text-white mb-4">
-                ¿Listo para tu próximo proyecto?
-              </h3>
-              <p className="text-lg font-lato text-gray-300 mb-8 max-w-2xl mx-auto">
-                Con <span className="text-blue-400 font-lato font-semibold">tecnología BIM avanzada</span> y
-                <span className="text-blue-400 font-lato font-semibold"> equipos especializados</span>, transformamos
-                tus ideas en realidades de acero duraderas.
-              </p>
+          {/* Título animado con letras */}
+          <AnimatedTitle
+            text={servicio.nombre.toUpperCase()}
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
+          />
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/contacto"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-lato font-bold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
-                >
-                  Solicitar cotización
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+          {/* Descripción */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+            viewport={{ once: true }}
+            className="text-gray-200 font-lato text-sm lg:text-base mb-6 max-w-md"
+          >
+            {servicio.descripcion}
+          </motion.p>
 
-                <Link
-                  href="/proyectos"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-lato font-bold rounded-lg hover:bg-white/20 transition-all duration-300"
-                >
-                  Ver proyectos realizados
-                </Link>
+          {/* Botón Conocer más estilo Ferrari */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-3 group/btn"
+          >
+            <span className="text-white font-lato uppercase tracking-wider text-sm lg:text-base font-semibold">
+              Conocer más
+            </span>
+
+            {/* Círculo con flecha estilo Ferrari */}
+            <div className="relative w-10 h-10 lg:w-12 lg:h-12">
+              {/* Círculo exterior */}
+              <div className="absolute inset-0 rounded-full border-2 border-white/80 group-hover/btn:border-white transition-all duration-300 group-hover/btn:scale-110" />
+
+              {/* Círculo interior animado en hover */}
+              <div className="absolute inset-0 rounded-full bg-white/0 group-hover/btn:bg-white transition-all duration-300" />
+
+              {/* Flecha */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <ArrowRight
+                  className="w-5 h-5 lg:w-6 lg:h-6 text-white transition-all duration-300 transform group-hover/btn:translate-x-1"
+                />
               </div>
             </div>
-          </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Línea divisoria (excepto en el último servicio) */}
+        {index < services.length - 1 && (
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
+        )}
+      </motion.div>
+    </Link>
+  )
+}
+
+export function ServicesSection() {
+  return (
+    <section id="servicios" className="bg-gray-900">
+      {/* Grid de servicios estilo Ferrari - 2 columnas */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+        {services.map((servicio, index) => (
+          <ServiceCard key={servicio.id} servicio={servicio} index={index} />
+        ))}
+      </div>
+
+      {/* Call to action final */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <Link
+            href="/servicios"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+          >
+            Ver detalles de servicios
+            <ArrowRight className="w-5 h-5" />
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -1,197 +1,175 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import Image from 'next/image'
+import { useRef, useEffect, useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { Factory, TrendingUp, Zap, Building2, ArrowRight } from 'lucide-react'
-
-const milestones = [
-  {
-    year: '1996',
-    title: 'Fundación',
-    description: 'Iniciamos en Popayán con estructuras metálicas',
-    image: '/images/about/planta-produccion.webp',
-    icon: Factory,
-  },
-  {
-    year: '2000s',
-    title: 'Expansión Nacional',
-    description: 'Proyectos emblemáticos en toda Colombia',
-    image: '/images/about/planta-produccion.webp', // Placeholder - cambiar por imagen real
-    icon: TrendingUp,
-  },
-  {
-    year: '2010s',
-    title: 'Innovación BIM',
-    description: 'Tecnología de punta en diseño y fabricación',
-    image: '/images/about/planta-produccion.webp', // Placeholder - cambiar por imagen real
-    icon: Zap,
-  },
-  {
-    year: '2024',
-    title: 'Consolidación',
-    description: '3 plantas, 600 ton/mes, líderes en Colombia',
-    image: '/images/about/planta-produccion.webp', // Placeholder - cambiar por imagen real
-    icon: Building2,
-  },
-]
-
-function TimelineCard({ milestone, index, isLast }: { milestone: typeof milestones[0]; index: number; isLast: boolean }) {
-  const cardRef = useRef(null)
-  const isInView = useInView(cardRef, { once: true, margin: '-50px' })
-  const Icon = milestone.icon
-
-  return (
-    <div className="relative flex-1">
-      {/* Línea conectora horizontal */}
-      {!isLast && (
-        <div className="hidden lg:block absolute top-[60px] left-1/2 w-full h-[2px] z-0">
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.8, delay: index * 0.2 + 0.3 }}
-            className="h-full bg-gradient-to-r from-blue-500 to-blue-600 origin-left"
-          />
-        </div>
-      )}
-
-      {/* Punto en la línea */}
-      <motion.div
-        ref={cardRef}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 0.5, delay: index * 0.2 }}
-        className="relative z-10 flex flex-col items-center"
-      >
-        {/* Círculo con icono */}
-        <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-2xl mb-6 relative group">
-          {/* Anillo animado */}
-          <div className="absolute inset-0 rounded-full border-4 border-blue-400 opacity-0 group-hover:opacity-100 animate-ping" />
-
-          {/* Icono */}
-          <Icon className="w-12 h-12 text-white relative z-10" />
-
-          {/* Año en el círculo */}
-          <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gray-900 border-2 border-blue-500 rounded-full px-4 py-1">
-            <span className="text-blue-400 font-bebas text-2xl">{milestone.year}</span>
-          </div>
-        </div>
-
-        {/* Card con imagen */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: index * 0.2 + 0.2 }}
-          className="w-full group/card cursor-pointer"
-        >
-          <div className="relative h-56 rounded-xl overflow-hidden shadow-xl">
-            <Image
-              src={milestone.image}
-              alt={milestone.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover/card:scale-110"
-            />
-            {/* Overlay oscuro */}
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
-
-            {/* Contenido sobre la imagen */}
-            <div className="absolute bottom-0 left-0 right-0 p-5">
-              {/* Título */}
-              <h5 className="text-xl md:text-2xl font-bebas uppercase text-white mb-2 leading-tight">
-                {milestone.title}
-              </h5>
-
-              {/* Descripción */}
-              <p className="text-gray-300 font-lato text-sm leading-relaxed">
-                {milestone.description}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </div>
-  )
-}
+import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
 
 export function AboutSection() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [currentVideo, setCurrentVideo] = useState('/videos/engineering-plant.mp4')
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Alternar entre video normal y reversa (solo desktop)
+  useEffect(() => {
+    if (isMobile) return
+    const video = videoRef.current
+    if (!video) return
+
+    video.playbackRate = 0.5 // 50% de velocidad
+
+    const handleEnded = () => {
+      // Cuando termine el video, cambiar al otro
+      setCurrentVideo(prev =>
+        prev === '/videos/engineering-plant.mp4'
+          ? '/videos/engineering-plant-reverse.mp4'
+          : '/videos/engineering-plant.mp4'
+      )
+    }
+
+    video.addEventListener('ended', handleEnded)
+
+    return () => {
+      video.removeEventListener('ended', handleEnded)
+    }
+  }, [isMobile])
+
+  // Reproducir automáticamente cuando cambie el video (solo desktop)
+  useEffect(() => {
+    if (isMobile) return
+    const video = videoRef.current
+    if (video) {
+      video.load()
+      video.playbackRate = 0.5
+      video.play().catch(() => {})
+    }
+  }, [currentVideo, isMobile])
+
+  // Parallax effect
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  // Transform para parallax - el video se mueve más lento que el scroll (invertido)
+  const y = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6])
+
+  // Efecto zoom para imagen en móvil
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1, 1.2])
+
+  // Efecto parallax para el texto - se queda atrás al hacer scroll
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
 
   return (
     <section
       ref={containerRef}
-      className="relative py-16 md:py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden"
+      className="relative w-full h-screen overflow-hidden"
     >
-      {/* Patrón de fondo sutil */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px)`,
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Título y descripción */}
-        <div className="text-center mb-20">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bebas uppercase text-white mb-6"
-          >
-            Nuestra{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500">
-              Trayectoria
-            </span>
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-300 font-lato max-w-4xl mx-auto leading-relaxed"
-          >
-            Desde <strong className="text-blue-400">1996 en Popayán, Cauca</strong>, MEISA nació con la visión de transformar
-            la industria metalmecánica colombiana. De empresa local a referente nacional en diseño, fabricación y montaje
-            de estructuras metálicas. Cada proyecto cuenta nuestra historia de innovación y compromiso con Colombia.
-          </motion.p>
-        </div>
-
-        {/* Timeline horizontal con línea conectora */}
-        <div className="relative mb-16">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-4">
-            {milestones.map((milestone, index) => (
-              <TimelineCard
-                key={milestone.year}
-                milestone={milestone}
-                index={index}
-                isLast={index === milestones.length - 1}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* CTA Button */}
+      {/* Imagen con zoom en móvil / Video con parallax en desktop */}
+      {isMobile ? (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex justify-center"
+          style={{ scale }}
+          className="absolute inset-0 w-full h-full"
         >
-          <Link
-            href="/trayectoria"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-lato font-bold text-lg rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
-          >
-            Conoce nuestra trayectoria completa
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+          <Image
+            src="/images/about/meisa-planta-aerea.jpg"
+            alt="MEISA - Planta de producción vista aérea"
+            fill
+            className="object-cover"
+            style={{ objectPosition: '65% center' }}
+            priority
+            sizes="100vw"
+          />
         </motion.div>
-      </div>
+      ) : (
+        <motion.div
+          style={{ y }}
+          className="absolute -top-[15%] left-0 w-full h-[130%]"
+        >
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={currentVideo} type="video/mp4" />
+          </video>
+        </motion.div>
+      )}
+
+      {/* Overlay oscuro con gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/50" />
+
+      {/* Contenido alineado a la izquierda con efecto parallax */}
+      <motion.div
+        style={{ y: textY }}
+        className="relative z-10 h-full flex items-end pb-72 md:items-center md:pb-0 px-4 sm:px-6 lg:px-16 xl:px-24"
+      >
+        <div className="max-w-3xl">
+          {/* Título principal - Dos líneas con tamaños diferentes */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="mb-3 max-h-[500px]:mb-2"
+          >
+            <h2 className="text-5xl max-h-[500px]:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-white leading-none">
+              EXCELENCIA
+            </h2>
+            <h3 className="text-2xl max-h-[500px]:text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bebas uppercase text-white leading-tight -mt-1 max-h-[500px]:-mt-0.5">
+              Nuestro Único Estándar
+            </h3>
+          </motion.div>
+
+          {/* Subtítulo/Descripción */}
+          <motion.p
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-[13px] max-h-[500px]:text-[10px] sm:text-sm md:text-base lg:text-lg text-gray-200 font-lato leading-relaxed mb-4 max-h-[500px]:mb-2 bg-black/40 px-1 py-2 max-h-[500px]:px-0.5 max-h-[500px]:py-1 rounded-lg max-w-[280px] sm:max-w-md md:max-w-lg lg:max-w-xl"
+          >
+            Cada proyecto es <span className="text-red-600 font-bold">único</span>. Nuestra <span className="text-red-600 font-bold">excelencia</span> en <span className="text-red-600 font-bold">diseño, fabricación y montaje</span>, una constante
+          </motion.p>
+
+          {/* Botón CTA */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <Link
+              href="/empresa"
+              className="group relative inline-block overflow-hidden"
+            >
+              {/* Barra roja que se expande en hover */}
+              <span className="absolute left-0 top-0 h-full w-1.5 bg-red-600 transition-all duration-500 ease-out group-hover:w-full z-0"></span>
+
+              {/* Texto del botón */}
+              <span className="relative z-10 inline-flex items-center gap-2 px-6 max-h-[500px]:px-5 py-1.5 max-h-[500px]:py-1 text-white font-lato font-bold text-sm max-h-[500px]:text-xs md:text-lg transition-colors duration-500 group-hover:text-gray-900">
+                Conoce Nuestra Empresa
+                <ArrowRight className="w-4 h-4 max-h-[500px]:w-3 max-h-[500px]:h-3 lg:w-6 lg:h-6 opacity-0 transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.div>
     </section>
   )
 }
