@@ -100,7 +100,7 @@ export function ExpertiseTransitionSection() {
         transition={{ duration: 1, delay: 1 }}
         className="absolute bottom-8 left-0 right-0 z-20 flex flex-col items-center gap-2"
       >
-        <span className="text-white font-bebas uppercase text-sm tracking-wider text-center">
+        <span className="text-white font-bebas uppercase text-base md:text-lg tracking-wider text-center">
           Nuestro Portafolio
         </span>
         <motion.div

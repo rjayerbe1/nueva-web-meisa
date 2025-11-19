@@ -80,7 +80,7 @@ export function ClientesSection() {
   }
 
   return (
-    <section id="clientes" className="py-20 bg-white">
+    <section id="clientes" className="py-12 md:py-16 bg-white">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -88,10 +88,10 @@ export function ClientesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <h2 className="text-blue-600 font-bebas uppercase text-2xl md:text-3xl lg:text-4xl mb-4">Nuestros Clientes</h2>
-          <h3 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase text-gray-900 mb-6">
+          <h2 className="text-blue-600 font-bebas uppercase text-2xl md:text-3xl lg:text-4xl mb-3">Nuestros Clientes</h2>
+          <h3 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase text-gray-900 mb-4">
             30+ Años
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Construyendo Confianza</span>
           </h3>
@@ -99,75 +99,6 @@ export function ClientesSection() {
             Las empresas más importantes confían en MEISA para sus proyectos estructurales más exigentes
           </p>
         </motion.div>
-      </div>
-
-      {/* Carrusel de logos automático - Ancho completo */}
-      {clientes.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-16 relative w-full"
-        >
-          {/* Contenedor con overflow y gradientes */}
-          <div className="overflow-hidden relative">
-            {/* Gradiente izquierdo */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-
-            {/* Gradiente derecho */}
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-
-            {/* Carrusel */}
-            <div className="flex space-x-12 md:space-x-16 animate-scroll py-8">
-              {/* Primera copia del array */}
-              {clientes.filter(c => c.logo).map((cliente) => (
-                <div
-                  key={`logo-1-${cliente.id}`}
-                  className="flex-shrink-0 w-32 md:w-40 h-16 md:h-20 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
-                >
-                  {cliente.logo ? (
-                    <Image
-                      src={cliente.logo}
-                      alt={cliente.nombre}
-                      width={120}
-                      height={60}
-                      className="object-contain max-w-full max-h-full transition-all duration-300"
-                    />
-                  ) : (
-                    <div className="text-gray-600 text-xs font-medium text-center">
-                      {cliente.nombre.split(' ').map(word => word[0]).join('').slice(0, 3)}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {/* Segunda copia para efecto continuo */}
-              {clientes.filter(c => c.logo).map((cliente) => (
-                <div
-                  key={`logo-2-${cliente.id}`}
-                  className="flex-shrink-0 w-32 md:w-40 h-16 md:h-20 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
-                >
-                  {cliente.logo ? (
-                    <Image
-                      src={cliente.logo}
-                      alt={cliente.nombre}
-                      width={120}
-                      height={60}
-                      className="object-contain max-w-full max-h-full transition-all duration-300"
-                    />
-                  ) : (
-                    <div className="text-gray-600 text-xs font-medium text-center">
-                      {cliente.nombre.split(' ').map(word => word[0]).join('').slice(0, 3)}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      )}
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* CTA Trayectoria */}
         <motion.div
@@ -175,7 +106,7 @@ export function ClientesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-10"
         >
           <Link
             href="/trayectoria"
@@ -191,6 +122,75 @@ export function ClientesSection() {
             </span>
           </Link>
         </motion.div>
+      </div>
+
+      {/* Carrusel de logos automático - Ancho completo */}
+      {clientes.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-12 relative w-full"
+        >
+          {/* Contenedor con overflow y gradientes */}
+          <div className="overflow-hidden relative">
+            {/* Gradiente izquierdo */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+
+            {/* Gradiente derecho */}
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+            {/* Carrusel */}
+            <div className="flex space-x-8 md:space-x-10 lg:space-x-12 animate-scroll py-8">
+              {/* Primera copia del array */}
+              {clientes.filter(c => c.logo).map((cliente) => (
+                <div
+                  key={`logo-1-${cliente.id}`}
+                  className="flex-shrink-0 w-48 md:w-56 lg:w-64 h-24 md:h-28 lg:h-32 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                >
+                  {cliente.logo ? (
+                    <Image
+                      src={cliente.logo}
+                      alt={cliente.nombre}
+                      width={200}
+                      height={100}
+                      className="object-contain max-w-full max-h-full transition-all duration-300"
+                    />
+                  ) : (
+                    <div className="text-gray-600 text-sm font-medium text-center">
+                      {cliente.nombre.split(' ').map(word => word[0]).join('').slice(0, 3)}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {/* Segunda copia para efecto continuo */}
+              {clientes.filter(c => c.logo).map((cliente) => (
+                <div
+                  key={`logo-2-${cliente.id}`}
+                  className="flex-shrink-0 w-48 md:w-56 lg:w-64 h-24 md:h-28 lg:h-32 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                >
+                  {cliente.logo ? (
+                    <Image
+                      src={cliente.logo}
+                      alt={cliente.nombre}
+                      width={200}
+                      height={100}
+                      className="object-contain max-w-full max-h-full transition-all duration-300"
+                    />
+                  ) : (
+                    <div className="text-gray-600 text-sm font-medium text-center">
+                      {cliente.nombre.split(' ').map(word => word[0]).join('').slice(0, 3)}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Proyectos destacados con logos */}
         {clientesDestacados.length > 0 && (
@@ -199,9 +199,9 @@ export function ClientesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-16"
+            className="mb-0"
           >
-            <h4 className="text-3xl font-bebas uppercase text-gray-900 text-center mb-8">Proyectos Destacados</h4>
+            <h4 className="text-3xl font-bebas uppercase text-gray-900 text-center mb-6">Proyectos Destacados</h4>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {clientesDestacados.map((cliente, index) => (

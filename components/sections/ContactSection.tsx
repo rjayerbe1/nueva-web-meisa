@@ -1,90 +1,17 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, Building2, Package, Calendar, FileText } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-
-const contactSchema = z.object({
-  nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  empresa: z.string().optional(),
-  email: z.string().email('Email inválido'),
-  telefono: z.string().min(10, 'Teléfono inválido'),
-  ciudad: z.string().min(2, 'La ciudad es requerida'),
-  tipoProyecto: z.string().min(1, 'Seleccione un tipo de proyecto'),
-  ubicacionProyecto: z.string().optional(),
-  tamanoProyecto: z.string().optional(),
-  serviciosRequeridos: z.array(z.string()).optional(),
-  plazoDeseado: z.string().optional(),
-  descripcion: z.string().min(20, 'Por favor describa su proyecto (mínimo 20 caracteres)'),
-  tienePlanos: z.string().optional(),
-})
-
-type ContactFormData = z.infer<typeof contactSchema>
-
-const tiposProyecto = [
-  'Estructura metálica para edificación',
-  'Estructura industrial',
-  'Cubierta metálica',
-  'Puente o pasarela',
-  'Tanque o recipiente',
-  'Escalera metálica',
-  'Mantenimiento o reparación',
-  'Otro tipo de proyecto'
-]
-
-const serviciosDisponibles = [
-  'Diseño estructural',
-  'Fabricación',
-  'Montaje',
-  'Pintura y acabados',
-  'Mantenimiento'
-]
+import { Phone, Mail, Clock, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import { siteConfig, getAniosExperienciaTexto } from '@/lib/site-config'
 
 export function ContactSection() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema)
-  })
-
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true)
-    setSubmitStatus('idle')
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!response.ok) throw new Error('Error al enviar el mensaje')
-
-      setSubmitStatus('success')
-      reset()
-
-      setTimeout(() => setSubmitStatus('idle'), 5000)
-    } catch (error) {
-      setSubmitStatus('error')
-      console.error('Error:', error)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  // Número de WhatsApp formateado para URL
+  const whatsappNumber = siteConfig.contacto.whatsapp.replace(/\D/g, '')
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hola, me gustaría solicitar información sobre sus servicios.')}`
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+    <section id="contacto" className="relative bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-12 md:py-16 overflow-hidden">
       {/* Decorative background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
@@ -92,452 +19,158 @@ export function ContactSection() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-700 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header con CTAs */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <h2 className="text-blue-400 font-bebas uppercase text-2xl md:text-3xl lg:text-4xl mb-3">
+            Estamos listos para tu proyecto
+          </h2>
+          <h3 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase text-white mb-4">
+            Hablemos de tu{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+              Proyecto
+            </span>
+          </h3>
+          <p className="text-lg md:text-xl font-lato text-gray-300 max-w-3xl mx-auto whitespace-nowrap">
+            Más de {getAniosExperienciaTexto()} años de experiencia respaldándonos. Contáctanos para recibir una cotización personalizada.
+          </p>
+        </motion.div>
+
+        {/* CTAs principales */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+        >
+          {/* Botón Solicitar Cotización */}
+          <Link
+            href="/contacto"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold text-base md:text-lg rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+          >
+            <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
+            Solicitar Cotización
+          </Link>
+
+          {/* Botón WhatsApp */}
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-lato font-bold text-base md:text-lg rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            WhatsApp
+          </a>
+        </motion.div>
+
+        {/* Contacto Directo */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="inline-block mb-4"
-          >
-            <div className="bg-blue-600/20 backdrop-blur-sm px-6 py-2 rounded-full border border-blue-500/30">
-              <p className="text-blue-400 font-lato font-semibold text-sm">Estamos listos para tu proyecto</p>
-            </div>
-          </motion.div>
+          <h4 className="text-2xl md:text-3xl font-bebas uppercase text-white text-center mb-6">
+            Contacto Directo
+          </h4>
 
-          <h2 className="text-6xl md:text-7xl font-bebas uppercase text-white mb-6">
-            Hablemos de tu{' '}
-            <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-              Proyecto
-            </span>
-          </h2>
-
-          <p className="text-xl font-lato text-gray-300 max-w-3xl mx-auto mb-10">
-            Más de 20 años de experiencia respaldándonos. Contáctanos para recibir una cotización personalizada.
-          </p>
-
-          {/* CTAs principales */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
-              href="#formulario-cotizacion"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-lato font-bold shadow-xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Teléfonos */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
             >
-              <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              Solicitar Cotización
-            </a>
-            <a
-              href="tel:+573104327227"
-              className="group px-8 py-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-xl font-lato font-bold border border-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mb-4 shadow-lg">
+                  <Phone className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="text-lg font-bebas uppercase text-white mb-3">Teléfonos</h5>
+                <div className="space-y-1 mb-4">
+                  <p className="text-sm font-lato text-gray-300">
+                    <strong>PBX:</strong> {siteConfig.contacto.telefonoCali}
+                  </p>
+                  <p className="text-sm font-lato text-gray-300">
+                    <strong>Móvil:</strong> {siteConfig.contacto.whatsapp}
+                  </p>
+                </div>
+                <a
+                  href={`tel:${siteConfig.contacto.whatsapp.replace(/\D/g, '')}`}
+                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-lato font-semibold text-sm transition-colors duration-300"
+                >
+                  Llamar ahora
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Email */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
             >
-              <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-              Llamar Ahora
-            </a>
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-4 shadow-lg">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="text-lg font-bebas uppercase text-white mb-3">Email</h5>
+                <p className="text-sm font-lato text-gray-300 mb-4">
+                  {siteConfig.contacto.email}
+                </p>
+                <a
+                  href={`mailto:${siteConfig.contacto.email}`}
+                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-lato font-semibold text-sm transition-colors duration-300"
+                >
+                  Enviar email
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Horario */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-700 to-blue-800 rounded-lg flex items-center justify-center mb-4 shadow-lg">
+                  <Clock className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="text-lg font-bebas uppercase text-white mb-3">Horario de Atención</h5>
+                <div className="space-y-1">
+                  <p className="text-sm font-lato text-gray-300">
+                    <strong>Lunes a Viernes:</strong>
+                  </p>
+                  <p className="text-sm font-lato text-gray-300">7:00 AM - 5:00 PM</p>
+                  <p className="text-sm font-lato text-gray-300 mt-2">
+                    <strong>Sábados:</strong>
+                  </p>
+                  <p className="text-sm font-lato text-gray-300">8:00 AM - 12:00 PM</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
 
-        {/* Grid: Contacto Directo + Formulario */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contacto Directo */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-4xl font-bebas uppercase text-white mb-8">Contacto Directo</h3>
-
-            <div className="space-y-6">
-              {/* Teléfonos */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="p-6 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <Phone className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-white font-bebas uppercase mb-2 text-xl">Teléfonos</h4>
-                      <div className="space-y-1">
-                        <p className="text-gray-300 font-lato">PBX: +57 (2) 312 0050-51-52-53</p>
-                        <p className="text-gray-300 font-lato">Móvil: +57 (310) 432 7227</p>
-                        <a
-                          href="tel:+573104327227"
-                          className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm mt-2 transition-colors font-lato font-bold group/link"
-                        >
-                          Llamar ahora
-                          <span className="group-hover/link:translate-x-1 transition-transform">→</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Email */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="p-6 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <Mail className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-white font-bebas uppercase mb-2 text-xl">Email</h4>
-                      <p className="text-gray-300 font-lato mb-2">contacto@meisa.com.co</p>
-                      <a
-                        href="mailto:contacto@meisa.com.co"
-                        className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm transition-colors font-lato font-bold group/link"
-                      >
-                        Enviar email
-                        <span className="group-hover/link:translate-x-1 transition-transform">→</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Horarios */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="p-6 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-700 to-blue-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <Clock className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-white font-bebas uppercase mb-2 text-xl">Horario de Atención</h4>
-                      <div className="space-y-1">
-                        <p className="text-gray-300 font-lato">Lunes a Viernes: 7:00 AM - 5:00 PM</p>
-                        <p className="text-gray-300 font-lato">Sábados: 8:00 AM - 12:00 PM</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Formulario de Cotización Comercial */}
-          <motion.div
-            id="formulario-cotizacion"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
-                  <FileText className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bebas uppercase text-white">Solicitar Cotización</h3>
-                  <p className="text-gray-400 text-sm font-lato">Cuéntanos sobre tu proyecto</p>
-                </div>
-              </div>
-
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Datos de contacto */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="nombre" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                      Nombre Completo *
-                    </label>
-                    <input
-                      {...register('nombre')}
-                      type="text"
-                      id="nombre"
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      placeholder="Tu nombre"
-                    />
-                    {errors.nombre && (
-                      <p className="mt-1 text-sm text-red-400">{errors.nombre.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="empresa" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                      Empresa
-                    </label>
-                    <input
-                      {...register('empresa')}
-                      type="text"
-                      id="empresa"
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      placeholder="Tu empresa"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                      Email *
-                    </label>
-                    <input
-                      {...register('email')}
-                      type="email"
-                      id="email"
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      placeholder="tu@email.com"
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="telefono" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                      Teléfono *
-                    </label>
-                    <input
-                      {...register('telefono')}
-                      type="tel"
-                      id="telefono"
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      placeholder="+57 300 123 4567"
-                    />
-                    {errors.telefono && (
-                      <p className="mt-1 text-sm text-red-400">{errors.telefono.message}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="ciudad" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                    Ciudad *
-                  </label>
-                  <input
-                    {...register('ciudad')}
-                    type="text"
-                    id="ciudad"
-                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="Tu ciudad"
-                  />
-                  {errors.ciudad && (
-                    <p className="mt-1 text-sm text-red-400">{errors.ciudad.message}</p>
-                  )}
-                </div>
-
-                {/* Información del proyecto */}
-                <div>
-                  <label htmlFor="tipoProyecto" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                    Tipo de Proyecto *
-                  </label>
-                  <select
-                    {...register('tipoProyecto')}
-                    id="tipoProyecto"
-                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  >
-                    <option value="">Seleccione un tipo</option>
-                    {tiposProyecto.map((tipo) => (
-                      <option key={tipo} value={tipo}>{tipo}</option>
-                    ))}
-                  </select>
-                  {errors.tipoProyecto && (
-                    <p className="mt-1 text-sm text-red-400">{errors.tipoProyecto.message}</p>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="ubicacionProyecto" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                      Ubicación del Proyecto
-                    </label>
-                    <input
-                      {...register('ubicacionProyecto')}
-                      type="text"
-                      id="ubicacionProyecto"
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      placeholder="Ej: Cali, Valle del Cauca"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="tamanoProyecto" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                      Tamaño Aproximado
-                    </label>
-                    <input
-                      {...register('tamanoProyecto')}
-                      type="text"
-                      id="tamanoProyecto"
-                      className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      placeholder="Ej: 500 m², 50 toneladas"
-                    />
-                  </div>
-                </div>
-
-                {/* Servicios requeridos */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-200 mb-3">
-                    Servicios Requeridos
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {serviciosDisponibles.map((servicio) => (
-                      <label key={servicio} className="flex items-center gap-2 cursor-pointer group">
-                        <input
-                          type="checkbox"
-                          value={servicio}
-                          {...register('serviciosRequeridos')}
-                          className="w-4 h-4 rounded border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500 focus:ring-offset-gray-900"
-                        />
-                        <span className="text-gray-300 text-sm font-lato group-hover:text-white transition-colors">
-                          {servicio}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="plazoDeseado" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                    Plazo Deseado
-                  </label>
-                  <select
-                    {...register('plazoDeseado')}
-                    id="plazoDeseado"
-                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  >
-                    <option value="">Seleccione un plazo</option>
-                    <option value="urgente">Urgente (menos de 1 mes)</option>
-                    <option value="1-3-meses">1-3 meses</option>
-                    <option value="3-6-meses">3-6 meses</option>
-                    <option value="mas-6-meses">Más de 6 meses</option>
-                    <option value="por-definir">Por definir</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="descripcion" className="block text-sm font-lato font-medium text-gray-200 mb-2">
-                    Descripción del Proyecto *
-                  </label>
-                  <textarea
-                    {...register('descripcion')}
-                    id="descripcion"
-                    rows={4}
-                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-                    placeholder="Cuéntanos los detalles de tu proyecto..."
-                  />
-                  {errors.descripcion && (
-                    <p className="mt-1 text-sm text-red-400">{errors.descripcion.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-200 mb-3">
-                    ¿Cuenta con planos o diseños?
-                  </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        value="si"
-                        {...register('tienePlanos')}
-                        className="w-4 h-4 border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-gray-300 font-lato">Sí</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        value="no"
-                        {...register('tienePlanos')}
-                        className="w-4 h-4 border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-gray-300 font-lato">No</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        value="parcial"
-                        {...register('tienePlanos')}
-                        className="w-4 h-4 border-gray-600 bg-gray-900/50 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-gray-300 font-lato">Parcialmente</span>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Submit button */}
-                <div>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`
-                      w-full px-6 py-4 rounded-xl font-lato font-bold text-white
-                      transition-all duration-300 transform flex items-center justify-center gap-2
-                      ${isSubmitting
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:scale-[1.02] shadow-lg hover:shadow-blue-500/25'
-                      }
-                    `}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        Enviar Cotización
-                        <Send className="w-5 h-5" />
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Status messages */}
-                {submitStatus === 'success' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-green-500/20 border border-green-500/50 rounded-xl flex items-start gap-3"
-                  >
-                    <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-green-400 font-lato">
-                      ¡Cotización enviada exitosamente! Nos pondremos en contacto contigo pronto.
-                    </p>
-                  </motion.div>
-                )}
-
-                {submitStatus === 'error' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-red-500/20 border border-red-500/50 rounded-xl"
-                  >
-                    <p className="text-red-400 font-lato text-center">
-                      Hubo un error al enviar la cotización. Por favor, intenta nuevamente o contáctanos directamente.
-                    </p>
-                  </motion.div>
-                )}
-              </form>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   )

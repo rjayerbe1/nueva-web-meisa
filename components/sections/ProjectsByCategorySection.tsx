@@ -200,9 +200,11 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
     fetchCategorias()
   }, [])
 
-  // Filtrar solo las categorías que tienen proyectos
+  // Filtrar solo las categorías que tienen proyectos y excluir "OTRO"
   const categoriesWithProjects = categorias.filter(categoria =>
-    projectsByCategory[categoria.key] && projectsByCategory[categoria.key].length > 0
+    categoria.key !== 'OTRO' &&
+    projectsByCategory[categoria.key] &&
+    projectsByCategory[categoria.key].length > 0
   )
 
   return (

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { getCategoryIconComponent } from "@/lib/get-category-icon"
@@ -30,33 +30,135 @@ interface ProjectCategoriesSectionProps {
   projectsByCategory?: Record<string, any[]>
 }
 
-// Componente para el título animado con letras individuales
-const AnimatedTitle = ({ text, className = "" }: { text: string; className?: string }) => {
-  const words = text.split(' ')
+// Componente de categoría individual con parallax
+function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria; index: number; projectCount: number }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  // Efecto parallax para la imagen - se mueve más lento que el scroll
+  const imageY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
+
+  // Efecto parallax para el contenido - se mueve más lento que el scroll
+  const contentY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
+
+  const words = categoria.nombre.split(' ')
 
   return (
-    <h1 className={className}>
-      {words.map((word, wordIndex) => (
-        <span key={wordIndex} className="inline-block mr-3">
-          {word.split('').map((char, charIndex) => (
-            <motion.span
-              key={`${wordIndex}-${charIndex}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.3,
-                delay: (wordIndex * word.length + charIndex) * 0.02,
-                ease: "easeOut"
-              }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="inline-block"
-            >
-              {char}
-            </motion.span>
-          ))}
-        </span>
-      ))}
-    </h1>
+    <Link
+      href={`/proyectos/categoria/${categoria.slug}`}
+      className="group block"
+    >
+      <motion.div
+        ref={containerRef}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: index * 0.1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        className="relative h-[50vh] lg:h-[75vh] overflow-hidden"
+      >
+        {/* Imagen de fondo con parallax */}
+        {categoria.imagenCover ? (
+          <motion.div
+            style={{ y: imageY }}
+            className="absolute inset-0 h-[120%] -top-[10%]"
+          >
+            <img
+              src={categoria.imagenCover}
+              alt={`Cover de ${categoria.nombre}`}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          </motion.div>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
+        )}
+
+        {/* Overlay configurable desde BD */}
+        {categoria.overlayOpacity && categoria.overlayOpacity > 0 ? (
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundColor: categoria.overlayColor || '#000000',
+              opacity: categoria.overlayOpacity
+            }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40" />
+        )}
+
+        {/* Overlay hover - configurable desde BD */}
+        {categoria.enableHoverOverlay && (
+          <style jsx>{`
+            .hover-overlay-${categoria.id} {
+              background-color: ${categoria.hoverOverlayColor || '#1e40af'};
+              opacity: 0;
+              transition: opacity 500ms;
+            }
+            .group:hover .hover-overlay-${categoria.id} {
+              opacity: ${categoria.hoverOverlayOpacity ?? 0.2};
+            }
+          `}</style>
+        )}
+        {categoria.enableHoverOverlay && (
+          <div className={`absolute inset-0 hover-overlay-${categoria.id}`} />
+        )}
+
+        {/* Contenido con parallax en la parte inferior */}
+        <motion.div
+          style={{ y: contentY }}
+          className="absolute inset-0 flex flex-col items-center justify-end px-12 sm:px-14 lg:px-12 pb-8 lg:pb-12 text-center"
+        >
+          {/* Ícono de categoría centrado */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
+            viewport={{ once: true }}
+            className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
+            style={{ color: categoria.color || '#3b82f6' }}
+          >
+            {getCategoryIconComponent(categoria.icono, "w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40")}
+          </motion.div>
+
+          {/* Título sin animación de letras - cada palabra en una línea, altura fija de 2 líneas */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight min-h-[6rem] sm:min-h-[7rem] lg:min-h-[9rem] xl:min-h-[11rem] flex flex-col justify-center">
+            {words.map((word, wordIndex) => (
+              <span key={wordIndex} className="block">
+                {word}
+              </span>
+            ))}
+          </h1>
+
+          {/* Botón Descubrir */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-3 group/btn"
+          >
+            <span className="text-white font-lato uppercase tracking-wider text-sm lg:text-base font-semibold">
+              Descubrir
+            </span>
+
+            {/* Círculo con flecha */}
+            <div className="relative w-10 h-10 lg:w-12 lg:h-12">
+              <div className="absolute inset-0 rounded-full border-2 border-white/80 group-hover/btn:border-white transition-all duration-300 group-hover/btn:scale-110" />
+              <div className="absolute inset-0 rounded-full bg-white/0 group-hover/btn:bg-white transition-all duration-300" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover/btn:text-blue-600 transition-all duration-300 transform group-hover/btn:translate-x-1" />
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Línea divisoria inferior */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
+      </motion.div>
+    </Link>
   )
 }
 
@@ -85,26 +187,6 @@ export default function ProjectCategoriesSection({ onCategorySelect, projectsByC
 
   return (
     <section className="bg-gray-900">
-      {/* Header de sección */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
-          <h2 className="text-blue-400 font-bebas uppercase text-xl mb-2">Nuestro Portafolio</h2>
-          <h3 className="text-5xl md:text-6xl font-bebas uppercase text-white mb-4">
-            Categorías de
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-slate-400"> Proyectos</span>
-          </h3>
-          <p className="text-xl font-lato text-gray-300 max-w-4xl mx-auto">
-            En MEISA hemos fabricado e instalado estructuras metálicas para todo tipo de proyectos
-            de construcción e infraestructura
-          </p>
-        </motion.div>
-      </div>
-
       {/* Grid de categorías estilo Ferrari - 2 columnas */}
       {loading ? (
         <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
@@ -112,142 +194,80 @@ export default function ProjectCategoriesSection({ onCategorySelect, projectsByC
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
           {categorias.map((categoria, index) => {
             const projectCount = projectsByCategory[categoria.key]?.length || 0
-
             return (
-              <Link
+              <CategoryCard
                 key={categoria.id}
-                href={`/proyectos/categoria/${categoria.slug}`}
-                className="group block"
-              >
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className="relative h-[85vh] lg:h-[75vh] overflow-hidden"
-                >
-                  {/* Imagen de fondo */}
-                  {categoria.imagenCover ? (
-                    <div className="absolute inset-0">
-                      <img
-                        src={categoria.imagenCover}
-                        alt={`Cover de ${categoria.nombre}`}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    </div>
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
-                  )}
-
-                  {/* Overlay configurable desde BD */}
-                  {categoria.overlayOpacity && categoria.overlayOpacity > 0 ? (
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundColor: categoria.overlayColor || '#000000',
-                        opacity: categoria.overlayOpacity
-                      }}
-                    />
-                  ) : (
-                    // Overlay por defecto si no está configurado
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40" />
-                  )}
-
-                  {/* Overlay hover - configurable desde BD */}
-                  {categoria.enableHoverOverlay && (
-                    <style jsx>{`
-                      .hover-overlay-${categoria.id} {
-                        background-color: ${categoria.hoverOverlayColor || '#1e40af'};
-                        opacity: 0;
-                        transition: opacity 500ms;
-                      }
-                      .group:hover .hover-overlay-${categoria.id} {
-                        opacity: ${categoria.hoverOverlayOpacity ?? 0.2};
-                      }
-                    `}</style>
-                  )}
-                  {categoria.enableHoverOverlay && (
-                    <div className={`absolute inset-0 hover-overlay-${categoria.id}`} />
-                  )}
-
-                  {/* Contenido en la parte inferior */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-end px-6 lg:px-12 pb-8 lg:pb-12 text-center">
-                    {/* Ícono de categoría - MUCHO MÁS GRANDE */}
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
-                      viewport={{ once: true }}
-                      className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
-                      style={{ color: categoria.color || '#3b82f6' }}
-                    >
-                      {getCategoryIconComponent(categoria.icono, "w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40")}
-                    </motion.div>
-
-                    {/* Título animado con letras */}
-                    <AnimatedTitle
-                      text={categoria.nombre.toUpperCase()}
-                      className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight"
-                    />
-
-                    {/* Botón Descubrir estilo Ferrari */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-                      viewport={{ once: true }}
-                      className="inline-flex items-center gap-3 group/btn"
-                    >
-                      <span className="text-white font-lato uppercase tracking-wider text-sm lg:text-base font-semibold">
-                        Descubrir
-                      </span>
-
-                      {/* Círculo con flecha estilo Ferrari */}
-                      <div className="relative w-10 h-10 lg:w-12 lg:h-12">
-                        {/* Círculo exterior */}
-                        <div className="absolute inset-0 rounded-full border-2 border-white/80 group-hover/btn:border-white transition-all duration-300 group-hover/btn:scale-110" />
-
-                        {/* Círculo interior animado en hover */}
-                        <div className="absolute inset-0 rounded-full bg-white/0 group-hover/btn:bg-white transition-all duration-300" />
-
-                        {/* Flecha */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover/btn:text-blue-600 transition-all duration-300 transform group-hover/btn:translate-x-1" />
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Línea divisoria inferior (excepto en la última categoría) */}
-                  {index < categorias.length - 1 && (
-                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
-                  )}
-                </motion.div>
-              </Link>
+                categoria={categoria}
+                index={index}
+                projectCount={projectCount}
+              />
             )
           })}
         </div>
       )}
 
       {/* Call to action final */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center"
-        >
-          <p className="text-gray-300 font-lato mb-6">
-            ¿No encuentras el tipo de proyecto que buscas?
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+      <div className="relative bg-gradient-to-b from-white via-gray-50 to-white py-20 overflow-hidden">
+        {/* Efectos de fondo */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center"
           >
-            Contáctanos para más información
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </motion.div>
+            {/* Título */}
+            <h2 className="text-blue-600 font-bebas uppercase text-2xl md:text-3xl mb-3">
+              ¿No encuentras tu proyecto?
+            </h2>
+            <h3 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase text-gray-900 mb-6">
+              Podemos{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">
+                Ayudarte
+              </span>
+            </h3>
+            <p className="text-lg md:text-xl font-lato text-gray-700 max-w-3xl mx-auto mb-10 whitespace-nowrap">
+              Contáctanos para una solución personalizada a tu medida.
+            </p>
+
+            {/* Botones CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              {/* Botón Solicitar Cotización */}
+              <Link
+                href="/contacto"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-bold text-base md:text-lg rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+              >
+                <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
+                Solicitar Cotización
+              </Link>
+
+              {/* Botón WhatsApp */}
+              <a
+                href="https://wa.me/573104327227?text=Hola,%20me%20gustaría%20solicitar%20información%20sobre%20sus%20servicios."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-lato font-bold text-base md:text-lg rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                WhatsApp
+              </a>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )
