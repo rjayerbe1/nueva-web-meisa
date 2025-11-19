@@ -723,3 +723,29 @@ model CustomFont {
 
   @@map("custom_fonts")
 }
+
+model ContactoWhatsApp {
+  id                      String   @id @default(cuid())
+  nombre                  String   // Nombre del contacto (ej: "Ricardo Ocampo")
+  cargo                   String   // Cargo o rol (ej: "Gerente Comercial")
+  telefono                String   // Número de WhatsApp (formato: +573104327227)
+  mensajePredeterminado   String   @default("Hola, me gustaría solicitar información sobre sus servicios.") @db.Text
+  avatar                  String?  // URL de avatar opcional (Uploadcare)
+  orden                   Int      @default(0) // Para ordenar los contactos en el widget
+  activo                  Boolean  @default(true) // Si está activo o no
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@map("contactos_whatsapp")
+}
+
+model ConfiguracionWhatsApp {
+  id                  String   @id @default(cuid())
+  horarioAtencion     String   @default("Lunes a Viernes: 7:00 AM - 5:00 PM")
+  mensajeIntroduccion String   @default("Elije la persona disponible para iniciar una conversación de WhatsApp")
+  tituloWidget        String   @default("Háblanos por WhatsApp")
+  activo              Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+
+  @@map("configuracion_whatsapp")
+}

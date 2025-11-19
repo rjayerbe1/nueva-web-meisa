@@ -3,14 +3,26 @@ import Image from "next/image"
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react"
 import { siteConfig } from "@/lib/site-config"
 
+// Ícono de X (Twitter)
+const XIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+)
+
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1.3fr_1fr] gap-8">
           {/* Información de la empresa */}
           <div>
-            <div className="mb-6">
+            <div className="mb-8">
               <Image
                 src="/images/logo/logo-meisa-white.png"
                 alt="MEISA"
@@ -19,43 +31,43 @@ export function Footer() {
                 unoptimized
               />
             </div>
-            <p className="text-gray-400 mb-4">
-              Metálicas e Ingeniería S.A.S. - Líderes en diseño, fabricación y montaje de estructuras metálicas.
-              <span className="text-blue-400 font-semibold"> Más de {siteConfig.empresa.aniosExperiencia} años</span> construyendo el futuro de Colombia.
-            </p>
-            
-            {/* Trust badges */}
-            <div className="mb-4 space-y-2">
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <span className="text-blue-400 font-bold">600</span>
-                <span>Ton/Mes de capacidad</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <span className="text-blue-400 font-bold">3</span>
-                <span>Plantas de producción</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <span className="text-blue-400 font-bold">320+</span>
-                <span>Personas en nuestro equipo</span>
-              </div>
-            </div>
 
-            <div className="flex space-x-4">
-              <a 
-                href="https://www.facebook.com/Metalicaseingenieria" 
+            <div className="flex space-x-5">
+              <a
+                href="https://www.facebook.com/Metalicaseingenieria"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-gray-300 hover:text-blue-400 transition-colors"
+                aria-label="Facebook"
               >
-                <Facebook className="w-5 h-5" />
+                <Facebook className="w-7 h-7" />
               </a>
-              <a 
-                href="https://www.instagram.com/meisa.s.a.s" 
+              <a
+                href="https://www.instagram.com/meisa.s.a.s"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-gray-300 hover:text-blue-400 transition-colors"
+                aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-7 h-7" />
+              </a>
+              <a
+                href="https://co.linkedin.com/company/meisa-sas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-blue-400 transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-7 h-7" />
+              </a>
+              <a
+                href="https://x.com/meisa_sas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-blue-400 transition-colors"
+                aria-label="X (Twitter)"
+              >
+                <XIcon className="w-7 h-7" />
               </a>
             </div>
           </div>
@@ -87,24 +99,28 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Servicios */}
+          {/* Ubicaciones */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Servicios</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>Diseño Estructural con BIM</li>
-              <li>Fabricación 600 Ton/Mes</li>
-              <li>Montaje Especializado</li>
-              <li>Obra Civil Integral</li>
-            </ul>
-            
-            <div className="mt-4 pt-4 border-t border-gray-800">
-              <h5 className="text-sm font-semibold text-gray-300 mb-2">Sectores que Atendemos:</h5>
-              <ul className="space-y-1 text-xs text-gray-400">
-                <li>• Centros Comerciales</li>
-                <li>• Infraestructura Vial</li>
-                <li>• Industria y Energía</li>
-                <li>• Edificios Institucionales</li>
-              </ul>
+            <h4 className="text-lg font-semibold mb-4">Nuestras Plantas</h4>
+            <div className="space-y-4">
+              <div>
+                <h5 className="text-white font-medium mb-1">Jamundí</h5>
+                <p className="text-gray-400 text-sm">
+                  Vía Panamericana 6 Sur – 195, Valle del Cauca
+                </p>
+              </div>
+              <div>
+                <h5 className="text-white font-medium mb-1">Popayán</h5>
+                <p className="text-gray-400 text-sm">
+                  Bodega E13 Parque Industrial, Cauca
+                </p>
+              </div>
+              <div>
+                <h5 className="text-white font-medium mb-1">Villa Rica</h5>
+                <p className="text-gray-400 text-sm">
+                  Vía Puerto Tejada, Cauca
+                </p>
+              </div>
             </div>
           </div>
 
@@ -127,17 +143,8 @@ export function Footer() {
                 </p>
               </div>
             </div>
-            
-            <div className="mt-4 pt-4 border-t border-gray-800">
-              <h5 className="text-sm font-semibold text-gray-300 mb-2">Ubicaciones:</h5>
-              <ul className="space-y-1 text-xs text-gray-400">
-                <li>📍 Popayán, Cauca</li>
-                <li>📍 Jamundí, Valle</li>
-                <li>📍 Villa Rica, Cauca</li>
-              </ul>
-            </div>
 
-            <div className="mt-4">
+            <div className="mt-6">
               <Link 
                 href="/contacto"
                 className="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
@@ -177,30 +184,6 @@ export function Footer() {
               >
                 Sistema Integrado de Gestión
               </Link>
-            </div>
-          </div>
-          
-          {/* Trust Elements */}
-          <div className="mt-4 flex flex-wrap justify-center items-center gap-6 text-xs text-gray-500">
-            <div className="flex items-center gap-1">
-              <span className="text-green-400">✓</span>
-              <span>+{siteConfig.empresa.aniosExperiencia} años de experiencia</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-green-400">✓</span>
-              <span>600 Ton/Mes capacidad</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-green-400">✓</span>
-              <span>3 plantas de producción</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-green-400">✓</span>
-              <span>Sistema Integrado de Gestión</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-green-400">✓</span>
-              <span>Normas NSR-10</span>
             </div>
           </div>
         </div>
