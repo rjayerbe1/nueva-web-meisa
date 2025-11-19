@@ -104,15 +104,14 @@ export const CATEGORY_COVERS = {
 
 // Mapeo de categorías a slugs
 export const CATEGORY_TO_SLUG: Record<CategoriaEnum, string> = {
-  CENTROS_COMERCIALES: 'centros-comerciales',
-  EDIFICIOS: 'edificios',
+  COMERCIAL: 'comercial',
+  EDIFICACIONES: 'edificaciones',
   INDUSTRIA: 'industria',
   PUENTES_VEHICULARES: 'puentes-vehiculares',
   PUENTES_PEATONALES: 'puentes-peatonales',
   ESCENARIOS_DEPORTIVOS: 'escenarios-deportivos',
   CUBIERTAS_Y_FACHADAS: 'cubiertas-y-fachadas',
   ESTRUCTURAS_MODULARES: 'estructuras-modulares',
-  OIL_AND_GAS: 'oil-and-gas',
   OTRO: 'otros'
 }
 
@@ -137,15 +136,14 @@ export function getRecommendedIcon(category: CategoriaEnum): string {
   }
   // Fallback a iconos Lucide
   const fallbacks: Record<CategoriaEnum, string> = {
-    CENTROS_COMERCIALES: 'Building',
-    EDIFICIOS: 'Home',
+    COMERCIAL: 'Building',
+    EDIFICACIONES: 'Home',
     INDUSTRIA: 'Factory',
     PUENTES_VEHICULARES: 'Layers',
     PUENTES_PEATONALES: 'Layers',
     ESCENARIOS_DEPORTIVOS: 'Camera',
     CUBIERTAS_Y_FACHADAS: 'Layers',
     ESTRUCTURAS_MODULARES: 'Layers',
-    OIL_AND_GAS: 'Zap',
     OTRO: 'MoreHorizontal'
   }
   return fallbacks[category] || 'Building'

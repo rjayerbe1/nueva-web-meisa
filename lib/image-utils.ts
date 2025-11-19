@@ -4,15 +4,14 @@ import { CategoriaEnum } from '@prisma/client'
 
 // Mapeo de categorías para nombres de carpetas
 const CATEGORY_FOLDER_MAP: Record<CategoriaEnum, string> = {
-  CENTROS_COMERCIALES: 'centros-comerciales',
-  EDIFICIOS: 'edificios',
+  COMERCIAL: 'comercial',
+  EDIFICACIONES: 'edificaciones',
   INDUSTRIA: 'industria',
   PUENTES_VEHICULARES: 'puentes-vehiculares',
   PUENTES_PEATONALES: 'puentes-peatonales',
   ESCENARIOS_DEPORTIVOS: 'escenarios-deportivos',
   CUBIERTAS_Y_FACHADAS: 'cubiertas-y-fachadas',
   ESTRUCTURAS_MODULARES: 'estructuras-modulares',
-  OIL_AND_GAS: 'oil-and-gas',
   OTRO: 'otros'
 }
 
