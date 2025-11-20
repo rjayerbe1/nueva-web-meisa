@@ -155,7 +155,8 @@ export function ClientesSection() {
                       alt={cliente.nombre}
                       width={200}
                       height={100}
-                      className="object-contain max-w-full max-h-full transition-all duration-300"
+                      className="object-contain transition-all duration-300"
+                      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
                     />
                   ) : (
                     <div className="text-gray-600 text-sm font-medium text-center">
@@ -176,7 +177,8 @@ export function ClientesSection() {
                       alt={cliente.nombre}
                       width={200}
                       height={100}
-                      className="object-contain max-w-full max-h-full transition-all duration-300"
+                      className="object-contain transition-all duration-300"
+                      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
                     />
                   ) : (
                     <div className="text-gray-600 text-sm font-medium text-center">
@@ -222,7 +224,8 @@ export function ClientesSection() {
                             alt={cliente.nombre}
                             width={48}
                             height={48}
-                            className="object-contain max-w-full max-h-full"
+                            className="object-contain"
+                            style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
                           />
                         ) : (
                           <div className="text-gray-600 text-xs font-lato font-medium text-center">

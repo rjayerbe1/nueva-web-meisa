@@ -194,7 +194,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
       {/* Loader de recursos del Hero */}
       <HeroImageLoader isVisible={!allResourcesLoaded} progress={displayProgress} />
 
-      <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]">
+      <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]" style={{ position: 'relative' }}>
       {/* Grid de 3 columnas en DESKTOP - permanece FIJO mientras se anima, se oculta al salir */}
       <div
         className={`fixed top-0 left-0 w-full h-screen flex z-30 transition-opacity duration-300 ${
@@ -207,12 +207,11 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
           <div className="h-1/3 bg-white relative border-b border-gray-200 overflow-hidden">
             {/* Logo centrado */}
             <div className="absolute inset-0 flex items-center justify-center z-10 px-6">
-              <div className="w-64">
+              <div className="flex items-center justify-center">
                 <LogoHoverEffect
                   variant="3d-tilt"
                   width={280}
                   height={79}
-                  className="w-full h-auto"
                 />
               </div>
             </div>
@@ -228,6 +227,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.leftColumn}
                 alt="MEISA - Estructura metálica de techo"
                 fill
+                sizes="100vw"
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.leftColumn)}
@@ -243,6 +243,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row2Top || heroImages.centerTop}
                 alt="MEISA - Ciclopuente al atardecer"
                 fill
+                sizes="100vw"
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Top || heroImages.centerTop)}
@@ -260,6 +261,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row2Bottom || heroImages.centerBottom}
                 alt="MEISA - Estructura metálica perspectiva"
                 fill
+                sizes="100vw"
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Bottom || heroImages.centerBottom)}
@@ -275,6 +277,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row3Top || heroImages.rightTop}
                 alt="MEISA - Coliseo estructuras rojas"
                 fill
+                sizes="100vw"
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Top || heroImages.rightTop)}
@@ -292,6 +295,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row3Bottom || heroImages.rightBottom}
                 alt="MEISA - Montaje con grúa"
                 fill
+                sizes="100vw"
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Bottom || heroImages.rightBottom)}
@@ -321,6 +325,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               src={heroImages.leftColumn}
               alt="Estructura metálica de techo - MEISA"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.leftColumn)}
@@ -336,6 +341,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               src={heroImages.centerTop}
               alt="Ciclopuente al atardecer - Estructura metálica MEISA"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.centerTop)}
@@ -351,6 +357,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               src={heroImages.centerBottom}
               alt="Vista interior de estructura metálica - Perspectiva"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.centerBottom)}
@@ -366,6 +373,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               src={heroImages.rightTop}
               alt="Coliseo con estructuras metálicas rojas MEISA"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.rightTop)}
@@ -381,6 +389,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               src={heroImages.rightBottom}
               alt="Montaje de viga metálica con grúa - MEISA en acción"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.rightBottom)}

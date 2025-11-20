@@ -128,11 +128,12 @@ export function TemplatesTable({ templates }: TemplatesTableProps) {
                   <div className="flex-shrink-0 h-12 w-12">
                     {template.thumbnail ? (
                       <Image
-                        className="h-12 w-12 rounded-lg object-cover"
+                        className="rounded-lg object-cover"
                         src={template.thumbnail}
                         alt={template.nombre}
                         width={48}
                         height={48}
+                        style={{ width: 'auto', height: 'auto' }}
                       />
                     ) : (
                       <div className="h-12 w-12 rounded-lg bg-meisa-blue bg-opacity-10 flex items-center justify-center">

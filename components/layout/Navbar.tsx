@@ -83,6 +83,7 @@ export function Navbar() {
                 alt="MEISA"
                 width={180}
                 height={51}
+                style={{ height: "auto" }}
                 unoptimized
               />
             </div>

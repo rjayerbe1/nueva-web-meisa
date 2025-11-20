@@ -205,7 +205,8 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                           alt={project.imagenPortada.alt}
                           width={32}
                           height={32}
-                          className="w-full h-full object-cover"
+                          className="object-cover"
+                          style={{ width: 'auto', height: 'auto' }}
                         />
                       </div>
                     ) : (

@@ -116,6 +116,7 @@ export function AboutSection() {
             muted
             playsInline
             className="w-full h-full object-cover"
+            style={{ transform: 'scale(1.2)' }}
             onLoadedData={() => markResourceLoaded(currentVideo)}
           >
             <source src={currentVideo} type="video/mp4" />
