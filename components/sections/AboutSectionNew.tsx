@@ -158,7 +158,7 @@ export function AboutSection() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-[13px] max-h-[500px]:text-[10px] sm:text-sm md:text-base lg:text-lg text-gray-200 font-lato leading-relaxed mb-4 max-h-[500px]:mb-2 bg-black/40 px-1 py-2 max-h-[500px]:px-0.5 max-h-[500px]:py-1 rounded-lg max-w-[280px] sm:max-w-md whitespace-normal md:whitespace-nowrap md:max-w-4xl lg:max-w-5xl xl:max-w-6xl"
           >
-            Cada proyecto es <span className="text-red-600 font-bold">único</span>. Nuestra <span className="text-red-600 font-bold">excelencia</span> en <span className="text-red-600 font-bold">diseño, fabricación y montaje</span>, una constante
+            Cada proyecto es <span className="font-bold">único</span>. Nuestra <span className="font-bold">excelencia</span> en <span className="font-bold">diseño, fabricación y montaje</span>, una constante
           </motion.p>
 
           {/* Botón CTA */}
@@ -176,7 +176,7 @@ export function AboutSection() {
               <span className="absolute left-0 top-0 h-full w-1.5 bg-red-600 transition-all duration-500 ease-out group-hover:w-full z-0"></span>
 
               {/* Texto del botón */}
-              <span className="relative z-10 inline-flex items-center gap-2 px-6 max-h-[500px]:px-5 py-1.5 max-h-[500px]:py-1 text-white font-lato font-bold text-sm max-h-[500px]:text-xs md:text-lg transition-colors duration-500 group-hover:text-gray-900">
+              <span className="relative z-10 inline-flex items-center gap-2 px-6 max-h-[500px]:px-5 py-1.5 max-h-[500px]:py-1 text-white font-lato font-bold text-sm max-h-[500px]:text-xs md:text-lg transition-colors duration-500">
                 Conoce Nuestra Empresa
                 <ArrowRight className="w-4 h-4 max-h-[500px]:w-3 max-h-[500px]:h-3 lg:w-6 lg:h-6 opacity-0 transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-1" />
               </span>
