@@ -26,10 +26,10 @@ export function Footer() {
               <Image
                 src="/images/logo/logo-meisa-white.png"
                 alt="MEISA"
-                width={90}
-                height={25}
+                width={120}
+                height={34}
                 unoptimized
-                style={{ maxWidth: '90px', height: 'auto' }}
+                style={{ maxWidth: '120px', height: 'auto' }}
               />
             </div>
 
