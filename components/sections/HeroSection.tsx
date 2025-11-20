@@ -227,7 +227,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.leftColumn}
                 alt="MEISA - Estructura metálica de techo"
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="100vw"
+                quality={95}
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.leftColumn)}
@@ -243,7 +244,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row2Top || heroImages.centerTop}
                 alt="MEISA - Ciclopuente al atardecer"
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="100vw"
+                quality={95}
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Top || heroImages.centerTop)}
@@ -261,7 +263,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row2Bottom || heroImages.centerBottom}
                 alt="MEISA - Estructura metálica perspectiva"
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="100vw"
+                quality={95}
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Bottom || heroImages.centerBottom)}
@@ -277,7 +280,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row3Top || heroImages.rightTop}
                 alt="MEISA - Coliseo estructuras rojas"
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="100vw"
+                quality={95}
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Top || heroImages.rightTop)}
@@ -295,7 +299,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                 src={heroImages.mobile?.row3Bottom || heroImages.rightBottom}
                 alt="MEISA - Montaje con grúa"
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="100vw"
+                quality={95}
                 className="object-cover"
                 priority
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Bottom || heroImages.rightBottom)}
@@ -326,6 +331,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Estructura metálica de techo - MEISA"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={95}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.leftColumn)}
@@ -342,6 +348,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Ciclopuente al atardecer - Estructura metálica MEISA"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={95}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.centerTop)}
@@ -358,6 +365,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Vista interior de estructura metálica - Perspectiva"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={95}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.centerBottom)}
@@ -374,6 +382,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Coliseo con estructuras metálicas rojas MEISA"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={95}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.rightTop)}
@@ -390,6 +399,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
               alt="Montaje de viga metálica con grúa - MEISA en acción"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={95}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.rightBottom)}
