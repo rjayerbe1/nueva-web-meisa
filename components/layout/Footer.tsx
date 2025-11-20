@@ -29,7 +29,7 @@ export function Footer() {
                 width={90}
                 height={25}
                 unoptimized
-                style={{ width: 'auto', height: 'auto' }}
+                style={{ maxWidth: '90px', height: 'auto' }}
               />
             </div>
 
