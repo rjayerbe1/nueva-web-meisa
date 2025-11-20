@@ -13,11 +13,13 @@ export function AboutSection() {
   const [currentVideo, setCurrentVideo] = useState('/videos/engineering-plant.mp4')
   const [isMobile, setIsMobile] = useState(false)
   const { registerResource, markResourceLoaded } = useLoading()
+  const hasRegistered = useRef(false)
 
-  // Registrar el video como recurso a cargar (solo en desktop)
+  // Registrar el video como recurso a cargar (solo en desktop, solo una vez)
   useEffect(() => {
-    if (!isMobile) {
+    if (!isMobile && !hasRegistered.current) {
       registerResource()
+      hasRegistered.current = true
     }
   }, [isMobile, registerResource])
 

@@ -28,24 +28,29 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
   const [displayProgress, setDisplayProgress] = useState(0)
   const [minTimeElapsed, setMinTimeElapsed] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const hasRegistered = useRef(false)
 
   // Usar el contexto de carga global
   const { loadedCount, totalResources, markResourceLoaded, registerResource } = useLoading()
 
-  // Registrar las imágenes del hero al montar el componente
+  // Registrar las imágenes del hero al montar el componente (solo una vez)
   useEffect(() => {
-    // Registrar las 5 imágenes del hero
-    const imagesToRegister = [
-      heroImages.leftColumn,
-      heroImages.centerTop,
-      heroImages.centerBottom,
-      heroImages.rightTop,
-      heroImages.rightBottom
-    ]
+    if (!hasRegistered.current) {
+      // Registrar las 5 imágenes del hero
+      const imagesToRegister = [
+        heroImages.leftColumn,
+        heroImages.centerTop,
+        heroImages.centerBottom,
+        heroImages.rightTop,
+        heroImages.rightBottom
+      ]
 
-    imagesToRegister.forEach(() => {
-      registerResource()
-    })
+      imagesToRegister.forEach(() => {
+        registerResource()
+      })
+
+      hasRegistered.current = true
+    }
   }, [heroImages, registerResource])
 
   // Calcular progreso real de carga basado en recursos totales
