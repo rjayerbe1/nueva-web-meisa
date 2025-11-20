@@ -15,13 +15,13 @@ export function AboutSection() {
   const { registerResource, markResourceLoaded } = useLoading()
   const hasRegistered = useRef(false)
 
-  // Registrar el video como recurso a cargar (solo en desktop, solo una vez)
+  // Registrar el video/imagen como recurso a cargar (solo una vez)
   useEffect(() => {
-    if (!isMobile && !hasRegistered.current) {
+    if (!hasRegistered.current) {
       registerResource()
       hasRegistered.current = true
     }
-  }, [isMobile, registerResource])
+  }, [registerResource])
 
   // Detectar si es móvil
   useEffect(() => {
@@ -103,6 +103,7 @@ export function AboutSection() {
             style={{ objectPosition: '65% center' }}
             priority
             sizes="100vw"
+            onLoad={() => markResourceLoaded('/images/about/meisa-planta-aerea.jpg')}
           />
         </motion.div>
       ) : (
