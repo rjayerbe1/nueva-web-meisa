@@ -29,6 +29,7 @@ export function Footer() {
                 width={135}
                 height={38}
                 unoptimized
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
 

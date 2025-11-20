@@ -95,7 +95,7 @@ export function ClientesSection() {
             30+ Años
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Construyendo Confianza</span>
           </h3>
-          <p className="text-lg md:text-xl font-lato text-gray-600 whitespace-nowrap">
+          <p className="text-lg md:text-xl font-lato text-gray-600 max-w-4xl mx-auto md:whitespace-nowrap">
             Las empresas más importantes confían en MEISA para sus proyectos estructurales más exigentes
           </p>
         </motion.div>
@@ -134,15 +134,13 @@ export function ClientesSection() {
           className="mb-12 relative w-full"
         >
           {/* Contenedor con overflow y gradientes */}
-          <div className="overflow-hidden relative">
-            {/* Gradiente izquierdo */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-
-            {/* Gradiente derecho */}
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+          <div className="overflow-x-auto md:overflow-hidden relative scrollbar-hide scroll-smooth">
+            {/* Gradientes solo en desktop */}
+            <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
 
             {/* Carrusel */}
-            <div className="flex space-x-8 md:space-x-10 lg:space-x-12 animate-scroll py-8">
+            <div className="flex space-x-8 md:space-x-10 lg:space-x-12 md:animate-scroll py-8 px-4 md:px-0">
               {/* Primera copia del array */}
               {clientes.filter(c => c.logo).map((cliente) => (
                 <div
@@ -165,11 +163,11 @@ export function ClientesSection() {
                   )}
                 </div>
               ))}
-              {/* Segunda copia para efecto continuo */}
+              {/* Segunda copia para efecto continuo - solo en desktop */}
               {clientes.filter(c => c.logo).map((cliente) => (
                 <div
                   key={`logo-2-${cliente.id}`}
-                  className="flex-shrink-0 w-48 md:w-56 lg:w-64 h-24 md:h-28 lg:h-32 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                  className="hidden md:flex flex-shrink-0 w-48 md:w-56 lg:w-64 h-24 md:h-28 lg:h-32 items-center justify-center hover:opacity-80 transition-opacity duration-300"
                 >
                   {cliente.logo ? (
                     <Image
@@ -271,13 +269,27 @@ export function ClientesSection() {
             transform: translateX(-50%);
           }
         }
-        
-        .animate-scroll {
-          animation: scroll 40s linear infinite;
+
+        /* Animación solo en desktop */
+        @media (min-width: 768px) {
+          .animate-scroll {
+            animation: scroll 40s linear infinite;
+          }
+
+          .animate-scroll:hover {
+            animation-play-state: paused;
+          }
         }
-        
-        .animate-scroll:hover {
-          animation-play-state: paused;
+
+        /* Ocultar scrollbar pero mantener funcionalidad en móvil */
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </section>

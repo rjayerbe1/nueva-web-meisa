@@ -61,11 +61,22 @@ interface ProjectsByCategorySectionProps {
 // Componente de categoría individual con parallax
 function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categoria: Categoria; index: number; projectCount: number; iconSize?: number }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
+
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Efecto parallax para la imagen - se mueve más lento que el scroll
   const imageY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
@@ -74,6 +85,9 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
   const contentY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
 
   const words = categoria.nombre.split(' ')
+
+  // Tamaño del icono: más pequeño en móvil
+  const finalIconSize = isMobile ? iconSize * 2 : iconSize * 4
 
   return (
     <Link
@@ -168,8 +182,8 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
             className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
             style={{
               color: categoria.color || '#3b82f6',
-              width: `${iconSize * 4}px`,
-              height: `${iconSize * 4}px`
+              width: `${finalIconSize}px`,
+              height: `${finalIconSize}px`
             }}
           >
             {getCategoryIconComponent(categoria.icono, "w-full h-full")}

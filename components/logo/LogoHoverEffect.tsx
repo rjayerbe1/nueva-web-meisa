@@ -147,6 +147,8 @@ function TiltEffect({ width, height }: { width: number; height: number }) {
           unoptimized
           priority
           style={{
+            width: 'auto',
+            height: 'auto',
             transform: 'translateZ(50px)',
             filter: isHovered ? 'drop-shadow(0 8px 16px rgba(30, 64, 175, 0.08))' : 'none'
           }}
@@ -216,6 +218,8 @@ function MagneticEffect({ width, height }: { width: number; height: number }) {
           priority
           className="transition-all duration-300"
           style={{
+            width: 'auto',
+            height: 'auto',
             filter: isHovered ? 'drop-shadow(0 10px 30px rgba(30, 64, 175, 0.4))' : 'none'
           }}
         />
@@ -268,6 +272,7 @@ function GlitchEffect({ width, height }: { width: number; height: number }) {
           height={height}
           unoptimized
           priority
+          style={{ width: 'auto', height: 'auto' }}
         />
       </motion.div>
 
@@ -295,6 +300,7 @@ function GlitchEffect({ width, height }: { width: number; height: number }) {
               height={height}
               unoptimized
               className="opacity-50"
+              style={{ width: 'auto', height: 'auto' }}
             />
           </motion.div>
 
@@ -320,6 +326,7 @@ function GlitchEffect({ width, height }: { width: number; height: number }) {
               height={height}
               unoptimized
               className="opacity-50"
+              style={{ width: 'auto', height: 'auto' }}
             />
           </motion.div>
 
@@ -400,6 +407,8 @@ function GlowScaleEffect({ width, height }: { width: number; height: number }) {
           priority
           className="relative z-10"
           style={{
+            width: 'auto',
+            height: 'auto',
             filter: isHovered
               ? `drop-shadow(0 0 30px rgba(59, 130, 246, 0.8)) drop-shadow(0 20px 40px rgba(30, 64, 175, 0.4))`
               : 'none'
@@ -490,7 +499,7 @@ function Parallax3DEffect({ width, height }: { width: number; height: number }) 
           height={height}
           unoptimized
           className="blur-sm"
-          style={{ filter: 'brightness(0.5)' }}
+          style={{ width: 'auto', height: 'auto', filter: 'brightness(0.5)' }}
         />
       </motion.div>
 
@@ -511,7 +520,7 @@ function Parallax3DEffect({ width, height }: { width: number; height: number }) 
           height={height}
           unoptimized
           className="blur-[1px]"
-          style={{ filter: 'brightness(0.7)' }}
+          style={{ width: 'auto', height: 'auto', filter: 'brightness(0.7)' }}
         />
       </motion.div>
 
@@ -537,6 +546,8 @@ function Parallax3DEffect({ width, height }: { width: number; height: number }) 
           unoptimized
           priority
           style={{
+            width: 'auto',
+            height: 'auto',
             filter: isHovered ? 'drop-shadow(0 15px 35px rgba(30, 64, 175, 0.35))' : 'none',
             transform: 'translateZ(30px)'
           }}

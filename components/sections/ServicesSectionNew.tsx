@@ -12,7 +12,7 @@ const AnimatedTitle = ({ text, className = "" }: { text: string; className?: str
   return (
     <h2 className={className}>
       {words.map((word, wordIndex) => (
-        <span key={wordIndex} className="inline-block mr-3">
+        <span key={wordIndex} className="block sm:inline-block sm:mr-3">
           {word.split('').map((char, charIndex) => (
             <motion.span
               key={`${wordIndex}-${charIndex}`}
