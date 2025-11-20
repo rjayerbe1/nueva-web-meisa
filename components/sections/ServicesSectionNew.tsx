@@ -1,9 +1,10 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Cpu, Hammer, Building2, Settings } from 'lucide-react'
+import { useLoading } from '@/contexts/LoadingContext'
 
 // Componente para el título animado con letras individuales
 const AnimatedTitle = ({ text, className = "" }: { text: string; className?: string }) => {
@@ -83,7 +84,15 @@ const services = [
 ]
 
 // Componente individual para cada servicio con parallax
-function ServiceCard({ servicio, index }: { servicio: typeof services[0]; index: number }) {
+function ServiceCard({
+  servicio,
+  index,
+  onVideoLoad
+}: {
+  servicio: typeof services[0];
+  index: number;
+  onVideoLoad: (videoId: string) => void;
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -123,6 +132,7 @@ function ServiceCard({ servicio, index }: { servicio: typeof services[0]; index:
                   ? { transform: 'scale(1.60)' }
                   : undefined
               }
+              onLoadedData={() => onVideoLoad(servicio.video!)}
             >
               <source src={servicio.video} type="video/mp4" />
             </video>
@@ -230,12 +240,28 @@ function ServiceCard({ servicio, index }: { servicio: typeof services[0]; index:
 }
 
 export function ServicesSection() {
+  const { registerResource, markResourceLoaded } = useLoading()
+
+  // Registrar todos los videos de servicios como recursos al montar
+  useEffect(() => {
+    services.forEach((servicio) => {
+      if (servicio.video) {
+        registerResource()
+      }
+    })
+  }, [registerResource])
+
   return (
     <section id="servicios" className="bg-gray-900">
       {/* Grid de servicios estilo Ferrari - 2 columnas */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {services.map((servicio, index) => (
-          <ServiceCard key={servicio.id} servicio={servicio} index={index} />
+          <ServiceCard
+            key={servicio.id}
+            servicio={servicio}
+            index={index}
+            onVideoLoad={markResourceLoaded}
+          />
         ))}
       </div>
     </section>

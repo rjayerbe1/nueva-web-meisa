@@ -8,6 +8,7 @@ import { ArrowRight, ChevronDown } from "lucide-react"
 import { HeroImageConfig } from "@/lib/hero-config"
 import { LogoHoverEffect } from "@/components/logo/LogoHoverEffect"
 import { HeroImageLoader } from "@/components/loading/HeroImageLoader"
+import { useLoading } from "@/contexts/LoadingContext"
 
 const specialties = [
   'DISEÑO\nESTRUCTURAL',
@@ -24,19 +25,33 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
   const [currentSpecialty, setCurrentSpecialty] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
-  const [loadedCount, setLoadedCount] = useState(0)
   const [displayProgress, setDisplayProgress] = useState(0)
   const [minTimeElapsed, setMinTimeElapsed] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const loadedImagesSet = useRef<Set<string>>(new Set())
 
-  // Determinar número total de imágenes según el dispositivo
-  const totalImages = 5
+  // Usar el contexto de carga global
+  const { loadedCount, totalResources, markResourceLoaded, registerResource } = useLoading()
 
-  // Calcular progreso real de carga basado en imágenes únicas
-  const targetProgress = (loadedCount / totalImages) * 100
-  // Solo mostrar como cargado si TODO está listo: imágenes cargadas, tiempo mínimo Y animación llegó a 100%
-  const allImagesLoaded = loadedCount >= totalImages && minTimeElapsed && displayProgress >= 99.9
+  // Registrar las imágenes del hero al montar el componente
+  useEffect(() => {
+    // Registrar las 5 imágenes del hero
+    const imagesToRegister = [
+      heroImages.leftColumn,
+      heroImages.centerTop,
+      heroImages.centerBottom,
+      heroImages.rightTop,
+      heroImages.rightBottom
+    ]
+
+    imagesToRegister.forEach(() => {
+      registerResource()
+    })
+  }, [heroImages, registerResource])
+
+  // Calcular progreso real de carga basado en recursos totales
+  const targetProgress = totalResources > 0 ? (loadedCount / totalResources) * 100 : 0
+  // Solo mostrar como cargado si TODO está listo: recursos cargados, tiempo mínimo Y animación llegó a 100%
+  const allResourcesLoaded = loadedCount >= totalResources && totalResources > 0 && minTimeElapsed && displayProgress >= 99.9
 
   // Animar el progreso mostrado para que siempre se vea crecer suavemente
   useEffect(() => {
@@ -65,14 +80,9 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
     }
   }, [targetProgress, displayProgress])
 
-  // Handler para cuando una imagen carga - recibe la URL para evitar duplicados
+  // Handler para cuando una imagen carga - usa el contexto global
   const handleImageLoad = (imageUrl: string) => {
-    if (!loadedImagesSet.current.has(imageUrl)) {
-      loadedImagesSet.current.add(imageUrl)
-      const newCount = loadedImagesSet.current.size
-      setLoadedCount(newCount)
-      console.log(`🖼️ Imagen única cargada: ${newCount}/${totalImages}`, imageUrl)
-    }
+    markResourceLoaded(imageUrl)
   }
 
   // Detectar si es móvil
@@ -94,17 +104,16 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
     return () => clearTimeout(minTimeout)
   }, [])
 
-  // Timeout de seguridad: forzar carga completa después de 1.5 segundos
+  // Timeout de seguridad: forzar tiempo mínimo después de 1.5 segundos
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (!allImagesLoaded) {
-        console.log('⚠️ Timeout de seguridad: forzando carga completa')
-        setLoadedCount(totalImages)
+      if (!minTimeElapsed) {
+        console.log('⚠️ Timeout de seguridad: forzando tiempo mínimo')
         setMinTimeElapsed(true)
       }
     }, 1500)
     return () => clearTimeout(timeout)
-  }, [allImagesLoaded, totalImages])
+  }, [minTimeElapsed])
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -177,8 +186,8 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
 
   return (
     <>
-      {/* Loader de imágenes del Hero */}
-      <HeroImageLoader isVisible={!allImagesLoaded} progress={displayProgress} />
+      {/* Loader de recursos del Hero */}
+      <HeroImageLoader isVisible={!allResourcesLoaded} progress={displayProgress} />
 
       <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]">
       {/* Grid de 3 columnas en DESKTOP - permanece FIJO mientras se anima, se oculta al salir */}

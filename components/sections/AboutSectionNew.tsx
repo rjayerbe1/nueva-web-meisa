@@ -5,12 +5,21 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
+import { useLoading } from '@/contexts/LoadingContext'
 
 export function AboutSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [currentVideo, setCurrentVideo] = useState('/videos/engineering-plant.mp4')
   const [isMobile, setIsMobile] = useState(false)
+  const { registerResource, markResourceLoaded } = useLoading()
+
+  // Registrar el video como recurso a cargar (solo en desktop)
+  useEffect(() => {
+    if (!isMobile) {
+      registerResource()
+    }
+  }, [isMobile, registerResource])
 
   // Detectar si es móvil
   useEffect(() => {
@@ -105,6 +114,7 @@ export function AboutSection() {
             muted
             playsInline
             className="w-full h-full object-cover"
+            onLoadedData={() => markResourceLoaded(currentVideo)}
           >
             <source src={currentVideo} type="video/mp4" />
           </video>

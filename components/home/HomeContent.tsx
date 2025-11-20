@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { HeroImageConfig } from '@/lib/hero-config'
+import { LoadingProvider } from '@/contexts/LoadingContext'
 
 // Importaciones de componentes
 import { HeroSection } from '@/components/sections/HeroSection'
@@ -192,7 +193,7 @@ export function HomeContent({ projectsByCategory, sections, heroImages }: HomeCo
   }
 
   return (
-    <>
+    <LoadingProvider>
       <div className="w-full bg-white">
         {/* Hero Section - DHK Style con sticky */}
         <section
@@ -248,6 +249,6 @@ export function HomeContent({ projectsByCategory, sections, heroImages }: HomeCo
         <ContactSection />
       </section>
       </div>
-    </>
+    </LoadingProvider>
   )
 }
