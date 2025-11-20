@@ -29,8 +29,7 @@ export function ClientesSection() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const carouselRef = useRef<HTMLDivElement>(null)
-  const autoplayInterval = useRef<NodeJS.Timeout | null>(null)
-  const pauseTimeout = useRef<NodeJS.Timeout | null>(null)
+  const desktopCarouselRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchClientes()
@@ -51,7 +50,88 @@ export function ClientesSection() {
     }
   }
 
-  // Autoplay para móvil
+  // Control de velocidad con mouse en desktop
+  useEffect(() => {
+    const carousel = desktopCarouselRef.current
+    if (!carousel) return
+
+    let mouseX = -1 // -1 significa mouse fuera del carrusel
+    let containerWidth = 0
+    let animationFrame: number
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = carousel.getBoundingClientRect()
+      mouseX = e.clientX - rect.left
+      containerWidth = rect.width
+    }
+
+    const handleMouseLeave = () => {
+      mouseX = -1 // Mouse fuera del carrusel
+    }
+
+    const smoothScroll = () => {
+      if (!carousel) return
+
+      const edgeThreshold = 150
+      let scrollSpeed = 0
+
+      // Mouse FUERA del carrusel: velocidad normal
+      if (mouseX < 0) {
+        scrollSpeed = 0.8
+      }
+      // Mouse cerca del borde izquierdo: retroceder rápido
+      else if (mouseX < edgeThreshold) {
+        scrollSpeed = -4
+      }
+      // Mouse cerca del borde derecho: avanzar rápido
+      else if (mouseX > containerWidth - edgeThreshold) {
+        scrollSpeed = 4
+      }
+      // Mouse en el centro: pausado
+      else {
+        scrollSpeed = 0
+      }
+
+      // Solo mover si hay velocidad
+      if (scrollSpeed !== 0) {
+        const scrollWidth = carousel.scrollWidth
+        const clientWidth = carousel.clientWidth
+        const currentScroll = carousel.scrollLeft
+        const halfScroll = (scrollWidth - clientWidth) / 2
+
+        if (scrollSpeed > 0) {
+          // Avanzando hacia adelante
+          if (currentScroll >= halfScroll) {
+            carousel.scrollLeft = 0
+          } else {
+            carousel.scrollLeft += scrollSpeed
+          }
+        } else {
+          // Retrocediendo
+          if (currentScroll <= 0) {
+            carousel.scrollLeft = halfScroll
+          } else {
+            carousel.scrollLeft += scrollSpeed
+          }
+        }
+      }
+
+      animationFrame = requestAnimationFrame(smoothScroll)
+    }
+
+    smoothScroll()
+
+    carousel.addEventListener('mousemove', handleMouseMove)
+    carousel.addEventListener('mouseleave', handleMouseLeave)
+
+    return () => {
+      cancelAnimationFrame(animationFrame)
+      carousel.removeEventListener('mousemove', handleMouseMove)
+      carousel.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [clientes])
+
+  // Autoplay suave para móvil
   useEffect(() => {
     const carousel = carouselRef.current
     if (!carousel) return
@@ -59,62 +139,58 @@ export function ClientesSection() {
     const isMobile = window.innerWidth < 768
     if (!isMobile) return // Solo en móvil
 
-    const startAutoplay = () => {
-      if (autoplayInterval.current) {
-        clearInterval(autoplayInterval.current)
+    let isScrolling = false
+    let animationFrame: number
+
+    const smoothScroll = () => {
+      if (!carousel || isScrolling) return
+
+      const scrollWidth = carousel.scrollWidth
+      const clientWidth = carousel.clientWidth
+      const currentScroll = carousel.scrollLeft
+
+      // Como duplicamos los logos, cuando llegue a la mitad, volver al inicio
+      // Esto crea un loop infinito perfecto
+      const halfScroll = (scrollWidth - clientWidth) / 2
+
+      if (currentScroll >= halfScroll) {
+        carousel.scrollLeft = 0
+      } else {
+        // Avanzar suavemente 0.5px para movimiento más lento
+        carousel.scrollLeft += 0.5
       }
 
-      autoplayInterval.current = setInterval(() => {
-        if (carousel) {
-          const maxScroll = carousel.scrollWidth - carousel.clientWidth
-          const currentScroll = carousel.scrollLeft
-
-          // Si llegó al final, volver al inicio
-          if (currentScroll >= maxScroll - 10) {
-            carousel.scrollTo({ left: 0, behavior: 'smooth' })
-          } else {
-            // Avanzar suavemente
-            carousel.scrollBy({ left: 250, behavior: 'smooth' })
-          }
-        }
-      }, 3000) // Avanza cada 3 segundos
-    }
-
-    const stopAutoplay = () => {
-      if (autoplayInterval.current) {
-        clearInterval(autoplayInterval.current)
-        autoplayInterval.current = null
-      }
+      animationFrame = requestAnimationFrame(smoothScroll)
     }
 
     const handleTouchStart = () => {
-      stopAutoplay()
-
-      // Limpiar timeout previo
-      if (pauseTimeout.current) {
-        clearTimeout(pauseTimeout.current)
-      }
-
-      // Reanudar después de 3 segundos sin interacción
-      pauseTimeout.current = setTimeout(() => {
-        startAutoplay()
-      }, 3000)
+      isScrolling = true
+      cancelAnimationFrame(animationFrame)
     }
 
-    // Iniciar autoplay
-    startAutoplay()
+    const handleTouchEnd = () => {
+      // Esperar 2 segundos después de soltar para reanudar
+      setTimeout(() => {
+        isScrolling = false
+        smoothScroll()
+      }, 2000)
+    }
+
+    // Iniciar animación suave
+    smoothScroll()
 
     // Event listeners
     carousel.addEventListener('touchstart', handleTouchStart)
+    carousel.addEventListener('touchend', handleTouchEnd)
     carousel.addEventListener('mousedown', handleTouchStart)
+    carousel.addEventListener('mouseup', handleTouchEnd)
 
     return () => {
-      stopAutoplay()
-      if (pauseTimeout.current) {
-        clearTimeout(pauseTimeout.current)
-      }
+      cancelAnimationFrame(animationFrame)
       carousel.removeEventListener('touchstart', handleTouchStart)
+      carousel.removeEventListener('touchend', handleTouchEnd)
       carousel.removeEventListener('mousedown', handleTouchStart)
+      carousel.removeEventListener('mouseup', handleTouchEnd)
     }
   }, [clientes])
 
@@ -203,19 +279,58 @@ export function ClientesSection() {
           viewport={{ once: true }}
           className="mb-12 relative w-full"
         >
-          {/* Contenedor con overflow y gradientes */}
-          <div ref={carouselRef} className="overflow-x-auto md:overflow-hidden relative scrollbar-hide scroll-smooth">
-            {/* Gradientes solo en desktop */}
-            <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-            <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+          {/* Desktop: scroll JavaScript con control de mouse */}
+          <div ref={desktopCarouselRef} className="hidden md:block overflow-x-auto relative scrollbar-hide scroll-smooth">
+            {/* Gradientes en los bordes */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
 
-            {/* Carrusel */}
-            <div className="flex space-x-8 md:space-x-10 lg:space-x-12 md:animate-scroll py-8 px-4 md:px-0">
+            <div className="flex space-x-10 lg:space-x-12 py-8">
+              {clientes.filter(c => c.logo).map((cliente) => (
+                <div
+                  key={`logo-desktop-1-${cliente.id}`}
+                  className="flex-shrink-0 w-56 lg:w-64 h-28 lg:h-32 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                >
+                  {cliente.logo && (
+                    <Image
+                      src={cliente.logo}
+                      alt={cliente.nombre}
+                      width={200}
+                      height={100}
+                      className="object-contain transition-all duration-300"
+                      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
+                    />
+                  )}
+                </div>
+              ))}
+              {clientes.filter(c => c.logo).map((cliente) => (
+                <div
+                  key={`logo-desktop-2-${cliente.id}`}
+                  className="flex-shrink-0 w-56 lg:w-64 h-28 lg:h-32 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                >
+                  {cliente.logo && (
+                    <Image
+                      src={cliente.logo}
+                      alt={cliente.nombre}
+                      width={200}
+                      height={100}
+                      className="object-contain transition-all duration-300"
+                      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Móvil: scroll JavaScript */}
+          <div ref={carouselRef} className="md:hidden overflow-x-auto relative scrollbar-hide scroll-smooth">
+            <div className="flex space-x-8 py-8 px-4">
               {/* Primera copia del array */}
               {clientes.filter(c => c.logo).map((cliente) => (
                 <div
-                  key={`logo-1-${cliente.id}`}
-                  className="flex-shrink-0 w-48 md:w-56 lg:w-64 h-24 md:h-28 lg:h-32 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                  key={`logo-mobile-1-${cliente.id}`}
+                  className="flex-shrink-0 w-48 h-24 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
                 >
                   {cliente.logo ? (
                     <Image
@@ -233,11 +348,11 @@ export function ClientesSection() {
                   )}
                 </div>
               ))}
-              {/* Segunda copia para efecto continuo - solo en desktop */}
+              {/* Segunda copia para loop infinito */}
               {clientes.filter(c => c.logo).map((cliente) => (
                 <div
-                  key={`logo-2-${cliente.id}`}
-                  className="hidden md:flex flex-shrink-0 w-48 md:w-56 lg:w-64 h-24 md:h-28 lg:h-32 items-center justify-center hover:opacity-80 transition-opacity duration-300"
+                  key={`logo-mobile-2-${cliente.id}`}
+                  className="flex-shrink-0 w-48 h-24 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
                 >
                   {cliente.logo ? (
                     <Image
@@ -331,27 +446,7 @@ export function ClientesSection() {
       </div>
 
       <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        /* Animación solo en desktop */
-        @media (min-width: 768px) {
-          .animate-scroll {
-            animation: scroll 40s linear infinite;
-          }
-
-          .animate-scroll:hover {
-            animation-play-state: paused;
-          }
-        }
-
-        /* Ocultar scrollbar pero mantener funcionalidad en móvil */
+        /* Ocultar scrollbar pero mantener funcionalidad */
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
