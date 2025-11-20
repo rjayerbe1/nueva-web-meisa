@@ -42,30 +42,31 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await request.json()
-    
-    // Obtener información del proyecto
-    const proyecto = await prisma.proyecto.findUnique({
-      where: { id: data.proyectoId },
-      select: {
-        titulo: true,
-        categoria: true,
-        imagenes: {
-          select: { url: true }
-        }
-      }
-    })
+    console.log('[Media API] Received data:', JSON.stringify(data, null, 2))
 
-    if (!proyecto) {
-      return NextResponse.json({ error: 'Proyecto no encontrado' }, { status: 404 })
-    }
-
-    // Si la URL viene del upload API, reorganizar el archivo
+    // Si la URL viene del upload API, reorganizar el archivo (solo si hay proyecto)
     let finalUrl = data.url
-    if (data.url && data.originalFileName) {
+    if (data.proyectoId && data.url && data.originalFileName) {
+      // Obtener información del proyecto
+      const proyecto = await prisma.proyecto.findUnique({
+        where: { id: data.proyectoId },
+        select: {
+          titulo: true,
+          categoria: true,
+          imagenes: {
+            select: { url: true }
+          }
+        }
+      })
+
+      if (!proyecto) {
+        return NextResponse.json({ error: 'Proyecto no encontrado' }, { status: 404 })
+      }
+
       try {
         // Obtener siguiente índice de imagen
         const imageIndex = getNextImageIndex(proyecto.imagenes)
-        
+
         // Generar nueva ruta organizada
         const newImagePath = generateImagePath(
           proyecto.categoria,
@@ -73,14 +74,14 @@ export async function POST(request: NextRequest) {
           data.originalFileName,
           imageIndex
         )
-        
+
         // Asegurar que el directorio existe
         ensureDirectoryExists(path.dirname(newImagePath))
-        
+
         // Mover archivo desde upload temporal a estructura organizada
         const currentPath = path.join(process.cwd(), 'public', data.url.replace('/images/', 'images/'))
         const newPath = path.join(process.cwd(), 'public', 'images', 'projects', newImagePath)
-        
+
         if (fs.existsSync(currentPath)) {
           fs.renameSync(currentPath, newPath)
           finalUrl = `/images/projects/${newImagePath}`
@@ -91,25 +92,40 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    const image = await prisma.imagenProyecto.create({
-      data: {
-        url: finalUrl,
-        alt: data.descripcion || 'Imagen del proyecto',
-        descripcion: data.descripcion || null,
-        proyectoId: data.proyectoId,
-      },
-      include: {
-        proyecto: {
-          select: {
-            titulo: true,
+    // Asegurar que proyectoId sea null si está vacío o no existe
+    const proyectoId = data.proyectoId && data.proyectoId.trim() !== '' ? data.proyectoId : null
+
+    const createData = {
+      url: finalUrl,
+      alt: data.descripcion || 'Imagen del proyecto',
+      descripcion: data.descripcion || null,
+      proyectoId: proyectoId,
+    }
+    console.log('[Media API] Create data:', JSON.stringify(createData, null, 2))
+    console.log('[Media API] proyectoId exists?', proyectoId !== null)
+
+    const image = proyectoId
+      ? await prisma.imagenProyecto.create({
+          data: createData,
+          include: {
+            proyecto: {
+              select: {
+                titulo: true,
+              }
+            }
           }
-        }
-      }
-    })
+        })
+      : await prisma.imagenProyecto.create({
+          data: createData,
+        })
 
     return NextResponse.json(image, { status: 201 })
   } catch (error) {
     console.error('Error creating media:', error)
+    if (error instanceof Error) {
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+    }
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

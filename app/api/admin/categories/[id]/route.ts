@@ -92,9 +92,20 @@ export async function PUT(
       // Actualizar a la nueva ruta organizada si cambió el slug
       updateData.imagenCover = imageUrls.imagenCover
     }
-    
+
     if (data.imagenBanner !== undefined) updateData.imagenBanner = data.imagenBanner
-    
+
+    // Handle video fields
+    if (data.videoCover !== undefined) updateData.videoCover = data.videoCover
+    if (data.videoBanner !== undefined) updateData.videoBanner = data.videoBanner
+    if (data.usarVideoCover !== undefined) updateData.usarVideoCover = data.usarVideoCover
+    if (data.usarVideoBanner !== undefined) updateData.usarVideoBanner = data.usarVideoBanner
+    // Video adjustment fields
+    if (data.videoCoverScale !== undefined) updateData.videoCoverScale = data.videoCoverScale
+    if (data.videoCoverPosition !== undefined) updateData.videoCoverPosition = data.videoCoverPosition
+    if (data.videoBannerScale !== undefined) updateData.videoBannerScale = data.videoBannerScale
+    if (data.videoBannerPosition !== undefined) updateData.videoBannerPosition = data.videoBannerPosition
+
     if (data.icono !== undefined) {
       updateData.icono = data.icono
     } else if (newSlug !== currentCategory.slug) {

@@ -46,7 +46,7 @@ interface ProjectsByCategorySectionProps {
 }
 
 // Componente de categoría individual con parallax
-function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria; index: number; projectCount: number }) {
+function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categoria: Categoria; index: number; projectCount: number; iconSize?: number }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -133,9 +133,13 @@ function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria
             transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
             viewport={{ once: true }}
             className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
-            style={{ color: categoria.color || '#3b82f6' }}
+            style={{
+              color: categoria.color || '#3b82f6',
+              width: `${iconSize * 4}px`,
+              height: `${iconSize * 4}px`
+            }}
           >
-            {getCategoryIconComponent(categoria.icono, "w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40")}
+            {getCategoryIconComponent(categoria.icono, "w-full h-full")}
           </motion.div>
 
           {/* Título sin animación de letras - cada palabra en una línea, altura fija de 2 líneas */}
@@ -180,6 +184,23 @@ function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria
 export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCategorySectionProps) {
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [loading, setLoading] = useState(true)
+  const [globalIconSize, setGlobalIconSize] = useState(48) // Tamaño global de iconos
+
+  // Cargar configuración global (endpoint público)
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch('/api/site-config')
+        if (response.ok) {
+          const config = await response.json()
+          setGlobalIconSize(config.categoryIconSize || 48)
+        }
+      } catch (error) {
+        console.error('Error fetching site config:', error)
+      }
+    }
+    fetchConfig()
+  }, [])
 
   // Cargar categorías desde la base de datos
   useEffect(() => {
@@ -222,6 +243,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
                 categoria={categoria}
                 index={index}
                 projectCount={projectCount}
+                iconSize={globalIconSize}
               />
             )
           })}

@@ -41,6 +41,7 @@ export function ExpandImageButton({
   return (
     <>
       <Button
+        type="button"
         size={size}
         variant={variant}
         onClick={handleOpenEditor}

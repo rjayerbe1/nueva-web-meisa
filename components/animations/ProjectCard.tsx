@@ -23,14 +23,15 @@ interface ProjectCardProps {
 }
 
 const categoryColors = {
-  CENTROS_COMERCIALES: "bg-purple-100 text-purple-800",
-  EDIFICIOS: "bg-blue-100 text-blue-800",
-  PUENTES: "bg-green-100 text-green-800",
-  OIL_GAS: "bg-yellow-100 text-yellow-800",
-  INDUSTRIAL: "bg-red-100 text-red-800",
-  RESIDENCIAL: "bg-pink-100 text-pink-800",
-  INFRAESTRUCTURA: "bg-gray-100 text-gray-800",
-  OTRO: "bg-indigo-100 text-indigo-800",
+  COMERCIAL: "bg-purple-100 text-purple-800",
+  EDIFICACIONES: "bg-blue-100 text-blue-800",
+  PUENTES_VEHICULARES: "bg-green-100 text-green-800",
+  PUENTES_PEATONALES: "bg-teal-100 text-teal-800",
+  INDUSTRIA: "bg-slate-100 text-slate-800",
+  ESCENARIOS_DEPORTIVOS: "bg-indigo-100 text-indigo-800",
+  CUBIERTAS_Y_FACHADAS: "bg-amber-100 text-amber-800",
+  ESTRUCTURAS_MODULARES: "bg-cyan-100 text-cyan-800",
+  OTRO: "bg-gray-100 text-gray-800",
 }
 
 const statusColors = {

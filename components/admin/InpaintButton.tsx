@@ -39,6 +39,7 @@ export function InpaintButton({
   return (
     <>
       <Button
+        type="button"
         size={size}
         variant={variant}
         onClick={handleOpenEditor}

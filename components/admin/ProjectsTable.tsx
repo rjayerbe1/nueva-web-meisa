@@ -67,20 +67,30 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
 
   const getCategoryColor = (categoria: string) => {
     switch (categoria) {
-      case 'CENTROS_COMERCIALES': return 'bg-purple-100 text-purple-800 border-purple-200'
-      case 'EDIFICIOS': return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'PUENTES': return 'bg-green-100 text-green-800 border-green-200'
-      case 'INDUSTRIAL': return 'bg-orange-100 text-orange-800 border-orange-200'
+      case 'COMERCIAL': return 'bg-purple-100 text-purple-800 border-purple-200'
+      case 'EDIFICACIONES': return 'bg-blue-100 text-blue-800 border-blue-200'
+      case 'PUENTES_VEHICULARES': return 'bg-green-100 text-green-800 border-green-200'
+      case 'PUENTES_PEATONALES': return 'bg-teal-100 text-teal-800 border-teal-200'
+      case 'INDUSTRIA': return 'bg-slate-100 text-slate-800 border-slate-200'
+      case 'ESCENARIOS_DEPORTIVOS': return 'bg-indigo-100 text-indigo-800 border-indigo-200'
+      case 'CUBIERTAS_Y_FACHADAS': return 'bg-amber-100 text-amber-800 border-amber-200'
+      case 'ESTRUCTURAS_MODULARES': return 'bg-cyan-100 text-cyan-800 border-cyan-200'
+      case 'OTRO': return 'bg-gray-100 text-gray-800 border-gray-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
   const getCategoryIcon = (categoria: string) => {
     switch (categoria) {
-      case 'CENTROS_COMERCIALES': return '🏬'
-      case 'EDIFICIOS': return '🏢'
-      case 'PUENTES': return '🌉'
-      case 'INDUSTRIAL': return '🏭'
+      case 'COMERCIAL': return '🏬'
+      case 'EDIFICACIONES': return '🏢'
+      case 'PUENTES_VEHICULARES': return '🌉'
+      case 'PUENTES_PEATONALES': return '🚶'
+      case 'INDUSTRIA': return '🏭'
+      case 'ESCENARIOS_DEPORTIVOS': return '⚽'
+      case 'CUBIERTAS_Y_FACHADAS': return '🏗️'
+      case 'ESTRUCTURAS_MODULARES': return '🔧'
+      case 'OTRO': return '📦'
       default: return '🏗️'
     }
   }

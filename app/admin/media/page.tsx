@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { UserRole } from "@prisma/client"
 import { Image as ImageIcon, Upload, FolderOpen, FileImage } from "lucide-react"
-import MediaCard from "@/components/admin/MediaCard"
+import MediaLibrary from "@/components/admin/MediaLibrary"
 import MediaPageClient from "@/components/admin/MediaPageClient"
 
 async function getProjectImages() {
@@ -81,22 +81,24 @@ export default async function MediaPage() {
               <FolderOpen className="h-6 w-6 text-green-600" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Proyectos con Media</p>
+              <p className="text-sm font-medium text-gray-600">Con Proyecto</p>
               <p className="text-2xl font-bold text-gray-900">
-                {new Set(images.map(img => img.proyectoId)).size}
+                {images.filter(img => img.proyectoId !== null).length}
               </p>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center">
             <div className="p-3 bg-purple-100 rounded-lg">
               <FileImage className="h-6 w-6 text-purple-600" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Tamaño Total</p>
-              <p className="text-2xl font-bold text-gray-900">--</p>
+              <p className="text-sm font-medium text-gray-600">Sin Proyecto</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {images.filter(img => img.proyectoId === null).length}
+              </p>
             </div>
           </div>
         </div>
@@ -105,21 +107,7 @@ export default async function MediaPage() {
       {/* Images Grid */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">Biblioteca de Imágenes</h2>
-        
-        {images.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {images.map((image) => (
-              <MediaCard key={image.id} image={image} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <ImageIcon className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No hay imágenes</h3>
-            <p className="text-gray-500 mb-4">Las imágenes subidas aparecerán aquí</p>
-            <MediaPageClient projects={projects} />
-          </div>
-        )}
+        <MediaLibrary images={images} />
       </div>
     </div>
   )

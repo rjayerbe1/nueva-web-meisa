@@ -114,10 +114,10 @@ model ImagenProyecto {
   width        Int?
   height       Int?
   format       String?
-  proyectoId   String
+  proyectoId   String?    // Ahora es opcional - permite imágenes sin proyecto
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  proyecto     Proyecto   @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+  proyecto     Proyecto?  @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
 
   @@map("imagenes_proyecto")
 }
@@ -311,7 +311,10 @@ model CategoriaProyecto {
   descripcion         String?
   slug                String        @unique
   imagenCover         String?
+  videoCover          String? // Video para la tarjeta/card de categoría
+  usarVideoCover      Boolean       @default(false) // Si true, usa videoCover; si false, usa imagenCover
   icono               String?
+  // iconSize removido - ahora es global en SiteConfig
   color               String?
   colorSecundario     String?
   metaTitle           String?
@@ -334,6 +337,13 @@ model CategoriaProyecto {
   procesoTrabajo      Json?
   casosExitoIds       Json?
   imagenBanner        String?
+  videoBanner         String? // Video de fondo para la categoría
+  usarVideoBanner     Boolean       @default(false) // Si true, usa videoBanner; si false, usa imagenBanner
+  // Campos para ajustar zoom y posición de videos
+  videoCoverScale     Float?        @default(1.0) // Escala del video cover (1.0 = 100%, 1.5 = 150%)
+  videoCoverPosition  String?       @default("center center") // Posición del video cover (ej: "center center", "top center")
+  videoBannerScale    Float?        @default(1.0) // Escala del video banner
+  videoBannerPosition String?       @default("center center") // Posición del video banner
   brochure            Brochure? // Relación con el brochure digital de la categoría
 
   @@map("categorias_proyecto")
@@ -748,4 +758,26 @@ model ConfiguracionWhatsApp {
   updatedAt           DateTime @updatedAt
 
   @@map("configuracion_whatsapp")
+}
+
+// ============================================
+// CONFIGURACIÓN GLOBAL DEL SITIO
+// ============================================
+
+model SiteConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique @default("global") // Siempre "global" - solo hay una fila
+
+  // Configuración de iconos de categorías
+  categoryIconSize Int @default(48) // Tamaño global de iconos en unidades Tailwind (12-80)
+
+  // Otras configuraciones futuras pueden ir aquí
+  // emailContacto String?
+  // telefono String?
+  // etc.
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@map("site_config")
 }

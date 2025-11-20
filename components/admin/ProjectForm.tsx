@@ -49,15 +49,14 @@ interface ProjectFormProps {
 }
 
 const categoriaLabels = {
-  CENTROS_COMERCIALES: "Centros Comerciales",
-  EDIFICIOS: "Edificios",
+  COMERCIAL: "Comercial",
+  EDIFICACIONES: "Edificaciones",
   INDUSTRIA: "Industria",
   PUENTES_VEHICULARES: "Puentes Vehiculares",
   PUENTES_PEATONALES: "Puentes Peatonales",
   ESCENARIOS_DEPORTIVOS: "Escenarios Deportivos",
   CUBIERTAS_Y_FACHADAS: "Cubiertas y Fachadas",
   ESTRUCTURAS_MODULARES: "Estructuras Modulares",
-  OIL_AND_GAS: "Oil & Gas",
   OTRO: "Otro"
 }
 

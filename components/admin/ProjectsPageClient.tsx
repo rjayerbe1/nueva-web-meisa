@@ -34,14 +34,15 @@ interface ProjectsPageClientProps {
 
 // Mapeo de categorías para mostrar nombres legibles
 const CATEGORIA_LABELS = {
-  CENTROS_COMERCIALES: 'Centros Comerciales',
-  EDIFICIOS: 'Edificios',
-  PUENTES: 'Puentes',
-  OIL_GAS: 'Oil & Gas',
-  INDUSTRIAL: 'Industrial',
-  RESIDENCIAL: 'Residencial',
-  INFRAESTRUCTURA: 'Infraestructura',
-  OTRO: 'Otros'
+  COMERCIAL: 'Comercial',
+  EDIFICACIONES: 'Edificaciones',
+  INDUSTRIA: 'Industria',
+  PUENTES_VEHICULARES: 'Puentes Vehiculares',
+  PUENTES_PEATONALES: 'Puentes Peatonales',
+  ESCENARIOS_DEPORTIVOS: 'Escenarios Deportivos',
+  CUBIERTAS_Y_FACHADAS: 'Cubiertas y Fachadas',
+  ESTRUCTURAS_MODULARES: 'Estructuras Modulares',
+  OTRO: 'Otro'
 } as const
 
 // Mapeo de estados para mostrar nombres legibles

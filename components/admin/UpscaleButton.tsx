@@ -86,6 +86,7 @@ export function UpscaleButton({
   return (
     <>
       <Button
+        type="button"
         size={size}
         variant={variant}
         onClick={handleUpscale}

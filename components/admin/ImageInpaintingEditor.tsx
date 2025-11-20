@@ -52,6 +52,12 @@ export function ImageInpaintingEditor({
         const imageCanvas = imageCanvasRef.current
         const maskCanvas = maskCanvasRef.current
 
+        // Verificar nuevamente que los canvas existen
+        if (!imageCanvas || !maskCanvas) {
+          console.error('Canvas elements not available')
+          return
+        }
+
         // Calcular tamaño manteniendo aspect ratio (max 1200x900 para mejor calidad)
         const maxWidth = 1200
         const maxHeight = 900
@@ -295,6 +301,7 @@ export function ImageInpaintingEditor({
             </p>
           </div>
           <button
+            type="button"
             onClick={onClose}
             disabled={isProcessing}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -336,6 +343,7 @@ export function ImageInpaintingEditor({
             <div className="flex items-center gap-4">
               <div className="flex gap-2">
                 <Button
+                  type="button"
                   size="sm"
                   variant={!isEraser ? 'default' : 'outline'}
                   onClick={() => setIsEraser(false)}
@@ -344,6 +352,7 @@ export function ImageInpaintingEditor({
                   Pincel
                 </Button>
                 <Button
+                  type="button"
                   size="sm"
                   variant={isEraser ? 'default' : 'outline'}
                   onClick={() => setIsEraser(true)}
@@ -369,6 +378,7 @@ export function ImageInpaintingEditor({
               </div>
 
               <Button
+                type="button"
                 size="sm"
                 variant="outline"
                 onClick={undo}
@@ -378,6 +388,7 @@ export function ImageInpaintingEditor({
               </Button>
 
               <Button
+                type="button"
                 size="sm"
                 variant="outline"
                 onClick={clearMask}
@@ -389,6 +400,7 @@ export function ImageInpaintingEditor({
             {/* Mode Selection */}
             <div className="flex gap-2">
               <Button
+                type="button"
                 size="sm"
                 variant={mode === 'remove' ? 'default' : 'outline'}
                 onClick={() => setMode('remove')}
@@ -398,6 +410,7 @@ export function ImageInpaintingEditor({
                 <span className="text-xs opacity-80 mt-1">~$0.0015 USD por imagen</span>
               </Button>
               <Button
+                type="button"
                 size="sm"
                 variant={mode === 'replace' ? 'default' : 'outline'}
                 onClick={() => setMode('replace')}
@@ -439,6 +452,7 @@ export function ImageInpaintingEditor({
           </p>
           <div className="flex gap-3">
             <Button
+              type="button"
               variant="outline"
               onClick={onClose}
               disabled={isProcessing}
@@ -446,6 +460,7 @@ export function ImageInpaintingEditor({
               Cancelar
             </Button>
             <Button
+              type="button"
               onClick={handleApply}
               disabled={isProcessing}
             >

@@ -6,6 +6,16 @@ import Image from "next/image"
 import Link from "next/link"
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
 
+// Helper para parsear posición desde formato "X,Y"
+const parsePosition = (posStr: string | null): { x: number; y: number } => {
+  if (!posStr || posStr.includes(' ')) {
+    // Formato antiguo "center center" o null -> usar 0,0
+    return { x: 0, y: 0 }
+  }
+  const [x, y] = posStr.split(',').map(v => parseFloat(v) || 0)
+  return { x, y }
+}
+
 interface Categoria {
   id: string
   key: string
@@ -13,6 +23,10 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  videoCover: string | null
+  usarVideoCover: boolean
+  videoCoverScale: number | null
+  videoCoverPosition: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -27,14 +41,16 @@ interface ProjectCategoryCardProps {
   onCategorySelect?: (categoryKey: string) => void
   delay?: number
   projectCount?: number
+  iconSize?: number // Tamaño global del icono en unidades Tailwind
 }
 
 
-export default function ProjectCategoryCard({ 
-  category, 
-  onCategorySelect, 
+export default function ProjectCategoryCard({
+  category,
+  onCategorySelect,
   delay = 0,
-  projectCount = 0
+  projectCount = 0,
+  iconSize = 48 // Default 48 si no se proporciona
 }: ProjectCategoryCardProps) {
 
   const handleClick = () => {
@@ -52,14 +68,34 @@ export default function ProjectCategoryCard({
         className="relative h-80 w-full cursor-pointer"
       >
       <div className="relative h-full rounded-2xl overflow-hidden shadow-xl transition-all duration-500 group-hover:shadow-2xl group-hover:scale-105">
-        {/* Imagen de fondo */}
-        {category.imagenCover ? (
+        {/* Video o Imagen de fondo - Decidir basado en usarVideoCover */}
+        {(category.videoCover || category.imagenCover) ? (
           <>
-            <img
-              src={category.imagenCover}
-              alt={`Cover de ${category.nombre}`}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+            {(category.usarVideoCover && category.videoCover) ? (
+              <video
+                src={category.videoCover}
+                className="w-full h-full"
+                style={{
+                  objectFit: 'cover',
+                  transform: `translate(${parsePosition(category.videoCoverPosition).x}%, ${parsePosition(category.videoCoverPosition).y}%) scale(${category.videoCoverScale || 1.0})`,
+                  willChange: 'transform',
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d',
+                  WebkitFontSmoothing: 'antialiased',
+                  imageRendering: 'crisp-edges'
+                }}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : category.imagenCover ? (
+              <img
+                src={category.imagenCover}
+                alt={`Cover de ${category.nombre}`}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+            ) : null}
             
             {/* Overlay personalizable para el ícono */}
             {category.overlayOpacity && category.overlayOpacity > 0 && (
@@ -77,11 +113,15 @@ export default function ProjectCategoryCard({
             
             {/* Ícono - se mueve con transform desde la misma posición base */}
             <div className="absolute top-0 left-0 right-0 bottom-20 flex items-center justify-center">
-              <div 
+              <div
                 className="flex items-center justify-center opacity-80 transition-all duration-500 ease-out group-hover:opacity-100 transform group-hover:-translate-y-16 group-hover:scale-50"
-                style={{ color: category.color || '#3b82f6' }}
+                style={{
+                  color: category.color || '#3b82f6',
+                  width: `${iconSize * 4}px`,
+                  height: `${iconSize * 4}px`
+                }}
               >
-                {getCategoryIconComponent(category.icono, "w-32 h-32")}
+                {getCategoryIconComponent(category.icono, "w-full h-full")}
               </div>
             </div>
 

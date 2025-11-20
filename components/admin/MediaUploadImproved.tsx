@@ -21,11 +21,12 @@ export default function MediaUploadImproved({ projects, onClose }: MediaUploadIm
   const [description, setDescription] = useState('')
   const [files, setFiles] = useState<FileList | null>(null)
   const [uploadStatus, setUploadStatus] = useState<string[]>([])
+  const [isDragging, setIsDragging] = useState(false)
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!files || files.length === 0 || !selectedProject) {
-      alert('Por favor selecciona al menos un archivo y un proyecto')
+    if (!files || files.length === 0) {
+      alert('Por favor selecciona al menos un archivo')
       return
     }
 
@@ -62,7 +63,7 @@ export default function MediaUploadImproved({ projects, onClose }: MediaUploadIm
             body: JSON.stringify({
               url,
               descripcion: description || file.name,
-              proyectoId: selectedProject
+              proyectoId: selectedProject || null
             }),
           })
 
@@ -91,6 +92,34 @@ export default function MediaUploadImproved({ projects, onClose }: MediaUploadIm
     }
   }
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    const droppedFiles = e.dataTransfer.files
+    if (droppedFiles && droppedFiles.length > 0) {
+      setFiles(droppedFiles)
+    }
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full">
@@ -107,15 +136,14 @@ export default function MediaUploadImproved({ projects, onClose }: MediaUploadIm
         <form onSubmit={handleUpload} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Proyecto *
+              Proyecto (opcional)
             </label>
             <select
-              required
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
             >
-              <option value="">Seleccionar proyecto...</option>
+              <option value="">Sin proyecto asignado</option>
               {projects.map((project) => (
                 <option key={project.id} value={project.id}>
                   {project.titulo}
@@ -141,9 +169,19 @@ export default function MediaUploadImproved({ projects, onClose }: MediaUploadIm
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Archivos *
             </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+            <div
+              className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition-colors ${
+                isDragging
+                  ? 'border-meisa-blue bg-blue-50'
+                  : 'border-gray-300 bg-white'
+              }`}
+              onDragEnter={handleDragEnter}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
               <div className="space-y-1 text-center">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                <Upload className={`mx-auto h-12 w-12 ${isDragging ? 'text-meisa-blue' : 'text-gray-400'}`} />
                 <div className="flex text-sm text-gray-600">
                   <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-meisa-blue hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-meisa-blue">
                     <span>Subir archivos</span>

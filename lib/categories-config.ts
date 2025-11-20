@@ -11,24 +11,24 @@ export interface ProjectCategory {
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = [
   {
-    id: "CentrosComerciales",
-    name: "Centros Comerciales",
-    description: "Encuentra aquí los centros comerciales hechos por Meisa.",
+    id: "Comercial",
+    name: "Comercial",
+    description: "Encuentra aquí los proyectos comerciales hechos por Meisa.",
     icon: "/images/icons/icono-centros-comerciales_1.png",
     image: "/images/categories/centros-comerciales/cover.jpg",
     backgroundColor: "#2d2e80",
     exampleProject: "centro-comercial-campanario",
-    dbValue: "CENTROS_COMERCIALES"
+    dbValue: "COMERCIAL"
   },
   {
-    id: "Edificios",
-    name: "Edificios",
-    description: "Encuentra aquí los edificios hechos por Meisa.",
+    id: "Edificaciones",
+    name: "Edificaciones",
+    description: "Encuentra aquí las edificaciones hechas por Meisa.",
     icon: "/images/icons/icono-edificios_1.png",
     image: "/images/categories/edificios/cover.jpg",
     backgroundColor: "#2d2e80",
     exampleProject: "edificios-cinemateca-distrital",
-    dbValue: "EDIFICIOS"
+    dbValue: "EDIFICACIONES"
   },
   {
     id: "Industria",
@@ -91,14 +91,14 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
     dbValue: "ESTRUCTURAS_MODULARES"
   },
   {
-    id: "OilandGas",
-    name: "Oil and Gas",
-    description: "En MEISA brindamos soluciones para la industria petrolera, química, alimenticia, papelera, entre otras, fabricando: Intercambiadores de calor, recipientes a presión, recipientes atmosféricos y muchos más equipos industriales.",
+    id: "Otro",
+    name: "Otros Proyectos",
+    description: "Otros proyectos especiales y soluciones personalizadas de MEISA.",
     icon: "/images/icons/icono-oil-and-gas_1.png",
     image: "/images/categories/oil-and-gas/cover.jpg",
     backgroundColor: "#2d2e80",
     exampleProject: "oil-and-gas-tanque-pulmon",
-    dbValue: "OIL_AND_GAS"
+    dbValue: "OTRO"
   }
 ]
 

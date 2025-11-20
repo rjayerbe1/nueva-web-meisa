@@ -14,6 +14,10 @@ import ImageCropModal from "./ImageCropModal"
 import { UpscaleButton } from "./UpscaleButton"
 import { ExpandImageButton } from "./ExpandImageButton"
 import { InpaintButton } from "./InpaintButton"
+import { OptimizeButton } from "./OptimizeButton"
+import { CategoryImageSelector } from "./CategoryImageSelector"
+import { AccordionSection } from "./AccordionSection"
+import { GlobalIconSizeConfig } from "./GlobalIconSizeConfig"
 
 // Iconos disponibles de Lucide
 import { 
@@ -42,15 +46,14 @@ const PRESET_COLORS = [
 
 // Categorías disponibles
 const CATEGORY_OPTIONS = [
-  { key: 'CENTROS_COMERCIALES', name: 'Centros Comerciales' },
-  { key: 'EDIFICIOS', name: 'Edificios' },
+  { key: 'COMERCIAL', name: 'Comercial' },
+  { key: 'EDIFICACIONES', name: 'Edificaciones' },
   { key: 'INDUSTRIA', name: 'Industria' },
   { key: 'PUENTES_VEHICULARES', name: 'Puentes Vehiculares' },
   { key: 'PUENTES_PEATONALES', name: 'Puentes Peatonales' },
   { key: 'ESCENARIOS_DEPORTIVOS', name: 'Escenarios Deportivos' },
   { key: 'CUBIERTAS_Y_FACHADAS', name: 'Cubiertas y Fachadas' },
   { key: 'ESTRUCTURAS_MODULARES', name: 'Estructuras Modulares' },
-  { key: 'OIL_AND_GAS', name: 'Oil & Gas' },
   { key: 'OTRO', name: 'Otro' }
 ]
 
@@ -61,7 +64,15 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  videoCover: string | null
+  usarVideoCover: boolean
+  videoCoverScale: number | null
+  videoCoverPosition: string | null
   imagenBanner: string | null
+  videoBanner: string | null
+  usarVideoBanner: boolean
+  videoBannerScale: number | null
+  videoBannerPosition: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -105,15 +116,39 @@ export default function CategoryEditModal({
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null)
   const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null)
   const [availableProjects, setAvailableProjects] = useState<{id: string, titulo: string}[]>([])
-  
+  const [showImageSelector, setShowImageSelector] = useState(false)
+  const [imageSelectorTarget, setImageSelectorTarget] = useState<'cover' | 'banner'>('cover')
+
+  // Helper functions para posición X,Y
+  const parsePosition = (posStr: string): { x: number; y: number } => {
+    if (!posStr || posStr.includes(' ')) {
+      // Formato antiguo "center center" o vacío -> convertir a "0,0"
+      return { x: 0, y: 0 }
+    }
+    const [x, y] = posStr.split(',').map(v => parseFloat(v) || 0)
+    return { x, y }
+  }
+
+  const formatPosition = (x: number, y: number): string => {
+    return `${x},${y}`
+  }
+
   // Form data
   const [formData, setFormData] = useState({
-    key: categoria?.key || 'CENTROS_COMERCIALES',
+    key: categoria?.key || 'COMERCIAL',
     nombre: categoria?.nombre || '',
     descripcion: categoria?.descripcion || '',
     slug: categoria?.slug || '',
     imagenCover: categoria?.imagenCover || '',
+    videoCover: categoria?.videoCover || '',
+    usarVideoCover: categoria?.usarVideoCover || false,
+    videoCoverScale: categoria?.videoCoverScale ?? 1.0,
+    videoCoverPosition: categoria?.videoCoverPosition || '0,0',
     imagenBanner: categoria?.imagenBanner || '',
+    videoBanner: categoria?.videoBanner || '',
+    usarVideoBanner: categoria?.usarVideoBanner || false,
+    videoBannerScale: categoria?.videoBannerScale ?? 1.0,
+    videoBannerPosition: categoria?.videoBannerPosition || '0,0',
     icono: categoria?.icono || 'Building',
     color: categoria?.color || '#3B82F6',
     colorSecundario: categoria?.colorSecundario || '',
@@ -143,7 +178,15 @@ export default function CategoryEditModal({
         descripcion: categoria.descripcion || '',
         slug: categoria.slug,
         imagenCover: categoria.imagenCover || '',
+        videoCover: categoria.videoCover || '',
+        usarVideoCover: categoria.usarVideoCover || false,
+        videoCoverScale: categoria.videoCoverScale ?? 1.0,
+        videoCoverPosition: categoria.videoCoverPosition || '0,0',
         imagenBanner: categoria.imagenBanner || '',
+        videoBanner: categoria.videoBanner || '',
+        usarVideoBanner: categoria.usarVideoBanner || false,
+        videoBannerScale: categoria.videoBannerScale ?? 1.0,
+        videoBannerPosition: categoria.videoBannerPosition || '0,0',
         icono: categoria.icono || 'Building',
         color: categoria.color || '#3B82F6',
         colorSecundario: categoria.colorSecundario || '',
@@ -275,7 +318,7 @@ export default function CategoryEditModal({
 
       const formData = new FormData()
       formData.append('file', file)
-      
+
       const uploadResponse = await fetch('/api/admin/upload', {
         method: 'POST',
         body: formData,
@@ -288,7 +331,7 @@ export default function CategoryEditModal({
       } else {
         alert('Error al subir el banner')
       }
-      
+
       // Limpiar el blob URL
       URL.revokeObjectURL(croppedImageUrl)
     } catch (error) {
@@ -297,6 +340,78 @@ export default function CategoryEditModal({
     } finally {
       setUploading(false)
       setSelectedBannerFile(null)
+    }
+  }
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validar que sea un video
+    if (!file.type.startsWith('video/')) {
+      alert('Por favor selecciona un archivo de video válido')
+      return
+    }
+
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'categories/videos')
+
+      const uploadResponse = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (uploadResponse.ok) {
+        const uploadResult = await uploadResponse.json()
+        setFormData(prev => ({ ...prev, videoBanner: uploadResult.url }))
+        alert('Video subido exitosamente')
+      } else {
+        alert('Error al subir el video')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error al subir el video')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleVideoCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validar que sea un video
+    if (!file.type.startsWith('video/')) {
+      alert('Por favor selecciona un archivo de video válido')
+      return
+    }
+
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'categories/videos')
+
+      const uploadResponse = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (uploadResponse.ok) {
+        const uploadResult = await uploadResponse.json()
+        setFormData(prev => ({ ...prev, videoCover: uploadResult.url }))
+        alert('Video de portada subido exitosamente')
+      } else {
+        alert('Error al subir el video')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error al subir el video de portada')
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -318,7 +433,15 @@ export default function CategoryEditModal({
         descripcion: formData.descripcion,
         slug: formData.slug,
         imagenCover: formData.imagenCover,
+        videoCover: formData.videoCover,
+        usarVideoCover: formData.usarVideoCover,
+        videoCoverScale: formData.videoCoverScale,
+        videoCoverPosition: formData.videoCoverPosition,
         imagenBanner: formData.imagenBanner,
+        videoBanner: formData.videoBanner,
+        usarVideoBanner: formData.usarVideoBanner,
+        videoBannerScale: formData.videoBannerScale,
+        videoBannerPosition: formData.videoBannerPosition,
         icono: formData.icono,
         color: formData.color,
         colorSecundario: formData.colorSecundario,
@@ -556,434 +679,23 @@ export default function CategoryEditModal({
 
             {/* Tab: Aspecto Visual */}
             {activeTab === 'visual' && (
-              <div className="space-y-4">
-                {/* Imagen de Cover y Preview - Más grande */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-4">
-                    Imagen de Portada y Vista Previa
-                  </label>
-                  
-                  <div className="grid grid-cols-2 gap-8">
-                    {/* Upload de imagen */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-600 mb-3">Subir Imagen</h4>
-                      <div className="flex justify-center">
-                        {formData.imagenCover ? (
-                          <div className="space-y-3">
-                            <img
-                              src={formData.imagenCover}
-                              alt="Cover preview"
-                              className="w-80 h-60 object-cover rounded-lg border border-gray-300"
-                            />
-                            <div className="space-y-3">
-                              {/* Botones principales */}
-                              <div className="flex space-x-2 justify-center">
-                                <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                                  {uploading ? 'Subiendo...' : 'Cambiar Imagen'}
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                    className="sr-only"
-                                    disabled={uploading}
-                                  />
-                                </label>
-                                <button
-                                  type="button"
-                                  onClick={() => setFormData(prev => ({ ...prev, imagenCover: '' }))}
-                                  className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
-                                >
-                                  Eliminar
-                                </button>
-                              </div>
+              <div className="space-y-6">
 
-                              {/* Herramientas de IA */}
-                              <div className="border-t pt-3">
-                                <p className="text-xs font-medium text-gray-600 mb-2 text-center">
-                                  Herramientas de IA
-                                </p>
-                                <div className="flex flex-wrap gap-2 justify-center">
-                                  <UpscaleButton
-                                    imageUrl={formData.imagenCover}
-                                    onUpscaleComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
-                                    size="sm"
-                                  />
-                                  <ExpandImageButton
-                                    imageUrl={formData.imagenCover}
-                                    onExpandComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
-                                    size="sm"
-                                  />
-                                  <InpaintButton
-                                    imageUrl={formData.imagenCover}
-                                    onInpaintComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
-                                    size="sm"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <label className="flex flex-col items-center justify-center w-80 h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                            <p className="text-base text-gray-600 font-medium">
-                              {uploading ? 'Subiendo...' : 'Subir Imagen'}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
-                              Se recortará automáticamente a formato cuadrado
-                            </p>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleImageUpload}
-                              className="sr-only"
-                              disabled={uploading}
-                            />
-                          </label>
-                        )}
-                      </div>
-                    </div>
+                
 
-                    {/* Preview completo MÁS GRANDE */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-600 mb-3">Vista Previa Final</h4>
-                      <div className="flex justify-center mb-4">
-                        <div className="w-80 h-60 relative rounded-xl overflow-hidden shadow-xl border border-gray-200 group">
-                          {/* Imagen de fondo o placeholder */}
-                        {formData.imagenCover ? (
-                          <div className="relative w-full h-full">
-                            <img
-                              src={formData.imagenCover}
-                              alt="Preview completo"
-                              className="w-full h-full object-cover"
-                            />
-                            
-                            {/* Overlay personalizable */}
-                            {formData.overlayOpacity > 0 && (
-                              <div 
-                                className="absolute inset-0"
-                                style={{ 
-                                  backgroundColor: formData.overlayColor,
-                                  opacity: formData.overlayOpacity
-                                }}
-                              />
-                            )}
-                            
-                            {/* Overlay oscuro para el texto */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                            
-                            {/* Ícono centrado MÁS GRANDE */}
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div 
-                                className="text-5xl opacity-80"
-                                style={{ color: formData.color || '#3b82f6' }}
-                              >
-                                {renderIconPreview("h-16 w-16")}
-                              </div>
-                            </div>
-
-                            {/* Información en esquina superior derecha */}
-                            <div className="absolute top-3 right-3 flex flex-col items-end space-y-2">
-                              {/* Info técnica */}
-                              <div className="text-xs text-white/80 bg-black/40 backdrop-blur-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div>Slug: {formData.slug || 'slug'}</div>
-                              </div>
-                              {/* Badges */}
-                              <div className="flex flex-col space-y-1">
-                                {formData.destacada && (
-                                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
-                                    <Star className="h-3 w-3 text-yellow-500" />
-                                  </div>
-                                )}
-                                {!formData.visible && (
-                                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
-                                    <EyeOff className="h-3 w-3 text-gray-600" />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Texto en la parte inferior */}
-                            <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                              <h3 className="text-sm font-bold mb-1 drop-shadow-lg">
-                                {formData.nombre || 'Nombre Categoría'}
-                              </h3>
-                              <p className="text-xs text-white/90 mb-2 drop-shadow">
-                                X proyecto(s)
-                              </p>
-                              {formData.descripcion && (
-                                <p className="text-xs text-white/80 line-clamp-2 drop-shadow">
-                                  {formData.descripcion}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="relative w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                            {/* Ícono centrado en placeholder */}
-                            <div 
-                              className="text-5xl"
-                              style={{ color: formData.color || '#3b82f6' }}
-                            >
-                              {renderIconPreview("h-16 w-16")}
-                            </div>
-
-                            {/* Badges en placeholder */}
-                            <div className="absolute top-3 right-3 flex flex-col space-y-1">
-                              {formData.destacada && (
-                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
-                                  <Star className="h-3 w-3 text-yellow-500" />
-                                </div>
-                              )}
-                              {!formData.visible && (
-                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
-                                  <EyeOff className="h-3 w-3 text-gray-600" />
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Texto en placeholder */}
-                            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent text-white">
-                              <h3 className="text-sm font-bold mb-1">
-                                {formData.nombre || 'Nombre Categoría'}
-                              </h3>
-                              <p className="text-xs text-white/90 mb-2">
-                                X proyecto(s)
-                              </p>
-                              {formData.descripcion && (
-                                <p className="text-xs text-white/80 line-clamp-2">
-                                  {formData.descripcion}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                        </div>
-                      </div>
-                      
-                      {/* Controles del overlay justo debajo del preview */}
-                      <div className="space-y-4">
-                        <div className="space-y-3 pb-3 border-b border-gray-200">
-                          <h4 className="text-xs font-semibold text-gray-700">Overlay Base</h4>
-                          {/* Color del overlay */}
-                          <div>
-                            <label className="block text-xs text-gray-600 mb-1">Color del Overlay</label>
-                            <input
-                              type="color"
-                              value={formData.overlayColor}
-                              onChange={(e) => setFormData(prev => ({ ...prev, overlayColor: e.target.value }))}
-                              className="w-full h-6 rounded border border-gray-300"
-                            />
-                          </div>
-
-                          {/* Opacidad del overlay */}
-                          <div>
-                            <label className="block text-xs text-gray-600 mb-1">
-                              Opacidad: {Math.round(formData.overlayOpacity * 100)}%
-                            </label>
-                            <input
-                              type="range"
-                              min="0"
-                              max="1"
-                              step="0.1"
-                              value={formData.overlayOpacity}
-                              onChange={(e) => setFormData(prev => ({ ...prev, overlayOpacity: parseFloat(e.target.value) }))}
-                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Controles del overlay hover */}
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-xs font-semibold text-gray-700">Overlay Hover</h4>
-                            <label className="flex items-center text-xs">
-                              <input
-                                type="checkbox"
-                                checked={formData.enableHoverOverlay}
-                                onChange={(e) => setFormData(prev => ({ ...prev, enableHoverOverlay: e.target.checked }))}
-                                className="mr-1.5 w-3 h-3"
-                              />
-                              <span className="text-gray-600">Activar</span>
-                            </label>
-                          </div>
-
-                          {formData.enableHoverOverlay && (
-                            <>
-                              {/* Color del overlay hover */}
-                              <div>
-                                <label className="block text-xs text-gray-600 mb-1">Color Hover</label>
-                                <input
-                                  type="color"
-                                  value={formData.hoverOverlayColor}
-                                  onChange={(e) => setFormData(prev => ({ ...prev, hoverOverlayColor: e.target.value }))}
-                                  className="w-full h-6 rounded border border-gray-300"
-                                />
-                              </div>
-
-                              {/* Opacidad del overlay hover */}
-                              <div>
-                                <label className="block text-xs text-gray-600 mb-1">
-                                  Opacidad Hover: {Math.round(formData.hoverOverlayOpacity * 100)}%
-                                </label>
-                                <input
-                                  type="range"
-                                  min="0"
-                                  max="1"
-                                  step="0.05"
-                                  value={formData.hoverOverlayOpacity}
-                                  onChange={(e) => setFormData(prev => ({ ...prev, hoverOverlayOpacity: parseFloat(e.target.value) }))}
-                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                />
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Imagen de Banner para Hero */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-4">
-                    Imagen de Banner (Hero de la página de categoría)
-                  </label>
-                  
-                  <div className="grid grid-cols-2 gap-8">
-                    {/* Upload de banner */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-600 mb-3">Subir Banner</h4>
-                      <div className="flex justify-center">
-                        {formData.imagenBanner ? (
-                          <div className="space-y-3">
-                            <img
-                              src={formData.imagenBanner}
-                              alt="Banner preview"
-                              className="w-80 h-48 object-cover rounded-lg border border-gray-300"
-                            />
-                            <div className="flex space-x-2 justify-center">
-                              <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-                                {uploading ? 'Subiendo...' : 'Cambiar Banner'}
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleBannerUpload}
-                                  className="sr-only"
-                                  disabled={uploading}
-                                />
-                              </label>
-                              <button
-                                type="button"
-                                onClick={() => setFormData(prev => ({ ...prev, imagenBanner: '' }))}
-                                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
-                              >
-                                Eliminar
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <label className="flex flex-col items-center justify-center w-80 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                            <p className="text-base text-gray-600 font-medium">
-                              {uploading ? 'Subiendo...' : 'Subir Banner'}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
-                              Proporción 6:1 (muy horizontal) - Se ajustará al recortar
-                            </p>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleBannerUpload}
-                              className="sr-only"
-                              disabled={uploading}
-                            />
-                          </label>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Preview del banner - Formato real del hero */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-600 mb-3">Vista Previa Hero Real</h4>
-                      <div className="flex justify-center">
-                        <div className="w-96 h-16 relative rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-gray-900">
-                          {formData.imagenBanner ? (
-                            <img
-                              src={formData.imagenBanner}
-                              alt="Banner preview"
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center">
-                              <div className="text-center text-gray-400">
-                                <div className="w-8 h-8 mx-auto mb-1 opacity-60" style={{ color: formData.color || '#3b82f6' }}>
-                                  {renderIconPreview("w-8 h-8")}
-                                </div>
-                                <p className="text-xs">Sin banner - se usará fondo oscuro</p>
-                              </div>
-                            </div>
-                          )}
-                          
-                          {/* Overlay personalizable si está configurado */}
-                          {formData.overlayOpacity > 0 && (
-                            <div 
-                              className="absolute inset-0"
-                              style={{ 
-                                backgroundColor: formData.overlayColor,
-                                opacity: formData.overlayOpacity
-                              }}
-                            />
-                          )}
-                          
-                          {/* Gradient overlay base para legibilidad */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20" />
-                          
-                          {/* Contenido del hero exactamente como aparece en la página real */}
-                          <div className="absolute inset-0 flex items-center px-3">
-                            <div className="text-white flex items-center gap-3 w-full">
-                              {/* Ícono de la categoría - más pequeño */}
-                              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{ color: formData.color || '#3b82f6' }}>
-                                {renderIconPreview("w-8 h-8")}
-                              </div>
-                              
-                              <div className="flex-1">
-                                {/* Breadcrumb simulado - más compacto */}
-                                <nav className="mb-1">
-                                  <ol className="flex items-center gap-1 text-[10px] opacity-80">
-                                    <li>Inicio</li>
-                                    <li>/</li>
-                                    <li>Proyectos</li>
-                                    <li>/</li>
-                                    <li className="text-white/80">{formData.nombre || 'Categoría'}</li>
-                                  </ol>
-                                </nav>
-                                
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <h1 className="text-sm font-bold mb-1">
-                                      {formData.nombre || 'Nombre Categoría'}
-                                    </h1>
-                                    <div className="flex items-center gap-3 text-[10px] text-white/80">
-                                      <span>X proyectos</span>
-                                      <span className="truncate max-w-[120px]">
-                                        {formData.descripcion ? `${formData.descripcion.substring(0, 30)}...` : 'Descripción'}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-500 text-center mt-2">
-                        Proporción 6:1 recomendada • Hero height: 320px (h-80) • Ancho completo responsivo
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Selección de Icono */}
+                {/* Sección 1: Iconografía y Colores */}
+                <AccordionSection
+                  title="Iconografía y Colores"
+                  icon="🎨"
+                  defaultOpen={true}
+                  statusIndicator={
+                    <span className="text-xs">
+                      {formData.icono ? '✓ Configurado' : '○ Pendiente'}
+                    </span>
+                  }
+                >
+                  <div className="space-y-6">
+                    {/* Selección de Icono */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Icono
@@ -1077,7 +789,20 @@ export default function CategoryEditModal({
                   </div>
                 </div>
 
-                {/* Colores */}
+                    {/* Configuración de Tamaño Global */}
+                <div className="border-t pt-4 mt-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Tamaño de Iconos
+                    </label>
+                    <GlobalIconSizeConfig onUpdate={() => {}} />
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    El tamaño de los iconos se configura de forma global para todas las categorías.
+                  </p>
+                </div>
+
+                    {/* Colores */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1138,7 +863,902 @@ export default function CategoryEditModal({
                       />
                     </div>
                   </div>
-                </div>
+                  </div>
+                  </div>
+                </AccordionSection>
+
+                {/* Sección 2: Medios de Portada (Card) */}
+                <AccordionSection
+                  title="Medios de Portada (Card)"
+                  icon="📸"
+                  defaultOpen={false}
+                  statusIndicator={
+                    <span className="text-xs">
+                      {formData.imagenCover && '✓ Imagen'} {formData.videoCover && '| ✓ Video'}
+                      {!formData.imagenCover && !formData.videoCover && '○ Sin medios'}
+                    </span>
+                  }
+                >
+                  <div className="space-y-6">
+                    <p className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      Los medios de portada se muestran en las tarjetas de categoría en la página principal.
+                    </p>
+
+                    {/* Upload de imagen */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-600 mb-3">Imagen de Portada</h4>
+                      <div className="flex justify-center">
+                        {formData.imagenCover ? (
+                          <div className="space-y-3">
+                            <img
+                              src={formData.imagenCover}
+                              alt="Cover preview"
+                              className="w-80 h-60 object-cover rounded-lg border border-gray-300"
+                            />
+                            <div className="space-y-3">
+                              {/* Botones principales */}
+                              <div className="flex flex-wrap gap-2 justify-center">
+                                <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                  {uploading ? 'Subiendo...' : 'Subir Nueva'}
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    className="sr-only"
+                                    disabled={uploading}
+                                  />
+                                </label>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setImageSelectorTarget('cover')
+                                    setShowImageSelector(true)
+                                  }}
+                                  className="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors"
+                                >
+                                  Galería GCS
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={async () => {
+                                    try {
+                                      const response = await fetch(formData.imagenCover)
+                                      const blob = await response.blob()
+                                      const url = window.URL.createObjectURL(blob)
+                                      const a = document.createElement('a')
+                                      a.href = url
+                                      a.download = `categoria-${formData.slug}-cover.jpg`
+                                      document.body.appendChild(a)
+                                      a.click()
+                                      window.URL.revokeObjectURL(url)
+                                      document.body.removeChild(a)
+                                    } catch (error) {
+                                      console.error('Error descargando imagen:', error)
+                                      alert('Error al descargar la imagen')
+                                    }
+                                  }}
+                                  className="px-4 py-2 text-sm font-medium text-green-600 bg-green-50 hover:bg-green-100 rounded-md transition-colors"
+                                >
+                                  Descargar
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setFormData(prev => ({ ...prev, imagenCover: '' }))}
+                                  className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                                >
+                                  Eliminar
+                                </button>
+                              </div>
+
+                              {/* Herramientas de IA */}
+                              <div className="border-t pt-3">
+                                <p className="text-xs font-medium text-gray-600 mb-2 text-center">
+                                  Herramientas de IA
+                                </p>
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                  <UpscaleButton
+                                    imageUrl={formData.imagenCover}
+                                    onUpscaleComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
+                                  />
+                                  <ExpandImageButton
+                                    imageUrl={formData.imagenCover}
+                                    onExpandComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
+                                  />
+                                  <InpaintButton
+                                    imageUrl={formData.imagenCover}
+                                    onInpaintComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
+                                  />
+                                  <OptimizeButton
+                                    imageUrl={formData.imagenCover}
+                                    onOptimizeComplete={(url) => setFormData(prev => ({ ...prev, imagenCover: url }))}
+                                    size="sm"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-80 h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                            <p className="text-base text-gray-600 font-medium">
+                              {uploading ? 'Subiendo...' : 'Subir Imagen'}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                              Se recortará automáticamente a formato cuadrado
+                            </p>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageUpload}
+                              className="sr-only"
+                              disabled={uploading}
+                            />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Video de Portada (Card) */}
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Video de Portada (Opcional - para la tarjeta de categoría)
+                        </label>
+                        {(formData.videoCover && formData.imagenCover) && (
+                          <label className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={formData.usarVideoCover}
+                              onChange={(e) => setFormData(prev => ({ ...prev, usarVideoCover: e.target.checked }))}
+                              className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm text-gray-600">Usar video</span>
+                          </label>
+                        )}
+                      </div>
+
+                      <div className="space-y-4">
+                        {formData.videoCover ? (
+                          <div className="space-y-3">
+                            {/* Video con proporción de tarjeta (4:3) y ancho limitado */}
+                            <div className="flex justify-center">
+                              <div className="w-80 aspect-[4/3] rounded-lg border border-gray-300 shadow-lg overflow-hidden">
+                                <video
+                                  src={formData.videoCover}
+                                  className="w-full h-full"
+                                  style={{
+                                    objectFit: 'cover',
+                                    transform: `translate(${parsePosition(formData.videoCoverPosition).x}%, ${parsePosition(formData.videoCoverPosition).y}%) scale(${formData.videoCoverScale})`
+                                  }}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                />
+                              </div>
+                            </div>
+
+                            {/* Controles de Zoom y Posición */}
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-4">
+                              <h4 className="text-sm font-semibold text-gray-700">Ajustes de Video</h4>
+                              <p className="text-xs text-gray-500">Ajusta el zoom y mueve el video para mostrar la mejor área</p>
+
+                              {/* Control de Zoom */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-2">
+                                  Zoom: {Math.round(formData.videoCoverScale * 100)}%
+                                </label>
+                                <input
+                                  type="range"
+                                  min="1"
+                                  max="2.5"
+                                  step="0.05"
+                                  value={formData.videoCoverScale}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, videoCoverScale: parseFloat(e.target.value) }))}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>100%</span>
+                                  <span>250%</span>
+                                </div>
+                              </div>
+
+                              {/* Control de Posición Horizontal (X) */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-2">
+                                  Posición Horizontal: {parsePosition(formData.videoCoverPosition).x > 0 ? '+' : ''}{parsePosition(formData.videoCoverPosition).x}%
+                                  <span className="text-gray-400 ml-2">(← Izquierda | Derecha →)</span>
+                                </label>
+                                <input
+                                  type="range"
+                                  min="-100"
+                                  max="100"
+                                  step="1"
+                                  value={parsePosition(formData.videoCoverPosition).x}
+                                  onChange={(e) => {
+                                    const newX = parseFloat(e.target.value)
+                                    const currentY = parsePosition(formData.videoCoverPosition).y
+                                    setFormData(prev => ({ ...prev, videoCoverPosition: formatPosition(newX, currentY) }))
+                                  }}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>← -100%</span>
+                                  <span>0%</span>
+                                  <span>+100% →</span>
+                                </div>
+                              </div>
+
+                              {/* Control de Posición Vertical (Y) */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-2">
+                                  Posición Vertical: {parsePosition(formData.videoCoverPosition).y > 0 ? '+' : ''}{parsePosition(formData.videoCoverPosition).y}%
+                                  <span className="text-gray-400 ml-2">(↑ Arriba | Abajo ↓)</span>
+                                </label>
+                                <input
+                                  type="range"
+                                  min="-100"
+                                  max="100"
+                                  step="1"
+                                  value={parsePosition(formData.videoCoverPosition).y}
+                                  onChange={(e) => {
+                                    const newY = parseFloat(e.target.value)
+                                    const currentX = parsePosition(formData.videoCoverPosition).x
+                                    setFormData(prev => ({ ...prev, videoCoverPosition: formatPosition(currentX, newY) }))
+                                  }}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>↑ -100%</span>
+                                  <span>0%</span>
+                                  <span>+100% ↓</span>
+                                </div>
+                              </div>
+
+                              {/* Botón de reset */}
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({
+                                  ...prev,
+                                  videoCoverScale: 1.0,
+                                  videoCoverPosition: '0,0'
+                                }))}
+                                className="w-full px-3 py-2 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                              >
+                                Restablecer Ajustes (Zoom 100%, Centro)
+                              </button>
+                            </div>
+
+                            <div className="flex space-x-2 justify-center">
+                              <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                {uploading ? 'Subiendo...' : 'Cambiar Video'}
+                                <input
+                                  type="file"
+                                  accept="video/*"
+                                  onChange={handleVideoCoverUpload}
+                                  className="sr-only"
+                                  disabled={uploading}
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, videoCover: '' }))}
+                                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                              >
+                                Eliminar Video
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-600 text-center">
+                              Este video se mostrará en las tarjetas de categoría (proporción 4:3)
+                            </p>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-80 aspect-[4/3] mx-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                            <p className="text-base text-gray-600 font-medium">
+                              {uploading ? 'Subiendo...' : 'Subir Video de Portada'}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                              MP4, WebM o MOV • Máx. 100MB • Para tarjetas de categoría
+                            </p>
+                            <input
+                              type="file"
+                              accept="video/*"
+                              onChange={handleVideoCoverUpload}
+                              className="sr-only"
+                              disabled={uploading}
+                            />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </AccordionSection>
+
+                {/* Sección 3: Medios de Hero (Banner) */}
+                <AccordionSection
+                  title="Medios de Hero (Banner)"
+                  icon="🖼️"
+                  defaultOpen={false}
+                  statusIndicator={
+                    <span className="text-xs">
+                      {formData.imagenBanner && '✓ Banner'} {formData.videoBanner && '| ✓ Video'}
+                      {!formData.imagenBanner && !formData.videoBanner && '○ Sin medios'}
+                    </span>
+                  }
+                >
+                  <div className="space-y-6">
+                    <p className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      El banner se muestra en la parte superior de la página dedicada de la categoría.
+                    </p>
+
+                    {/* Imagen de Banner para Hero */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-4">
+                        Imagen de Banner (Hero de la página de categoría)
+                      </label>
+
+                      <div className="grid grid-cols-2 gap-8">
+                        {/* Upload de banner */}
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-3">Subir Banner</h4>
+                          <div className="flex justify-center">
+                            {formData.imagenBanner ? (
+                              <div className="space-y-3">
+                                <img
+                                  src={formData.imagenBanner}
+                                  alt="Banner preview"
+                                  className="w-80 h-48 object-cover rounded-lg border border-gray-300"
+                                />
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                  <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    {uploading ? 'Subiendo...' : 'Subir Nueva'}
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={handleBannerUpload}
+                                      className="sr-only"
+                                      disabled={uploading}
+                                    />
+                                  </label>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setImageSelectorTarget('banner')
+                                      setShowImageSelector(true)
+                                    }}
+                                    className="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors"
+                                  >
+                                    Galería GCS
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={async () => {
+                                      try {
+                                        const response = await fetch(formData.imagenBanner)
+                                        const blob = await response.blob()
+                                        const url = window.URL.createObjectURL(blob)
+                                        const a = document.createElement('a')
+                                        a.href = url
+                                        a.download = `categoria-${formData.slug}-banner.jpg`
+                                        document.body.appendChild(a)
+                                        a.click()
+                                        window.URL.revokeObjectURL(url)
+                                        document.body.removeChild(a)
+                                      } catch (error) {
+                                        console.error('Error descargando imagen:', error)
+                                        alert('Error al descargar la imagen')
+                                      }
+                                    }}
+                                    className="px-4 py-2 text-sm font-medium text-green-600 bg-green-50 hover:bg-green-100 rounded-md transition-colors"
+                                  >
+                                    Descargar
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({ ...prev, imagenBanner: '' }))}
+                                    className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                                  >
+                                    Eliminar
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <label className="flex flex-col items-center justify-center w-80 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                                <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                                <p className="text-base text-gray-600 font-medium">
+                                  {uploading ? 'Subiendo...' : 'Subir Banner'}
+                                </p>
+                                <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                                  Proporción 6:1 (muy horizontal) - Se ajustará al recortar
+                                </p>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={handleBannerUpload}
+                                  className="sr-only"
+                                  disabled={uploading}
+                                />
+                              </label>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Preview del banner - Formato real del hero */}
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-3">Vista Previa Hero Real</h4>
+                          <div className="flex justify-center">
+                            <div className="w-96 h-16 relative rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-gray-900">
+                              {formData.imagenBanner ? (
+                                <img
+                                  src={formData.imagenBanner}
+                                  alt="Banner preview"
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-center">
+                                  <div className="text-center text-gray-400">
+                                    <div className="w-8 h-8 mx-auto mb-1 opacity-60" style={{ color: formData.color || '#3b82f6' }}>
+                                      {renderIconPreview("w-8 h-8")}
+                                    </div>
+                                    <p className="text-xs">Sin banner - se usará fondo oscuro</p>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Overlay personalizable si está configurado */}
+                              {formData.overlayOpacity > 0 && (
+                                <div
+                                  className="absolute inset-0"
+                                  style={{
+                                    backgroundColor: formData.overlayColor,
+                                    opacity: formData.overlayOpacity
+                                  }}
+                                />
+                              )}
+
+                              {/* Gradient overlay base para legibilidad */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20" />
+
+                              {/* Contenido del hero exactamente como aparece en la página real */}
+                              <div className="absolute inset-0 flex items-center px-3">
+                                <div className="text-white flex items-center gap-3 w-full">
+                                  {/* Ícono de la categoría - más pequeño */}
+                                  <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{ color: formData.color || '#3b82f6' }}>
+                                    {renderIconPreview("w-8 h-8")}
+                                  </div>
+
+                                  <div className="flex-1">
+                                    {/* Breadcrumb simulado - más compacto */}
+                                    <nav className="mb-1">
+                                      <ol className="flex items-center gap-1 text-[10px] opacity-80">
+                                        <li>Inicio</li>
+                                        <li>/</li>
+                                        <li>Proyectos</li>
+                                        <li>/</li>
+                                        <li className="text-white/80">{formData.nombre || 'Categoría'}</li>
+                                      </ol>
+                                    </nav>
+
+                                    <div className="flex items-center justify-between">
+                                      <div>
+                                        <h1 className="text-sm font-bold mb-1">
+                                          {formData.nombre || 'Nombre Categoría'}
+                                        </h1>
+                                        <div className="flex items-center gap-3 text-[10px] text-white/80">
+                                          <span>X proyectos</span>
+                                          <span className="truncate max-w-[120px]">
+                                            {formData.descripcion ? `${formData.descripcion.substring(0, 30)}...` : 'Descripción'}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-500 text-center mt-2">
+                            Proporción 6:1 recomendada • Hero height: 320px (h-80) • Ancho completo responsivo
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Video de Fondo */}
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Video de Fondo (Opcional - en lugar del banner de imagen)
+                        </label>
+                        {(formData.videoBanner && formData.imagenBanner) && (
+                          <label className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={formData.usarVideoBanner}
+                              onChange={(e) => setFormData(prev => ({ ...prev, usarVideoBanner: e.target.checked }))}
+                              className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm text-gray-600">Usar video</span>
+                          </label>
+                        )}
+                      </div>
+
+                      <div className="space-y-4">
+                        {formData.videoBanner ? (
+                          <div className="space-y-3">
+                            <div className="w-full h-48 rounded-lg border border-gray-300 overflow-hidden">
+                              <video
+                                src={formData.videoBanner}
+                                className="w-full h-full"
+                                style={{
+                                  objectFit: 'cover',
+                                  transform: `translate(${parsePosition(formData.videoBannerPosition).x}%, ${parsePosition(formData.videoBannerPosition).y}%) scale(${formData.videoBannerScale})`
+                                }}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                              />
+                            </div>
+
+                            {/* Controles de Zoom y Posición para Banner */}
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-4">
+                              <h4 className="text-sm font-semibold text-gray-700">Ajustes de Video Banner</h4>
+                              <p className="text-xs text-gray-500">Ajusta el zoom y mueve el video para mostrar la mejor área</p>
+
+                              {/* Control de Zoom */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-2">
+                                  Zoom: {Math.round(formData.videoBannerScale * 100)}%
+                                </label>
+                                <input
+                                  type="range"
+                                  min="1"
+                                  max="2.5"
+                                  step="0.05"
+                                  value={formData.videoBannerScale}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, videoBannerScale: parseFloat(e.target.value) }))}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>100%</span>
+                                  <span>250%</span>
+                                </div>
+                              </div>
+
+                              {/* Control de Posición Horizontal (X) */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-2">
+                                  Posición Horizontal: {parsePosition(formData.videoBannerPosition).x > 0 ? '+' : ''}{parsePosition(formData.videoBannerPosition).x}%
+                                  <span className="text-gray-400 ml-2">(← Izquierda | Derecha →)</span>
+                                </label>
+                                <input
+                                  type="range"
+                                  min="-100"
+                                  max="100"
+                                  step="1"
+                                  value={parsePosition(formData.videoBannerPosition).x}
+                                  onChange={(e) => {
+                                    const newX = parseFloat(e.target.value)
+                                    const currentY = parsePosition(formData.videoBannerPosition).y
+                                    setFormData(prev => ({ ...prev, videoBannerPosition: formatPosition(newX, currentY) }))
+                                  }}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>← -100%</span>
+                                  <span>0%</span>
+                                  <span>+100% →</span>
+                                </div>
+                              </div>
+
+                              {/* Control de Posición Vertical (Y) */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-2">
+                                  Posición Vertical: {parsePosition(formData.videoBannerPosition).y > 0 ? '+' : ''}{parsePosition(formData.videoBannerPosition).y}%
+                                  <span className="text-gray-400 ml-2">(↑ Arriba | Abajo ↓)</span>
+                                </label>
+                                <input
+                                  type="range"
+                                  min="-100"
+                                  max="100"
+                                  step="1"
+                                  value={parsePosition(formData.videoBannerPosition).y}
+                                  onChange={(e) => {
+                                    const newY = parseFloat(e.target.value)
+                                    const currentX = parsePosition(formData.videoBannerPosition).x
+                                    setFormData(prev => ({ ...prev, videoBannerPosition: formatPosition(currentX, newY) }))
+                                  }}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                  <span>↑ -100%</span>
+                                  <span>0%</span>
+                                  <span>+100% ↓</span>
+                                </div>
+                              </div>
+
+                              {/* Botón de reset */}
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({
+                                  ...prev,
+                                  videoBannerScale: 1.0,
+                                  videoBannerPosition: '0,0'
+                                }))}
+                                className="w-full px-3 py-2 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                              >
+                                Restablecer Ajustes (Zoom 100%, Centro)
+                              </button>
+                            </div>
+
+                            <div className="flex space-x-2 justify-center">
+                              <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                {uploading ? 'Subiendo...' : 'Cambiar Video'}
+                                <input
+                                  type="file"
+                                  accept="video/*"
+                                  onChange={handleVideoUpload}
+                                  className="sr-only"
+                                  disabled={uploading}
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, videoBanner: '' }))}
+                                className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                              >
+                                Eliminar Video
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-600 text-center">
+                              El video se reproducirá automáticamente en loop como fondo del hero
+                            </p>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                            <p className="text-base text-gray-600 font-medium">
+                              {uploading ? 'Subiendo...' : 'Subir Video de Fondo'}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                              MP4, WebM o MOV • Máx. 100MB • Se reproducirá en loop
+                            </p>
+                            <input
+                              type="file"
+                              accept="video/*"
+                              onChange={handleVideoUpload}
+                              className="sr-only"
+                              disabled={uploading}
+                            />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </AccordionSection>
+
+                {/* Sección 4: Efectos Visuales */}
+                <AccordionSection
+                  title="Efectos Visuales"
+                  icon="🎭"
+                  defaultOpen={false}
+                  statusIndicator={
+                    <span className="text-xs">
+                      {formData.overlayOpacity > 0 && '✓ Overlay activo'}
+                    </span>
+                  }
+                >
+                  <div className="space-y-6">
+                    <p className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      Configura overlays y efectos visuales para las tarjetas de categoría.
+                    </p>
+
+                    {/* Preview completo MÁS GRANDE */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-600 mb-3">Vista Previa de Tarjeta con Efectos</h4>
+                      <div className="flex justify-center mb-4">
+                        <div className="w-80 h-60 relative rounded-xl overflow-hidden shadow-xl border border-gray-200 group">
+                          {/* Imagen de fondo o placeholder */}
+                        {formData.imagenCover ? (
+                          <div className="relative w-full h-full">
+                            <img
+                              src={formData.imagenCover}
+                              alt="Preview completo"
+                              className="w-full h-full object-cover"
+                            />
+
+                            {/* Overlay personalizable */}
+                            {formData.overlayOpacity > 0 && (
+                              <div
+                                className="absolute inset-0"
+                                style={{
+                                  backgroundColor: formData.overlayColor,
+                                  opacity: formData.overlayOpacity
+                                }}
+                              />
+                            )}
+
+                            {/* Overlay oscuro para el texto */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                            {/* Ícono centrado MÁS GRANDE */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div
+                                className="text-5xl opacity-80"
+                                style={{ color: formData.color || '#3b82f6' }}
+                              >
+                                {renderIconPreview("h-16 w-16")}
+                              </div>
+                            </div>
+
+                            {/* Información en esquina superior derecha */}
+                            <div className="absolute top-3 right-3 flex flex-col items-end space-y-2">
+                              {/* Info técnica */}
+                              <div className="text-xs text-white/80 bg-black/40 backdrop-blur-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div>Slug: {formData.slug || 'slug'}</div>
+                              </div>
+                              {/* Badges */}
+                              <div className="flex flex-col space-y-1">
+                                {formData.destacada && (
+                                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                    <Star className="h-3 w-3 text-yellow-500" />
+                                  </div>
+                                )}
+                                {!formData.visible && (
+                                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                    <EyeOff className="h-3 w-3 text-gray-600" />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Texto en la parte inferior */}
+                            <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                              <h3 className="text-sm font-bold mb-1 drop-shadow-lg">
+                                {formData.nombre || 'Nombre Categoría'}
+                              </h3>
+                              <p className="text-xs text-white/90 mb-2 drop-shadow">
+                                X proyecto(s)
+                              </p>
+                              {formData.descripcion && (
+                                <p className="text-xs text-white/80 line-clamp-2 drop-shadow">
+                                  {formData.descripcion}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="relative w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            {/* Ícono centrado en placeholder */}
+                            <div
+                              className="text-5xl"
+                              style={{ color: formData.color || '#3b82f6' }}
+                            >
+                              {renderIconPreview("h-16 w-16")}
+                            </div>
+
+                            {/* Badges en placeholder */}
+                            <div className="absolute top-3 right-3 flex flex-col space-y-1">
+                              {formData.destacada && (
+                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                  <Star className="h-3 w-3 text-yellow-500" />
+                                </div>
+                              )}
+                              {!formData.visible && (
+                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                  <EyeOff className="h-3 w-3 text-gray-600" />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Texto en placeholder */}
+                            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 to-transparent text-white">
+                              <h3 className="text-sm font-bold mb-1">
+                                {formData.nombre || 'Nombre Categoría'}
+                              </h3>
+                              <p className="text-xs text-white/90 mb-2">
+                                X proyecto(s)
+                              </p>
+                              {formData.descripcion && (
+                                <p className="text-xs text-white/80 line-clamp-2">
+                                  {formData.descripcion}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        </div>
+                      </div>
+
+                      {/* Controles del overlay justo debajo del preview */}
+                      <div className="space-y-4">
+                        <div className="space-y-3 pb-3 border-b border-gray-200">
+                          <h4 className="text-xs font-semibold text-gray-700">Overlay Base</h4>
+                          {/* Color del overlay */}
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">Color del Overlay</label>
+                            <input
+                              type="color"
+                              value={formData.overlayColor}
+                              onChange={(e) => setFormData(prev => ({ ...prev, overlayColor: e.target.value }))}
+                              className="w-full h-6 rounded border border-gray-300"
+                            />
+                          </div>
+
+                          {/* Opacidad del overlay */}
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">
+                              Opacidad: {Math.round(formData.overlayOpacity * 100)}%
+                            </label>
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step="0.1"
+                              value={formData.overlayOpacity}
+                              onChange={(e) => setFormData(prev => ({ ...prev, overlayOpacity: parseFloat(e.target.value) }))}
+                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Controles del overlay hover */}
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-xs font-semibold text-gray-700">Overlay Hover</h4>
+                            <label className="flex items-center text-xs">
+                              <input
+                                type="checkbox"
+                                checked={formData.enableHoverOverlay}
+                                onChange={(e) => setFormData(prev => ({ ...prev, enableHoverOverlay: e.target.checked }))}
+                                className="mr-1.5 w-3 h-3"
+                              />
+                              <span className="text-gray-600">Activar</span>
+                            </label>
+                          </div>
+
+                          {formData.enableHoverOverlay && (
+                            <>
+                              {/* Color del overlay hover */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">Color Hover</label>
+                                <input
+                                  type="color"
+                                  value={formData.hoverOverlayColor}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, hoverOverlayColor: e.target.value }))}
+                                  className="w-full h-6 rounded border border-gray-300"
+                                />
+                              </div>
+
+                              {/* Opacidad del overlay hover */}
+                              <div>
+                                <label className="block text-xs text-gray-600 mb-1">
+                                  Opacidad Hover: {Math.round(formData.hoverOverlayOpacity * 100)}%
+                                </label>
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="1"
+                                  step="0.05"
+                                  value={formData.hoverOverlayOpacity}
+                                  onChange={(e) => setFormData(prev => ({ ...prev, hoverOverlayOpacity: parseFloat(e.target.value) }))}
+                                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionSection>
+
+
 
               </div>
             )}
@@ -1514,6 +2134,20 @@ export default function CategoryEditModal({
         onCropComplete={handleBannerCropComplete}
         imageFile={selectedBannerFile}
         aspectRatio={6}
+      />
+
+      {/* Selector de Imágenes de GCS */}
+      <CategoryImageSelector
+        isOpen={showImageSelector}
+        onClose={() => setShowImageSelector(false)}
+        onSelect={(imageUrl) => {
+          if (imageSelectorTarget === 'cover') {
+            setFormData(prev => ({ ...prev, imagenCover: imageUrl }))
+          } else {
+            setFormData(prev => ({ ...prev, imagenBanner: imageUrl }))
+          }
+        }}
+        currentImageUrl={imageSelectorTarget === 'cover' ? formData.imagenCover : formData.imagenBanner}
       />
     </div>
   )

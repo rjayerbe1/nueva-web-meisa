@@ -10,6 +10,15 @@ import { getCategoryIconComponent } from '@/lib/get-category-icon'
 import { UnifiedStatsCard } from '@/components/ui/unified-stats-card'
 import { CanvasRenderer } from '@/components/brochure/CanvasRenderer'
 
+// Helper para parsear posición desde formato "X,Y"
+const parsePosition = (posStr: string | null): { x: number; y: number } => {
+  if (!posStr || posStr.includes(' ')) {
+    return { x: 0, y: 0 }
+  }
+  const [x, y] = posStr.split(',').map(v => parseFloat(v) || 0)
+  return { x, y }
+}
+
 interface Brochure {
   id: string
   titulo: string
@@ -70,6 +79,10 @@ interface Categoria {
   slug: string
   imagenCover: string | null
   imagenBanner: string | null
+  videoBanner: string | null
+  usarVideoBanner: boolean
+  videoBannerScale: number | null
+  videoBannerPosition: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -235,14 +248,34 @@ export default function CategoryProjectsPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative h-96 bg-gray-900 overflow-hidden pt-32">
-        {/* Background Image - Usar banner si existe, sino cover */}
-        {(categoria.imagenBanner || categoria.imagenCover) && (
+        {/* Background - Video o Imagen - Decidir basado en usarVideoBanner */}
+        {(categoria.videoBanner || categoria.imagenBanner || categoria.imagenCover) && (
           <div className="absolute inset-0">
-            <img
-              src={categoria.imagenBanner || categoria.imagenCover || ''}
-              alt={`Banner de ${categoria.nombre}`}
-              className="w-full h-full object-cover"
-            />
+            {(categoria.usarVideoBanner && categoria.videoBanner) ? (
+              <video
+                src={categoria.videoBanner}
+                className="w-full h-full"
+                style={{
+                  objectFit: 'cover',
+                  transform: `translate(${parsePosition(categoria.videoBannerPosition).x}%, ${parsePosition(categoria.videoBannerPosition).y}%) scale(${categoria.videoBannerScale || 1.0})`,
+                  willChange: 'transform',
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d',
+                  WebkitFontSmoothing: 'antialiased',
+                  imageRendering: 'crisp-edges'
+                }}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              <img
+                src={categoria.imagenBanner || categoria.imagenCover || ''}
+                alt={`Banner de ${categoria.nombre}`}
+                className="w-full h-full object-cover"
+              />
+            )}
             {/* Overlay */}
             {categoria.overlayOpacity && categoria.overlayOpacity > 0 && (
               <div

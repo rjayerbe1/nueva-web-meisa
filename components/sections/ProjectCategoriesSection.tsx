@@ -6,6 +6,15 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { getCategoryIconComponent } from "@/lib/get-category-icon"
 
+// Helper para parsear posición desde formato "X,Y"
+const parsePosition = (posStr: string | null): { x: number; y: number } => {
+  if (!posStr || posStr.includes(' ')) {
+    return { x: 0, y: 0 }
+  }
+  const [x, y] = posStr.split(',').map(v => parseFloat(v) || 0)
+  return { x, y }
+}
+
 interface Categoria {
   id: string
   key: string
@@ -13,7 +22,12 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  videoCover: string | null
+  usarVideoCover: boolean
+  videoCoverScale: number | null
+  videoCoverPosition: string | null
   icono: string | null
+  // iconSize removido - ahora es global
   color: string | null
   colorSecundario: string | null
   overlayColor: string | null
@@ -31,7 +45,7 @@ interface ProjectCategoriesSectionProps {
 }
 
 // Componente de categoría individual con parallax
-function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria; index: number; projectCount: number }) {
+function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categoria: Categoria; index: number; projectCount: number; iconSize?: number }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -60,8 +74,28 @@ function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria
         viewport={{ once: true, margin: "-50px" }}
         className="relative h-[50vh] lg:h-[75vh] overflow-hidden"
       >
-        {/* Imagen de fondo con parallax */}
-        {categoria.imagenCover ? (
+        {/* Video o Imagen de fondo con parallax */}
+        {(categoria.usarVideoCover && categoria.videoCover) ? (
+          <div className="absolute inset-0">
+            <video
+              src={categoria.videoCover}
+              className="w-full h-full"
+              style={{
+                objectFit: 'cover',
+                transform: `translate(${parsePosition(categoria.videoCoverPosition).x}%, ${parsePosition(categoria.videoCoverPosition).y}%) scale(${categoria.videoCoverScale || 1.0})`,
+                willChange: 'transform',
+                backfaceVisibility: 'hidden',
+                transformStyle: 'preserve-3d',
+                WebkitFontSmoothing: 'antialiased',
+                imageRendering: 'crisp-edges'
+              }}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          </div>
+        ) : categoria.imagenCover ? (
           <motion.div
             style={{ y: imageY }}
             className="absolute inset-0 h-[120%] -top-[10%]"
@@ -118,9 +152,13 @@ function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria
             transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
             viewport={{ once: true }}
             className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
-            style={{ color: categoria.color || '#3b82f6' }}
+            style={{
+              color: categoria.color || '#3b82f6',
+              width: `${iconSize * 4}px`,
+              height: `${iconSize * 4}px`
+            }}
           >
-            {getCategoryIconComponent(categoria.icono, "w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40")}
+            {getCategoryIconComponent(categoria.icono, "w-full h-full")}
           </motion.div>
 
           {/* Título sin animación de letras - cada palabra en una línea, altura fija de 2 líneas */}
@@ -165,6 +203,23 @@ function CategoryCard({ categoria, index, projectCount }: { categoria: Categoria
 export default function ProjectCategoriesSection({ onCategorySelect, projectsByCategory = {} }: ProjectCategoriesSectionProps) {
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [loading, setLoading] = useState(true)
+  const [globalIconSize, setGlobalIconSize] = useState(48) // Tamaño global de iconos
+
+  // Cargar configuración global (endpoint público)
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch('/api/site-config')
+        if (response.ok) {
+          const config = await response.json()
+          setGlobalIconSize(config.categoryIconSize || 48)
+        }
+      } catch (error) {
+        console.error('Error fetching site config:', error)
+      }
+    }
+    fetchConfig()
+  }, [])
 
   // Cargar categorías desde la base de datos
   useEffect(() => {
@@ -200,6 +255,7 @@ export default function ProjectCategoriesSection({ onCategorySelect, projectsByC
                 categoria={categoria}
                 index={index}
                 projectCount={projectCount}
+                iconSize={globalIconSize}
               />
             )
           })}

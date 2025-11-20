@@ -4,6 +4,9 @@ import { authOptions } from '@/lib/auth'
 import { UserRole } from '@prisma/client'
 import { Storage } from '@google-cloud/storage'
 import Replicate from 'replicate'
+import { readFile, writeFile, mkdir } from 'fs/promises'
+import { join } from 'path'
+import { existsSync } from 'fs'
 
 // Inicializar Google Cloud Storage
 const storage = new Storage({
@@ -30,19 +33,35 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL de imagen requerida' }, { status: 400 })
     }
 
-    // Validar que la imagen sea de Google Cloud Storage
-    if (!imageUrl.includes('storage.googleapis.com')) {
-      return NextResponse.json({ error: 'Solo se pueden upscalear imágenes de Google Cloud Storage' }, { status: 400 })
-    }
-
     console.log('🚀 [Upscale] Iniciando upscaling de:', imageUrl)
 
-    // Extraer el path de la imagen en GCS
-    const urlParts = imageUrl.split('meisa-imagenes/')
-    if (urlParts.length < 2) {
-      return NextResponse.json({ error: 'URL de imagen inválida' }, { status: 400 })
+    // Detectar si la imagen es local o de GCS
+    const isLocalImage = imageUrl.startsWith('/uploads/') || imageUrl.startsWith('/public/')
+    const isGCSImage = imageUrl.includes('storage.googleapis.com')
+
+    if (!isLocalImage && !isGCSImage) {
+      return NextResponse.json({
+        error: 'Solo se pueden upscalear imágenes locales o de Google Cloud Storage'
+      }, { status: 400 })
     }
-    const gcsPath = urlParts[1]
+
+    let fullImageUrl = imageUrl
+    let gcsPath = ''
+
+    // Si es imagen local, construir URL completa para Replicate
+    if (isLocalImage) {
+      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+      fullImageUrl = `${baseUrl}${imageUrl}`
+      console.log('📁 [Upscale] Imagen local detectada, URL completa:', fullImageUrl)
+    } else {
+      // Extraer el path de la imagen en GCS
+      const urlParts = imageUrl.split('meisa-imagenes/')
+      if (urlParts.length < 2) {
+        return NextResponse.json({ error: 'URL de imagen GCS inválida' }, { status: 400 })
+      }
+      gcsPath = urlParts[1]
+      console.log('☁️ [Upscale] Imagen GCS detectada, path:', gcsPath)
+    }
 
     // Llamar a Bria Increase-Resolution 4x (soporta hasta 8192x8192)
     console.log('⚡ [Upscale] Enviando a Bria Increase-Resolution 4x...')
@@ -50,7 +69,7 @@ export async function POST(request: NextRequest) {
       "bria/increase-resolution:19266ced4be9ec28f269ab20a2622104cac9c518158b7761e7edeb30954bd01a",
       {
         input: {
-          image_url: imageUrl,
+          image_url: fullImageUrl,
           desired_increase: 4,
           preserve_alpha: true
         }
@@ -59,48 +78,70 @@ export async function POST(request: NextRequest) {
 
     console.log('✨ [Upscale] Imagen procesada por Replicate:', output)
 
-    // Descargar la imagen upscaled
+    // Descargar la imagen upscaled de Replicate
     const response = await fetch(output)
     if (!response.ok) {
       throw new Error('Error descargando imagen upscaled de Replicate')
     }
     const buffer = Buffer.from(await response.arrayBuffer())
 
-    // Crear nombre para la imagen upscaled (agregar sufijo -upscaled)
-    const pathParts = gcsPath.split('/')
-    const filename = pathParts[pathParts.length - 1]
-    const filenameWithoutExt = filename.substring(0, filename.lastIndexOf('.'))
-    const extension = filename.substring(filename.lastIndexOf('.'))
-    const upscaledFilename = `${filenameWithoutExt}-upscaled${extension}`
+    let upscaledUrl: string
 
-    // Mantener la misma carpeta que la imagen original
-    const folder = pathParts.slice(0, -1).join('/')
-    const upscaledPath = folder ? `${folder}/${upscaledFilename}` : upscaledFilename
+    if (isLocalImage) {
+      // Guardar imagen upscaled localmente
+      const originalPath = imageUrl.replace('/uploads/', '')
+      const pathParts = originalPath.split('/')
+      const filename = pathParts[pathParts.length - 1]
+      const filenameWithoutExt = filename.substring(0, filename.lastIndexOf('.'))
+      const upscaledFilename = `${filenameWithoutExt}-upscaled.png`
 
-    console.log('📤 [Upscale] Subiendo a GCS:', upscaledPath)
+      // Mantener la misma carpeta que la imagen original
+      const folder = pathParts.slice(0, -1).join('/')
+      const uploadDir = join(process.cwd(), 'public', 'uploads', folder)
 
-    // Subir a Google Cloud Storage
-    const gcsFile = bucket.file(upscaledPath)
-    await gcsFile.save(buffer, {
-      metadata: {
-        contentType: 'image/png', // Real-ESRGAN retorna PNG
-        cacheControl: 'public, max-age=31536000',
-      },
-      public: true
-    })
+      if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true })
+      }
 
-    // URL pública de la imagen upscaled
-    const upscaledUrl = `https://storage.googleapis.com/${bucket.name}/${upscaledPath}`
+      const filepath = join(uploadDir, upscaledFilename)
+      await writeFile(filepath, buffer)
 
-    console.log('✅ [Upscale] Completado:', upscaledUrl)
+      upscaledUrl = `/uploads/${folder}/${upscaledFilename}`
+      console.log('✅ [Upscale] Guardado localmente:', upscaledUrl)
+    } else {
+      // Guardar imagen upscaled en GCS
+      const pathParts = gcsPath.split('/')
+      const filename = pathParts[pathParts.length - 1]
+      const filenameWithoutExt = filename.substring(0, filename.lastIndexOf('.'))
+      const extension = filename.substring(filename.lastIndexOf('.'))
+      const upscaledFilename = `${filenameWithoutExt}-upscaled${extension}`
+
+      const folder = pathParts.slice(0, -1).join('/')
+      const upscaledPath = folder ? `${folder}/${upscaledFilename}` : upscaledFilename
+
+      console.log('📤 [Upscale] Subiendo a GCS:', upscaledPath)
+
+      const gcsFile = bucket.file(upscaledPath)
+      await gcsFile.save(buffer, {
+        metadata: {
+          contentType: 'image/png',
+          cacheControl: 'public, max-age=31536000',
+        },
+        public: true
+      })
+
+      upscaledUrl = `https://storage.googleapis.com/${bucket.name}/${upscaledPath}`
+      console.log('✅ [Upscale] Subido a GCS:', upscaledUrl)
+    }
 
     return NextResponse.json({
       success: true,
       originalUrl: imageUrl,
       upscaledUrl,
       method: 'bria-increase-resolution',
+      storage: isLocalImage ? 'local' : 'gcs',
       cost: 0.04,
-      message: 'Imagen upscaled exitosamente con Bria Increase-Resolution 4x'
+      message: `Imagen upscaled exitosamente con Bria Increase-Resolution 4x (guardada ${isLocalImage ? 'localmente' : 'en GCS'})`
     })
   } catch (error) {
     console.error('❌ [Upscale] Error:', error)

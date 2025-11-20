@@ -8,11 +8,12 @@ import { ArrowRight, MapPin, Calendar, Building2 } from 'lucide-react'
 
 const categories = [
   { id: 'todos', label: 'Todos', count: 52 },
-  { id: 'PUENTES', label: 'Puentes', count: 12 },
-  { id: 'EDIFICIOS', label: 'Edificios', count: 15 },
-  { id: 'CENTROS_COMERCIALES', label: 'Centros Comerciales', count: 8 },
-  { id: 'INDUSTRIAL', label: 'Industrial', count: 10 },
-  { id: 'OIL_GAS', label: 'Oil & Gas', count: 7 },
+  { id: 'COMERCIAL', label: 'Comercial', count: 8 },
+  { id: 'EDIFICACIONES', label: 'Edificaciones', count: 15 },
+  { id: 'INDUSTRIA', label: 'Industria', count: 10 },
+  { id: 'PUENTES_VEHICULARES', label: 'Puentes Vehiculares', count: 8 },
+  { id: 'PUENTES_PEATONALES', label: 'Puentes Peatonales', count: 4 },
+  { id: 'ESCENARIOS_DEPORTIVOS', label: 'Escenarios Deportivos', count: 5 },
 ]
 
 interface Project {

@@ -6,13 +6,14 @@ import { Building2, Save, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 const categorias = [
-  { value: 'CENTROS_COMERCIALES', label: 'Centros Comerciales' },
-  { value: 'EDIFICIOS', label: 'Edificios' },
-  { value: 'PUENTES', label: 'Puentes' },
-  { value: 'OIL_GAS', label: 'Oil & Gas' },
-  { value: 'INDUSTRIAL', label: 'Industrial' },
-  { value: 'RESIDENCIAL', label: 'Residencial' },
-  { value: 'INFRAESTRUCTURA', label: 'Infraestructura' },
+  { value: 'COMERCIAL', label: 'Comercial' },
+  { value: 'EDIFICACIONES', label: 'Edificaciones' },
+  { value: 'INDUSTRIA', label: 'Industria' },
+  { value: 'PUENTES_VEHICULARES', label: 'Puentes Vehiculares' },
+  { value: 'PUENTES_PEATONALES', label: 'Puentes Peatonales' },
+  { value: 'ESCENARIOS_DEPORTIVOS', label: 'Escenarios Deportivos' },
+  { value: 'CUBIERTAS_Y_FACHADAS', label: 'Cubiertas y Fachadas' },
+  { value: 'ESTRUCTURAS_MODULARES', label: 'Estructuras Modulares' },
   { value: 'OTRO', label: 'Otro' },
 ]
 
@@ -30,7 +31,7 @@ export default function NewProjectPage() {
   const [formData, setFormData] = useState({
     titulo: '',
     descripcion: '',
-    categoria: 'EDIFICIOS',
+    categoria: 'EDIFICACIONES',
     estado: 'PLANIFICACION',
     cliente: '',
     contactoCliente: '',

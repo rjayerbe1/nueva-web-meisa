@@ -100,6 +100,7 @@ export function BeforeAfterComparison({
             <p className="text-sm text-gray-600 mt-1">{description}</p>
           </div>
           <button
+            type="button"
             onClick={onDiscard}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
@@ -180,6 +181,7 @@ export function BeforeAfterComparison({
         {/* Footer con botones de acción */}
         <div className="flex items-center justify-between p-6 bg-gray-50 border-t">
           <Button
+            type="button"
             variant="outline"
             onClick={handleDownloadBoth}
             className="gap-2"
@@ -190,6 +192,7 @@ export function BeforeAfterComparison({
 
           <div className="flex gap-3">
             <Button
+              type="button"
               variant="outline"
               onClick={onDiscard}
               className="gap-2"
@@ -198,6 +201,7 @@ export function BeforeAfterComparison({
               Descartar
             </Button>
             <Button
+              type="button"
               onClick={onAccept}
               className="bg-green-600 hover:bg-green-700 gap-2"
             >

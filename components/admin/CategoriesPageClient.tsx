@@ -18,7 +18,15 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  videoCover: string | null
+  usarVideoCover: boolean
+  videoCoverScale: number | null
+  videoCoverPosition: string | null
   imagenBanner: string | null
+  videoBanner: string | null
+  usarVideoBanner: boolean
+  videoBannerScale: number | null
+  videoBannerPosition: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -76,10 +84,10 @@ const PRESET_COLORS = [
   '#6B7280'  // Gray
 ]
 
-export default function CategoriesPageClient({ 
-  categorias, 
-  categoryStats, 
-  canEdit 
+export default function CategoriesPageClient({
+  categorias,
+  categoryStats,
+  canEdit
 }: CategoriesPageClientProps) {
   const router = useRouter()
   const [showEditModal, setShowEditModal] = useState(false)
