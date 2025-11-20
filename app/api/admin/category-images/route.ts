@@ -44,7 +44,7 @@ export async function GET() {
           return {
             url: publicUrl,
             name: file.name.split('/').pop() || file.name,
-            size: parseInt(metadata.size || '0'),
+            size: typeof metadata.size === 'string' ? parseInt(metadata.size) : (metadata.size || 0),
             updated: metadata.updated || new Date().toISOString(),
             contentType: metadata.contentType || 'image/jpeg'
           }

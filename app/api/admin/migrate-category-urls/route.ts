@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     console.log('🔄 [Migración] Iniciando actualización de URLs de categorías...')
 
     // Buscar todas las categorías
-    const categorias = await prisma.categoria.findMany()
+    const categorias = await prisma.categoriaProyecto.findMany()
     console.log(`📋 [Migración] Encontradas ${categorias.length} categorías`)
 
     const updates: Array<{ categoria: string; field: string; oldUrl: string; newUrl: string }> = []
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
       // Aplicar actualizaciones si las hay
       if (Object.keys(categoryUpdates).length > 0) {
-        await prisma.categoria.update({
+        await prisma.categoriaProyecto.update({
           where: { id: categoria.id },
           data: categoryUpdates
         })
