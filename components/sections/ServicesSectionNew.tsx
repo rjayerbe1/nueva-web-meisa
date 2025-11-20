@@ -1,10 +1,9 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Cpu, Hammer, Building2, Settings } from 'lucide-react'
-import { useLoading } from '@/contexts/LoadingContext'
 
 // Componente para el título animado con letras individuales
 const AnimatedTitle = ({ text, className = "" }: { text: string; className?: string }) => {
@@ -91,7 +90,7 @@ function ServiceCard({
 }: {
   servicio: typeof services[0];
   index: number;
-  onVideoLoad: (videoId: string) => void;
+  onVideoLoad?: (videoId: string) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -132,7 +131,7 @@ function ServiceCard({
                   ? { transform: 'scale(1.60)' }
                   : undefined
               }
-              onLoadedData={() => onVideoLoad(servicio.video!)}
+              onLoadedData={() => onVideoLoad?.(servicio.video!)}
             >
               <source src={servicio.video} type="video/mp4" />
             </video>
@@ -240,17 +239,8 @@ function ServiceCard({
 }
 
 export function ServicesSection() {
-  const { registerResource, markResourceLoaded } = useLoading()
-
-  // Registrar todos los videos de servicios como recursos al montar
-  useEffect(() => {
-    services.forEach((servicio) => {
-      if (servicio.video) {
-        registerResource()
-      }
-    })
-  }, [registerResource])
-
+  // No registramos los videos de servicios como recursos críticos
+  // Se cargarán en segundo plano mientras el usuario ve el hero y about
   return (
     <section id="servicios" className="bg-gray-900">
       {/* Grid de servicios estilo Ferrari - 2 columnas */}
@@ -260,7 +250,7 @@ export function ServicesSection() {
             key={servicio.id}
             servicio={servicio}
             index={index}
-            onVideoLoad={markResourceLoaded}
+            onVideoLoad={() => {}} // No hacemos nada cuando cargan los videos
           />
         ))}
       </div>

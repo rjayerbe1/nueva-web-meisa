@@ -6,6 +6,15 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
 
+// Helper para parsear posición desde formato "X,Y"
+const parsePosition = (posStr: string | null): { x: number; y: number } => {
+  if (!posStr || posStr.includes(' ')) {
+    return { x: 0, y: 0 }
+  }
+  const [x, y] = posStr.split(',').map(v => parseFloat(v) || 0)
+  return { x, y }
+}
+
 interface ProjectImage {
   url: string
   alt: string
@@ -29,6 +38,10 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
+  videoCover: string | null
+  usarVideoCover: boolean
+  videoCoverScale: number | null
+  videoCoverPosition: string | null
   icono: string | null
   color: string | null
   colorSecundario: string | null
@@ -75,8 +88,28 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
         viewport={{ once: true, margin: "-50px" }}
         className="relative h-[50vh] lg:h-[75vh] overflow-hidden"
       >
-        {/* Imagen de fondo con parallax */}
-        {categoria.imagenCover ? (
+        {/* Video o Imagen de fondo con parallax */}
+        {(categoria.usarVideoCover && categoria.videoCover) ? (
+          <div className="absolute inset-0">
+            <video
+              src={categoria.videoCover}
+              className="w-full h-full"
+              style={{
+                objectFit: 'cover',
+                transform: `translate(${parsePosition(categoria.videoCoverPosition).x}%, ${parsePosition(categoria.videoCoverPosition).y}%) scale(${categoria.videoCoverScale || 1.0})`,
+                willChange: 'transform',
+                backfaceVisibility: 'hidden',
+                transformStyle: 'preserve-3d',
+                WebkitFontSmoothing: 'antialiased',
+                imageRendering: 'crisp-edges'
+              }}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          </div>
+        ) : categoria.imagenCover ? (
           <motion.div
             style={{ y: imageY }}
             className="absolute inset-0 h-[120%] -top-[10%]"
