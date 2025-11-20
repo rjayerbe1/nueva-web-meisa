@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -28,6 +28,9 @@ export function ClientesSection() {
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const autoplayInterval = useRef<NodeJS.Timeout | null>(null)
+  const pauseTimeout = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     fetchClientes()
@@ -47,6 +50,73 @@ export function ClientesSection() {
       setLoading(false)
     }
   }
+
+  // Autoplay para móvil
+  useEffect(() => {
+    const carousel = carouselRef.current
+    if (!carousel) return
+
+    const isMobile = window.innerWidth < 768
+    if (!isMobile) return // Solo en móvil
+
+    const startAutoplay = () => {
+      if (autoplayInterval.current) {
+        clearInterval(autoplayInterval.current)
+      }
+
+      autoplayInterval.current = setInterval(() => {
+        if (carousel) {
+          const maxScroll = carousel.scrollWidth - carousel.clientWidth
+          const currentScroll = carousel.scrollLeft
+
+          // Si llegó al final, volver al inicio
+          if (currentScroll >= maxScroll - 10) {
+            carousel.scrollTo({ left: 0, behavior: 'smooth' })
+          } else {
+            // Avanzar suavemente
+            carousel.scrollBy({ left: 250, behavior: 'smooth' })
+          }
+        }
+      }, 3000) // Avanza cada 3 segundos
+    }
+
+    const stopAutoplay = () => {
+      if (autoplayInterval.current) {
+        clearInterval(autoplayInterval.current)
+        autoplayInterval.current = null
+      }
+    }
+
+    const handleTouchStart = () => {
+      stopAutoplay()
+
+      // Limpiar timeout previo
+      if (pauseTimeout.current) {
+        clearTimeout(pauseTimeout.current)
+      }
+
+      // Reanudar después de 3 segundos sin interacción
+      pauseTimeout.current = setTimeout(() => {
+        startAutoplay()
+      }, 3000)
+    }
+
+    // Iniciar autoplay
+    startAutoplay()
+
+    // Event listeners
+    carousel.addEventListener('touchstart', handleTouchStart)
+    carousel.addEventListener('mousedown', handleTouchStart)
+
+    return () => {
+      stopAutoplay()
+      if (pauseTimeout.current) {
+        clearTimeout(pauseTimeout.current)
+      }
+      carousel.removeEventListener('touchstart', handleTouchStart)
+      carousel.removeEventListener('mousedown', handleTouchStart)
+    }
+  }, [clientes])
 
   // Obtener clientes destacados con proyecto
   const clientesDestacados = clientes
@@ -134,7 +204,7 @@ export function ClientesSection() {
           className="mb-12 relative w-full"
         >
           {/* Contenedor con overflow y gradientes */}
-          <div className="overflow-x-auto md:overflow-hidden relative scrollbar-hide scroll-smooth">
+          <div ref={carouselRef} className="overflow-x-auto md:overflow-hidden relative scrollbar-hide scroll-smooth">
             {/* Gradientes solo en desktop */}
             <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
             <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
