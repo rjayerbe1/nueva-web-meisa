@@ -26,8 +26,8 @@ export function Footer() {
               <Image
                 src="/images/logo/logo-meisa-white.png"
                 alt="MEISA"
-                width={135}
-                height={38}
+                width={110}
+                height={31}
                 unoptimized
                 style={{ width: 'auto', height: 'auto' }}
               />
