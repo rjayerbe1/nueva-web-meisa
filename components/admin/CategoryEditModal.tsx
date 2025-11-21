@@ -89,7 +89,6 @@ interface Categoria {
   // Nuevos campos para contenido ampliado
   descripcionAmpliada: string | null
   beneficios: any | null
-  procesoTrabajo: any | null
   estadisticas: any | null
   casosExitoIds: any | null
 }
@@ -165,7 +164,6 @@ export default function CategoryEditModal({
     // Nuevos campos para contenido ampliado
     descripcionAmpliada: categoria?.descripcionAmpliada || '',
     beneficios: categoria?.beneficios || [],
-    procesoTrabajo: categoria?.procesoTrabajo || [],
     estadisticas: categoria?.estadisticas || {},
     casosExitoIds: categoria?.casosExitoIds || []
   })
@@ -203,7 +201,6 @@ export default function CategoryEditModal({
         // Nuevos campos para contenido ampliado
         descripcionAmpliada: categoria.descripcionAmpliada || '',
         beneficios: categoria.beneficios || [],
-        procesoTrabajo: categoria.procesoTrabajo || [],
         estadisticas: categoria.estadisticas || {},
         casosExitoIds: categoria.casosExitoIds || []
       })
@@ -457,7 +454,6 @@ export default function CategoryEditModal({
         destacada: formData.destacada,
         descripcionAmpliada: formData.descripcionAmpliada,
         beneficios: formData.beneficios,
-        procesoTrabajo: formData.procesoTrabajo,
         estadisticas: formData.estadisticas,
         casosExitoIds: formData.casosExitoIds
       }
@@ -1390,19 +1386,22 @@ export default function CategoryEditModal({
                       <div className="space-y-4">
                         {formData.videoBanner ? (
                           <div className="space-y-3">
-                            <div className="w-full h-48 rounded-lg border border-gray-300 overflow-hidden">
-                              <video
-                                src={formData.videoBanner}
-                                className="w-full h-full"
-                                style={{
-                                  objectFit: 'cover',
-                                  transform: `translate(${parsePosition(formData.videoBannerPosition).x}%, ${parsePosition(formData.videoBannerPosition).y}%) scale(${formData.videoBannerScale})`
-                                }}
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                              />
+                            <div className="bg-gray-100 rounded-lg p-3">
+                              <p className="text-xs text-gray-600 mb-2 font-medium">Preview (Aspect ratio de pantalla completa)</p>
+                              <div className="w-full aspect-[16/9] rounded-lg border-2 border-gray-300 overflow-hidden shadow-lg">
+                                <video
+                                  src={formData.videoBanner}
+                                  className="w-full h-full"
+                                  style={{
+                                    objectFit: 'cover',
+                                    transform: `translate(${parsePosition(formData.videoBannerPosition).x}%, ${parsePosition(formData.videoBannerPosition).y}%) scale(${formData.videoBannerScale})`
+                                  }}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                />
+                              </div>
                             </div>
 
                             {/* Controles de Zoom y Posición para Banner */}
@@ -1889,56 +1888,6 @@ export default function CategoryEditModal({
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     Lista de beneficios que aparecerá con checkmarks verdes.
-                  </p>
-                </div>
-
-                {/* Proceso de Trabajo */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nuestro Proceso de Trabajo
-                  </label>
-                  <div className="space-y-3">
-                    {(formData.procesoTrabajo as string[]).map((paso, index) => (
-                      <div key={index} className="flex gap-2 items-start">
-                        <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
-                          {index + 1}
-                        </div>
-                        <input
-                          type="text"
-                          value={paso}
-                          onChange={(e) => {
-                            const newProceso = [...(formData.procesoTrabajo as string[])]
-                            newProceso[index] = e.target.value
-                            setFormData(prev => ({ ...prev, procesoTrabajo: newProceso }))
-                          }}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                          placeholder="Ej: Análisis de requerimientos y diseño inicial"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newProceso = (formData.procesoTrabajo as string[]).filter((_, i) => i !== index)
-                            setFormData(prev => ({ ...prev, procesoTrabajo: newProceso }))
-                          }}
-                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const newProceso = [...(formData.procesoTrabajo as string[]), '']
-                        setFormData(prev => ({ ...prev, procesoTrabajo: newProceso }))
-                      }}
-                      className="w-full px-3 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50"
-                    >
-                      + Agregar Paso del Proceso
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Pasos numerados del proceso de trabajo que sigue MEISA.
                   </p>
                 </div>
 

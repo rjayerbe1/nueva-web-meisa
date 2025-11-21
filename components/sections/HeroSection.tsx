@@ -27,8 +27,11 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
   const [isMobile, setIsMobile] = useState(false)
   const [displayProgress, setDisplayProgress] = useState(0)
   const [minTimeElapsed, setMinTimeElapsed] = useState(false)
+  const [videoStarted, setVideoStarted] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const hasRegistered = useRef(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoMobileRef = useRef<HTMLVideoElement>(null)
 
   // Usar el contexto de carga global
   const { loadedCount, totalResources, markResourceLoaded, registerResource } = useLoading()
@@ -141,6 +144,18 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Iniciar video cuando termina el loader
+  useEffect(() => {
+    if (allResourcesLoaded && !videoStarted) {
+      setVideoStarted(true)
+      // Iniciar reproducción de ambos videos después de un pequeño delay
+      setTimeout(() => {
+        videoRef.current?.play().catch(err => console.log('Error playing desktop video:', err))
+        videoMobileRef.current?.play().catch(err => console.log('Error playing mobile video:', err))
+      }, 100)
+    }
+  }, [allResourcesLoaded, videoStarted])
+
   // Transformaciones para las columnas de imágenes - efecto secuencial superpuesto izquierda → centro → derecha
   // Columna izquierda: primera en revelarse (0-30% del scroll)
   const leftClipPath = useTransform(
@@ -206,7 +221,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
           {/* Fila 1 - Logo con Scroll Reveal */}
           <div className="h-1/3 bg-white relative border-b border-gray-200 overflow-hidden">
             {/* Logo centrado */}
-            <div className="absolute inset-0 flex items-center justify-center z-10 px-6">
+            <div className={`absolute inset-0 flex items-center justify-center z-10 px-6 transition-opacity duration-500 ${videoStarted ? 'opacity-0' : 'opacity-100'}`}>
               <div className="flex items-center justify-center">
                 <LogoHoverEffect
                   variant="3d-tilt"
@@ -214,6 +229,19 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
                   height={79}
                 />
               </div>
+            </div>
+
+            {/* Video del logo - Aparece cuando termina el loader */}
+            <div className={`absolute inset-0 flex items-center justify-center z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
+              <video
+                ref={videoMobileRef}
+                className="w-full h-full object-cover"
+                muted
+                playsInline
+                preload="auto"
+              >
+                <source src="/videos/hero/logo-intro-mobile.mp4" type="video/mp4" />
+              </video>
             </div>
 
             {/* Imagen que se revela con scroll horizontal */}
@@ -313,7 +341,7 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
         {/* Columna Izquierda - Logo centrado con Scroll Reveal */}
         <div className="hidden md:block w-1/3 bg-white border-r border-gray-200 relative">
           {/* Fondo blanco con logo con efecto 3D Tilt */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${videoStarted ? 'opacity-0' : 'opacity-100'}`}>
             <LogoHoverEffect
               variant="3d-tilt"
               width={300}
@@ -321,9 +349,22 @@ export function HeroSection({ heroImages }: HeroSectionProps) {
             />
           </div>
 
+          {/* Video del logo - Aparece cuando termina el loader */}
+          <div className={`absolute inset-0 flex items-center justify-center z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              muted
+              playsInline
+              preload="auto"
+            >
+              <source src="/videos/hero/logo-intro-desktop.mp4" type="video/mp4" />
+            </video>
+          </div>
+
           {/* Imagen que se revela al hacer scroll - Tapa el logo */}
           <motion.div
-            className="absolute inset-0"
+            className="absolute inset-0 z-20"
             style={{ clipPath: leftClipPath }}
           >
             <Image

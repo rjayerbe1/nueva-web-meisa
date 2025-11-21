@@ -18,22 +18,22 @@ const XIcon = ({ className }: { className?: string }) => (
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1.3fr_1fr] gap-8">
+      <div className="container mx-auto px-4 py-4 md:py-12">
+        <div className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1.3fr_1fr] gap-4 md:gap-8">
           {/* Información de la empresa */}
           <div>
-            <div className="mb-8">
+            <div className="mb-3 md:mb-8">
               <Image
                 src="/images/logo/logo-meisa-white.png"
                 alt="MEISA"
-                width={120}
-                height={34}
+                width={100}
+                height={28}
                 unoptimized
-                style={{ maxWidth: '120px', height: 'auto' }}
+                className="w-[100px] md:w-[120px] h-auto"
               />
             </div>
 
-            <div className="flex space-x-5">
+            <div className="flex space-x-3 md:space-x-5">
               <a
                 href="https://www.facebook.com/Metalicaseingenieria"
                 target="_blank"
@@ -41,7 +41,7 @@ export function Footer() {
                 className="text-gray-300 hover:text-blue-400 transition-colors"
                 aria-label="Facebook"
               >
-                <Facebook className="w-7 h-7" />
+                <Facebook className="w-5 h-5 md:w-7 md:h-7" />
               </a>
               <a
                 href="https://www.instagram.com/meisa.s.a.s"
@@ -50,7 +50,7 @@ export function Footer() {
                 className="text-gray-300 hover:text-blue-400 transition-colors"
                 aria-label="Instagram"
               >
-                <Instagram className="w-7 h-7" />
+                <Instagram className="w-5 h-5 md:w-7 md:h-7" />
               </a>
               <a
                 href="https://co.linkedin.com/company/meisa-sas"
@@ -59,7 +59,7 @@ export function Footer() {
                 className="text-gray-300 hover:text-blue-400 transition-colors"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-7 h-7" />
+                <Linkedin className="w-5 h-5 md:w-7 md:h-7" />
               </a>
               <a
                 href="https://x.com/meisa_sas"
@@ -68,13 +68,13 @@ export function Footer() {
                 className="text-gray-300 hover:text-blue-400 transition-colors"
                 aria-label="X (Twitter)"
               >
-                <XIcon className="w-7 h-7" />
+                <XIcon className="w-5 h-5 md:w-7 md:h-7" />
               </a>
             </div>
           </div>
 
           {/* Enlaces rápidos */}
-          <div>
+          <div className="hidden md:block">
             <h4 className="text-lg font-semibold mb-4">Empresa</h4>
             <ul className="space-y-2">
               <li>
@@ -101,7 +101,7 @@ export function Footer() {
           </div>
 
           {/* Ubicaciones */}
-          <div>
+          <div className="hidden md:block">
             <h4 className="text-lg font-semibold mb-4">Nuestras Plantas</h4>
             <div className="space-y-4">
               <div>
@@ -127,28 +127,28 @@ export function Footer() {
 
           {/* Contacto */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contacto Rápido</h4>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-blue-400" />
-                <p className="text-gray-400 text-sm">
+            <h4 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Contacto Rápido</h4>
+            <div className="space-y-2 md:space-y-3">
+              <div className="flex items-start gap-2 md:gap-3">
+                <Phone className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mt-0.5" />
+                <p className="text-gray-400 text-xs md:text-sm leading-tight">
                   <span className="text-white font-medium">+57 (2) 312 0050</span><br />
-                  <span className="text-xs">Lun-Vie: 7AM-5PM</span>
+                  <span className="text-xs hidden md:inline">Lun-Vie: 7AM-5PM</span>
                 </p>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-400" />
-                <p className="text-gray-400 text-sm">
+              <div className="flex items-start gap-2 md:gap-3">
+                <Mail className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mt-0.5" />
+                <p className="text-gray-400 text-xs md:text-sm leading-tight">
                   <span className="text-white">contacto@meisa.com.co</span><br />
-                  <span className="text-xs">Respuesta en 24h</span>
+                  <span className="text-xs hidden md:inline">Respuesta en 24h</span>
                 </p>
               </div>
             </div>
 
-            <div className="mt-6">
-              <Link 
+            <div className="mt-3 md:mt-6">
+              <Link
                 href="/contacto"
-                className="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 text-white text-xs md:text-sm rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Solicitar Cotización
               </Link>
@@ -157,33 +157,42 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-800 mt-8 pt-8">
-          <div className="text-center text-gray-400 text-sm">
-            <p>&copy; {new Date().getFullYear()} MEISA Metálicas e Ingeniería S.A.S. ® Todos los derechos reservados Colombia</p>
-            <div className="mt-2 space-x-4">
-              <a 
+        <div className="border-t border-gray-800 mt-3 md:mt-8 pt-3 md:pt-8">
+          <div className="text-center text-gray-400">
+            {/* Versión móvil - texto corto */}
+            <p className="text-[10px] leading-tight md:hidden">
+              &copy; {new Date().getFullYear()} MEISA S.A.S. Todos los derechos reservados
+            </p>
+            {/* Versión desktop - texto completo */}
+            <p className="hidden md:block text-sm leading-tight">
+              &copy; {new Date().getFullYear()} MEISA Metálicas e Ingeniería S.A.S. ® Todos los derechos reservados Colombia
+            </p>
+            <div className="mt-1 md:mt-2 flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-1 md:gap-0 md:space-x-4 text-[9px] md:text-xs">
+              <a
                 href="https://meisa.com.co/politica-tratamiento-datos/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition-colors"
+                className="hover:text-white transition-colors whitespace-nowrap"
               >
-                Política de Tratamiento de Datos
+                Política de Datos
               </a>
-              <span>|</span>
-              <a 
+              <span className="hidden md:inline">|</span>
+              <span className="md:hidden">•</span>
+              <a
                 href="https://meisa.com.co/manual-sagrilaft/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition-colors"
+                className="hover:text-white transition-colors whitespace-nowrap"
               >
-                Manual SAGRILAFT
+                SAGRILAFT
               </a>
-              <span>|</span>
-              <Link 
+              <span className="hidden md:inline">|</span>
+              <span className="md:hidden">•</span>
+              <Link
                 href="/calidad"
-                className="hover:text-white transition-colors"
+                className="hover:text-white transition-colors whitespace-nowrap"
               >
-                Sistema Integrado de Gestión
+                Sistema de Gestión
               </Link>
             </div>
           </div>

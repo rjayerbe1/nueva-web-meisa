@@ -113,7 +113,7 @@ function ServiceCard({
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: index * 0.1 }}
         viewport={{ once: true, margin: "-50px" }}
-        className="relative h-screen overflow-hidden"
+        className="relative h-[50vh] lg:h-screen overflow-hidden"
       >
         {/* Imagen o Video de fondo */}
         <div className="absolute inset-0">
