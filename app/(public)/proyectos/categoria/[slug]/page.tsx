@@ -444,13 +444,17 @@ export default function CategoryProjectsPage() {
             </motion.div>
           </div>
         ) : (() => {
+          // Separar proyectos con y sin imágenes
+          const proyectosConImagenes = proyectos.filter(p => p.imagenes && p.imagenes.length > 0)
+          const proyectosSinImagenes = proyectos.filter(p => !p.imagenes || p.imagenes.length === 0)
+
           // Obtener IDs de proyectos destacados
           const proyectosDestacadosIds: string[] = categoria.casosExitoIds && categoria.casosExitoIds.length > 0
             ? categoria.casosExitoIds
             : []
 
-          // Ordenar proyectos: destacados primero, luego el resto
-          const proyectosOrdenados = [...proyectos].sort((a, b) => {
+          // Ordenar proyectos con imágenes: destacados primero, luego el resto
+          const proyectosConImagenesOrdenados = [...proyectosConImagenes].sort((a, b) => {
             const aEsDestacado = proyectosDestacadosIds.includes(a.id)
             const bEsDestacado = proyectosDestacadosIds.includes(b.id)
             if (aEsDestacado && !bEsDestacado) return -1
@@ -460,26 +464,26 @@ export default function CategoryProjectsPage() {
 
           return (
             <>
-              {/* Grid de proyectos estilo ProjectCategoriesSection */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                {proyectosOrdenados.map((proyecto, index) => {
-                  const esDestacado = proyectosDestacadosIds.includes(proyecto.id)
+              {/* Grid de proyectos con imágenes */}
+              {proyectosConImagenesOrdenados.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                  {proyectosConImagenesOrdenados.map((proyecto, index) => {
+                    const esDestacado = proyectosDestacadosIds.includes(proyecto.id)
 
-                  return (
-                    <Link
-                      key={proyecto.id}
-                      href={`/proyectos/detalle/${proyecto.slug}`}
-                      className="group block"
-                    >
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: index * 0.1 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        className="relative h-[60vh] lg:h-[70vh] overflow-hidden"
+                    return (
+                      <Link
+                        key={proyecto.id}
+                        href={`/proyectos/detalle/${proyecto.slug}`}
+                        className="group block"
                       >
-                        {/* Imagen de fondo con hover */}
-                        {proyecto.imagenes[0] ? (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ duration: 0.8, delay: index * 0.1 }}
+                          viewport={{ once: true, margin: "-50px" }}
+                          className="relative h-[60vh] lg:h-[70vh] overflow-hidden"
+                        >
+                          {/* Imagen de fondo con hover */}
                           <div className="absolute inset-0">
                             <Image
                               src={proyecto.imagenes[0].urlOptimized || proyecto.imagenes[0].url}
@@ -489,9 +493,6 @@ export default function CategoryProjectsPage() {
                               sizes="(max-width: 1024px) 100vw, 50vw"
                             />
                           </div>
-                        ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
-                        )}
 
                         {/* Overlay oscuro */}
                         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
@@ -565,23 +566,124 @@ export default function CategoryProjectsPage() {
                   )
                 })}
               </div>
+              )}
 
-              {/* Back to all categories */}
-              <div className="py-16 text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  <Link
-                    href="/proyectos"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-lato font-semibold rounded-lg transition-all duration-300 border border-white/20 hover:border-white/40"
+              {/* Lista de proyectos sin imágenes */}
+              {proyectosSinImagenes.length > 0 && (
+                <div className="py-16 px-4 sm:px-6 lg:px-16 xl:px-24 bg-white">
+                  <div className="max-w-7xl mx-auto">
+                    {/* Título de la sección */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6 }}
+                      viewport={{ once: true }}
+                      className="mb-12"
+                    >
+                      <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bebas uppercase text-gray-900 text-center">
+                        Más Proyectos
+                      </h2>
+                    </motion.div>
+
+                    {/* Contenedor centrado - ocupa 2 de 4 columnas */}
+                    <div className="max-w-5xl mx-auto">
+                      {/* Lista simple de proyectos estilo HTML clásico */}
+                      <motion.ul
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="columns-1 md:columns-2 gap-x-20 gap-y-8"
+                        style={{ columnFill: 'balance' }}
+                      >
+                        {proyectosSinImagenes.map((proyecto, index) => (
+                          <motion.li
+                            key={proyecto.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: index * 0.02 }}
+                            viewport={{ once: true }}
+                            className="break-inside-avoid mb-8 border-l-[12px] border-blue-600 pl-6"
+                          >
+                            {/* Nombre del proyecto */}
+                            <div className="text-gray-900 font-lato font-bold text-xl md:text-2xl leading-tight">
+                              {proyecto.titulo}
+                            </div>
+
+                            {/* Ubicación */}
+                            <div className="text-gray-900 font-lato text-base leading-tight">
+                              {proyecto.ubicacion}
+                            </div>
+
+                            {/* Toneladas */}
+                            {proyecto.toneladas && (
+                              <div className="text-gray-500 font-lato text-sm tracking-wide">
+                                {proyecto.toneladas.toLocaleString()} TONS
+                              </div>
+                            )}
+                          </motion.li>
+                        ))}
+                      </motion.ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* CTA Section */}
+              <div className="py-20 px-4 sm:px-6 lg:px-16 xl:px-24 bg-gradient-to-br from-slate-900 to-slate-800">
+                <div className="max-w-6xl mx-auto text-center">
+                  {/* Título */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="mb-12"
                   >
-                    <ArrowLeft className="w-5 h-5" />
-                    Explorar todas las categorías
-                  </Link>
-                </motion.div>
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bebas uppercase text-white mb-4">
+                      ¿Listo para tu próximo proyecto?
+                    </h2>
+                    <p className="text-lg sm:text-xl text-gray-300 font-lato max-w-3xl mx-auto">
+                      Descubre más sobre nuestros servicios, conoce nuestra trayectoria o solicita una cotización personalizada.
+                    </p>
+                  </motion.div>
+
+                  {/* Botones CTA */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                  >
+                    {/* Explorar categorías */}
+                    <Link
+                      href="/proyectos"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-lato font-semibold rounded-lg transition-all duration-300 border border-white/20 hover:border-white/40 hover:scale-105"
+                    >
+                      <ArrowLeft className="w-5 h-5" />
+                      Explorar Categorías
+                    </Link>
+
+                    {/* Ver trayectoria */}
+                    <Link
+                      href="/trayectoria"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+                    >
+                      <Building className="w-5 h-5" />
+                      Nuestra Trayectoria
+                    </Link>
+
+                    {/* Cotizar proyecto */}
+                    <Link
+                      href="/contacto"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                      Cotizar Proyecto
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
 
               </>

@@ -235,11 +235,26 @@ export const OilGasIcon = ({ className = "w-6 h-6" }: IconProps) => (
   </svg>
 )
 
+// Icono unificado para Puentes (combina vehiculares y peatonales)
+export const PuentesIcon = PuentesVehicularesIcon
+
+// Icono para Deportes & Educación (antes Escenarios Deportivos)
+export const DeportesEducacionIcon = EscenariosDeportivosIcon
+
+// Icono para Infraestructura Urbana (antes Oil & Gas / Otros)
+export const InfraestructuraUrbanaIcon = OilGasIcon
+
 export const categoryIcons = {
+  COMERCIAL: CentrosComercialesIcon,
+  INDUSTRIAL: IndustriaIcon,
+  PUENTES: PuentesIcon,
+  INFRAESTRUCTURA_URBANA: InfraestructuraUrbanaIcon,
+  EDIFICACIONES: EdificiosIcon,
+  DEPORTES_EDUCACION: DeportesEducacionIcon,
+  // Legacy aliases (para compatibilidad)
   CENTROS_COMERCIALES: CentrosComercialesIcon,
   EDIFICIOS: EdificiosIcon,
-  INDUSTRIAL: IndustriaIcon,
-  PUENTES: PuentesVehicularesIcon,
+  PUENTES_VEHICULARES: PuentesVehicularesIcon,
   PUENTES_PEATONALES: PuentesPeatonalesIcon,
   ESCENARIOS_DEPORTIVOS: EscenariosDeportivosIcon,
   CUBIERTAS_FACHADAS: CubiertasFachadasIcon,

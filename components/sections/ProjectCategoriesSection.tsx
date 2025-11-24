@@ -151,14 +151,14 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
             viewport={{ once: true }}
-            className="mb-6 transform group-hover:scale-110 transition-transform duration-500"
+            className="mb-4 md:mb-6 transform group-hover:scale-110 transition-transform duration-500"
             style={{
-              color: categoria.color || '#3b82f6',
-              width: `${iconSize * 4}px`,
-              height: `${iconSize * 4}px`
+              color: categoria.color || '#3b82f6'
             }}
           >
-            {getCategoryIconComponent(categoria.icono, "w-full h-full")}
+            <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64">
+              {getCategoryIconComponent(categoria.icono, "w-full h-full")}
+            </div>
           </motion.div>
 
           {/* Título sin animación de letras - cada palabra en una línea, altura fija de 2 líneas */}

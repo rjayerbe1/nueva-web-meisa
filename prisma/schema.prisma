@@ -59,7 +59,7 @@ model Proyecto {
   titulo               String
   codigoInterno        String?
   descripcion          String
-  categoria            CategoriaEnum
+  categoria            CategoriaEnum        @default(COMERCIAL)
   estado               EstadoProyecto       @default(PLANIFICACION)
   prioridad            PrioridadEnum        @default(MEDIA)
   fechaInicio          DateTime
@@ -95,8 +95,8 @@ model Proyecto {
   progreso             ProgresoProyecto[]
   clienteRel           Cliente?             @relation(fields: [clienteId], references: [id])
   user                 User                 @relation(fields: [createdBy], references: [id])
+  hojaVida             ProyectoHojaVida?
   timeline             TimelineEntry[]
-  hojaVida             ProyectoHojaVida?    // Relación opcional con hoja de vida
 
   @@map("proyectos")
 }
@@ -114,7 +114,7 @@ model ImagenProyecto {
   width        Int?
   height       Int?
   format       String?
-  proyectoId   String?    // Ahora es opcional - permite imágenes sin proyecto
+  proyectoId   String?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   proyecto     Proyecto?  @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
@@ -206,16 +206,14 @@ model Servicio {
   subtitulo            String?
   tecnologias          Json?
   titulo               String?
-  
-  // New fields for enhanced service detail page
-  imagenesGaleria      Json?    // Array of image URLs for gallery
-  estadisticas         Json?    // Key stats like years of experience, projects completed
-  procesoPasos         Json?    // Process flow steps with icons and descriptions
-  tablaComparativa     Json?    // Comparison table data
-  videoDemostrativo    String?  // YouTube or video URL
-  preguntasFrecuentes  Json?    // FAQs specific to this service
-  recursosDescargables Json?    // PDFs, brochures, technical specs
-  
+  imagenesGaleria      Json?
+  estadisticas         Json?
+  procesoPasos         Json?
+  tablaComparativa     Json?
+  videoDemostrativo    String?
+  preguntasFrecuentes  Json?
+  recursosDescargables Json?
+
   @@map("servicios")
 }
 
@@ -271,35 +269,35 @@ model ConfiguracionSitio {
 }
 
 model Pagina {
-  id               String          @id @default(cuid())
-  slug             String          @unique
-  titulo           String
-  subtitulo        String?
-  contenido        Json            // Contenido estructurado en JSON
-  metaTitle        String?
-  metaDescription  String?
-  imagenHero       String?
-  imagenBanner     String?
-  activa           Boolean         @default(true)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  secciones        SeccionPagina[]
+  id              String          @id @default(cuid())
+  slug            String          @unique
+  titulo          String
+  subtitulo       String?
+  contenido       Json
+  metaTitle       String?
+  metaDescription String?
+  imagenHero      String?
+  imagenBanner    String?
+  activa          Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  secciones       SeccionPagina[]
 
   @@map("paginas")
 }
 
 model SeccionPagina {
-  id         String   @id @default(cuid())
-  paginaId   String
-  titulo     String
-  subtitulo  String?
-  contenido  Json
-  tipo       TipoSeccion
-  orden      Int      @default(0)
-  visible    Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  pagina     Pagina   @relation(fields: [paginaId], references: [id], onDelete: Cascade)
+  id        String      @id @default(cuid())
+  paginaId  String
+  titulo    String
+  subtitulo String?
+  contenido Json
+  tipo      TipoSeccion
+  orden     Int         @default(0)
+  visible   Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  pagina    Pagina      @relation(fields: [paginaId], references: [id], onDelete: Cascade)
 
   @@map("secciones_pagina")
 }
@@ -311,10 +309,7 @@ model CategoriaProyecto {
   descripcion         String?
   slug                String        @unique
   imagenCover         String?
-  videoCover          String? // Video para la tarjeta/card de categoría
-  usarVideoCover      Boolean       @default(false) // Si true, usa videoCover; si false, usa imagenCover
   icono               String?
-  // iconSize removido - ahora es global en SiteConfig
   color               String?
   colorSecundario     String?
   metaTitle           String?
@@ -327,7 +322,6 @@ model CategoriaProyecto {
   updatedAt           DateTime      @updatedAt
   overlayColor        String?
   overlayOpacity      Float?        @default(0.0)
-  // Nuevos campos para overlay hover configurable
   hoverOverlayColor   String?       @default("#1e40af")
   hoverOverlayOpacity Float?        @default(0.2)
   enableHoverOverlay  Boolean       @default(true)
@@ -337,14 +331,15 @@ model CategoriaProyecto {
   procesoTrabajo      Json?
   casosExitoIds       Json?
   imagenBanner        String?
-  videoBanner         String? // Video de fondo para la categoría
-  usarVideoBanner     Boolean       @default(false) // Si true, usa videoBanner; si false, usa imagenBanner
-  // Campos para ajustar zoom y posición de videos
-  videoCoverScale     Float?        @default(1.0) // Escala del video cover (1.0 = 100%, 1.5 = 150%)
-  videoCoverPosition  String?       @default("center center") // Posición del video cover (ej: "center center", "top center")
-  videoBannerScale    Float?        @default(1.0) // Escala del video banner
-  videoBannerPosition String?       @default("center center") // Posición del video banner
-  brochure            Brochure? // Relación con el brochure digital de la categoría
+  videoBanner         String?
+  videoCover          String?
+  usarVideoBanner     Boolean       @default(false)
+  usarVideoCover      Boolean       @default(false)
+  videoBannerPosition String?       @default("center center")
+  videoBannerScale    Float?        @default(1.0)
+  videoCoverPosition  String?       @default("center center")
+  videoCoverScale     Float?        @default(1.0)
+  brochure            Brochure?
 
   @@map("categorias_proyecto")
 }
@@ -392,6 +387,263 @@ model HistoriaProyecto {
   @@map("historias_proyecto")
 }
 
+model ProyectoHojaVida {
+  id                    String        @id @default(cuid())
+  entidadContratante    String
+  objetoContrato        String
+  tituloDisplay         String?
+  descripcionSecundaria String?
+  fechaInicio           DateTime
+  fechaFin              DateTime
+  pesoKg                Decimal?      @db.Decimal(12, 2)
+  areaM2                Decimal?      @db.Decimal(12, 2)
+  ubicacion             String
+  departamento          String?
+  valorContrato         Decimal       @db.Decimal(15, 2)
+  moneda                String        @default("COP")
+  categoria             CategoriaEnum @default(INDUSTRIAL)
+  imagenes              Json?
+  destacado             Boolean       @default(false)
+  visible               Boolean       @default(true)
+  orden                 Int           @default(0)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  proyectoDetalladoId   String?       @unique
+  proyectoDetallado     Proyecto?     @relation(fields: [proyectoDetalladoId], references: [id])
+
+  @@map("proyectos_hoja_vida")
+}
+
+model ConfiguracionTrayectoria {
+  id              String   @id @default(cuid())
+  resenaHistorica String
+  mision          String
+  vision          String
+  valores         Json
+  updatedAt       DateTime @updatedAt
+
+  @@map("configuracion_trayectoria")
+}
+
+model ResumenAnio {
+  id               String   @id @default(cuid())
+  anio             Int      @unique
+  titulo           String
+  descripcion      String
+  categorias       Json?
+  imagenesFeatured Json?
+  estadisticas     Json?
+  visible          Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("resumenes_anio")
+}
+
+model BrochureTemplate {
+  id                String                 @id @default(cuid())
+  nombre            String
+  descripcion       String?
+  thumbnail         String?
+  tipoCategoria     CategoriaEnum?
+  estructura        Json
+  componentsLibrary Json
+  estilosGlobales   Json?
+  isPublic          Boolean                @default(false)
+  isDefault         Boolean                @default(false)
+  createdBy         String
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  pages             BrochureTemplatePage[]
+  brochures         Brochure[]
+
+  @@map("brochure_templates")
+}
+
+model BrochureTemplatePage {
+  id         String           @id @default(cuid())
+  templateId String
+  nombre     String
+  orden      Int              @default(0)
+  estructura Json
+  estilos    Json?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  template   BrochureTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@map("brochure_template_pages")
+}
+
+model Brochure {
+  id                  String             @id @default(cuid())
+  titulo              String
+  descripcion         String?
+  templateId          String
+  categoriaId         String?            @unique
+  contenido           Json
+  datosPersonalizados Json?
+  configuracion       Json?
+  activo              Boolean            @default(false)
+  publicado           Boolean            @default(false)
+  fechaPublicacion    DateTime?
+  urlAmigable         String             @unique
+  versionNumero       Int                @default(1)
+  thumbnail           String?
+  pdfUrl              String?
+  createdBy           String
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  analytics           BrochureAnalytics?
+  pages               BrochurePage[]
+  categoria           CategoriaProyecto? @relation(fields: [categoriaId], references: [id])
+  template            BrochureTemplate   @relation(fields: [templateId], references: [id])
+
+  @@map("brochures")
+}
+
+model BrochurePage {
+  id              String        @id @default(cuid())
+  brochureId      String
+  pageTemplateId  String?
+  nombre          String
+  orden           Int           @default(0)
+  canvasData      Json?
+  contenido       Json?
+  componentesData Json?
+  configuracion   Json?
+  visible         Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  brochure        Brochure      @relation(fields: [brochureId], references: [id], onDelete: Cascade)
+  pageTemplate    PageTemplate? @relation(fields: [pageTemplateId], references: [id])
+
+  @@map("brochure_pages")
+}
+
+model PageTemplate {
+  id            String         @id @default(cuid())
+  nombre        String
+  descripcion   String?
+  thumbnail     String?
+  categoria     String?
+  canvasData    Json
+  configuracion Json?
+  isPublic      Boolean        @default(true)
+  usageCount    Int            @default(0)
+  createdBy     String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  pages         BrochurePage[]
+
+  @@map("page_templates")
+}
+
+model BrochureComponent {
+  id                String                 @id @default(cuid())
+  nombre            String
+  tipo              TipoComponenteBrochure
+  descripcion       String?
+  thumbnail         String?
+  htmlTemplate      String
+  cssEstilos        String
+  jsInteracciones   String?
+  propiedadesSchema Json
+  valorDefecto      Json?
+  categoria         String?
+  tags              String[]
+  isPublic          Boolean                @default(true)
+  usageCount        Int                    @default(0)
+  createdBy         String
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@map("brochure_components")
+}
+
+model BrochureStyle {
+  id               String   @id @default(cuid())
+  nombre           String
+  descripcion      String?
+  coloresPrimarios Json
+  tipografia       Json
+  espaciado        Json?
+  bordes           Json?
+  sombras          Json?
+  efectos          Json?
+  cssCustom        String?
+  isDefault        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("brochure_styles")
+}
+
+model BrochureAnalytics {
+  id          String   @id @default(cuid())
+  brochureId  String   @unique
+  vistas      Int      @default(0)
+  descargas   Int      @default(0)
+  compartidos Int      @default(0)
+  fecha       DateTime @default(now())
+  brochure    Brochure @relation(fields: [brochureId], references: [id], onDelete: Cascade)
+
+  @@map("brochure_analytics")
+}
+
+model CustomFont {
+  id          String   @id @default(cuid())
+  nombre      String   @unique
+  fontFamily  String
+  fileUrl     String
+  fileName    String
+  fileFormat  String
+  fileSize    Int?
+  description String?
+  category    String?
+  isActive    Boolean  @default(true)
+  uploadedBy  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("custom_fonts")
+}
+
+model ContactoWhatsApp {
+  id                    String   @id @default(cuid())
+  nombre                String
+  cargo                 String
+  telefono              String
+  mensajePredeterminado String   @default("Hola, me gustaría solicitar información sobre sus servicios.")
+  avatar                String?
+  orden                 Int      @default(0)
+  activo                Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("contactos_whatsapp")
+}
+
+model ConfiguracionWhatsApp {
+  id                  String   @id @default(cuid())
+  horarioAtencion     String   @default("Lunes a Viernes: 7:00 AM - 5:00 PM")
+  mensajeIntroduccion String   @default("Elije la persona disponible para iniciar una conversación de WhatsApp")
+  tituloWidget        String   @default("Háblanos por WhatsApp")
+  activo              Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+
+  @@map("configuracion_whatsapp")
+}
+
+model SiteConfig {
+  id               String   @id @default(cuid())
+  key              String   @unique @default("global")
+  categoryIconSize Int      @default(48)
+  updatedAt        DateTime @updatedAt
+  createdAt        DateTime @default(now())
+
+  @@map("site_config")
+}
+
 enum UserRole {
   ADMIN
   EDITOR
@@ -412,14 +664,11 @@ enum SectorCliente {
 
 enum CategoriaEnum {
   COMERCIAL
+  INDUSTRIAL
+  PUENTES
+  INFRAESTRUCTURA_URBANA
   EDIFICACIONES
-  INDUSTRIA
-  PUENTES_VEHICULARES
-  PUENTES_PEATONALES
-  ESCENARIOS_DEPORTIVOS
-  CUBIERTAS_Y_FACHADAS
-  ESTRUCTURAS_MODULARES
-  OTRO
+  DEPORTES_EDUCACION
 }
 
 enum EstadoProyecto {
@@ -508,276 +757,4 @@ enum TipoComponenteBrochure {
   DIVIDER
   SPACER
   CUSTOM_HTML
-}
-
-model ProyectoHojaVida {
-  id                   String        @id @default(cuid())
-  entidadContratante   String
-  objetoContrato       String        @db.Text
-  tituloDisplay        String?       // Título compacto para mostrar
-  descripcionSecundaria String?      @db.Text // Detalles técnicos adicionales
-  fechaInicio          DateTime
-  fechaFin             DateTime
-  pesoKg               Decimal?      @db.Decimal(12, 2)
-  areaM2               Decimal?      @db.Decimal(12, 2)
-  ubicacion            String
-  departamento         String?
-  valorContrato        Decimal       @db.Decimal(15, 2)
-  moneda               String        @default("COP")
-  imagenes             Json?
-  destacado            Boolean       @default(false)
-  visible              Boolean       @default(true)
-  orden                Int           @default(0)
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
-  proyectoDetalladoId  String?       @unique // ID del proyecto detallado relacionado
-  proyectoDetallado    Proyecto?     @relation(fields: [proyectoDetalladoId], references: [id])
-
-  @@map("proyectos_hoja_vida")
-}
-
-model ConfiguracionTrayectoria {
-  id              String   @id @default(cuid())
-  resenaHistorica String   @db.Text
-  mision          String   @db.Text
-  vision          String   @db.Text
-  valores         Json
-  updatedAt       DateTime @updatedAt
-
-  @@map("configuracion_trayectoria")
-}
-
-model ResumenAnio {
-  id               String   @id @default(cuid())
-  anio             Int      @unique
-  titulo           String
-  descripcion      String   @db.Text
-  categorias       Json?
-  imagenesFeatured Json?
-  estadisticas     Json?
-  visible          Boolean  @default(true)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  @@map("resumenes_anio")
-}
-
-// ============================================
-// BROCHURE SYSTEM MODELS
-// ============================================
-
-model BrochureTemplate {
-  id                String     @id @default(cuid())
-  nombre            String
-  descripcion       String?
-  thumbnail         String?
-  tipoCategoria     CategoriaEnum? // Para filtrar templates por categoría
-  estructura        Json       // JSON con la estructura completa del template
-  componentsLibrary Json       // Biblioteca de componentes disponibles
-  estilosGlobales   Json?      // Estilos CSS globales del template
-  isPublic          Boolean    @default(false)
-  isDefault         Boolean    @default(false)
-  createdBy         String
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
-  brochures         Brochure[]
-  pages             BrochureTemplatePage[]
-
-  @@map("brochure_templates")
-}
-
-model BrochureTemplatePage {
-  id          String            @id @default(cuid())
-  templateId  String
-  nombre      String
-  orden       Int               @default(0)
-  estructura  Json              // Layout y componentes de la página
-  estilos     Json?             // Estilos específicos de la página
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  template    BrochureTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
-
-  @@map("brochure_template_pages")
-}
-
-model Brochure {
-  id                String            @id @default(cuid())
-  titulo            String
-  descripcion       String?
-  templateId        String
-  categoriaId       String?           @unique // Una categoría puede tener un brochure
-  contenido         Json              // Contenido específico del brochure
-  datosPersonalizados Json?           // Datos que se inyectan en el template
-  configuracion     Json?             // Configuraciones específicas del brochure
-  activo            Boolean           @default(false)
-  publicado         Boolean           @default(false)
-  fechaPublicacion  DateTime?
-  urlAmigable       String            @unique
-  versionNumero     Int               @default(1)
-  thumbnail         String?
-  pdfUrl            String?           // URL del PDF completo del brochure en Google Cloud Storage
-  createdBy         String
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  template          BrochureTemplate  @relation(fields: [templateId], references: [id])
-  categoria         CategoriaProyecto? @relation(fields: [categoriaId], references: [id])
-  pages             BrochurePage[]
-  analytics         BrochureAnalytics[]
-
-  @@map("brochures")
-}
-
-model BrochurePage {
-  id              String        @id @default(cuid())
-  brochureId      String
-  pageTemplateId  String?       // Referencia opcional a plantilla de página usada
-  nombre          String
-  orden           Int           @default(0)
-  canvasData      Json?         // JSON de Fabric.js con el diseño del canvas
-  contenido       Json?         // DEPRECATED: Mantener por compatibilidad (migrará a canvasData)
-  componentesData Json?         // DEPRECATED: Mantener por compatibilidad
-  configuracion   Json?         // Config adicional (ancho, alto canvas, etc.)
-  visible         Boolean       @default(true)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  brochure        Brochure      @relation(fields: [brochureId], references: [id], onDelete: Cascade)
-  pageTemplate    PageTemplate? @relation(fields: [pageTemplateId], references: [id], onDelete: SetNull)
-
-  @@map("brochure_pages")
-}
-
-model PageTemplate {
-  id            String          @id @default(cuid())
-  nombre        String          // "Portada Estándar", "Proyecto 3 Fotos", etc.
-  descripcion   String?
-  thumbnail     String?         // Preview de la plantilla
-  categoria     String?         // "Portadas", "Proyectos", "Galerías"
-  canvasData    Json            // JSON de Fabric.js con el diseño completo
-  configuracion Json?           // Metadata (ancho, alto, colores sugeridos, etc.)
-  isPublic      Boolean         @default(true)
-  usageCount    Int             @default(0) // Contador de usos
-  createdBy     String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  pages         BrochurePage[]  // Páginas que usan esta plantilla
-
-  @@map("page_templates")
-}
-
-model BrochureComponent {
-  id                String   @id @default(cuid())
-  nombre            String
-  tipo              TipoComponenteBrochure
-  descripcion       String?
-  thumbnail         String?
-  htmlTemplate      String   @db.Text // HTML template del componente
-  cssEstilos        String   @db.Text // CSS del componente
-  jsInteracciones   String?  @db.Text // JavaScript opcional para interacciones
-  propiedadesSchema Json     // JSON Schema que define las propiedades configurables
-  valorDefecto      Json?    // Valores por defecto de las propiedades
-  categoria         String?  // Para organizar componentes
-  tags              String[]
-  isPublic          Boolean  @default(true)
-  usageCount        Int      @default(0)
-  createdBy         String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  @@map("brochure_components")
-}
-
-model BrochureStyle {
-  id              String   @id @default(cuid())
-  nombre          String
-  descripcion     String?
-  coloresPrimarios Json    // {primary, secondary, accent, etc.}
-  tipografia      Json     // {headingFont, bodyFont, sizes, etc.}
-  espaciado       Json?    // {margins, paddings, gaps}
-  bordes          Json?    // {radius, widths, styles}
-  sombras         Json?    // {box shadows, text shadows}
-  efectos         Json?    // {transitions, animations}
-  cssCustom       String?  @db.Text
-  isDefault       Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@map("brochure_styles")
-}
-
-model BrochureAnalytics {
-  id          String   @id @default(cuid())
-  brochureId  String   @unique // Hacer único para upsert
-  vistas      Int      @default(0)
-  descargas   Int      @default(0)
-  compartidos Int      @default(0)
-  fecha       DateTime @default(now())
-  brochure    Brochure @relation(fields: [brochureId], references: [id], onDelete: Cascade)
-
-  @@map("brochure_analytics")
-}
-
-model CustomFont {
-  id          String   @id @default(cuid())
-  nombre      String   @unique // Nombre de la fuente (ej: "Mi Fuente Custom")
-  fontFamily  String   // Nombre CSS de la familia de fuente
-  fileUrl     String   // URL del archivo de fuente en Uploadcare
-  fileName    String   // Nombre original del archivo
-  fileFormat  String   // ttf, otf, woff, woff2
-  fileSize    Int?     // Tamaño en bytes
-  description String?  // Descripción opcional
-  category    String?  // Sans-serif, Serif, Display, etc.
-  isActive    Boolean  @default(true)
-  uploadedBy  String   // Usuario que subió la fuente
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("custom_fonts")
-}
-
-model ContactoWhatsApp {
-  id                      String   @id @default(cuid())
-  nombre                  String   // Nombre del contacto (ej: "Ricardo Ocampo")
-  cargo                   String   // Cargo o rol (ej: "Gerente Comercial")
-  telefono                String   // Número de WhatsApp (formato: +573104327227)
-  mensajePredeterminado   String   @default("Hola, me gustaría solicitar información sobre sus servicios.") @db.Text
-  avatar                  String?  // URL de avatar opcional (Uploadcare)
-  orden                   Int      @default(0) // Para ordenar los contactos en el widget
-  activo                  Boolean  @default(true) // Si está activo o no
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
-
-  @@map("contactos_whatsapp")
-}
-
-model ConfiguracionWhatsApp {
-  id                  String   @id @default(cuid())
-  horarioAtencion     String   @default("Lunes a Viernes: 7:00 AM - 5:00 PM")
-  mensajeIntroduccion String   @default("Elije la persona disponible para iniciar una conversación de WhatsApp")
-  tituloWidget        String   @default("Háblanos por WhatsApp")
-  activo              Boolean  @default(true)
-  updatedAt           DateTime @updatedAt
-
-  @@map("configuracion_whatsapp")
-}
-
-// ============================================
-// CONFIGURACIÓN GLOBAL DEL SITIO
-// ============================================
-
-model SiteConfig {
-  id        String   @id @default(cuid())
-  key       String   @unique @default("global") // Siempre "global" - solo hay una fila
-
-  // Configuración de iconos de categorías
-  categoryIconSize Int @default(48) // Tamaño global de iconos en unidades Tailwind (12-80)
-
-  // Otras configuraciones futuras pueden ir aquí
-  // emailContacto String?
-  // telefono String?
-  // etc.
-
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-
-  @@map("site_config")
 }

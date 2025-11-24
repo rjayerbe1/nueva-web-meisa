@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, Upload, Palette, Eye, Star, EyeOff } from "lucide-react"
+import { X, Upload, Palette, Eye, Star, EyeOff, Video as VideoIcon } from "lucide-react"
 import { CategoriaEnum } from "@prisma/client"
 import {
   getAllAvailableIcons,
@@ -16,6 +16,7 @@ import { ExpandImageButton } from "./ExpandImageButton"
 import { InpaintButton } from "./InpaintButton"
 import { OptimizeButton } from "./OptimizeButton"
 import { CategoryImageSelector } from "./CategoryImageSelector"
+import { CategoryVideoSelector } from "./CategoryVideoSelector"
 import { AccordionSection } from "./AccordionSection"
 import { GlobalIconSizeConfig } from "./GlobalIconSizeConfig"
 
@@ -117,6 +118,8 @@ export default function CategoryEditModal({
   const [availableProjects, setAvailableProjects] = useState<{id: string, titulo: string}[]>([])
   const [showImageSelector, setShowImageSelector] = useState(false)
   const [imageSelectorTarget, setImageSelectorTarget] = useState<'cover' | 'banner'>('cover')
+  const [showVideoSelector, setShowVideoSelector] = useState(false)
+  const [videoSelectorTarget, setVideoSelectorTarget] = useState<'cover' | 'banner'>('cover')
 
   // Helper functions para posición X,Y
   const parsePosition = (posStr: string): { x: number; y: number } => {
@@ -1152,22 +1155,37 @@ export default function CategoryEditModal({
                             </p>
                           </div>
                         ) : (
-                          <label className="flex flex-col items-center justify-center w-80 aspect-[4/3] mx-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                            <p className="text-base text-gray-600 font-medium">
-                              {uploading ? 'Subiendo...' : 'Subir Video de Portada'}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
-                              MP4, WebM o MOV • Máx. 100MB • Para tarjetas de categoría
-                            </p>
-                            <input
-                              type="file"
-                              accept="video/*"
-                              onChange={handleVideoCoverUpload}
-                              className="sr-only"
-                              disabled={uploading}
-                            />
-                          </label>
+                          <div className="space-y-3">
+                            <label className="flex flex-col items-center justify-center w-80 aspect-[4/3] mx-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                              <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                              <p className="text-base text-gray-600 font-medium">
+                                {uploading ? 'Subiendo...' : 'Subir Video de Portada'}
+                              </p>
+                              <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                                MP4, WebM o MOV • Máx. 100MB • Para tarjetas de categoría
+                              </p>
+                              <input
+                                type="file"
+                                accept="video/*"
+                                onChange={handleVideoCoverUpload}
+                                className="sr-only"
+                                disabled={uploading}
+                              />
+                            </label>
+                            <div className="flex justify-center">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setVideoSelectorTarget('cover')
+                                  setShowVideoSelector(true)
+                                }}
+                                className="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors flex items-center gap-2"
+                              >
+                                <VideoIcon className="w-4 h-4" />
+                                Galería GCS (Videos)
+                              </button>
+                            </div>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -1519,22 +1537,37 @@ export default function CategoryEditModal({
                             </p>
                           </div>
                         ) : (
-                          <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                            <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                            <p className="text-base text-gray-600 font-medium">
-                              {uploading ? 'Subiendo...' : 'Subir Video de Fondo'}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-2 text-center px-4">
-                              MP4, WebM o MOV • Máx. 100MB • Se reproducirá en loop
-                            </p>
-                            <input
-                              type="file"
-                              accept="video/*"
-                              onChange={handleVideoUpload}
-                              className="sr-only"
-                              disabled={uploading}
-                            />
-                          </label>
+                          <div className="space-y-3">
+                            <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                              <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                              <p className="text-base text-gray-600 font-medium">
+                                {uploading ? 'Subiendo...' : 'Subir Video de Fondo'}
+                              </p>
+                              <p className="text-sm text-gray-500 mt-2 text-center px-4">
+                                MP4, WebM o MOV • Máx. 100MB • Se reproducirá en loop
+                              </p>
+                              <input
+                                type="file"
+                                accept="video/*"
+                                onChange={handleVideoUpload}
+                                className="sr-only"
+                                disabled={uploading}
+                              />
+                            </label>
+                            <div className="flex justify-center">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setVideoSelectorTarget('banner')
+                                  setShowVideoSelector(true)
+                                }}
+                                className="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors flex items-center gap-2"
+                              >
+                                <VideoIcon className="w-4 h-4" />
+                                Galería GCS (Videos)
+                              </button>
+                            </div>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -2097,6 +2130,20 @@ export default function CategoryEditModal({
           }
         }}
         currentImageUrl={imageSelectorTarget === 'cover' ? formData.imagenCover : formData.imagenBanner}
+      />
+
+      {/* Selector de Videos de GCS */}
+      <CategoryVideoSelector
+        isOpen={showVideoSelector}
+        onClose={() => setShowVideoSelector(false)}
+        onSelect={(videoUrl) => {
+          if (videoSelectorTarget === 'cover') {
+            setFormData(prev => ({ ...prev, videoCover: videoUrl }))
+          } else {
+            setFormData(prev => ({ ...prev, videoBanner: videoUrl }))
+          }
+        }}
+        currentVideoUrl={videoSelectorTarget === 'cover' ? formData.videoCover : formData.videoBanner}
       />
     </div>
   )
