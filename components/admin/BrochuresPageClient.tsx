@@ -29,7 +29,6 @@ type Brochure = {
   } | null
   _count: {
     pages: number
-    analytics: number
   }
 }
 

@@ -36,8 +36,7 @@ export async function GET(req: NextRequest) {
         },
         _count: {
           select: {
-            pages: true,
-            analytics: true
+            pages: true
           }
         }
       }

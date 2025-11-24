@@ -31,8 +31,7 @@ export async function GET(
         },
         _count: {
           select: {
-            pages: true,
-            analytics: true
+            pages: true
           }
         }
       }
@@ -155,8 +154,7 @@ export async function PUT(
         },
         _count: {
           select: {
-            pages: true,
-            analytics: true
+            pages: true
           }
         }
       }

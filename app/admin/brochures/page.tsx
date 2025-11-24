@@ -35,8 +35,7 @@ async function getBrochures() {
       },
       _count: {
         select: {
-          pages: true,
-          analytics: true
+          pages: true
         }
       }
     }

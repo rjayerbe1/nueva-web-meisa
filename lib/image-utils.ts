@@ -5,14 +5,11 @@ import { CategoriaEnum } from '@prisma/client'
 // Mapeo de categorías para nombres de carpetas
 const CATEGORY_FOLDER_MAP: Record<CategoriaEnum, string> = {
   COMERCIAL: 'comercial',
+  INDUSTRIAL: 'industrial',
+  PUENTES: 'puentes',
+  INFRAESTRUCTURA_URBANA: 'infraestructura-urbana',
   EDIFICACIONES: 'edificaciones',
-  INDUSTRIA: 'industria',
-  PUENTES_VEHICULARES: 'puentes-vehiculares',
-  PUENTES_PEATONALES: 'puentes-peatonales',
-  ESCENARIOS_DEPORTIVOS: 'escenarios-deportivos',
-  CUBIERTAS_Y_FACHADAS: 'cubiertas-y-fachadas',
-  ESTRUCTURAS_MODULARES: 'estructuras-modulares',
-  OTRO: 'otros'
+  DEPORTES_EDUCACION: 'deportes-educacion'
 }
 
 // Convertir título a slug para nombres de carpetas y archivos
