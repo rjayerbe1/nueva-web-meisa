@@ -377,3 +377,234 @@
     animation: gradient-border-pulse 2s ease-in-out infinite;
   }
 }
+
+/* ============================================
+   LAYOUT ESPECIAL PARA MÓVIL LANDSCAPE
+   Solo aplica a móviles pequeños (altura < 500px)
+   NO afecta tablets ni desktop
+   ============================================ */
+@media (orientation: landscape) and (max-width: 1023px) and (max-height: 500px) {
+  .mobile-landscape-layout {
+    flex-direction: row !important;
+  }
+
+  .mobile-landscape-sidebar {
+    width: 35% !important;
+    flex-shrink: 0 !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
+
+  .mobile-landscape-content {
+    width: 65% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
+
+  .mobile-landscape-cards {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .mobile-landscape-card {
+    flex: 1 !important;
+    min-height: 50px !important;
+    width: 100% !important;
+  }
+
+  .mobile-landscape-card h4 {
+    font-size: 1rem !important;
+  }
+
+  /* Tarjeta seleccionada tiene texto más grande */
+  .mobile-landscape-card-active h4 {
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+  }
+
+  /* Ocultar versiones que no aplican en landscape móvil */
+  .hide-on-mobile-landscape {
+    display: none !important;
+  }
+
+  /* Mostrar versión landscape */
+  .show-on-mobile-landscape {
+    display: flex !important;
+  }
+
+  /* Título de categoría más compacto */
+  .mobile-landscape-title {
+    font-size: 2rem !important;
+    line-height: 1 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Reducir gap entre título y tarjetas */
+  .mobile-landscape-header-section {
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* Indicador "Ver Proyectos" súper compacto */
+  .mobile-landscape-scroll-indicator {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0 !important;
+    gap: 0.125rem !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  .mobile-landscape-scroll-indicator span {
+    font-size: 8px !important;
+  }
+
+  .mobile-landscape-scroll-indicator .scroll-wheel {
+    width: 10px !important;
+    height: 16px !important;
+    padding: 1px !important;
+    border-width: 1px !important;
+  }
+
+  .mobile-landscape-scroll-indicator .scroll-dot {
+    width: 2px !important;
+    height: 2px !important;
+  }
+
+  .mobile-landscape-scroll-indicator .scroll-chevron {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  /* Header superior más compacto */
+  .mobile-landscape-header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* Ocultar estadísticas en landscape móvil (pero NO brochure) */
+  .hide-stats-landscape {
+    display: none !important;
+  }
+
+  /* Botones brochure más compactos en landscape */
+  .mobile-landscape-brochure-buttons {
+    display: flex !important;
+    gap: 0.25rem !important;
+  }
+
+  .mobile-landscape-brochure-buttons a,
+  .mobile-landscape-brochure-buttons button {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 9px !important;
+  }
+
+  .mobile-landscape-brochure-buttons svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Texto de descripción más pequeño en landscape */
+  .mobile-landscape-content {
+    font-size: 1rem !important;
+    line-height: 1.3 !important;
+    padding: 0.125rem !important;
+    overflow: hidden !important;
+  }
+
+  .mobile-landscape-content > div {
+    font-size: 1rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .mobile-landscape-content p {
+    font-size: 1rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.125rem !important;
+  }
+
+  /* Sección "Ideal para" más compacta en landscape */
+  .mobile-landscape-content .ideal-para-section {
+    margin-top: 0.25rem !important;
+  }
+
+  .mobile-landscape-content .ideal-para-section h4 {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.125rem !important;
+  }
+
+  .mobile-landscape-content .ideal-para-section .ideal-para-tags {
+    gap: 0.25rem !important;
+  }
+
+  .mobile-landscape-content .ideal-para-section .ideal-para-tag {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Grid de proyectos: 2 columnas en landscape móvil, cada proyecto ocupa 100vh (pantalla completa) */
+  .mobile-landscape-projects-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .mobile-landscape-project-card {
+    height: 100vh !important;
+  }
+
+  /* Texto en tarjetas de proyectos en landscape */
+  .mobile-landscape-project-card h3 {
+    font-family: var(--font-bebas), sans-serif !important;
+    font-size: 2.25rem !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Ubicación - blanco e itálica */
+  .mobile-landscape-project-card p.italic {
+    font-family: var(--font-lato), sans-serif !important;
+    font-size: 0.9rem !important;
+    line-height: 1.2 !important;
+    font-style: italic !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  /* Toneladas - Lato */
+  .mobile-landscape-project-card p.font-light {
+    font-family: var(--font-lato), sans-serif !important;
+    font-size: 1.125rem !important;
+    font-weight: 300 !important;
+    line-height: 1 !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  /* Ver Proyecto y otros spans - Lato */
+  .mobile-landscape-project-card span {
+    font-family: var(--font-lato), sans-serif !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Grid de categorías en /proyectos - 2 columnas en landscape móvil */
+  .mobile-landscape-categories-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .mobile-landscape-category-card {
+    height: 100vh !important;
+  }
+
+  /* Reducir tamaño de iconos en landscape (espacio horizontal limitado) */
+  .mobile-landscape-category-card .category-icon {
+    width: 10rem !important;
+    height: 10rem !important;
+  }
+
+  /* Título más pequeño */
+  .mobile-landscape-category-card h1 {
+    font-size: 3rem !important;
+    min-height: auto !important;
+    margin-bottom: 0.5rem !important;
+  }
+}

@@ -49,13 +49,13 @@ export function EspecialidadesTabs({
   const especialidadActual = especialidadesActivas[activeIndex]
 
   return (
-    <div className="w-full h-full flex flex-col px-0 lg:px-2 gap-2 lg:gap-4">
+    <div className="w-full h-full flex flex-col mobile-landscape-layout px-0 lg:px-2 gap-2 lg:gap-4">
 
       {/* NAVEGACIÓN - TARJETAS */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 mobile-landscape-sidebar">
 
         {/* MÓVIL PORTRAIT: Carrusel horizontal deslizable */}
-        <div className="flex lg:hidden overflow-x-auto gap-3 px-4 py-2 snap-x snap-mandatory scrollbar-hide">
+        <div className="flex lg:hidden hide-on-mobile-landscape overflow-x-auto gap-3 px-4 py-2 snap-x snap-mandatory scrollbar-hide">
           {especialidadesActivas.map((esp, index) => {
             const hueRotation = index * 40
             const gradientStart = `hsl(${210 + hueRotation}, 70%, 35%)`
@@ -90,6 +90,51 @@ export function EspecialidadesTabs({
                         : 'text-white/90 text-xl'
                     }`}
                     style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8)' }}
+                  >
+                    {esp.titulo}
+                  </h4>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* MÓVIL LANDSCAPE: Tarjetas verticales al lado izquierdo */}
+        <div className="hidden show-on-mobile-landscape mobile-landscape-cards">
+          {especialidadesActivas.map((esp, index) => {
+            const hueRotation = index * 40
+            const gradientStart = `hsl(${210 + hueRotation}, 70%, 35%)`
+            const gradientEnd = `hsl(${210 + hueRotation}, 60%, 25%)`
+
+            return (
+              <button
+                key={esp.id}
+                onClick={() => handleEspecialidadChange(index)}
+                className={`mobile-landscape-card group relative overflow-hidden rounded-lg transition-all duration-300 ${
+                  index === activeIndex
+                    ? 'border-2 border-white shadow-xl mobile-landscape-card-active'
+                    : 'border border-white/30 opacity-70'
+                }`}
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: esp.imagen
+                      ? `url(${esp.imagen})`
+                      : `linear-gradient(135deg, ${gradientStart} 0%, ${gradientEnd} 100%)`
+                  }}
+                />
+                <div className={`absolute inset-0 transition-all duration-300 ${
+                  index === activeIndex ? 'bg-black/20' : 'bg-black/50'
+                }`} />
+                <div className="absolute inset-0 flex items-center justify-center px-2">
+                  <h4
+                    className={`font-bebas uppercase text-center leading-tight drop-shadow-lg text-sm ${
+                      index === activeIndex
+                        ? 'text-white font-bold'
+                        : 'text-white/90'
+                    }`}
+                    style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
                   >
                     {esp.titulo}
                   </h4>
@@ -153,7 +198,7 @@ export function EspecialidadesTabs({
       </div>
 
       {/* CONTENIDO - DESCRIPCIÓN */}
-      <div className="flex-1 px-4 py-3 lg:px-6 lg:py-4 overflow-hidden min-h-0">
+      <div className="flex-1 mobile-landscape-content px-4 py-3 lg:px-6 lg:py-4 overflow-hidden min-h-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -176,15 +221,15 @@ export function EspecialidadesTabs({
             </div>
 
             {especialidadActual.proyectosEjemplo && especialidadActual.proyectosEjemplo.length > 0 && (
-              <div className="mt-auto">
+              <div className="mt-auto ideal-para-section">
                 <h4 className="text-xs sm:text-sm font-lato font-semibold text-white/70 uppercase tracking-wide mb-2">
                   Ideal para
                 </h4>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 ideal-para-tags">
                   {especialidadActual.proyectosEjemplo.map((proyecto, idx) => (
                     <div
                       key={idx}
-                      className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-white/10 text-white text-xs sm:text-sm md:text-base font-lato rounded-lg border border-white/20 hover:bg-white/15 transition-all"
+                      className="ideal-para-tag inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-white/10 text-white text-xs sm:text-sm md:text-base font-lato rounded-lg border border-white/20 hover:bg-white/15 transition-all"
                     >
                       <span className="text-blue-400">●</span>
                       {proyecto}

@@ -72,7 +72,7 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: index * 0.1 }}
         viewport={{ once: true, margin: "-50px" }}
-        className="relative h-[50vh] lg:h-[75vh] overflow-hidden"
+        className="relative h-[50vh] lg:h-[75vh] overflow-hidden mobile-landscape-category-card"
       >
         {/* Video o Imagen de fondo con parallax */}
         {(categoria.usarVideoCover && categoria.videoCover) ? (
@@ -156,7 +156,7 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
               color: categoria.color || '#3b82f6'
             }}
           >
-            <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64">
+            <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 category-icon">
               {getCategoryIconComponent(categoria.icono, "w-full h-full")}
             </div>
           </motion.div>
@@ -246,7 +246,7 @@ export default function ProjectCategoriesSection({ onCategorySelect, projectsByC
       {loading ? (
         <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 mobile-landscape-categories-grid">
           {categorias.map((categoria, index) => {
             const projectCount = projectsByCategory[categoria.key]?.length || 0
             return (

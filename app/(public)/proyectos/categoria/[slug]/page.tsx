@@ -329,73 +329,70 @@ export default function CategoryProjectsPage() {
             </motion.nav>
 
             {/* Fila con Título y Extras */}
-            <div className="flex items-end justify-between gap-6 mb-6">
+            <div className="flex items-center gap-3 lg:gap-6 mb-4 lg:mb-6 mobile-landscape-header-section">
               {/* Título principal */}
               <motion.h1
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-5xl sm:text-6xl md:text-7xl font-bebas uppercase text-white leading-none"
+                className="text-5xl sm:text-6xl md:text-7xl font-bebas uppercase text-white leading-none mobile-landscape-title"
               >
                 {categoria.nombre}
               </motion.h1>
 
-              {/* Estadísticas + Brochure en línea */}
-              <div className="flex items-center gap-4">
-                {/* Estadísticas - Compactas */}
-                {categoria.estadisticas && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="flex items-center gap-3"
+              {/* Botones Brochure - Ver y Descargar (pegados al título) */}
+              {brochure && brochure.publicado && brochure.activo && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="flex gap-1.5 lg:gap-2 mobile-landscape-brochure-buttons"
+                >
+                  {/* Ver Brochure */}
+                  <Link
+                    href={`/brochure/${brochure.urlAmigable}`}
+                    className="flex items-center gap-1.5 lg:gap-2 px-2 py-1 lg:px-3 lg:py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300"
                   >
-                    {categoria.estadisticas.toneladasTotal && (
-                      <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
-                        <span className="text-xl font-bebas text-white">{categoria.estadisticas.toneladasTotal.toLocaleString()}</span>
-                        <span className="text-white/70 font-lato text-xs uppercase">Ton</span>
-                      </div>
-                    )}
-                    {categoria.estadisticas.proyectosCompletados && (
-                      <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
-                        <span className="text-xl font-bebas text-white">{categoria.estadisticas.proyectosCompletados}+</span>
-                        <span className="text-white/70 font-lato text-xs uppercase">Proy</span>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
+                    <BookOpen className="w-3 h-3 lg:w-4 lg:h-4" />
+                    <span className="text-[10px] lg:text-xs font-lato font-semibold">Brochure</span>
+                  </Link>
 
-                {/* Botones Brochure - Ver y Descargar */}
-                {brochure && brochure.publicado && brochure.activo && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.5 }}
-                    className="flex gap-2"
+                  {/* Descargar PDF */}
+                  <button
+                    onClick={handleDownloadPDF}
+                    disabled={downloadingPDF}
+                    className="flex items-center gap-1.5 lg:gap-2 px-2 py-1 lg:px-3 lg:py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {/* Ver Brochure */}
-                    <Link
-                      href={`/brochure/${brochure.urlAmigable}`}
-                      className="flex items-center gap-2 px-3 py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300"
-                    >
-                      <BookOpen className="w-4 h-4" />
-                      <span className="text-xs font-lato font-semibold">Ver Brochure</span>
-                    </Link>
+                    <FileBadge className="w-3 h-3 lg:w-4 lg:h-4" />
+                    <span className="text-[10px] lg:text-xs font-lato font-semibold">
+                      {downloadingPDF ? '...' : 'PDF'}
+                    </span>
+                  </button>
+                </motion.div>
+              )}
 
-                    {/* Descargar PDF */}
-                    <button
-                      onClick={handleDownloadPDF}
-                      disabled={downloadingPDF}
-                      className="flex items-center gap-2 px-3 py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <FileBadge className="w-4 h-4" />
-                      <span className="text-xs font-lato font-semibold">
-                        {downloadingPDF ? 'Descargando...' : 'Descargar PDF'}
-                      </span>
-                    </button>
-                  </motion.div>
-                )}
-              </div>
+              {/* Estadísticas - Solo desktop, al final */}
+              {categoria.estadisticas && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="hidden lg:flex items-center gap-3 ml-auto"
+                >
+                  {categoria.estadisticas.toneladasTotal && (
+                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
+                      <span className="text-xl font-bebas text-white">{categoria.estadisticas.toneladasTotal.toLocaleString()}</span>
+                      <span className="text-white/70 font-lato text-xs uppercase">Ton</span>
+                    </div>
+                  )}
+                  {categoria.estadisticas.proyectosCompletados && (
+                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
+                      <span className="text-xl font-bebas text-white">{categoria.estadisticas.proyectosCompletados}+</span>
+                      <span className="text-white/70 font-lato text-xs uppercase">Proy</span>
+                    </div>
+                  )}
+                </motion.div>
+              )}
             </div>
           </div>
 
@@ -420,7 +417,7 @@ export default function CategoryProjectsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 mt-4 mb-2"
+            className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 mt-4 mb-2 mobile-landscape-scroll-indicator"
           >
             <span className="text-white/60 font-lato text-[11px] uppercase tracking-wider">
               Ver Proyectos
@@ -432,7 +429,7 @@ export default function CategoryProjectsPage() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center p-1"
+              className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center p-1 scroll-wheel"
             >
               <motion.div
                 animate={{ opacity: [0.5, 1, 0.5] }}
@@ -441,10 +438,10 @@ export default function CategoryProjectsPage() {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="w-1 h-1 bg-white rounded-full"
+                className="w-1 h-1 bg-white rounded-full scroll-dot"
               />
             </motion.div>
-            <ChevronDown className="w-4 h-4 text-white/40" />
+            <ChevronDown className="w-4 h-4 text-white/40 scroll-chevron" />
           </motion.div>
         </div>
       </section>
@@ -501,7 +498,7 @@ export default function CategoryProjectsPage() {
             <>
               {/* Grid de proyectos con imágenes */}
               {proyectosConImagenesOrdenados.length > 0 && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-0 mobile-landscape-projects-grid">
                   {proyectosConImagenesOrdenados.map((proyecto, index) => {
                     const esDestacado = proyectosDestacadosIds.includes(proyecto.id)
 
@@ -516,7 +513,7 @@ export default function CategoryProjectsPage() {
                           whileInView={{ opacity: 1 }}
                           transition={{ duration: 0.8, delay: index * 0.1 }}
                           viewport={{ once: true, margin: "-50px" }}
-                          className="relative h-[78vh] lg:h-[91vh] overflow-hidden"
+                          className="relative h-[50vh] sm:h-[50vh] lg:h-[91vh] overflow-hidden mobile-landscape-project-card"
                         >
                           {/* Imagen de fondo con hover */}
                           <div className="absolute inset-0">
@@ -524,19 +521,16 @@ export default function CategoryProjectsPage() {
                               src={proyecto.imagenes[0].urlOptimized || proyecto.imagenes[0].url}
                               alt={proyecto.imagenes[0].alt}
                               fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
+                              className="object-cover"
                               sizes="(max-width: 1024px) 100vw, 50vw"
                             />
                           </div>
 
-                        {/* Overlay oscuro */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+                        {/* Overlay sutil */}
+                        <div className="absolute inset-0 bg-black/25" />
 
-                        {/* Overlay hover azul */}
-                        <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-500" />
-
-                        {/* Contenido - Centrado */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center px-8 sm:px-12 lg:px-8 text-center">
+                        {/* Contenido - Centrado verticalmente, alineado a la izquierda */}
+                        <div className="absolute inset-0 flex flex-col items-start justify-center px-8 sm:px-12 lg:px-10 text-left">
 
                           {/* Badge destacado */}
                           {esDestacado && (
@@ -545,50 +539,39 @@ export default function CategoryProjectsPage() {
                               whileInView={{ opacity: 1, scale: 1 }}
                               transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
                               viewport={{ once: true }}
-                              className="mb-6 bg-blue-600/90 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-lato font-bold uppercase tracking-wider border border-white/30"
+                              className="mb-2 bg-blue-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-lato font-bold uppercase tracking-wider border border-white/30"
                             >
-                              ⭐ Proyecto Destacado
+                              Proyecto Destacado
                             </motion.div>
                           )}
 
+                          {/* Ubicación */}
+                          <p className="text-lg sm:text-xl lg:text-lg text-white/90 font-lato italic leading-tight" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
+                            {proyecto.ubicacion}
+                          </p>
+
                           {/* Título del proyecto */}
-                          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight">
+                          <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white leading-none" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                             {proyecto.titulo}
                           </h3>
 
-                          {/* Cliente */}
-                          <p className="text-lg sm:text-xl text-blue-300 font-lato font-semibold mb-6">
-                            {proyecto.cliente}
-                          </p>
-
-                          {/* Información adicional */}
-                          <div className="flex flex-wrap items-center justify-center gap-4 mb-8 text-sm text-white/80 font-lato">
-                            <div className="flex items-center gap-2">
-                              <MapPin className="w-4 h-4" />
-                              <span>{proyecto.ubicacion}</span>
-                            </div>
-                            {proyecto.fechaInicio && (
-                              <>
-                                <span className="text-white/40">•</span>
-                                <div className="flex items-center gap-2">
-                                  <Calendar className="w-4 h-4" />
-                                  <span>{new Date(proyecto.fechaInicio).getFullYear()}</span>
-                                </div>
-                              </>
-                            )}
-                          </div>
+                          {/* Toneladas */}
+                          {proyecto.toneladas && (
+                            <p className="text-2xl sm:text-3xl lg:text-4xl font-lato font-light text-white/80 leading-none mt-1" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
+                              {Math.round(proyecto.toneladas).toLocaleString('es-CO')} TONS
+                            </p>
+                          )}
 
                           {/* Botón Ver proyecto */}
-                          <div className="inline-flex items-center gap-3 group/btn">
-                            <span className="text-white font-lato uppercase tracking-wider text-sm lg:text-base font-semibold">
+                          <div className="inline-flex items-center gap-2 mt-4 group/btn">
+                            <span className="text-white font-lato uppercase tracking-wider text-xs lg:text-sm font-medium" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
                               Ver Proyecto
                             </span>
 
-                            <div className="relative w-10 h-10 lg:w-12 lg:h-12">
-                              <div className="absolute inset-0 rounded-full border-2 border-white/80 group-hover/btn:border-white transition-all duration-300 group-hover/btn:scale-110" />
-                              <div className="absolute inset-0 rounded-full bg-white/0 group-hover/btn:bg-white transition-all duration-300" />
+                            <div className="relative w-8 h-8 lg:w-10 lg:h-10">
+                              <div className="absolute inset-0 rounded-full border-2 border-white group-hover/btn:scale-110 transition-all duration-300" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }} />
                               <div className="absolute inset-0 flex items-center justify-center">
-                                <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover/btn:text-blue-600 transition-all duration-300 transform group-hover/btn:translate-x-1" />
+                                <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 text-white transition-all duration-300 transform group-hover/btn:translate-x-0.5" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }} />
                               </div>
                             </div>
                           </div>
