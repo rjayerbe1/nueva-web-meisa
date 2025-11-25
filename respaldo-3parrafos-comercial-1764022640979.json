@@ -1,0 +1,47 @@
+[
+  {
+    "id": "esp_1764013852971_ytc6xicza",
+    "icono": "Bridge",
+    "orden": 1,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+    "titulo": "Estructuras de Gran Luz",
+    "descripcion": "¿Construye un supermercado, centro comercial o hipermercado? Estas edificaciones requieren **espacios amplios sin columnas** que interrumpan la circulación o limiten cómo distribuye sus locales. La estructura metálica permite cubrir grandes áreas dejando el interior completamente libre.\n\nPuede organizar góndolas, islas promocionales o locales comerciales donde lo necesite. Si después requiere reorganizar el espacio, la estructura lo permite sin obras mayores. **Flexibilidad total** para adaptar su negocio a las tendencias del mercado.",
+    "proyectosEjemplo": [
+      "Centros comerciales",
+      "Supermercados",
+      "Hipermercados"
+    ]
+  },
+  {
+    "id": "esp_1764013852971_jf14pxlhk",
+    "icono": "Building2",
+    "orden": 2,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+    "titulo": "Cubiertas y Fachadas Metálicas",
+    "descripcion": "¿Su centro comercial, tienda o local retail necesita protección y buena imagen? Las cubiertas metálicas le dan **techos durables** que resisten décadas sin filtraciones. Las fachadas metálicas le dan el aspecto moderno que atrae clientes a su negocio.\n\nSe fabrican en taller y se instalan rápido, acortando el tiempo de obra. Puede elegir acabados, colores y texturas que reflejen su marca. Juntas, cubierta y fachada protegen su inversión y **proyectan la imagen** que su negocio necesita.",
+    "proyectosEjemplo": [
+      "Centros comerciales",
+      "Tiendas comerciales",
+      "Edificios comerciales",
+      "Locales retail"
+    ]
+  },
+  {
+    "id": "esp_1764013852971_iyouaxqby",
+    "icono": "Layers3",
+    "orden": 3,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+    "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+    "descripcion": "¿Tiene una bodega comercial, local multinivel o punto de venta donde necesita más espacio? Un entrepiso metálico le permite **crear un nivel adicional** aprovechando la altura que ya tiene, sin ampliar el edificio ni comprar más terreno.\n\nFunciona para salas de cine con múltiples niveles, locales comerciales con mezanine de exhibición, o bodegas que necesitan área de oficinas arriba. Soporta cargas pesadas y se puede **reubicar** si cambia de local.",
+    "proyectosEjemplo": [
+      "Bodegas comerciales",
+      "Entrepisos comerciales",
+      "Locales multinivel",
+      "Salas de cine",
+      "Puntos de venta"
+    ]
+  }
+]

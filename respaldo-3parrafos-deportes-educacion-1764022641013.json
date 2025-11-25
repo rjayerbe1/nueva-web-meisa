@@ -1,0 +1,47 @@
+[
+  {
+    "id": "esp_1764015220989_2rt3ctzc7",
+    "icono": "Trophy",
+    "orden": 1,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+    "titulo": "Coliseos y Canchas Cubiertas",
+    "descripcion": "¿Construye un coliseo deportivo, pabellón, cancha cubierta o arena para eventos? Estos espacios necesitan **cubiertas de gran luz** sin columnas que bloqueen la vista del público o interfieran con el área de juego.\n\nLa estructura permite graderías con visual perfecta desde cualquier ubicación. Soporta iluminación profesional y equipos suspendidos. Diseño antisísmico para **seguridad en eventos masivos**. Ventilación natural que reduce costos de operación permanentemente.",
+    "proyectosEjemplo": [
+      "Coliseos deportivos",
+      "Pabellones deportivos",
+      "Canchas cubiertas",
+      "Arenas"
+    ]
+  },
+  {
+    "id": "esp_1764015220989_r6rp7fqf8",
+    "icono": "Waves",
+    "orden": 2,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?w=800&q=80",
+    "titulo": "Piscinas Cubiertas",
+    "descripcion": "¿Necesita cubrir una piscina olímpica, complejo acuático o natatorio? El ambiente sobre piscinas es agresivo: el cloro genera vapor salino y la condensación constante destruye estructuras normales en pocos años.\n\nUsamos tratamientos especiales que **resisten este ambiente único**. Cubiertas translúcidas aportan luz natural reduciendo consumo eléctrico. La ventilación integrada extrae humedad protegiendo estructura y equipos. Solución durable para un ambiente que exige materiales especializados.",
+    "proyectosEjemplo": [
+      "Piscinas olímpicas",
+      "Complejos acuáticos",
+      "Natatorios",
+      "Piscinas cubiertas"
+    ]
+  },
+  {
+    "id": "esp_1764015220989_tuingilop",
+    "icono": "Lightbulb",
+    "orden": 3,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
+    "titulo": "Torres y Estructuras Auxiliares",
+    "descripcion": "¿Su campo deportivo necesita torres de iluminación o graderías metálicas? Las torres deben resistir vientos fuertes sin vibrar, garantizando **iluminación estable** para entrenamientos y eventos. Las graderías deben soportar cargas de público con seguridad.\n\nIncluyen plataformas de acceso seguro para mantenimiento de luminarias. El galvanizado elimina repintado en altura. Si transmite eventos, los niveles de luz cumplen **normativa para televisión**. Todo diseñado para operación profesional de su instalación deportiva.",
+    "proyectosEjemplo": [
+      "Torres de iluminación",
+      "Campos deportivos",
+      "Cubiertas tensionadas",
+      "Graderías metálicas"
+    ]
+  }
+]

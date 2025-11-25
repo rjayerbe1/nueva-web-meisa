@@ -1,0 +1,521 @@
+{
+  "comercial": {
+    "nombre": "Comercial",
+    "slug": "comercial",
+    "totalProyectos": 57,
+    "especialidades": [
+      {
+        "id": "esp_1764013852971_ytc6xicza",
+        "icono": "Bridge",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+        "titulo": "Estructuras de Gran Luz",
+        "descripcion": "¿Necesita un espacio comercial amplio sin columnas que estorben? Las estructuras metálicas le dan **espacios completamente libres** donde puede distribuir sus locales como quiera. El sistema modular aprovecha cada metro cuadrado para **maximizar su área rentable**.\n\nCuando sus inquilinos cambien o renueven, puede **adaptar el espacio fácilmente** sin tocar la estructura. Ideal para centros comerciales, supermercados o grandes superficies donde necesita flexibilidad total para que su negocio crezca y evolucione con el mercado.",
+        "proyectosEjemplo": [
+          "Centros comerciales",
+          "Supermercados",
+          "Hipermercados"
+        ]
+      },
+      {
+        "id": "esp_1764013852971_jf14pxlhk",
+        "icono": "Building2",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+        "titulo": "Cubiertas y Fachadas Metálicas",
+        "descripcion": "¿Busca proteger su local comercial con cubiertas que duren años? Trabajamos con **sistemas impermeables** de alta duración que combinan protección estructural con **estética moderna** que atrae clientes a su negocio.\n\nLa construcción en acero **reduce sus tiempos de obra** significativamente comparado con métodos tradicionales. Esto significa que puede **abrir más rápido** y empezar a generar ingresos antes. Perfecto para retail, locales comerciales y edificios donde la imagen y velocidad son críticas.",
+        "proyectosEjemplo": [
+          "Centros comerciales",
+          "Tiendas comerciales",
+          "Edificios comerciales",
+          "Locales retail"
+        ]
+      },
+      {
+        "id": "esp_1764013852971_iyouaxqby",
+        "icono": "Layers3",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+        "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+        "descripcion": "¿Quiere duplicar su espacio sin ampliar el edificio? Con entrepisos metálicos puede crear **dos o más niveles** donde antes tenía uno solo. Sistema desmontable que le permite **reconfigurar completamente** si cambia el uso de su espacio.\n\n**Maximice la rentabilidad** de su inmueble creando área adicional para almacenamiento o venta sin gastar en expansión horizontal. Soporta cargas pesadas de inventario y tránsito de público. Ideal para retail, bodegas y puntos de venta donde cada metro cuadrado cuenta.",
+        "proyectosEjemplo": [
+          "Bodegas comerciales",
+          "Entrepisos comerciales",
+          "Locales multinivel",
+          "Salas de cine",
+          "Puntos de venta"
+        ]
+      }
+    ],
+    "proyectosEjemplo": [
+      {
+        "titulo": "Dollar City - Mazuren",
+        "ubicacion": "Bogotá, Bogotá D.C."
+      },
+      {
+        "titulo": "Dollar City - La María",
+        "ubicacion": "Popayan-Cauca, Cauca"
+      },
+      {
+        "titulo": "Dollar City - Alfaguara",
+        "ubicacion": "Jamundi - Valle del Cauca, Valle del Cauca"
+      },
+      {
+        "titulo": "Construandes - Galería CC Llanogrande",
+        "ubicacion": "Palmira - Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Astrelec - Locales Natura Park",
+        "ubicacion": "Jamundi-Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Constructora Normandia - CC Bochalema Plaza",
+        "ubicacion": "Cali-Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Estructura metálica para la Cinemateca Distrital en Bogotá",
+        "ubicacion": "Bogotá, Cundinamarca"
+      },
+      {
+        "titulo": "Ménsula Ingenieros - CC Paseo Villa del Río",
+        "ubicacion": "Bogotá, Bogotá D.C."
+      },
+      {
+        "titulo": "Construcciones Adriana Rivera - CC Monserrat",
+        "ubicacion": "Popayán-Cauca, Cauca"
+      },
+      {
+        "titulo": "J.M. Rodriguez - Mezanine Alberto VO5 Neiva",
+        "ubicacion": "Neiva"
+      }
+    ]
+  },
+  "industrial": {
+    "nombre": "Industrial",
+    "slug": "industrial",
+    "totalProyectos": 70,
+    "especialidades": [
+      {
+        "id": "esp_1764015191932_j1scwxiax",
+        "icono": "Warehouse",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80",
+        "titulo": "Naves Industriales de Gran Luz",
+        "descripcion": "¿Necesita una bodega grande sin columnas que interrumpan sus operaciones? Construimos naves industriales con **espacios completamente libres** para que mueva montacargas y equipos sin obstáculos. Alturas generosas le permiten usar **almacenamiento vertical** con racks de múltiples niveles.\n\nEl sistema modular permite **expandir su bodega** agregando crujías cuando crezca, sin tocar lo existente ni parar operaciones. La **construcción prefabricada** reduce drásticamente los tiempos. Perfecto cuando necesita grandes espacios abiertos para logística y almacenamiento eficiente.",
+        "proyectosEjemplo": [
+          "Bodegas industriales",
+          "Centros de distribución",
+          "Hangares",
+          "Almacenes"
+        ]
+      },
+      {
+        "id": "esp_1764015191932_v5ene1yyt",
+        "icono": "Factory",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1586864387634-daa74dca8f6e?w=800&q=80",
+        "titulo": "Edificios Industriales de Múltiples Niveles",
+        "descripcion": "¿Su proceso productivo necesita varios pisos? Diseñamos edificios industriales que alojan **procesos complejos en vertical**. Los entrepisos metálicos soportan maquinaria pesada **sin transmitir vibraciones** entre niveles, protegiendo sus procesos sensibles.\n\nLa estructura resiste **ambientes agresivos** por vapores químicos o humedad constante. Si necesita crecer, puede **expandir sin parar producción** durante la construcción. Ideal cuando su industria opera continuamente y no puede permitirse interrupciones mientras crece.",
+        "proyectosEjemplo": [
+          "Plantas farmacéuticas",
+          "Ingenios azucareros",
+          "Edificios de producción",
+          "Plantas industriales"
+        ]
+      },
+      {
+        "id": "esp_1764015191932_rnimp72r2",
+        "icono": "Snowflake",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+        "titulo": "Estructuras Especializadas de Alta Resistencia",
+        "descripcion": "¿Opera en condiciones extremas? Diseñamos estructuras para **ambientes exigentes** como cuartos fríos industriales, atmósferas corrosivas y vibraciones de maquinaria pesada. Las cerchas optimizadas minimizan puentes térmicos **reduciendo su consumo energético**.\n\nUsamos acero con **recubrimientos especiales** que resisten condensación permanente y químicos agresivos. Cada estructura la diseñamos específicamente para los requerimientos únicos de su proceso, garantizando que dure décadas en las condiciones más difíciles.",
+        "proyectosEjemplo": [
+          "Cuartos fríos",
+          "Cámaras de refrigeración",
+          "Plantas de proceso",
+          "Estructuras anticorrosivas"
+        ]
+      }
+    ],
+    "proyectosEjemplo": [
+      {
+        "titulo": "Tecnosur - Módulo 8 Villa Rica",
+        "ubicacion": "Villa Rica-Cauca, Cauca"
+      },
+      {
+        "titulo": "Construandes - Hangar Aeropuerto",
+        "ubicacion": "Palmira - Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Pollo Listo - Cuarto Frío",
+        "ubicacion": "Villa Gorgona - Valle del Cauca, Valle del Cauca"
+      },
+      {
+        "titulo": "Ampliacion Cargill",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Bodega Duplex",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Bodega Intera",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Tecnofar",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Torre Cogeneracion Propal",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Bodega Protecnica Etapa II",
+        "ubicacion": "Yumbo, Valle"
+      },
+      {
+        "titulo": "Tanques de Almacenamiento GLP",
+        "ubicacion": "Pitalito, Huila"
+      }
+    ]
+  },
+  "puentes": {
+    "nombre": "Puentes",
+    "slug": "puentes",
+    "totalProyectos": 59,
+    "especialidades": [
+      {
+        "id": "esp_1764017208450_b6j5z5m27",
+        "icono": "Bridge",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://storage.googleapis.com/meisa-imagenes/categories/1764019518771-dl7018.jpg",
+        "titulo": "Puentes de Vigas y Cerchas",
+        "descripcion": "¿Necesita un puente vehicular o peatonal que salve luces importantes? Trabajamos con vigas cajón y cerchas metálicas que **fabricamos completamente en taller** con control de calidad estricto, garantizando precisión en cada conexión.\n\nPodemos montar su puente por dovelas o con **lanzamiento incremental** usando nariz metálica y gatos hidráulicos según su proyecto. Todo **diseñado para resistir sismos** según NSR-10, con sistemas de protección que duran décadas. Ideal cuando necesita cruzar ríos, vías o quebradas con cargas importantes.",
+        "proyectosEjemplo": [
+          "Puentes vehiculares",
+          "Viaductos",
+          "Ciclopuentes",
+          "Puentes peatonales"
+        ]
+      },
+      {
+        "id": "esp_1764017208450_h29jfvp1t",
+        "icono": "Arc",
+        "orden": 2,
+        "activo": true,
+        "imagen": "",
+        "titulo": "Puentes en Arco Metálico",
+        "descripcion": "¿Tiene restricciones de altura pero necesita salvar una luz considerable? Los puentes en arco aprovechan la compresión del acero para resolver este desafío técnico. El arco transfiere cargas lateralmente hacia los estribos, optimizando la **eficiencia estructural**.\n\nPrefabricamos las dovelas de arco en módulos que montamos **progresivamente** desde los extremos hacia el centro. El diseño crea un **elemento visual distintivo** que se integra con el entorno. Perfecto cuando la topografía limita la altura disponible para su puente.",
+        "proyectosEjemplo": [
+          "Puentes en arco",
+          "Viaductos urbanos",
+          "Puentes emblemáticos"
+        ]
+      },
+      {
+        "id": "esp_1764017208450_em7fmu5wh",
+        "icono": "Users",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&q=80",
+        "titulo": "Puentes Peatonales",
+        "descripcion": "¿Necesita conectar comunidades rápidamente sin cerrar vías? Los puentes peatonales livianos permiten **instalación en horas** en lugar de semanas. Por su poco peso, podemos hacer **montaje nocturno** o en fines de semana, manteniendo el tráfico diurno normal.\n\nLos sistemas prefabricados se transportan completos y ensamblan rápidamente. El acabado **galvanizado en caliente** elimina mantenimiento en zonas de difícil acceso. Incluye **rampas accesibles** según normativa universal, conectando comunidades de forma rápida y económica donde el acceso tradicional sería muy costoso o lento.",
+        "proyectosEjemplo": [
+          "Puentes peatonales",
+          "Pasarelas urbanas",
+          "Puentes colgantes",
+          "Puentes comunitarios"
+        ]
+      }
+    ],
+    "proyectosEjemplo": [
+      {
+        "titulo": "Puente Vehicular Nolasco",
+        "ubicacion": "Nátaga, Huila"
+      },
+      {
+        "titulo": "Puente Vehicular Carrera 100",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      {
+        "titulo": "La 63 Cali",
+        "ubicacion": "Cali"
+      },
+      {
+        "titulo": "Puente Peatonal Autopista Sur - Carrera 68",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      {
+        "titulo": "Puente Peatonal La Tertulia",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      {
+        "titulo": "Puente Peatonal Terminal Intermedio",
+        "ubicacion": "Cali, Valle del Cauca"
+      },
+      {
+        "titulo": "Consorcio Islas - Puente Vehicular Cra 100",
+        "ubicacion": "Cali-Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Orlando Revelo - Puente Vehicular Río Negro",
+        "ubicacion": "Inzá-Cauca, Cauca"
+      },
+      {
+        "titulo": "Consorcio Cambrin - Puente Vehicular Cambrín",
+        "ubicacion": "Rio Blanco-Tolima, Tolima"
+      },
+      {
+        "titulo": "Puente Vehicular La 21",
+        "ubicacion": "Cali, Valle del Cauca"
+      }
+    ]
+  },
+  "infraestructura-urbana": {
+    "nombre": "Infraestructura Urbana",
+    "slug": "infraestructura-urbana",
+    "totalProyectos": 0,
+    "especialidades": [
+      {
+        "id": "esp_1764007451251_qh020tuv9",
+        "icono": "Bike",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Ciclopuentes y Pasarelas Peatonales",
+        "descripcion": "Puentes metálicos ligeros que separan el tráfico vulnerable (peatones y ciclistas) del tráfico vehicular, mejorando la seguridad vial urbana. MEISA diseña estructuras con luces de 30 a 60 metros que cruzan avenidas de alto flujo sin interrumpir la circulación vehicular con semáforos. Rampas accesibles con pendiente máxima 8% permiten ascenso cómodo para bicicletas, coches de bebé, sillas de ruedas y personas mayores. La estructura prefabricada permite instalación nocturna sin afectar el tráfico diurno: fabricación en taller, transporte en módulos y montaje en pocas horas. Acabado arquitectónico con barandas transparentes e iluminación LED integrada crea hito urbano visible que promueve el uso del sistema.",
+        "proyectosEjemplo": [
+          "Ciclopuentes",
+          "Pasarelas peatonales",
+          "Conexiones urbanas"
+        ]
+      },
+      {
+        "id": "esp_1764007451251_bw4z21m2h",
+        "icono": "Train",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&q=80",
+        "titulo": "Estaciones de Transporte Masivo",
+        "descripcion": "Estructuras metálicas que configuran estaciones de sistemas BRT (Bus Rapid Transit) o metro elevado, definiendo espacios urbanos funcionales. MEISA diseña cubiertas metálicas ligeras con grandes voladizos que protegen usuarios de lluvia y sol sin obstruir visuales urbanas. Columnas esbeltas de acero minimizan la ocupación de andenes permitiendo flujo peatonal óptimo. La modulación estructural permite replicar el diseño en múltiples estaciones de la red con economías de escala en fabricación. Entrepisos metálicos en estaciones elevadas soportan el tránsito constante de miles de usuarios diarios sin vibraciones molestas. Acabados durables resisten vandalismo y requieren mínimo mantenimiento. Techos translúcidos aportan iluminación natural reduciendo consumo energético.",
+        "proyectosEjemplo": [
+          "Estaciones Transmilenio",
+          "Estaciones BRT",
+          "Paraderos"
+        ]
+      },
+      {
+        "id": "esp_1764007451251_st6ap2o8o",
+        "icono": "Bus",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80",
+        "titulo": "Terminales de Transporte Intermunicipal",
+        "descripcion": "Edificios metálicos de gran escala que concentran operaciones de transporte terrestre de pasajeros con altos estándares de funcionalidad. MEISA diseña cubiertas de gran luz sin columnas en zonas de muelles de abordaje, permitiendo maniobras de buses sin obstrucciones. Estructuras modulares facilitan expansión futura de muelles conforme crece la demanda de transporte. Entrepisos metálicos para oficinas administrativas, locales comerciales y salas de espera se integran estructuralmente con la cubierta principal. Canaletas y bajantes dimensionadas para evacuación de aguas lluvias de cubiertas extensas. Iluminación natural cenital mediante lucernarios reduce consumo energético en operación 24/7. Estructura diseñada para soportar instalaciones de señalización y sistemas de información al usuario.",
+        "proyectosEjemplo": [
+          "Terminales de transporte",
+          "Centrales de buses",
+          "Terminales intermunicipales"
+        ]
+      }
+    ],
+    "proyectosEjemplo": []
+  },
+  "edificaciones": {
+    "nombre": "Edificaciones",
+    "slug": "edificaciones",
+    "totalProyectos": 67,
+    "especialidades": [
+      {
+        "id": "esp_1764015210449_f641ck2jb",
+        "icono": "Building",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+        "titulo": "Pórticos Metálicos de Múltiples Niveles",
+        "descripcion": "¿Necesita un edificio de varios pisos con espacios flexibles? Los sistemas de pórticos metálicos le dan **plantas completamente libres** sin muros de carga. Puede distribuir el interior como quiera según sus necesidades actuales y futuras.\n\nLas losas colaborantes integradas con vigas **reducen tiempos de construcción** comparado con sistemas tradicionales. Las fachadas livianas se cuelgan de la estructura permitiendo grandes áreas vidriadas. Todo **diseñado para resistir sismos** según NSR-10 para seguridad garantizada.",
+        "proyectosEjemplo": [
+          "Edificios de oficinas",
+          "Sedes administrativas",
+          "Edificios gubernamentales",
+          "Museos",
+          "Teatros"
+        ]
+      },
+      {
+        "id": "esp_1764015210449_k4rxp6apf",
+        "icono": "Car",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&q=80",
+        "titulo": "Estructuras Metálicas para Estacionamiento",
+        "descripcion": "¿Necesita más cajones de parqueo pero tiene poco terreno? Las estructuras metálicas le permiten **apilar vehículos en vertical**, resolviendo la escasez de área en proyectos urbanos. La modulación optimiza el número de cajones por metro cuadrado construido.\n\nLa **ventilación natural** mediante fachadas abiertas elimina sistemas mecánicos de extracción, reduciendo sus costos operativos permanentemente. Construimos más rápido que con concreto, lo que significa que puede **generar ingresos por estacionamiento antes** en el cronograma de su proyecto.",
+        "proyectosEjemplo": [
+          "Parqueaderos multinivel",
+          "Estacionamientos",
+          "Edificios de parqueo"
+        ]
+      },
+      {
+        "id": "esp_1764015210449_lo0a23zot",
+        "icono": "Layers3",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+        "titulo": "Estructuras Livianas Modulares",
+        "descripcion": "¿Necesita ampliar su edificio sin parar operaciones? Las estructuras modulares prefabricadas permiten **construcción ultrarrápida** de ampliaciones o edificios completos. Fabricamos en taller mientras preparan cimentación, acelerando drásticamente el cronograma.\n\nLa ligereza del acero minimiza cargas sobre **cimentaciones existentes**, permitiendo ampliaciones sin reforzar bases. Podemos hacer **montaje nocturno** o en fines de semana para que opere normalmente durante el día. Perfecto cuando no puede interrumpir sus actividades durante la ampliación.",
+        "proyectosEjemplo": [
+          "Colegios",
+          "Estructuras educativas",
+          "Ampliaciones verticales",
+          "Expansiones laterales"
+        ]
+      }
+    ],
+    "proyectosEjemplo": [
+      {
+        "titulo": "Bomberos Popayan",
+        "ubicacion": "Popayan"
+      },
+      {
+        "titulo": "Clinica Reina Victoria",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Cimentación, estructura metálica y cubiertas ampliación en Popayán, Cauca",
+        "ubicacion": "Popayán, Cauca"
+      },
+      {
+        "titulo": "Bomberos Popayán - Edificio Administrativo",
+        "ubicacion": "Popayán-Cauca, Cauca"
+      },
+      {
+        "titulo": "Propal - Torre Cogeneración",
+        "ubicacion": "Yumbo-Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Cargill - Ampliación Cubierta",
+        "ubicacion": "Villa Rica-Cauca, Cauca"
+      },
+      {
+        "titulo": "Omega - Edificio Nueva Sede",
+        "ubicacion": "Cali-Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Construcción de obra civil, estructura metálica y cubierta",
+        "ubicacion": "Cali, Valle"
+      },
+      {
+        "titulo": "Estructura Metálica y Cubierta en Neiva",
+        "ubicacion": "Neiva, Huila"
+      },
+      {
+        "titulo": "Tequendama Parking Cali",
+        "ubicacion": "Cali"
+      }
+    ]
+  },
+  "deportes-educacion": {
+    "nombre": "Deportes & Educación",
+    "slug": "deportes-educacion",
+    "totalProyectos": 32,
+    "especialidades": [
+      {
+        "id": "esp_1764015220989_2rt3ctzc7",
+        "icono": "Trophy",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+        "titulo": "Coliseos y Canchas Cubiertas",
+        "descripcion": "¿Necesita un coliseo o cancha cubierta con visuales óptimas? Diseñamos **cubiertas de gran luz** sin columnas para que las graderías tengan vista perfecta. Todo **diseñado para resistir sismos** garantizando seguridad en eventos masivos según normativa de federaciones internacionales.\n\nLas plataformas integradas soportan **iluminación profesional** deportiva sin interferir con el juego. La ventilación natural reduce costos operativos permanentemente. El diseño permite múltiples disciplinas deportivas en un solo recinto, maximizando la utilización del espacio durante todo el año.",
+        "proyectosEjemplo": [
+          "Coliseos deportivos",
+          "Pabellones deportivos",
+          "Canchas cubiertas",
+          "Arenas"
+        ]
+      },
+      {
+        "id": "esp_1764015220989_r6rp7fqf8",
+        "icono": "Waves",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?w=800&q=80",
+        "titulo": "Piscinas Cubiertas",
+        "descripcion": "¿Necesita cubrir una piscina olímpica o recreativa? Trabajamos con estructuras especiales para **ambientes de alta humedad**. El **galvanizado en caliente** más pintura epóxica especial protegen contra el ambiente salino del cloro y condensación constante.\n\nLas cubiertas translúcidas aportan **iluminación natural** reduciendo su consumo eléctrico. La ventilación integrada extrae aire húmedo evitando condensación destructiva en estructura y equipos. Capacidad para soportar marcadores electrónicos y sistemas de climatización suspendidos que necesite.",
+        "proyectosEjemplo": [
+          "Piscinas olímpicas",
+          "Complejos acuáticos",
+          "Natatorios",
+          "Piscinas cubiertas"
+        ]
+      },
+      {
+        "id": "esp_1764015220989_tuingilop",
+        "icono": "Lightbulb",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
+        "titulo": "Torres y Estructuras Auxiliares",
+        "descripcion": "¿Necesita torres de iluminación para su escenario deportivo? Las diseñamos para resistir **vientos extremos** sin vibrar mediante análisis dinámico riguroso. Las plataformas de mantenimiento en la cima permiten **acceso seguro** para cambiar luminarias y ajustar equipos.\n\nEl acabado galvanizado elimina **mantenimiento de pintura en altura**, reduciendo sus costos a largo plazo. Incluye **graderías metálicas** de alta capacidad integradas estructuralmente. Los niveles de iluminación cumplen **normativa para transmisión televisiva** de eventos deportivos profesionales.",
+        "proyectosEjemplo": [
+          "Torres de iluminación",
+          "Campos deportivos",
+          "Cubiertas tensionadas",
+          "Graderías metálicas"
+        ]
+      }
+    ],
+    "proyectosEjemplo": [
+      {
+        "titulo": "Cancha Javeriana Cali",
+        "ubicacion": "Cali"
+      },
+      {
+        "titulo": "Cecun",
+        "ubicacion": "No especificada"
+      },
+      {
+        "titulo": "Complejo Acuático Popayán",
+        "ubicacion": "Popayán, Cauca"
+      },
+      {
+        "titulo": "Coliseo Mayor Juegos Nacionales 2012",
+        "ubicacion": "Popayán, Cauca"
+      },
+      {
+        "titulo": "Consorcio GAMJ - Coliseo Menor Pereira",
+        "ubicacion": "Pereira, Risaralda"
+      },
+      {
+        "titulo": "UT Pereira - Complejo Acuático",
+        "ubicacion": "Pereira, Risaralda"
+      },
+      {
+        "titulo": "Pontificia Javeriana - Cancha Múltiple Etapa 2",
+        "ubicacion": "Cali-Valle, Valle del Cauca"
+      },
+      {
+        "titulo": "Consorcio APV - Colegio Chiriqui Valledupar",
+        "ubicacion": "Valledupar"
+      },
+      {
+        "titulo": "Consorcio APV - Colegio Chiriquí Valledupar",
+        "ubicacion": "Valledupar"
+      },
+      {
+        "titulo": "Maja - Coliseo Mundialista Korfball",
+        "ubicacion": "Cali"
+      }
+    ]
+  }
+}

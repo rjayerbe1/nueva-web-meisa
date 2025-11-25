@@ -1,0 +1,44 @@
+[
+  {
+    "id": "esp_1764007451251_qh020tuv9",
+    "icono": "Bike",
+    "orden": 1,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    "titulo": "Ciclopuentes y Pasarelas Peatonales",
+    "descripcion": "¿Su proyecto urbano necesita separar ciclistas y peatones del tráfico?\n\nLos ciclopuentes y pasarelas son estructuras livianas que **cruzan avenidas de forma segura**, conectando barrios, parques o estaciones de transporte. Se instalan rápido sin cerrar vías por mucho tiempo.\n\nIncluyen rampas accesibles y pueden tener cubiertas para proteger de lluvia y sol. Ideales para **movilidad sostenible** en ciudades que priorizan ciclistas y peatones.",
+    "proyectosEjemplo": [
+      "Ciclopuentes",
+      "Pasarelas peatonales",
+      "Conexiones urbanas"
+    ]
+  },
+  {
+    "id": "esp_1764007451251_bw4z21m2h",
+    "icono": "Train",
+    "orden": 2,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&q=80",
+    "titulo": "Estaciones de Transporte Masivo",
+    "descripcion": "¿Construye estaciones para Transmilenio, BRT o metro elevado?\n\nEstas estructuras deben ser **funcionales, seguras y resistir uso intensivo** de miles de usuarios diarios. La estructura metálica permite cubiertas amplias y plataformas elevadas con tiempos de construcción reducidos.\n\nSoportan torniquetes, sistemas de información y equipos de recaudo. Fabricamos en taller y montamos de noche para **no afectar la operación** del sistema de transporte.",
+    "proyectosEjemplo": [
+      "Estaciones Transmilenio",
+      "Estaciones BRT",
+      "Paraderos"
+    ]
+  },
+  {
+    "id": "esp_1764007451251_st6ap2o8o",
+    "icono": "Bus",
+    "orden": 3,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80",
+    "titulo": "Terminales de Transporte Intermunicipal",
+    "descripcion": "¿Necesita una terminal de transporte o central de buses?\n\nEstos edificios de gran escala concentran operaciones de transporte terrestre, requiriendo **espacios amplios para buses, taquillas y zonas de espera** de pasajeros. Deben manejar flujos masivos de personas.\n\nLa estructura metálica permite cubrir grandes áreas sin columnas que obstaculicen circulación. **Construcción más rápida** que en concreto para poner en operación antes su terminal.",
+    "proyectosEjemplo": [
+      "Terminales de transporte",
+      "Centrales de buses",
+      "Terminales intermunicipales"
+    ]
+  }
+]

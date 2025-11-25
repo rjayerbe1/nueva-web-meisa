@@ -59,7 +59,6 @@ model Proyecto {
   titulo               String
   codigoInterno        String?
   descripcion          String
-  categoria            CategoriaEnum        @default(COMERCIAL)
   estado               EstadoProyecto       @default(PLANIFICACION)
   prioridad            PrioridadEnum        @default(MEDIA)
   fechaInicio          DateTime
@@ -88,6 +87,7 @@ model Proyecto {
   areaTotal            Decimal?             @db.Decimal(15, 2)
   toneladas            Decimal?             @db.Decimal(10, 2)
   clienteId            String?
+  categoria            CategoriaEnum        @default(COMERCIAL)
   comentarios          ComentarioProyecto[]
   documentos           DocumentoProyecto[]
   historia             HistoriaProyecto?
@@ -304,7 +304,6 @@ model SeccionPagina {
 
 model CategoriaProyecto {
   id                  String        @id @default(cuid())
-  key                 CategoriaEnum @unique
   nombre              String
   descripcion         String?
   slug                String        @unique
@@ -325,7 +324,6 @@ model CategoriaProyecto {
   hoverOverlayColor   String?       @default("#1e40af")
   hoverOverlayOpacity Float?        @default(0.2)
   enableHoverOverlay  Boolean       @default(true)
-  beneficios          Json?
   descripcionAmpliada String?
   estadisticas        Json?
   procesoTrabajo      Json?
@@ -339,6 +337,8 @@ model CategoriaProyecto {
   videoBannerScale    Float?        @default(1.0)
   videoCoverPosition  String?       @default("center center")
   videoCoverScale     Float?        @default(1.0)
+  key                 CategoriaEnum @unique
+  especialidades      Json?
   brochure            Brochure?
 
   @@map("categorias_proyecto")
@@ -401,7 +401,6 @@ model ProyectoHojaVida {
   departamento          String?
   valorContrato         Decimal       @db.Decimal(15, 2)
   moneda                String        @default("COP")
-  categoria             CategoriaEnum @default(INDUSTRIAL)
   imagenes              Json?
   destacado             Boolean       @default(false)
   visible               Boolean       @default(true)
@@ -409,6 +408,7 @@ model ProyectoHojaVida {
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
   proyectoDetalladoId   String?       @unique
+  categoria             CategoriaEnum @default(INDUSTRIAL)
   proyectoDetallado     Proyecto?     @relation(fields: [proyectoDetalladoId], references: [id])
 
   @@map("proyectos_hoja_vida")
@@ -445,7 +445,6 @@ model BrochureTemplate {
   nombre            String
   descripcion       String?
   thumbnail         String?
-  tipoCategoria     CategoriaEnum?
   estructura        Json
   componentsLibrary Json
   estilosGlobales   Json?
@@ -454,6 +453,7 @@ model BrochureTemplate {
   createdBy         String
   createdAt         DateTime               @default(now())
   updatedAt         DateTime               @updatedAt
+  tipoCategoria     CategoriaEnum?
   pages             BrochureTemplatePage[]
   brochures         Brochure[]
 

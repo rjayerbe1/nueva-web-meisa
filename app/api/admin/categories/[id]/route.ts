@@ -117,6 +117,9 @@ export async function PUT(
     if (data.colorSecundario !== undefined) updateData.colorSecundario = data.colorSecundario
     if (data.overlayColor !== undefined) updateData.overlayColor = data.overlayColor
     if (data.overlayOpacity !== undefined) updateData.overlayOpacity = data.overlayOpacity
+    if (data.hoverOverlayColor !== undefined) updateData.hoverOverlayColor = data.hoverOverlayColor
+    if (data.hoverOverlayOpacity !== undefined) updateData.hoverOverlayOpacity = data.hoverOverlayOpacity
+    if (data.enableHoverOverlay !== undefined) updateData.enableHoverOverlay = data.enableHoverOverlay
     if (data.metaTitle !== undefined) updateData.metaTitle = data.metaTitle
     if (data.metaDescription !== undefined) updateData.metaDescription = data.metaDescription
     if (data.orden !== undefined) updateData.orden = data.orden
@@ -125,10 +128,10 @@ export async function PUT(
     
     // Handle new enhanced content fields
     if (data.descripcionAmpliada !== undefined) updateData.descripcionAmpliada = data.descripcionAmpliada
-    if (data.beneficios !== undefined) updateData.beneficios = data.beneficios
     if (data.procesoTrabajo !== undefined) updateData.procesoTrabajo = data.procesoTrabajo
     if (data.estadisticas !== undefined) updateData.estadisticas = data.estadisticas
     if (data.casosExitoIds !== undefined) updateData.casosExitoIds = data.casosExitoIds
+    if (data.especialidades !== undefined) updateData.especialidades = data.especialidades
 
     console.log('Update object:', updateData) // Debug log
     

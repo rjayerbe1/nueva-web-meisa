@@ -1,0 +1,50 @@
+{
+  "nombre": "Edificaciones",
+  "especialidades": [
+    {
+      "id": "esp_1764015210449_f641ck2jb",
+      "icono": "Building",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Pórticos Metálicos de Múltiples Niveles",
+      "descripcion": "¿Necesita un edificio de varios pisos con espacios flexibles? Los sistemas de pórticos metálicos le dan **plantas completamente libres** sin muros de carga. Puede distribuir el interior como quiera según sus necesidades actuales y futuras.\n\nLas losas colaborantes integradas con vigas **reducen tiempos de construcción** comparado con sistemas tradicionales. Las fachadas livianas se cuelgan de la estructura permitiendo grandes áreas vidriadas. Todo **diseñado para resistir sismos** según NSR-10 para seguridad garantizada.",
+      "proyectosEjemplo": [
+        "Edificios de oficinas",
+        "Sedes administrativas",
+        "Edificios gubernamentales",
+        "Museos",
+        "Teatros"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_k4rxp6apf",
+      "icono": "Car",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&q=80",
+      "titulo": "Estructuras Metálicas para Estacionamiento",
+      "descripcion": "¿Necesita más cajones de parqueo pero tiene poco terreno? Las estructuras metálicas le permiten **apilar vehículos en vertical**, resolviendo la escasez de área en proyectos urbanos. La modulación optimiza el número de cajones por metro cuadrado construido.\n\nLa **ventilación natural** mediante fachadas abiertas elimina sistemas mecánicos de extracción, reduciendo sus costos operativos permanentemente. Construimos más rápido que con concreto, lo que significa que puede **generar ingresos por estacionamiento antes** en el cronograma de su proyecto.",
+      "proyectosEjemplo": [
+        "Parqueaderos multinivel",
+        "Estacionamientos",
+        "Edificios de parqueo"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_lo0a23zot",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+      "titulo": "Estructuras Livianas Modulares",
+      "descripcion": "¿Necesita ampliar su edificio sin parar operaciones? Las estructuras modulares prefabricadas permiten **construcción ultrarrápida** de ampliaciones o edificios completos. Fabricamos en taller mientras preparan cimentación, acelerando drásticamente el cronograma.\n\nLa ligereza del acero minimiza cargas sobre **cimentaciones existentes**, permitiendo ampliaciones sin reforzar bases. Podemos hacer **montaje nocturno** o en fines de semana para que opere normalmente durante el día. Perfecto cuando no puede interrumpir sus actividades durante la ampliación.",
+      "proyectosEjemplo": [
+        "Colegios",
+        "Estructuras educativas",
+        "Ampliaciones verticales",
+        "Expansiones laterales"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "nombre": "Industrial",
+  "especialidades": [
+    {
+      "id": "esp_1764007374002_x745uhpka",
+      "icono": "Warehouse",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80",
+      "titulo": "Bodegas de Gran Escala",
+      "descripcion": "Naves industriales de acero que maximizan el volumen almacenable con mínimas columnas internas. MEISA diseña estructuras modulares con luces hasta 25 metros entre pórticos, permitiendo distribución flexible de racks y zonas de maniobra para montacargas. El sistema de cerchas metálicas soporta cubiertas livianas mientras alturas hasta 12 metros optimizan el almacenamiento vertical por apilamiento. La fabricación en serie reduce costos por metro cuadrado comparado con construcción tradicional. La estructura pre-ingeniería permite expansiones futuras agregando crujías adicionales sin modificar lo existente. Cimentaciones diseñadas específicamente para suelos blandos mediante zapatas aisladas o vigas de amarre según estudio geotécnico.",
+      "proyectosEjemplo": [
+        "Bodegas industriales",
+        "Centros de distribución",
+        "Almacenes"
+      ]
+    },
+    {
+      "id": "esp_1764007374002_cynd1tgme",
+      "icono": "FlaskConical",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80",
+      "titulo": "Plantas Farmacéuticas",
+      "descripcion": "Estructuras metálicas para la industria farmacéutica que cumplen con normativa sanitaria estricta nacional e internacional. MEISA diseña edificios con entrepisos técnicos que alojan ductos de HVAC, tuberías de proceso y bandejas eléctricas sin comprometer la altura libre de las áreas de producción. Las vigas perimetrales soportan sistemas de aire acondicionado industrial manteniendo temperatura controlada de 20°C ±2°C y humedad relativa estable. La modulación estructural permite expansión de áreas limpias sin contaminar la producción existente durante la construcción. Acero con recubrimientos epóxicos resiste la limpieza diaria con químicos agresivos. Los entrepisos metálicos soportan maquinaria de producción sin transmitir vibraciones entre niveles.",
+      "proyectosEjemplo": [
+        "Plantas farmacéuticas",
+        "Edificios de producción",
+        "Áreas limpias"
+      ]
+    },
+    {
+      "id": "esp_1764007374002_afyucwqzt",
+      "icono": "Factory",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1586864387634-daa74dca8f6e?w=800&q=80",
+      "titulo": "Ingenios Azucareros",
+      "descripcion": "Estructuras metálicas pesadas para industria azucarera que soportan maquinaria de proceso continuo operando 24/7. MEISA diseña pórticos de acero que resisten vibraciones constantes de molinos, centrífugas y evaporadores sin fatiga del material. Vigas reforzadas soportan silos elevados de azúcar con cargas puntuales hasta 50 toneladas, mientras las plataformas metálicas permiten acceso seguro para mantenimiento de equipos en altura. Acero grado ASTM A572 resistente a ambientes altamente corrosivos por vapores de melaza y humedad constante. Las conexiones atornilladas facilitan el desmontaje para reemplazo de maquinaria sin necesidad de demoler la estructura. Diseño sismorresistente protege la inversión en zonas de alta amenaza sísmica.",
+      "proyectosEjemplo": [
+        "Ingenios azucareros",
+        "Plantas industriales",
+        "Complejos industriales"
+      ]
+    },
+    {
+      "id": "esp_1764007374002_ga9unhauo",
+      "icono": "Snowflake",
+      "orden": 4,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+      "titulo": "Cuartos Fríos Industriales",
+      "descripcion": "Estructuras metálicas para refrigeración industrial que soportan paneles aislantes y equipos de refrigeración pesados. MEISA diseña naves con cerchas ligeras que minimizan los puentes térmicos hacia el exterior, reduciendo significativamente el consumo energético de los sistemas de refrigeración. Columnas y vigas con recubrimiento anticorrosivo especial resisten la condensación constante y la humedad elevada del ambiente. La estructura está calculada para soportar la carga adicional del panel aislante (más pesado que cubiertas convencionales) más los equipos de refrigeración suspendidos del techo. La modulación permite expansión de cámaras frías sin interrumpir la operación de las áreas refrigeradas existentes. Puertas de carga dimensionadas para paso de montacargas de gran tonelaje.",
+      "proyectosEjemplo": [
+        "Cuartos fríos",
+        "Cámaras de refrigeración",
+        "Plantas de proceso"
+      ]
+    },
+    {
+      "id": "esp_1764007374002_3efsljl8z",
+      "icono": "Plane",
+      "orden": 5,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80",
+      "titulo": "Hangares Aeronáuticos",
+      "descripcion": "Estructuras de gran luz sin columnas internas para albergar aeronaves completas con espacio de maniobra. MEISA diseña cerchas metálicas con luces hasta 50 metros que permiten mover aviones dentro del hangar sin obstrucciones. Altura libre hasta 15 metros acomoda el empenaje vertical de aeronaves comerciales y jets ejecutivos. Portones deslizantes de gran formato fabricados en acero con sistemas de contrapesos calculados para operación manual o motorizada. La cubierta liviana minimiza la carga estructural en las cerchas mientras el aislamiento térmico protege las aeronaves de las temperaturas exteriores extremas. El piso de concreto reforzado con malla electrosoldada soporta el peso concentrado de los trenes de aterrizaje sin fisurarse.",
+      "proyectosEjemplo": [
+        "Hangares aeronáuticos",
+        "Talleres de aviación",
+        "Mantenimiento aeronáutico"
+      ]
+    }
+  ]
+}

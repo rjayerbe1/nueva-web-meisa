@@ -1,0 +1,50 @@
+{
+  "nombre": "Industrial",
+  "especialidades": [
+    {
+      "id": "esp_1764015191932_j1scwxiax",
+      "icono": "Warehouse",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80",
+      "titulo": "Naves Industriales de Gran Luz",
+      "descripcion": "Bodegas industriales y hangares de un nivel que maximizan almacenamiento con luces **hasta 50 metros** sin columnas. MEISA ha construido naves para centros de distribución, almacenes y operaciones logísticas.\n\nAlturas generosas permiten aprovechar **almacenamiento vertical** con racks. Estructura prefabricada **reduce tiempos de construcción**. Sistema modular permite **expansiones** agregando crujías adicionales sin modificar lo existente. Ideal cuando su operación requiere grandes espacios abiertos para maniobra de montacargas.",
+      "proyectosEjemplo": [
+        "Bodegas industriales",
+        "Centros de distribución",
+        "Hangares",
+        "Almacenes"
+      ]
+    },
+    {
+      "id": "esp_1764015191932_v5ene1yyt",
+      "icono": "Factory",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1586864387634-daa74dca8f6e?w=800&q=80",
+      "titulo": "Edificios Industriales de Múltiples Niveles",
+      "descripcion": "Edificios industriales de varios pisos que alojan **procesos productivos complejos**. MEISA ha construido plantas para empresas farmacéuticas e ingenios azucareros que **operan 24/7**.\n\nEntrepisos metálicos soportan maquinaria pesada de producción **sin transmitir vibraciones** entre niveles. Estructura diseñada para resistir ambientes agresivos por vapores químicos o humedad constante. La modulación permite **expansión sin interrumpir producción** existente durante construcción.",
+      "proyectosEjemplo": [
+        "Plantas farmacéuticas",
+        "Ingenios azucareros",
+        "Edificios de producción",
+        "Plantas industriales"
+      ]
+    },
+    {
+      "id": "esp_1764015191932_rnimp72r2",
+      "icono": "Snowflake",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+      "titulo": "Estructuras Especializadas de Alta Resistencia",
+      "descripcion": "Estructuras metálicas para **condiciones operativas extremas**. MEISA ha diseñado estructuras que resisten ambientes de refrigeración, atmósferas corrosivas y vibraciones de maquinaria pesada.\n\nPara cuartos fríos industriales, las cerchas minimizan puentes térmicos **reduciendo consumo energético**. Acero con recubrimientos anticorrosivos especiales resiste condensación y ambientes agresivos. **Diseño estructural específico** para cada proceso industrial según sus requerimientos únicos.",
+      "proyectosEjemplo": [
+        "Cuartos fríos",
+        "Cámaras de refrigeración",
+        "Plantas de proceso",
+        "Estructuras anticorrosivas"
+      ]
+    }
+  ]
+}

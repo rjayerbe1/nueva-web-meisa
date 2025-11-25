@@ -1,0 +1,50 @@
+{
+  "nombre": "Deportes & Educación",
+  "especialidades": [
+    {
+      "id": "esp_1764015220989_2rt3ctzc7",
+      "icono": "Trophy",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+      "titulo": "Coliseos y Canchas Cubiertas",
+      "descripcion": "Estructuras deportivas cubiertas con **cubiertas de gran luz** sin columnas que permiten graderías con visuales óptimas para el público. **Diseño sismorresistente** garantiza seguridad en concentraciones masivas cumpliendo normativa de federaciones deportivas internacionales.\n\nPlataformas integradas para **iluminación profesional** deportiva sin interferir con juego. Ventilación natural reduce costos operativos permanentemente. El diseño permite albergar múltiples disciplinas deportivas en un solo recinto, maximizando utilización del espacio a lo largo del año.",
+      "proyectosEjemplo": [
+        "Coliseos deportivos",
+        "Pabellones deportivos",
+        "Canchas cubiertas",
+        "Arenas"
+      ]
+    },
+    {
+      "id": "esp_1764015220989_r6rp7fqf8",
+      "icono": "Waves",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?w=800&q=80",
+      "titulo": "Piscinas Cubiertas",
+      "descripcion": "Estructuras metálicas sobre piscinas con tratamiento especial para **ambientes de alta humedad**. **Galvanizado en caliente** más pintura epóxica especial protegen la estructura contra ambiente salino generado por cloro y condensación constante.\n\nCubiertas translúcidas aportan **iluminación natural** reduciendo consumo eléctrico. Ventilación integrada extrae aire húmedo evitando condensación destructiva en estructura y equipos. Capacidad para soportar equipos pesados suspendidos como marcadores electrónicos y sistemas de climatización.",
+      "proyectosEjemplo": [
+        "Piscinas olímpicas",
+        "Complejos acuáticos",
+        "Natatorios",
+        "Piscinas cubiertas"
+      ]
+    },
+    {
+      "id": "esp_1764015220989_tuingilop",
+      "icono": "Lightbulb",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
+      "titulo": "Torres y Estructuras Auxiliares",
+      "descripcion": "Torres de iluminación diseñadas para resistir **vientos extremos** sin vibrar mediante análisis dinámico riguroso. Plataformas de mantenimiento en la cima permiten **acceso seguro** para cambio de luminarias y ajustes de equipos.\n\nAcabado galvanizado elimina **mantenimiento de pintura en altura**, reduciendo costos operativos a largo plazo. Incluye **graderías metálicas** de alta capacidad integradas estructuralmente. Niveles de iluminación cumplen **normativa para transmisión televisiva** de eventos deportivos profesionales.",
+      "proyectosEjemplo": [
+        "Torres de iluminación",
+        "Campos deportivos",
+        "Cubiertas tensionadas",
+        "Graderías metálicas"
+      ]
+    }
+  ]
+}

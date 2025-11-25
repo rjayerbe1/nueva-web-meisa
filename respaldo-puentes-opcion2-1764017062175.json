@@ -1,0 +1,50 @@
+{
+  "nombre": "Puentes",
+  "especialidades": [
+    {
+      "id": "esp_1764015201438_2sc916nnn",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      "titulo": "Puentes de Vigas y Cerchas",
+      "descripcion": "Puentes metálicos mediante vigas cajón o cerchas reticuladas que salvan grandes distancias. MEISA ha construido puentes vehiculares con luces hasta 212 metros. Fabricación en taller con control de calidad certificado, montaje por dovelas que reduce cierres de vía. Incluye puentes en arco donde la geometría transfiere cargas lateralmente a los estribos. Diseño sismorresistente cumpliendo NSR-10. Acabados anticorrosivos para décadas de vida útil. Instalación nocturna permite mantener tráfico diurno.",
+      "proyectosEjemplo": [
+        "Puentes vehiculares",
+        "Puentes en arco",
+        "Viaductos",
+        "Puentes de gran luz"
+      ]
+    },
+    {
+      "id": "esp_1764015201438_yzhi1g0bl",
+      "icono": "Users",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&q=80",
+      "titulo": "Puentes Livianos Peatonales",
+      "descripcion": "Puentes metálicos ligeros que conectan comunidades sobre vías de alto tráfico. MEISA ha construido pasarelas peatonales y ciclopuentes con luces típicas de 30 a 80 metros. Rampas accesibles permiten movilidad inclusiva para personas con discapacidad y bicicletas. Estructura prefabricada permite instalación nocturna sin interrumpir tráfico diurno. Fabricación completa en taller, transporte en secciones y montaje en horas con grúas móviles.",
+      "proyectosEjemplo": [
+        "Puentes peatonales",
+        "Pasarelas urbanas",
+        "Ciclopuentes",
+        "Conexiones peatonales"
+      ]
+    },
+    {
+      "id": "esp_1764015201438_udcz8rtmi",
+      "icono": "Cable",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80",
+      "titulo": "Puentes de Cables",
+      "descripcion": "Puentes mediante cables de acero de alta resistencia ideales para salvar luces excepcionales. Los cables galvanizados soportan el tablero transfiriendo cargas a torres metálicas ancladas en los extremos. Esta solución es eficiente para cruzar cañones profundos, ríos anchos o valles donde cimentaciones intermedias son difíciles o costosas. Cables galvanizados resisten corrosión atmosférica. Ideal para puentes comunitarios que requieren soluciones de rápida instalación.",
+      "proyectosEjemplo": [
+        "Puentes colgantes",
+        "Puentes atirantados",
+        "Puentes sobre cañones",
+        "Puentes comunitarios"
+      ]
+    }
+  ]
+}

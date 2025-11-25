@@ -1,0 +1,1182 @@
+
+====================================================================================================
+ANÁLISIS COMPLETO: PROYECTOS POR CATEGORÍA Y ESPECIALIDAD
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ COMERCIAL                                                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos reales: 41                                                                               │
+│ Total de especialidades: 6                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+📁 PROYECTOS REALES EN COMERCIAL (41):
+
+    1. Dollar City - Río Negro Calle 100
+       Cliente: Dollar City
+       Descripción: Construccion y Montaje Estructura Metalica Dollar City Rio Negro Calle 100
+       📊 74.9 ton, 498 m²
+
+    2. Dollar City - Chapinero
+       Cliente: Dollar City
+       Descripción: Construccion y Montaje Estructura Metalica Dollar City Chapinero
+       📊 59.7 ton, 571.73 m²
+
+    3. Dollar City - Mazuren
+       Cliente: Dollar City
+       Descripción: Construccion y Montaje Estructura Metalica Dollar City Mazuren
+       📊 125.8 ton, 789 m²
+
+    4. Dollar City - La María
+       Cliente: Dollar City
+       Descripción: Construccion y Montaje Estructura Metalica Dollar City La Maria
+       📊 59.8 ton, 759 m²
+
+    5. Dollar City - Alfaguara
+       Cliente: Dollar City
+       Descripción: Construccion y Montaje Estructura Metalica Dollar City Alfaguara
+       📊 53.8 ton, 560 m²
+
+    6. Construandes - Galería CC Llanogrande
+       Cliente: Construandes
+       Descripción: Galeria local 326 CC Llanogrande
+       📊 325.4 ton, 3024 m²
+
+    7. Astrelec - Locales Natura Park
+       Cliente: Astrelec S.A.S
+       Descripción: Construccion estructura metalica locales comerciales Natura Park
+       📊 73.3 ton, 2327 m²
+
+    8. Constructora Normandia - CC Bochalema Plaza
+       Cliente: Constructora Normandia
+       Descripción: Construcción estructura metalica CC Bochalema Plaza
+       📊 1781.5 ton, 16347 m²
+
+    9. Ménsula Ingenieros - CC Paseo Villa del Río
+       Cliente: Ménsula Ingenieros S.A.S
+       Descripción: Estructura metálica Centro Comercial Paseo Villa del Río
+       📊 420.0 ton, 2789 m²
+
+   10. Construcciones Adriana Rivera - CC Monserrat
+       Cliente: Construcciones Adriana Rivera S.A.S
+       Descripción: Construcción de estructura metálica y cubiertas para Centro comercial Monserrat
+       📊 212.0 ton, 4308 m²
+
+   11. CC Construcciones - Edificio Servicios Postobón
+       Cliente: C.C. CONSTRUCCIONES S.A.S
+       Descripción: Estructura metálica Edificio Servicios Industriales (Equipos Auxiliares) POSTOBON Estructura Metálica cubiertas nueva sala de jarabes
+       📊 138.6 ton, N/A
+
+   12. Industria Mercadeo y Color - Mezanine Esprit
+       Cliente: INDUSTRIA MERCADEO Y COLOR SAS
+       Descripción: Mezanine local ESPRIT - LA ESTACION CALI
+       📊 0.9 ton, N/A
+
+   13. Banco de Occidente - Ampliación CC Único Tres Cali
+       Cliente: BANCO DE OCCIDENTE
+       Descripción: Construcción de obra civiles, estructuras y cubiertas para la Ampliación C.C. UNICO TRES - Cali
+       📊 780.0 ton, 15900 m²
+
+   14. Royal Films - Salas Cine CC Único Pasto
+       Cliente: ROYAL FILMS SAS
+       Descripción: Pasto - Obras Civiles de Salas de Cine C.C Único Pasto
+       📊 NaN ton, 1000 m²
+
+   15. Royal Films - Adecuación CC Jardín Plaza Cali
+       Cliente: ROYAL FILMS SAS
+       Descripción: Cali - Estructura Metálica para obras de Adecuación Salas de Cine C.C. Jardín Plaza
+       📊 10.7 ton, N/A
+
+   16. Royal Films - Salas Cine CC Único Yumbo
+       Cliente: ROYAL FILMS SAS
+       Descripción: Yumbo - Obras Civiles Adecuación de Salas de Cine C.C Único Yumbo
+       📊 NaN ton, 800 m²
+
+   17. Royal Films - Graderías CC Único Cali
+       Cliente: ROYAL FILMS SAS
+       Descripción: Cali - Estructura Metálica Soporte Graderías y Cuartos de Proyección Salas de Cine C.C Único Cali
+       📊 123.9 ton, N/A
+
+   18. Centros Comerciales Costa - Royal Films Barranquilla
+       Cliente: CENTROS COMERCIALES DE LA COSTA S.A.S
+       Descripción: Adecuación Royal Films UNICO BARRANQUILLA
+       📊 0.1 ton, N/A
+
+   19. Centros Comerciales Café - Royal Films Neiva
+       Cliente: CENTROS COMERCIALES DEL CAFE S.AS
+       Descripción: Adecuación Royal Films UNICO NEIVA
+       📊 0.3 ton, N/A
+
+   20. Centros Comerciales Huila - Contrapiso Royal Films
+       Cliente: CENTROS COMERCIALES DEL HUILA SAS
+       Descripción: CONTRAPISO LOCAL ROYAL FILMS C.C.UNICO NEIVA
+       📊 NaN ton, 1592 m²
+
+   21. Royal Films - Graderías CC La Estación Cali
+       Cliente: ROYAL FILMS S.A.S
+       Descripción: Construcción graderías y losas salas de cine C.C. LA ESTACION CALI
+       📊 117.6 ton, N/A
+
+   22. Arinsa - Ampliación CC Campanario Popayán
+       Cliente: ARINSA – POPAYAN – Cimentación, Estructura Metálica y Cubiertas Ampliación Centro Comercial Campanar
+       Descripción: ARINSA – POPAYAN – Cimentación, Estructura Metálica y Cubiertas Ampliación Centro Comercial Campanario
+       📊 2454.8 ton, 12000 m²
+
+   23. Distribuidora Internacional - Mezanine Polo
+       Cliente: DISTRIBUIDORA INTERNACIONAL ARTICULOS
+       Descripción: MEZANINE LOCAL POLO
+       📊 NaN ton, 27 m²
+
+   24. Constructora Colpatria - CC Único Neiva
+       Cliente: CONSTRUCTORA COLPATRIA – NEIVA – Estructura Metálicas Centro Comercial Único Neiva.
+       Descripción: CONSTRUCTORA COLPATRIA – NEIVA – Estructura Metálicas Centro Comercial Único Neiva.
+       📊 583.0 ton, 14140 m²
+
+   25. CC Único Pasto - Parqueaderos y Cinemas
+       Cliente: CENTRO COMERCIAL  ÚNICO
+       Descripción: PASTO - Parqueaderos y Cinemas, estructuras metálicas
+       📊 255.5 ton, 5148 m²
+
+   26. Constructora Colpatria - CC Único Barranquilla
+       Cliente: CONSTRUCTORA COLPATRIA S.A. – BARRANQUILLA – Estructura Metálicas Centro Comercial Único Barranquill
+       Descripción: CONSTRUCTORA COLPATRIA S.A. – BARRANQUILLA – Estructura Metálicas Centro Comercial Único Barranquilla.
+       📊 15.0 ton, N/A
+
+   27. Construcciones Proformas - Local Alberto VO5
+       Cliente: CONSTRUCCIONES PROFORMAS
+       Descripción: Popayán - Cubierta Local Comercial Alberto VO5
+       📊 9.6 ton, 305 m²
+
+   28. CC Único Yumbo - Parqueaderos y Cinemas
+       Cliente: CENTRO COMERCIAL  ÚNICO
+       Descripción: YUMBO - Parqueaderos y cinemas
+       📊 122.0 ton, 1998 m²
+
+   29. Arboleda Rojas - Locales Av. Cañasgordas
+       Cliente: ARBOLEDA ROJAS ANDRÉS
+       Descripción: Cali - Estructura Metálica y Cubierta Locales Avenida Cañasgordas
+       📊 13.0 ton, 977 m²
+
+   30. CC Único - Centro Comercial Yumbo
+       Cliente: CENTRO COMERCIAL ÚNICO
+       Descripción: Diseño y construcción de centro comercial en Yumbo (Valle)
+       📊 320.0 ton, 9890 m²
+
+   31. Andrés Arboleda - Locales Cañas Gordas
+       Cliente: ANDRÉS ARBOLEDA
+       Descripción: Estructura metálica y cubierta para locales "Cañas Gordas" . Cali
+       📊 6.2 ton, 517 m²
+
+   32. CC Automotriz - Local Comercial Cali
+       Cliente: CENTRO COMERCIAL AUTOMOTRIZ
+       Descripción: Estructura metálica y cubierta local en Cali
+       📊 NaN ton, 273 m²
+
+   33. CC Único - Ampliación Centro Comercial Cali
+       Cliente: CENTRO COMERCIAL ÚNICO
+       Descripción: Estructuras metálicas , cubiertas y fachadas para ampliación en Cali
+       📊 1800.0 ton, 30000 m²
+
+   34. CC Único - Estructuras Villavicencio
+       Cliente: CENTRO COMERCIAL ÚNICO
+       Descripción: Diseño y construcción de estructuras metálicas y cubiertas, en Villavicencio
+       📊 670.0 ton, 16300 m²
+
+   35. CC Único Pasto - Estructuras Sede Pasto
+       Cliente: CENTRO COMERCIAL ÚNICO PASTO
+       Descripción: Estructuras metálicas y cubiertas en teja Standing Seam para sede de Pasto.
+       📊 410.0 ton, 18820 m²
+
+   36. CC Único - Estructuras Barranquilla
+       Cliente: CENTRO COMERCIAL ÚNICO
+       Descripción: BARRANQUILLA - Diseño y construcción estructura metálica y cubierta
+       📊 625.8 ton, 21984 m²
+
+   37. Arinsa - CC Campanario Popayán
+       Cliente: ARINSA S.A. Diseño y construcción estructuras metálicas y cubiertas Centro Comercial Campanario
+       Descripción: Popayán
+       📊 470.0 ton, 22000 m²
+
+   38. CC Único Cali - Estructuras Etapa 4
+       Cliente: CENTRO COMERCIAL ÚNICO CALI- 4a. Etapa
+       Descripción: Estructuras metálicas varias
+       📊 60.0 ton, N/A
+
+   39. Velkar - CC Único Etapa 3 Cali
+       Cliente: VELKAR S.A.  Estructura metálica de cubierta y de soporte 3a. Etapa Centro Comercial Único
+       Descripción: Cali
+       📊 NaN ton, 4000 m²
+
+   40. Supermercados Pomona - Sede Ciudad Jardín
+       Cliente: SUPERMERCADOS POMONA Estructura metálica y cubierta Ciudad Jardín
+       Descripción: Cali
+       📊 29.0 ton, N/A
+
+   41. UT Centro Comercial Popular - Pasto
+       Cliente: UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto
+       Descripción: UNIÓN TEMPORAL CENTRO COMERCIAL POPULAR. Estructura para Centro Comercial en Pasto
+       📊 NaN ton, 665 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+🎯 ESPECIALIDADES DE COMERCIAL:
+
+   1. Estructuras de Gran Luz
+      ✅ 28 proyecto(s) asignado(s):
+         • Construandes - Galería CC Llanogrande (325.4 ton)
+         • Constructora Normandia - CC Bochalema Plaza (1781.5 ton)
+         • Ménsula Ingenieros - CC Paseo Villa del Río (420.0 ton)
+         ... y 25 más
+
+   2. Cubiertas Standing Seam
+      ✅ 15 proyecto(s) asignado(s):
+         • Construcciones Adriana Rivera - CC Monserrat (212.0 ton)
+         • CC Construcciones - Edificio Servicios Postobón (138.6 ton)
+         • Banco de Occidente - Ampliación CC Único Tres Cali (780.0 ton)
+         ... y 12 más
+
+   3. Entrepisos y Estructuras Multi-nivel
+      ✅ 3 proyecto(s) asignado(s):
+         • Industria Mercadeo y Color - Mezanine Esprit (0.9 ton)
+         • Centros Comerciales Huila - Contrapiso Royal Films (NaN ton)
+         • Distribuidora Internacional - Mezanine Polo (NaN ton)
+
+   4. Mezanines de Alta Capacidad
+      ✅ 2 proyecto(s) asignado(s):
+         • Industria Mercadeo y Color - Mezanine Esprit (0.9 ton)
+         • Distribuidora Internacional - Mezanine Polo (NaN ton)
+
+   5. Ampliaciones sin Interrupciones
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+   6. Cubiertas y Fachadas Metálicas
+      ✅ 15 proyecto(s) asignado(s):
+         • Construcciones Adriana Rivera - CC Monserrat (212.0 ton)
+         • CC Construcciones - Edificio Servicios Postobón (138.6 ton)
+         • Banco de Occidente - Ampliación CC Único Tres Cali (780.0 ton)
+         ... y 12 más
+
+
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ INDUSTRIAL                                                                                       │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos reales: 43                                                                               │
+│ Total de especialidades: 6                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+📁 PROYECTOS REALES EN INDUSTRIAL (43):
+
+    1. Construandes - Hangar Aeropuerto
+       Cliente: Construandes S.A.S
+       Descripción: Estructura Metalica Hangar Aeropuerto
+       📊 47.1 ton, 890 m²
+
+    2. Pollo Listo - Cuarto Frío
+       Cliente: Pollo Listo
+       Descripción: Construccion y Montaje Estructura Metalica Cuarto Frio
+       📊 30.6 ton, 454 m²
+
+    3. Ingenio Providencia - Bahía Alcoholes
+       Cliente: Ingenio Providencia S.A.
+       Descripción: Bahía de Alcoholes
+       📊 14.6 ton, 270 m²
+
+    4. Sucroal - Centro Distribución Palmira
+       Cliente: Sucroal S.A
+       Descripción: Centro de Distribución - Palmira
+       📊 169.7 ton, 2331 m²
+
+    5. Tecnosur - Centro Distribución Villa Rica
+       Cliente: Inverteq S.A.S. - Tecnosur
+       Descripción: Centro de distribución - Villa Rica
+       📊 840.2 ton, 11879 m²
+
+    6. Ingenio Providencia - Zona Catas y Oficinas
+       Cliente: Ingenio Providencia S.A.
+       Descripción: Obras civiles y Estructura Metalica Zona de Catas Oficinas y Vestier
+       📊 4.7 ton, N/A
+
+    7. Ingenio Providencia - Bodega 5 Azúcar
+       Cliente: Ingenio Providencia S.A.
+       Descripción: Bodega 5 Azucar
+       📊 227.3 ton, 3544 m²
+
+    8. Tecnoquímicas - Sólidos Altos Volúmenes
+       Cliente: Tecnoquímicas S.A.
+       Descripción: Construccion Estructura Metalica Solidos de Altos Volumenes TQ Jamundi
+       📊 614.7 ton, 3328 m²
+
+    9. Ingenio Providencia - Complejo Piedechinche
+       Cliente: Ingenio Providencia S.A.
+       Descripción: Construcción de obra civil, estructura metalica, fachada y cubierta del complejo industrial Piedechinche
+       📊 812.4 ton, 14519 m²
+
+   10. Tecnoquímicas - Edificio Cápsulas Blandas
+       Cliente: Tecnoquímicas S.A.
+       Descripción: Construccion Estructura Metalica Edificio capsulas Blandas Envases y empaques TQ Jamundi
+       📊 508.0 ton, 3676 m²
+
+   11. Tecnoquímicas - Bodega 3
+       Cliente: Tecnoquímicas S.A.
+       Descripción: Construccion Estructura Metalica Bodega 3 TQ Jamundi
+       📊 132.5 ton, 2100 m²
+
+   12. Inverteq - Bodega Semisólidos Tecnofar
+       Cliente: Constructora Inverteq S.A.S
+       Descripción: Construccion de bodega semisolidos Tecnofar
+       📊 612.1 ton, 5141 m²
+
+   13. Ingenio Providencia - Cubierta Teja
+       Cliente: INGENIO PROVIDENCIA S.A.
+       Descripción: CONST E INST CUBIERTA TEJA
+       📊 NaN ton, 929 m²
+
+   14. null
+       Cliente: Protecnica Ingenieria SAS
+       Descripción: Estructura metálica, fachada y cubierta para bodega
+       📊 28.0 ton, N/A
+
+   15. Estrumetal - Bodega Hero Motors Villarrica
+       Cliente: ESTRUMETAL
+       Descripción: Villarrica - Fabricación Estructura Metálica Bodega E42 Proyecto Hero Motors
+       📊 114.0 ton, N/A
+
+   16. Pollos Bucanero - Planta Harinas Villagorgona
+       Cliente: POLLOS BUCANERO
+       Descripción: Villagorgona - Planta de Harinas
+       📊 NaN ton, 800 m²
+
+   17. Pollos Bucanero - Cubierta Planta Villagorgona
+       Cliente: POLLOS BUCANERO
+       Descripción: Villagorgona - Cubierta Doble Agua Planta de Pollos
+       📊 1.0 ton, N/A
+
+   18. Tugo - Bodega Muebles y Objetos Cali
+       Cliente: TUGO
+       Descripción: Cali - Estructura Metálica Bodega Muebles y Objetos
+       📊 57.0 ton, N/A
+
+   19. Ingenio Mayagüez - Edificio Torre
+       Cliente: INGENIO MAYAGÜEZ
+       Descripción: Estructura metálica para Edificio Torre
+       📊 16.2 ton, N/A
+
+   20. Pollos Bucanero - Pollo Campesino y Cuartos Fríos
+       Cliente: POLLOS BUCANERO
+       Descripción: Villagorgona - Proyecto Pollo Campesino & Cuartos Fríos
+       📊 148.6 ton, N/A
+
+   21. Pollos Bucanero - Hangar Pollo en Pie
+       Cliente: POLLOS BUCANERO
+       Descripción: Villagorgona - Hangar Pollo en Pie
+       📊 17.4 ton, 1122 m²
+
+   22. Consorcio PIC - Bodega DIAN Cali
+       Cliente: CONSORCIO PIC
+       Descripción: Cali - Estructura Metálica para Bodega DIAN
+       📊 17.4 ton, N/A
+
+   23. Pollos Bucanero - Bodegas y Cuartos Fríos Etapa 4
+       Cliente: POLLOS BUCANERO 4a, ETAPA
+       Descripción: Estructuras metálicas y cubiertas  para bodegas y cuartos fríos - Cali
+       📊 NaN ton, 5325 m²
+
+   24. Ingenio Mayagüez - Bodega Dúplex 26m
+       Cliente: INGENIO MAYAGUEZ
+       Descripción: Estructura metálica y cubierta para bodega Dúplex - altura 26 mts.
+       📊 327.0 ton, 4900 m²
+
+   25. Ingenio Mayagüez - Torre Tacho 6 Niveles
+       Cliente: INGENIO MAYAGUEZ
+       Descripción: Estructura metálica y cubierta para edificio "Torre Tacho" -  seis niveles -  altura 30 mts.
+       📊 272.0 ton, 345 m²
+
+   26. Ingenio Manuelita - Edificio 6 Plantas Palmira
+       Cliente: INGENIO MANUELITA
+       Descripción: Estructura metálica para edificio de 6 plantas, sector de mezclas en Palmira (Valle)
+       📊 72.0 ton, 703 m²
+
+   27. Calima Motors - Bodegas Buenaventura
+       Cliente: CALIMA MOTORS
+       Descripción: Estructura metálica y cubierta para bodegas en Buenaventura (Valle)
+       📊 NaN ton, 1370 m²
+
+   28. Ferretería Maracaibo - Mezanine Bodega Popayán
+       Cliente: FERRETERIA MARACAIBO
+       Descripción: Estructura metálica mezaninne para bodega de cemento en Popayán
+       📊 NaN ton, 180 m²
+
+   29. OPP Graneles - Bodegas Buenaventura
+       Cliente: O.P.P. GRANELES
+       Descripción: Estructuras metálicas para bodegas en Buenaventura (Valle del Cauca)
+       📊 66.7 ton, N/A
+
+   30. Zona Franca Palmaseca - Cubierta Bodegas
+       Cliente: ZONA FRANCA PALMASECA
+       Descripción: Estructura metálica para cubierta de bodegas
+       📊 22.5 ton, N/A
+
+   31. Nutriplantas - Bodega Tuluá
+       Cliente: NUTRIPLANTAS
+       Descripción: Estructura metálica de cubierta en bodega de Tuluá
+       📊 94.0 ton, 4800 m²
+
+   32. Velkar - Bodega Texcintas Cali
+       Cliente: VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali
+       Descripción: VELKAR S.A. Estructura metálica de cubierta para bodega  de TEXCINTAS en Cali
+       📊 24.0 ton, N/A
+
+   33. Clínica Excellence - Soporte Edificio 4 Plantas
+       Cliente: CLINICA EXCELLENCE CALI
+       Descripción: Estructura básica de soporte edificio de 4 plantas
+       📊 55.0 ton, N/A
+
+   34. Incico - Bodega Cementos Argos Yumbo
+       Cliente: INCICO LTDA. Diseño y construcción estructura metálica bodega Cementos Argos en Yumbo Valle del Cauc
+       Descripción: INCICO LTDA. Diseño y construcción estructura metálica bodega Cementos Argos en Yumbo Valle del Cauca
+       📊 NaN ton, 480 m²
+
+   35. Mira Tu Salud EPS - Reforzamiento Edificio Bogotá
+       Cliente: MIRA TU SALUD EPS. Reforzamiento edificio de 5 plantas en Bogotá y obras metálicas varias
+       Descripción: MIRA TU SALUD EPS. Reforzamiento edificio de 5 plantas en Bogotá y obras metálicas varias
+       📊 NaN ton, 1200 m²
+
+   36. Construcciones e Ingeniería - Ingenio Providencia
+       Cliente: CONSTRUCCIONES E INGENIERÍA LTDA.
+       Descripción: Viaductos para soportar tuberías 500 mm Ingenio Providencia Valle del Cauca                                                      Longitud 70 mts.
+       📊 NaN ton, N/A
+
+   37. Concrecauca - Planta Prefabricados
+       Cliente: CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en P
+       Descripción: CONCRECAUCA LTDA. Estructuras metálicas, silos y pavimento de concreto, planta de Prefabricados en Puerto Tejada, Cauca
+       📊 NaN ton, 1532 m²
+
+   38. Ready Fruit Company - Planta La Unión
+       Cliente: READY FRUIT COMPANY
+       Descripción: Estructura metálica de cubierta  y entrepisos, Planta de La Unión, Valle del Cauca
+       📊 NaN ton, 3579 m²
+
+   39. Ing. Ricardo Arboleda - Bodegas C.I. Valle
+       Cliente: Ing. RICARDO ARBOLEDA
+       Descripción: Estructuras metálicas para  bodegas C.I. Valle
+       📊 NaN ton, 1320 m²
+
+   40. Aroma del Cauca - Fábrica Parque Industrial
+       Cliente: AROMA DEL CAUCA
+       Descripción: Estructura metálica cubierta para fábrica en el Parque Industrial Popayán
+       📊 NaN ton, 1790 m²
+
+   41. Yazaki Metrex - Fábrica Parque Industrial
+       Cliente: YAZAKI METREX S.A.
+       Descripción: Estructura metálica cubierta para fábrica en el Parque Industrial Popayán
+       📊 NaN ton, 3000 m²
+
+   42. Guido Gavilanes y Oscar Ruiz - 3 Bodegas
+       Cliente: GUIDO GAVILANES Y OSCAR RUIZ
+       Descripción: Diseño y construcción de estructuras metálicas para tres bodegas  en el Parque Industrial de Popayán
+       📊 NaN ton, 1400 m²
+
+   43. Friesland Colombia - Planta Pasto
+       Cliente: FRIESLAND COLOMBIA S.A.
+       Descripción: Diseño y construcción de la  estructura metálica y cubierta para planta de producción en Pasto
+       📊 NaN ton, 611 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+🎯 ESPECIALIDADES DE INDUSTRIAL:
+
+   1. Bodegas de Gran Escala
+      ✅ 18 proyecto(s) asignado(s):
+         • Ingenio Providencia - Bodega 5 Azúcar (227.3 ton)
+         • Tecnoquímicas - Bodega 3 (132.5 ton)
+         • Inverteq - Bodega Semisólidos Tecnofar (612.1 ton)
+         ... y 15 más
+
+   2. Plantas Farmacéuticas
+      ✅ 1 proyecto(s) asignado(s):
+         • Inverteq - Bodega Semisólidos Tecnofar (612.1 ton)
+
+   3. Ingenios Azucareros
+      ✅ 11 proyecto(s) asignado(s):
+         • Ingenio Providencia - Bahía Alcoholes (14.6 ton)
+         • Sucroal - Centro Distribución Palmira (169.7 ton)
+         • Ingenio Providencia - Zona Catas y Oficinas (4.7 ton)
+         ... y 8 más
+
+   4. Cuartos Fríos Industriales
+      ✅ 2 proyecto(s) asignado(s):
+         • Pollos Bucanero - Pollo Campesino y Cuartos Fríos (148.6 ton)
+         • Pollos Bucanero - Bodegas y Cuartos Fríos Etapa 4 (NaN ton)
+
+   5. Hangares Aeronáuticos
+      ✅ 2 proyecto(s) asignado(s):
+         • Construandes - Hangar Aeropuerto (47.1 ton)
+         • Pollos Bucanero - Hangar Pollo en Pie (17.4 ton)
+
+   6. Puentes Grúa Industriales
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ PUENTES                                                                                          │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos reales: 44                                                                               │
+│ Total de especialidades: 6                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+📁 PROYECTOS REALES EN PUENTES (44):
+
+    1. PAVCOL - Ciclopuente Calle 98
+       Cliente: PAVCOL
+       Descripción: Ciclopuente Calle 98 P11 GRUPO 7
+       📊 381.4 ton, 1528 m²
+
+    2. Puente Vehicular Ovejas
+       Cliente: Construcción y Administración S.A Sucursal Colombia
+       Descripción: Puente Vehicular OVEJAS
+       📊 535.7 ton, 2360 m²
+
+    3. CASA - Puente Cascada
+       Cliente: C.A.S.A. Sucol
+       Descripción: Construccion y Montaje Estructura Metalica Puente Cascada
+       📊 537.2 ton, N/A
+
+    4. PAVCOL - Estación Calle 19 y Puente Av. Esperanza
+       Cliente: PAVCOL
+       Descripción: Estación Calle 19 y Puente Peatonal Av. Esperanza Norte P8 Grupo 4
+       📊 272.7 ton, N/A
+
+    5. PAVCOL - Puente La Floresta
+       Cliente: PAVCOL
+       Descripción: Puente la Floresta
+       📊 398.2 ton, N/A
+
+    6. Consorcio Islas - Puente Vehicular Cra 100
+       Cliente: Consorcio Islas 2019
+       Descripción: Puente Vehicular Cra 100
+       📊 444.9 ton, 75.92 m²
+
+    7. Orlando Revelo - Puente Vehicular Río Negro
+       Cliente: Orlando Revelo Villota
+       Descripción: Puente Vehicular Río Negro
+       📊 54.6 ton, 32 m²
+
+    8. Consorcio Cambrin - Puente Vehicular Cambrín
+       Cliente: Consorcio Cambrin 2017
+       Descripción: Puente Vehicular Cambrín
+       📊 290.0 ton, 90.85 m²
+
+    9. null
+       Cliente: Cliente Público
+       Descripción: Estructura metálica para puente vehicular en Pasto
+       📊 NaN ton, N/A
+
+   10. UT EYR - Puente Vehicular La Paila
+       Cliente: UNION TEMPORAL EYR
+       Descripción: Construcción Puente Vehicular "La Paila"
+       📊 293.0 ton, N/A
+
+   11. UT EYR - Barandas Puente El Jagual
+       Cliente: UNION TEMPORAL EYR
+       Descripción: Barandas metálicas peatonales para puente El Jagual - Caloto
+       📊 4.3 ton, N/A
+
+   12. null
+       Cliente: CONSORCIO VÍAS DE CALI S.A.S.
+       Descripción: Estructura metálica para puente peatonal
+       📊 128.0 ton, N/A
+
+   13. Consorcio Remin - Puente Frisoles Nariño
+       Cliente: CONSORCIO REMIN – Nariño – Estructura Metálica Para Puente Frisoles, Ancuya – Ancusa, L=47 m
+       Descripción: CONSORCIO REMIN – Nariño – Estructura Metálica Para Puente Frisoles, Ancuya – Ancusa, L=47 m
+       📊 89.2 ton, N/A
+
+   14. UT E&R - Puente El Jagua Corinto
+       Cliente: UNIÓN TEMPORAL E & R
+       Descripción: Corinto - Obra Civil y Traslado Puente El Jagua L=70 pies
+       📊 70.0 ton, N/A
+
+   15. Consorcio Competitividad - Barandas La Lupa
+       Cliente: CONSORCIO CORREDORES DE COMPETITIVIDAD
+       Descripción: Barandas para puentes sector La Lupa - Cauca
+       📊 13.9 ton, N/A
+
+   16. Mejía Santander - Puentes Peatonales Paez
+       Cliente: MEJIA SANTANDER JUAN CARLOS
+       Descripción: Municipio Paez -Construcción Puentes Peatonales: El Cristo L=58m, El Buco L=39m y San Vicente L=126m
+       📊 NaN ton, N/A
+
+   17. Orlando Revelo - Puente Frisoles Ancuyá
+       Cliente: Ing. ORLANDO REVELO
+       Descripción: Construcción puente vehicular "Frisoles" - Ancuyá Nariño                       Longitud 48 mts.
+       📊 94.5 ton, N/A
+
+   18. null
+       Cliente: Cliente Público
+       Descripción: Estructura metálica para puente vehicular en Bolívar
+       📊 NaN ton, N/A
+
+   19. null
+       Cliente: Harold Méndez
+       Descripción: Estructura metálica para puente peatonal
+       📊 8.0 ton, N/A
+
+   20. Comfacauca - Puente Vehicular Río Cauca
+       Cliente: COMFACAUCA
+       Descripción: Diseño y construcción puente vehicular sobre rio Cauca Centro Recreativo Pisojé Longitud 40 mts.
+       📊 20.0 ton, N/A
+
+   21. Consorcio Competitividad - Puente Arco Saraconcho
+       Cliente: CONSORCIO CORREDORES DE COMPETITIVIDAD
+       Descripción: Diseño  y construcción puente vehicular en Arco,  Saraconcho     Longitud 150 mts.
+       📊 357.0 ton, N/A
+
+   22. Consorcio Competitividad - Puente Cusiyaco
+       Cliente: CONSORCIO CORREDORES DE COMPETITIVIDAD
+       Descripción: Diseño y construcción Puente Cusiyaco              Longitud 40 mts.
+       📊 41.0 ton, N/A
+
+   23. Odinsa - Puente Peatonal Romelia 1 Risaralda
+       Cliente: ODINSA S.A.
+       Descripción: Diseño y construcción puente peatonal Romelia 1 en Risaralda - Autopistas del Café. Long. 130 mts.
+       📊 59.0 ton, N/A
+
+   24. Odinsa - Puente Peatonal Romelia 2 Risaralda
+       Cliente: ODINSA S.A. Diseño y construcción puente peatonal Romelia 2 en Dosquebradas Risaralda  Longitud 212 
+       Descripción: ODINSA S.A. Diseño y construcción puente peatonal Romelia 2 en Dosquebradas Risaralda  Longitud 212 mts.
+       📊 92.0 ton, N/A
+
+   25. Consorcio Vías Cali - Puente Autopista Sur x Cra 63B
+       Cliente: CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de
+       Descripción: CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción   puente peatonal Autopista Sur x Carrera 63B de Cali
+       📊 128.0 ton, N/A
+
+   26. Consorcio Vías Cali - Puente Autopista Sur x Cra 68
+       Cliente: CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Ca
+       Descripción: CONSORCIO VIAS DE CALI S.A.S. Diseño y construcción puente peatonal Autopista Sur x Carrera 68 de Cali
+       📊 170.4 ton, N/A
+
+   27. Consorcio MG - Puente Río Mazamorras
+       Cliente: CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts.
+       Descripción: CONSORCIO M.G. Puente vehicular metálico sobre el río Mazamorras (Cauca/Huila) Longitud 45 mts.
+       📊 63.0 ton, N/A
+
+   28. Manuel Muñoz - Puente Terminal Popayán
+       Cliente: Ing. MANUEL MUÑOZ
+       Descripción: Reparación y montaje puente peatonal Terminal de Transportes de Popayán  Longitud 70 mts.
+       📊 57.0 ton, N/A
+
+   29. Consorcio del Cauca - Puente Nolasco
+       Cliente: CONSORCIO DEL CAUCA
+       Descripción: Diseño y construcción Puente Vehicular "Nolasco" sobre el río Páez        Longitud 145 mts.
+       📊 350.0 ton, N/A
+
+   30. Constructora Pijao - 14 Puentes Metálicos
+       Cliente: CONSTRUCTORA PIJAO LTDA. Construcción de 14 puentes metálicos en apartamentos
+       Descripción: Cali.    Longitud 58.80 mts.
+       📊 52.0 ton, N/A
+
+   31. Programa Tierradentro - Puentes Peatonales Cauca
+       Cliente: PROGRAMA TIERRADENTRO
+       Descripción: UNIÓN EUROPEA - Diseño y construcción puentes peatonales y caballares en Mosoco, Calderas y Cohetando, Depto. Del Cauca.  Longitud 45 mts.
+       📊 15.0 ton, N/A
+
+   32. Programa Tierradentro - Puentes Yaquivá
+       Cliente: PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaqu
+       Descripción: PROGRAMA TIERRADENTRO . UNIÓN EUROPEA -Diseño y construcción puentes peatonales y caballares en Yaquivá, Segovia, Carrizales y La Estrella (Cauca) Longitud 94 mts.
+       📊 30.0 ton, N/A
+
+   33. Fertécnica - Puente Tacueyó-López
+       Cliente: FERTECNICA S.A.
+       Descripción: Puente vehicular en vigas metálicas y losa de concreto sobre Metaldeck  carretera Tacueyó- López Depto. Del Cauca.                        Longitud 12 mts.
+       📊 15.0 ton, N/A
+
+   34. Ing. Hernán Vallejo - Puente Sesecito Timbiquí
+       Cliente: In. HERNAN VALLEJO
+       Descripción: Puente peatonal "Sesecito" en Timbiquí Cauca.                                         Longitud 22 mts.
+       📊 10.0 ton, N/A
+
+   35. Ing. Jesús Albeiro Vásquez - Puente Paispamba
+       Cliente: Ing. JESUS ALBEIRO VASQUEZ
+       Descripción: Puente colgante sobre el río El Molino, Paispamba Cauca     Longitud 25 mts.
+       📊 12.0 ton, N/A
+
+   36. Ing. Jorge Palechor - Puente Dos Brazos
+       Cliente: Ing. JORGE PALECHOR
+       Descripción: Puente peatonal colgante río Dos Brazos en Popayán                          Longitud 28 mts.
+       📊 12.0 ton, N/A
+
+   37. JMD Construcción - Puentes Cartón Colombia
+       Cliente: J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 2
+       Descripción: J.M.D. CONSTRUCCIÓN LTDA. Construcción dos puentes vehiculares Cartón de Colombia, Cauca. Longitud 20 mts.
+       📊 30.0 ton, N/A
+
+   38. Calderón y Jaramillo - Refuerzo Puente Cameguadua
+       Cliente: CALDERON Y JARAMILLO INGS.
+       Descripción: Refuerzo puente vehicular Cameguadua, Chinchiná, Caldas        longitud 10 mts.
+       📊 15.0 ton, N/A
+
+   39. Corporación Nasa Kiwe - Puente El Lucero
+       Cliente: CORPORACIÓN NASA KIWE
+       Descripción: Puente vehicular quebrada "El Lucero" Tierradentro Cauca.         Longitud : 16 mts.
+       📊 30.0 ton, N/A
+
+   40. Fondo Nal. Caminos Vecinales - Puentes Chocó
+       Cliente: FONDO NAL. CAMINOS VECINALES
+       Descripción: Diseño y construcción de dos puentes peatonales en San José del Palmar Departamento del Chocó               longitud : 37 mts.
+       📊 20.0 ton, N/A
+
+   41. Corporación Nasa Kiwe - Puente La Troja
+       Cliente: CORPORACIÓN NASA KIWE
+       Descripción: Construcción de vigas, pen- dolones y suministro cables para puente colgante vehicular  La Troja en Tierradentro.         Longitud 103 mts.
+       📊 35.0 ton, N/A
+
+   42. Municipio Popayán - Puente Río Molino
+       Cliente: MUNICIPIO DE POPAYÁN
+       Descripción: Puente peatonal sobre el río Molino, sector Universidad-Hospital.    Longitud 18 mts.
+       📊 12.0 ton, N/A
+
+   43. Municipio Guapi - Puente Río Napi
+       Cliente: MUNICIPIO DE GUAPI
+       Descripción: Puente sobre el río Napi para conducción tubería  de acueducto       longitud 117 mts.
+       📊 25.0 ton, N/A
+
+   44. Madecons - 2 Puentes Circunvalar Pasto
+       Cliente: MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud
+       Descripción: MADECONS LTDA. Diseño y construcción de dos puentes metálicos, carretera circunvalar Pasto  Longitud 25 mts c/u.
+       📊 80.0 ton, N/A
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+🎯 ESPECIALIDADES DE PUENTES:
+
+   1. Puentes de Gran Luz (Vehiculares y Peatonales)
+      ✅ 44 proyecto(s) asignado(s):
+         • PAVCOL - Ciclopuente Calle 98 (381.4 ton)
+         • Puente Vehicular Ovejas (535.7 ton)
+         • CASA - Puente Cascada (537.2 ton)
+         ... y 41 más
+
+   2. Puentes en Arco Metálicos
+      ✅ 44 proyecto(s) asignado(s):
+         • PAVCOL - Ciclopuente Calle 98 (381.4 ton)
+         • Puente Vehicular Ovejas (535.7 ton)
+         • CASA - Puente Cascada (537.2 ton)
+         ... y 41 más
+
+   3. Puentes Peatonales y de Acceso
+      ✅ 44 proyecto(s) asignado(s):
+         • PAVCOL - Ciclopuente Calle 98 (381.4 ton)
+         • Puente Vehicular Ovejas (535.7 ton)
+         • CASA - Puente Cascada (537.2 ton)
+         ... y 41 más
+
+   4. Puentes Colgantes (Vehiculares y Peatonales)
+      ✅ 44 proyecto(s) asignado(s):
+         • PAVCOL - Ciclopuente Calle 98 (381.4 ton)
+         • Puente Vehicular Ovejas (535.7 ton)
+         • CASA - Puente Cascada (537.2 ton)
+         ... y 41 más
+
+   5. Diseño Sísmico de Puentes
+      ✅ 44 proyecto(s) asignado(s):
+         • PAVCOL - Ciclopuente Calle 98 (381.4 ton)
+         • Puente Vehicular Ovejas (535.7 ton)
+         • CASA - Puente Cascada (537.2 ton)
+         ... y 41 más
+
+   6. Puentes Sociales para Comunidades Rurales
+      ✅ 44 proyecto(s) asignado(s):
+         • PAVCOL - Ciclopuente Calle 98 (381.4 ton)
+         • Puente Vehicular Ovejas (535.7 ton)
+         • CASA - Puente Cascada (537.2 ton)
+         ... y 41 más
+
+
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ INFRAESTRUCTURA URBANA                                                                           │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos reales: 4                                                                                │
+│ Total de especialidades: 6                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+📁 PROYECTOS REALES EN INFRAESTRUCTURA URBANA (4):
+
+    1. MHC - Estaciones Transmilenio Cra 11 y 19
+       Cliente: MHC
+       Descripción: Estaciones de Transmilenio Cra 11 y 19
+       📊 424.1 ton, N/A
+
+    2. null
+       Cliente: Surcolombiana de Gas S.A E.S.P.
+       Descripción: Tanques estacionarios horizontales de 3,000 galones cada uno
+       📊 NaN ton, N/A
+
+    3. Consorcio Metrovial SB - Terminal Intermedio
+       Cliente: Consorcio Metrovial Sb
+       Descripción: Terminal intermedio autopista Simon Bolivar parte 2
+       📊 654.0 ton, 8842 m²
+
+    4. Terminal Transportes - Cubierta Muelle Popayán
+       Cliente: TERMINAL DE TRNSPORTES POPAYÁN
+       Descripción: Cubierta muelle de embarque
+       📊 28.0 ton, N/A
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+🎯 ESPECIALIDADES DE INFRAESTRUCTURA URBANA:
+
+   1. Ciclopuentes y Pasarelas Peatonales
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+   2. Estaciones de Transporte Masivo
+      ✅ 2 proyecto(s) asignado(s):
+         • MHC - Estaciones Transmilenio Cra 11 y 19 (424.1 ton)
+         • null (NaN ton)
+
+   3. Terminales de Transporte Intermunicipal
+      ✅ 2 proyecto(s) asignado(s):
+         • Consorcio Metrovial SB - Terminal Intermedio (654.0 ton)
+         • Terminal Transportes - Cubierta Muelle Popayán (28.0 ton)
+
+   4. Puentes Urbanos de Conexión Vial
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+   5. Estructuras de Sombra y Pérgolas Urbanas
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+   6. Miradores y Torres de Observación
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ EDIFICACIONES                                                                                    │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos reales: 23                                                                               │
+│ Total de especialidades: 6                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+📁 PROYECTOS REALES EN EDIFICACIONES (23):
+
+    1. Omega - Ampliación Tercer Piso
+       Cliente: OMEGA
+       Descripción: Ampliacion Omega Tercer Piso
+       📊 7.9 ton, 263 m²
+
+    2. JJVM - Entre Bosques
+       Cliente: JJVM S.A.S.
+       Descripción: Entre Bosques
+       📊 4.9 ton, N/A
+
+    3. Sucroal - Edificio Cítrico
+       Cliente: Sucroal S.A
+       Descripción: Edificio Citrico
+       📊 166.0 ton, 1099 m²
+
+    4. Diego María Romero - Parqueadero Tequendama
+       Cliente: Diego María Romero
+       Descripción: Construccion estructura metalica edificio de 3 pisos para parqueadero.Tequendama Parking
+       📊 156.1 ton, 9633 m²
+
+    5. Bomberos Popayán - Edificio Administrativo
+       Cliente: Cuerpo de Bomberos Popayán
+       Descripción: Construcción edificio administrativo cuerpo de bomberos Popayán
+       📊 91.5 ton, 1085 m²
+
+    6. Omega - Edificio Nueva Sede
+       Cliente: Omega
+       Descripción: Construcción edificio nueva sede Seguridad Omega
+       📊 115.0 ton, 1633 m²
+
+    7. Constructora Colpatria - WTC Pacific
+       Cliente: CONSTRUCTORA COLPATRIA
+       Descripción: Edificio World Trade Center Pacific, estructura metálica y cubierta
+       📊 110.1 ton, N/A
+
+    8. Pollos Bucanero - Edificio Subproductos
+       Cliente: POLLOS BUCANERO
+       Descripción: Villagorgona - 3 Niveles y Cubierta  Subproductos
+       📊 23.0 ton, 245 m²
+
+    9. Pollos Bucanero - Edificio Subproductos
+       Cliente: POLLOS BUCANERO
+       Descripción: Villagorgona - 3 Niveles y Cubierta  Subproductos
+       📊 32.1 ton, N/A
+
+   10. Streleck & Cohen - Edificio Portal Plaza
+       Cliente: ABRAHAM STRELECK & ILLIAN COHEN
+       Descripción: Estructura metálica y cubierta edificio "Portal Plaza" en Cli
+       📊 140.0 ton, N/A
+
+   11. Astrelec - Edificio Parque 102
+       Cliente: ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio "Parque 102" en Cali
+       Descripción: ASTRELEC S.A.S. Estructura metálica y cubierta para el edificio "Parque 102" en Cali
+       📊 14.6 ton, 310 m²
+
+   12. Cely y Caicedo - Edificio Prado 2
+       Cliente: Ings. CELY y CAICEDO
+       Descripción: Estructura metálica y cubierta edificio PRADO 2 en Popayán
+       📊 15.0 ton, 220 m²
+
+   13. Comfacauca - Mezanine Oficinas Popayán
+       Cliente: COMFACAUCA
+       Descripción: Diseño y construcción de mezaninne para oficinas sede de Popayán
+       📊 NaN ton, 216 m²
+
+   14. Comfacauca - Canchas Centro Recreativo Pisojé
+       Cliente: COMFACAUCA
+       Descripción: Diseño y construcción de estructuras y cubiertas par canchas Centro Recreativo Pisojé.
+       📊 NaN ton, 2470 m²
+
+   15. Eka - Ampliación Fábrica Cali
+       Cliente: EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali
+       Descripción: EKA S.A. Estructuras metálicas  y entrepisos para la ampliación de la fábrica en Cali
+       📊 15.0 ton, N/A
+
+   16. Constructora Hernández Bohmer - Campestre Towers
+       Cliente: CONSTRUCTORA HERNANDEZ BOHMER
+       Descripción: Estructura metálica edificio Campestre Towers Cali
+       📊 16.0 ton, N/A
+
+   17. Colegio Colombo Británico - Cubierta Sede
+       Cliente: COLEGIO COLOMBO BRITÁNICO
+       Descripción: Estructura de Cubierta en sede de Cali
+       📊 NaN ton, 220 m²
+
+   18. DCI Arte - Sede Cali
+       Cliente: D.C.I. ARTE
+       Descripción: Estructuras y cubierta sede Cali
+       📊 15.0 ton, N/A
+
+   19. Velkar - Cubiertas Plazuela del Sur
+       Cliente: VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali
+       Descripción: VELKAR S.A.  Cubiertas parqueaderos edificio Plazuela del Sur en Cali
+       📊 NaN ton, 550 m²
+
+   20. Colegio Santa Isabel - Sede Cali Ciudad 2000
+       Cliente: COLEGIO STA. ISABEL DE HUNGRIA
+       Descripción: Estructura básica y de cubierta , obra civil y acabados en Sede Cali Ciudad 2000
+       📊 NaN ton, 1200 m²
+
+   21. Ing. Diego Carvajal - Banco Coopdesarrollo Jamundí
+       Cliente: Ing. DIEGO CARVAJAL
+       Descripción: Estructura metálica edificio Banco Coopdesarrollo en Jamundí
+       📊 NaN ton, 300 m²
+
+   22. Constructora Ayacar - Droguería Humanitaria
+       Cliente: CONSTRUCTORA AYACAR S.A
+       Descripción: Estructuras metálicas de cubierta y entrepisos Edificio Droguería Humanitaria de Cali
+       📊 NaN ton, 770 m²
+
+   23. Lotería del Cauca - Edificio Edgar Negret
+       Cliente: LOTERÍA DEL CAUCA
+       Descripción: Diseño y construcción estructuras  metálicas para el Edificio Edgar Negret Popayán
+       📊 NaN ton, 545 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+🎯 ESPECIALIDADES DE EDIFICACIONES:
+
+   1. Edificios Institucionales y de Oficinas
+      ✅ 21 proyecto(s) asignado(s):
+         • Omega - Ampliación Tercer Piso (7.9 ton)
+         • JJVM - Entre Bosques (4.9 ton)
+         • Sucroal - Edificio Cítrico (166.0 ton)
+         ... y 18 más
+
+   2. Parqueaderos Multinivel
+      ✅ 2 proyecto(s) asignado(s):
+         • Diego María Romero - Parqueadero Tequendama (156.1 ton)
+         • Velkar - Cubiertas Plazuela del Sur (NaN ton)
+
+   3. Edificios Culturales Emblemáticos
+      ✅ 17 proyecto(s) asignado(s):
+         • Omega - Ampliación Tercer Piso (7.9 ton)
+         • JJVM - Entre Bosques (4.9 ton)
+         • Sucroal - Edificio Cítrico (166.0 ton)
+         ... y 14 más
+
+   4. Colegios y Estructuras Educativas
+      ✅ 5 proyecto(s) asignado(s):
+         • Comfacauca - Canchas Centro Recreativo Pisojé (NaN ton)
+         • Eka - Ampliación Fábrica Cali (15.0 ton)
+         • DCI Arte - Sede Cali (15.0 ton)
+         ... y 2 más
+
+   5. Edificios de Altura
+      ✅ 17 proyecto(s) asignado(s):
+         • Omega - Ampliación Tercer Piso (7.9 ton)
+         • JJVM - Entre Bosques (4.9 ton)
+         • Sucroal - Edificio Cítrico (166.0 ton)
+         ... y 14 más
+
+   6. Ampliaciones a Edificios Existentes
+      ✅ 17 proyecto(s) asignado(s):
+         • Omega - Ampliación Tercer Piso (7.9 ton)
+         • JJVM - Entre Bosques (4.9 ton)
+         • Sucroal - Edificio Cítrico (166.0 ton)
+         ... y 14 más
+
+
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ DEPORTES & EDUCACIÓN                                                                             │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos reales: 18                                                                               │
+│ Total de especialidades: 6                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+📁 PROYECTOS REALES EN DEPORTES & EDUCACIÓN (18):
+
+    1. Consorcio GAMJ - Coliseo Menor Pereira
+       Cliente: Consorcio Deportivo GAMJ
+       Descripción: Coliseo Menor Pereira
+       📊 119.2 ton, N/A
+
+    2. UT Pereira - Complejo Acuático
+       Cliente: Unión Temporal Complejo Acuático Pereira
+       Descripción: Complejo Acuatico Pereira
+       📊 40.1 ton, N/A
+
+    3. Pontificia Javeriana - Cancha Múltiple Etapa 2
+       Cliente: Pontificia Universidad Javeriana
+       Descripción: Construccion de estructura y acabados, proyecto cancha multiple- etapa 2
+       📊 87.0 ton, 1228 m²
+
+    4. Royal Films - Graderías y Losas Único Neiva
+       Cliente: ROYAL FILMS S.A.S
+       Descripción: Construcción graderías y losas salas de cine UNICO NEIVA Y ADICIONALES
+       📊 61.5 ton, N/A
+
+    5. Maja - Coliseo Mundialista Korfball
+       Cliente: MAJA S.A.S.
+       Descripción: Estructura metálica y cubierta para el Coliseo Mundialista Korfball en Cali, Juegos Mundiales.
+       📊 216.0 ton, 3300 m²
+
+    6. Colegio Franciscanas - Coliseo Cubierto No. 2
+       Cliente: COLEGIO FRANCISCANAS
+       Descripción: Diseño y construcción del Coliseo Cubierto No. 2 en Popayán
+       📊 NaN ton, 750 m²
+
+    7. Argeu - Coliseo Artes Marciales
+       Cliente: ARGEU S.A.
+       Descripción: Coliseo de Artes Marciales para los Juegos Nacionales de Popayán
+       📊 196.0 ton, 4036 m²
+
+    8. Consorcio MJ 2011 - Coliseo Fútbol Sala
+       Cliente: CONSORCIO MJ 2011
+       Descripción: Coliseo de fútbol sala para los Juegos Nacionales de Popayán
+       📊 267.5 ton, 6133 m²
+
+    9. Fondo Mixto Deporte - Piscina Olímpica Popayán
+       Cliente: FONDO MIXTO PARA PROMOCIÓN DEL DEPORTE- Diseño y construcción estructura metálica y cubierta para la
+       Descripción: FONDO MIXTO PARA PROMOCIÓN DEL DEPORTE- Diseño y construcción estructura metálica y cubierta para la piscina olímpica, Juegos Nacionales de Popayán
+       📊 135.0 ton, 3557 m²
+
+   10. null
+       Cliente: MAJA S.A.S.
+       Descripción: Obra civil y estructura metálica para Coliseo Mayor
+       📊 NaN ton, N/A
+
+   11. Colegio Colombo Francés - Coliseo Popayán
+       Cliente: COLEGIO COLOMBO FRANCES
+       Descripción: POPAYÁN Coliseo Cubierto para el Colegio
+       📊 NaN ton, 896 m²
+
+   12. Comité Cafeteros Cauca - Coliseo Timbío
+       Cliente: COMITÉ CAFETEROS CAUCA
+       Descripción: Estructura metálica Coliseo  Cubierto  Timbío
+       📊 18.5 ton, N/A
+
+   13. Municipio Miranda - Coliseo Plaza Principal
+       Cliente: MUNICIPIO DE MIRNDA
+       Descripción: CAUCA. Diseño y construcción Coliseo Cubierto Plaza Principal
+       📊 NaN ton, 1912 m²
+
+   14. Colegio Sta. Isabel de Hungría - Coliseo
+       Cliente: COLEGIO STA. ISABEL DE HUNGRÍA
+       Descripción: CALI diseño y construcción de estructura metálica para Coliseo Deportivo Dúplex en la ciudad de Cali.
+       📊 NaN ton, 1650 m²
+
+   15. Plan Colombia - 5 Coliseos Cauca
+       Cliente: Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos de
+       Descripción: Ings. AURA TULIA URBANO, REGINA SOLARTE y EDUARDO CASTRILLON, estructuras metálicas para Coliseos del Plan Colombia en Almaguer,Cajibío, Morales, Caldono y Florencia- Depto. Del Cauca
+       📊 231.0 ton, N/A
+
+   16. Municipio Popayán - 10 Coliseos Barrios
+       Cliente: MUNICIPIO DE POPAYÁN, GOBERNACIÓN DEL CAUCA Y OTRAS ENTIDADES
+       Descripción: Diseño y construcción de Coliseos Polideportivos en los barrios Palacé, Alfonso López, La Esmeralda, Pandiguando, Chuni, Colegio Negret, Berlín, Sauces, Independencia y La Paz
+       📊 NaN ton, 8650 m²
+
+   17. Entidades Dptal. y Municipal - 7 Coliseos
+       Cliente: ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en San
+       Descripción: ENTIDADES DE ORDEN DEPARTAMENTAL Y MUNICIPAL Diseño y Construcción de Coliseos Polideportivos en Santa Rosa, Piendamó, Corinto, La Sierra, Timbiquí y Santander de Quilichao (Cauca) y Tumaco (Nariño)
+       📊 NaN ton, 9000 m²
+
+   18. Universidad del Cauca - Coliseo Campus
+       Cliente: UNIVERSIDAD DEL CAUCA
+       Descripción: Diseño y construcción Coliseo Cubierto en el Campus de Popayán
+       📊 NaN ton, 1632 m²
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+
+🎯 ESPECIALIDADES DE DEPORTES & EDUCACIÓN:
+
+   1. Coliseos para Eventos Internacionales
+      ✅ 14 proyecto(s) asignado(s):
+         • Consorcio GAMJ - Coliseo Menor Pereira (119.2 ton)
+         • Maja - Coliseo Mundialista Korfball (216.0 ton)
+         • Colegio Franciscanas - Coliseo Cubierto No. 2 (NaN ton)
+         ... y 11 más
+
+   2. Cubiertas de Grandes Luces sin Columnas
+      ✅ 2 proyecto(s) asignado(s):
+         • Maja - Coliseo Mundialista Korfball (216.0 ton)
+         • Fondo Mixto Deporte - Piscina Olímpica Popayán (135.0 ton)
+
+   3. Graderías y Estructuras de Soporte de Público
+      ❌ NO HAY PROYECTOS REALES que encajen
+
+   4. Torres Metálicas para Iluminación Deportiva
+      ✅ 8 proyecto(s) asignado(s):
+         • Maja - Coliseo Mundialista Korfball (216.0 ton)
+         • Argeu - Coliseo Artes Marciales (196.0 ton)
+         • Consorcio MJ 2011 - Coliseo Fútbol Sala (267.5 ton)
+         ... y 5 más
+
+   5. Piscinas Cubiertas y Complejos Acuáticos
+      ✅ 3 proyecto(s) asignado(s):
+         • UT Pereira - Complejo Acuático (40.1 ton)
+         • Maja - Coliseo Mundialista Korfball (216.0 ton)
+         • Fondo Mixto Deporte - Piscina Olímpica Popayán (135.0 ton)
+
+   6. Cubiertas Tensionadas y Membranas
+      ✅ 2 proyecto(s) asignado(s):
+         • Maja - Coliseo Mundialista Korfball (216.0 ton)
+         • Fondo Mixto Deporte - Piscina Olímpica Popayán (135.0 ton)
+
+
+====================================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ RESUMEN GLOBAL                                                                                   │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Total de proyectos analizados: 252                                                                        │
+│ Proyectos sin categoría clara: 79                                                                         │
+│ Especialidades analizadas: 36                                                                            │
+│ Especialidades SIN proyectos: 7                                                                            │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+⚠️  ACCIÓN REQUERIDA:
+   7 especialidades NO tienen proyectos reales asignados.
+   Estas especialidades deben ser ELIMINADAS o RENOMBRADAS.
+

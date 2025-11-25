@@ -50,10 +50,10 @@ export function ExpertiseTransitionSection() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="mb-6"
           >
-            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-white leading-none">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-white leading-none" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
               EXPERTOS
             </h2>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bebas uppercase text-white leading-tight -mt-2">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bebas uppercase text-white leading-tight -mt-2" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
               en Acero
             </h3>
           </motion.div>
@@ -64,7 +64,8 @@ export function ExpertiseTransitionSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-lato leading-relaxed mb-8 bg-black/40 px-2 py-2 rounded-lg"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-lato leading-relaxed mb-8"
+            style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}
           >
             Cada detalle bajo control: planeación, tecnología BIM, presupuesto, ingeniería, diseño de conexiones, detallado, fabricación y montaje. El ciclo completo en nuestras manos.
           </motion.p>
@@ -84,7 +85,7 @@ export function ExpertiseTransitionSection() {
               <span className="absolute left-0 top-0 h-full w-1.5 bg-blue-600 transition-all duration-500 ease-out group-hover:w-full z-0"></span>
 
               {/* Texto del botón */}
-              <span className="relative z-10 inline-flex items-center gap-2 px-8 py-2 text-white font-lato font-bold text-sm md:text-base lg:text-lg transition-colors duration-500 group-hover:text-white whitespace-nowrap">
+              <span className="relative z-10 inline-flex items-center gap-2 px-8 py-2 text-white font-lato font-bold text-sm md:text-base lg:text-lg transition-colors duration-500 group-hover:text-white whitespace-nowrap" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
                 Conoce Nuestros Procesos & Tecnologías
                 <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 opacity-0 transition-all duration-300 transform group-hover:opacity-100 group-hover:translate-x-1" />
               </span>

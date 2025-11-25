@@ -1,0 +1,50 @@
+{
+  "nombre": "Comercial",
+  "especialidades": [
+    {
+      "id": "esp_1764013852971_ytc6xicza",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Estructuras de Gran Luz",
+      "descripcion": "¿Necesita un espacio comercial amplio sin columnas que estorben? Las estructuras metálicas le dan **espacios completamente libres** donde puede distribuir sus locales como quiera. El sistema modular aprovecha cada metro cuadrado para **maximizar su área rentable**.\n\nCuando sus inquilinos cambien o renueven, puede **adaptar el espacio fácilmente** sin tocar la estructura. Ideal para centros comerciales, supermercados o grandes superficies donde necesita flexibilidad total para que su negocio crezca y evolucione con el mercado.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Supermercados",
+        "Hipermercados"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_jf14pxlhk",
+      "icono": "Building2",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+      "titulo": "Cubiertas y Fachadas Metálicas",
+      "descripcion": "¿Busca proteger su local comercial con cubiertas que duren años? Trabajamos con **sistemas impermeables** de alta duración que combinan protección estructural con **estética moderna** que atrae clientes a su negocio.\n\nLa construcción en acero **reduce sus tiempos de obra** significativamente comparado con métodos tradicionales. Esto significa que puede **abrir más rápido** y empezar a generar ingresos antes. Perfecto para retail, locales comerciales y edificios donde la imagen y velocidad son críticas.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Tiendas comerciales",
+        "Edificios comerciales",
+        "Locales retail"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_iyouaxqby",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+      "descripcion": "¿Quiere duplicar su espacio sin ampliar el edificio? Con entrepisos metálicos puede crear **dos o más niveles** donde antes tenía uno solo. Sistema desmontable que le permite **reconfigurar completamente** si cambia el uso de su espacio.\n\n**Maximice la rentabilidad** de su inmueble creando área adicional para almacenamiento o venta sin gastar en expansión horizontal. Soporta cargas pesadas de inventario y tránsito de público. Ideal para retail, bodegas y puntos de venta donde cada metro cuadrado cuenta.",
+      "proyectosEjemplo": [
+        "Bodegas comerciales",
+        "Entrepisos comerciales",
+        "Locales multinivel",
+        "Salas de cine",
+        "Puntos de venta"
+      ]
+    }
+  ]
+}

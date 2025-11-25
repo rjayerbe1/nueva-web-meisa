@@ -1,0 +1,50 @@
+{
+  "nombre": "Comercial",
+  "especialidades": [
+    {
+      "id": "esp_1764013852971_ytc6xicza",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Estructuras de Gran Luz",
+      "descripcion": "¿Necesita un espacio amplio sin columnas en el medio? **\"Gran luz\"** significa que la estructura puede cubrir distancias largas (20, 30 o más metros) sin necesitar apoyos intermedios. Esto le da **libertad total** para distribuir su espacio comercial como quiera.\n\nSin columnas de por medio, puede ubicar góndolas, locales o exhibidores donde prefiera. La estructura soporta todo el peso desde los bordes, dejando **todo el interior libre** para su negocio. Ideal para supermercados, centros comerciales y grandes superficies.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Supermercados",
+        "Hipermercados"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_jf14pxlhk",
+      "icono": "Building2",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+      "titulo": "Cubiertas y Fachadas Metálicas",
+      "descripcion": "¿Busca un techo durable o una fachada moderna para su edificio? Las **cubiertas metálicas** son los techos de acero que protegen su espacio de lluvia y sol. Las **fachadas metálicas** son los cerramientos exteriores que dan imagen y protección a su edificio.\n\nAmbas se fabrican en taller y se instalan rápido, reduciendo tiempo de obra. La cubierta resiste décadas sin goteras. La fachada le da un **aspecto moderno y profesional** que atrae clientes. Juntas protegen y embellecen su local comercial.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Tiendas comerciales",
+        "Edificios comerciales",
+        "Locales retail"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_iyouaxqby",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+      "descripcion": "¿Quiere aprovechar la altura de su local creando un segundo nivel? Un **entrepiso** (o mezanine) es una plataforma metálica que se instala dentro de su espacio, creando un piso adicional sin construir un edificio nuevo.\n\nDuplica su área útil usando el espacio vertical que ya tiene. Se puede **desarmar y reubicar** si cambia de local. Soporta cargas pesadas de mercancía o tránsito de público. Perfecto cuando necesita más espacio pero no puede expandirse horizontalmente.",
+      "proyectosEjemplo": [
+        "Bodegas comerciales",
+        "Entrepisos comerciales",
+        "Locales multinivel",
+        "Salas de cine",
+        "Puntos de venta"
+      ]
+    }
+  ]
+}

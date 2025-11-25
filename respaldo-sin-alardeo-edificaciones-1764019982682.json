@@ -1,0 +1,50 @@
+{
+  "nombre": "Edificaciones",
+  "especialidades": [
+    {
+      "id": "esp_1764015210449_f641ck2jb",
+      "icono": "Building",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Pórticos Metálicos de Múltiples Niveles",
+      "descripcion": "Estructuras de acero para edificios de múltiples pisos mediante sistemas de pórticos. MEISA ha construido edificios administrativos, sedes corporativas y edificios institucionales.\n\nModulación amplia permite **plantas libres** sin muros de carga, facilitando distribución interior variable según necesidades. Losas colaborantes integradas con vigas **reducen tiempos de construcción**. Fachadas livianas se cuelgan de la estructura permitiendo grandes áreas vidriadas. **Diseño sismorresistente** cumpliendo NSR-10.",
+      "proyectosEjemplo": [
+        "Edificios de oficinas",
+        "Sedes administrativas",
+        "Edificios gubernamentales",
+        "Museos",
+        "Teatros"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_k4rxp6apf",
+      "icono": "Car",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&q=80",
+      "titulo": "Estructuras Metálicas para Estacionamiento",
+      "descripcion": "Estructuras metálicas que **maximizan vehículos estacionados** mediante apilamiento vertical. MEISA ha construido parqueaderos multinivel con rampas que conectan niveles para circulación vehicular cómoda.\n\nVigas metálicas soportan losas que resisten tránsito vehicular pesado. Modulación optimizada **maximiza el número de cajones** por metro cuadrado construido. **Ventilación natural** mediante fachadas abiertas elimina sistemas mecánicos de extracción de gases reduciendo costos operativos.",
+      "proyectosEjemplo": [
+        "Parqueaderos multinivel",
+        "Estacionamientos",
+        "Edificios de parqueo"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_lo0a23zot",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+      "titulo": "Estructuras Livianas Modulares",
+      "descripcion": "Estructuras metálicas prefabricadas en módulos para **construcción rápida**. MEISA ha realizado ampliaciones verticales y laterales a edificios existentes **sin interrumpir operaciones**.\n\nLas estructuras se fabrican en taller, transportan en secciones y ensamblan mediante conexiones atornilladas. **Construcción rápida** reduce el período de obra significativamente. Ligereza del acero minimiza cargas sobre cimentaciones existentes. **Montaje nocturno** o en fines de semana permite operación diurna continua.",
+      "proyectosEjemplo": [
+        "Colegios",
+        "Estructuras educativas",
+        "Ampliaciones verticales",
+        "Expansiones laterales"
+      ]
+    }
+  ]
+}

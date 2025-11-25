@@ -45,7 +45,6 @@ interface Categoria {
   updatedAt: Date
   // Nuevos campos para contenido ampliado
   descripcionAmpliada: string | null
-  beneficios: any[] | null
   procesoTrabajo: any[] | null
   estadisticas: any | null
   casosExitoIds: string[] | null

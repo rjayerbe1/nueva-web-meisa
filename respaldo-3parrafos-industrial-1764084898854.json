@@ -1,0 +1,47 @@
+[
+  {
+    "id": "esp_1764015191932_j1scwxiax",
+    "icono": "Warehouse",
+    "orden": 1,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80",
+    "titulo": "Naves Industriales de Gran Luz",
+    "descripcion": "¿Necesita una bodega, centro de distribución o hangar?\n\nEstas operaciones requieren **grandes espacios sin columnas** donde montacargas, racks y equipos se muevan libremente. Toda la altura queda disponible para almacenamiento vertical con sistemas de estantería de múltiples niveles.\n\nSi su operación crece, puede **agregar módulos** sin afectar lo existente ni parar actividades. Fabricamos en taller y montamos rápido para que arranque operaciones lo antes posible.",
+    "proyectosEjemplo": [
+      "Bodegas industriales",
+      "Centros de distribución",
+      "Hangares",
+      "Almacenes"
+    ]
+  },
+  {
+    "id": "esp_1764015191932_v5ene1yyt",
+    "icono": "Factory",
+    "orden": 2,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1586864387634-daa74dca8f6e?w=800&q=80",
+    "titulo": "Edificios Industriales de Múltiples Niveles",
+    "descripcion": "¿Su proceso de producción necesita varios pisos conectados?\n\nAlgunos procesos industriales como plantas farmacéuticas o ingenios requieren flujos verticales donde materiales bajan por gravedad o suben entre niveles. Los pisos soportan **maquinaria pesada** sin transmitir vibraciones a niveles vecinos.\n\nResisten ambientes con químicos o humedad constante. Puede **ampliar sin parar producción** porque construimos al lado mientras usted sigue operando normalmente.",
+    "proyectosEjemplo": [
+      "Plantas farmacéuticas",
+      "Ingenios azucareros",
+      "Edificios de producción",
+      "Plantas industriales"
+    ]
+  },
+  {
+    "id": "esp_1764015191932_rnimp72r2",
+    "icono": "Snowflake",
+    "orden": 3,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+    "titulo": "Estructuras Especializadas de Alta Resistencia",
+    "descripcion": "¿Su planta tiene cuartos fríos, cámaras de refrigeración o ambientes corrosivos?\n\nEstas condiciones especiales destruyen estructuras convencionales. Necesita una solución diseñada para **resistir su ambiente particular**: temperatura extrema, químicos agresivos o vibración constante de maquinaria.\n\nPara cuartos fríos, minimizamos puentes térmicos que le cuestan energía. Para ambientes corrosivos, usamos recubrimientos especiales. **Cada estructura se diseña** según sus condiciones específicas.",
+    "proyectosEjemplo": [
+      "Cuartos fríos",
+      "Cámaras de refrigeración",
+      "Plantas de proceso",
+      "Estructuras anticorrosivas"
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "nombre": "Edificaciones",
+  "especialidades": [
+    {
+      "id": "esp_1764015210449_f641ck2jb",
+      "icono": "Building",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Pórticos Metálicos de Múltiples Niveles",
+      "descripcion": "¿Necesita un edificio de varios pisos con espacios flexibles? Los **pórticos metálicos** son marcos estructurales de acero (columnas + vigas) que soportan el edificio y permiten plantas completamente libres, sin muros de carga que limiten la distribución interior.\n\nPuede organizar oficinas, salones o locales como quiera, y **reorganizar después** sin tocar la estructura. Las fachadas van colgadas del pórtico, permitiendo grandes ventanales. Construcción más rápida que en concreto. Cumple norma sísmica NSR-10.",
+      "proyectosEjemplo": [
+        "Edificios de oficinas",
+        "Sedes administrativas",
+        "Edificios gubernamentales",
+        "Museos",
+        "Teatros"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_k4rxp6apf",
+      "icono": "Car",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&q=80",
+      "titulo": "Estructuras Metálicas para Estacionamiento",
+      "descripcion": "¿Necesita más parqueaderos pero tiene poco terreno? Las **estructuras para estacionamiento** son edificios metálicos de varios niveles diseñados específicamente para apilar vehículos en vertical, multiplicando la capacidad de parqueo en el mismo terreno.\n\nLas rampas conectan los niveles para circulación cómoda de carros. La **ventilación natural** por fachadas abiertas elimina extractores mecánicos, reduciendo costos de operación. Se construye más rápido que en concreto, generando ingresos antes.",
+      "proyectosEjemplo": [
+        "Parqueaderos multinivel",
+        "Estacionamientos",
+        "Edificios de parqueo"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_lo0a23zot",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+      "titulo": "Estructuras Livianas Modulares",
+      "descripcion": "¿Necesita ampliar su edificio sin parar operaciones? Las **estructuras modulares** son sistemas prefabricados livianos que se fabrican en taller por módulos y se ensamblan rápido en sitio, como un sistema de piezas que encajan.\n\nPor ser livianas, se pueden montar sobre **edificios existentes** sin reforzar cimentaciones. Instalamos de noche o fines de semana para no interrumpir su operación diurna. Perfecto para ampliaciones de colegios, clínicas u oficinas donde no puede parar actividades.",
+      "proyectosEjemplo": [
+        "Colegios",
+        "Estructuras educativas",
+        "Ampliaciones verticales",
+        "Expansiones laterales"
+      ]
+    }
+  ]
+}

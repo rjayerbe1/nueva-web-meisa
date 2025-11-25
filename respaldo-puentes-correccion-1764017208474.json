@@ -1,0 +1,49 @@
+{
+  "nombre": "Puentes",
+  "especialidades": [
+    {
+      "id": "esp_1764017062145_kx51h5mtc",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      "titulo": "Puentes de Vigas y Cerchas",
+      "descripcion": "Puentes metálicos mediante vigas cajón o cerchas reticuladas para tráfico vehicular y peatonal. MEISA ha construido más de 35 puentes con luces hasta 212 metros. Fabricación en taller con control de calidad certificado, montaje por dovelas que reduce cierres de vía. Diseño sismorresistente cumpliendo NSR-10. Incluye puentes vehiculares de gran luz y peatonales estándar. Acabados anticorrosivos para décadas de vida útil. Instalación nocturna permite mantener tráfico diurno.",
+      "proyectosEjemplo": [
+        "Puente Ovejas (535 ton)",
+        "Puente Cascada (537 ton)",
+        "Ciclopuente Calle 98",
+        "Puentes vehiculares"
+      ]
+    },
+    {
+      "id": "esp_1764017062145_7j9xzocga",
+      "icono": "Arc",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1577791465033-6aa3e486f9d7?w=800&q=80",
+      "titulo": "Puentes en Arco Metálico",
+      "descripcion": "Puentes con geometría en arco que aprovechan la compresión del acero para salvar luces importantes con altura limitada. MEISA ha construido el Puente Arco Saraconcho de 150 metros, proyecto emblemático donde el arco transfiere cargas lateralmente a los estribos eliminando momentos en el centro. Ideal cuando hay restricciones de altura pero se requiere luz considerable. Prefabricación de dovelas de arco permite montaje progresivo. El acabado arquitectónico del arco se convierte en elemento icónico que identifica el sector.",
+      "proyectosEjemplo": [
+        "Puente Arco Saraconcho (150m)",
+        "Viaductos urbanos",
+        "Puentes emblemáticos"
+      ]
+    },
+    {
+      "id": "esp_1764017062145_m1siygbes",
+      "icono": "Users",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&q=80",
+      "titulo": "Puentes Livianos y Comunitarios",
+      "descripcion": "Puentes metálicos ligeros que conectan comunidades mediante estructuras peatonales, colgantes y rurales. MEISA ha construido más de 20 puentes livianos incluyendo pasarelas peatonales de 30 a 80 metros con rampas accesibles, 3 puentes colgantes para cruzar ríos y cañones, y múltiples puentes comunitarios que conectan veredas aisladas. Estructura prefabricada permite instalación rápida sin maquinaria pesada. Galvanizado elimina mantenimiento en zonas de difícil acceso. Diseño resistente a crecientes con altura libre adecuada.",
+      "proyectosEjemplo": [
+        "Puentes peatonales (10+)",
+        "Puentes colgantes (3)",
+        "Puentes comunitarios Tierradentro",
+        "Accesos rurales"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "esp_1764017208450_b6j5z5m27",
+    "icono": "Bridge",
+    "orden": 1,
+    "activo": true,
+    "imagen": "https://storage.googleapis.com/meisa-imagenes/categories/1764019518771-dl7018.jpg",
+    "titulo": "Puentes de Vigas y Cerchas",
+    "descripcion": "¿Necesita un puente vehicular, viaducto o ciclopuente?\n\nEstos proyectos de infraestructura requieren estructuras que soporten tráfico pesado y cumplan normativa sísmica. Trabajamos con vigas para luces moderadas y cerchas para distancias mayores, eligiendo el sistema según su proyecto.\n\nFabricamos en taller y montamos por dovelas o con **lanzamiento incremental** según las condiciones de su obra. Todo cumple **norma sísmica NSR-10**. Usted elige el método que mejor funcione.",
+    "proyectosEjemplo": [
+      "Puentes vehiculares",
+      "Viaductos",
+      "Ciclopuentes",
+      "Puentes peatonales"
+    ]
+  },
+  {
+    "id": "esp_1764017208450_h29jfvp1t",
+    "icono": "Arc",
+    "orden": 2,
+    "activo": true,
+    "imagen": "",
+    "titulo": "Puentes en Arco Metálico",
+    "descripcion": "¿Su puente debe cruzar un río o vía con restricciones de altura?\n\nCuando no hay espacio vertical suficiente para vigas convencionales, el arco metálico resuelve el problema empujando las cargas hacia los lados. Puede salvar distancias importantes sin estructuras muy altas sobre la vía inferior.\n\nAdemás de funcional, el arco le da al puente un **aspecto emblemático** que se convierte en referencia del sector. Combina ingeniería eficiente con valor arquitectónico.",
+    "proyectosEjemplo": [
+      "Puentes en arco",
+      "Viaductos urbanos",
+      "Puentes emblemáticos"
+    ]
+  },
+  {
+    "id": "esp_1764017208450_em7fmu5wh",
+    "icono": "Users",
+    "orden": 3,
+    "activo": true,
+    "imagen": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&q=80",
+    "titulo": "Puentes Peatonales",
+    "descripcion": "¿Necesita conectar barrios, cruzar avenidas o dar acceso a estaciones?\n\nLos puentes peatonales son estructuras livianas que se instalan **mucho más rápido** que opciones en concreto. Podemos montar de noche o fines de semana sin cerrar vías principales durante el día.\n\nIncluyen rampas para personas con movilidad reducida. Algunos proyectos incluyen puentes colgantes para zonas rurales donde no hay acceso para equipos pesados. **Instalación rápida** que minimiza impacto en la ciudad.",
+    "proyectosEjemplo": [
+      "Puentes peatonales",
+      "Pasarelas urbanas",
+      "Puentes colgantes",
+      "Puentes comunitarios"
+    ]
+  }
+]

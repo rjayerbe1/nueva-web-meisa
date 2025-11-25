@@ -1,0 +1,50 @@
+{
+  "nombre": "Industrial",
+  "especialidades": [
+    {
+      "id": "esp_1764015191932_j1scwxiax",
+      "icono": "Warehouse",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80",
+      "titulo": "Naves Industriales de Gran Luz",
+      "descripcion": "¿Necesita una bodega grande donde montacargas y equipos se muevan libremente? Las **naves de gran luz** son bodegas que cubren distancias amplias (30, 40 o más metros) sin columnas intermedias. Todo el espacio interior queda libre para su operación.\n\nAprovecha toda la altura para racks de almacenamiento vertical. Si después necesita más espacio, puede **agregar módulos** sin tocar lo existente. Se fabrica en taller y se monta rápido en sitio. Perfecto para centros de distribución, hangares y operaciones logísticas.",
+      "proyectosEjemplo": [
+        "Bodegas industriales",
+        "Centros de distribución",
+        "Hangares",
+        "Almacenes"
+      ]
+    },
+    {
+      "id": "esp_1764015191932_v5ene1yyt",
+      "icono": "Factory",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1586864387634-daa74dca8f6e?w=800&q=80",
+      "titulo": "Edificios Industriales de Múltiples Niveles",
+      "descripcion": "¿Su proceso de producción necesita varios pisos conectados? Los **edificios industriales multinivel** son estructuras de varios pisos diseñadas para alojar maquinaria, producción y almacenamiento en vertical, aprovechando mejor el terreno disponible.\n\nLos pisos soportan cargas pesadas de equipos **sin transmitir vibraciones** entre niveles. Si trabaja con químicos o humedad, la estructura resiste esos ambientes. Puede **seguir produciendo** mientras construimos la ampliación al lado.",
+      "proyectosEjemplo": [
+        "Plantas farmacéuticas",
+        "Ingenios azucareros",
+        "Edificios de producción",
+        "Plantas industriales"
+      ]
+    },
+    {
+      "id": "esp_1764015191932_rnimp72r2",
+      "icono": "Snowflake",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+      "titulo": "Estructuras Especializadas de Alta Resistencia",
+      "descripcion": "¿Su operación tiene condiciones especiales? Las **estructuras especializadas** se diseñan para casos particulares: cuartos fríos que necesitan aislar temperatura, plantas con vapores corrosivos, o procesos con vibración constante de maquinaria.\n\nCada caso lo analizamos y diseñamos específicamente para sus condiciones. Si es **cuarto frío**, minimizamos puentes térmicos para ahorrar energía. Si hay corrosión, usamos recubrimientos especiales. Su estructura se adapta a sus requerimientos únicos.",
+      "proyectosEjemplo": [
+        "Cuartos fríos",
+        "Cámaras de refrigeración",
+        "Plantas de proceso",
+        "Estructuras anticorrosivas"
+      ]
+    }
+  ]
+}

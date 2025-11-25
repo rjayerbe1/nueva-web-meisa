@@ -1,0 +1,50 @@
+{
+  "nombre": "Comercial",
+  "especialidades": [
+    {
+      "id": "esp_1764013852971_ytc6xicza",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Estructuras de Gran Luz",
+      "descripcion": "Estructuras metálicas que permiten espacios comerciales amplios sin columnas intermedias que obstruyan la circulación o distribución de locales. MEISA ha construido centros comerciales hasta 30,000 m² con luces de gran claro que maximizan el área rentable. Sistema modular que facilita futuras remodelaciones según cambien los inquilinos. Ideal para supermercados, centros comerciales y grandes superficies donde la flexibilidad espacial es clave para el negocio.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Supermercados",
+        "Hipermercados"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_jf14pxlhk",
+      "icono": "Building2",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+      "titulo": "Cubiertas y Fachadas Metálicas",
+      "descripcion": "Cubiertas metálicas que protegen espacios comerciales con sistemas impermeables de larga duración. MEISA ha instalado sistemas standing seam en múltiples locales comerciales y centros comerciales. Fachadas metálicas que combinan funcionalidad estructural con estética arquitectónica moderna. Reducen tiempos de construcción comparado con sistemas tradicionales. Ideales para proyectos retail, locales comerciales y edificios donde la imagen es importante para atraer clientes.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Tiendas comerciales",
+        "Edificios comerciales",
+        "Locales retail"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_iyouaxqby",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+      "descripcion": "Estructuras que duplican el área útil sin ampliar la huella del edificio. MEISA ha construido entrepisos metálicos en locales comerciales y bodegas que soportan cargas pesadas de inventario y público. Sistema desmontable que permite reconfiguración si cambia el uso del espacio. Maximizan rentabilidad al crear dos o más niveles donde antes había uno. Aplicable en retail, bodegas comerciales y puntos de venta.",
+      "proyectosEjemplo": [
+        "Bodegas comerciales",
+        "Entrepisos comerciales",
+        "Locales multinivel",
+        "Salas de cine",
+        "Puntos de venta"
+      ]
+    }
+  ]
+}

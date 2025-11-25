@@ -1,0 +1,765 @@
+[
+  {
+    "id": "cmiah5t3100038txd2fixukin",
+    "key": "INFRAESTRUCTURA_URBANA",
+    "nombre": "Infraestructura Urbana",
+    "descripcion": "Estaciones de transporte público, mobiliario urbano y estructuras para infraestructura pública",
+    "slug": "infraestructura-urbana",
+    "imagenCover": "https://storage.googleapis.com/meisa-imagenes/categories/1763571527577-60q30f.jpg",
+    "icono": "image:cubiertas-y-fachadas",
+    "color": "#7c3aed",
+    "colorSecundario": "#8b5cf6",
+    "metaTitle": "",
+    "metaDescription": "",
+    "orden": 4,
+    "visible": true,
+    "destacada": false,
+    "totalProyectos": 8,
+    "createdAt": "2025-11-22T15:59:38.365Z",
+    "updatedAt": "2025-11-24T16:29:07.711Z",
+    "overlayColor": "#000000",
+    "overlayOpacity": 0,
+    "hoverOverlayColor": "#1e40af",
+    "hoverOverlayOpacity": 0.2,
+    "enableHoverOverlay": true,
+    "beneficios": [
+      "Estaciones de transporte masivo",
+      "Terminales de alta capacidad",
+      "Ciclopuentes y movilidad sostenible",
+      "Obras escultóricas urbanas",
+      "Infraestructura antisísmica"
+    ],
+    "descripcionAmpliada": "",
+    "estadisticas": {},
+    "procesoTrabajo": null,
+    "casosExitoIds": [],
+    "especialidades": [
+      {
+        "id": "esp-1763997526524-0",
+        "icono": "Star",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Estaciones de Transporte Masivo (MIO/TransMilenio)",
+        "metricas": [
+          "424 ton"
+        ],
+        "descripcion": "Las estaciones de transporte masivo son nodos urbanos críticos: estructuras que protegen miles de usuarios diariamente, facilitan flujos peatonales intensos y resisten vandalismo sin mantenimiento constante. MEISA construye estaciones metálicas para sistemas BRT con cubiertas de gran luz que eliminan columnas obstruyendo circulación, estructuras livianas que cargan mínimamente viaductos existentes y acabados industriales que resisten uso público intenso. Con experiencia en Estaciones TransMilenio Bogotá (424 toneladas) y terminales MIO Cali, dominamos ingeniería urbana que integra accesibilidad universal, protección climática eficiente y diseños que resisten décadas de uso por millones de usuarios anuales. Cada estación se calcula para cargas de multitud concentrada, vientos urbanos amplificados por edificios circundantes y vibraciones de buses frenando repetidamente: estructuras que deben funcionar impecablemente 18 horas diarias durante 30+ años sin cerrar para mantenimiento porque sistema de transporte público no puede parar operación sin colapsar movilidad urbana completamente.",
+        "proyectosEjemplo": [
+          "Estaciones TransMilenio Bogot"
+        ]
+      },
+      {
+        "id": "esp-1763997526524-1",
+        "icono": "Bus",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Terminales de Transporte Intermunicipal",
+        "metricas": [],
+        "descripcion": "Los terminales de transporte son infraestructura de movilidad regional: muelles de embarque que protegen pasajeros, cubiertas de grandes luces que cubren andenes y estructuras que organizan flujos de miles diarios eficientemente. MEISA diseña terminales con cubiertas metálicas de gran luz que eliminan goteras sobre andenes, estructuras que integran comercio y servicios, y sistemas que facilitan expansiones futuras modulares. Cada terminal se planifica para operación 24/7 continua, considera seguridad contra incendios en espacios públicos masivos y diseña para mantenibilidad que permite limpiezas profundas sin cerrar operación. Con experiencia en terminales que mueven decenas de miles de pasajeros mensualmente, entendemos que estas estructuras anclan economías regionales: cada hora de cierre por mantenimiento cuesta millones en productividad perdida, cada goteo genera quejas ciudadanas y cada falla estructural compromete reputación de operador durante años de servicio público visible donde cada defecto se magnifica mediáticamente multiplicando impacto negativo exponencialmente.",
+        "proyectosEjemplo": [
+          "terminales que mueven decenas de miles de pasajeros mensualmente"
+        ]
+      },
+      {
+        "id": "esp-1763997526524-2",
+        "icono": "Star",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Puentes Peatonales Integrados con Transporte",
+        "metricas": [
+          "273 ton"
+        ],
+        "descripcion": "Los puentes peatonales integrados con estaciones son sistemas multimodales complejos: estructuras que conectan estaciones con aceras opuestas, facilitan transbordos entre rutas y organizan flujos de miles en espacios reducidos. MEISA diseña infraestructura integrada que combina cubierta de estación con puente peatonal en estructura única optimizada, minimiza pilares en intersecciones críticas y crea experiencia de usuario fluida sin escaleras innecesarias. Con experiencia en proyectos de 273 toneladas que combinan Estación Calle 19 con Puente Av. Esperanza Norte, dominamos complejidad de diseñar sistemas donde estructura sirve múltiples funciones simultáneamente: protege usuarios esperando buses, conecta aceras separadas por autopistas y facilita transferencias peatonales entre rutas diversas sin congestión que frustra usuarios dependientes de transporte público como única opción movilidad diaria económicamente viable para mayorías urbanas sin vehículo particular.",
+        "proyectosEjemplo": [
+          "s de"
+        ]
+      },
+      {
+        "id": "esp-1763997526524-3",
+        "icono": "Star",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Obras Urbanas Escultóricas",
+        "metricas": [
+          "16 ton",
+          "10 m"
+        ],
+        "descripcion": "Las obras urbanas escultóricas son arte estructural a escala monumental: esculturas metálicas que definen identidad urbana, requieren ingeniería de vientos complejos y resisten décadas sin mantenimiento visible. MEISA fabrica esculturas arquitectónicas como monumentos \"Tierradentro\" (16 toneladas) que combinan significado cultural con resistencia estructural: análisis de vientos que previenen resonancia destructiva, cimentaciones que anclan sin afectar servicios subterráneos y acabados que resisten corrosión atmosférica sin deterioro estético visible. Cada obra escultórica urbana se diseña considerando visual desde múltiples ángulos circulatorios, iluminación nocturna integrada estructuralmente y geometrías complejas que convierten visión artística en realidad construida: soldaduras invisibles que no interrumpen líneas estéticas, conexiones ocultas ingeniosamente y estructuras que lucen delicadas pero resisten huracanes certificadamente según NSR-10 más exigente que convierte arte efímero en legado urbano permanente durante generaciones.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526524-4",
+        "icono": "ArrowUpFromLine",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Escalinatas y Obras de Conexión Urbana",
+        "metricas": [
+          "30 ton"
+        ],
+        "descripcion": "Las escalinatas urbanas son infraestructura de accesibilidad topográfica: conectan niveles urbanos salvando desniveles pronunciados, crean espacios públicos activados y embellecen ciudad mediante diseño arquitectónico. MEISA construye escalinatas metálicas como \"Escalinata Curva Río Cali\" (30 toneladas) que integran barandas escultóricas, iluminación arquitectónica y geometrías curvas complejas que convierten pendientes urbanas hostiles en recorridos peatonales atractivos. Cada escalinata se calcula para cargas de multitud durante eventos, resiste exposición climática sin deterioro y facilita mantenimiento sin cerrar acceso público. Con estructuras urbanas visibles donde estética define aceptación ciudadana, entendemos que infraestructura funcional debe inspirar: escalinatas que ciudadanos disfrutan subir, turistas fotografían memorablemente y comunidades identifican como símbolo de renovación urbana que transforma barrios mediante inversión pública visible que comunica dignidad y modernidad simultáneamente sin palabras necesarias explicativas.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526524-5",
+        "icono": "Star",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Infraestructura de Servicios Públicos",
+        "metricas": [],
+        "descripcion": "La infraestructura de servicios públicos es ingeniería oculta vital: tanques de almacenamiento que garantizan suministro continuo, estructuras que soportan equipos técnicos pesados y sistemas que operan décadas sin falla. MEISA fabrica tanques estacionarios GLP de 3,000 galones que cumplen códigos ASME rigurosamente, estructuras para subestaciones eléctricas que resisten sísmicamente y soportes para equipos industriales municipales. Cada estructura de servicios públicos se diseña para accesibilidad de mantenimiento predictivo, considera normativas específicas del servicio y garantiza operación continua durante emergencias cuando servicios públicos no pueden fallar porque comunidad depende críticamente. Con experiencia en infraestructura técnica donde falla significa crisis comunitaria, aplicamos redundancia estructural, materiales de máxima durabilidad y diseños que facilitan reparaciones urgentes sin interrumpir servicio público esencial que ciudadanía asume garantizado permanentemente sin consciencia de infraestructura compleja que hace posible servicios urbanos básicos tomados como dados inevitablemente.",
+        "proyectosEjemplo": [
+          "infraestructura"
+        ]
+      }
+    ],
+    "imagenBanner": "",
+    "videoBanner": "",
+    "videoCover": "https://storage.googleapis.com/meisa-imagenes/categories/videos/1763655627877-ugt8zq.mp4",
+    "usarVideoBanner": false,
+    "usarVideoCover": true,
+    "videoBannerPosition": "center center",
+    "videoBannerScale": 1,
+    "videoCoverPosition": "0,-16",
+    "videoCoverScale": 1.35
+  },
+  {
+    "id": "cmiah5t3200048txdatyk0w2i",
+    "key": "EDIFICACIONES",
+    "nombre": "Edificaciones",
+    "descripcion": "Edificios de oficinas, institucionales, parqueaderos y estructuras arquitectónicas",
+    "slug": "edificaciones",
+    "imagenCover": "https://storage.googleapis.com/meisa-imagenes/categories/1763991899803-5x6vfn.jpg",
+    "icono": "image:edificios",
+    "color": "#16a34a",
+    "colorSecundario": "#22c55e",
+    "metaTitle": "",
+    "metaDescription": "",
+    "orden": 5,
+    "visible": true,
+    "destacada": false,
+    "totalProyectos": 67,
+    "createdAt": "2025-11-22T15:59:38.366Z",
+    "updatedAt": "2025-11-24T16:29:07.713Z",
+    "overlayColor": "#000000",
+    "overlayOpacity": 0,
+    "hoverOverlayColor": "#1e40af",
+    "hoverOverlayOpacity": 0.2,
+    "enableHoverOverlay": true,
+    "beneficios": [
+      "Diseño sismorresistente NSR-10",
+      "Parqueaderos multinivel eficientes",
+      "Edificios culturales emblemáticos",
+      "Estructuras educativas duraderas",
+      "Reforzamiento estructural especializado"
+    ],
+    "descripcionAmpliada": "",
+    "estadisticas": {},
+    "procesoTrabajo": null,
+    "casosExitoIds": [],
+    "especialidades": [
+      {
+        "id": "esp-1763997526517-0",
+        "icono": "Shield",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Diseño Sismorresistente",
+        "metricas": [],
+        "descripcion": "Los edificios en Colombia enfrentan amenaza sísmica permanente que exige ingeniería estructural sin concesiones: análisis dinámico riguroso, ductilidad controlada y sistemas que protegen vidas ante el peor terremoto documentado. MEISA diseña estructuras metálicas con arriostramientos concéntricos que permanecen elásticos, conexiones dúctiles que absorben energía mediante deformación plástica y sistemas de pórticos resistentes a momento que distribuyen fuerzas sísmicas. Cada edificio pasa modelación 3D con espectros de diseño NSR-10, análisis tiempo-historia cuando altura lo exige y diseño de conexiones que garantizan colapso progresivo imposible. Con memorias firmadas por especialistas sísmicos, entregamos edificaciones que protegen vidas incluso cuando terremotos severos sacuden estructuras durante minutos interminables de movimiento telúrico extremo.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526517-1",
+        "icono": "ParkingCircle",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&q=80",
+        "titulo": "Parqueaderos Multinivel",
+        "metricas": [
+          "40%",
+          "8 metros",
+          "9,600 m²"
+        ],
+        "descripcion": "Los parqueaderos multinivel son estructuras optimizadas al milímetro: cada centímetro de altura entre niveles suma m² rentables, cada columna bien ubicada libera bahías y cada rampa eficiente acelera circulación. MEISA diseña edificios de parqueo con losas metálicas tipo deck que reducen peso propio 40%, rampas helicoidales que minimizan huella horizontal y modulaciones de 5x8 metros que maximizan espacios de estacionamiento. Con experiencia en parqueaderos de 3 pisos y 9,600 m², integramos iluminación natural mediante fachadas permeables, ventilación cruzada que elimina olores y sistemas de drenaje que evacuan aguas de lavado sin inundaciones. Cada parqueadero MEISA es máquina eficiente que genera ingresos por m² construido al menor costo estructural posible.",
+        "proyectosEjemplo": [
+          "parqueaderos de"
+        ]
+      },
+      {
+        "id": "esp-1763997526517-2",
+        "icono": "Theater",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&q=80",
+        "titulo": "Edificios Culturales Emblemáticos",
+        "metricas": [
+          "490 ton"
+        ],
+        "descripcion": "Los edificios culturales trascienden función: son símbolos arquitectónicos que definen identidad urbana y requieren estructuras que hagan posible visiones audaces. MEISA construye proyectos emblemáticos como cinematecas con estructuras aparentes que se convierten en arte, voladizos dramáticos que desafían gravedad y grandes luces sin columnas que crean espacios inspiradores. Cada elemento estructural se diseña considerando estética simultáneamente con resistencia: conexiones expuestas que lucen ingeniería precision, acabados industriales pulidos que no requieren ocultarse y geometrías complejas que convierten matemática estructural en escultura habitable. Con 490 toneladas en edificios que miles visitan diariamente, entendemos que estas estructuras no solo resisten cargas: inspiran comunidades y perduran como legados arquitectónicos generacionales.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526517-3",
+        "icono": "Star",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Colegios y Estructuras Educativas",
+        "metricas": [
+          "50 años"
+        ],
+        "descripcion": "Los colegios requieren estructuras que protegen lo más valioso: niños y jóvenes concentrados en espacios que deben ser absolutamente seguros sismorresistentemente. MEISA construye infraestructura educativa con factores de seguridad superiores a norma mínima, estructuras redundantes que previenen colapso progresivo y sistemas de evacuación diseñados para pánico infantil. Con experiencia en 12+ colegios sumando miles de m² educativos, diseñamos aulas con iluminación natural estructuralmente integrada, cubiertas de gran luz que crean espacios polivalentes y acabados industriales que resisten décadas de uso intensivo por estudiantes. Cada colegio MEISA es inversión social protegida estructuralmente: los padres confían que la estructura nunca colapsará sobre sus hijos, ni durante terremoto ni durante 50 años de operación educativa continua.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526517-4",
+        "icono": "TowerControl",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&q=80",
+        "titulo": "Edificios de Altura",
+        "metricas": [],
+        "descripcion": "Los edificios de altura enfrentan desafíos estructurales exponenciales: derivas sísmicas amplificadas, cargas de viento crecientes y efectos P-Delta que pueden colapsar estructuras mal diseñadas. MEISA construye edificios metálicos de múltiples pisos con núcleos rígidos que controlan desplazamientos laterales, conexiones de momento que distribuyen fuerzas y sistemas mixtos acero-concreto que optimizan cada material según su ventaja estructural. Cada edificio alto pasa análisis de segundo orden, consideración de efectos P-Delta y diseño de cimentación que ancla estructura resistiendo volcamiento. Con proyectos como WTC Pacific, dominamos la ingeniería de edificios donde cada piso adicional no solo suma carga vertical: multiplica complejidad sísmica y de viento exponencialmente.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526517-5",
+        "icono": "Star",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Reforzamiento Estructural",
+        "metricas": [],
+        "descripcion": "El reforzamiento estructural es cirugía de edificios existentes: requiere diagnóstico preciso, intervención mínima y resultados que extienden vida útil décadas. MEISA ejecuta refuerzos sísmicos con perfiles metálicos adosados que no invaden arquitectura, arriostramientos estratégicos que controlan derivas y conexiones a estructura existente mediante anclajes químicos certificados. Cada refuerzo comienza con evaluación estructural completa, ensayos no destructivos que revelan patologías ocultas y modelación que compara capacidad actual versus demanda sísmica vigente. Con experiencia en edificios históricos y operando, convertimos estructuras vulnerables en edificaciones seguras que cumplen NSR-10 actual sin demoler ni reconstruir completamente, preservando inversión existente mediante ingeniería de refuerzo inteligente y económica.",
+        "proyectosEjemplo": [
+          "edificios hist"
+        ]
+      }
+    ],
+    "imagenBanner": "",
+    "videoBanner": "",
+    "videoCover": "https://storage.googleapis.com/meisa-imagenes/categories/videos/1763563816699-yunj27.mp4",
+    "usarVideoBanner": false,
+    "usarVideoCover": true,
+    "videoBannerPosition": "center center",
+    "videoBannerScale": 1,
+    "videoCoverPosition": "0,9",
+    "videoCoverScale": 1.35
+  },
+  {
+    "id": "cmiah5t3300058txdryuejz11",
+    "key": "DEPORTES_EDUCACION",
+    "nombre": "Deportes & Educación",
+    "descripcion": "Coliseos, polideportivos, canchas, graderías e instalaciones deportivas y educativas",
+    "slug": "deportes-educacion",
+    "imagenCover": "https://storage.googleapis.com/meisa-imagenes/categories/1763576571360-8fboh8.jpg",
+    "icono": "image:escenarios-deportivos",
+    "color": "#ea580c",
+    "colorSecundario": "#f97316",
+    "metaTitle": "",
+    "metaDescription": "",
+    "orden": 6,
+    "visible": true,
+    "destacada": false,
+    "totalProyectos": 32,
+    "createdAt": "2025-11-22T15:59:38.368Z",
+    "updatedAt": "2025-11-24T16:29:07.716Z",
+    "overlayColor": "#000000",
+    "overlayOpacity": 0,
+    "hoverOverlayColor": "#1e40af",
+    "hoverOverlayOpacity": 0.2,
+    "enableHoverOverlay": true,
+    "beneficios": [
+      "Coliseos para eventos de gran escala",
+      "Cubiertas de 60m sin columnas",
+      "Acústica deportiva optimizada",
+      "Graderías de alta capacidad",
+      "Instalaciones acuáticas especializadas"
+    ],
+    "descripcionAmpliada": "",
+    "estadisticas": {},
+    "procesoTrabajo": null,
+    "casosExitoIds": [],
+    "especialidades": [
+      {
+        "id": "esp-1763997526521-0",
+        "icono": "Trophy",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
+        "titulo": "Coliseos para Eventos Internacionales",
+        "metricas": [],
+        "descripcion": "Los coliseos de clase mundial exigen ingeniería que cumple estándares internacionales: dimensiones FIFA/FIBA certificadas, iluminación que garantiza transmisión televisiva HD y acústica que permite anuncios claros para 5,000+ espectadores. MEISA construye escenarios para eventos internacionales con estructuras de grandes luces libres que eliminan columnas obstruyendo visuales, cubiertas acústicas que controlan reverberación y sistemas estructurales que soportan equipos técnicos de transmisión. Con experiencia en Juegos Nacionales Popayán 2012 y Juegos Mundiales Cali 2013, dominamos la complejidad de coliseos que hospedan competencias donde atletas de élite compiten ante auditorios internacionales: cada línea de cancha ubicada milimétricamente, cada asiento con visual sin obstrucciones y cada sistema cumpliendo federaciones deportivas más exigentes del planeta.",
+        "proyectosEjemplo": [
+          "Juegos Nacionales Popay"
+        ]
+      },
+      {
+        "id": "esp-1763997526522-1",
+        "icono": "Home",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80",
+        "titulo": "Cubiertas de Grandes Luces sin Columnas",
+        "metricas": [
+          "60 metros",
+          "268 ton"
+        ],
+        "descripcion": "Los escenarios deportivos exigen espacios diáfanos absolutos: canchas reglamentarias no permiten columnas intermedias que obstruyan juego o visuales. MEISA diseña cubiertas de grandes luces con cerchas metálicas de hasta 60 metros, arcos estructurales que cubren 6,000+ m² y sistemas de cables que desafían gravedad aparentemente. Cada cubierta deportiva se calcula para cargas de viento según ubicación, acumulación de agua por obstrucción de drenajes y cargas suspendidas de tableros electrónicos, iluminación y equipos audiovisuales. Con coliseos de hasta 268 toneladas cubriendo canchas completas sin apoyo interior, convertimos requisitos deportivos no negociables en realidades estructurales que atletas y espectadores disfrutan sin consciencia de la ingeniería compleja que hace posible cada partido, cada competencia, cada evento deportivo memorable.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526522-2",
+        "icono": "Star",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
+        "titulo": "Acústica Deportiva Especializada",
+        "metricas": [],
+        "descripcion": "La acústica en coliseos deportivos es ingeniería contradictoria: debe amplificar anuncios claramente pero controlar reverberación que convierte gritos de hinchada en ruido ensordecedor ininteligible. MEISA diseña coliseos con geometría de cubierta que difunde sonido homogéneamente, materiales absorbentes estratégicamente ubicados y volúmenes calculados que generan tiempo de reverberación óptimo para palabra hablada. Cada coliseo pasa simulación acústica que predice inteligibilidad de discurso, diseño de reflectores que dirigen sonido de voceo a graderías y especificación de acabados que absorben frecuencias problemáticas sin tratamientos costosos posteriores. Con experiencia en coliseos donde miles celebran victorias generando niveles sonoros extremos, equilibramos emoción de hinchada con funcionalidad de comunicación crítica durante eventos deportivos de alta intensidad emocional.",
+        "proyectosEjemplo": [
+          "coliseos donde miles celebran victorias generando niveles sonoros extremos"
+        ]
+      },
+      {
+        "id": "esp-1763997526522-3",
+        "icono": "Armchair",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+        "titulo": "Graderías y Estructuras de Soporte de Público",
+        "metricas": [
+          "100%"
+        ],
+        "descripcion": "Las graderías deportivas son estructuras de carga dinámica extrema: multitudes que saltan sincronizadamente generan cargas que duplican peso estático, evacuaciones pánico que concentran personas y vibraciones que pueden resonar peligrosamente. MEISA fabrica tribunas metálicas con estructuras calculadas para cargas dinámicas de 500 kg/m², frecuencias naturales alejadas de saltos rítmicos y sistemas de evacuación que cumplen NFPA con pasillos dimensionados para pánico. Cada gradería pasa análisis de vibración que identifica modos peligrosos, diseño de conexiones que disipan energía y verificación de visuales que garantizan que 100% de asientos ven cancha sin obstrucciones. Con graderías para coliseos de 4,000+ m², convertimos emoción deportiva en experiencia segura donde hinchadas celebran intensamente sin comprometer integridad estructural que protege miles de vidas simultáneamente.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526522-4",
+        "icono": "Star",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
+        "titulo": "Iluminación Deportiva Estructural",
+        "metricas": [],
+        "descripcion": "La iluminación deportiva profesional exige estructuras especializadas: soportes que elevan luminarias 15+ metros sin crear sombras en cancha, sistemas que resisten vientos sin vibrar y cargas suspendidas de 5+ toneladas de equipos. MEISA integra iluminación deportiva estructuralmente con torres metálicas que soportan reflectores, vigas perimetrales preparadas para cargas suspendidas y sistemas eléctricos coordinados con estructura. Cada sistema de iluminación cumple requisitos de federaciones: 500+ lux homogéneos en superficie de juego, ausencia de deslumbramiento para atletas y capacidad de transmisión HD para eventos televisados. Con coliseos que hospedan competencias nocturnas y transmisiones internacionales, diseñamos estructuras que hacen invisible la fuente de luz: atletas compiten sin sombras molestas y espectadores disfrutan visibilidad perfecta mientras estructura oculta soporta infraestructura técnica que hace posible deporte de alto rendimiento.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526522-5",
+        "icono": "Building2",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80",
+        "titulo": "Piscinas Cubiertas y Complejos Acuáticos",
+        "metricas": [
+          "70%",
+          "135 ton",
+          "3,557 m²"
+        ],
+        "descripcion": "Las piscinas cubiertas son ambientes estructurales extremos: humedad constante del 70%, cloro atmosférico corrosivo y temperaturas elevadas que aceleran deterioro. MEISA construye facilidades acuáticas con estructuras de acero galvanizado o pinturas epóxicas especiales, cubiertas que evacúan condensación sin gotear sobre piscina y sistemas de ventilación estructurados que controlan humedad. Con experiencia en Piscina Olímpica Juegos Nacionales (135 ton, 3,557 m²) y Complejo Acuático Pereira, integramos tribunas que resisten ambiente húmedo, iluminación que no corroe y acabados que mantienen apariencia durante décadas de exposición a atmósfera agresiva. Cada piscina cubierta se diseña considerando vida útil real en condiciones hostiles: aceros con sobre-espesores de sacrificio, conexiones inspeccionables y sistemas que permiten mantenimiento preventivo sin cerrar instalación que comunidad deportiva depende año completo.",
+        "proyectosEjemplo": [
+          "Piscina Ol",
+          "Acu"
+        ]
+      }
+    ],
+    "imagenBanner": "",
+    "videoBanner": "",
+    "videoCover": "https://storage.googleapis.com/meisa-imagenes/categories/videos/1763656082765-915zik.mp4",
+    "usarVideoBanner": false,
+    "usarVideoCover": true,
+    "videoBannerPosition": "center center",
+    "videoBannerScale": 1,
+    "videoCoverPosition": "center center",
+    "videoCoverScale": 1
+  },
+  {
+    "id": "cmiah5t2m00008txd5dujojce",
+    "key": "COMERCIAL",
+    "nombre": "Comercial",
+    "descripcion": "Centros comerciales, locales retail, cines y espacios de entretenimiento",
+    "slug": "comercial",
+    "imagenCover": "https://storage.googleapis.com/meisa-imagenes/categories/1763560393467-u7i2dn.jpg",
+    "icono": "image:centros-comerciales",
+    "color": "#1e40af",
+    "colorSecundario": "#3b82f6",
+    "metaTitle": "",
+    "metaDescription": "",
+    "orden": 1,
+    "visible": true,
+    "destacada": true,
+    "totalProyectos": 57,
+    "createdAt": "2025-11-22T15:59:38.351Z",
+    "updatedAt": "2025-11-24T16:29:07.717Z",
+    "overlayColor": "#000000",
+    "overlayOpacity": 0,
+    "hoverOverlayColor": "#1e40af",
+    "hoverOverlayOpacity": 0.2,
+    "enableHoverOverlay": true,
+    "beneficios": [
+      "Estructuras de gran luz sin columnas",
+      "Construcción sin interrumpir operaciones",
+      "Cubiertas con 30+ años de garantía",
+      "Mezanines que maximizan espacios",
+      "Sistemas modulares prefabricados"
+    ],
+    "descripcionAmpliada": "",
+    "estadisticas": {},
+    "procesoTrabajo": null,
+    "casosExitoIds": [],
+    "especialidades": [
+      {
+        "id": "esp-1763997526519-0",
+        "icono": "Bridge",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+        "titulo": "Estructuras de Gran Luz",
+        "metricas": [
+          "30 metros",
+          "16,000 m²"
+        ],
+        "descripcion": "La arquitectura comercial moderna exige espacios diáfanos que maximicen la rentabilidad por metro cuadrado. MEISA domina el diseño de estructuras de gran luz con claros de hasta 30 metros sin apoyos intermedios, permitiendo distribuciones comerciales flexibles que se adaptan a las necesidades cambiantes del retail. Desde centros comerciales de 16,000 m² hasta locales boutique, nuestras cerchas metálicas y vigas compuestas eliminan columnas que obstruyen visual y circulación, creando experiencias de compra fluidas donde la arquitectura se vuelve invisible para el cliente pero omnipresente para el propietario que ve maximizada cada área rentable.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526519-1",
+        "icono": "Home",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80",
+        "titulo": "Cubiertas Standing Seam",
+        "metricas": [],
+        "descripcion": "Las cubiertas metálicas Standing Seam representan la evolución técnica de los sistemas de impermeabilización comercial. MEISA instala cubiertas autoportantes de doble costura que eliminan perforaciones, garantizan hermeticidad absoluta durante 30+ años y crean efectos visuales contemporáneos que elevan la arquitectura comercial. Con pendientes optimizadas para evacuación pluvial instantánea y sistemas de anclaje oculto que preservan la estética limpia de grandes superficies, transformamos techos funcionales en elementos arquitectónicos distintivos que reducen costos operativos mientras mejoran la imagen del centro comercial.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526519-2",
+        "icono": "Armchair",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+        "titulo": "Graderías para Salas de Cine",
+        "metricas": [
+          "60 ton"
+        ],
+        "descripcion": "El diseño estructural de salas de cine trasciende la simple construcción: es ingeniería acústica, ergonomía visual y seguridad en evacuación fusionadas en acero. MEISA fabrica graderías autoportantes con geometrías precisas al milímetro que garantizan ángulos de visión perfectos desde cada butaca, soportan cargas dinámicas de evacuación y integran aislamiento acústico estructural entre salas. Desde proyectos de 60 toneladas de graderías hasta adecuaciones complejas en centros comerciales operando, dominamos la técnica especializada de construir experiencias cinematográficas donde el espectador olvida la estructura pero disfruta sus beneficios invisibles.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526519-3",
+        "icono": "Layers3",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&q=80",
+        "titulo": "Mezanines de Alta Capacidad",
+        "metricas": [
+          "27 m²"
+        ],
+        "descripcion": "Los mezanines comerciales son arte estructural en equilibrio: maximizar área rentable duplicando espacios verticales sin comprometer la estabilidad ni sobrecargar la estructura existente. MEISA diseña entrepisos metálicos calculados para cargas vivas de hasta 500 kg/m², con sistemas de anclaje que distribuyen tensiones sin afectar la operación comercial durante instalación. Desde mezanines de 27 m² para locales boutique hasta estructuras de múltiples niveles, integramos escaleras, barandas normativas y acabados que convierten metros cúbicos de aire en metros cuadrados rentables sin cerrar un solo día de ventas.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526519-4",
+        "icono": "Star",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80",
+        "titulo": "Ampliaciones sin Interrupciones",
+        "metricas": [
+          "30,000 m²",
+          "100%"
+        ],
+        "descripcion": "Ampliar un centro comercial operando es como cirugía a corazón abierto: requiere precisión milimétrica, coordinación quirúrgica y cero margen de error. MEISA ejecuta ampliaciones de hasta 30,000 m² en centros comerciales funcionando al 100%, mediante sistemas modulares prefabricados que se ensamblan en horarios nocturnos o madrugadas. Nuestro dominio de conexiones estructurales entre edificaciones existentes y nuevas, refuerzos sísmicos calculados y fachadas que integran arquitectónicamente dos épocas constructivas diferentes, permite que el centro comercial nunca cierre mientras crece, protegiendo el flujo de ingresos del propietario durante toda la construcción.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526519-5",
+        "icono": "Star",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&q=80",
+        "titulo": "Fachadas Ventiladas Metálicas",
+        "metricas": [
+          "40%"
+        ],
+        "descripcion": "Las fachadas metálicas ventiladas son sistemas técnicos complejos que resuelven simultáneamente estética, aislamiento térmico y durabilidad extrema. MEISA fabrica e instala pieles arquitectónicas metálicas con cámaras de aire que reducen transferencia térmica hasta 40%, paneles que resisten vientos huracanados según NSR-10 zona 7, y acabados que mantienen color y brillo durante décadas sin repintado. Desde paneles tipo cassette hasta sistemas de lamas orientables, transformamos envolventes de centros comerciales en elementos técnicos que reducen consumo energético mensual mientras crean identidades arquitectónicas únicas que posicionan el proyecto comercialmente.",
+        "proyectosEjemplo": [
+          "comercialmente"
+        ]
+      }
+    ],
+    "imagenBanner": "",
+    "videoBanner": "",
+    "videoCover": "https://storage.googleapis.com/meisa-imagenes/categories/videos/comercial-ceiling-1763561202789.mp4",
+    "usarVideoBanner": false,
+    "usarVideoCover": true,
+    "videoBannerPosition": "center center",
+    "videoBannerScale": 1,
+    "videoCoverPosition": "center center",
+    "videoCoverScale": 1
+  },
+  {
+    "id": "cmiah5t2x00018txdehmcq6nz",
+    "key": "INDUSTRIAL",
+    "nombre": "Industrial",
+    "descripcion": "Bodegas, centros de distribución, plantas industriales y estructuras para producción",
+    "slug": "industrial",
+    "imagenCover": "https://storage.googleapis.com/meisa-imagenes/categories/1763566950448-sdu9nd.jpg",
+    "icono": "image:industria",
+    "color": "#dc2626",
+    "colorSecundario": "#ef4444",
+    "metaTitle": "",
+    "metaDescription": "",
+    "orden": 2,
+    "visible": true,
+    "destacada": true,
+    "totalProyectos": 70,
+    "createdAt": "2025-11-22T15:59:38.361Z",
+    "updatedAt": "2025-11-24T16:29:07.719Z",
+    "overlayColor": "#000000",
+    "overlayOpacity": 0,
+    "hoverOverlayColor": "#1e40af",
+    "hoverOverlayOpacity": 0.2,
+    "enableHoverOverlay": true,
+    "beneficios": [
+      "Bodegas de hasta 12,000 m²",
+      "Estructuras libre de vibraciones",
+      "Resistencia a ambientes corrosivos",
+      "Puentes grúa hasta 50 toneladas",
+      "Hangares con luces de 50 metros"
+    ],
+    "descripcionAmpliada": "",
+    "estadisticas": {},
+    "procesoTrabajo": null,
+    "casosExitoIds": [],
+    "especialidades": [
+      {
+        "id": "esp-1763997526444-0",
+        "icono": "Warehouse",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Bodegas de Gran Escala",
+        "metricas": [
+          "12,000 m²",
+          "40 metros",
+          "840 ton"
+        ],
+        "descripcion": "Las mega-bodegas industriales son catedrales del almacenamiento: estructuras de hasta 12,000 m² con claros libres de 40 metros que eliminan columnas interiores maximizando capacidad de rack y flujos logísticos. MEISA diseña centros de distribución con cerchas de alma llena, vigas armadas y columnas compuestas que soportan techos, puentes grúa y cargas de nieve extraordinarias simultáneamente. Cada estructura optimiza altura libre interior para racks de última milla, integra sistemas de evacuación pluvial dimensionados para tormentas centenarias y facilita expansiones modulares futuras. Desde bodegas de 840 toneladas hasta complejos logísticos multi-fase, dominamos la ingeniería de escala que convierte metros cúbicos de aire en capacidad de almacenamiento que genera millones en eficiencia operativa.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526444-1",
+        "icono": "FlaskConical",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Plantas Farmacéuticas",
+        "metricas": [
+          "614 ton"
+        ],
+        "descripcion": "Las plantas farmacéuticas exigen precisión absoluta: techos que no vibran afectando equipos analíticos, estructuras que soportan aires acondicionados industriales y pisos que resisten productos químicos agresivos. MEISA construye facilidades farmacéuticas con estructuras calculadas para deflexiones mínimas L/600, acabados que cumplen normativas FDA y GMP, y sistemas que facilitan validación de ambientes controlados. Con experiencia en plantas para Tecnoquímicas de hasta 614 toneladas, integramos cuartos limpios estructurales, zonas de producción con presión diferencial y áreas de almacenamiento con control ambiental. Cada viga, columna y conexión se fabrica sabiendo que soportará producción farmacéutica que salva vidas y no puede detenerse jamás por falla estructural.",
+        "proyectosEjemplo": [
+          "s para Tecnoqu"
+        ]
+      },
+      {
+        "id": "esp-1763997526444-2",
+        "icono": "Factory",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Ingenios Azucareros",
+        "metricas": [
+          "812 ton",
+          "30 años"
+        ],
+        "descripcion": "Los ingenios azucareros son ambientes estructurales extremos: humedad constante, temperaturas elevadas, vapores corrosivos y cargas dinámicas de maquinaria pesada operando 24/7 durante zafra. MEISA diseña estructuras industriales con aceros de alta resistencia a corrosión, recubrimientos epóxicos de grado industrial y conexiones que anticipan mantenimiento preventivo sin detener producción. Desde complejos industriales de 812 toneladas hasta torres de proceso de 6 niveles, dominamos la ingeniería de ambientes agresivos: calculamos vida útil real en atmósferas corrosivas, especificamos protecciones catódicas cuando necesario y diseñamos para que el ingenio produzca azúcar 30 años sin reconstrucción estructural mayor.",
+        "proyectosEjemplo": [
+          "produzca az"
+        ]
+      },
+      {
+        "id": "esp-1763997526444-3",
+        "icono": "Snowflake",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Cuartos Fríos Industriales",
+        "metricas": [],
+        "descripcion": "Los cuartos fríos son estructuras térmicamente complejas: deben soportar aislamiento pesado, resistir ciclos térmicos extremos y mantener hermeticidad absoluta durante décadas. MEISA fabrica estructuras para refrigeración industrial con perfiles tubulares que minimizan puentes térmicos, conexiones que absorben dilataciones por temperatura y sistemas de anclaje que fijan paneles aislantes sin perforar envolvente térmica. Con experiencia en cuartos fríos avícolas y de distribución, integramos estructuras portantes que soportan equipos de refrigeración en techo, facilitan mantenimiento de compresores y permiten expansiones de capacidad sin rediseño total. Cada cuarto frío MEISA mantiene cadena de frío crítica protegiendo millones en producto perecedero.",
+        "proyectosEjemplo": [
+          "cuartos fr"
+        ]
+      },
+      {
+        "id": "esp-1763997526444-4",
+        "icono": "Plane",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Hangares Aeronáuticos",
+        "metricas": [
+          "50 metros",
+          "20 ton"
+        ],
+        "descripcion": "Los hangares aeronáuticos requieren luces libres monumentales sin obstrucciones: aviones no esquivan columnas. MEISA diseña hangares con estructuras de gran luz hasta 50 metros mediante cerchas espaciales, arcos metálicos o vigas de celosía que crean espacios diáfanos donde aeronaves circulan libremente. Con puertas corredizas estructurales de hasta 20 toneladas, pisos industriales que soportan cargas concentradas de trenes de aterrizaje y sistemas de ventilación integrados estructuralmente, convertimos especificaciones aeronáuticas en realidades construidas. Cada hangar pasa análisis de viento según zona aeroportuaria, cálculos de succión crítica en cubiertas y diseño sísmico que protege aeronaves valiosas durante terremotos.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526444-5",
+        "icono": "Crane",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Puentes Grúa Industriales",
+        "metricas": [
+          "50 ton"
+        ],
+        "descripcion": "Los puentes grúa son sistemas estructurales integrados: vigas carrilera que deben permanecer niveladas al milímetro, columnas que resisten cargas horizontales de frenado y conexiones que absorben impactos cíclicos miles de veces diarias. MEISA diseña estructuras industriales preparadas para puentes grúa de 5 a 50 toneladas, con vigas carrilera soldadas continuas que eliminan juntas, sistemas de anclaje que facilitan nivelación post-construcción y arriostramientos que controlan desplazamientos laterales. Cada columna de grúa se calcula para fatiga acumulada, cada conexión para cargas dinámicas y cada cimentación para momentos de volcamiento. Entregamos plantas donde puentes grúa operan suavemente durante décadas sin desalineaciones costosas ni mantenimientos correctivos inesperados.",
+        "proyectosEjemplo": []
+      }
+    ],
+    "imagenBanner": "",
+    "videoBanner": "",
+    "videoCover": "https://storage.googleapis.com/meisa-imagenes/categories/videos/1763566876543-s3nby6.mp4",
+    "usarVideoBanner": false,
+    "usarVideoCover": true,
+    "videoBannerPosition": "center center",
+    "videoBannerScale": 1,
+    "videoCoverPosition": "0,39",
+    "videoCoverScale": 2.15
+  },
+  {
+    "id": "cmiah5t2z00028txd25ew04vu",
+    "key": "PUENTES",
+    "nombre": "Puentes",
+    "descripcion": "Puentes vehiculares, peatonales, ciclopuentes y viaductos. Uno de nuestros pilares más fuertes con más de 7,500 toneladas de estructura metálica instalada",
+    "slug": "puentes",
+    "imagenCover": "https://storage.googleapis.com/meisa-imagenes/categories/1763570102114-10fsfm.jpg",
+    "icono": "image:puentes-vehiculares",
+    "color": "#0891b2",
+    "colorSecundario": "#06b6d4",
+    "metaTitle": "",
+    "metaDescription": "",
+    "orden": 3,
+    "visible": true,
+    "destacada": true,
+    "totalProyectos": 59,
+    "createdAt": "2025-11-22T15:59:38.363Z",
+    "updatedAt": "2025-11-24T16:29:07.686Z",
+    "overlayColor": "#000000",
+    "overlayOpacity": 0,
+    "hoverOverlayColor": "#1e40af",
+    "hoverOverlayOpacity": 0.2,
+    "enableHoverOverlay": true,
+    "beneficios": [
+      "Puentes de gran luz hasta 212 metros",
+      "Diseño sísmico certificado",
+      "Puentes colgantes y en arco",
+      "Conexión para comunidades rurales",
+      "Estructuras con 50+ años de vida útil"
+    ],
+    "descripcionAmpliada": "",
+    "estadisticas": {},
+    "procesoTrabajo": null,
+    "casosExitoIds": [],
+    "especialidades": [
+      {
+        "id": "esp-1763997526514-0",
+        "icono": "Bridge",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+        "titulo": "Puentes de Gran Luz (Vehiculares y Peatonales)",
+        "metricas": [
+          "212 metros",
+          "150 metros"
+        ],
+        "descripcion": "Los puentes de gran luz desafían física y geometría: cruzar 150+ metros sin apoyos intermedios requiere ingeniería estructural extrema donde cada kilogramo cuenta y cada milímetro de deflexión se amplifica. MEISA diseña puentes de grandes luces mediante arcos metálicos que trabajan compresión pura, cerchas Warren optimizadas que minimizan peso y sistemas cajón que maximizan rigidez torsional. Desde puentes peatonales de 212 metros en Romelia hasta vehiculares de 150 metros en Saraconcho, dominamos matemática compleja donde deflexiones milimétricas crecen exponencialmente, vibraciones pueden generar resonancia catastrófica y cada conexión soporta tensiones que destruirían estructuras comunes. Cada puente largo recibe análisis dinámico de vientos, evaluación de flutter aerodinámico y diseño de fundaciones que anclan cables resistiendo empujes laterales monumentales que convierten cañones infranqueables en cruces cotidianos.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526514-1",
+        "icono": "Sparkles",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Puentes en Arco Metálicos",
+        "metricas": [
+          "150 metros"
+        ],
+        "descripcion": "Los puentes en arco son elegancia estructural milenaria perfeccionada: geometrías parabólicas que convierten carga vertical en compresión axial minimizando momentos flexionantes. MEISA fabrica arcos metálicos con curvaturas calculadas para línea de presión óptima, arriostramientos laterales que previenen pandeo y sistemas de montaje que construyen arco antes de cerrar clave superior. Con puentes arco de 150 metros como Saraconcho, dominamos ingeniería que analiza imperfecciones geométricas inevitables, cargas asimétricas de tráfico vivo y efectos de temperatura que expanden y contraen estructura diariamente. Cada arco metálico se diseña considerando montaje sin cimbra completa: voladizos sucesivos que crecen desde estribos, cables provisionales que sostienen durante construcción y secuencia que permite ensamblar estructura sobre quebrada profunda sin construir andamiajes monumentales imposibles económicamente en geografías abruptas colombianas.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526514-2",
+        "icono": "Bike",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Ciclopuentes y Movilidad Sostenible",
+        "metricas": [
+          "1,528 m²",
+          "381 ton"
+        ],
+        "descripcion": "Los ciclopuentes son infraestructura de movilidad sostenible que transforma ciudades: cruces que facilitan transporte no motorizado requieren anchos que acomodan ciclistas en ambos sentidos, pendientes suaves que permiten ascenso sin caminar y estructuras esbeltas integradas urbanísticamente. MEISA diseña ciclopuentes metálicos con tableros de hasta 1,528 m², sistemas de drenaje integrados que evitan encharcamientos peligrosos y barandas que cumplen normativas sin obstruir visibilidad. Con experiencia en proyectos de 381 toneladas para Bogotá y Cali, dominamos ingeniería que convierte cruces peatonales peligrosos en arterias ciclo-inclusivas: conexiones que promueven transporte activo, reducen accidentes mortales y conectan ciclorrutas metropolitanas con diseños contemporáneos que celebran bicicleta como medio de transporte legítimo prioritario en ciudades modernas comprometidas con sostenibilidad y salud pública mediante infraestructura que incentiva cambiar carro por bicicleta permanentemente.",
+        "proyectosEjemplo": [
+          "s de"
+        ]
+      },
+      {
+        "id": "esp-1763997526514-3",
+        "icono": "Cable",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Puentes Colgantes (Vehiculares y Peatonales)",
+        "metricas": [],
+        "descripcion": "Los puentes colgantes son ingeniería de cables trabajando tracción pura: cable principal describe catenaria matemática perfecta, péndolas verticales transfieren carga a tablero y torres resisten compresión vertical más tracción horizontal de cables anclados en macizos monumentales. MEISA ejecuta puentes colgantes vehiculares y peatonales calculando catenaria precisa, dimensionando anclajes que resisten 100+ toneladas de tracción y diseñando tableros suficientemente rígidos que no vibran excesivamente. Cada puente colgante requiere análisis de estabilidad aerodinámica, consideración de cargas asimétricas críticas y diseño de rigidización que previene oscilaciones destructivas. Con puentes colgantes de 70+ metros sobre ríos torrentosos, dominamos tecnología ancestral perfeccionada con ingeniería moderna: cables galvanizados que resisten décadas sin reemplazo, torres metálicas esbeltas que soportan fuerzas horizontales sin colapso y sistemas que permiten cruzar cañones profundos económicamente donde puentes convencionales costarían millones adicionales.",
+        "proyectosEjemplo": []
+      },
+      {
+        "id": "esp-1763997526514-4",
+        "icono": "Shield",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Diseño Sísmico de Puentes",
+        "metricas": [],
+        "descripcion": "Los puentes sismorresistentes deben permanecer funcionales post-terremoto: comunidades aisladas dependen de estos cruces vitales para evacuación, socorro y recuperación económica inmediata. MEISA diseña puentes con aparatos de apoyo que acomodan desplazamientos sísmicos de 20+ cm, conexiones dúctiles que disipan energía y sistemas redundantes que previenen colapso progresivo. Cada puente recibe análisis sísmico multimodal que identifica frecuencias críticas, diseño de estribos que resisten empuje sísmico de relleno y detallado de conexiones que garantizan ductilidad sin falla frágil súbita. Con experiencia en zonas de alta amenaza sísmica (Cauca, Huila, Nariño), aplicamos técnicas desde aparatos de neopreno que aislan parcialmente hasta sistemas de amortiguación pasiva que reducen demandas sísmicas en elementos críticos, garantizando puentes que permiten tránsito inmediato post-sismo cuando infraestructura vecinal colapsa dejando comunidades completamente aisladas durante emergencias críticas prolongadas.",
+        "proyectosEjemplo": [
+          "zonas de alta amenaza"
+        ]
+      },
+      {
+        "id": "esp-1763997526514-5",
+        "icono": "Users",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Puentes Sociales para Comunidades Rurales",
+        "metricas": [],
+        "descripcion": "Los puentes sociales trascienden ingeniería: son infraestructura de dignidad que conecta comunidades indígenas y rurales con servicios de salud, educación y mercados previamente inaccesibles durante temporadas lluviosas. MEISA construye puentes para programas sociales con diseños robustos pero económicos, materiales que resisten sin mantenimiento sofisticado y sistemas constructivos que emplean mano de obra local generando empleo comunitario. Con experiencia en 7+ puentes para Programa Tierradentro financiado por Unión Europea, integramos participación comunitaria genuina, respeto por saberes tradicionales y técnicas que convierten ríos infranqueables en conexiones permanentes dignas. Cada puente social se diseña sabiendo que transportará niños a escuelas, enfermos a centros de salud y campesinos a mercados: infraestructura que multiplica oportunidades donde antes solo había aislamiento geográfico forzoso que perpetuaba pobreza generacionalmente durante décadas de abandono estatal.",
+        "proyectosEjemplo": []
+      }
+    ],
+    "imagenBanner": "",
+    "videoBanner": "",
+    "videoCover": "https://storage.googleapis.com/meisa-imagenes/categories/videos/1763655398737-dsihkm.mp4",
+    "usarVideoBanner": false,
+    "usarVideoCover": true,
+    "videoBannerPosition": "center center",
+    "videoBannerScale": 1,
+    "videoCoverPosition": "center center",
+    "videoCoverScale": 1
+  }
+]

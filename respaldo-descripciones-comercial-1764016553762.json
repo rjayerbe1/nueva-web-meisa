@@ -1,0 +1,50 @@
+{
+  "nombre": "Comercial",
+  "especialidades": [
+    {
+      "id": "esp_1764013852971_ytc6xicza",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Estructuras de Gran Luz",
+      "descripcion": "Estructuras metálicas que crean espacios comerciales amplios sin columnas intermedias. MEISA diseña cerchas y vigas de hasta 30 metros de luz libre, permitiendo distribuciones flexibles en centros comerciales, supermercados e hipermercados. La fabricación en taller garantiza precisión milimétrica mientras el montaje modular reduce tiempos de construcción hasta 40% comparado con concreto tradicional. El acero estructural soporta cargas de techo, sistemas HVAC y señalización sin comprometer la amplitud del espacio, creando ambientes que maximizan la circulación de clientes y el espacio de exhibición rentable.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Supermercados",
+        "Hipermercados"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_jf14pxlhk",
+      "icono": "Building2",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+      "titulo": "Cubiertas y Fachadas Metálicas",
+      "descripcion": "Envolventes metálicas completas que protegen y definen la imagen arquitectónica de edificios comerciales. MEISA diseña e instala sistemas integrados de cubierta Standing Seam y fachadas ventiladas que trabajan estructuralmente unidos, eliminando puentes térmicos y optimizando el aislamiento. El sistema Standing Seam con juntas elevadas permite expansión térmica sin filtraciones, garantizando más de 30 años de vida útil sin mantenimiento constante. Las fachadas ventiladas metálicas reducen la temperatura interior hasta 40% mediante cámara de aire que expulsa el calor por convección natural. Materiales como panel compuesto metálico o lámina conformada ofrecen durabilidad superior a 30 años. La prefabricación de módulos en taller acelera el montaje en obra, reduciendo costos de mano de obra y tiempos de ejecución significativamente. Ideal para comercios que no pueden cerrar por problemas de goteras: instalación rápida, sin soldaduras expuestas y acabado metálico contemporáneo.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Tiendas comerciales",
+        "Edificios comerciales",
+        "Locales retail"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_iyouaxqby",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+      "descripcion": "Estructuras metálicas que multiplican el espacio vertical aprovechando la altura libre existente en locales comerciales y bodegas. MEISA diseña entrepisos y mezanines que duplican el área utilizable sin ampliar la huella del inmueble, creando segundos niveles para oficinas, bodegas, almacenamiento o áreas de exhibición adicionales. La fabricación modular en taller permite instalación en pocos días sin interrumpir las operaciones del negocio. Estas estructuras soportan cargas operativas de hasta 750 kg/m², adecuadas para almacenamiento denso, productos densamente apilados, maquinaria pesada o circulación constante de público. El diseño estructural considera no solo el peso estático sino también las vibraciones generadas por tráfico de montacargas y personal. La estructura desmontable permite reubicación si la operación cambia de local, protegiendo la inversión a largo plazo. Escaleras y barandas integradas cumplen con normativa de seguridad industrial.",
+      "proyectosEjemplo": [
+        "Bodegas comerciales",
+        "Entrepisos comerciales",
+        "Locales multinivel",
+        "Salas de cine",
+        "Puntos de venta"
+      ]
+    }
+  ]
+}

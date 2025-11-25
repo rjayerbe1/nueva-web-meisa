@@ -77,6 +77,9 @@ export async function POST(request: NextRequest) {
         colorSecundario: data.colorSecundario || null,
         overlayColor: data.overlayColor || null,
         overlayOpacity: data.overlayOpacity || 0,
+        hoverOverlayColor: data.hoverOverlayColor || null,
+        hoverOverlayOpacity: data.hoverOverlayOpacity || 0,
+        enableHoverOverlay: data.enableHoverOverlay || false,
         metaTitle: data.metaTitle || null,
         metaDescription: data.metaDescription || null,
         orden: data.orden || 0,
@@ -84,10 +87,10 @@ export async function POST(request: NextRequest) {
         destacada: data.destacada !== undefined ? data.destacada : false,
         // Enhanced content fields
         descripcionAmpliada: data.descripcionAmpliada || null,
-        beneficios: data.beneficios || null,
         procesoTrabajo: data.procesoTrabajo || null,
         estadisticas: data.estadisticas || null,
         casosExitoIds: data.casosExitoIds || null,
+        especialidades: data.especialidades || null,
       }
     })
 

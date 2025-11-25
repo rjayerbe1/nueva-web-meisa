@@ -19,6 +19,7 @@ import { CategoryImageSelector } from "./CategoryImageSelector"
 import { CategoryVideoSelector } from "./CategoryVideoSelector"
 import { AccordionSection } from "./AccordionSection"
 import { GlobalIconSizeConfig } from "./GlobalIconSizeConfig"
+import { EspecialidadesManager } from "./EspecialidadesManager"
 
 // Iconos disponibles de Lucide
 import { 
@@ -89,9 +90,9 @@ interface Categoria {
   destacada: boolean
   // Nuevos campos para contenido ampliado
   descripcionAmpliada: string | null
-  beneficios: any | null
   estadisticas: any | null
   casosExitoIds: any | null
+  especialidades: any | null
 }
 
 interface CategoryEditModalProps {
@@ -109,7 +110,7 @@ export default function CategoryEditModal({
 }: CategoryEditModalProps) {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'basic' | 'visual' | 'seo' | 'content'>('basic')
+  const [activeTab, setActiveTab] = useState<'basic' | 'visual' | 'seo' | 'content' | 'especialidades'>('basic')
   const [activeIconTab, setActiveIconTab] = useState<'specialized' | 'generic'>('specialized')
   const [showCropModal, setShowCropModal] = useState(false)
   const [showBannerCropModal, setShowBannerCropModal] = useState(false)
@@ -166,7 +167,6 @@ export default function CategoryEditModal({
     destacada: categoria?.destacada !== undefined ? categoria.destacada : false,
     // Nuevos campos para contenido ampliado
     descripcionAmpliada: categoria?.descripcionAmpliada || '',
-    beneficios: categoria?.beneficios || [],
     estadisticas: categoria?.estadisticas || {},
     casosExitoIds: categoria?.casosExitoIds || []
   })
@@ -203,9 +203,9 @@ export default function CategoryEditModal({
         destacada: categoria.destacada,
         // Nuevos campos para contenido ampliado
         descripcionAmpliada: categoria.descripcionAmpliada || '',
-        beneficios: categoria.beneficios || [],
         estadisticas: categoria.estadisticas || {},
-        casosExitoIds: categoria.casosExitoIds || []
+        casosExitoIds: categoria.casosExitoIds || [],
+        especialidades: categoria.especialidades || []
       })
     }
   }, [categoria])
@@ -456,9 +456,9 @@ export default function CategoryEditModal({
         visible: formData.visible,
         destacada: formData.destacada,
         descripcionAmpliada: formData.descripcionAmpliada,
-        beneficios: formData.beneficios,
         estadisticas: formData.estadisticas,
-        casosExitoIds: formData.casosExitoIds
+        casosExitoIds: formData.casosExitoIds,
+        especialidades: formData.especialidades
       }
       
       console.log('Sending clean form data:', cleanFormData) // Debug log
@@ -550,6 +550,7 @@ export default function CategoryEditModal({
               { id: 'basic', name: 'Información Básica' },
               { id: 'visual', name: 'Aspecto Visual' },
               { id: 'content', name: 'Contenido de Página' },
+              { id: 'especialidades', name: 'Especialidades' },
               { id: 'seo', name: 'SEO y Metadatos' }
             ].map(tab => (
               <button
@@ -1795,6 +1796,25 @@ export default function CategoryEditModal({
               </div>
             )}
 
+            {/* Tab: Especialidades */}
+            {activeTab === 'especialidades' && (
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-blue-900 mb-2">Especialidades Técnicas</h3>
+                  <p className="text-sm text-blue-700">
+                    Gestiona las especialidades técnicas que se mostrarán en el carrusel del hero de esta categoría.
+                    Estas especialidades destacan la experiencia y capacidades de MEISA en proyectos específicos.
+                  </p>
+                </div>
+
+                <EspecialidadesManager
+                  especialidades={formData.especialidades || []}
+                  onChange={(especialidades) => setFormData(prev => ({ ...prev, especialidades }))}
+                  color={formData.color || '#3b82f6'}
+                />
+              </div>
+            )}
+
             {/* Tab: SEO */}
             {activeTab === 'seo' && (
               <div className="space-y-6">
@@ -1874,53 +1894,6 @@ export default function CategoryEditModal({
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Esta descripción aparecerá en la sección principal de la página de categoría.
-                  </p>
-                </div>
-
-                {/* Beneficios */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Beneficios de elegir MEISA
-                  </label>
-                  <div className="space-y-3">
-                    {(formData.beneficios as string[]).map((beneficio, index) => (
-                      <div key={index} className="flex gap-2">
-                        <input
-                          type="text"
-                          value={beneficio}
-                          onChange={(e) => {
-                            const newBeneficios = [...(formData.beneficios as string[])]
-                            newBeneficios[index] = e.target.value
-                            setFormData(prev => ({ ...prev, beneficios: newBeneficios }))
-                          }}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                          placeholder="Ej: 27+ años de experiencia en estructuras metálicas"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newBeneficios = (formData.beneficios as string[]).filter((_, i) => i !== index)
-                            setFormData(prev => ({ ...prev, beneficios: newBeneficios }))
-                          }}
-                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const newBeneficios = [...(formData.beneficios as string[]), '']
-                        setFormData(prev => ({ ...prev, beneficios: newBeneficios }))
-                      }}
-                      className="w-full px-3 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50"
-                    >
-                      + Agregar Beneficio
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Lista de beneficios que aparecerá con checkmarks verdes.
                   </p>
                 </div>
 

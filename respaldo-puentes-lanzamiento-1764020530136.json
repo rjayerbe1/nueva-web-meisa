@@ -1,0 +1,49 @@
+{
+  "nombre": "Puentes",
+  "especialidades": [
+    {
+      "id": "esp_1764017208450_b6j5z5m27",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://storage.googleapis.com/meisa-imagenes/categories/1764019518771-dl7018.jpg",
+      "titulo": "Puentes de Vigas y Cerchas",
+      "descripcion": "Puentes metálicos mediante vigas cajón o cerchas reticuladas que permiten salvar luces importantes para tráfico vehicular y peatonal. Fabricación en taller con **control de calidad certificado** garantiza precisión en cada conexión estructural.\n\nMontaje por dovelas permite construir sin **cerrar completamente la vía inferior**, minimizando impacto en tráfico existente. **Diseño sismorresistente** cumpliendo NSR-10 con acabados anticorrosivos de larga duración. **Instalación nocturna** permite mantener operación diurna, reduciendo pérdidas económicas por congestión.",
+      "proyectosEjemplo": [
+        "Puentes vehiculares",
+        "Viaductos",
+        "Ciclopuentes",
+        "Puentes peatonales"
+      ]
+    },
+    {
+      "id": "esp_1764017208450_h29jfvp1t",
+      "icono": "Arc",
+      "orden": 2,
+      "activo": true,
+      "imagen": "",
+      "titulo": "Puentes en Arco Metálico",
+      "descripcion": "Puentes con geometría en arco que aprovechan el comportamiento a compresión del acero para salvar luces considerables con **restricciones de altura**. El arco transfiere cargas lateralmente hacia estribos mediante compresión pura, optimizando eficiencia estructural.\n\nPrefabricación modular de dovelas permite **montaje progresivo** desde extremos hacia el centro. El diseño arquitectónico del arco crea un **elemento visual distintivo** que se integra con el entorno. Ideal cuando la topografía limita altura pero se requiere luz considerable para la vía inferior.",
+      "proyectosEjemplo": [
+        "Puentes en arco",
+        "Viaductos urbanos",
+        "Puentes emblemáticos"
+      ]
+    },
+    {
+      "id": "esp_1764017208450_em7fmu5wh",
+      "icono": "Users",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&q=80",
+      "titulo": "Puentes Peatonales",
+      "descripcion": "Puentes metálicos livianos diseñados para conectar comunidades mediante estructuras eficientes. La ligereza del acero permite construir en **terrenos difíciles** con cimentaciones económicas, crucial en zonas remotas o complejas topográficamente.\n\nSistemas prefabricados facilitan **instalación rápida** sin requerir maquinaria pesada en sitio. Acabado **galvanizado en caliente** elimina mantenimientos costosos en zonas de difícil acceso. Incluye diseño de **rampas accesibles** cumpliendo normativa de accesibilidad universal para integración comunitaria completa.",
+      "proyectosEjemplo": [
+        "Puentes peatonales",
+        "Pasarelas urbanas",
+        "Puentes colgantes",
+        "Puentes comunitarios"
+      ]
+    }
+  ]
+}

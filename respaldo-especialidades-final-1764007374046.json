@@ -1,0 +1,212 @@
+{
+  "industrial": {
+    "nombre": "Industrial",
+    "especialidades": [
+      {
+        "id": "esp_1764005079575_3s3i9b0hk",
+        "icono": "Warehouse",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Bodegas de Gran Escala",
+        "metricas": [
+          "12,000 m²",
+          "15m altura",
+          "20-30m luz"
+        ],
+        "descripcion": "Almacenamiento masivo bajo techo: bodegas industriales hasta 12,000 m² en una sola nave sin columnas internas. MEISA diseña estructuras metálicas optimizadas para maximizar volumen almacenable: alturas 12-15 metros permiten racks verticales multinivel que multiplican capacidad por área de suelo. Con luces entre columnas de 20-30 metros, montacargas y transpaletas circulan libremente sin obstrucciones, acelerando operaciones logísticas críticas. Estructuras calculadas para cargas de techo superiores: puentes grúa, HVAC industrial, iluminación LED y eventualmente paneles solares futuros sin requerir refuerzos posteriores costosos. Diseño modular permite expansiones longitudinales agregando crujías adicionales, convirtiendo bodega en activo escalable que crece con negocio sin reconstruir.",
+        "proyectosEjemplo": [
+          "Bodegas Industriales"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_phn449gh0",
+        "icono": "Pill",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Plantas Farmacéuticas",
+        "metricas": [
+          "Ambientes controlados",
+          "Libre vibraciones",
+          "GMP"
+        ],
+        "descripcion": "Estructuras para ambientes controlados: plantas farmacéuticas requieren espacios libres de vibraciones, contaminación y con precisión dimensional milimétrica. MEISA fabrica estructuras metálicas con tolerancias estrictas que soportan entrepisos técnicos para equipos sensibles, cielorrasos herméticos y sistemas HVAC ultra-filtrados sin introducir partículas metálicas. Acero estructural pintado con recubrimientos inertes evita desprendimiento que contaminaría procesos certificados GMP. Con experiencia en ingenios que procesan alimentos/medicinas, entendemos criticidad de limpiabilidad: juntas selladas, superficies lisas y accesibilidad para sanitización periódica. Estructuras libre de vibraciones mediante fundaciones aisladas y arriostramientos calculados protegen equipos de precisión costosos que rechazo por vibración significaría pérdidas millonarias en producto no conforme.",
+        "proyectosEjemplo": [
+          "Plantas Farmacéuticas"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_zalp551gv",
+        "icono": "Factory",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Ingenios Azucareros",
+        "metricas": [
+          "Cargas pesadas",
+          "Ambientes corrosivos",
+          "24/7"
+        ],
+        "descripcion": "Estructuras pesadas para procesamiento agroindustrial: ingenios azucareros operan maquinaria masiva 24/7 en ambientes corrosivos. MEISA diseña estructuras de acero de alta resistencia que soportan equipos de molienda, calderas, centrifugadoras y silos sin fatiga estructural. Con cargas dinámicas por maquinaria rotativa y vibraciones constantes, calculamos arriostramientos y fundaciones que mantienen estabilidad perpetua. Ambiente húmedo con vapor de caña y azúcar cristalizada requiere aceros con recubrimientos anticorrosivos industriales: galvanizado en caliente, pintura epóxica de alto espesor o aceros inoxidables en zonas críticas. Entendemos que parada no planificada en zafra significa pérdida irreversible de caña madura: diseñamos redundancia estructural y accesibilidad para mantenimiento predictivo que previene fallas catastróficas.",
+        "proyectosEjemplo": [
+          "Ingenios Azucareros"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_9bx38eil5",
+        "icono": "Snowflake",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Cuartos Fríos Industriales",
+        "metricas": [
+          "-25°C temperatura",
+          "Paneles aislados",
+          "Hermeticidad"
+        ],
+        "descripcion": "Estructuras para refrigeración industrial: cuartos fríos requieren marcos metálicos que resistan gradientes térmicos extremos sin deformación. MEISA fabrica estructuras que soportan paneles aislados pesados, equipos de refrigeración en techo y puertas industriales masivas sin deflectar. Con temperaturas internas -25°C y externas +35°C, acero sufre contracción/expansión térmica que diseño debe absorber mediante juntas calculadas. Estructuras deben ser impermeables a vapor: cualquier infiltración condensa dentro aislamiento anulando capacidad térmica y pudriendo paneles costosos. Calculamos cargas de hielo acumulado en techo por fugas térmicas, previniendo colapsos invernales comunes en instalaciones mal diseñadas. Con experiencia en plantas procesadoras de alimentos, entendemos criticidad de mantener cadena de frío: falla estructural que detiene refrigeración significa pérdida de inventario completo.",
+        "proyectosEjemplo": [
+          "Plantas de Alimentos"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_tddrac62t",
+        "icono": "Plane",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
+        "titulo": "Hangares Aeronáuticos",
+        "metricas": [
+          "50m luz",
+          "500+ ton capacidad",
+          "15-20m altura"
+        ],
+        "descripcion": "Coberturas de gran luz para aviación: hangares requieren estructuras sin columnas internas que obstruyan maniobras de aeronaves. MEISA diseña cerchas metálicas con luces hasta 50 metros que cubren completamente aviones comerciales, helicópteros o jets privados sin soportes intermedios. Con alturas 15-20 metros para acomodar empenajes verticales, calculamos estructuras que resisten cargas de viento y succión aerodinámica sin pandeo. Hangares deben soportar cargas de mantenimiento: puentes grúa para motores, plataformas elevadas para acceso a fuselaje y sistemas de extracción de gases pesados. Puertas motorizadas de 40+ metros de ancho requieren dinteles metálicos ultra-resistentes sin deflexión que genere trabas operacionales. Con experiencia en infraestructura aeroportuaria, entendemos criticidad de tiempos: cada hora que avión no vuela significa ingresos perdidos, por eso diseñamos hangares que facilitan mantenimiento rápido.",
+        "proyectosEjemplo": [
+          "Hangares Aeronáuticos"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_6v292cev7",
+        "icono": "Crane",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        "titulo": "Puentes Grúa Industriales",
+        "metricas": [
+          "50 ton capacidad",
+          "30m recorrido",
+          "Alta resistencia"
+        ],
+        "descripcion": "Vigas metálicas para manejo de cargas pesadas: puentes grúa mueven materiales masivos dentro plantas industriales. MEISA diseña vigas carrileras de acero estructural que soportan grúas hasta 50 toneladas con recorridos 30+ metros sin fatiga. Calculamos deflexiones máximas permitidas: exceso genera descarrilamiento, insuficiencia significa sobrecosto estructural. Conexiones entre viga carrilera y columnas deben absorber cargas dinámicas laterales cuando grúa frena/arranca bruscamente: diseñamos cartelas reforzadas y pernos de alta resistencia. Vigas deben ser accesibles para mantenimiento de riel: inspección de desgaste, lubricación y eventual reemplazo sin desmontar estructura completa. Con experiencia en plantas siderúrgicas y astilleros que operan grúas continuamente, entendemos que falla de puente grúa paraliza planta completa costando millones diarios en producción detenida.",
+        "proyectosEjemplo": [
+          "Plantas Industriales"
+        ]
+      }
+    ]
+  },
+  "comercial": {
+    "nombre": "Comercial",
+    "especialidades": [
+      {
+        "id": "esp_1764005079575_cekw3xsvh",
+        "icono": "Bridge",
+        "orden": 1,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+        "titulo": "Estructuras de Gran Luz",
+        "metricas": [
+          "30 metros luz",
+          "16,000 m²"
+        ],
+        "descripcion": "Espacios comerciales amplios sin columnas intermedias: centros comerciales, supermercados e hipermercados requieren áreas despejadas para máxima flexibilidad. MEISA diseña estructuras metálicas con luces hasta 30 metros mediante cerchas optimizadas, permitiendo distribuciones comerciales libres sin obstrucciones visuales ni funcionales. Con 16,000 m² cubiertos en un solo proyecto, dominamos la ingeniería que elimina columnas internas maximizando espacio rentable: cada metro sin columna significa más estantería, mejor circulación y mayores ventas por m². Nuestras estructuras soportan cargas de techo, HVAC y señalización sin comprometer la amplitud, entregando espacios que arquitectos comerciales necesitan para crear experiencias de compra fluidas que convierten visitantes en compradores.",
+        "proyectosEjemplo": [
+          "Dollar City Mazurén",
+          "Centros Comerciales"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_mxj6wyg64",
+        "icono": "Home",
+        "orden": 2,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80",
+        "titulo": "Cubiertas Standing Seam",
+        "metricas": [
+          "30+ años durabilidad",
+          "40% reducción térmica"
+        ],
+        "descripcion": "Techos metálicos de larga duración: Standing Seam ofrece impermeabilidad superior sin mantenimiento constante. MEISA fabrica e instala cubiertas con juntas elevadas que expanden/contraen térmicamente sin generar filtraciones, garantizando 30+ años sin reemplazo. Sistema ideal para comercios que no pueden cerrar por goteras: instalación rápida, sin soldaduras expuestas y estética contemporánea metálica. Con pendientes calculadas para evacuación pluvial inmediata, estas cubiertas protegen mercancía valiosa eliminando riesgos de humedad que generan pérdidas millonarias. Material 100% reciclable y reflectivo reduce carga térmica 40% versus tejas tradicionales, bajando costos energéticos de climatización perpetuamente.",
+        "proyectosEjemplo": [
+          "Tiendas Dollar City"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_b313ezg6g",
+        "icono": "Layers3",
+        "orden": 3,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&q=80",
+        "titulo": "Entrepisos y Estructuras Multi-nivel",
+        "metricas": [
+          "5,000 m²/nivel",
+          "500 kg/m²"
+        ],
+        "descripcion": "Multiplicar espacio vertical en locales comerciales existentes: mezanines y entrepisos metálicos duplican área utilizable sin ampliar huella. MEISA diseña estructuras de acero que aprovechan altura libre desperdiciada, creando segundos niveles para oficinas, bodegas o showrooms adicionales sin requerir permisos de construcción mayor. Instalación en días sin cerrar operaciones: fabricamos entrepisos completos en taller, transportamos en secciones y ensamblamos rápidamente in-situ mientras negocio funciona abajo. Soportan cargas operativas reales: oficinas con archivos pesados, bodegas con producto densamente almacenado, showrooms con público circulando. Estructuras modulares permiten desmontaje/reconfiguración futura cuando negocio evoluciona, protegiendo inversión a largo plazo.",
+        "proyectosEjemplo": [
+          "Locales Comerciales"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_fof74tqmz",
+        "icono": "Layers",
+        "orden": 4,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&q=80",
+        "titulo": "Mezanines de Alta Capacidad",
+        "metricas": [
+          "500 kg/m² capacidad",
+          "Hasta 5,000 m²"
+        ],
+        "descripcion": "Entrepisos industriales robustos para cargas pesadas: mezanines metálicos que soportan maquinaria, inventario denso y tráfico intenso. MEISA fabrica plataformas de acero estructural calculadas para cargas vivas superiores a estándares comerciales: 500-800 kg/m² permiten almacenamiento vertical de mercancía pesada sin deflexiones. Ideal para bodegas que maximizan capacidad: cada metro cúbico vertical aprovechado reduce necesidad de expansión horizontal costosa. Con escaleras industriales, barandas normativas y acabados antideslizantes, estos mezanines cumplen códigos de seguridad mientras optimizan logística. Instalación modular sin soldadura in-situ acelera montaje y facilita desmontaje si operación cambia de sede, convirtiendo estructura en activo reutilizable no en costo hundido permanente.",
+        "proyectosEjemplo": [
+          "Bodegas Comerciales"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_xsdodpv76",
+        "icono": "Plus",
+        "orden": 5,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80",
+        "titulo": "Ampliaciones sin Interrupciones",
+        "metricas": [
+          "0 días interrupción",
+          "30,000 m² ampliados"
+        ],
+        "descripcion": "Expansión de locales comerciales operativos: estructuras metálicas permiten ampliar sin cerrar negocio. MEISA domina técnica de conectar estructura nueva a existente mientras comercio funciona normalmente: fabricación completa en taller, transporte nocturno y montaje acelerado en horarios no comerciales. Coordinación milimétrica entre estructura vieja y nueva evita juntas visibles o desniveles: clientes no perciben adición porque integración es arquitectónicamente invisible. Con 30,000 m² ampliados sin detener ventas, entendemos que cada día cerrado significa ingresos perdidos irrecuperables. Método modular metálico completa en semanas versus meses de construcción tradicional, permitiendo capitalizar crecimiento rápidamente sin sacrificar operación actual que genera flujo de caja necesario para financiar misma expansión.",
+        "proyectosEjemplo": [
+          "Ampliaciones Comerciales"
+        ]
+      },
+      {
+        "id": "esp_1764005079575_fsibsjooy",
+        "icono": "Building",
+        "orden": 6,
+        "activo": true,
+        "imagen": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&q=80",
+        "titulo": "Cubiertas y Fachadas Metálicas",
+        "metricas": [
+          "40% reducción térmica",
+          "5,000 m²",
+          "30+ años"
+        ],
+        "descripcion": "Envolventes metálicas de alto rendimiento: fachadas ventiladas y cubiertas que protegen, aíslan y embellecen edificaciones comerciales. MEISA integra paneles metálicos con cámaras de aire que reducen transferencia térmica 40%, cortando costos de climatización perpetuamente. Sistema de fachada ventilada permite que aire circule entre panel exterior y muro, evacuando calor verano y reteniendo invierno sin consumo energético. Cubiertas metálicas complementarias con aislamiento térmico superior crean envolvente integral que transforma edificio comercial en estructura energéticamente eficiente. Con 5,000 m² instalados y garantía 30+ años, estas envolventes requieren mantenimiento mínimo: sin pintura periódica, sin reemplazo de elementos, solo limpieza ocasional. Material metálico reciclable 100% al final de vida útil cumple estándares sostenibilidad que inquilinos corporativos exigen cada vez más.",
+        "proyectosEjemplo": [
+          "Edificios Comerciales"
+        ]
+      }
+    ]
+  }
+}

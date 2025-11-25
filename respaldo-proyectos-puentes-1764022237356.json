@@ -1,0 +1,49 @@
+{
+  "nombre": "Puentes",
+  "especialidades": [
+    {
+      "id": "esp_1764017208450_b6j5z5m27",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://storage.googleapis.com/meisa-imagenes/categories/1764019518771-dl7018.jpg",
+      "titulo": "Puentes de Vigas y Cerchas",
+      "descripcion": "¿Necesita un puente vehicular resistente? Las **vigas** son elementos horizontales sólidos que soportan peso directamente. Las **cerchas** son estructuras trianguladas más livianas que pueden cubrir distancias mayores. Elegimos el sistema según lo que necesite su proyecto.\n\nFabricamos todo en taller y lo montamos en sitio, sea por secciones (dovelas) o con **lanzamiento incremental** usando gatos hidráulicos. Usted elige el método según las condiciones de su obra. Todo cumple norma sísmica colombiana NSR-10.",
+      "proyectosEjemplo": [
+        "Puentes vehiculares",
+        "Viaductos",
+        "Ciclopuentes",
+        "Puentes peatonales"
+      ]
+    },
+    {
+      "id": "esp_1764017208450_h29jfvp1t",
+      "icono": "Arc",
+      "orden": 2,
+      "activo": true,
+      "imagen": "",
+      "titulo": "Puentes en Arco Metálico",
+      "descripcion": "¿Necesita cruzar un río o quebrada pero tiene poca altura disponible? Un **puente en arco** usa una curva de acero que empuja hacia los lados (hacia los estribos) en vez de hacia abajo. Por eso puede salvar distancias grandes sin necesitar estructuras muy altas.\n\nEl arco trabaja principalmente en compresión, lo que hace muy **eficiente el uso del acero**. Además de funcional, el arco le da al puente un **aspecto distintivo** que se convierte en referencia visual del sector.",
+      "proyectosEjemplo": [
+        "Puentes en arco",
+        "Viaductos urbanos",
+        "Puentes emblemáticos"
+      ]
+    },
+    {
+      "id": "esp_1764017208450_em7fmu5wh",
+      "icono": "Users",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&q=80",
+      "titulo": "Puentes Peatonales",
+      "descripcion": "¿Necesita conectar dos puntos para paso de personas? Los **puentes peatonales** son estructuras livianas diseñadas específicamente para tránsito de gente, no vehículos. Por ser livianos, se pueden **instalar muy rápido** comparado con puentes de concreto.\n\nMontamos en horas lo que en concreto toma semanas. Podemos instalar de noche o fines de semana **sin cerrar vías**. Incluyen rampas accesibles para personas con movilidad reducida. Ideales para cruces de avenidas, accesos a estaciones o conexiones entre barrios.",
+      "proyectosEjemplo": [
+        "Puentes peatonales",
+        "Pasarelas urbanas",
+        "Puentes colgantes",
+        "Puentes comunitarios"
+      ]
+    }
+  ]
+}

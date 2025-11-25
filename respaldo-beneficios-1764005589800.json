@@ -1,0 +1,62 @@
+{
+  "infraestructura-urbana": {
+    "nombre": "Infraestructura Urbana",
+    "beneficios": [
+      "Estaciones de transporte masivo",
+      "Terminales de alta capacidad",
+      "Ciclopuentes y movilidad sostenible",
+      "Obras escultóricas urbanas",
+      "Infraestructura antisísmica"
+    ]
+  },
+  "edificaciones": {
+    "nombre": "Edificaciones",
+    "beneficios": [
+      "Diseño sismorresistente NSR-10",
+      "Parqueaderos multinivel eficientes",
+      "Edificios culturales emblemáticos",
+      "Estructuras educativas duraderas",
+      "Reforzamiento estructural especializado"
+    ]
+  },
+  "comercial": {
+    "nombre": "Comercial",
+    "beneficios": [
+      "Estructuras de gran luz sin columnas",
+      "Construcción sin interrumpir operaciones",
+      "Cubiertas con 30+ años de garantía",
+      "Mezanines que maximizan espacios",
+      "Sistemas modulares prefabricados"
+    ]
+  },
+  "industrial": {
+    "nombre": "Industrial",
+    "beneficios": [
+      "Bodegas de hasta 12,000 m²",
+      "Estructuras libre de vibraciones",
+      "Resistencia a ambientes corrosivos",
+      "Puentes grúa hasta 50 toneladas",
+      "Hangares con luces de 50 metros"
+    ]
+  },
+  "deportes-educacion": {
+    "nombre": "Deportes & Educación",
+    "beneficios": [
+      "Coliseos para eventos de gran escala",
+      "Cubiertas de 60m sin columnas",
+      "Acústica deportiva optimizada",
+      "Graderías de alta capacidad",
+      "Instalaciones acuáticas especializadas"
+    ]
+  },
+  "puentes": {
+    "nombre": "Puentes",
+    "beneficios": [
+      "Puentes de gran luz hasta 212 metros",
+      "Diseño sísmico certificado",
+      "Puentes colgantes y en arco",
+      "Conexión para comunidades rurales",
+      "Estructuras con 50+ años de vida útil"
+    ]
+  }
+}

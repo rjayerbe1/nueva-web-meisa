@@ -5,10 +5,11 @@ import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ExternalLink, Building, Calendar, MapPin, User, BookOpen, ChevronDown, Check, FileBadge } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ExternalLink, Building, Calendar, MapPin, User, BookOpen, ChevronDown, FileBadge } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
 import { UnifiedStatsCard } from '@/components/ui/unified-stats-card'
 import { CanvasRenderer } from '@/components/brochure/CanvasRenderer'
+import { EspecialidadesTabs } from '@/components/sections/EspecialidadesTabs'
 
 // Helper para parsear posición desde formato "X,Y"
 const parsePosition = (posStr: string | null): { x: number; y: number } => {
@@ -96,6 +97,7 @@ interface Categoria {
   procesoTrabajo: any | null
   estadisticas: any | null
   casosExitoIds: any | null
+  especialidades: any | null
 }
 
 export default function CategoryProjectsPage() {
@@ -106,8 +108,16 @@ export default function CategoryProjectsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [downloadingPDF, setDownloadingPDF] = useState(false)
+  const [heroBackground, setHeroBackground] = useState<string | null>(null)
 
   console.log('Component rendered, params:', params)
+
+  // Handler para cambio de especialidad
+  const handleEspecialidadChange = (especialidad: any) => {
+    if (especialidad?.imagen) {
+      setHeroBackground(especialidad.imagen)
+    }
+  }
 
   const handleDownloadPDF = async () => {
     if (!brochure || downloadingPDF) return
@@ -248,33 +258,50 @@ export default function CategoryProjectsPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section - 1 Pantalla (100vh) */}
       <section className="relative h-screen overflow-hidden">
-        {/* Background - Video o Imagen de fondo */}
-        {(categoria.videoBanner || categoria.imagenBanner || categoria.imagenCover) && (
+        {/* Background - Video o Imagen de fondo (dinámico con especialidades) */}
+        {(heroBackground || categoria.videoBanner || categoria.imagenBanner || categoria.imagenCover) && (
           <div className="absolute inset-0">
-            {(categoria.usarVideoBanner && categoria.videoBanner) ? (
-              <video
-                src={categoria.videoBanner}
-                className="w-full h-full"
-                style={{
-                  objectFit: 'cover',
-                  transform: `translate(${parsePosition(categoria.videoBannerPosition).x}%, ${parsePosition(categoria.videoBannerPosition).y}%) scale(${categoria.videoBannerScale || 1.0})`,
-                  willChange: 'transform',
-                  backfaceVisibility: 'hidden',
-                  transformStyle: 'preserve-3d',
-                  WebkitFontSmoothing: 'antialiased',
-                  imageRendering: 'crisp-edges'
-                }}
-                autoPlay
-                muted
-                loop
-                playsInline
+            {/* Imagen de especialidad (si existe) */}
+            {heroBackground && (
+              <motion.img
+                key={heroBackground}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                src={heroBackground}
+                alt="Fondo de especialidad"
+                className="absolute inset-0 w-full h-full object-cover"
               />
-            ) : (
-              <img
-                src={categoria.imagenBanner || categoria.imagenCover || ''}
-                alt={`Banner de ${categoria.nombre}`}
-                className="w-full h-full object-cover"
-              />
+            )}
+            {/* Video o imagen de categoría como fallback */}
+            {!heroBackground && (
+              <>
+                {(categoria.usarVideoBanner && categoria.videoBanner) ? (
+                  <video
+                    src={categoria.videoBanner}
+                    className="w-full h-full"
+                    style={{
+                      objectFit: 'cover',
+                      transform: `translate(${parsePosition(categoria.videoBannerPosition).x}%, ${parsePosition(categoria.videoBannerPosition).y}%) scale(${categoria.videoBannerScale || 1.0})`,
+                      willChange: 'transform',
+                      backfaceVisibility: 'hidden',
+                      transformStyle: 'preserve-3d',
+                      WebkitFontSmoothing: 'antialiased',
+                      imageRendering: 'crisp-edges'
+                    }}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : (
+                  <img
+                    src={categoria.imagenBanner || categoria.imagenCover || ''}
+                    alt={`Banner de ${categoria.nombre}`}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </>
             )}
             {/* Overlay con gradiente oscuro graduado */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
@@ -282,135 +309,143 @@ export default function CategoryProjectsPage() {
         )}
 
         {/* Contenido del Hero - Todo en 100vh */}
-        <div className="relative z-10 h-full flex flex-col justify-between px-4 sm:px-6 lg:px-16 xl:px-24 py-8">
-          <div className="max-w-6xl w-full mx-auto h-full flex flex-col justify-between">
-            {/* SECCIÓN SUPERIOR - Layout 70/30 */}
-            <div>
-              {/* Breadcrumb - Ancho completo */}
-              <motion.nav
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="mb-8"
-              >
-                <ol className="flex items-center gap-2 text-xs sm:text-sm text-white/70">
-                  <li><Link href="/" className="hover:text-white transition-colors">Inicio</Link></li>
-                  <li>/</li>
-                  <li><Link href="/proyectos" className="hover:text-white transition-colors">Proyectos</Link></li>
-                  <li>/</li>
-                  <li className="text-white/90 font-medium">{categoria.nombre}</li>
-                </ol>
-              </motion.nav>
+        <div className="relative z-10 h-full flex flex-col py-6">
+          {/* SECCIÓN SUPERIOR - Edge to Edge (todo el ancho) */}
+          <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8">
+            {/* Breadcrumb */}
+            <motion.nav
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mb-4"
+            >
+              <ol className="flex items-center gap-2 text-xs sm:text-sm text-white/70">
+                <li><Link href="/" className="hover:text-white transition-colors">Inicio</Link></li>
+                <li>/</li>
+                <li><Link href="/proyectos" className="hover:text-white transition-colors">Proyectos</Link></li>
+                <li>/</li>
+                <li className="text-white/90 font-medium">{categoria.nombre}</li>
+              </ol>
+            </motion.nav>
 
+            {/* Fila con Título y Extras */}
+            <div className="flex items-end justify-between gap-6 mb-6">
               {/* Título principal */}
               <motion.h1
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-white leading-none mb-4"
+                className="text-5xl sm:text-6xl md:text-7xl font-bebas uppercase text-white leading-none"
               >
                 {categoria.nombre}
               </motion.h1>
 
-              {/* Descripción ampliada - 100% ancho */}
-              {categoria.descripcionAmpliada && (
-                <motion.p
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="text-sm sm:text-base md:text-lg text-white/70 font-lato leading-relaxed italic mb-6 text-justify"
-                >
-                  {categoria.descripcionAmpliada}
-                </motion.p>
-              )}
+              {/* Estadísticas + Brochure en línea */}
+              <div className="flex items-center gap-4">
+                {/* Estadísticas - Compactas */}
+                {categoria.estadisticas && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="flex items-center gap-3"
+                  >
+                    {categoria.estadisticas.toneladasTotal && (
+                      <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
+                        <span className="text-xl font-bebas text-white">{categoria.estadisticas.toneladasTotal.toLocaleString()}</span>
+                        <span className="text-white/70 font-lato text-xs uppercase">Ton</span>
+                      </div>
+                    )}
+                    {categoria.estadisticas.proyectosCompletados && (
+                      <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
+                        <span className="text-xl font-bebas text-white">{categoria.estadisticas.proyectosCompletados}+</span>
+                        <span className="text-white/70 font-lato text-xs uppercase">Proy</span>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
 
-              {/* Toggle Brochure - Debajo de la descripción */}
-              {brochure && brochure.publicado && brochure.activo && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="max-w-md"
-                >
-                  {/* Toggle compacto y profesional */}
-                  <div className="grid grid-cols-2 gap-0 rounded-lg backdrop-blur-md bg-white/10 border border-white/30 overflow-hidden shadow-lg">
-                    {/* Botón Ver Brochure */}
+                {/* Botones Brochure - Ver y Descargar */}
+                {brochure && brochure.publicado && brochure.activo && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    className="flex gap-2"
+                  >
+                    {/* Ver Brochure */}
                     <Link
                       href={`/brochure/${brochure.urlAmigable}`}
-                      className="flex items-center justify-center gap-2 px-4 py-2.5 hover:bg-white/20 text-white transition-all duration-300 group"
+                      className="flex items-center gap-2 px-3 py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300"
                     >
-                      <BookOpen className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm font-lato font-semibold">Ver Brochure</span>
+                      <BookOpen className="w-4 h-4" />
+                      <span className="text-xs font-lato font-semibold">Ver Brochure</span>
                     </Link>
 
-                    {/* Divisor vertical */}
-                    <div className="absolute left-1/2 top-2 bottom-2 w-px bg-white/30"></div>
-
-                    {/* Botón Descarga Brochure */}
+                    {/* Descargar PDF */}
                     <button
                       onClick={handleDownloadPDF}
                       disabled={downloadingPDF}
-                      className="flex items-center justify-center gap-2 px-4 py-2.5 hover:bg-white/20 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
+                      className="flex items-center gap-2 px-3 py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <FileBadge className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm font-lato font-semibold">
-                        {downloadingPDF ? 'Descargando...' : 'Descarga Brochure'}
+                      <FileBadge className="w-4 h-4" />
+                      <span className="text-xs font-lato font-semibold">
+                        {downloadingPDF ? 'Descargando...' : 'Descargar PDF'}
                       </span>
                     </button>
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
+              </div>
             </div>
+          </div>
 
-            {/* SECCIÓN INFERIOR - Icono + Stats + Beneficios + Brochure Compacto */}
+          {/* Tabs de Especialidades - TODO EL ANCHO (sin padding lateral) */}
+          {categoria.especialidades && categoria.especialidades.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="space-y-4"
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex-1 w-full min-h-0"
             >
-              {/* Icono de categoría centrado */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="flex justify-center mb-4"
-                style={{ color: categoria.color || '#3b82f6' }}
-              >
-                {getCategoryIconComponent(categoria.icono, "w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56")}
-              </motion.div>
-
-              {/* Estadísticas - Muy compactas en línea */}
-              {categoria.estadisticas && (
-                <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-                  {categoria.estadisticas.toneladasTotal && (
-                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
-                      <span className="text-2xl sm:text-3xl font-bebas text-white">{categoria.estadisticas.toneladasTotal.toLocaleString()}</span>
-                      <span className="text-white/70 font-lato text-xs uppercase">Ton</span>
-                    </div>
-                  )}
-                  {categoria.estadisticas.proyectosCompletados && (
-                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
-                      <span className="text-2xl sm:text-3xl font-bebas text-white">{categoria.estadisticas.proyectosCompletados}+</span>
-                      <span className="text-white/70 font-lato text-xs uppercase">Proyectos</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Beneficios - Ocupan todo el ancho del hero */}
-              {categoria.beneficios && categoria.beneficios.length > 0 && (
-                <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full">
-                  {categoria.beneficios.map((beneficio: any, index: number) => (
-                    <div key={index} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20 flex-1 min-w-[200px]">
-                      <Check className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                      <span className="text-white/90 font-lato text-xs sm:text-sm">{beneficio.length > 80 ? beneficio.substring(0, 80) + '...' : beneficio}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <EspecialidadesTabs
+                especialidades={categoria.especialidades}
+                color={categoria.color || '#3b82f6'}
+                onEspecialidadChange={handleEspecialidadChange}
+              />
             </motion.div>
-          </div>
+          )}
+
+          {/* Indicador de Scroll */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 mt-4 mb-2"
+          >
+            <span className="text-white/60 font-lato text-[11px] uppercase tracking-wider">
+              Ver Proyectos
+            </span>
+            <motion.div
+              animate={{ y: [0, 5, 0] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center p-1"
+            >
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="w-1 h-1 bg-white rounded-full"
+              />
+            </motion.div>
+            <ChevronDown className="w-4 h-4 text-white/40" />
+          </motion.div>
         </div>
       </section>
 
@@ -481,7 +516,7 @@ export default function CategoryProjectsPage() {
                           whileInView={{ opacity: 1 }}
                           transition={{ duration: 0.8, delay: index * 0.1 }}
                           viewport={{ once: true, margin: "-50px" }}
-                          className="relative h-[60vh] lg:h-[70vh] overflow-hidden"
+                          className="relative h-[78vh] lg:h-[91vh] overflow-hidden"
                         >
                           {/* Imagen de fondo con hover */}
                           <div className="absolute inset-0">

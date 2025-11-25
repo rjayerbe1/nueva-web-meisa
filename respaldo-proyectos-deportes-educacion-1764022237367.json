@@ -1,0 +1,50 @@
+{
+  "nombre": "Deportes & Educación",
+  "especialidades": [
+    {
+      "id": "esp_1764015220989_2rt3ctzc7",
+      "icono": "Trophy",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+      "titulo": "Coliseos y Canchas Cubiertas",
+      "descripcion": "¿Necesita cubrir una cancha deportiva o construir un coliseo? Las **cubiertas de gran luz** para deportes son techos de acero que protegen la cancha sin columnas intermedias que bloqueen la vista del público ni interfieran con el juego.\n\nLa estructura permite graderías con **visual perfecta** desde todos los ángulos. Soporta sistemas de iluminación profesional suspendidos. La ventilación natural reduce costos de operación. Diseño antisísmico garantiza **seguridad en eventos masivos** según normas internacionales.",
+      "proyectosEjemplo": [
+        "Coliseos deportivos",
+        "Pabellones deportivos",
+        "Canchas cubiertas",
+        "Arenas"
+      ]
+    },
+    {
+      "id": "esp_1764015220989_r6rp7fqf8",
+      "icono": "Waves",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?w=800&q=80",
+      "titulo": "Piscinas Cubiertas",
+      "descripcion": "¿Necesita cubrir una piscina olímpica o recreativa? Las **cubiertas para piscinas** son estructuras especiales diseñadas para resistir el ambiente húmedo y salino que genera el cloro. El vapor y la condensación destruyen estructuras normales, pero estas están preparadas.\n\nUsamos **galvanizado más pintura especial** para resistir la corrosión constante. Las cubiertas pueden ser translúcidas para iluminación natural. La ventilación integrada extrae la humedad, protegiendo la estructura y los equipos que tenga instalados.",
+      "proyectosEjemplo": [
+        "Piscinas olímpicas",
+        "Complejos acuáticos",
+        "Natatorios",
+        "Piscinas cubiertas"
+      ]
+    },
+    {
+      "id": "esp_1764015220989_tuingilop",
+      "icono": "Lightbulb",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
+      "titulo": "Torres y Estructuras Auxiliares",
+      "descripcion": "¿Necesita torres de iluminación para su escenario deportivo? Las **torres de iluminación** son estructuras verticales diseñadas para soportar reflectores a gran altura y resistir vientos fuertes sin vibrar, garantizando iluminación estable para eventos.\n\nIncluyen plataformas de mantenimiento en la cima para **acceso seguro** a las luminarias. El galvanizado elimina la necesidad de pintar en altura, reduciendo costos de mantenimiento. Los niveles de luz cumplen **normativa para transmisión televisiva** de eventos profesionales.",
+      "proyectosEjemplo": [
+        "Torres de iluminación",
+        "Campos deportivos",
+        "Cubiertas tensionadas",
+        "Graderías metálicas"
+      ]
+    }
+  ]
+}

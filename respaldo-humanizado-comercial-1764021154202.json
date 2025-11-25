@@ -1,0 +1,50 @@
+{
+  "nombre": "Comercial",
+  "especialidades": [
+    {
+      "id": "esp_1764013852971_ytc6xicza",
+      "icono": "Bridge",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Estructuras de Gran Luz",
+      "descripcion": "Estructuras metálicas que permiten espacios comerciales amplios sin columnas intermedias, maximizando la **flexibilidad de distribución** para locales y circulación. Sistema modular con luces de gran claro que aprovecha al máximo el área rentable del proyecto.\n\nEl diseño modular facilita **futuras remodelaciones** cuando cambien inquilinos o giros de negocio. Ideal para centros comerciales, supermercados y grandes superficies donde la **planta libre** es clave para la rentabilidad y adaptabilidad del espacio comercial.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Supermercados",
+        "Hipermercados"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_jf14pxlhk",
+      "icono": "Building2",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80",
+      "titulo": "Cubiertas y Fachadas Metálicas",
+      "descripcion": "Cubiertas metálicas con **sistemas impermeables** de larga duración que protegen espacios comerciales. Fachadas metálicas que combinan funcionalidad estructural con **estética arquitectónica moderna**, creando imagen atractiva para clientes.\n\nLa construcción en acero **reduce tiempos de obra** significativamente comparado con sistemas tradicionales. El resultado es apertura más rápida del negocio, reduciendo períodos sin generar ingresos. Ideal para proyectos retail donde la imagen y velocidad de entrega son críticas.",
+      "proyectosEjemplo": [
+        "Centros comerciales",
+        "Tiendas comerciales",
+        "Edificios comerciales",
+        "Locales retail"
+      ]
+    },
+    {
+      "id": "esp_1764013852971_iyouaxqby",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "titulo": "Entrepisos y Mezanines de Alta Capacidad",
+      "descripcion": "Estructuras que **duplican el área útil** sin ampliar la huella del edificio, creando dos o más niveles donde antes había uno. Sistema desmontable que permite **reconfiguración completa** si cambia el uso del espacio comercial.\n\n**Maximiza la rentabilidad** del inmueble al crear área adicional de almacenamiento o venta sin costos de expansión horizontal. Soporta cargas pesadas de inventario y tránsito de público. Aplicable en retail, bodegas comerciales y puntos de venta donde el metro cuadrado es crítico.",
+      "proyectosEjemplo": [
+        "Bodegas comerciales",
+        "Entrepisos comerciales",
+        "Locales multinivel",
+        "Salas de cine",
+        "Puntos de venta"
+      ]
+    }
+  ]
+}

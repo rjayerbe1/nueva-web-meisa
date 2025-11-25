@@ -1,0 +1,90 @@
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+const fs = require('fs')
+
+const generateId = () => `esp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+const INDUSTRIAL_CONSOLIDADO = [
+  {
+    id: generateId(),
+    titulo: 'Naves Industriales de Gran Luz',
+    icono: 'Warehouse',
+    descripcion: 'Estructuras metálicas de un nivel que maximizan el volumen almacenable con luces de 20 a 50 metros sin columnas intermedias. MEISA diseña naves industriales modulares que permiten distribución flexible de espacios operativos, racks de almacenamiento y zonas de maniobra para montacargas y maquinaria pesada. El sistema de cerchas metálicas soporta cubiertas livianas mientras alturas hasta 15 metros optimizan el almacenamiento vertical y la ventilación natural. La fabricación en serie reduce costos por metro cuadrado comparado con construcción tradicional, mientras la estructura pre-ingeniería permite expansiones futuras agregando crujías adicionales sin modificar lo existente. Ideal para bodegas, centros de distribución, hangares aeronáuticos y naves logísticas que requieren grandes espacios abiertos sin obstrucciones. Cimentaciones diseñadas específicamente para suelos blandos mediante zapatas aisladas o vigas de amarre según estudio geotécnico.',
+    proyectosEjemplo: ['Bodegas industriales', 'Centros de distribución', 'Hangares', 'Almacenes'],
+    orden: 1,
+    activo: true,
+    imagen: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80'
+  },
+  {
+    id: generateId(),
+    titulo: 'Edificios Industriales de Múltiples Niveles',
+    icono: 'Factory',
+    descripcion: 'Estructuras metálicas verticales con entrepisos técnicos que alojan procesos industriales complejos en varios niveles. MEISA diseña edificios industriales de 3 a 8 pisos con entrepisos metálicos que soportan maquinaria de producción, equipos de proceso y sistemas auxiliares sin transmitir vibraciones entre niveles. Las vigas perimetrales soportan instalaciones de HVAC, tuberías de proceso y bandejas eléctricas sin comprometer la altura libre de las áreas de producción. La modulación estructural permite expansión de áreas de proceso sin interrumpir la producción existente durante la construcción. Acero con recubrimientos epóxicos o galvanizado resiste ambientes corrosivos por vapores químicos, melaza, humedad constante o limpieza diaria con químicos agresivos. Ideal para plantas farmacéuticas que cumplen normativa sanitaria estricta, ingenios azucareros con maquinaria operando 24/7, y plantas industriales que requieren múltiples niveles operativos.',
+    proyectosEjemplo: ['Plantas farmacéuticas', 'Ingenios azucareros', 'Edificios de producción', 'Plantas industriales'],
+    orden: 2,
+    activo: true,
+    imagen: 'https://images.unsplash.com/photo-1586864387634-daa74dca8f6e?w=800&q=80'
+  },
+  {
+    id: generateId(),
+    titulo: 'Estructuras Especializadas de Alta Resistencia',
+    icono: 'Snowflake',
+    descripcion: 'Estructuras metálicas diseñadas para resistir condiciones operativas extremas mediante tratamientos y sistemas estructurales especiales. MEISA diseña estructuras que resisten ambientes de refrigeración hasta -25°C, vibraciones constantes de maquinaria pesada, atmósferas altamente corrosivas por químicos o humedad, y cargas dinámicas excepcionales. Para cuartos fríos industriales, las cerchas ligeras minimizan puentes térmicos reduciendo significativamente el consumo energético, mientras columnas y vigas con recubrimiento anticorrosivo especial resisten condensación constante. Estructuras calculadas para soportar cargas adicionales de paneles aislantes más equipos de refrigeración suspendidos del techo. Para plantas con maquinaria pesada, pórticos de acero resisten vibraciones sin fatiga del material, con conexiones atornilladas que facilitan desmontaje para reemplazo de equipos. Acero grado ASTM A572 o superior resistente a ambientes extremos. La modulación permite expansión sin interrumpir operaciones críticas.',
+    proyectosEjemplo: ['Cuartos fríos', 'Cámaras de refrigeración', 'Plantas de proceso', 'Estructuras anticorrosivas'],
+    orden: 3,
+    activo: true,
+    imagen: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80'
+  }
+]
+
+async function consolidar() {
+  try {
+    console.log('\n' + '='.repeat(80))
+    console.log('CONSOLIDACIÓN: INDUSTRIAL (5 → 3 especialidades)')
+    console.log('='.repeat(80) + '\n')
+
+    // Crear respaldo
+    console.log('📦 Creando respaldo...')
+    const categoriaActual = await prisma.categoriaProyecto.findUnique({
+      where: { slug: 'industrial' }
+    })
+
+    const backupFilename = `./respaldo-industrial-consolidacion-${Date.now()}.json`
+    fs.writeFileSync(backupFilename, JSON.stringify({
+      nombre: categoriaActual.nombre,
+      especialidades: categoriaActual.especialidades
+    }, null, 2))
+    console.log(`   ✅ Respaldo: ${backupFilename}\n`)
+
+    // Mostrar cambios
+    console.log('📝 Consolidando especialidades...\n')
+    console.log('❌ ELIMINADAS/UNIFICADAS (2):')
+    console.log('   • "Plantas Farmacéuticas" → unida en "Edificios Industriales de Múltiples Niveles"')
+    console.log('   • "Hangares Aeronáuticos" → unido en "Naves Industriales de Gran Luz"')
+
+    console.log('\n✅ NUEVAS (3):')
+    console.log('   1. Naves Industriales de Gran Luz (Bodegas + Hangares)')
+    console.log('   2. Edificios Industriales de Múltiples Niveles (Farmacéuticas + Ingenios)')
+    console.log('   3. Estructuras Especializadas de Alta Resistencia (Cuartos Fríos + Anticorrosivas)')
+
+    // Actualizar
+    await prisma.categoriaProyecto.update({
+      where: { slug: 'industrial' },
+      data: { especialidades: INDUSTRIAL_CONSOLIDADO }
+    })
+
+    console.log('\n' + '='.repeat(80))
+    console.log('✅ CONSOLIDACIÓN COMPLETADA')
+    console.log('='.repeat(80))
+    console.log('   INDUSTRIAL: 5 → 3 especialidades')
+    console.log(`   Respaldo: ${backupFilename}`)
+    console.log('='.repeat(80) + '\n')
+
+  } catch (error) {
+    console.error('❌ Error:', error)
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+consolidar()

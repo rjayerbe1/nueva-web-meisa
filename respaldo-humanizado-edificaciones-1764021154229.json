@@ -1,0 +1,50 @@
+{
+  "nombre": "Edificaciones",
+  "especialidades": [
+    {
+      "id": "esp_1764015210449_f641ck2jb",
+      "icono": "Building",
+      "orden": 1,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+      "titulo": "Pórticos Metálicos de Múltiples Niveles",
+      "descripcion": "Estructuras de acero para edificios de múltiples pisos mediante sistemas de pórticos que permiten **plantas libres** sin muros de carga. Modulación amplia facilita distribución interior variable según necesidades actuales y futuras del edificio.\n\nLosas colaborantes integradas con vigas **reducen tiempos de construcción** comparado con sistemas tradicionales. Fachadas livianas se cuelgan de la estructura permitiendo grandes áreas vidriadas. **Diseño sismorresistente** certificado cumpliendo NSR-10 para seguridad estructural garantizada.",
+      "proyectosEjemplo": [
+        "Edificios de oficinas",
+        "Sedes administrativas",
+        "Edificios gubernamentales",
+        "Museos",
+        "Teatros"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_k4rxp6apf",
+      "icono": "Car",
+      "orden": 2,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&q=80",
+      "titulo": "Estructuras Metálicas para Estacionamiento",
+      "descripcion": "Estructuras metálicas que **maximizan vehículos estacionados** mediante apilamiento vertical, resolviendo escasez de área en proyectos urbanos. Vigas metálicas soportan losas que resisten tránsito vehicular pesado con modulación optimizada por número de cajones.\n\n**Ventilación natural** mediante fachadas abiertas elimina sistemas mecánicos de extracción de gases, reduciendo costos operativos permanentemente. La construcción en acero permite construir más rápido que concreto, generando ingresos por estacionamiento antes en el cronograma del proyecto.",
+      "proyectosEjemplo": [
+        "Parqueaderos multinivel",
+        "Estacionamientos",
+        "Edificios de parqueo"
+      ]
+    },
+    {
+      "id": "esp_1764015210449_lo0a23zot",
+      "icono": "Layers3",
+      "orden": 3,
+      "activo": true,
+      "imagen": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+      "titulo": "Estructuras Livianas Modulares",
+      "descripcion": "Estructuras metálicas prefabricadas en módulos para **construcción rápida** de ampliaciones o edificios completos. Fabricación en taller mientras se prepara cimentación acelera drásticamente el cronograma comparado con construcción tradicional.\n\nLigereza del acero minimiza cargas sobre **cimentaciones existentes**, permitiendo ampliaciones verticales o laterales sin reforzar bases. **Montaje nocturno** o en fines de semana permite operación diurna continua del edificio. Ideal cuando no puede interrumpir actividades durante ampliación.",
+      "proyectosEjemplo": [
+        "Colegios",
+        "Estructuras educativas",
+        "Ampliaciones verticales",
+        "Expansiones laterales"
+      ]
+    }
+  ]
+}
