@@ -48,6 +48,7 @@ interface Categoria {
   procesoTrabajo: any[] | null
   estadisticas: any | null
   casosExitoIds: string[] | null
+  especialidades: any | null
 }
 
 interface CategoriesPageClientProps {

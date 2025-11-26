@@ -168,7 +168,8 @@ export default function CategoryEditModal({
     // Nuevos campos para contenido ampliado
     descripcionAmpliada: categoria?.descripcionAmpliada || '',
     estadisticas: categoria?.estadisticas || {},
-    casosExitoIds: categoria?.casosExitoIds || []
+    casosExitoIds: categoria?.casosExitoIds || [],
+    especialidades: categoria?.especialidades || []
   })
 
   useEffect(() => {
