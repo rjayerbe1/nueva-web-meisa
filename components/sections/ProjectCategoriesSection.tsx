@@ -47,6 +47,7 @@ interface ProjectCategoriesSectionProps {
 // Componente de categoría individual con parallax
 function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categoria: Categoria; index: number; projectCount: number; iconSize?: number }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [videoLoaded, setVideoLoaded] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -77,9 +78,18 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
         {/* Video o Imagen de fondo con parallax */}
         {(categoria.usarVideoCover && categoria.videoCover) ? (
           <div className="absolute inset-0">
+            {/* Imagen de fondo como placeholder mientras el video carga */}
+            {categoria.imagenCover && (
+              <img
+                src={categoria.imagenCover}
+                alt={`Cover de ${categoria.nombre}`}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            {/* Video que aparece cuando está listo */}
             <video
               src={categoria.videoCover}
-              className="w-full h-full"
+              className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
               style={{
                 objectFit: 'cover',
                 transform: `translate(${parsePosition(categoria.videoCoverPosition).x}%, ${parsePosition(categoria.videoCoverPosition).y}%) scale(${categoria.videoCoverScale || 1.0})`,
@@ -93,6 +103,7 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
               muted
               loop
               playsInline
+              onCanPlayThrough={() => setVideoLoaded(true)}
             />
           </div>
         ) : categoria.imagenCover ? (
