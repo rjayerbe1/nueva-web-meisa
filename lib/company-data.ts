@@ -129,3 +129,150 @@ export const TECHNOLOGIES = [
   { name: 'StruM.I.S', description: 'Software líder mundial en gestión integral y control de producción para fabricantes de estructuras metálicas' },
   { name: 'FastCAM', description: 'Proveedor líder de software de ingeniería para máquina de corte por Plasma y Oxicorte' }
 ] as const
+
+// Cita del liderazgo para la página de empresa
+export const LEADERSHIP_QUOTE = {
+  quote: 'En MEISA no solo construimos estructuras de acero, construimos la infraestructura que impulsa el desarrollo de Colombia. Cada proyecto es un compromiso con la excelencia y la seguridad.',
+  name: 'Gerencia General',
+  title: 'MEISA S.A.S.',
+  image: '/images/empresa/liderazgo/gerente.jpg' // Placeholder - actualizar con foto real
+} as const
+
+// Contenido de Seguridad Laboral
+export const SAFETY_CONTENT = {
+  title: 'Seguridad Laboral',
+  subtitle: 'La seguridad de nuestro equipo es nuestra prioridad #1',
+  items: [
+    'Protocolos certificados de trabajo en altura',
+    'Equipos de protección personal de última generación',
+    'Programa de capacitación continua',
+    'Supervisión permanente en obra',
+    'Certificaciones en seguridad industrial'
+  ],
+  goal: 'Meta organizacional: Cero accidentes'
+} as const
+
+// Contenido de Sostenibilidad
+export const SUSTAINABILITY_CONTENT = {
+  title: 'Sostenibilidad',
+  subtitle: 'Comprometidos con el medio ambiente',
+  items: [
+    'Gestión responsable de residuos metálicos',
+    'Optimización de cortes para minimizar desperdicios',
+    'Programa de reciclaje de materiales',
+    'Eficiencia energética en operaciones',
+    'Proveedores con prácticas sostenibles'
+  ],
+  commitment: 'Compromiso con las futuras generaciones'
+} as const
+
+// Certificación de la empresa
+export const CERTIFICATIONS = [
+  {
+    name: 'RUC',
+    fullName: 'Registro Uniforme de Contratistas',
+    description: 'Certificación del Consejo Colombiano de Seguridad en SSTA',
+    logo: '/images/certificaciones/ruc-logo.png',
+    issuer: 'Consejo Colombiano de Seguridad (CCS)',
+    importance: 'Requisito exigido por grandes empresas contratantes en procesos de licitación',
+    benefits: [
+      'Gestión certificada en Seguridad, Salud en el Trabajo y Ambiente (SSTA)',
+      'Evaluación anual por auditores profesionales del CCS',
+      'Visibilidad ante grandes empresas contratantes del país',
+      'Compromiso demostrado con la seguridad de los trabajadores'
+    ]
+  }
+] as const
+
+// Normas que cumplimos (no son certificaciones)
+export const STANDARDS_COMPLIANCE = [
+  {
+    name: 'NSR-10',
+    description: 'Norma Sismo Resistente Colombiana',
+    logo: '/images/normas/nsr-10.png'
+  },
+  {
+    name: 'AWS D1.1',
+    description: 'Código de Soldadura Estructural',
+    logo: '/images/normas/aws.png'
+  },
+  {
+    name: 'AISC 360',
+    description: 'Especificación para Edificios de Acero',
+    logo: '/images/normas/aisc.png'
+  },
+  {
+    name: 'NTC',
+    description: 'Normas Técnicas Colombianas',
+    logo: '/images/normas/ntc.png'
+  }
+] as const
+
+// Documentos corporativos
+export const CORPORATE_DOCUMENTS = [
+  {
+    name: 'Manual SAGRILAFT',
+    description: 'Sistema de Autocontrol y Gestión del Riesgo',
+    url: '/documentos/manual-sagrilaft.pdf'
+  },
+  {
+    name: 'Política de Transparencia y Ética',
+    description: 'Lineamientos de conducta empresarial',
+    url: '/documentos/politica-transparencia.pdf'
+  },
+  {
+    name: 'Tratamiento de Datos Personales',
+    description: 'Política de privacidad y protección de datos',
+    url: '/documentos/tratamiento-datos.pdf'
+  }
+] as const
+
+// Historia de MEISA - Evolución de la empresa
+export const COMPANY_HISTORY = {
+  // Texto introductorio en 3 párrafos
+  intro: [
+    'Metálicas e Ingeniería S.A.S. fue constituida en el año 1996 en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructuras Metálicas. A lo largo de más de 29 años, hemos participado activamente en la construcción y manejo de Proyectos y Obras Civiles en todo el territorio Nacional.',
+    'Con el objeto de lograr una mayor competitividad y continuar brindando productos y servicios de calidad, nuestra empresa año a año ha incorporado talento humano altamente competente, máquinas y equipos de última tecnología, permitiéndonos ser cada vez más eficientes en los tiempos de entrega y en la reducción de costos de los proyectos.',
+    'Hoy contamos con tres plantas de producción estratégicamente ubicadas en el suroccidente colombiano, con una capacidad combinada de 600 toneladas mensuales y un equipo de más de 320 colaboradores comprometidos con la excelencia.'
+  ],
+  // 5 hitos principales de la empresa
+  timeline: [
+    {
+      period: '1996',
+      title: 'Fundación',
+      description: 'MEISA nace en Popayán, Cauca, como un taller especializado en estructuras metálicas con la visión de ofrecer soluciones de calidad a la región suroccidental de Colombia.',
+      highlight: 'Inicio de operaciones'
+    },
+    {
+      period: '2006-2010',
+      title: 'Expansión',
+      description: 'Inauguración de la segunda planta de producción en la ciudad de Jamundí. Construcción de centros comerciales y puentes vehiculares en la región.',
+      highlight: 'Planta Jamundí'
+    },
+    {
+      period: '2011-2015',
+      title: 'Certificación',
+      description: 'Obtención de la certificación RUC del Consejo Colombiano de Seguridad. Consolidación como empresa de clase nacional con estándares de calidad y seguridad.',
+      highlight: 'RUC Certificado'
+    },
+    {
+      period: '2016-2020',
+      title: 'Proyectos Emblemáticos',
+      description: 'Participación en proyectos de gran envergadura: centros comerciales, edificios corporativos, coliseos deportivos e infraestructura de transporte en todo el país.',
+      highlight: '+300 proyectos'
+    },
+    {
+      period: '2021-Presente',
+      title: 'Consolidación',
+      description: 'Con 3 plantas operativas y tecnología BIM de última generación, participamos en proyectos industriales, comerciales y de infraestructura vial en todo el país.',
+      highlight: 'Presencia nacional'
+    }
+  ],
+  achievements: [
+    'Más de 500 proyectos completados en toda Colombia',
+    '29 años de experiencia continua en el mercado',
+    '3 plantas de producción estratégicamente ubicadas',
+    '600 toneladas de capacidad mensual de fabricación',
+    'Equipo de más de 320 profesionales comprometidos'
+  ]
+} as const

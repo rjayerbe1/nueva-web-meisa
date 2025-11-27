@@ -333,7 +333,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-white/70">Certificación</span>
-                    <span className="font-medium text-white">ISO 9001</span>
+                    <span className="font-medium text-white">RUC</span>
                   </div>
                 </div>
               </div>

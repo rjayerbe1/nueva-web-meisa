@@ -83,7 +83,7 @@ export function HeroSectionNew() {
             Más de <span className="font-semibold text-blue-400">{siteConfig.empresa.aniosExperiencia} años</span> diseñando,
             fabricando y montando estructuras metálicas con{' '}
             <span className="font-semibold text-blue-400">tecnología de vanguardia</span>{' '}
-            y calidad certificada ISO 9001
+            y calidad certificada
           </motion.p>
           
           {/* Tarjeta de misión */}
@@ -137,7 +137,7 @@ export function HeroSectionNew() {
           >
             {[
               { icon: Award, text: `${siteConfig.empresa.aniosExperiencia}+ Años`, desc: "de experiencia" },
-              { icon: Shield, text: "ISO 9001", desc: "Certificación" },
+              { icon: Shield, text: "RUC", desc: "Certificación" },
               { icon: Zap, text: "600 ton/mes", desc: "Capacidad" }
             ].map((item, index) => {
               const IconComponent = item.icon

@@ -1,0 +1,45 @@
+# robots.txt para MEISA - Metálicas e Ingeniería S.A.
+# https://meisa.com.co
+
+User-agent: *
+Allow: /
+
+# Bloquear rutas privadas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Bloquear archivos de configuración
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Permitir sitemap
+Allow: /sitemap.xml
+
+# Sitemap location
+Sitemap: https://meisa.com.co/sitemap.xml
+
+# Crawl delay para ser amigable con el servidor
+Crawl-delay: 1
+
+# Google específico
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Bing específico
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Google Images
+User-agent: Googlebot-Image
+Allow: /
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.gif$
