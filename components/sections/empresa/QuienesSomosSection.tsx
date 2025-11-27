@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Target, Eye, Award, Building, CheckCircle, Rocket, Factory, Shield, Briefcase, Star } from 'lucide-react'
+import { Award, Building, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 import { COMPANY_INFO, CORPORATE_VALUES, COMPANY_HISTORY } from '@/lib/company-data'
 
@@ -16,6 +16,15 @@ const valorIconPaths: Record<string, string> = {
   'Pasión': '/images/valores/pasion.webp',
   'Disciplina': '/images/valores/disciplina.webp'
 }
+
+// Iconos animados para el timeline
+const timelineIconPaths = [
+  '/images/iconos-animados/fundacion.gif',
+  '/images/iconos-animados/expansion.gif',
+  '/images/iconos-animados/certificacion.gif',
+  '/images/iconos-animados/proyectos.gif',
+  '/images/iconos-animados/consolidacion.gif'
+]
 
 export function QuienesSomosSection() {
   return (
@@ -63,13 +72,12 @@ export function QuienesSomosSection() {
 
           <div className="relative">
             {/* Línea horizontal conectora */}
-            <div className="hidden md:block absolute top-6 left-[10%] right-[10%] h-0.5 bg-blue-300"></div>
+            <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-blue-300"></div>
 
             {/* Items */}
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {COMPANY_HISTORY.timeline.map((item, index) => {
-                const timelineIcons = [Rocket, Factory, Shield, Briefcase, Star]
-                const Icon = timelineIcons[index] || Star
+                const iconPath = timelineIconPaths[index]
 
                 return (
                   <motion.div
@@ -80,9 +88,13 @@ export function QuienesSomosSection() {
                     transition={{ delay: index * 0.1 }}
                     className="relative flex flex-col items-center"
                   >
-                    {/* Icono en la línea */}
-                    <div className="w-12 h-12 bg-blue-600 rounded-full shadow-lg z-10 mb-4 flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-white" />
+                    {/* Icono animado */}
+                    <div className="w-16 h-16 bg-white rounded-full shadow-lg z-10 mb-4 flex items-center justify-center border-2 border-blue-200">
+                      <img
+                        src={iconPath}
+                        alt={item.title}
+                        className="w-12 h-12 object-contain"
+                      />
                     </div>
 
                     {/* Card */}
@@ -121,89 +133,83 @@ export function QuienesSomosSection() {
           </div>
         </motion.div>
 
-        {/* Misión y Visión */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {/* Misión */}
+        {/* Misión/Visión + Valores - Diseño integrado */}
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Columna 1: Misión y Visión */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 border border-blue-100 shadow-lg"
+            className="space-y-8"
           >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Target className="w-7 h-7 text-white" />
+            {/* Misión */}
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <img
+                  src="/images/iconos-animados/mision.gif"
+                  alt="Misión"
+                  className="w-12 h-12 object-contain"
+                />
+                <h3 className="text-xl font-bold text-gray-900">Misión</h3>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900">Misión</h3>
+              <p className="text-gray-600 leading-relaxed pl-16">
+                {COMPANY_INFO.MISSION}
+              </p>
             </div>
-            <p className="text-gray-700 leading-relaxed">
-              {COMPANY_INFO.MISSION}
-            </p>
+
+            {/* Visión */}
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <img
+                  src="/images/iconos-animados/vision.gif"
+                  alt="Visión"
+                  className="w-12 h-12 object-contain"
+                />
+                <h3 className="text-xl font-bold text-gray-900">Visión</h3>
+              </div>
+              <p className="text-gray-600 leading-relaxed pl-16">
+                {COMPANY_INFO.VISION}
+              </p>
+            </div>
           </motion.div>
 
-          {/* Visión */}
+          {/* Columna 2: Valores */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 border border-slate-100 shadow-lg"
           >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center shadow-lg">
-                <Eye className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900">Visión</h3>
-            </div>
-            <p className="text-gray-700 leading-relaxed">
-              {COMPANY_INFO.VISION}
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Valores */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Nuestros Valores Corporativos</h3>
-            <p className="text-gray-600">Principios fundamentales que guían nuestro actuar diario</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {CORPORATE_VALUES.map((valor, index) => {
-              const iconPath = valorIconPaths[valor.name]
-              return (
-                <motion.div
-                  key={valor.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -5 }}
-                  className="group"
-                >
-                  <div className="bg-white rounded-xl p-5 shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300 h-full">
-                    <div className="w-16 h-16 mb-4 flex items-center justify-center">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Valores Corporativos</h3>
+            <div className="grid grid-cols-4 gap-6">
+              {CORPORATE_VALUES.map((valor, index) => {
+                const iconPath = valorIconPaths[valor.name]
+                return (
+                  <motion.div
+                    key={valor.name}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                    className="text-center group"
+                  >
+                    <div className="w-20 h-20 mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110">
                       {iconPath && (
                         <Image
                           src={iconPath}
                           alt={valor.name}
-                          width={64}
-                          height={64}
+                          width={80}
+                          height={80}
                           className="object-contain"
                         />
                       )}
                     </div>
-                    <h4 className="font-bold text-gray-900 mb-2">{valor.name}</h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">{valor.description}</p>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-        </motion.div>
+                    <span className="text-sm font-medium text-gray-700">{valor.name}</span>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )

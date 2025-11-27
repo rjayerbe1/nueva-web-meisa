@@ -26,33 +26,34 @@ export const COMPANY_INFO = {
 
 export const PLANTS = [
   {
-    name: 'Sede Principal Popayán',
-    location: 'Bodega E13 Parque Industrial – Cauca',
-    area: 4400, // m²
-    capacity: 350, // ton/mes
-    naves: 3,
-    bridgeCranes: 5,
-    cncTables: 2,
-    googleMaps: 'https://goo.gl/maps/SnHGyu5xrNRKFhgN8',
-    description: 'Planta principal con mayor capacidad de producción'
-  },
-  {
-    name: 'Sede Jamundí',
+    name: 'Planta Jamundí',
     location: 'Vía Panamericana 6 Sur – 195 – Valle del Cauca',
     area: 6000, // m²
-    capacity: 250, // ton/mes
     naves: 1,
-    bridgeCranes: 3,
+    craneCapacity: 20, // ton
     cncTables: 1,
     additionalEquipment: ['Ensambladora de Perfiles'],
     googleMaps: 'https://goo.gl/maps/gZ8ftUnD7Wckx6A96',
-    description: 'Sede administrativa con capacidades de fabricación'
+    description: 'Planta de producción y sede administrativa de MEISA'
+  },
+  {
+    name: 'Planta Popayán',
+    location: 'Bodega E13 Parque Industrial – Cauca',
+    area: 4400, // m²
+    naves: 1,
+    craneCapacity: 10, // ton
+    cncTables: 2,
+    googleMaps: 'https://goo.gl/maps/SnHGyu5xrNRKFhgN8',
+    description: 'Planta de producción'
   },
   {
     name: 'Planta Villa Rica',
     location: 'Vía Puerto Tejada – Villa Rica, Vereda Agua Azul, Cauca',
+    area: 4000, // m²
+    naves: 2,
+    craneCapacity: 20, // ton
     googleMaps: 'https://www.google.com/maps/@3.1985885,-76.4442089,15z',
-    description: 'Planta especializada en proyectos regionales'
+    description: 'Planta de producción'
   }
 ] as const
 
@@ -133,9 +134,9 @@ export const TECHNOLOGIES = [
 // Cita del liderazgo para la página de empresa
 export const LEADERSHIP_QUOTE = {
   quote: 'En MEISA no solo construimos estructuras de acero, construimos la infraestructura que impulsa el desarrollo de Colombia. Cada proyecto es un compromiso con la excelencia y la seguridad.',
-  name: 'Gerencia General',
-  title: 'MEISA S.A.S.',
-  image: '/images/empresa/liderazgo/gerente.jpg' // Placeholder - actualizar con foto real
+  name: 'Roberto Ayerbe Camayo',
+  title: 'Gerente Técnico | Socio Fundador',
+  image: '/images/empresa/liderazgo/roberto-ayerbe.png'
 } as const
 
 // Contenido de Seguridad Laboral

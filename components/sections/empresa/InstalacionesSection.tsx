@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { MapPin, Factory, Scale, Ruler, ExternalLink } from 'lucide-react'
+import { MapPin, Weight, Scale, Ruler, ExternalLink } from 'lucide-react'
 import { PLANTS, COMPANY_STATS } from '@/lib/company-data'
 import { useCountUp } from '@/hooks/useCountUp'
 
@@ -27,11 +27,11 @@ function StatCounter({ value, label, suffix = '' }: { value: number; label: stri
   )
 }
 
-// Coordenadas para los mapas embebidos
+// Coordenadas reales para los mapas embebidos
 const plantCoordinates = {
-  'Sede Principal Popayán': { lat: 2.4448, lng: -76.6147, zoom: 15 },
-  'Sede Jamundí': { lat: 3.2619, lng: -76.5397, zoom: 15 },
-  'Planta Villa Rica': { lat: 3.1879, lng: -76.4486, zoom: 15 }
+  'Planta Jamundí': { lat: 3.2487839, lng: -76.5263946, placeId: '0x8e309ea112757501:0x2cfda6d9126079df' },
+  'Planta Popayán': { lat: 2.5024167, lng: -76.5598033, placeId: '0x8e30042e3d132a67:0xedbc4d22716e928a' },
+  'Planta Villa Rica': { lat: 3.1878965, lng: -76.4486029, placeId: '0x8e3a7700295ca9bf:0xa6b69c2179a47088' }
 }
 
 export function InstalacionesSection() {
@@ -72,7 +72,7 @@ export function InstalacionesSection() {
                   {/* Mapa embebido */}
                   <div className="h-48 relative overflow-hidden">
                     <iframe
-                      src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${coords.lng}!3d${coords.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z!5e0!3m2!1ses!2sco!4v1700000000000`}
+                      src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1500!2d${coords.lng}!3d${coords.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s${coords.placeId}!2sMetálicas+e+Ingeniería+S.A.S.!5e0!3m2!1ses!2sco!4v1700000000000`}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -81,12 +81,6 @@ export function InstalacionesSection() {
                       referrerPolicy="no-referrer-when-downgrade"
                       className="grayscale hover:grayscale-0 transition-all duration-500"
                     />
-                    {/* Badge de capacidad */}
-                    {'capacity' in planta && planta.capacity && (
-                      <div className="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                        {planta.capacity} ton/mes
-                      </div>
-                    )}
                   </div>
 
                   {/* Content */}
@@ -106,21 +100,15 @@ export function InstalacionesSection() {
 
                     {/* Stats */}
                     {'area' in planta && planta.area && (
-                      <div className="flex flex-wrap gap-3 text-sm mb-4">
+                      <div className="flex gap-3 text-sm mb-4">
                         <div className="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
                           <Ruler className="w-4 h-4 text-blue-500" />
-                          <span>{planta.area.toLocaleString()} m²</span>
+                          <span>{planta.area.toLocaleString()} m² {'naves' in planta && planta.naves && `| ${planta.naves} ${planta.naves === 1 ? 'nave' : 'naves'}`}</span>
                         </div>
-                        {'bridgeCranes' in planta && planta.bridgeCranes && (
+                        {'craneCapacity' in planta && planta.craneCapacity && (
                           <div className="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
-                            <Factory className="w-4 h-4 text-blue-500" />
-                            <span>{planta.bridgeCranes} grúas</span>
-                          </div>
-                        )}
-                        {'naves' in planta && planta.naves && (
-                          <div className="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
-                            <Scale className="w-4 h-4 text-blue-500" />
-                            <span>{planta.naves} naves</span>
+                            <Weight className="w-4 h-4 text-blue-500" />
+                            <span>Izaje hasta {planta.craneCapacity} ton</span>
                           </div>
                         )}
                       </div>

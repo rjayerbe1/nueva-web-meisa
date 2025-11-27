@@ -6,12 +6,10 @@ import { ArrowRight } from 'lucide-react'
 import { siteConfig } from '@/lib/site-config'
 
 // Nuevas secciones de empresa
-import { EmpresaHeroSection } from '@/components/sections/empresa/EmpresaHeroSection'
 import { CreemosSection } from '@/components/sections/empresa/CreemosSection'
 import { QuienesSomosSection } from '@/components/sections/empresa/QuienesSomosSection'
 import { InstalacionesSection } from '@/components/sections/empresa/InstalacionesSection'
 import { CompromisoSection } from '@/components/sections/empresa/CompromisoSection'
-import { EmpresaNavigation } from '@/components/empresa/EmpresaNavigation'
 
 interface EmpresaContentProps {
   paginaData?: any
@@ -20,17 +18,11 @@ interface EmpresaContentProps {
 export default function EmpresaContent({ paginaData }: EmpresaContentProps) {
   return (
     <main className="min-h-screen bg-white">
-      {/* 1. Hero Cinematográfico */}
-      <EmpresaHeroSection />
+      {/* 1. Quiénes Somos (Historia + Misión/Visión + Valores) */}
+      <QuienesSomosSection />
 
       {/* 2. Sección "Creemos" + Cita del Liderazgo */}
       <CreemosSection />
-
-      {/* Navegación Sticky */}
-      <EmpresaNavigation />
-
-      {/* 3. Quiénes Somos (Historia + Misión/Visión + Valores) */}
-      <QuienesSomosSection />
 
       {/* 4. Instalaciones + Capacidades (con estadísticas) */}
       <InstalacionesSection />

@@ -18,10 +18,25 @@ export function EmpresaHeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Video autoplay failed, probably due to browser policy
-      })
+    const video = videoRef.current
+    if (video) {
+      // Intentar reproducir el video
+      const playVideo = async () => {
+        try {
+          await video.play()
+        } catch (error) {
+          console.log('Video autoplay failed:', error)
+        }
+      }
+
+      // Si el video ya está listo, reproducir
+      if (video.readyState >= 3) {
+        playVideo()
+      } else {
+        // Esperar a que esté listo
+        video.addEventListener('canplay', playVideo)
+        return () => video.removeEventListener('canplay', playVideo)
+      }
     }
   }, [])
 
@@ -42,13 +57,8 @@ export function EmpresaHeroSection() {
         style={{ y }}
         className="absolute inset-0 w-full h-full"
       >
-        {/* Fallback image while video loads */}
-        {!videoLoaded && (
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: 'url(/images/empresa/hero-fallback.jpg)' }}
-          />
-        )}
+        {/* Fallback color mientras carga el video */}
+        <div className="absolute inset-0 bg-gray-900" />
 
         <video
           ref={videoRef}
@@ -56,85 +66,75 @@ export function EmpresaHeroSection() {
           muted
           loop
           playsInline
+          preload="auto"
           onLoadedData={() => setVideoLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="absolute inset-0 w-full h-full object-cover scale-125"
         >
           <source src="/videos/fabricacion-metalica.mp4" type="video/mp4" />
         </video>
 
-        {/* Dark overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+        {/* Overlay gradiente lateral - oscuro izquierda, transparente derecha */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
+        {/* Overlay adicional en la parte inferior para transición suave */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
       </motion.div>
 
-      {/* Content */}
+      {/* Content - Alineado a la izquierda */}
       <motion.div
         style={{ opacity }}
-        className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center"
+        className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-24 max-w-5xl"
       >
-        {/* Badge */}
+        {/* Main Title - Estilo similar a AboutSection */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-6"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-3"
         >
-          <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 text-sm font-medium tracking-wider">
-            DESDE 1996
-          </span>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-white leading-none" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+            ESTRUCTURAS QUE
+          </h1>
+          <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-500 leading-none" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+            TRANSFORMAN
+          </h2>
         </motion.div>
-
-        {/* Main Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white tracking-tight leading-none mb-4"
-        >
-          <span className="block">CONSTRUYENDO</span>
-          <span className="block mt-2">
-            EL FUTURO DE{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
-              COLOMBIA
-            </span>
-          </span>
-        </motion.h1>
 
         {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-6 text-lg sm:text-xl md:text-2xl text-white/80 max-w-3xl font-light"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          className="text-sm sm:text-base md:text-lg text-gray-200 font-lato leading-relaxed mb-6 max-w-md"
+          style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}
         >
-          Más de 29 años liderando la industria de estructuras metálicas en Colombia
+          Más de <span className="font-bold">500 proyectos</span> en todo el país
         </motion.p>
 
-        {/* Scroll Indicator */}
-        <motion.button
-          onClick={scrollToNext}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors cursor-pointer group"
-        >
-          <span className="text-sm font-medium tracking-wider uppercase">Descubre más</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-          >
-            <ChevronDown className="w-6 h-6 group-hover:scale-110 transition-transform" />
-          </motion.div>
-        </motion.button>
       </motion.div>
 
-      {/* Decorative elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10" />
+      {/* Scroll Indicator - Centrado abajo */}
+      <motion.button
+        onClick={scrollToNext}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-white/60 hover:text-white/90 transition-colors cursor-pointer group"
+      >
+        <span className="text-xs font-medium tracking-widest uppercase">Descubre más</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: 'easeInOut'
+          }}
+        >
+          <ChevronDown className="w-6 h-6" />
+        </motion.div>
+      </motion.button>
+
     </div>
   )
 }
