@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 /**
+ * DEPRECATED: Ya no se necesita. El desarrollo ahora usa Neon directamente.
+ * Se conserva como referencia.
+ *
  * Script para sincronizar canvasData de plantillas a producción
  */
 

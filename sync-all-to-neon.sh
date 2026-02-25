@@ -1,8 +1,15 @@
 #!/bin/bash
 
+# DEPRECATED: Ya no se necesita. El desarrollo ahora usa Neon directamente.
+# Se conserva como referencia.
+#
 # Script maestro para sincronizar TODA la base de datos local a Neon (producción)
 # Incluye: schema, categorías, assets, proyectos, y contadores
 # Uso: ./sync-all-to-neon.sh
+
+echo "⚠️  DEPRECATED: Este script ya no es necesario."
+echo "   El desarrollo ahora usa Neon directamente."
+exit 0
 
 set -e  # Salir si hay error
 

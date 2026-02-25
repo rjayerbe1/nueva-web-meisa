@@ -62,13 +62,20 @@ Main models: User, Proyecto, ImagenProyecto, ProgresoProyecto, Servicio, Miembro
 
 ### Environment Variables
 Required in `.env.local`:
-- `DATABASE_URL` - PostgreSQL connection
+- `DATABASE_URL` - Neon PostgreSQL connection (production DB used directly in dev)
 - `NEXTAUTH_SECRET` - Auth secret
 - `NEXTAUTH_URL` - Base URL
 - `UPLOADCARE_PUBLIC_KEY` - File uploads
 
+### Database (Neon - Single DB)
+- Development and production use the **same Neon database** directly
+- No local PostgreSQL needed — all changes go to Neon immediately
+- `npm run db:push` includes a safety confirmation before applying schema changes
+- `npm run db:push:force` skips confirmation (use with caution)
+- Sync scripts (`sync-db-to-neon.sh`, `sync-all-to-neon.sh`, `scripts/sync-*.mjs`) are **DEPRECATED**
+
 ### Development Workflow
-1. Database changes: Edit `prisma/schema.prisma` → Run `npm run db:push`
+1. Database changes: Edit `prisma/schema.prisma` → Run `npm run db:push` (confirms before applying to Neon)
 2. API routes: Create/edit in `/app/api/`
 3. UI components: Use existing Shadcn/ui components or create new ones
 4. Admin features: Add to `/app/admin/` with proper auth checks
@@ -116,4 +123,4 @@ Required in `.env.local`:
 - **Cloud Run (GCP)**: Automatic deployment on push to main (production)
 - **Docker**: Use provided Dockerfile and docker-compose.yml for local dev
 - **Manual**: Build with `npm run build`, serve with `npm start`
-- **Database**: Neon PostgreSQL (sync with `./sync-db-to-neon.sh`)
+- **Database**: Neon PostgreSQL (used directly in dev and production, no sync needed)
