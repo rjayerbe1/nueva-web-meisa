@@ -74,20 +74,6 @@ async function getProjectsByCategory() {
   return projectsByCategory
 }
 
-// Estructura de secciones para navegación sticky
-const homeSections = [
-  { id: 'inicio', titulo: 'Inicio', icon: 'Home' },
-  { id: 'nosotros', titulo: 'Nosotros', icon: 'Users' },
-  { id: 'capacidades', titulo: 'Nuestro Legado', icon: 'BarChart3' },
-  { id: 'servicios', titulo: 'Servicios', icon: 'Settings' },
-  { id: 'tecnologia', titulo: 'Tecnología', icon: 'Monitor' },
-  { id: 'infraestructura', titulo: 'Infraestructura', icon: 'Factory' },
-  { id: 'proyectos', titulo: 'Proyectos', icon: 'Award' },
-  { id: 'clientes', titulo: 'Clientes', icon: 'UserCheck' },
-  { id: 'valores', titulo: 'Valores', icon: 'Heart' },
-  { id: 'contacto', titulo: 'Contacto', icon: 'MessageSquare' }
-]
-
 export default async function HomePage() {
   const [projectsByCategory, heroImages] = await Promise.all([
     getProjectsByCategory(),
@@ -97,7 +83,6 @@ export default async function HomePage() {
   return (
     <HomeContent
       projectsByCategory={projectsByCategory}
-      sections={homeSections}
       heroImages={heroImages}
     />
   )

@@ -129,7 +129,7 @@ export default async function ServiciosPage() {
 export const metadata = {
   title: 'Servicios de Estructuras Metálicas',
   description:
-    'Servicios completos de estructuras metálicas en Colombia: diseño estructural, fabricación con tecnología CNC, montaje especializado y consultoría BIM. Más de 40 años de experiencia. Certificación ISO.',
+    `Servicios completos de estructuras metálicas en Colombia: diseño estructural, fabricación con tecnología CNC, montaje especializado y consultoría BIM. Más de ${siteConfig.empresa.aniosExperiencia} años de experiencia. Certificación ISO.`,
   keywords: [
     'servicios estructuras metálicas',
     'diseño estructural Colombia',

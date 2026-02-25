@@ -1,5 +1,6 @@
 // Componentes JSON-LD Schema para SEO
 // Estos schemas ayudan a Google a entender mejor el contenido del sitio
+import { siteConfig } from '@/lib/site-config'
 
 export function OrganizationSchema() {
   const schema = {
@@ -17,8 +18,8 @@ export function OrganizationSchema() {
     },
     image: 'https://meisa.com.co/images/og-image.jpg',
     description:
-      'Empresa líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de 40 años de experiencia en puentes, edificios, centros comerciales y naves industriales.',
-    foundingDate: '1983',
+      `Empresa líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de ${siteConfig.empresa.aniosExperiencia} años de experiencia en puentes, edificios, centros comerciales y naves industriales.`,
+    foundingDate: '1996',
     numberOfEmployees: {
       '@type': 'QuantitativeValue',
       minValue: 100,

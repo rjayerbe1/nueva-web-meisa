@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Eye, Calendar, MapPin, ChevronRight } from 'lucide-react'
 import { Proyecto } from '@prisma/client'
+import { siteConfig } from '@/lib/site-config'
 
 interface ProjectWithImages extends Proyecto {
   imagenes: { url: string; alt: string }[]
@@ -144,7 +145,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
             Proyectos Destacados
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Más de 29 años construyendo el futuro de Colombia
+            Más de {siteConfig.empresa.aniosExperiencia} años construyendo el futuro de Colombia
           </p>
         </motion.div>
         

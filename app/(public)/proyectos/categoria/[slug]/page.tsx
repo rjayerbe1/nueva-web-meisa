@@ -110,8 +110,6 @@ export default function CategoryProjectsPage() {
   const [downloadingPDF, setDownloadingPDF] = useState(false)
   const [heroBackground, setHeroBackground] = useState<string | null>(null)
 
-  console.log('Component rendered, params:', params)
-
   // Handler para cambio de especialidad
   const handleEspecialidadChange = (especialidad: any) => {
     if (especialidad?.imagen) {
@@ -127,8 +125,6 @@ export default function CategoryProjectsPage() {
 
       // Si existe un PDF pregenerado, descargarlo directamente
       if (brochure.pdfUrl && brochure.pdfUrl.trim() !== '') {
-        console.log('📥 Descargando PDF pregenerado:', brochure.pdfUrl)
-
         // Crear un enlace temporal para descargar el archivo
         const link = document.createElement('a')
         link.href = brochure.pdfUrl
@@ -137,15 +133,11 @@ export default function CategoryProjectsPage() {
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-
-        console.log('✅ PDF descargado exitosamente')
       } else {
-        // Si no existe PDF pregenerado, mostrar mensaje
-        alert('El PDF aún no ha sido generado. Por favor, contacta al administrador para generar el PDF del brochure.')
+        return
       }
     } catch (error) {
       console.error('Error al descargar PDF:', error)
-      alert('Error al descargar el PDF')
     } finally {
       setDownloadingPDF(false)
     }
@@ -153,71 +145,53 @@ export default function CategoryProjectsPage() {
 
   useEffect(() => {
     const slug = params.slug as string
-    console.log('useEffect called with slug:', slug, 'params:', params)
     
     if (!slug) {
-      console.log('No slug available yet, returning...')
       return
     }
 
     const fetchCategoryAndProjects = async () => {
       try {
-        console.log('=== STARTING FETCH ===', slug)
         setLoading(true)
         setError(null)
         
         // Fetch category info
-        console.log('Fetching category from:', `/api/categories/${slug}`)
         const categoryResponse = await fetch(`/api/categories/${slug}`)
-        console.log('Category response status:', categoryResponse.status)
         
         if (!categoryResponse.ok) {
-          const errorText = await categoryResponse.text()
-          console.log('Category error response:', errorText)
           throw new Error('Categoría no encontrada')
         }
         
         const categoryData = await categoryResponse.json()
-        console.log('Category data received:', categoryData)
         setCategoria(categoryData)
 
         // Fetch projects for this category
-        console.log('Fetching projects for key:', categoryData.key)
         const projectsResponse = await fetch(`/api/projects/by-category/${categoryData.key}`)
-        console.log('Projects response status:', projectsResponse.status)
         
         if (projectsResponse.ok) {
           const projectsData = await projectsResponse.json()
-          console.log('Projects data received, length:', projectsData.length)
           setProyectos(projectsData)
         } else {
-          console.log('Projects fetch failed, but continuing...')
           setProyectos([])
         }
 
         // Fetch brochure for this category
-        console.log('Fetching brochure for category id:', categoryData.id)
         try {
           const brochureResponse = await fetch(`/api/brochures/by-category/${categoryData.id}`)
           if (brochureResponse.ok) {
             const brochureData = await brochureResponse.json()
-            console.log('Brochure data received:', brochureData)
             setBrochure(brochureData)
           } else {
-            console.log('No brochure found for this category')
             setBrochure(null)
           }
         } catch (brochureError) {
-          console.log('Error fetching brochure, but continuing...', brochureError)
+          console.error('Error fetching brochure for category:', brochureError)
           setBrochure(null)
         }
-
-        console.log('=== FETCH COMPLETED SUCCESSFULLY ===')
       } catch (error) {
-        console.error('=== ERROR IN FETCH ===', error)
+        console.error('Error loading category projects:', error)
         setError('Error al cargar la información de la categoría')
       } finally {
-        console.log('=== SETTING LOADING FALSE ===')
         setLoading(false)
       }
     }

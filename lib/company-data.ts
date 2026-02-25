@@ -1,12 +1,15 @@
 // Datos oficiales de MEISA extraídos de INFORMACION-REAL-MEISA.md
+const FOUNDING_YEAR = 1996
+const YEARS_EXPERIENCE = new Date().getFullYear() - FOUNDING_YEAR
+
 export const COMPANY_STATS = {
   EMPLOYEES: 220,
   CONTRACTORS: 100,
   MONTHLY_CAPACITY: 600,
-  YEARS_EXPERIENCE: 29,
+  YEARS_EXPERIENCE,
   PLANTS: 3,
   PROJECTS_COMPLETED: 500,
-  FOUNDING_YEAR: 1996,
+  FOUNDING_YEAR,
   TOTAL_TEAM: 320, // Empleados + Contratistas
   SOFTWARE_COUNT: 8,
   BRIDGE_CRANES: 8,
@@ -232,7 +235,7 @@ export const CORPORATE_DOCUMENTS = [
 export const COMPANY_HISTORY = {
   // Texto introductorio en 3 párrafos
   intro: [
-    'Metálicas e Ingeniería S.A.S. fue constituida en el año 1996 en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructuras Metálicas. A lo largo de más de 29 años, hemos participado activamente en la construcción y manejo de Proyectos y Obras Civiles en todo el territorio Nacional.',
+    `Metálicas e Ingeniería S.A.S. fue constituida en el año ${FOUNDING_YEAR} en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de Estructuras Metálicas. A lo largo de más de ${YEARS_EXPERIENCE} años, hemos participado activamente en la construcción y manejo de Proyectos y Obras Civiles en todo el territorio Nacional.`,
     'Con el objeto de lograr una mayor competitividad y continuar brindando productos y servicios de calidad, nuestra empresa año a año ha incorporado talento humano altamente competente, máquinas y equipos de última tecnología, permitiéndonos ser cada vez más eficientes en los tiempos de entrega y en la reducción de costos de los proyectos.',
     'Hoy contamos con tres plantas de producción estratégicamente ubicadas en el suroccidente colombiano, con una capacidad combinada de 600 toneladas mensuales y un equipo de más de 320 colaboradores comprometidos con la excelencia.'
   ],
@@ -271,7 +274,7 @@ export const COMPANY_HISTORY = {
   ],
   achievements: [
     'Más de 500 proyectos completados en toda Colombia',
-    '29 años de experiencia continua en el mercado',
+    `${YEARS_EXPERIENCE} años de experiencia continua en el mercado`,
     '3 plantas de producción estratégicamente ubicadas',
     '600 toneladas de capacidad mensual de fabricación',
     'Equipo de más de 320 profesionales comprometidos'

@@ -720,7 +720,7 @@ export default function ServiciosContent({
               {[
                 { numero: '500+', texto: 'Proyectos Exitosos' },
                 { numero: '15,000+', texto: 'Toneladas Fabricadas' },
-                { numero: '29+', texto: 'Años de Experiencia' },
+                { numero: `${siteConfig.empresa.aniosExperiencia}+`, texto: 'Años de Experiencia' },
                 { numero: '100%', texto: 'Satisfacción Cliente' }
               ].map((stat, index) => (
                 <motion.div 

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { UserRole } from '@prisma/client'
 
 // Schema de validación para el contacto
 const contactSchema = z.object({
@@ -8,8 +11,42 @@ const contactSchema = z.object({
   email: z.string().email('Email inválido'),
   telefono: z.string().optional(),
   empresa: z.string().optional(),
-  mensaje: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+  // Campos legacy y nuevos para compatibilidad entre formularios
+  mensaje: z.string().optional(),
+  descripcion: z.string().optional(),
+  ciudad: z.string().optional(),
+  tipoProyecto: z.string().optional(),
+  ubicacionProyecto: z.string().optional(),
+  tamanoProyecto: z.string().optional(),
+  serviciosRequeridos: z.array(z.string()).optional(),
+  plazoDeseado: z.string().optional(),
+  tienePlanos: z.string().optional(),
 })
+
+function buildMensaje(data: z.infer<typeof contactSchema>) {
+  const mensajeBase = (data.mensaje || data.descripcion || '').trim()
+  if (!mensajeBase) {
+    return null
+  }
+
+  const detalles: string[] = []
+
+  if (data.ciudad) detalles.push(`Ciudad: ${data.ciudad}`)
+  if (data.tipoProyecto) detalles.push(`Tipo de proyecto: ${data.tipoProyecto}`)
+  if (data.ubicacionProyecto) detalles.push(`Ubicación del proyecto: ${data.ubicacionProyecto}`)
+  if (data.tamanoProyecto) detalles.push(`Tamaño del proyecto: ${data.tamanoProyecto}`)
+  if (data.serviciosRequeridos?.length) {
+    detalles.push(`Servicios requeridos: ${data.serviciosRequeridos.join(', ')}`)
+  }
+  if (data.plazoDeseado) detalles.push(`Plazo deseado: ${data.plazoDeseado}`)
+  if (data.tienePlanos) detalles.push(`Cuenta con planos: ${data.tienePlanos}`)
+
+  if (detalles.length === 0) {
+    return mensajeBase
+  }
+
+  return `${mensajeBase}\n\n--- Datos del proyecto ---\n${detalles.join('\n')}`
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,6 +54,18 @@ export async function POST(request: NextRequest) {
     
     // Validar los datos
     const validatedData = contactSchema.parse(body)
+    const mensaje = buildMensaje(validatedData)
+
+    if (!mensaje || mensaje.length < 10) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Datos inválidos',
+          errors: [{ path: ['mensaje'], message: 'El mensaje debe tener al menos 10 caracteres' }]
+        },
+        { status: 400 }
+      )
+    }
     
     // Guardar en la base de datos
     const contact = await prisma.contactForm.create({
@@ -25,7 +74,7 @@ export async function POST(request: NextRequest) {
         email: validatedData.email,
         telefono: validatedData.telefono || null,
         empresa: validatedData.empresa || null,
-        mensaje: validatedData.mensaje,
+        mensaje,
         origen: request.headers.get('referer') || 'contacto',
       }
     })
@@ -71,8 +120,18 @@ export async function POST(request: NextRequest) {
 // GET para obtener contactos (solo para admin)
 export async function GET(request: NextRequest) {
   try {
-    // Aquí deberías verificar autenticación de admin
-    // Por ahora solo devolvemos los contactos
+    const session = await getServerSession(authOptions)
+    const role = session?.user?.role
+
+    if (!session || (role !== UserRole.ADMIN && role !== UserRole.EDITOR)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'No autorizado'
+        },
+        { status: 401 }
+      )
+    }
     
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')

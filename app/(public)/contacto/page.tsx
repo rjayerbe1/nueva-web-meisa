@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, ChevronRight, X, FileText } from "lucide-react"
 import { useForm } from 'react-hook-form'
@@ -102,15 +103,22 @@ export default function ContactoPage() {
     setSubmitStatus('idle')
 
     try {
+      const payload = {
+        ...data,
+        mensaje: data.descripcion,
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       })
 
-      if (!response.ok) throw new Error('Error al enviar el mensaje')
+      if (!response.ok) {
+        throw new Error('Error al enviar el mensaje')
+      }
 
       setSubmitStatus('success')
       reset()
@@ -150,7 +158,7 @@ export default function ContactoPage() {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-2 text-gray-300 mb-6"
           >
-            <a href="/" className="hover:text-blue-400 transition-colors">Inicio</a>
+            <Link href="/" className="hover:text-blue-400 transition-colors">Inicio</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-white font-semibold">Contacto</span>
           </motion.div>

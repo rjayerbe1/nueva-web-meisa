@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { Award, Building, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
-import { COMPANY_INFO, CORPORATE_VALUES, COMPANY_HISTORY } from '@/lib/company-data'
+import { COMPANY_INFO, CORPORATE_VALUES, COMPANY_HISTORY, COMPANY_STATS } from '@/lib/company-data'
 
 // Mapeo de valores a sus iconos personalizados
 const valorIconPaths: Record<string, string> = {
@@ -41,7 +41,7 @@ export function QuienesSomosSection() {
             Quiénes <span className="text-blue-600">Somos</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Más de 29 años construyendo la infraestructura de Colombia
+            Más de {COMPANY_STATS.YEARS_EXPERIENCE} años construyendo la infraestructura de Colombia
           </p>
         </motion.div>
 
@@ -56,7 +56,7 @@ export function QuienesSomosSection() {
             <span className="font-bold text-gray-900">Metálicas e Ingeniería S.A.S.</span> fue constituida en el año
             <span className="font-bold text-blue-600"> 1996 </span>
             en la ciudad de Popayán, centrando su actividad en el diseño, fabricación y montaje de estructuras metálicas.
-            A lo largo de más de 29 años, hemos participado activamente en la construcción de proyectos
+            A lo largo de más de {COMPANY_STATS.YEARS_EXPERIENCE} años, hemos participado activamente en la construcción de proyectos
             en todo el territorio nacional, incorporando talento humano competente y tecnología de última generación.
           </p>
         </motion.div>

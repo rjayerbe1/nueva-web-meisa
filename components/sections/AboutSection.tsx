@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CheckCircle2, Award, Shield, Zap, ArrowRight } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 const features = [
   {
@@ -15,7 +16,7 @@ const features = [
   },
   {
     name: 'Experiencia Comprobada',
-    description: 'Más de 29 años de trayectoria respaldan nuestro trabajo.',
+    description: `Más de ${siteConfig.empresa.aniosExperiencia} años de trayectoria respaldan nuestro trabajo.`,
     icon: Award,
     color: 'from-slate-600 to-slate-700',
   },
@@ -74,13 +75,13 @@ export function AboutSection() {
             
             <p className="text-gray-300 text-lg mb-6 leading-relaxed">
               MEISA es líder en el diseño, fabricación y montaje de estructuras metálicas en Colombia. 
-              Con más de 29 años de experiencia, hemos sido parte fundamental en el desarrollo de la 
+              Con más de {siteConfig.empresa.aniosExperiencia} años de experiencia, hemos sido parte fundamental en el desarrollo de la 
               infraestructura del país.
             </p>
             
             <p className="text-gray-300 text-lg mb-8 leading-relaxed">
               Desde nuestra fundación en 1996 en Popayán, hemos crecido hasta convertirnos en referentes 
-              del sector, con dos plantas de producción y capacidad de 600 toneladas mensuales.
+              del sector, con tres plantas de producción y capacidad de 600 toneladas mensuales.
             </p>
 
             {/* Características */}
@@ -121,7 +122,7 @@ export function AboutSection() {
               viewport={{ once: true }}
             >
               <Link
-                href="/nosotros"
+                href="/empresa"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105"
               >
                 Conoce nuestra historia
@@ -151,7 +152,7 @@ export function AboutSection() {
                   <div className="relative h-48 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl overflow-hidden group">
                     <div className="absolute inset-0 bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-4xl font-bold text-white/80">2</span>
+                      <span className="text-4xl font-bold text-white/80">3</span>
                       <span className="text-lg text-white/60 ml-2">Plantas</span>
                     </div>
                   </div>
@@ -199,7 +200,7 @@ export function AboutSection() {
                     <CheckCircle2 className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-gray-900">29+</p>
+                    <p className="text-2xl font-bold text-gray-900">{siteConfig.empresa.aniosExperiencia}+</p>
                     <p className="text-sm text-gray-600">Años de experiencia</p>
                   </div>
                 </div>

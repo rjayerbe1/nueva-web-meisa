@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, Lato } from 'next/font/google'
 import './globals.css'
-import { Navbar } from '@/components/layout/Navbar'
-import { Footer } from '@/components/layout/Footer'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { GlobalSchemas } from '@/components/seo/JsonLdSchema'
+import { siteConfig } from '@/lib/site-config'
 
 // Bebas Neue para títulos - alto impacto, condensada
 const bebasNeue = Bebas_Neue({
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
     template: '%s | MEISA - Estructuras Metálicas Colombia',
   },
   description:
-    'MEISA es líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de 40 años construyendo puentes, edificios, centros comerciales, naves industriales y estructuras de acero. Sedes en Popayán, Cali y Bogotá.',
+    `MEISA es líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de ${siteConfig.empresa.aniosExperiencia} años construyendo puentes, edificios, centros comerciales, naves industriales y estructuras de acero. Sedes en Popayán, Cali y Bogotá.`,
   keywords: [
     'estructuras metálicas Colombia',
     'fabricación estructuras metálicas',
@@ -69,7 +68,7 @@ export const metadata: Metadata = {
     siteName: 'MEISA - Estructuras Metálicas Colombia',
     title: 'MEISA | Estructuras Metálicas en Colombia | Diseño, Fabricación y Montaje',
     description:
-      'Empresa líder en estructuras metálicas en Colombia. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales. +40 años de experiencia.',
+      `Empresa líder en estructuras metálicas en Colombia. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales. +${siteConfig.empresa.aniosExperiencia} años de experiencia.`,
     images: [
       {
         url: '/images/og-image.jpg',
@@ -91,7 +90,7 @@ export const metadata: Metadata = {
     canonical: 'https://meisa.com.co',
   },
   verification: {
-    google: 'tu-codigo-de-verificacion-google', // Reemplazar con código real
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
   },
   category: 'construction',
   other: {
