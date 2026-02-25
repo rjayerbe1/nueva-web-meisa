@@ -26,7 +26,24 @@ export async function getVisibleCategories(): Promise<CategoryData[]> {
   try {
     const categories = await prisma.categoriaProyecto.findMany({
       where: { visible: true },
-      orderBy: { orden: 'asc' }
+      orderBy: { orden: 'asc' },
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        metaTitle: true,
+        metaDescription: true,
+        orden: true,
+        visible: true,
+        destacada: true,
+        totalProyectos: true,
+      }
     })
 
     return categories
@@ -46,7 +63,24 @@ export async function getFeaturedCategories(): Promise<CategoryData[]> {
         visible: true,
         destacada: true 
       },
-      orderBy: { orden: 'asc' }
+      orderBy: { orden: 'asc' },
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        metaTitle: true,
+        metaDescription: true,
+        orden: true,
+        visible: true,
+        destacada: true,
+        totalProyectos: true,
+      }
     })
 
     return categories
@@ -62,7 +96,24 @@ export async function getFeaturedCategories(): Promise<CategoryData[]> {
 export async function getCategoryBySlug(slug: string): Promise<CategoryData | null> {
   try {
     const category = await prisma.categoriaProyecto.findUnique({
-      where: { slug }
+      where: { slug },
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        metaTitle: true,
+        metaDescription: true,
+        orden: true,
+        visible: true,
+        destacada: true,
+        totalProyectos: true,
+      }
     })
 
     return category
@@ -78,7 +129,24 @@ export async function getCategoryBySlug(slug: string): Promise<CategoryData | nu
 export async function getCategoryByKey(key: CategoriaEnum): Promise<CategoryData | null> {
   try {
     const category = await prisma.categoriaProyecto.findUnique({
-      where: { key }
+      where: { key },
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        metaTitle: true,
+        metaDescription: true,
+        orden: true,
+        visible: true,
+        destacada: true,
+        totalProyectos: true,
+      }
     })
 
     return category

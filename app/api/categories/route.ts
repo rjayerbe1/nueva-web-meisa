@@ -9,7 +9,30 @@ export async function GET() {
       where: {
         visible: true
       },
-      orderBy: { orden: 'asc' }
+      orderBy: { orden: 'asc' },
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        videoCover: true,
+        usarVideoCover: true,
+        videoCoverScale: true,
+        videoCoverPosition: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        overlayColor: true,
+        overlayOpacity: true,
+        hoverOverlayColor: true,
+        hoverOverlayOpacity: true,
+        enableHoverOverlay: true,
+        visible: true,
+        destacada: true,
+        especialidades: true
+      }
     })
 
     return NextResponse.json(categorias)

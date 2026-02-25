@@ -23,7 +23,45 @@ export async function GET(
     }
 
     const categoria = await prisma.categoriaProyecto.findUnique({
-      where: { id: params.id }
+      where: { id: params.id },
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        videoCover: true,
+        usarVideoCover: true,
+        videoCoverScale: true,
+        videoCoverPosition: true,
+        imagenBanner: true,
+        videoBanner: true,
+        usarVideoBanner: true,
+        videoBannerScale: true,
+        videoBannerPosition: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        overlayColor: true,
+        overlayOpacity: true,
+        hoverOverlayColor: true,
+        hoverOverlayOpacity: true,
+        enableHoverOverlay: true,
+        metaTitle: true,
+        metaDescription: true,
+        orden: true,
+        visible: true,
+        destacada: true,
+        totalProyectos: true,
+        createdAt: true,
+        updatedAt: true,
+        descripcionAmpliada: true,
+        procesoTrabajo: true,
+        estadisticas: true,
+        casosExitoIds: true,
+        especialidades: true,
+      }
     })
 
     if (!categoria) {
@@ -53,7 +91,13 @@ export async function PUT(
 
     // Obtener categoría actual
     const currentCategory = await prisma.categoriaProyecto.findUnique({
-      where: { id: params.id }
+      where: { id: params.id },
+      select: {
+        id: true,
+        key: true,
+        slug: true,
+        nombre: true
+      }
     })
 
     if (!currentCategory) {
@@ -132,12 +176,49 @@ export async function PUT(
     if (data.estadisticas !== undefined) updateData.estadisticas = data.estadisticas
     if (data.casosExitoIds !== undefined) updateData.casosExitoIds = data.casosExitoIds
     if (data.especialidades !== undefined) updateData.especialidades = data.especialidades
-
     console.log('Update object:', updateData) // Debug log
     
     const categoria = await prisma.categoriaProyecto.update({
       where: { id: params.id },
-      data: updateData
+      data: updateData,
+      select: {
+        id: true,
+        key: true,
+        nombre: true,
+        descripcion: true,
+        slug: true,
+        imagenCover: true,
+        videoCover: true,
+        usarVideoCover: true,
+        videoCoverScale: true,
+        videoCoverPosition: true,
+        imagenBanner: true,
+        videoBanner: true,
+        usarVideoBanner: true,
+        videoBannerScale: true,
+        videoBannerPosition: true,
+        icono: true,
+        color: true,
+        colorSecundario: true,
+        overlayColor: true,
+        overlayOpacity: true,
+        hoverOverlayColor: true,
+        hoverOverlayOpacity: true,
+        enableHoverOverlay: true,
+        metaTitle: true,
+        metaDescription: true,
+        orden: true,
+        visible: true,
+        destacada: true,
+        totalProyectos: true,
+        createdAt: true,
+        updatedAt: true,
+        descripcionAmpliada: true,
+        procesoTrabajo: true,
+        estadisticas: true,
+        casosExitoIds: true,
+        especialidades: true,
+      }
     })
 
     console.log(`✅ Categoría actualizada con estructura organizada: ${categoria.nombre} (${categoria.slug})`)
@@ -168,7 +249,13 @@ export async function DELETE(
 
     // Verificar si hay proyectos usando esta categoría
     const categoria = await prisma.categoriaProyecto.findUnique({
-      where: { id: params.id }
+      where: { id: params.id },
+      select: {
+        id: true,
+        key: true,
+        slug: true,
+        nombre: true
+      }
     })
 
     if (!categoria) {

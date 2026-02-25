@@ -5,9 +5,49 @@ import { prisma } from "@/lib/prisma"
 import CategoriesPageClient from "@/components/admin/CategoriesPageClient"
 
 async function getCategories() {
-  return await prisma.categoriaProyecto.findMany({
-    orderBy: { orden: 'asc' }
+  const categorias = await prisma.categoriaProyecto.findMany({
+    orderBy: { orden: 'asc' },
+    select: {
+      id: true,
+      key: true,
+      nombre: true,
+      descripcion: true,
+      slug: true,
+      imagenCover: true,
+      videoCover: true,
+      usarVideoCover: true,
+      videoCoverScale: true,
+      videoCoverPosition: true,
+      imagenBanner: true,
+      videoBanner: true,
+      usarVideoBanner: true,
+      videoBannerScale: true,
+      videoBannerPosition: true,
+      icono: true,
+      color: true,
+      colorSecundario: true,
+      overlayColor: true,
+      overlayOpacity: true,
+      hoverOverlayColor: true,
+      hoverOverlayOpacity: true,
+      enableHoverOverlay: true,
+      metaTitle: true,
+      metaDescription: true,
+      orden: true,
+      visible: true,
+      destacada: true,
+      totalProyectos: true,
+      createdAt: true,
+      updatedAt: true,
+      descripcionAmpliada: true,
+      procesoTrabajo: true,
+      estadisticas: true,
+      casosExitoIds: true,
+      especialidades: true,
+    }
   })
+
+  return categorias
 }
 
 async function getCategoryStats() {
