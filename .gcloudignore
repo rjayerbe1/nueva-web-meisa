@@ -1,0 +1,30 @@
+.git
+.gitignore
+.gcloudignore
+node_modules
+.next
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+.vercel
+.DS_Store
+*.log
+coverage
+.nyc_output
+.vscode
+.idea
+tmp/
+temp/
+*.bak
+# Imagenes pesadas que no se usan en runtime
+public/uploads/*.psd
+# Legado: dumps de migracion FTP + backups (>1 GiB)
+ftp-images-complete/
+ftp-images-organized/
+backups/
+wordpress-backup/
+*.zip
+*.tar.gz
