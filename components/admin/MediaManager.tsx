@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -58,6 +58,7 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [selectedFiles, setSelectedFiles] = useState<string[]>([])
+  const fileInputId = `file-upload-${useId()}`
 
   useEffect(() => {
     fetchMediaFiles()
@@ -267,11 +268,11 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
               accept="image/*"
               onChange={handleFileUpload}
               className="hidden"
-              id="file-upload"
+              id={fileInputId}
               disabled={uploading}
             />
             <Button asChild disabled={uploading}>
-              <label htmlFor="file-upload" className="cursor-pointer">
+              <label htmlFor={fileInputId} className="cursor-pointer">
                 <Upload className="w-4 h-4 mr-2" />
                 {uploading ? 'Subiendo...' : 'Subir Imágenes'}
               </label>
@@ -334,7 +335,7 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
             </p>
             {!searchQuery && selectedCategory === 'all' && (
               <Button asChild>
-                <label htmlFor="file-upload" className="cursor-pointer">
+                <label htmlFor={fileInputId} className="cursor-pointer">
                   <Plus className="w-4 h-4 mr-2" />
                   Subir primera imagen
                 </label>
