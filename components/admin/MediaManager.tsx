@@ -95,9 +95,11 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
     if (!uploadedFiles || uploadedFiles.length === 0) return
 
     setUploading(true)
+    let successCount = 0
+    let lastUrl: string | null = null
+
     try {
       for (const file of Array.from(uploadedFiles)) {
-        // Validar tipo de archivo
         if (!file.type.startsWith('image/')) {
           toast({
             title: 'Archivo no válido',
@@ -107,21 +109,39 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
           continue
         }
 
-        // Validar tamaño (máximo 5MB)
-        if (file.size > 5 * 1024 * 1024) {
+        if (file.size > 10 * 1024 * 1024) {
           toast({
             title: 'Archivo muy grande',
-            description: `${file.name} excede el límite de 5MB`,
+            description: `${file.name} excede el límite de 10MB`,
             variant: 'destructive'
           })
           continue
         }
 
-        // En un caso real, aquí subirías el archivo a un servicio como Uploadcare, S3, etc.
-        // Por ahora simularemos la subida
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('folder', 'pages')
+
+        const response = await fetch('/api/admin/upload', {
+          method: 'POST',
+          body: formData
+        })
+
+        if (!response.ok) {
+          const { error } = await response.json().catch(() => ({ error: 'Error desconocido' }))
+          toast({
+            title: 'Error al subir',
+            description: `${file.name}: ${error}`,
+            variant: 'destructive'
+          })
+          continue
+        }
+
+        const { url } = await response.json()
+
         const newFile: MediaFile = {
           id: Date.now().toString() + Math.random(),
-          url: URL.createObjectURL(file),
+          url,
           name: file.name,
           type: file.type,
           size: file.size,
@@ -130,12 +150,20 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
         }
 
         setFiles(prev => [newFile, ...prev])
+        successCount++
+        lastUrl = url
       }
 
-      toast({
-        title: 'Archivos subidos',
-        description: `Se subieron ${uploadedFiles.length} archivo(s) correctamente`,
-      })
+      if (successCount > 0) {
+        toast({
+          title: 'Archivos subidos',
+          description: `Se subieron ${successCount} archivo(s) correctamente`,
+        })
+
+        if (onSelectImage && lastUrl) {
+          onSelectImage(lastUrl)
+        }
+      }
     } catch (error) {
       console.error('Error uploading files:', error)
       toast({
@@ -145,6 +173,7 @@ export default function MediaManager({ onSelectImage, selectedImage, showSelecto
       })
     } finally {
       setUploading(false)
+      event.target.value = ''
     }
   }
 
