@@ -19,7 +19,7 @@ const MENU_ITEMS = [
   { label: "Empresa", href: "/empresa", imagen: "/images/about/meisa-planta-aerea.jpg" },
   { label: "Trayectoria", href: "/trayectoria", imagen: "/images/hero/coliseo-estructuras-rojas.jpg" },
   { label: "Procesos & Tecnologías", href: "/procesos-tecnologias", imagen: "/images/hero/montaje-grua.jpg" },
-  { label: "Políticas", href: "/politicas", imagen: "/images/hero/techo-metalico.jpg" },
+  { label: "Calidad", href: "/calidad", imagen: "/images/hero/techo-metalico.jpg" },
   { label: "Contacto", href: "/contacto", imagen: "/images/hero/hero-construccion-industrial.jpg" },
 ]
 
@@ -35,7 +35,7 @@ const FOOTER_LINKS = [
   { grupo: "empresa", label: "Proyectos", href: "/proyectos" },
   { grupo: "empresa", label: "Contacto", href: "/contacto" },
   // Legal
-  { grupo: "legal", label: "Políticas", href: "/politicas" },
+  { grupo: "legal", label: "Calidad", href: "/calidad" },
   { grupo: "legal", label: "Tratamiento de datos", href: "/documentos/tratamiento-datos.pdf" },
   { grupo: "legal", label: "Transparencia", href: "/documentos/politica-transparencia.pdf" },
   { grupo: "legal", label: "SAGRILAFT", href: "/documentos/manual-sagrilaft.pdf" },

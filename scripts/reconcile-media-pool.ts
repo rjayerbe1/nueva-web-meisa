@@ -1,12 +1,10 @@
 /**
- * Script de reconciliación — importa URLs de imágenes/videos existentes en
- * los modelos del sitio al pool central `Media`. Es idempotente: si una URL
- * ya existe en Media (por su `url` único) la salta.
+ * Script de reconciliación — importa URLs de imágenes/videos/documentos
+ * existentes en los modelos del sitio al pool central `Media`.
+ *
+ * Es idempotente: si una URL ya existe en Media (url @unique) la salta.
  *
  * Uso: npx tsx scripts/reconcile-media-pool.ts
- *
- * Prerrequisito: el modelo Media debe existir en la DB (correr `npm run db:push`
- * después de agregar Media a prisma/schema.prisma).
  */
 import { prisma } from "../lib/prisma"
 import { MediaKind, Prisma } from "@prisma/client"
@@ -42,47 +40,115 @@ function guessContentType(url: string, kind: MediaKind): string {
   return "image/jpeg"
 }
 
+/** Extrae URLs strings de un valor Json arbitrario (array, objeto, string). */
+function extractUrlsFromJson(value: unknown): string[] {
+  const out: string[] = []
+  const walk = (v: unknown) => {
+    if (v == null) return
+    if (typeof v === "string") {
+      const trimmed = v.trim()
+      if (trimmed && /^(https?:\/\/|\/)/.test(trimmed)) {
+        // Heurística: parece URL o path absoluto. Evita strings de 1-2 caracteres.
+        if (/\.(jpe?g|png|gif|webp|avif|svg|mp4|mov|webm|pdf)(\?|$)/i.test(trimmed)) {
+          out.push(trimmed)
+        }
+      }
+      return
+    }
+    if (Array.isArray(v)) {
+      v.forEach(walk)
+      return
+    }
+    if (typeof v === "object") {
+      Object.values(v as Record<string, unknown>).forEach(walk)
+    }
+  }
+  walk(value)
+  return out
+}
+
 async function collectSources(): Promise<Source[]> {
   const sources: Source[] = []
 
-  const plants = await prisma.plant.findMany({ select: { imagen: true } })
-  sources.push({ model: "Plant", folder: "empresa", urls: plants.map((p) => p.imagen) })
-
-  const valores = await prisma.companyValue.findMany({ select: { imagen: true } })
-  sources.push({ model: "CompanyValue", folder: "empresa", urls: valores.map((v) => v.imagen) })
-
-  const certs = await prisma.certificacion.findMany({ select: { logo: true } })
-  sources.push({ model: "Certificacion", folder: "empresa", urls: certs.map((c) => c.logo) })
-
-  const normas = await prisma.norma.findMany({ select: { logo: true } })
-  sources.push({ model: "Norma", folder: "empresa", urls: normas.map((n) => n.logo) })
-
-  const tecnologias = await prisma.tecnologia.findMany({ select: { imagen: true } })
-  sources.push({ model: "Tecnologia", folder: "procesos-tecnologias", urls: tecnologias.map((t) => t.imagen) })
-
-  const equipos = await prisma.equipo.findMany({ select: { imagen: true } })
-  sources.push({ model: "Equipo", folder: "procesos-tecnologias", urls: equipos.map((e) => e.imagen) })
-
-  const procesos = await prisma.procesoDigital.findMany({ select: { imagen: true } })
-  sources.push({ model: "ProcesoDigital", folder: "procesos-tecnologias", urls: procesos.map((p) => p.imagen) })
-
-  const politicas = await prisma.politica.findMany({ select: { imagen: true, documentoUrl: true } })
-  sources.push({ model: "Politica:imagen", folder: "politicas", urls: politicas.map((p) => p.imagen) })
+  /* ── Empresa ── */
   sources.push({
-    model: "Politica:documento",
+    model: "Plant",
+    folder: "empresa",
+    urls: (await prisma.plant.findMany({ select: { imagen: true } })).map((p) => p.imagen),
+  })
+  sources.push({
+    model: "CompanyValue",
+    folder: "empresa",
+    urls: (await prisma.companyValue.findMany({ select: { imagen: true } })).map(
+      (v) => v.imagen,
+    ),
+  })
+  sources.push({
+    model: "Certificacion:logo",
+    folder: "empresa",
+    urls: (await prisma.certificacion.findMany({ select: { logo: true } })).map((c) => c.logo),
+  })
+  sources.push({
+    model: "Certificacion:doc",
+    folder: "empresa-docs",
+    urls: (await prisma.certificacion.findMany({ select: { documentoUrl: true } })).map(
+      (c) => c.documentoUrl,
+    ),
+    kind: MediaKind.DOC,
+  })
+  sources.push({
+    model: "Norma:logo",
+    folder: "empresa",
+    urls: (await prisma.norma.findMany({ select: { logo: true } })).map((n) => n.logo),
+  })
+  const empresaConfig = await prisma.configuracionEmpresa.findUnique({
+    where: { id: "default" },
+    select: { liderQuoteImagen: true },
+  })
+  if (empresaConfig?.liderQuoteImagen) {
+    sources.push({
+      model: "ConfiguracionEmpresa:lider",
+      folder: "empresa",
+      urls: [empresaConfig.liderQuoteImagen],
+    })
+  }
+
+  /* ── Procesos y Tecnologías ── */
+  sources.push({
+    model: "Tecnologia",
+    folder: "procesos-tecnologias",
+    urls: (await prisma.tecnologia.findMany({ select: { imagen: true } })).map((t) => t.imagen),
+  })
+  sources.push({
+    model: "Equipo",
+    folder: "procesos-tecnologias",
+    urls: (await prisma.equipo.findMany({ select: { imagen: true } })).map((e) => e.imagen),
+  })
+  sources.push({
+    model: "ProcesoDigital",
+    folder: "procesos-tecnologias",
+    urls: (await prisma.procesoDigital.findMany({ select: { imagen: true } })).map(
+      (p) => p.imagen,
+    ),
+  })
+
+  /* ── Políticas ── */
+  const politicas = await prisma.politica.findMany({
+    select: { imagen: true, documentoUrl: true },
+  })
+  sources.push({
+    model: "Politica:imagen",
+    folder: "politicas",
+    urls: politicas.map((p) => p.imagen),
+  })
+  sources.push({
+    model: "Politica:doc",
     folder: "politicas-docs",
     urls: politicas.map((p) => p.documentoUrl),
     kind: MediaKind.DOC,
   })
 
-  const lideres = await prisma.configuracionEmpresa.findUnique({
-    where: { id: "default" },
-    select: { liderQuoteImagen: true },
-  })
-  if (lideres?.liderQuoteImagen) {
-    sources.push({ model: "ConfiguracionEmpresa", folder: "empresa", urls: [lideres.liderQuoteImagen] })
-  }
-
+  /* ── Home ── */
   const featured = await prisma.homeFeaturedProject.findUnique({
     where: { id: "default" },
     select: { imagen: true },
@@ -90,11 +156,14 @@ async function collectSources(): Promise<Source[]> {
   if (featured?.imagen) {
     sources.push({ model: "HomeFeaturedProject", folder: "home", urls: [featured.imagen] })
   }
-
   const servHome = await prisma.homeServicioDestacado.findMany({
     select: { imagen: true, video: true },
   })
-  sources.push({ model: "HomeServicio:imagen", folder: "home", urls: servHome.map((s) => s.imagen) })
+  sources.push({
+    model: "HomeServicio:imagen",
+    folder: "home",
+    urls: servHome.map((s) => s.imagen),
+  })
   sources.push({
     model: "HomeServicio:video",
     folder: "home",
@@ -102,13 +171,218 @@ async function collectSources(): Promise<Source[]> {
     kind: MediaKind.VIDEO,
   })
 
-  const menuItems = await prisma.menuItem.findMany({ select: { imagen: true } })
-  sources.push({ model: "MenuItem", folder: "navegacion", urls: menuItems.map((m) => m.imagen) })
+  /* ── Home hero (desde HomeSeccionConfig y ConfiguracionSitio) ── */
+  const homeCopy = await prisma.homeSeccionConfig.findUnique({
+    where: { id: "default" },
+    select: { heroVideoDesktop: true, heroVideoMobile: true },
+  })
+  if (homeCopy?.heroVideoDesktop || homeCopy?.heroVideoMobile) {
+    sources.push({
+      model: "HomeSeccionConfig:hero-videos",
+      folder: "home",
+      urls: [homeCopy.heroVideoDesktop, homeCopy.heroVideoMobile],
+      kind: MediaKind.VIDEO,
+    })
+  }
 
-  const fases = await prisma.procesoFase.findMany({ select: { imagen: true } })
-  sources.push({ model: "ProcesoFase", folder: "servicios", urls: fases.map((f) => f.imagen) })
+  // ConfiguracionSitio: clave='hero_images' guarda un JSON con 5+ URLs de imágenes del hero
+  const heroConfig = await prisma.configuracionSitio.findUnique({
+    where: { clave: "hero_images" },
+  })
+  if (heroConfig?.valor) {
+    try {
+      const parsed = JSON.parse(heroConfig.valor)
+      sources.push({
+        model: "ConfiguracionSitio:hero-images",
+        folder: "home",
+        urls: extractUrlsFromJson(parsed),
+      })
+    } catch {
+      // ignore
+    }
+  }
 
-  // PilarSIG no tiene campo imagen en el schema actual — skipeado.
+  /* ── Servicios (catálogo completo) ── */
+  const servicios = await prisma.servicio.findMany({
+    select: {
+      imagen: true,
+      videoDemostrativo: true,
+      imagenesGaleria: true,
+    },
+  })
+  sources.push({
+    model: "Servicio:imagen",
+    folder: "servicios",
+    urls: servicios.map((s) => s.imagen),
+  })
+  sources.push({
+    model: "Servicio:video",
+    folder: "servicios",
+    urls: servicios.map((s) => s.videoDemostrativo),
+    kind: MediaKind.VIDEO,
+  })
+  sources.push({
+    model: "Servicio:galeria",
+    folder: "servicios",
+    urls: servicios.flatMap((s) => extractUrlsFromJson(s.imagenesGaleria)),
+  })
+
+  /* ── ProcesoFase ── */
+  sources.push({
+    model: "ProcesoFase",
+    folder: "servicios",
+    urls: (await prisma.procesoFase.findMany({ select: { imagen: true } })).map((f) => f.imagen),
+  })
+
+  /* ── Categorías de proyecto (hero de cada /proyectos?cat=...) ── */
+  const cats = await prisma.categoriaProyecto.findMany({
+    select: { imagenCover: true, imagenBanner: true, videoBanner: true, videoCover: true },
+  })
+  sources.push({
+    model: "Categoria:cover",
+    folder: "proyectos",
+    urls: cats.map((c) => c.imagenCover),
+  })
+  sources.push({
+    model: "Categoria:banner",
+    folder: "proyectos",
+    urls: cats.map((c) => c.imagenBanner),
+  })
+  sources.push({
+    model: "Categoria:videoBanner",
+    folder: "proyectos",
+    urls: cats.map((c) => c.videoBanner),
+    kind: MediaKind.VIDEO,
+  })
+  sources.push({
+    model: "Categoria:videoCover",
+    folder: "proyectos",
+    urls: cats.map((c) => c.videoCover),
+    kind: MediaKind.VIDEO,
+  })
+
+  /* ── Imágenes de proyectos (ImagenProyecto — el bulk de fotos del catálogo) ── */
+  const imgsProyecto = await prisma.imagenProyecto.findMany({
+    select: { url: true, urlOptimized: true },
+  })
+  sources.push({
+    model: "ImagenProyecto:url",
+    folder: "proyectos",
+    urls: imgsProyecto.map((i) => i.url),
+  })
+  sources.push({
+    model: "ImagenProyecto:optimized",
+    folder: "proyectos",
+    urls: imgsProyecto.map((i) => i.urlOptimized),
+  })
+
+  /* ── Documentos de proyecto ── */
+  const docsProyecto = await prisma.documentoProyecto.findMany({ select: { url: true } })
+  sources.push({
+    model: "DocumentoProyecto",
+    folder: "proyectos-docs",
+    urls: docsProyecto.map((d) => d.url),
+    kind: MediaKind.DOC,
+  })
+
+  /* ── HistoriaProyecto (imágenes de caso de éxito + video) ── */
+  const historias = await prisma.historiaProyecto.findMany({
+    select: {
+      imagenDestacada: true,
+      videoUrl: true,
+      imagenesDesafio: true,
+      imagenesSolucion: true,
+      imagenesResultado: true,
+      infografias: true,
+    },
+  })
+  sources.push({
+    model: "Historia:destacada",
+    folder: "historias",
+    urls: historias.map((h) => h.imagenDestacada),
+  })
+  sources.push({
+    model: "Historia:video",
+    folder: "historias",
+    urls: historias.map((h) => h.videoUrl),
+    kind: MediaKind.VIDEO,
+  })
+  sources.push({
+    model: "Historia:json",
+    folder: "historias",
+    urls: historias.flatMap((h) => [
+      ...extractUrlsFromJson(h.imagenesDesafio),
+      ...extractUrlsFromJson(h.imagenesSolucion),
+      ...extractUrlsFromJson(h.imagenesResultado),
+      ...extractUrlsFromJson(h.infografias),
+    ]),
+  })
+
+  /* ── ProyectoHojaVida (trayectoria) ── */
+  const pHojaVida = await prisma.proyectoHojaVida.findMany({ select: { imagenes: true } })
+  sources.push({
+    model: "ProyectoHojaVida",
+    folder: "trayectoria",
+    urls: pHojaVida.flatMap((p) => extractUrlsFromJson(p.imagenes)),
+  })
+
+  /* ── Resúmenes de año (trayectoria) ── */
+  const resumenes = await prisma.resumenAnio.findMany({
+    select: { imagenesFeatured: true },
+  })
+  sources.push({
+    model: "ResumenAnio",
+    folder: "trayectoria",
+    urls: resumenes.flatMap((r) => extractUrlsFromJson(r.imagenesFeatured)),
+  })
+
+  /* ── Clientes (logos) ── */
+  const clientes = await prisma.cliente.findMany({
+    select: { logo: true, logoBlanco: true },
+  })
+  sources.push({
+    model: "Cliente:logo",
+    folder: "clientes",
+    urls: clientes.map((c) => c.logo),
+  })
+  sources.push({
+    model: "Cliente:logoBlanco",
+    folder: "clientes",
+    urls: clientes.map((c) => c.logoBlanco),
+  })
+
+  /* ── Brochures ── */
+  const brochures = await prisma.brochure.findMany({
+    select: { thumbnail: true, pdfUrl: true },
+  })
+  sources.push({
+    model: "Brochure:thumb",
+    folder: "brochures",
+    urls: brochures.map((b) => b.thumbnail),
+  })
+  sources.push({
+    model: "Brochure:pdf",
+    folder: "brochures",
+    urls: brochures.map((b) => b.pdfUrl),
+    kind: MediaKind.DOC,
+  })
+
+  /* ── BrochureTemplate thumbnail ── */
+  const btemplates = await prisma.brochureTemplate.findMany({
+    select: { thumbnail: true },
+  })
+  sources.push({
+    model: "BrochureTemplate",
+    folder: "brochures",
+    urls: btemplates.map((b) => b.thumbnail),
+  })
+
+  /* ── Navegación (MenuItem) ── */
+  sources.push({
+    model: "MenuItem",
+    folder: "navegacion",
+    urls: (await prisma.menuItem.findMany({ select: { imagen: true } })).map((m) => m.imagen),
+  })
 
   return sources
 }
@@ -120,10 +394,23 @@ async function main() {
   let imported = 0
   let skipped = 0
   let failed = 0
+  const importedByFolder: Record<string, number> = {}
 
   for (const src of sources) {
     const unique = Array.from(new Set(src.urls.filter(Boolean))) as string[]
     for (const url of unique) {
+      // Skip data URLs (base64 inlined — no son URLs navegables; el índice
+      // único de Media tiene límite ~2700 bytes por pg_btree).
+      if (url.startsWith("data:")) {
+        skipped++
+        continue
+      }
+      // Skip URLs absurdas (posibles basura en DB).
+      if (url.length > 2000) {
+        skipped++
+        continue
+      }
+
       const existing = await prisma.media.findUnique({ where: { url } })
       if (existing) {
         skipped++
@@ -150,7 +437,7 @@ async function main() {
           } satisfies Prisma.MediaCreateInput,
         })
         imported++
-        console.log(`  ✅ [${src.model}] ${fileName}`)
+        importedByFolder[src.folder] = (importedByFolder[src.folder] ?? 0) + 1
       } catch (e) {
         failed++
         console.warn(`  ⚠️  [${src.model}] ${fileName}: ${(e as Error).message}`)
@@ -158,10 +445,21 @@ async function main() {
     }
   }
 
+  const total = await prisma.media.count()
+  const byKind = await prisma.media.groupBy({ by: ["kind"], _count: true })
+
   console.log("\n📊 Resumen:")
-  console.log(`  Importadas: ${imported}`)
-  console.log(`  Saltadas (ya existían): ${skipped}`)
-  console.log(`  Fallidas: ${failed}`)
+  console.log(`  Importadas en esta corrida: ${imported}`)
+  console.log(`  Saltadas (ya existían):     ${skipped}`)
+  console.log(`  Fallidas:                   ${failed}`)
+  console.log(`\n📁 Por carpeta (esta corrida):`)
+  for (const [folder, count] of Object.entries(importedByFolder).sort()) {
+    console.log(`  ${folder.padEnd(25)} ${count}`)
+  }
+  console.log(`\n💾 Total en Media pool: ${total}`)
+  for (const row of byKind) {
+    console.log(`  ${row.kind.padEnd(6)} ${row._count}`)
+  }
 }
 
 main()

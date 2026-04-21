@@ -20,7 +20,7 @@ const DEFAULT_MENU_ITEMS: NavbarMenuItem[] = [
   { name: 'Empresa', href: '/empresa', image: '/images/about/meisa-planta-aerea.jpg' },
   { name: 'Trayectoria', href: '/trayectoria', image: '/images/hero/coliseo-estructuras-rojas.jpg' },
   { name: 'Procesos & Tecnologías', href: '/procesos-tecnologias', image: '/images/hero/montaje-grua.jpg' },
-  { name: 'Políticas', href: '/politicas', image: '/images/hero/techo-metalico.jpg' },
+  { name: 'Calidad', href: '/calidad', image: '/images/hero/techo-metalico.jpg' },
   { name: 'Contacto', href: '/contacto', image: '/images/hero/hero-construccion-industrial.jpg' },
 ]
 

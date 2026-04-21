@@ -1,5 +1,5 @@
 /**
- * Seed de /procesos-tecnologias (tecnologia) y /politicas (calidad).
+ * Seed de /procesos-tecnologias (tecnologia) y /calidad (políticas y SIG).
  *
  * Migra los arrays hardcoded de:
  *   - app/(public)/tecnologia/TecnologiaContent.tsx (tecnologiaSections, softwareCategories, equipmentCategories, digitalProcesses)
@@ -47,7 +47,7 @@ const GRUPOS = [
     icono: "Gauge",
     orden: 2,
   },
-  // /politicas
+  // /calidad
   {
     pagina: "calidad",
     clave: "sig",

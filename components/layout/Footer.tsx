@@ -64,7 +64,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/politicas" className="text-white/80 hover:text-white transition-colors">
+                <Link href="/calidad" className="text-white/80 hover:text-white transition-colors">
                   Calidad y Certificaciones
                 </Link>
               </li>
@@ -119,7 +119,7 @@ export function Footer() {
             >
               SAGRILAFT
             </a>
-            <Link href="/politicas" className="hover:text-white transition-colors">
+            <Link href="/calidad" className="hover:text-white transition-colors">
               Sistema de Gestión
             </Link>
           </div>

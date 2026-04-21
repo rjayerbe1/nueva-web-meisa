@@ -76,8 +76,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/calidad',
-        destination: '/politicas',
+        source: '/politicas',
+        destination: '/calidad',
         permanent: true,
       },
     ]

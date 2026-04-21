@@ -66,7 +66,7 @@ export function PoliticasAdminTabs({ politicas, pilares, normas, gruposCalidad }
   return (
     <AdminTabsLayout
       title="Políticas"
-      description="Contenido de /politicas: políticas corporativas, pilares del SIG y normas aplicables."
+      description="Contenido de /calidad: políticas corporativas, pilares del SIG y normas aplicables."
       tabs={[
         {
           id: "politicas",

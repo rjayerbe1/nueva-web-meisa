@@ -12,7 +12,7 @@ const IMAGE_BY_HREF: Record<string, string> = {
   '/empresa': '/images/about/meisa-planta-aerea.jpg',
   '/trayectoria': '/images/hero/coliseo-estructuras-rojas.jpg',
   '/procesos-tecnologias': '/images/hero/montaje-grua.jpg',
-  '/politicas': '/images/hero/techo-metalico.jpg',
+  '/calidad': '/images/hero/techo-metalico.jpg',
   '/contacto': '/images/hero/hero-construccion-industrial.jpg',
 }
 

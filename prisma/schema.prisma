@@ -872,7 +872,7 @@ model Norma {
 // y app/(public)/calidad/CalidadContent.tsx.
 // =====================================================================
 
-// Encabezados de sub-secciones en /procesos-tecnologias y /politicas
+// Encabezados de sub-secciones en /procesos-tecnologias y /calidad
 model GrupoSeccion {
   id            String   @id @default(cuid())
   pagina        String   // "tecnologia" | "calidad"
@@ -942,7 +942,7 @@ model ProcesoDigital {
   @@map("procesos_digitales")
 }
 
-// Políticas corporativas — sección "Políticas" en /politicas
+// Políticas corporativas — sección "Políticas" en /calidad
 model Politica {
   id           String   @id @default(cuid())
   slug         String   @unique
@@ -959,7 +959,7 @@ model Politica {
   @@map("politicas")
 }
 
-// Pilares SIG — sección "Sistema Integrado de Gestión" en /politicas
+// Pilares SIG — sección "Sistema Integrado de Gestión" en /calidad
 model PilarSIG {
   id            String   @id @default(cuid())
   slug          String   @unique
