@@ -79,6 +79,45 @@ const seoFields: FieldDef[] = [
   },
 ]
 
+const especificacionesFields: FieldDef[] = [
+  {
+    name: "tecnologias",
+    label: "Tecnologías",
+    kind: "stringArray",
+    multiline: true,
+    rows: 2,
+    gridSpan: 2,
+    hint: "Software, herramientas y tecnologías que usa este servicio. Un ítem por línea.",
+  },
+  {
+    name: "normativas",
+    label: "Normativas aplicables",
+    kind: "stringArray",
+    multiline: true,
+    rows: 2,
+    gridSpan: 2,
+    hint: "Códigos, estándares y normas cumplidas (ej. 'NSR-10 - Reglamento…').",
+  },
+  {
+    name: "equipamiento",
+    label: "Equipamiento",
+    kind: "stringArray",
+    multiline: true,
+    rows: 2,
+    gridSpan: 2,
+    hint: "Equipos e instrumentos utilizados (uno por línea).",
+  },
+  {
+    name: "equipos",
+    label: "Equipos humanos / especializados",
+    kind: "stringArray",
+    multiline: true,
+    rows: 2,
+    gridSpan: 2,
+    hint: "Roles o áreas que participan en el servicio.",
+  },
+]
+
 const galeriaFields: FieldDef[] = [
   {
     name: "imagenesGaleria",
@@ -205,14 +244,6 @@ export function ServicioDetailEditor({ servicio }: Props) {
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const setSpecSection = (
-    key: "tecnologias" | "normativas" | "equipamiento" | "equipos",
-    patch: { titulo?: string; items?: string[] },
-  ) => {
-    const current = (form[key] as { titulo?: string; items?: string[] } | null) ?? {}
-    setField(key, { ...current, ...patch })
-  }
-
   const save = async () => {
     setSaving(true)
     setError(null)
@@ -267,65 +298,6 @@ export function ServicioDetailEditor({ servicio }: Props) {
     </div>
   )
 
-  const renderSpecTab = () => (
-    <div className="rounded-md border border-slate-200 bg-white">
-      <div className="space-y-8 px-6 py-6">
-        {(
-          [
-            { key: "tecnologias", title: "Tecnologías" },
-            { key: "normativas", title: "Normativas" },
-            { key: "equipamiento", title: "Equipamiento" },
-            { key: "equipos", title: "Equipos" },
-          ] as const
-        ).map((group, idx) => {
-          const data = (form[group.key] as { titulo?: string; items?: string[] } | null) ?? {}
-          return (
-            <section
-              key={group.key}
-              className={idx > 0 ? "border-t border-slate-200 pt-8" : ""}
-            >
-              <div className="mb-5">
-                <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                  Sección {String(idx + 1).padStart(2, "0")}
-                </p>
-                <h3 className="font-bebas text-xl uppercase leading-tight text-slate-950">
-                  {group.title}
-                </h3>
-              </div>
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <FormField
-                  field={{
-                    name: `${group.key}Titulo`,
-                    label: `Título de ${group.title.toLowerCase()}`,
-                    kind: "text",
-                    gridSpan: 2,
-                  }}
-                  value={data.titulo ?? ""}
-                  onChange={(v) => setSpecSection(group.key, { titulo: v as string })}
-                  disabled={saving}
-                />
-                <FormField
-                  field={{
-                    name: `${group.key}Items`,
-                    label: "Items",
-                    kind: "stringArray",
-                    multiline: true,
-                    rows: 2,
-                    gridSpan: 2,
-                    hint: "Cada línea es un elemento del bloque.",
-                  }}
-                  value={data.items ?? []}
-                  onChange={(v) => setSpecSection(group.key, { items: v as string[] })}
-                  disabled={saving}
-                />
-              </div>
-            </section>
-          )
-        })}
-      </div>
-    </div>
-  )
-
   return (
     <div className="space-y-4">
       {/* Back + actions */}
@@ -364,7 +336,11 @@ export function ServicioDetailEditor({ servicio }: Props) {
         tabs={[
           { id: "identidad", label: "Identidad", content: renderFields(identidadFields) },
           { id: "seo", label: "SEO & Expertise", content: renderFields(seoFields) },
-          { id: "especificaciones", label: "Especificaciones", content: renderSpecTab() },
+          {
+            id: "especificaciones",
+            label: "Especificaciones",
+            content: renderFields(especificacionesFields),
+          },
           { id: "galeria", label: "Galería & Media", content: renderFields(galeriaFields) },
           { id: "estadisticas", label: "Estadísticas", content: renderFields(estadisticasFields) },
           { id: "proceso", label: "Proceso", content: renderFields(procesoFields) },
