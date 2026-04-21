@@ -147,7 +147,7 @@ interface ModalProps {
   onPick: (url: string) => void
 }
 
-function MediaPickerModal({ open, onOpenChange, kind, folder, allowUrl, onPick }: ModalProps) {
+export function MediaPickerModal({ open, onOpenChange, kind, folder, allowUrl, onPick }: ModalProps) {
   const [tab, setTab] = useState<"library" | "upload" | "url">("library")
 
   return (

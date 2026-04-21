@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { X, Plus } from "lucide-react"
-import { MediaPicker } from "@/components/admin/media/MediaPicker"
+import { MediaPicker, MediaPickerModal } from "@/components/admin/media/MediaPicker"
+import { useState } from "react"
+import { ImagePlus, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export type FieldKind =
@@ -265,84 +267,169 @@ function ImageArrayField({
   disabled?: boolean
 }) {
   const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
+  const [editingIdx, setEditingIdx] = useState<number | null>(null)
+
+  // Solo renderizamos posiciones con valor real. El botón "+" abre el picker
+  // y al elegir una URL la añade al final (setAt(value.length, url)).
+  const filled = value.filter((u) => typeof u === "string" && u.length > 0)
 
   const setAt = (idx: number, url: string | null) => {
     if (!url) {
-      onChange(value.filter((_, i) => i !== idx))
+      onChange(filled.filter((_, i) => i !== idx))
       return
     }
-    const next = [...value]
-    next[idx] = url
+    const next = [...filled]
+    if (idx >= next.length) next.push(url)
+    else next[idx] = url
     onChange(next)
   }
 
-  const add = () => onChange([...value, ""])
-
   const move = (idx: number, dir: -1 | 1) => {
     const target = idx + dir
-    if (target < 0 || target >= value.length) return
-    const next = [...value]
+    if (target < 0 || target >= filled.length) return
+    const next = [...filled]
     ;[next[idx], next[target]] = [next[target], next[idx]]
     onChange(next)
+  }
+
+  const handlePick = (url: string) => {
+    if (editingIdx === null) return
+    setAt(editingIdx, url)
+    setEditingIdx(null)
   }
 
   return (
     <div className={spanClass}>
       <FieldLabel required={field.required}>{field.label}</FieldLabel>
       {field.hint && <FieldHint>{field.hint}</FieldHint>}
-      <div className="mt-2 space-y-2">
-        {value.length === 0 && (
-          <p className="rounded-none border border-dashed border-slate-300 bg-white px-4 py-6 text-center font-lato text-xs text-slate-500">
-            Aún no hay imágenes. Agrega la primera con el botón.
-          </p>
-        )}
-        {value.map((url, idx) => (
-          <div
-            key={idx}
-            className="flex items-start gap-2 rounded-none border border-slate-200 bg-white p-2"
-          >
-            <div className="flex flex-col items-center gap-0.5 py-1">
-              <button
-                type="button"
-                onClick={() => move(idx, -1)}
-                disabled={disabled || idx === 0}
-                className="flex h-5 w-5 items-center justify-center text-[10px] text-slate-400 transition-colors hover:text-slate-900 disabled:opacity-30"
-                aria-label="Mover arriba"
-              >
-                ▲
-              </button>
-              <span className="font-mono text-[9px] text-slate-400">
-                {String(idx + 1).padStart(2, "0")}
-              </span>
-              <button
-                type="button"
-                onClick={() => move(idx, 1)}
-                disabled={disabled || idx === value.length - 1}
-                className="flex h-5 w-5 items-center justify-center text-[10px] text-slate-400 transition-colors hover:text-slate-900 disabled:opacity-30"
-                aria-label="Mover abajo"
-              >
-                ▼
-              </button>
-            </div>
-            <div className="flex-1">
-              <MediaPicker
-                value={url || null}
-                onChange={(v) => setAt(idx, v)}
-                kind="image"
-              />
-            </div>
-          </div>
+
+      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {filled.map((url, idx) => (
+          <ImageArrayTile
+            key={`${url}-${idx}`}
+            url={url}
+            index={idx}
+            total={filled.length}
+            disabled={disabled}
+            onChange={() => setEditingIdx(idx)}
+            onRemove={() => setAt(idx, null)}
+            onMove={(dir) => move(idx, dir)}
+          />
         ))}
-        <Button
+
+        {/* Add tile */}
+        <button
           type="button"
-          variant="outline"
-          size="sm"
-          onClick={add}
+          onClick={() => setEditingIdx(filled.length)}
           disabled={disabled}
-          className="rounded-none border-slate-300 font-lato text-xs font-semibold uppercase tracking-wide hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+          className="group flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-none border-2 border-dashed border-slate-300 bg-white font-lato text-xs font-semibold uppercase tracking-wider text-slate-500 transition-colors hover:border-red-600 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
         >
-          <Plus className="mr-1 h-3 w-3" /> Agregar imagen
-        </Button>
+          <ImagePlus className="h-6 w-6" />
+          Agregar
+        </button>
+      </div>
+
+      {filled.length === 0 && (
+        <p className="mt-2 font-lato text-xs italic text-slate-500">
+          Aún no hay imágenes — usa el botón &quot;Agregar&quot; para seleccionar la primera.
+        </p>
+      )}
+
+      <MediaPickerModal
+        open={editingIdx !== null}
+        onOpenChange={(v) => !v && setEditingIdx(null)}
+        kind="image"
+        folder="general"
+        allowUrl={true}
+        onPick={handlePick}
+      />
+    </div>
+  )
+}
+
+function ImageArrayTile({
+  url,
+  index,
+  total,
+  disabled,
+  onChange,
+  onRemove,
+  onMove,
+}: {
+  url: string
+  index: number
+  total: number
+  disabled?: boolean
+  onChange: () => void
+  onRemove: () => void
+  onMove: (dir: -1 | 1) => void
+}) {
+  return (
+    <div className="group relative aspect-square overflow-hidden rounded-none border border-slate-200 bg-slate-100">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={url}
+        alt=""
+        loading="lazy"
+        className="h-full w-full object-cover"
+      />
+
+      {/* Index badge */}
+      <span className="absolute left-2 top-2 rounded-none bg-black/70 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+
+      {/* Hover overlay */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            onChange()
+          }}
+          disabled={disabled}
+          className="inline-flex items-center gap-1 rounded-none bg-white px-2 py-1 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-900 transition-colors hover:bg-red-600 hover:text-white disabled:opacity-50"
+        >
+          Cambiar
+        </button>
+        <div className="mt-1 flex gap-1">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onMove(-1)
+            }}
+            disabled={disabled || index === 0}
+            className="flex h-7 w-7 items-center justify-center rounded-none bg-white/95 text-slate-700 transition-colors hover:bg-slate-950 hover:text-white disabled:opacity-30"
+            aria-label="Mover izquierda"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onMove(1)
+            }}
+            disabled={disabled || index === total - 1}
+            className="flex h-7 w-7 items-center justify-center rounded-none bg-white/95 text-slate-700 transition-colors hover:bg-slate-950 hover:text-white disabled:opacity-30"
+            aria-label="Mover derecha"
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onRemove()
+            }}
+            disabled={disabled}
+            className="flex h-7 w-7 items-center justify-center rounded-none bg-white/95 text-slate-700 transition-colors hover:bg-red-600 hover:text-white disabled:opacity-50"
+            aria-label="Eliminar"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   )
