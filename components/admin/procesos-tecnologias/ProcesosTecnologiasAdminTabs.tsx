@@ -79,6 +79,8 @@ const procesoFields: FieldDef[] = [
     name: "beneficios",
     label: "Beneficios",
     kind: "stringArray",
+    multiline: true,
+    rows: 2,
     gridSpan: 2,
   },
   { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },

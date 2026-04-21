@@ -21,6 +21,8 @@ const fields: FieldDef[] = [
     name: "fortalezas",
     label: "Fortalezas",
     kind: "stringArray",
+    multiline: true,
+    rows: 2,
     gridSpan: 2,
     hint: "Viñetas de fortalezas de la fase.",
   },

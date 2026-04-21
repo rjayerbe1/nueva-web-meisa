@@ -57,6 +57,8 @@ const configSections: SingletonSection[] = [
         name: "historiaIntro",
         label: "Párrafos introductorios",
         kind: "stringArray",
+        multiline: true,
+        rows: 4,
         gridSpan: 2,
         hint: "Cada item es un párrafo. El orden en que los pongas es el orden en que se muestran.",
       },
@@ -76,7 +78,7 @@ const configSections: SingletonSection[] = [
     fields: [
       { name: "seguridadTitulo", label: "Título", kind: "text" },
       { name: "seguridadSubtitulo", label: "Subtítulo", kind: "text" },
-      { name: "seguridadItems", label: "Items (bullets)", kind: "stringArray", gridSpan: 2 },
+      { name: "seguridadItems", label: "Items (bullets)", kind: "stringArray", multiline: true, rows: 2, gridSpan: 2 },
       { name: "seguridadMeta", label: "Meta destacada", kind: "text", gridSpan: 2 },
     ],
   },
@@ -87,7 +89,7 @@ const configSections: SingletonSection[] = [
     fields: [
       { name: "sostenibilidadTitulo", label: "Título", kind: "text" },
       { name: "sostenibilidadSubtitulo", label: "Subtítulo", kind: "text" },
-      { name: "sostenibilidadItems", label: "Items (bullets)", kind: "stringArray", gridSpan: 2 },
+      { name: "sostenibilidadItems", label: "Items (bullets)", kind: "stringArray", multiline: true, rows: 2, gridSpan: 2 },
       {
         name: "sostenibilidadCompromiso",
         label: "Compromiso (cierre)",
@@ -126,7 +128,7 @@ const certFields: FieldDef[] = [
   { name: "emisor", label: "Emisor", kind: "text" },
   { name: "importancia", label: "Importancia (texto)", kind: "text" },
   { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
-  { name: "beneficios", label: "Beneficios", kind: "stringArray", gridSpan: 2 },
+  { name: "beneficios", label: "Beneficios", kind: "stringArray", multiline: true, rows: 2, gridSpan: 2 },
   { name: "logo", label: "Logo", kind: "image" },
   { name: "documentoUrl", label: "URL documento", kind: "url" },
   { name: "orden", label: "Orden", kind: "number" },

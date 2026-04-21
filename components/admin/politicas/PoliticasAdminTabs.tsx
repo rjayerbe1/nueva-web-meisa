@@ -21,6 +21,8 @@ const politicaFields: FieldDef[] = [
     name: "compromisos",
     label: "Compromisos",
     kind: "stringArray",
+    multiline: true,
+    rows: 2,
     gridSpan: 2,
     hint: "Lista de compromisos asociados a la política.",
   },

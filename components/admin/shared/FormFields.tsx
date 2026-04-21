@@ -40,6 +40,8 @@ export interface FieldDef {
   max?: number
   step?: number
   gridSpan?: 1 | 2
+  /** Para stringArray: renderiza cada item como <textarea> en vez de <input>. */
+  multiline?: boolean
 }
 
 interface FormFieldProps {
@@ -242,23 +244,41 @@ function StringArrayField({
       {field.hint && <FieldHint>{field.hint}</FieldHint>}
       <div className="mt-2 space-y-2">
         {value.map((item, idx) => (
-          <div key={idx} className="flex gap-2">
-            <input
-              value={item}
-              onChange={(e) => {
-                const next = [...value]
-                next[idx] = e.target.value
-                onChange(next)
-              }}
-              disabled={disabled}
-              placeholder={field.placeholder}
-              className={INPUT_CLS}
-            />
+          <div key={idx} className="flex items-start gap-2">
+            {field.multiline ? (
+              <textarea
+                value={item}
+                onChange={(e) => {
+                  const next = [...value]
+                  next[idx] = e.target.value
+                  onChange(next)
+                }}
+                disabled={disabled}
+                placeholder={field.placeholder}
+                rows={field.rows ?? 3}
+                className={cn(INPUT_CLS, "resize-y leading-relaxed")}
+              />
+            ) : (
+              <input
+                value={item}
+                onChange={(e) => {
+                  const next = [...value]
+                  next[idx] = e.target.value
+                  onChange(next)
+                }}
+                disabled={disabled}
+                placeholder={field.placeholder}
+                className={INPUT_CLS}
+              />
+            )}
             <button
               type="button"
               onClick={() => onChange(value.filter((_, i) => i !== idx))}
               disabled={disabled}
-              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-none border border-slate-200 text-slate-400 transition-colors hover:border-red-600 hover:text-red-600 disabled:opacity-50"
+              className={cn(
+                "flex w-10 flex-shrink-0 items-center justify-center rounded-none border border-slate-200 text-slate-400 transition-colors hover:border-red-600 hover:text-red-600 disabled:opacity-50",
+                field.multiline ? "h-10 self-start" : "h-10",
+              )}
               aria-label="Eliminar"
             >
               <X className="h-4 w-4" />
