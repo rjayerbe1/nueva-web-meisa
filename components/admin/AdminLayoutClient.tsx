@@ -12,21 +12,15 @@ export function AdminLayoutClient({ children }: AdminLayoutClientProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar - Fixed */}
+    <div className="flex h-screen bg-stone-50 font-lato">
       <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      
-      {/* Main content - Scrollable */}
+
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
-        {/* Header */}
         <AdminHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        
-        {/* Main content area */}
+
         <main className="flex-1 overflow-y-auto">
-          <div className="py-8">
-            <div className="mx-auto max-w-none px-4 sm:px-6 lg:px-8">
-              {children}
-            </div>
+          <div className="mx-auto w-full max-w-[1600px] py-6 px-4 sm:px-6 lg:px-10">
+            {children}
           </div>
         </main>
       </div>
