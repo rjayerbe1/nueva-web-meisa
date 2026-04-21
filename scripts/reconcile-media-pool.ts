@@ -108,8 +108,7 @@ async function collectSources(): Promise<Source[]> {
   const fases = await prisma.procesoFase.findMany({ select: { imagen: true } })
   sources.push({ model: "ProcesoFase", folder: "servicios", urls: fases.map((f) => f.imagen) })
 
-  const pilares = await prisma.pilarSIG.findMany({ select: {} })
-  // PilarSIG no tiene imagen por ahora
+  // PilarSIG no tiene campo imagen en el schema actual — skipeado.
 
   return sources
 }
