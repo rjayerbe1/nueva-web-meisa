@@ -19,10 +19,20 @@ const DEFAULT_SPECIALTIES = [
 
 interface HeroSectionProps {
   heroImages: HeroImageConfig
+  heroVideos?: { desktop: string | null; mobile: string | null }
   specialties?: string[]
 }
 
-export function HeroSection({ heroImages, specialties: specialtiesProp }: HeroSectionProps) {
+const DEFAULT_HERO_VIDEO_DESKTOP = "/videos/hero/logo-intro-desktop.mp4"
+const DEFAULT_HERO_VIDEO_MOBILE = "/videos/hero/logo-intro-mobile.mp4"
+
+export function HeroSection({
+  heroImages,
+  heroVideos,
+  specialties: specialtiesProp,
+}: HeroSectionProps) {
+  const videoDesktopSrc = heroVideos?.desktop || DEFAULT_HERO_VIDEO_DESKTOP
+  const videoMobileSrc = heroVideos?.mobile || DEFAULT_HERO_VIDEO_MOBILE
   const specialties = specialtiesProp && specialtiesProp.length > 0 ? specialtiesProp : DEFAULT_SPECIALTIES
   const [currentSpecialty, setCurrentSpecialty] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
@@ -242,7 +252,7 @@ export function HeroSection({ heroImages, specialties: specialtiesProp }: HeroSe
                 playsInline
                 preload="auto"
               >
-                <source src="/videos/hero/logo-intro-mobile.mp4" type="video/mp4" />
+                <source src={videoMobileSrc} type="video/mp4" />
               </video>
             </div>
 
@@ -360,7 +370,7 @@ export function HeroSection({ heroImages, specialties: specialtiesProp }: HeroSe
               playsInline
               preload="auto"
             >
-              <source src="/videos/hero/logo-intro-desktop.mp4" type="video/mp4" />
+              <source src={videoDesktopSrc} type="video/mp4" />
             </video>
           </div>
 

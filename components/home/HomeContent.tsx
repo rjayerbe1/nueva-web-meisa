@@ -23,6 +23,7 @@ import type { ClientesCopy } from '@/components/sections/ClientesSection'
 export interface HomeContentProps {
   projectsByCategory: Record<string, any[]>
   heroImages: HeroImageConfig
+  heroVideos?: { desktop: string | null; mobile: string | null }
   especialidades: string[]
   stats: StatItem[]
   featured: FeaturedProjectData | null
@@ -56,6 +57,7 @@ const DEFAULT_ORDEN: Array<{ clave: SeccionKey; activo: boolean }> = [
 export function HomeContent({
   projectsByCategory,
   heroImages,
+  heroVideos,
   especialidades,
   stats,
   featured,
@@ -76,7 +78,11 @@ export function HomeContent({
       case 'hero':
         return (
           <section id="inicio" className="w-full" key={clave}>
-            <HeroSection heroImages={heroImages} specialties={especialidades} />
+            <HeroSection
+              heroImages={heroImages}
+              heroVideos={heroVideos}
+              specialties={especialidades}
+            />
           </section>
         )
       case 'stats':

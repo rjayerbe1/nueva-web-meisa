@@ -6,6 +6,8 @@ const handlers = singletonHandlers({
   delegate: prisma.homeSeccionConfig,
   updateSchema: z
     .object({
+      heroVideoDesktop: z.string().nullable(),
+      heroVideoMobile: z.string().nullable(),
       clientesEyebrow: z.string().nullable(),
       clientesTitulo: z.string().nullable(),
       clientesDescripcion: z.string().nullable(),

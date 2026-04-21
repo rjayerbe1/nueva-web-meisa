@@ -1105,12 +1105,17 @@ model HomeServicioDestacado {
 // Copy editable de secciones pequeñas del home
 model HomeSeccionConfig {
   id                      String   @id @default("default")
+  // Hero — videos intro del logo (desktop + mobile)
+  heroVideoDesktop        String?
+  heroVideoMobile         String?
+  // Clientes
   clientesEyebrow         String?
   clientesTitulo          String?
   clientesDescripcion     String?
   clientesCtaTexto        String?
   clientesCtaUrl          String?
   clientesProyectosTitulo String?
+  // Contacto
   contactoEyebrow         String?
   contactoTitulo          String?
   contactoDescripcion     String?

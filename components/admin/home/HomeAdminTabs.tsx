@@ -125,6 +125,20 @@ const servicioFields: FieldDef[] = [
 ]
 
 const copyFields: FieldDef[] = [
+  {
+    name: "heroVideoDesktop",
+    label: "Hero — Video intro (desktop)",
+    kind: "video",
+    gridSpan: 2,
+    hint: "Video del logo que aparece al terminar el loader (versión desktop).",
+  },
+  {
+    name: "heroVideoMobile",
+    label: "Hero — Video intro (mobile)",
+    kind: "video",
+    gridSpan: 2,
+    hint: "Video del logo que aparece al terminar el loader (versión móvil).",
+  },
   { name: "clientesEyebrow", label: "Clientes — Eyebrow", kind: "text" },
   { name: "clientesTitulo", label: "Clientes — Título", kind: "text" },
   { name: "clientesDescripcion", label: "Clientes — Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
@@ -241,14 +255,14 @@ export function HomeAdminTabs(props: Props) {
         },
         {
           id: "copy",
-          label: "Copy (Clientes/Contacto)",
+          label: "Hero videos + Copy",
           content: (
             <SingletonEditor<HomeSeccionConfig>
               data={seccionConfig}
               fields={copyFields}
               endpoint="/api/admin/home/seccion-config"
-              sectionTitle="Textos editoriales del home"
-              description="Encabezados y CTAs de las secciones 'Clientes' y 'Contacto'."
+              sectionTitle="Hero videos + textos editoriales"
+              description="Videos intro del hero, encabezados y CTAs de 'Clientes' y 'Contacto'."
             />
           ),
         },

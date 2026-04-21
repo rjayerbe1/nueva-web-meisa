@@ -88,18 +88,31 @@ function MediaPreview({
   onReplace: () => void
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-      <div className="flex items-center gap-3 p-3">
-        <div className="relative h-16 w-24 flex-shrink-0 overflow-hidden rounded bg-gray-100">
-          {kind === "video" ? (
-            <div className="flex h-full w-full items-center justify-center bg-gray-900 text-white">
-              <Film className="h-6 w-6" />
-            </div>
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="preview" className="h-full w-full object-cover" />
-          )}
+    <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+      {kind === "video" ? (
+        <div className="relative w-full bg-black">
+          <video
+            key={value}
+            src={value}
+            controls
+            preload="metadata"
+            playsInline
+            className="block h-48 w-full object-contain"
+          >
+            Tu navegador no soporta video.
+          </video>
         </div>
+      ) : (
+        <div className="relative w-full bg-gray-100">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={value}
+            alt="preview"
+            className="block h-48 w-full object-contain"
+          />
+        </div>
+      )}
+      <div className="flex items-center gap-3 border-t border-gray-200 bg-white p-3">
         <div className="min-w-0 flex-1">
           <p className="truncate font-mono text-xs text-gray-700">{value}</p>
         </div>
