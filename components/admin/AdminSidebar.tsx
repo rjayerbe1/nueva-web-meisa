@@ -35,9 +35,10 @@ const navigation: NavItem[] = [
       { name: "Lista de servicios", href: "/admin/services" },
       { name: "Aspectos visuales", href: "/admin/services/visual" },
       { name: "Contenido detallado", href: "/admin/services/content" },
+      { name: "Proceso Integral", href: "/admin/services/proceso-integral" },
     ],
   },
-  { kind: "item", name: "Contacto", href: "/admin/contacto", stub: true },
+  { kind: "item", name: "Contacto", href: "/admin/contacto" },
   { kind: "item", name: "Navegación", href: "/admin/navegacion", stub: true },
 
   { kind: "section", label: "Operaciones" },
