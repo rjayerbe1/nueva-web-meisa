@@ -221,7 +221,7 @@ export function EmpresaAdminTabs(props: Props) {
             <ListCrudEditor<Norma>
               items={props.normas}
               fields={normaFields}
-              endpoint="/api/admin/empresa/normas"
+              endpoint="/api/admin/normas"
               emptyTemplate={{
                 codigo: "",
                 descripcion: "",

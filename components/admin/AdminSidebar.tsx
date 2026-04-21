@@ -26,7 +26,7 @@ const navigation: NavItem[] = [
   { kind: "item", name: "Inicio", href: "/admin/home" },
   { kind: "item", name: "Empresa", href: "/admin/empresa" },
   { kind: "item", name: "Procesos y Tecnologías", href: "/admin/procesos-tecnologias" },
-  { kind: "item", name: "Políticas", href: "/admin/politicas", stub: true },
+  { kind: "item", name: "Políticas", href: "/admin/politicas" },
   {
     kind: "item",
     name: "Servicios",
@@ -39,7 +39,7 @@ const navigation: NavItem[] = [
     ],
   },
   { kind: "item", name: "Contacto", href: "/admin/contacto" },
-  { kind: "item", name: "Navegación", href: "/admin/navegacion", stub: true },
+  { kind: "item", name: "Navegación", href: "/admin/navegacion" },
 
   { kind: "section", label: "Operaciones" },
   {
