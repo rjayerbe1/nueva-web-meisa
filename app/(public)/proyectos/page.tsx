@@ -5,9 +5,8 @@ import { BreadcrumbSchema } from "@/components/seo/JsonLdSchema"
 import { aniosExperiencia } from "@/lib/site-meta"
 import { getCategoriasPublicas } from "@/lib/content/categorias"
 
-// Force dynamic rendering (no static generation during build)
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// ISR: sirve desde caché 60s, regenera en background
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Proyectos de Estructuras Metálicas',

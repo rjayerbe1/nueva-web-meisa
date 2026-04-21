@@ -2,8 +2,7 @@ import { Metadata } from 'next'
 import { getProcesosTecnologiasData } from '@/lib/content/tecnologia-politicas'
 import { ProcesosTecnologiasContent } from './ProcesosTecnologiasContent'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Procesos & Tecnologías | MEISA — BIM, CNC, Trazabilidad Digital',

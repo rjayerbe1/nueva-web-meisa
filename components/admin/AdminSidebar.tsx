@@ -56,18 +56,7 @@ const navigation: NavItem[] = [
     icon: Wrench,
   },
   { kind: "item", name: "Calidad", href: "/admin/calidad", icon: Scroll },
-  {
-    kind: "item",
-    name: "Servicios",
-    href: "/admin/services",
-    icon: Briefcase,
-    subItems: [
-      { name: "Lista de servicios", href: "/admin/services" },
-      { name: "Aspectos visuales", href: "/admin/services/visual" },
-      { name: "Contenido detallado", href: "/admin/services/content" },
-      { name: "Proceso Integral", href: "/admin/services/proceso-integral" },
-    ],
-  },
+  { kind: "item", name: "Servicios", href: "/admin/services", icon: Briefcase },
   { kind: "item", name: "Contacto", href: "/admin/contacto", icon: Phone },
   { kind: "item", name: "Navegación", href: "/admin/navegacion", icon: NavIcon },
 

@@ -121,10 +121,12 @@
   /* Scroll natural — sin smooth global para evitar lag con trackpad/wheel.
      Anclas internas pueden usar scrollIntoView({ behavior: 'smooth' }) en JS cuando se requiera. */
 
-  /* Única scrollbar: solo el body scrollea, html ajustado para evitar dobles scrollbars visuales
-     cuando algún descendente toca overflow. */
+  /* Única scrollbar y sin scroll horizontal por elementos que se salen en translateX temporales.
+     Usamos `overflow-x: clip` en lugar de `hidden` porque `hidden` rompe `position: sticky` en
+     descendientes (crea un contexto de overflow). `clip` previene overflow horizontal sin romper
+     sticky ni crear un scroller adicional. */
   html, body {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   body {
     min-height: 100vh;

@@ -5,6 +5,8 @@ import { MediaKind, Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { requireAdmin, apiErrorResponse } from "@/lib/auth-helpers"
 import { uploadToGcs } from "@/lib/media/gcs"
+import { isValidPath, ROOT_FOLDER } from "@/lib/media/folder-path"
+import { ensureFolderPath } from "@/lib/media/folder-repo"
 
 export const runtime = "nodejs"
 
@@ -15,20 +17,42 @@ const IMAGE_TYPES = [
   "image/gif",
   "image/webp",
   "image/avif",
+  "image/svg+xml",
 ]
 const VIDEO_TYPES = ["video/mp4", "video/quicktime", "video/webm", "video/x-msvideo"]
-const DOC_TYPES = ["application/pdf"]
+const DOC_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "text/plain",
+  "text/csv",
+  "application/csv",
+]
 
-function kindFromMime(mime: string): MediaKind | null {
+function kindFromMime(mime: string, fileName?: string): MediaKind | null {
   if (IMAGE_TYPES.includes(mime)) return MediaKind.IMAGE
   if (VIDEO_TYPES.includes(mime)) return MediaKind.VIDEO
   if (DOC_TYPES.includes(mime)) return MediaKind.DOC
+
+  // Algunos navegadores no envían MIME para .docx/.xlsx; fallback por extensión
+  if (fileName) {
+    const ext = fileName.toLowerCase().split(".").pop() ?? ""
+    if (["doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "csv"].includes(ext)) {
+      return MediaKind.DOC
+    }
+    if (["jpg", "jpeg", "png", "gif", "webp", "avif", "svg"].includes(ext)) return MediaKind.IMAGE
+    if (["mp4", "mov", "webm", "avi", "m4v"].includes(ext)) return MediaKind.VIDEO
+  }
   return null
 }
 
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024
 const MAX_VIDEO_BYTES = 100 * 1024 * 1024
-const MAX_DOC_BYTES = 20 * 1024 * 1024
+const MAX_DOC_BYTES = 50 * 1024 * 1024
 
 export async function GET(req: NextRequest) {
   try {
@@ -99,6 +123,13 @@ export async function POST(req: NextRequest) {
       const body = await req.json()
       const data = registerSchema.parse(body)
 
+      if (!isValidPath(data.folder)) {
+        return NextResponse.json(
+          { error: `Ruta de carpeta inválida: "${data.folder}"` },
+          { status: 400 },
+        )
+      }
+
       const existing = await prisma.media.findUnique({ where: { url: data.url } })
       if (existing) return NextResponse.json(existing)
 
@@ -137,6 +168,7 @@ export async function POST(req: NextRequest) {
           uploadedById: session.user.id,
         },
       })
+      await ensureFolderPath(data.folder)
       return NextResponse.json(record, { status: 201 })
     }
 
@@ -148,10 +180,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Archivo requerido" }, { status: 400 })
     }
 
-    const kind = kindFromMime(file.type)
+    const kind = kindFromMime(file.type, file.name)
     if (!kind) {
       return NextResponse.json(
-        { error: `Tipo de archivo no soportado: ${file.type}` },
+        { error: `Tipo de archivo no soportado: ${file.type || file.name}` },
         { status: 400 },
       )
     }
@@ -166,11 +198,18 @@ export async function POST(req: NextRequest) {
     }
 
     const meta = uploadMetaSchema.parse({
-      folder: form.get("folder") ?? "general",
+      folder: form.get("folder") ?? ROOT_FOLDER,
       altText: form.get("altText") ?? undefined,
       title: form.get("title") ?? undefined,
       tags: form.get("tags") ?? undefined,
     })
+
+    if (!isValidPath(meta.folder)) {
+      return NextResponse.json(
+        { error: `Ruta de carpeta inválida: "${meta.folder}"` },
+        { status: 400 },
+      )
+    }
 
     const buffer = Buffer.from(await file.arrayBuffer())
 
@@ -210,6 +249,7 @@ export async function POST(req: NextRequest) {
         uploadedById: session.user.id,
       },
     })
+    await ensureFolderPath(meta.folder)
 
     return NextResponse.json(record, { status: 201 })
   } catch (e) {

@@ -3,9 +3,8 @@ import { TrayectoriaClient } from './TrayectoriaClient'
 import { prisma } from '@/lib/prisma'
 import { aniosExperiencia } from '@/lib/site-meta'
 
-// Force dynamic rendering (no static generation during build)
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// ISR: sirve desde caché 60s, regenera en background
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Nuestra Trayectoria | MEISA',

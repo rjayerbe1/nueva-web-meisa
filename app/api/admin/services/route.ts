@@ -1,96 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { UserRole } from '@prisma/client'
-import { VALID_SERVICE_COLORS, isValidServiceColor } from '@/lib/service-colors'
+import { z } from "zod"
+import { prisma } from "@/lib/prisma"
+import { listHandlers } from "@/lib/admin/crud"
 
-export async function GET() {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
+// Json fields pasan tal cual (JsonValue). Campos básicos con validación estricta.
+const anyJson: z.ZodType<unknown> = z.any()
 
-    const services = await prisma.servicio.findMany({
-      orderBy: { orden: 'asc' }
-    })
+const handlers = listHandlers({
+  delegate: prisma.servicio,
+  createSchema: z.object({
+    slug: z.string().min(1),
+    nombre: z.string().min(1),
+    titulo: z.string().nullable().optional(),
+    subtitulo: z.string().nullable().optional(),
+    descripcion: z.string().min(1),
+    caracteristicas: z.array(z.string()).default([]),
+    icono: z.string().nullable().optional(),
+    imagen: z.string().nullable().optional(),
+    color: z.string().default("blue"),
+    bgGradient: z.string().nullable().optional(),
+    orden: z.number().int().default(0),
+    destacado: z.boolean().default(false),
+    activo: z.boolean().default(true),
+    metaTitle: z.string().nullable().optional(),
+    metaDescription: z.string().nullable().optional(),
+    expertiseTitulo: z.string().nullable().optional(),
+    expertiseDescripcion: z.string().nullable().optional(),
+    // Json pass-through
+    tecnologias: anyJson.optional(),
+    normativas: anyJson.optional(),
+    equipamiento: anyJson.optional(),
+    equipos: anyJson.optional(),
+    imagenesGaleria: anyJson.optional(),
+    estadisticas: anyJson.optional(),
+    procesoPasos: anyJson.optional(),
+    tablaComparativa: anyJson.optional(),
+    videoDemostrativo: z.string().nullable().optional(),
+    preguntasFrecuentes: anyJson.optional(),
+    recursosDescargables: anyJson.optional(),
+  }),
+})
 
-    return NextResponse.json(services)
-  } catch (error) {
-    console.error('Error fetching services:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session || session.user.role === UserRole.VIEWER) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
-    const data = await request.json()
-    
-    // Validar color
-    if (data.color && !isValidServiceColor(data.color)) {
-      return NextResponse.json(
-        { error: `Color no válido. Debe ser uno de: ${VALID_SERVICE_COLORS.join(', ')}` }, 
-        { status: 400 }
-      )
-    }
-    
-    // Generar slug a partir del nombre
-    const slug = data.nombre
-      .toLowerCase()
-      .replace(/[áàäâ]/g, 'a')
-      .replace(/[éèëê]/g, 'e')
-      .replace(/[íìïî]/g, 'i')
-      .replace(/[óòöô]/g, 'o')
-      .replace(/[úùüû]/g, 'u')
-      .replace(/[ñ]/g, 'n')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-    
-    const service = await prisma.servicio.create({
-      data: {
-        nombre: data.nombre,
-        titulo: data.titulo || null,
-        subtitulo: data.subtitulo || null,
-        slug: slug,
-        descripcion: data.descripcion,
-        caracteristicas: data.caracteristicas || [],
-        tecnologias: data.tecnologias || null,
-        normativas: data.normativas || null,
-        equipamiento: data.equipamiento || null,
-        equipos: data.equipos || null,
-        expertiseTitulo: data.expertiseTitulo || null,
-        expertiseDescripcion: data.expertiseDescripcion || null,
-        orden: data.orden || 999,
-        icono: data.icono || null,
-        imagen: data.imagen || null,
-        color: data.color || 'blue',
-        bgGradient: data.bgGradient || null,
-        destacado: data.destacado || false,
-        activo: data.activo !== undefined ? data.activo : true,
-        metaTitle: data.metaTitle || null,
-        metaDescription: data.metaDescription || null,
-        // New fields for enhanced service detail page
-        imagenesGaleria: data.imagenesGaleria || null,
-        estadisticas: data.estadisticas || null,
-        procesoPasos: data.procesoPasos || null,
-        tablaComparativa: data.tablaComparativa || null,
-        videoDemostrativo: data.videoDemostrativo || null,
-        preguntasFrecuentes: data.preguntasFrecuentes || null,
-        recursosDescargables: data.recursosDescargables || null
-      }
-    })
-
-    return NextResponse.json(service, { status: 201 })
-  } catch (error) {
-    console.error('Error creating service:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}
+export const GET = handlers.GET
+export const POST = handlers.POST

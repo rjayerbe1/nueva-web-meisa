@@ -3,8 +3,7 @@ import { getPoliticasData } from '@/lib/content/tecnologia-politicas'
 import { getNormasActivas } from '@/lib/content/empresa'
 import { PoliticasContent } from './PoliticasContent'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Calidad | MEISA — SIG, Políticas, Certificaciones y Normas',

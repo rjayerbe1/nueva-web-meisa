@@ -4,8 +4,7 @@ import { getPlantasPublicas } from '@/lib/content/plantas'
 import { getEmpresaData } from '@/lib/content/empresa'
 import { prisma } from '@/lib/prisma'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const revalidate = 60
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await prisma.configuracionEmpresa.findUnique({ where: { id: 'default' } })

@@ -6,9 +6,8 @@ import { aniosExperiencia } from '@/lib/site-meta'
 import { BreadcrumbSchema } from '@/components/seo/JsonLdSchema'
 import { getProcesoFases } from '@/lib/content/servicios-contacto'
 
-// Force dynamic rendering (no static generation during build)
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// ISR: sirve desde caché 60s, regenera en background
+export const revalidate = 60
 
 // Proceso integral — leído de la tabla ProcesoFase (Fase 4)
 async function getProcesoIntegral() {

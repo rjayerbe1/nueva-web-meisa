@@ -3,6 +3,8 @@ import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { requireAdmin, apiErrorResponse } from "@/lib/auth-helpers"
 import { deleteFromGcs } from "@/lib/media/gcs"
+import { isValidPath } from "@/lib/media/folder-path"
+import { ensureFolderPath } from "@/lib/media/folder-repo"
 
 const patchSchema = z
   .object({
@@ -29,7 +31,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     await requireAdmin()
     const body = await req.json()
     const data = patchSchema.parse(body)
+    if (data.folder !== undefined && !isValidPath(data.folder)) {
+      return NextResponse.json(
+        { error: `Ruta de carpeta inválida: "${data.folder}"` },
+        { status: 400 },
+      )
+    }
     const updated = await prisma.media.update({ where: { id: params.id }, data })
+    if (data.folder) await ensureFolderPath(data.folder)
     return NextResponse.json(updated)
   } catch (e) {
     if (e instanceof z.ZodError) {

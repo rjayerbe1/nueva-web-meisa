@@ -3,8 +3,7 @@ import ContactoContent from './ContactoContent'
 import { getPlantasPublicas } from '@/lib/content/plantas'
 import { getContactoData } from '@/lib/content/servicios-contacto'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Contacto | MEISA - Estructuras Metálicas',

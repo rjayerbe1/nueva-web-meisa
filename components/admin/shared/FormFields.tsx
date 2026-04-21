@@ -30,6 +30,8 @@ export type FieldKind =
   | "video"
   | "imageArray"
   | "date"
+  | "objectArray"
+  | "json"
 
 export interface FieldDef {
   name: string
@@ -46,6 +48,12 @@ export interface FieldDef {
   gridSpan?: 1 | 2
   /** Para stringArray: renderiza cada item como <textarea> en vez de <input>. */
   multiline?: boolean
+  /** Para objectArray: schema de los campos de cada item. */
+  itemFields?: FieldDef[]
+  /** Para objectArray: template del objeto vacío al agregar un ítem. */
+  itemTemplate?: Record<string, unknown>
+  /** Para objectArray: label corto del ítem en el header colapsable. */
+  itemLabel?: (item: Record<string, unknown>, index: number) => string
 }
 
 interface FormFieldProps {
@@ -248,9 +256,209 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
         />
       )
 
+    case "objectArray":
+      return (
+        <ObjectArrayField
+          field={field}
+          value={(value as Record<string, unknown>[]) ?? []}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      )
+
+    case "json":
+      return (
+        <JsonField
+          field={field}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      )
+
     default:
       return null
   }
+}
+
+/* ─── Object array (lista de sub-formularios con fields) ──────────────── */
+
+function ObjectArrayField({
+  field,
+  value,
+  onChange,
+  disabled,
+}: {
+  field: FieldDef
+  value: Record<string, unknown>[]
+  onChange: (v: unknown) => void
+  disabled?: boolean
+}) {
+  const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
+  const itemFields = field.itemFields ?? []
+  const itemTemplate = field.itemTemplate ?? {}
+
+  const updateItem = (idx: number, next: Record<string, unknown>) => {
+    const copy = [...value]
+    copy[idx] = next
+    onChange(copy)
+  }
+
+  const removeItem = (idx: number) => {
+    onChange(value.filter((_, i) => i !== idx))
+  }
+
+  const addItem = () => {
+    onChange([...value, { ...itemTemplate }])
+  }
+
+  const moveItem = (idx: number, dir: -1 | 1) => {
+    const target = idx + dir
+    if (target < 0 || target >= value.length) return
+    const copy = [...value]
+    ;[copy[idx], copy[target]] = [copy[target], copy[idx]]
+    onChange(copy)
+  }
+
+  return (
+    <div className={spanClass}>
+      <FieldLabel required={field.required}>{field.label}</FieldLabel>
+      {field.hint && <FieldHint>{field.hint}</FieldHint>}
+
+      <div className="mt-2 space-y-3">
+        {value.length === 0 && (
+          <p className="rounded-none border border-dashed border-slate-300 bg-white px-4 py-6 text-center font-lato text-xs text-slate-500">
+            Aún no hay ítems. Usa el botón para agregar el primero.
+          </p>
+        )}
+
+        {value.map((item, idx) => {
+          const label = field.itemLabel
+            ? field.itemLabel(item, idx)
+            : `Ítem ${String(idx + 1).padStart(2, "0")}`
+          return (
+            <div
+              key={idx}
+              className="rounded-none border border-slate-200 bg-white"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-slate-100 bg-stone-50 px-3 py-2">
+                <span className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+                  {label}
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => moveItem(idx, -1)}
+                    disabled={disabled || idx === 0}
+                    className="flex h-6 w-6 items-center justify-center text-[10px] text-slate-400 transition-colors hover:text-slate-900 disabled:opacity-30"
+                    aria-label="Subir"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveItem(idx, 1)}
+                    disabled={disabled || idx === value.length - 1}
+                    className="flex h-6 w-6 items-center justify-center text-[10px] text-slate-400 transition-colors hover:text-slate-900 disabled:opacity-30"
+                    aria-label="Bajar"
+                  >
+                    ▼
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeItem(idx)}
+                    disabled={disabled}
+                    className="flex h-6 w-6 items-center justify-center text-slate-400 transition-colors hover:text-red-600 disabled:opacity-30"
+                    aria-label="Eliminar"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
+                {itemFields.map((f) => (
+                  <FormField
+                    key={f.name}
+                    field={f}
+                    value={item[f.name]}
+                    onChange={(v) => updateItem(idx, { ...item, [f.name]: v })}
+                    disabled={disabled}
+                  />
+                ))}
+              </div>
+            </div>
+          )
+        })}
+
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={addItem}
+          disabled={disabled}
+          className="rounded-none border-slate-300 font-lato text-xs font-semibold uppercase tracking-wide hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+        >
+          <Plus className="mr-1 h-3 w-3" /> Agregar ítem
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+/* ─── JSON textarea con validación ────────────────────────────────────── */
+
+function JsonField({
+  field,
+  value,
+  onChange,
+  disabled,
+}: {
+  field: FieldDef
+  value: unknown
+  onChange: (v: unknown) => void
+  disabled?: boolean
+}) {
+  const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
+  const initialText =
+    value === null || value === undefined ? "" : JSON.stringify(value, null, 2)
+  const [text, setText] = useState(initialText)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleChange = (next: string) => {
+    setText(next)
+    if (!next.trim()) {
+      setError(null)
+      onChange(null)
+      return
+    }
+    try {
+      const parsed = JSON.parse(next)
+      setError(null)
+      onChange(parsed)
+    } catch (e: any) {
+      setError(e?.message ?? "JSON inválido")
+    }
+  }
+
+  return (
+    <div className={spanClass}>
+      <FieldLabel required={field.required}>{field.label}</FieldLabel>
+      {field.hint && <FieldHint>{field.hint}</FieldHint>}
+      <textarea
+        value={text}
+        onChange={(e) => handleChange(e.target.value)}
+        disabled={disabled}
+        rows={field.rows ?? 10}
+        placeholder='{ "ejemplo": "JSON válido" }'
+        className={cn(INPUT_CLS, "resize-y font-mono text-xs leading-relaxed")}
+      />
+      {error && (
+        <p className="mt-1.5 rounded-none border border-red-200 bg-red-50 px-2 py-1 font-lato text-xs text-red-700">
+          {error}
+        </p>
+      )}
+    </div>
+  )
 }
 
 /* ─── Image array (multi-imagen con MediaPicker por item) ─────────────── */

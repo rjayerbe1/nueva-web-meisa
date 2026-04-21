@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, ChevronRight, X, FileText } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, X, ArrowRight } from "lucide-react"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -33,6 +32,13 @@ interface ContactoContentProps {
   contactoData: ContactoData
 }
 
+// Clases reusables para inputs (dark brutalist, sin rounded)
+const inputClass =
+  "w-full px-4 py-3 bg-slate-900 border border-white/20 text-white placeholder-white/30 focus:outline-none focus:border-red-600 transition-colors font-lato"
+const labelClass =
+  "block text-white/60 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.18em] mb-2"
+const errorClass = "mt-1 text-xs text-red-500 font-lato"
+
 export default function ContactoContent({
   plantas,
   contactoData,
@@ -47,9 +53,9 @@ export default function ContactoContent({
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema)
+    resolver: zodResolver(contactSchema),
   })
 
   const onSubmit = async (data: ContactFormData) => {
@@ -57,27 +63,16 @@ export default function ContactoContent({
     setSubmitStatus('idle')
 
     try {
-      const payload = {
-        ...data,
-        mensaje: data.descripcion,
-      }
-
+      const payload = { ...data, mensaje: data.descripcion }
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-
-      if (!response.ok) {
-        throw new Error('Error al enviar el mensaje')
-      }
-
+      if (!response.ok) throw new Error('Error al enviar el mensaje')
       setSubmitStatus('success')
       reset()
-
-      setTimeout(() => setSubmitStatus('idle'), 5000)
+      setTimeout(() => setSubmitStatus('idle'), 6000)
     } catch (error) {
       setSubmitStatus('error')
       console.error('Error:', error)
@@ -87,471 +82,338 @@ export default function ContactoContent({
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
-      {/* Hero Section with Background Image */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/about/planta-produccion.webp"
-            alt="MEISA Contacto"
-            fill
-            className="object-cover"
-            priority
-          />
-          {/* Dark Overlay for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 via-gray-900/70 to-gray-900/80" />
-        </div>
+    <div className="bg-slate-950 text-white">
+      {/* Hero full-bleed dark con imagen */}
+      <section className="relative h-[70vh] md:h-[75vh] min-h-[500px] overflow-hidden bg-slate-950">
+        <Image
+          src="/images/about/planta-produccion.webp"
+          alt="MEISA — Contacto"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/60" />
 
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Breadcrumb */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-center gap-2 text-gray-300 mb-6"
-          >
-            <Link href="/" className="hover:text-blue-400 transition-colors">Inicio</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-semibold">Contacto</span>
-          </motion.div>
-
-          {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
-          >
-            Contáctanos
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto"
-          >
-            Expertos en diseño, fabricación y montaje de estructuras metálicas
-          </motion.p>
+        <div className="relative z-10 h-full flex items-end pb-16 md:pb-24 px-4 sm:px-6 lg:px-12">
+          <div className="mx-auto max-w-7xl w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl"
+            >
+              <p className="text-white/60 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-5">
+                Construyamos juntos
+              </p>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white">
+                Hablemos de
+              </h1>
+              <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white/50">
+                tu proyecto.
+              </h2>
+              <p className="mt-8 text-base md:text-lg text-white/70 font-lato leading-relaxed max-w-2xl">
+                Cuéntanos sobre tu proyecto estructural. Nuestro equipo de diseño, fabricación y
+                montaje te responde en menos de 24 horas.
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Main Contact Section: Form + Contact Info + Locations */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* LEFT COLUMN: Contact Form */}
+      {/* Main section: Form + Info + Plantas */}
+      <section className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+            {/* FORM (col-span-7) */}
             <motion.div
               id="formulario-contacto"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-7"
             >
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 sticky top-24">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Solicitar Cotización</h2>
-                  <p className="text-gray-600 text-sm">Cuéntanos sobre tu proyecto y te contactaremos pronto</p>
-                </div>
+              <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                Solicitar cotización
+              </p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-white mb-8">
+                Cuéntanos
+                <span className="block text-white/40">los detalles.</span>
+              </h2>
 
-                {submitStatus === 'success' ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-12"
+              {submitStatus === 'success' ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="border border-white/20 p-10 text-center"
+                >
+                  <CheckCircle2 className="w-12 h-12 text-red-600 mx-auto mb-5" strokeWidth={1.5} />
+                  <h3 className="text-3xl font-bebas uppercase leading-[0.95] text-white mb-3">
+                    Mensaje enviado
+                  </h3>
+                  <p className="text-white/70 font-lato text-sm md:text-base max-w-md mx-auto">
+                    Te responderemos en menos de 24 horas al correo que registraste.
+                  </p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Nombre + Empresa */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="nombre" className={labelClass}>Nombre completo *</label>
+                      <input {...register('nombre')} type="text" id="nombre" className={inputClass} placeholder="Tu nombre" />
+                      {errors.nombre && <p className={errorClass}>{errors.nombre.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="empresa" className={labelClass}>Empresa</label>
+                      <input {...register('empresa')} type="text" id="empresa" className={inputClass} placeholder="Tu empresa" />
+                    </div>
+                  </div>
+
+                  {/* Email + Teléfono */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="email" className={labelClass}>Email *</label>
+                      <input {...register('email')} type="email" id="email" className={inputClass} placeholder="tu@email.com" />
+                      {errors.email && <p className={errorClass}>{errors.email.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="telefono" className={labelClass}>Teléfono *</label>
+                      <input {...register('telefono')} type="tel" id="telefono" className={inputClass} placeholder="+57 300 123 4567" />
+                      {errors.telefono && <p className={errorClass}>{errors.telefono.message}</p>}
+                    </div>
+                  </div>
+
+                  {/* Ciudad */}
+                  <div>
+                    <label htmlFor="ciudad" className={labelClass}>Ciudad *</label>
+                    <input {...register('ciudad')} type="text" id="ciudad" className={inputClass} placeholder="Tu ciudad" />
+                    {errors.ciudad && <p className={errorClass}>{errors.ciudad.message}</p>}
+                  </div>
+
+                  {/* Tipo de proyecto */}
+                  <div>
+                    <label htmlFor="tipoProyecto" className={labelClass}>Tipo de proyecto *</label>
+                    <select {...register('tipoProyecto')} id="tipoProyecto" className={inputClass}>
+                      <option value="">Seleccione un tipo</option>
+                      {tiposProyecto.map((tipo) => (
+                        <option key={tipo} value={tipo}>{tipo}</option>
+                      ))}
+                    </select>
+                    {errors.tipoProyecto && <p className={errorClass}>{errors.tipoProyecto.message}</p>}
+                  </div>
+
+                  {/* Ubicación + Tamaño */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="ubicacionProyecto" className={labelClass}>Ubicación del proyecto</label>
+                      <input {...register('ubicacionProyecto')} type="text" id="ubicacionProyecto" className={inputClass} placeholder="Cali, Valle del Cauca" />
+                    </div>
+                    <div>
+                      <label htmlFor="tamanoProyecto" className={labelClass}>Tamaño aproximado</label>
+                      <input {...register('tamanoProyecto')} type="text" id="tamanoProyecto" className={inputClass} placeholder="500 m² · 50 toneladas" />
+                    </div>
+                  </div>
+
+                  {/* Servicios requeridos */}
+                  <div>
+                    <label className={labelClass}>Servicios requeridos</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                      {serviciosDisponibles.map((servicio) => (
+                        <label key={servicio} className="flex items-center gap-2.5 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            value={servicio}
+                            {...register('serviciosRequeridos')}
+                            className="w-4 h-4 border border-white/30 bg-slate-900 text-red-600 focus:ring-0 focus:ring-offset-0 accent-red-600"
+                          />
+                          <span className="text-white/70 font-lato text-sm group-hover:text-white transition-colors">
+                            {servicio}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Plazo */}
+                  <div>
+                    <label htmlFor="plazoDeseado" className={labelClass}>Plazo deseado</label>
+                    <select {...register('plazoDeseado')} id="plazoDeseado" className={inputClass}>
+                      <option value="">Seleccione un plazo</option>
+                      <option value="urgente">Urgente (menos de 1 mes)</option>
+                      <option value="1-3-meses">1-3 meses</option>
+                      <option value="3-6-meses">3-6 meses</option>
+                      <option value="mas-6-meses">Más de 6 meses</option>
+                      <option value="por-definir">Por definir</option>
+                    </select>
+                  </div>
+
+                  {/* Descripción */}
+                  <div>
+                    <label htmlFor="descripcion" className={labelClass}>Descripción del proyecto *</label>
+                    <textarea
+                      {...register('descripcion')}
+                      id="descripcion"
+                      rows={5}
+                      className={`${inputClass} resize-none`}
+                      placeholder="Cuéntanos los detalles de tu proyecto..."
+                    />
+                    {errors.descripcion && <p className={errorClass}>{errors.descripcion.message}</p>}
+                  </div>
+
+                  {/* Planos */}
+                  <div>
+                    <label className={labelClass}>¿Cuentas con planos o diseños?</label>
+                    <div className="flex flex-wrap gap-6">
+                      {[
+                        { value: 'si', label: 'Sí' },
+                        { value: 'no', label: 'No' },
+                        { value: 'parcial', label: 'Parcialmente' },
+                      ].map((opt) => (
+                        <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer group">
+                          <input
+                            type="radio"
+                            value={opt.value}
+                            {...register('tienePlanos')}
+                            className="w-4 h-4 border border-white/30 bg-slate-900 text-red-600 focus:ring-0 focus:ring-offset-0 accent-red-600"
+                          />
+                          <span className="text-white/70 font-lato text-sm group-hover:text-white transition-colors">{opt.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Submit — botón rojo brutalist */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h4 className="text-2xl font-semibold text-gray-900 mb-2">
-                      ¡Mensaje enviado!
-                    </h4>
-                    <p className="text-gray-600">
-                      Nos pondremos en contacto contigo pronto.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    {/* Nombre y Empresa */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
-                          Nombre Completo *
-                        </label>
-                        <input
-                          {...register('nombre')}
-                          type="text"
-                          id="nombre"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder="Tu nombre"
-                        />
-                        {errors.nombre && (
-                          <p className="mt-1 text-sm text-red-500">{errors.nombre.message}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label htmlFor="empresa" className="block text-sm font-medium text-gray-700 mb-2">
-                          Empresa
-                        </label>
-                        <input
-                          {...register('empresa')}
-                          type="text"
-                          id="empresa"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder="Tu empresa"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Email y Teléfono */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          Email *
-                        </label>
-                        <input
-                          {...register('email')}
-                          type="email"
-                          id="email"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder="tu@email.com"
-                        />
-                        {errors.email && (
-                          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-2">
-                          Teléfono *
-                        </label>
-                        <input
-                          {...register('telefono')}
-                          type="tel"
-                          id="telefono"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder="+57 300 123 4567"
-                        />
-                        {errors.telefono && (
-                          <p className="mt-1 text-sm text-red-500">{errors.telefono.message}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Ciudad */}
-                    <div>
-                      <label htmlFor="ciudad" className="block text-sm font-medium text-gray-700 mb-2">
-                        Ciudad *
-                      </label>
-                      <input
-                        {...register('ciudad')}
-                        type="text"
-                        id="ciudad"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                        placeholder="Tu ciudad"
-                      />
-                      {errors.ciudad && (
-                        <p className="mt-1 text-sm text-red-500">{errors.ciudad.message}</p>
-                      )}
-                    </div>
-
-                    {/* Tipo de Proyecto */}
-                    <div>
-                      <label htmlFor="tipoProyecto" className="block text-sm font-medium text-gray-700 mb-2">
-                        Tipo de Proyecto *
-                      </label>
-                      <select
-                        {...register('tipoProyecto')}
-                        id="tipoProyecto"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      >
-                        <option value="">Seleccione un tipo</option>
-                        {tiposProyecto.map((tipo) => (
-                          <option key={tipo} value={tipo}>{tipo}</option>
-                        ))}
-                      </select>
-                      {errors.tipoProyecto && (
-                        <p className="mt-1 text-sm text-red-500">{errors.tipoProyecto.message}</p>
-                      )}
-                    </div>
-
-                    {/* Ubicación y Tamaño del Proyecto */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="ubicacionProyecto" className="block text-sm font-medium text-gray-700 mb-2">
-                          Ubicación del Proyecto
-                        </label>
-                        <input
-                          {...register('ubicacionProyecto')}
-                          type="text"
-                          id="ubicacionProyecto"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder="Ej: Cali, Valle del Cauca"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="tamanoProyecto" className="block text-sm font-medium text-gray-700 mb-2">
-                          Tamaño Aproximado
-                        </label>
-                        <input
-                          {...register('tamanoProyecto')}
-                          type="text"
-                          id="tamanoProyecto"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder="Ej: 500 m², 50 toneladas"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Servicios requeridos */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Servicios Requeridos
-                      </label>
-                      <div className="grid grid-cols-2 gap-3">
-                        {serviciosDisponibles.map((servicio) => (
-                          <label key={servicio} className="flex items-center gap-2 cursor-pointer group">
-                            <input
-                              type="checkbox"
-                              value={servicio}
-                              {...register('serviciosRequeridos')}
-                              className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                            />
-                            <span className="text-gray-700 text-sm group-hover:text-gray-900 transition-colors">
-                              {servicio}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Plazo Deseado */}
-                    <div>
-                      <label htmlFor="plazoDeseado" className="block text-sm font-medium text-gray-700 mb-2">
-                        Plazo Deseado
-                      </label>
-                      <select
-                        {...register('plazoDeseado')}
-                        id="plazoDeseado"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      >
-                        <option value="">Seleccione un plazo</option>
-                        <option value="urgente">Urgente (menos de 1 mes)</option>
-                        <option value="1-3-meses">1-3 meses</option>
-                        <option value="3-6-meses">3-6 meses</option>
-                        <option value="mas-6-meses">Más de 6 meses</option>
-                        <option value="por-definir">Por definir</option>
-                      </select>
-                    </div>
-
-                    {/* Descripción del Proyecto */}
-                    <div>
-                      <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 mb-2">
-                        Descripción del Proyecto *
-                      </label>
-                      <textarea
-                        {...register('descripcion')}
-                        id="descripcion"
-                        rows={4}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-                        placeholder="Cuéntanos los detalles de tu proyecto..."
-                      />
-                      {errors.descripcion && (
-                        <p className="mt-1 text-sm text-red-500">{errors.descripcion.message}</p>
-                      )}
-                    </div>
-
-                    {/* Tiene Planos */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-3">
-                        ¿Cuenta con planos o diseños?
-                      </label>
-                      <div className="flex gap-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            value="si"
-                            {...register('tienePlanos')}
-                            className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-gray-700">Sí</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            value="no"
-                            {...register('tienePlanos')}
-                            className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-gray-700">No</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            value="parcial"
-                            {...register('tienePlanos')}
-                            className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-gray-700">Parcialmente</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      {isSubmitting ? (
-                        <>Enviando...</>
-                      ) : (
-                        <>
-                          Enviar mensaje
-                          <Send className="w-5 h-5" />
-                        </>
-                      )}
-                    </button>
-
-                    {submitStatus === 'error' && (
-                      <p className="text-red-500 text-sm text-center">
-                        Hubo un error al enviar el mensaje. Por favor intenta de nuevo.
-                      </p>
+                    {isSubmitting ? 'Enviando...' : (
+                      <>
+                        Enviar mensaje
+                        <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </>
                     )}
-                  </form>
-                )}
-              </div>
+                  </button>
+
+                  {submitStatus === 'error' && (
+                    <p className="text-red-500 font-lato text-sm">
+                      Hubo un error al enviar. Por favor intenta de nuevo.
+                    </p>
+                  )}
+                </form>
+              )}
             </motion.div>
 
-            {/* RIGHT COLUMN: Contact Info + Locations */}
+            {/* Info + Plantas (col-span-5) */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="lg:col-span-5 space-y-12 lg:space-y-16"
             >
-              {/* Contact Info Section */}
+              {/* Info de contacto */}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Información de Contacto</h3>
+                <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                  Información
+                </p>
+                <h3 className="text-3xl md:text-4xl font-bebas uppercase leading-[0.95] text-white mb-8">
+                  Canales directos
+                </h3>
 
-                <div className="space-y-3">
-                  {/* Teléfonos */}
-                  <div className="group bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md flex-shrink-0">
-                        <Phone className="w-5 h-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-gray-900 font-semibold mb-1 text-sm">Teléfonos</h4>
-                        <div className="space-y-0.5">
-                          <p className="text-gray-600 text-xs">PBX: +57 (2) 312 0050-51-52-53</p>
-                          <p className="text-gray-600 text-xs">Móvil: +57 (310) 432 7227</p>
-                        </div>
-                      </div>
+                <div className="divide-y divide-white/10 border-y border-white/10">
+                  <div className="flex items-start gap-4 py-5">
+                    <Phone className="w-5 h-5 text-white/60 mt-1 flex-shrink-0" strokeWidth={2} />
+                    <div>
+                      <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Teléfonos</p>
+                      <p className="text-white font-lato text-sm">PBX: +57 (2) 312 0050-51-52-53</p>
+                      <p className="text-white font-lato text-sm">Móvil: +57 310 432 7227</p>
                     </div>
                   </div>
-
-                  {/* Email */}
-                  <div className="group bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md flex-shrink-0">
-                        <Mail className="w-5 h-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-gray-900 font-semibold mb-1 text-sm">Email</h4>
-                        <p className="text-gray-600 text-xs">contacto@meisa.com.co</p>
-                      </div>
+                  <div className="flex items-start gap-4 py-5">
+                    <Mail className="w-5 h-5 text-white/60 mt-1 flex-shrink-0" strokeWidth={2} />
+                    <div>
+                      <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Email</p>
+                      <a href="mailto:contacto@meisa.com.co" className="text-white font-lato text-sm hover:text-red-500 transition-colors">
+                        contacto@meisa.com.co
+                      </a>
                     </div>
                   </div>
-
-                  {/* Horarios */}
-                  <div className="group bg-white rounded-lg p-4 shadow-md border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-blue-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md flex-shrink-0">
-                        <Clock className="w-5 h-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-gray-900 font-semibold mb-1 text-sm">Horario de Atención</h4>
-                        <div className="space-y-0.5">
-                          <p className="text-gray-600 text-xs">Lun-Vie: 7:00 AM - 5:00 PM</p>
-                          <p className="text-gray-600 text-xs">Sáb: 8:00 AM - 12:00 PM</p>
-                        </div>
-                      </div>
+                  <div className="flex items-start gap-4 py-5">
+                    <Clock className="w-5 h-5 text-white/60 mt-1 flex-shrink-0" strokeWidth={2} />
+                    <div>
+                      <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Horario</p>
+                      <p className="text-white font-lato text-sm">Lun-Vie: 7:00 AM — 5:00 PM</p>
+                      <p className="text-white font-lato text-sm">Sáb: 8:00 AM — 12:00 PM</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Locations Section */}
+              {/* Plantas */}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Nuestras <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">Ubicaciones</span></h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Visítanos en cualquiera de nuestras tres plantas industriales
+                <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                  Ubicaciones
+                </p>
+                <h3 className="text-3xl md:text-4xl font-bebas uppercase leading-[0.95] text-white mb-2">
+                  Nuestras plantas
+                </h3>
+                <p className="text-white/60 font-lato text-sm mb-6">
+                  {plantas.length} plantas industriales — haz click para ver detalle.
                 </p>
 
-                <div className="space-y-4">
-                  {plantas.map((planta, index) => (
-                    <motion.div
+                <div className="space-y-px bg-white/10">
+                  {plantas.map((planta) => (
+                    <button
                       key={planta.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      viewport={{ once: true }}
                       onClick={() => setSelectedPlanta(planta)}
-                      className="group cursor-pointer"
+                      className="group w-full bg-slate-950 hover:bg-slate-900 transition-colors text-left"
                     >
-                      <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200 hover:border-blue-300">
-                        {/* Map Preview */}
-                        <div className="relative h-36 overflow-hidden">
-                          <iframe
-                            src={planta.mapEmbedUrl ?? ''}
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            className="pointer-events-none"
-                          />
-                          {/* Overlay on hover */}
-                          <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-all duration-300 flex items-center justify-center">
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white px-3 py-1.5 rounded-full shadow-lg">
-                              <p className="text-blue-600 font-semibold text-sm">Ver detalles</p>
-                            </div>
-                          </div>
-
-                          {/* Title Badge */}
-                          <div className="absolute top-0 left-0 right-0">
-                            <div className={`bg-gradient-to-br ${planta.colorGradient ?? 'from-blue-500 to-blue-600'} backdrop-blur-md bg-opacity-95 px-3 py-2 shadow-2xl`}>
-                              <h4 className="text-sm font-bold text-white">{planta.nombre}</h4>
-                              <p className="text-white/90 text-xs font-medium">{planta.tipo}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Info */}
-                        <div className="p-3">
-                          <div className="space-y-1.5">
-                            <p className="flex items-start gap-2 text-gray-700">
-                              <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-blue-600" />
-                              <span className="text-xs leading-snug">{planta.ubicacion}</span>
-                            </p>
-                            <p className="flex items-center gap-2 text-gray-700">
-                              <Phone className="w-3.5 h-3.5 flex-shrink-0 text-blue-600" />
-                              <span className="text-xs">{planta.telefono}</span>
-                            </p>
-                            <p className="flex items-center gap-2 text-gray-700">
-                              <Clock className="w-3.5 h-3.5 flex-shrink-0 text-blue-600" />
-                              <span className="text-xs">{planta.horario}</span>
-                            </p>
-                          </div>
+                      <div className="relative h-36 overflow-hidden border-b border-white/10">
+                        <iframe
+                          src={planta.mapEmbedUrl ?? ''}
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          className="pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500"
+                        />
+                        {/* Overlay bloquea click a Google + muestra nombre */}
+                        <div className="absolute top-2 left-2 z-10 bg-slate-950 border border-white/20 px-2.5 py-1 flex items-center gap-1.5">
+                          <MapPin className="w-3 h-3 text-white" strokeWidth={2.5} />
+                          <span className="font-lato font-bold text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-white">
+                            Ver detalle
+                          </span>
                         </div>
                       </div>
-                    </motion.div>
+                      <div className="p-5">
+                        <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-1">
+                          {planta.tipo}
+                        </p>
+                        <h4 className="text-xl md:text-2xl font-bebas uppercase leading-[0.95] text-white mb-3">
+                          {planta.nombre}
+                        </h4>
+                        <div className="space-y-1.5 text-sm">
+                          <p className="flex items-start gap-2 text-white/70 font-lato">
+                            <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-white/40" />
+                            <span>{planta.ubicacion}</span>
+                          </p>
+                          <p className="flex items-center gap-2 text-white/70 font-lato">
+                            <Phone className="w-3.5 h-3.5 flex-shrink-0 text-white/40" />
+                            <span>{planta.telefono}</span>
+                          </p>
+                          <p className="flex items-center gap-2 text-white/70 font-lato">
+                            <Clock className="w-3.5 h-3.5 flex-shrink-0 text-white/40" />
+                            <span>{planta.horario}</span>
+                          </p>
+                        </div>
+                      </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -560,134 +422,112 @@ export default function ContactoContent({
         </div>
       </section>
 
-      {/* Modal for Map Details */}
+      {/* Modal planta — sharp, sin blur */}
       <AnimatePresence>
         {selectedPlanta && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80"
             onClick={() => setSelectedPlanta(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25 }}
-              className="relative bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="relative bg-slate-950 border border-white/20 max-w-5xl w-full max-h-[90vh] overflow-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close button */}
               <button
                 onClick={() => setSelectedPlanta(null)}
-                className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white shadow-lg transition-all duration-200 hover:scale-110"
+                className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-slate-950 border border-white/20 hover:border-white hover:bg-white hover:text-slate-950 transition-colors"
+                aria-label="Cerrar"
               >
-                <X className="w-5 h-5 text-gray-700" />
+                <X className="w-5 h-5" strokeWidth={2} />
               </button>
 
-              {/* Header with gradient */}
-              <div className={`relative bg-gradient-to-br ${selectedPlanta.colorGradient ?? 'from-blue-500 to-blue-600'} px-8 py-8`}>
-                <h3 className="text-3xl font-bold text-white mb-2">{selectedPlanta.nombre}</h3>
-                <p className="text-white/90 text-lg">{selectedPlanta.tipo}</p>
-                <div className="flex items-center gap-2 mt-4 text-white/90">
-                  <MapPin className="w-5 h-5" />
-                  <p className="text-sm">{selectedPlanta.ubicacion}</p>
+              {/* Header */}
+              <div className="px-8 pt-8 pb-6 border-b border-white/10">
+                <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">
+                  {selectedPlanta.tipo}
+                </p>
+                <h3 className="text-4xl md:text-5xl font-bebas uppercase leading-[0.95] text-white mb-4">
+                  {selectedPlanta.nombre}
+                </h3>
+                <div className="flex items-start gap-2 text-white/70">
+                  <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-white/40" strokeWidth={2} />
+                  <p className="font-lato text-sm md:text-base">{selectedPlanta.ubicacion}</p>
                 </div>
               </div>
 
-              {/* Large interactive map */}
-              <div className="p-8">
-                <div className="mb-8 rounded-2xl overflow-hidden shadow-lg">
+              {/* Mapa */}
+              <div className="px-8 pt-8">
+                <div className="relative h-[380px] md:h-[450px] overflow-hidden border border-white/10">
                   <iframe
                     src={selectedPlanta.mapEmbedUrl ?? ''}
                     width="100%"
-                    height="450"
+                    height="100%"
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full"
+                    className="w-full h-full"
                   />
+                  {/* Overlay reemplaza el botón Maps de Google con nuestro propio link */}
+                  {selectedPlanta.googleMapsUrl && (
+                    <a
+                      href={selectedPlanta.googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute top-2 left-2 z-10 bg-slate-950 border border-white/20 px-2.5 py-1 flex items-center gap-1.5 hover:bg-white hover:border-white hover:text-slate-950 transition-colors"
+                    >
+                      <MapPin className="w-3 h-3" strokeWidth={2.5} />
+                      <span className="font-lato font-bold text-[9px] md:text-[10px] uppercase tracking-[0.15em]">
+                        Ver en Maps
+                      </span>
+                    </a>
+                  )}
                 </div>
-
-                {/* Contact Info Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-gray-50 rounded-xl p-6 text-center">
-                    <Phone className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 mb-2">Teléfono</h4>
-                    <p className="text-gray-600 text-sm">{selectedPlanta.telefono}</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-xl p-6 text-center">
-                    <Mail className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 mb-2">Email</h4>
-                    <p className="text-gray-600 text-sm">{selectedPlanta.email}</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-xl p-6 text-center">
-                    <Clock className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 mb-2">Horario</h4>
-                    <p className="text-gray-600 text-sm">{selectedPlanta.horario}</p>
-                  </div>
-                </div>
-
-                {/* Google Maps button */}
-                <a
-                  href={selectedPlanta.googleMapsUrl ?? '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`w-full flex items-center justify-center gap-3 bg-gradient-to-r ${selectedPlanta.colorGradient ?? 'from-blue-500 to-blue-600'} hover:shadow-xl text-white px-6 py-4 rounded-xl text-base font-semibold transition-all duration-300 group`}
-                >
-                  <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Abrir en Google Maps
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </a>
               </div>
+
+              {/* Info grid */}
+              <div className="p-8 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10 border-t border-white/10 mt-8">
+                <div className="p-5 md:px-5 md:py-0">
+                  <Phone className="w-5 h-5 text-white/40 mb-3" strokeWidth={2} />
+                  <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Teléfono</p>
+                  <p className="text-white font-lato text-sm">{selectedPlanta.telefono}</p>
+                </div>
+                <div className="p-5 md:px-5 md:py-0">
+                  <Mail className="w-5 h-5 text-white/40 mb-3" strokeWidth={2} />
+                  <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Email</p>
+                  <p className="text-white font-lato text-sm break-all">{selectedPlanta.email}</p>
+                </div>
+                <div className="p-5 md:px-5 md:py-0">
+                  <Clock className="w-5 h-5 text-white/40 mb-3" strokeWidth={2} />
+                  <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Horario</p>
+                  <p className="text-white font-lato text-sm">{selectedPlanta.horario}</p>
+                </div>
+              </div>
+
+              {selectedPlanta.googleMapsUrl && (
+                <div className="px-8 pb-8">
+                  <a
+                    href={selectedPlanta.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700"
+                  >
+                    Abrir en Google Maps
+                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Final CTA Banner */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              ¿Listo para comenzar tu proyecto?
-            </h2>
-            <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-              Nuestro equipo está preparado para convertir tu visión en realidad
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="tel:+573104327227"
-                className="group px-8 py-4 bg-white hover:bg-gray-100 text-blue-700 rounded-xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-              >
-                <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                Llamar Ahora
-              </a>
-              <a
-                href="#formulario-contacto"
-                className="group px-8 py-4 bg-blue-800/50 backdrop-blur-sm hover:bg-blue-800/70 text-white rounded-xl font-semibold border-2 border-white/30 hover:border-white/50 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-              >
-                <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                Enviar Mensaje
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </main>
+    </div>
   )
 }

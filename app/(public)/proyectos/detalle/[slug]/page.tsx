@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ProjectDetailClient from './ProjectDetailClient'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const revalidate = 60
 
 export default async function ProyectoDetallePage({
   params,

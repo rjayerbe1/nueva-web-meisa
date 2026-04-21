@@ -4,9 +4,8 @@ import ServicioDetailEnhanced from './ServicioDetailEnhanced'
 import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 
-// Force dynamic rendering (no static generation during build)
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// ISR: sirve desde caché 60s, regenera en background
+export const revalidate = 60
 
 interface ServicioPageProps {
   params: {

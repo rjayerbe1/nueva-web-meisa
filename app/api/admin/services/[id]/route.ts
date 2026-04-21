@@ -1,129 +1,45 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { UserRole } from '@prisma/client'
-import { VALID_SERVICE_COLORS, isValidServiceColor } from '@/lib/service-colors'
+import { z } from "zod"
+import { prisma } from "@/lib/prisma"
+import { itemHandlers } from "@/lib/admin/crud"
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
+const anyJson: z.ZodType<unknown> = z.any()
 
-    const service = await prisma.servicio.findUnique({
-      where: { id: params.id }
+const handlers = itemHandlers({
+  delegate: prisma.servicio,
+  updateSchema: z
+    .object({
+      slug: z.string().min(1),
+      nombre: z.string().min(1),
+      titulo: z.string().nullable(),
+      subtitulo: z.string().nullable(),
+      descripcion: z.string().min(1),
+      caracteristicas: z.array(z.string()),
+      icono: z.string().nullable(),
+      imagen: z.string().nullable(),
+      color: z.string(),
+      bgGradient: z.string().nullable(),
+      orden: z.number().int(),
+      destacado: z.boolean(),
+      activo: z.boolean(),
+      metaTitle: z.string().nullable(),
+      metaDescription: z.string().nullable(),
+      expertiseTitulo: z.string().nullable(),
+      expertiseDescripcion: z.string().nullable(),
+      tecnologias: anyJson,
+      normativas: anyJson,
+      equipamiento: anyJson,
+      equipos: anyJson,
+      imagenesGaleria: anyJson,
+      estadisticas: anyJson,
+      procesoPasos: anyJson,
+      tablaComparativa: anyJson,
+      videoDemostrativo: z.string().nullable(),
+      preguntasFrecuentes: anyJson,
+      recursosDescargables: anyJson,
     })
+    .partial(),
+})
 
-    if (!service) {
-      return NextResponse.json({ error: 'Servicio no encontrado' }, { status: 404 })
-    }
-
-    return NextResponse.json(service)
-  } catch (error) {
-    console.error('Error fetching service:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}
-
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session || session.user.role === UserRole.VIEWER) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
-    const data = await request.json()
-    
-    // Validar color
-    if (data.color && !isValidServiceColor(data.color)) {
-      return NextResponse.json(
-        { error: `Color no válido. Debe ser uno de: ${VALID_SERVICE_COLORS.join(', ')}` }, 
-        { status: 400 }
-      )
-    }
-    
-    // Generar nuevo slug si el nombre cambió
-    const slug = data.nombre
-      .toLowerCase()
-      .replace(/[áàäâ]/g, 'a')
-      .replace(/[éèëê]/g, 'e')
-      .replace(/[íìïî]/g, 'i')
-      .replace(/[óòöô]/g, 'o')
-      .replace(/[úùüû]/g, 'u')
-      .replace(/[ñ]/g, 'n')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-    
-    const service = await prisma.servicio.update({
-      where: { id: params.id },
-      data: {
-        nombre: data.nombre,
-        titulo: data.titulo || null,
-        subtitulo: data.subtitulo || null,
-        slug: slug,
-        descripcion: data.descripcion,
-        caracteristicas: data.caracteristicas || [],
-        tecnologias: data.tecnologias || null,
-        normativas: data.normativas || null,
-        equipamiento: data.equipamiento || null,
-        equipos: data.equipos || null,
-        expertiseTitulo: data.expertiseTitulo || null,
-        expertiseDescripcion: data.expertiseDescripcion || null,
-        orden: data.orden || 999,
-        icono: data.icono || null,
-        imagen: data.imagen || null,
-        color: data.color || 'blue',
-        bgGradient: data.bgGradient || null,
-        destacado: data.destacado || false,
-        activo: data.activo !== undefined ? data.activo : true,
-        metaTitle: data.metaTitle || null,
-        metaDescription: data.metaDescription || null,
-        // New fields for enhanced service detail page
-        imagenesGaleria: data.imagenesGaleria || null,
-        estadisticas: data.estadisticas || null,
-        procesoPasos: data.procesoPasos || null,
-        tablaComparativa: data.tablaComparativa || null,
-        videoDemostrativo: data.videoDemostrativo || null,
-        preguntasFrecuentes: data.preguntasFrecuentes || null,
-        recursosDescargables: data.recursosDescargables || null
-      }
-    })
-
-    return NextResponse.json(service)
-  } catch (error) {
-    console.error('Error updating service:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session || session.user.role === UserRole.VIEWER) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
-    await prisma.servicio.delete({
-      where: { id: params.id }
-    })
-
-    return NextResponse.json({ message: 'Servicio eliminado exitosamente' })
-  } catch (error) {
-    console.error('Error deleting service:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}
+export const GET = handlers.GET
+export const PUT = handlers.PUT
+export const DELETE = handlers.DELETE

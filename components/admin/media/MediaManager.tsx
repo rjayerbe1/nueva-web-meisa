@@ -20,6 +20,8 @@ import {
   Folder,
   Tag,
   SlidersHorizontal,
+  ChevronRight,
+  Home,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Media, MediaKind } from "@prisma/client"
@@ -28,6 +30,16 @@ import { UpscaleButton } from "@/components/admin/UpscaleButton"
 import { ImageExpansionEditor } from "@/components/admin/ImageExpansionEditor"
 import { ImageInpaintingEditor } from "@/components/admin/ImageInpaintingEditor"
 import { Maximize2, Scissors, Sparkles } from "lucide-react"
+import { FolderTree } from "./FolderTree"
+import { UploadQueue, type UploadItem } from "./UploadQueue"
+import {
+  buildFolderTree,
+  joinPath,
+  splitPath,
+  normalizeSegment,
+  type FolderNode,
+  ROOT_FOLDER,
+} from "@/lib/media/folder-path"
 
 type KindFilter = "any" | "IMAGE" | "VIDEO" | "DOC"
 
@@ -36,6 +48,61 @@ const KIND_LABEL: Record<KindFilter, string> = {
   IMAGE: "Imágenes",
   VIDEO: "Videos",
   DOC: "Documentos",
+}
+
+const ACCEPT_ATTR =
+  "image/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain,text/csv,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt"
+
+const MAX_CONCURRENT_UPLOADS = 3
+
+interface EnqueuedUpload extends UploadItem {
+  file: File
+  targetFolder: string
+}
+
+interface FolderApiPayload {
+  paths: string[]
+  counts: Record<string, number>
+}
+
+async function walkEntry(entry: any, basePath: string, out: { file: File; relativePath: string }[]) {
+  if (entry.isFile) {
+    const file: File = await new Promise((res, rej) => entry.file(res, rej))
+    out.push({ file, relativePath: basePath })
+    return
+  }
+  if (entry.isDirectory) {
+    const reader = entry.createReader()
+    const subDir = basePath ? `${basePath}/${entry.name}` : entry.name
+    const readAll = async (): Promise<any[]> => {
+      const acc: any[] = []
+      while (true) {
+        const chunk: any[] = await new Promise((res, rej) => reader.readEntries(res, rej))
+        if (chunk.length === 0) break
+        acc.push(...chunk)
+      }
+      return acc
+    }
+    const children = await readAll()
+    for (const child of children) await walkEntry(child, subDir, out)
+  }
+}
+
+async function itemsFromDataTransfer(dt: DataTransfer): Promise<{ file: File; relativePath: string }[]> {
+  const out: { file: File; relativePath: string }[] = []
+  const items = Array.from(dt.items ?? [])
+  const supportsEntries = items.length > 0 && typeof (items[0] as any).webkitGetAsEntry === "function"
+  if (supportsEntries) {
+    for (const it of items) {
+      const entry = (it as any).webkitGetAsEntry?.()
+      if (entry) await walkEntry(entry, "", out)
+    }
+  } else {
+    for (const f of Array.from(dt.files ?? [])) {
+      out.push({ file: f, relativePath: "" })
+    }
+  }
+  return out
 }
 
 export function MediaManager() {
@@ -48,7 +115,11 @@ export function MediaManager() {
   const [tag, setTag] = useState<string | null>(null)
   const [editing, setEditing] = useState<Media | null>(null)
   const [lightbox, setLightbox] = useState<Media | null>(null)
-  const [uploading, setUploading] = useState(false)
+  const [folderData, setFolderData] = useState<FolderApiPayload>({ paths: [], counts: {} })
+  const [uploadQueue, setUploadQueue] = useState<EnqueuedUpload[]>([])
+  const [queueOpen, setQueueOpen] = useState(true)
+  const [isDragging, setIsDragging] = useState(false)
+  const dragCounter = useRef(0)
   const fileRef = useRef<HTMLInputElement>(null)
 
   /* ── Debounce search ── */
@@ -78,12 +149,44 @@ export function MediaManager() {
     fetchList()
   }, [fetchList])
 
-  /* ── Derived: folders + tags from loaded items ── */
-  const folders = useMemo(() => {
-    const map = new Map<string, number>()
-    for (const it of items) map.set(it.folder, (map.get(it.folder) ?? 0) + 1)
-    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]))
-  }, [items])
+  const fetchFolders = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/media-library/folders")
+      if (res.ok) {
+        const data: FolderApiPayload = await res.json()
+        setFolderData(data)
+      }
+    } catch {
+      /* noop */
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchFolders()
+  }, [fetchFolders])
+
+  /* ── Derived: tree + inmediate subfolders + tags ── */
+  const folderTree: FolderNode[] = useMemo(
+    () => buildFolderTree(folderData.paths, folderData.counts),
+    [folderData],
+  )
+
+  const subfolders: FolderNode[] = useMemo(() => {
+    if (!folder) return folderTree
+    const parts = splitPath(folder)
+    let cursor = folderTree
+    for (const p of parts) {
+      const next = cursor.find((n) => n.name === p)
+      if (!next) return []
+      cursor = next.children
+    }
+    return cursor
+  }, [folder, folderTree])
+
+  const rootCount = useMemo(
+    () => Object.values(folderData.counts).reduce((a, b) => a + b, 0),
+    [folderData.counts],
+  )
 
   const tags = useMemo(() => {
     const map = new Map<string, number>()
@@ -100,24 +203,95 @@ export function MediaManager() {
     return items.filter((it) => it.tags?.includes(tag))
   }, [items, tag])
 
-  /* ── Actions ── */
-  const upload = async (file: File) => {
-    setUploading(true)
+  /* ── Upload queue: procesa hasta MAX_CONCURRENT ── */
+  const processQueue = useCallback(async () => {
+    setUploadQueue((prev) => {
+      const uploading = prev.filter((i) => i.status === "uploading").length
+      if (uploading >= MAX_CONCURRENT_UPLOADS) return prev
+      const next = [...prev]
+      const slots = MAX_CONCURRENT_UPLOADS - uploading
+      const toStart = next.filter((i) => i.status === "queued").slice(0, slots)
+      for (const job of toStart) {
+        job.status = "uploading"
+        void runUpload(job)
+      }
+      return next
+    })
+  }, [])
+
+  const runUpload = useCallback(async (job: EnqueuedUpload) => {
     try {
       const fd = new FormData()
-      fd.append("file", file)
-      fd.append("folder", folder ?? "general")
+      fd.append("file", job.file)
+      fd.append("folder", job.targetFolder)
       const res = await fetch("/api/admin/media-library", { method: "POST", body: fd })
       if (res.ok) {
         const saved: Media = await res.json()
-        setItems((prev) => [saved, ...prev])
+        setItems((prev) =>
+          saved.folder === (folder ?? saved.folder) ? [saved, ...prev] : prev,
+        )
+        setUploadQueue((prev) =>
+          prev.map((i) => (i.id === job.id ? { ...i, status: "done" } : i)),
+        )
+        // refrescar árbol si apareció carpeta nueva
+        if (!folderData.paths.includes(job.targetFolder)) fetchFolders()
       } else {
         const msg = await res.json().catch(() => ({ error: "Error" }))
-        alert(msg.error ?? "Error subiendo")
+        setUploadQueue((prev) =>
+          prev.map((i) =>
+            i.id === job.id ? { ...i, status: "error", error: msg.error ?? "Error" } : i,
+          ),
+        )
       }
+    } catch (e: any) {
+      setUploadQueue((prev) =>
+        prev.map((i) =>
+          i.id === job.id ? { ...i, status: "error", error: e?.message ?? "Error red" } : i,
+        ),
+      )
     } finally {
-      setUploading(false)
+      setTimeout(() => void processQueue(), 50)
     }
+  }, [folder, folderData.paths, fetchFolders, processQueue])
+
+  const enqueueFiles = useCallback(
+    (files: { file: File; relativePath: string }[], baseFolder: string) => {
+      const jobs: EnqueuedUpload[] = files.map(({ file, relativePath }) => {
+        const relFolder = relativePath
+          .split("/")
+          .map((s) => normalizeSegment(s))
+          .filter(Boolean)
+          .join("/")
+        const target = joinPath(baseFolder || ROOT_FOLDER, relFolder)
+        return {
+          id: crypto.randomUUID(),
+          name: file.name,
+          folder: target,
+          size: file.size,
+          status: "queued" as const,
+          file,
+          targetFolder: target,
+        }
+      })
+      if (jobs.length === 0) return
+      setUploadQueue((prev) => [...jobs, ...prev])
+      setQueueOpen(true)
+      setTimeout(() => void processQueue(), 0)
+    },
+    [processQueue],
+  )
+
+  const retryJob = useCallback((id: string) => {
+    setUploadQueue((prev) =>
+      prev.map((i) => (i.id === id ? { ...i, status: "queued", error: undefined } : i)),
+    )
+    setTimeout(() => void processQueue(), 0)
+  }, [processQueue])
+
+  const onBrowsePick = (list: FileList | null) => {
+    if (!list || list.length === 0) return
+    const files = Array.from(list).map((f) => ({ file: f, relativePath: "" }))
+    enqueueFiles(files, folder ?? "")
   }
 
   const del = async (id: string) => {
@@ -132,6 +306,77 @@ export function MediaManager() {
     }
   }
 
+  /* ── Folder ops ── */
+  const createFolder = async (parent: string | null, segment: string) => {
+    const path = parent ? joinPath(parent, segment) : segment
+    const res = await fetch("/api/admin/media-library/folders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path }),
+    })
+    if (res.ok) await fetchFolders()
+    else {
+      const err = await res.json().catch(() => ({}))
+      alert(err.error ?? "No se pudo crear la carpeta")
+    }
+  }
+
+  const renameFolder = async (oldPath: string, newPath: string) => {
+    const res = await fetch(
+      `/api/admin/media-library/folders/${oldPath
+        .split("/")
+        .map(encodeURIComponent)
+        .join("/")}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newPath }),
+      },
+    )
+    if (res.ok) {
+      if (folder === oldPath) setFolder(newPath)
+      else if (folder?.startsWith(oldPath + "/"))
+        setFolder(newPath + folder.slice(oldPath.length))
+      await Promise.all([fetchFolders(), fetchList()])
+    } else {
+      const err = await res.json().catch(() => ({}))
+      alert(err.error ?? "No se pudo renombrar")
+    }
+  }
+
+  const deleteFolder = async (path: string) => {
+    if (!confirm(`¿Eliminar la carpeta "${path}"? Debe estar vacía.`)) return
+    const res = await fetch(
+      `/api/admin/media-library/folders/${path
+        .split("/")
+        .map(encodeURIComponent)
+        .join("/")}`,
+      { method: "DELETE" },
+    )
+    if (res.ok) {
+      if (folder === path || folder?.startsWith(path + "/")) setFolder(null)
+      await fetchFolders()
+    } else {
+      const err = await res.json().catch(() => ({}))
+      alert(err.error ?? "No se pudo eliminar")
+    }
+  }
+
+  const moveItems = async (ids: string[], targetFolder: string) => {
+    const folderTarget = targetFolder || ROOT_FOLDER
+    const res = await fetch("/api/admin/media-library/bulk-move", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids, folder: folderTarget }),
+    })
+    if (res.ok) {
+      await Promise.all([fetchFolders(), fetchList()])
+    } else {
+      const err = await res.json().catch(() => ({}))
+      alert(err.error ?? "No se pudo mover")
+    }
+  }
+
   const hasFilters = kind !== "any" || folder || tag || debouncedQuery
   const clearFilters = () => {
     setKind("any")
@@ -140,8 +385,47 @@ export function MediaManager() {
     setQuery("")
   }
 
+  /* ── Drag-drop global ── */
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+    dragCounter.current = 0
+    const dropped = await itemsFromDataTransfer(e.dataTransfer)
+    enqueueFiles(dropped, folder ?? "")
+  }
+
   return (
-    <div className="space-y-6">
+    <div
+      className="relative space-y-6"
+      onDragEnter={(e) => {
+        if (!e.dataTransfer.types.includes("Files")) return
+        dragCounter.current += 1
+        setIsDragging(true)
+      }}
+      onDragLeave={() => {
+        dragCounter.current = Math.max(0, dragCounter.current - 1)
+        if (dragCounter.current === 0) setIsDragging(false)
+      }}
+      onDragOver={(e) => {
+        if (e.dataTransfer.types.includes("Files")) e.preventDefault()
+      }}
+      onDrop={handleDrop}
+    >
+      {/* Drop overlay */}
+      {isDragging && (
+        <div className="pointer-events-none fixed inset-0 z-40 flex items-center justify-center bg-red-600/10 backdrop-blur-sm">
+          <div className="border-4 border-dashed border-red-600 bg-white/90 px-10 py-8 text-center shadow-xl">
+            <Upload className="mx-auto mb-3 h-10 w-10 text-red-600" />
+            <p className="font-bebas text-3xl uppercase tracking-wider text-slate-950">
+              Suelta para subir
+            </p>
+            <p className="font-lato text-sm text-slate-600">
+              Archivos o carpetas enteras · preserva la estructura
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Page header */}
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
@@ -152,37 +436,32 @@ export function MediaManager() {
             Biblioteca de medios
           </h1>
           <p className="mt-2 max-w-2xl font-lato text-sm text-slate-600">
-            Repositorio central de imágenes, videos y documentos del sitio. Todo lo que se
-            sube aquí queda disponible para los MediaPicker de los editores.
+            Repositorio central de imágenes, videos y documentos del sitio. Arrastra archivos o
+            carpetas enteras para subirlos.
           </p>
         </div>
         <button
           onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="inline-flex items-center gap-2 rounded-none bg-red-600 px-5 py-2.5 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-none bg-red-600 px-5 py-2.5 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700"
         >
-          {uploading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Upload className="h-4 w-4" />
-          )}
-          Subir archivo
+          <Upload className="h-4 w-4" />
+          Subir archivos
         </button>
         <input
           ref={fileRef}
           type="file"
-          accept="image/*,video/*,application/pdf"
+          multiple
+          accept={ACCEPT_ATTR}
           className="hidden"
           onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) upload(file)
+            onBrowsePick(e.target.files)
             e.target.value = ""
           }}
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
-        {/* Sidebar filters */}
+      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+        {/* Sidebar */}
         <aside className="space-y-6">
           {/* Search */}
           <div>
@@ -212,19 +491,23 @@ export function MediaManager() {
             ))}
           </FilterGroup>
 
-          {/* Folders */}
-          <FilterGroup icon={<Folder className="h-3 w-3" />} label="Carpetas">
-            <FilterItem active={folder === null} onClick={() => setFolder(null)} label="Todas" />
-            {folders.map(([name, count]) => (
-              <FilterItem
-                key={name}
-                active={folder === name}
-                onClick={() => setFolder(name)}
-                label={name}
-                count={count}
-              />
-            ))}
-          </FilterGroup>
+          {/* Folder tree */}
+          <div>
+            <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+              <Folder className="h-3 w-3 text-slate-400" />
+              Carpetas
+            </div>
+            <FolderTree
+              nodes={folderTree}
+              currentPath={folder}
+              rootCount={rootCount}
+              onNavigate={(p) => setFolder(p)}
+              onCreate={createFolder}
+              onRename={renameFolder}
+              onDelete={deleteFolder}
+              onDropItems={moveItems}
+            />
+          </div>
 
           {/* Top tags */}
           {tags.length > 0 && (
@@ -254,12 +537,28 @@ export function MediaManager() {
 
         {/* Grid */}
         <section>
-          <div className="mb-3 flex items-center justify-between">
-            <p className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
+          {/* Breadcrumb */}
+          <div className="mb-3 flex items-center justify-between gap-2">
+            <Breadcrumb path={folder} onNavigate={(p) => setFolder(p)} />
+            <p className="flex-shrink-0 font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
               {filteredItems.length}{" "}
               {filteredItems.length === 1 ? "elemento" : "elementos"}
             </p>
           </div>
+
+          {/* Subfolders como tiles */}
+          {subfolders.length > 0 && (
+            <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
+              {subfolders.map((sf) => (
+                <FolderTile
+                  key={sf.path}
+                  node={sf}
+                  onOpen={() => setFolder(sf.path)}
+                  onDropItems={(ids) => moveItems(ids, sf.path)}
+                />
+              ))}
+            </div>
+          )}
 
           {loading ? (
             <div className="flex h-64 items-center justify-center text-slate-300">
@@ -272,7 +571,7 @@ export function MediaManager() {
                 Sin resultados
               </p>
               <p className="max-w-xs font-lato text-sm text-slate-500">
-                Ajusta los filtros o sube un archivo para empezar.
+                Ajusta los filtros, sube un archivo o arrastra una carpeta para empezar.
               </p>
             </div>
           ) : (
@@ -290,6 +589,17 @@ export function MediaManager() {
           )}
         </section>
       </div>
+
+      {queueOpen && (
+        <UploadQueue
+          items={uploadQueue}
+          onClear={() =>
+            setUploadQueue((prev) => prev.filter((i) => i.status === "queued" || i.status === "uploading"))
+          }
+          onRetry={retryJob}
+          onClose={() => setQueueOpen(false)}
+        />
+      )}
 
       {editing && (
         <EditDialog
@@ -319,6 +629,110 @@ export function MediaManager() {
       )}
     </div>
   )
+}
+
+/* ─── Breadcrumb ──────────────────────────────────────────────────────── */
+
+function Breadcrumb({
+  path,
+  onNavigate,
+}: {
+  path: string | null
+  onNavigate: (p: string | null) => void
+}) {
+  const parts = path ? splitPath(path) : []
+  return (
+    <nav className="flex flex-wrap items-center gap-1 font-lato text-sm">
+      <button
+        onClick={() => onNavigate(null)}
+        className={cn(
+          "flex items-center gap-1 px-1.5 py-0.5 transition-colors",
+          !path
+            ? "font-semibold text-red-700"
+            : "text-slate-500 hover:text-slate-900",
+        )}
+      >
+        <Home className="h-3.5 w-3.5" />
+        Todas
+      </button>
+      {parts.map((seg, i) => {
+        const subPath = parts.slice(0, i + 1).join("/")
+        const isLast = i === parts.length - 1
+        return (
+          <span key={subPath} className="flex items-center gap-1">
+            <ChevronRight className="h-3 w-3 text-slate-300" />
+            <button
+              onClick={() => onNavigate(subPath)}
+              className={cn(
+                "px-1.5 py-0.5 transition-colors",
+                isLast
+                  ? "font-semibold text-red-700"
+                  : "text-slate-500 hover:text-slate-900",
+              )}
+            >
+              {seg}
+            </button>
+          </span>
+        )
+      })}
+    </nav>
+  )
+}
+
+/* ─── Folder tile (grid de subcarpetas) ───────────────────────────────── */
+
+function FolderTile({
+  node,
+  onOpen,
+  onDropItems,
+}: {
+  node: FolderNode
+  onOpen: () => void
+  onDropItems: (ids: string[]) => void
+}) {
+  const [over, setOver] = useState(false)
+  return (
+    <button
+      onClick={onOpen}
+      onDragOver={(e) => {
+        if (!e.dataTransfer.types.includes("application/x-media-ids")) return
+        e.preventDefault()
+        setOver(true)
+      }}
+      onDragLeave={() => setOver(false)}
+      onDrop={(e) => {
+        const raw = e.dataTransfer.getData("application/x-media-ids")
+        setOver(false)
+        if (!raw) return
+        try {
+          const ids = JSON.parse(raw) as string[]
+          if (Array.isArray(ids) && ids.length > 0) onDropItems(ids)
+        } catch {
+          /* noop */
+        }
+      }}
+      className={cn(
+        "group flex items-center gap-3 border border-slate-200 bg-white px-3 py-3 text-left transition-colors hover:border-red-600",
+        over && "border-red-600 bg-red-50",
+      )}
+    >
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center bg-slate-100 text-slate-500 group-hover:bg-red-50 group-hover:text-red-600">
+        <Folder className="h-5 w-5" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate font-lato text-sm font-semibold text-slate-900">
+          {node.name}
+        </p>
+        <p className="font-lato text-[11px] text-slate-500">
+          {(node.count ?? 0) + countDescendants(node)} elemento(s)
+        </p>
+      </div>
+    </button>
+  )
+}
+
+function countDescendants(n: FolderNode): number {
+  return n.children.reduce((acc, c) => acc + c.count + countDescendants(c), 0)
 }
 
 /* ─── Sidebar filter primitives ───────────────────────────────────────── */
@@ -393,7 +807,14 @@ function MediaCard({
   }
 
   return (
-    <div className="group relative overflow-hidden rounded-none border border-slate-200 bg-white transition-all hover:border-red-600 hover:shadow-md">
+    <div
+      className="group relative overflow-hidden rounded-none border border-slate-200 bg-white transition-all hover:border-red-600 hover:shadow-md"
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.effectAllowed = "move"
+        e.dataTransfer.setData("application/x-media-ids", JSON.stringify([media.id]))
+      }}
+    >
       <button
         type="button"
         onClick={onOpen}

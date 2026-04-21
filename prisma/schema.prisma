@@ -1222,3 +1222,11 @@ model Media {
   @@index([createdAt])
   @@map("media")
 }
+
+model MediaFolder {
+  id        String   @id @default(cuid())
+  path      String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("media_folder")
+}

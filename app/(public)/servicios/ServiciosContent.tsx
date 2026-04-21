@@ -249,23 +249,26 @@ export default function ServiciosContent({
         </div>
       </section>
 
-      {/* Sticky Nav brutalist — sin blur, sin rounded */}
+      {/* Sticky Nav brutalist — sin blur, sin rounded.
+          Desktop: reparte el ancho con flex-1 (todos los servicios caben).
+          Mobile: scroll horizontal con flechas si hay overflow. */}
       <div
         ref={navRef}
         className="sticky top-0 z-40 bg-slate-950/95 border-y border-white/10"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto lg:px-0 relative">
+          {/* Flechas de scroll — solo aparecen en mobile si hay overflow */}
           {showLeftArrow && (
             <button
               onClick={scrollNavLeft}
-              className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-slate-950 border border-white/20 hover:border-white p-2 transition-colors"
+              className="lg:hidden absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-slate-950 border border-white/20 hover:border-white p-2 transition-colors"
               aria-label="Scroll izquierda"
             >
               <ChevronLeft className="w-5 h-5 text-white" strokeWidth={2} />
             </button>
           )}
 
-          <nav className="flex overflow-x-auto py-4 space-x-0 scrollbar-hide scroll-smooth px-10">
+          <nav className="flex overflow-x-auto lg:overflow-visible scrollbar-hide scroll-smooth px-10 lg:px-0 lg:justify-stretch">
             {servicios.map((servicio) => {
               const Icon = getIcon(servicio.icono)
               const isActive = activeSection === servicio.id
@@ -274,14 +277,12 @@ export default function ServiciosContent({
                   key={servicio.id}
                   data-service-id={servicio.id}
                   onClick={() => scrollToSection(servicio.id)}
-                  className={`group relative flex items-center gap-2.5 px-5 py-2.5 whitespace-nowrap transition-colors duration-200 flex-shrink-0 border-l first:border-l-0 border-white/10 ${
-                    isActive
-                      ? 'bg-white text-slate-950'
-                      : 'text-white/70 hover:text-white'
+                  className={`group relative flex items-center justify-center gap-2.5 px-4 py-3.5 whitespace-nowrap transition-colors duration-200 flex-shrink-0 lg:flex-1 lg:min-w-0 border-l first:border-l-0 border-white/10 ${
+                    isActive ? 'bg-white text-slate-950' : 'text-white/70 hover:text-white'
                   }`}
                 >
-                  <Icon className="w-4 h-4" strokeWidth={2} />
-                  <span className="font-lato font-bold text-xs uppercase tracking-[0.12em]">
+                  <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2} />
+                  <span className="font-lato font-bold text-[11px] lg:text-xs uppercase tracking-[0.1em] lg:truncate">
                     {servicio.titulo}
                   </span>
                   {isActive && (
@@ -295,7 +296,7 @@ export default function ServiciosContent({
           {showRightArrow && (
             <button
               onClick={scrollNavRight}
-              className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-slate-950 border border-white/20 hover:border-white p-2 transition-colors"
+              className="lg:hidden absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-slate-950 border border-white/20 hover:border-white p-2 transition-colors"
               aria-label="Scroll derecha"
             >
               <ChevronRight className="w-5 h-5 text-white" strokeWidth={2} />
