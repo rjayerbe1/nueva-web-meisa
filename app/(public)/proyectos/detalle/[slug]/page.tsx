@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, MapPin, User, Calendar, Building, Award, Settings, ExternalLink, Phone, Mail, Star, Clock, Ruler, Weight, Share2, Eye, X, ChevronLeft, ChevronRight, ZoomIn, Target, Lightbulb, TrendingUp, Users, Quote, CheckCircle, Play, BarChart3, Wrench, Users2, Trophy, BookOpen, FileText, Camera, Video, Download } from 'lucide-react'
-import { siteConfig } from '@/lib/site-config'
+import { aniosExperiencia } from '@/lib/site-meta'
 
 interface Proyecto {
   id: string
@@ -1890,8 +1890,8 @@ export default function ProjectDetailPage() {
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {hasHistoria
-                ? `Con más de ${siteConfig.empresa.aniosExperiencia} años transformando desafíos en éxitos, MEISA está listo para hacer de tu proyecto la próxima historia de éxito.`
-                : `Somos expertos en estructuras metálicas con más de ${siteConfig.empresa.aniosExperiencia} años de experiencia. Convierte tu visión en realidad con la calidad y confianza que nos caracteriza.`
+                ? `Con más de ${aniosExperiencia()} años transformando desafíos en éxitos, MEISA está listo para hacer de tu proyecto la próxima historia de éxito.`
+                : `Somos expertos en estructuras metálicas con más de ${aniosExperiencia()} años de experiencia. Convierte tu visión en realidad con la calidad y confianza que nos caracteriza.`
               }
             </p>
             
@@ -1932,7 +1932,7 @@ export default function ProjectDetailPage() {
                 <div className="hidden sm:block text-blue-300">|</div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span>{siteConfig.empresa.aniosExperiencia}+ AÑOS</span>
+                  <span>{aniosExperiencia()}+ AÑOS</span>
                 </div>
                 <div className="hidden sm:block text-blue-300">|</div>
                 <div className="flex items-center gap-2">

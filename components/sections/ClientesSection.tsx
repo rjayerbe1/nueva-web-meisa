@@ -21,6 +21,8 @@ export interface ClientesCopy {
   eyebrow?: string | null
   titulo?: string | null
   descripcion?: string | null
+  ctaTexto?: string | null
+  ctaUrl?: string | null
 }
 
 interface ClientesSectionProps {
@@ -31,11 +33,14 @@ interface ClientesSectionProps {
 export function ClientesSection({ copy, foundingYear = 1996 }: ClientesSectionProps = {}) {
   const yearsExperience = new Date().getFullYear() - foundingYear
   const eyebrow = copy?.eyebrow || 'Nuestros clientes'
-  const tituloLinea1 = copy?.titulo || 'Confianza construida'
-  const tituloLinea2 = `durante ${yearsExperience}+ años`
+  const titulo =
+    copy?.titulo || `Confianza construida\ndurante ${yearsExperience}+ años`
+  const tituloLineas = titulo.split('\n')
   const descripcion =
     copy?.descripcion ||
-    'Empresas líderes nacionales e internacionales confían en MEISA para sus proyectos estructurales más exigentes.'
+    'Empresas líderes en infraestructura, minería y construcción confían en MEISA para sus proyectos estructurales más exigentes.'
+  const ctaTexto = copy?.ctaTexto || 'Conoce nuestra trayectoria'
+  const ctaUrl = copy?.ctaUrl || '/trayectoria'
 
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [loading, setLoading] = useState(true)
@@ -65,12 +70,16 @@ export function ClientesSection({ copy, foundingYear = 1996 }: ClientesSectionPr
           <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
             {eyebrow}
           </p>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95]">
-            {tituloLinea1}
-          </h2>
-          <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-            {tituloLinea2}
-          </h3>
+          {tituloLineas.map((linea, i) => (
+            <h2
+              key={i}
+              className={`text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] ${
+                i > 0 ? 'text-white/40' : ''
+              }`}
+            >
+              {linea}
+            </h2>
+          ))}
           <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
             {descripcion}
           </p>
@@ -117,11 +126,11 @@ export function ClientesSection({ copy, foundingYear = 1996 }: ClientesSectionPr
           className="mt-12 md:mt-16"
         >
           <Link
-            href="/trayectoria"
+            href={ctaUrl}
             className="group inline-flex items-center gap-3 text-white font-lato font-bold text-base md:text-lg"
           >
             <span className="relative">
-              Conoce nuestra trayectoria
+              {ctaTexto}
               <span className="absolute left-0 -bottom-0.5 h-px w-full bg-white/40 transition-colors duration-300 group-hover:bg-white" />
             </span>
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />

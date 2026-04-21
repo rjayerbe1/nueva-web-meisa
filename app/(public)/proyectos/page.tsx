@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import ProjectsPageClient from "./ProjectsPageClient"
 import { BreadcrumbSchema } from "@/components/seo/JsonLdSchema"
-import { siteConfig } from "@/lib/site-config"
+import { aniosExperiencia } from "@/lib/site-meta"
 
 // Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
@@ -11,7 +11,7 @@ export const revalidate = 0
 export const metadata: Metadata = {
   title: 'Proyectos de Estructuras Metálicas',
   description:
-    `Conozca nuestros proyectos de estructuras metálicas en Colombia: puentes vehiculares y peatonales, centros comerciales, edificios, naves industriales, estadios y más. Portafolio de MEISA con +${siteConfig.empresa.aniosExperiencia} años de experiencia.`,
+    `Conozca nuestros proyectos de estructuras metálicas en Colombia: puentes vehiculares y peatonales, centros comerciales, edificios, naves industriales, estadios y más. Portafolio de MEISA con +${aniosExperiencia()} años de experiencia.`,
   keywords: [
     'proyectos estructuras metálicas',
     'portafolio construcción acero',

@@ -3,7 +3,7 @@ import { Bebas_Neue, Lato } from 'next/font/google'
 import './globals.css'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { GlobalSchemas } from '@/components/seo/JsonLdSchema'
-import { siteConfig } from '@/lib/site-config'
+import { aniosExperiencia } from '@/lib/site-meta'
 
 // Bebas Neue para títulos - alto impacto, condensada
 const bebasNeue = Bebas_Neue({
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: '%s | MEISA - Estructuras Metálicas Colombia',
   },
   description:
-    `MEISA es líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de ${siteConfig.empresa.aniosExperiencia} años construyendo puentes, edificios, centros comerciales, naves industriales y estructuras de acero. Sedes en Popayán, Cali y Bogotá.`,
+    `MEISA es líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de ${aniosExperiencia()} años construyendo puentes, edificios, centros comerciales, naves industriales y estructuras de acero. Sedes en Popayán, Cali y Bogotá.`,
   keywords: [
     'estructuras metálicas Colombia',
     'fabricación estructuras metálicas',
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     siteName: 'MEISA - Estructuras Metálicas Colombia',
     title: 'MEISA | Estructuras Metálicas en Colombia | Diseño, Fabricación y Montaje',
     description:
-      `Empresa líder en estructuras metálicas en Colombia. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales. +${siteConfig.empresa.aniosExperiencia} años de experiencia.`,
+      `Empresa líder en estructuras metálicas en Colombia. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales. +${aniosExperiencia()} años de experiencia.`,
     images: [
       {
         url: '/images/og-image.jpg',

@@ -92,18 +92,18 @@ const SERVICIOS_HOME = [
 
 const SECCION_CONFIG = {
   id: "default",
-  clientesEyebrow: "Nuestros Clientes",
-  clientesTitulo: "30+ Años Construyendo Confianza",
+  clientesEyebrow: "Nuestros clientes",
+  clientesTitulo: "Confianza construida\ndurante 30+ años",
   clientesDescripcion:
-    "Las empresas más importantes confían en MEISA para sus proyectos estructurales más exigentes",
-  clientesCtaTexto: "Conoce Nuestra Trayectoria",
+    "Empresas líderes en infraestructura, minería y construcción confían en MEISA para sus proyectos estructurales más exigentes.",
+  clientesCtaTexto: "Conoce nuestra trayectoria",
   clientesCtaUrl: "/trayectoria",
-  clientesProyectosTitulo: "Proyectos Destacados",
-  contactoEyebrow: "Estamos listos para tu proyecto",
-  contactoTitulo: "Hablemos de tu Proyecto",
+  clientesProyectosTitulo: "Proyectos destacados",
+  contactoEyebrow: "Contacto",
+  contactoTitulo: "Hablemos de tu\npróximo proyecto",
   contactoDescripcion:
-    "Más de 28 años de experiencia respaldándonos. Contáctanos para recibir una cotización personalizada.",
-  contactoCta1Texto: "Solicitar Cotización",
+    "Treinta años construyendo estructuras metálicas en Colombia. Cuéntanos qué necesitas y recibirás una cotización personalizada.",
+  contactoCta1Texto: "Solicitar cotización",
   contactoCta2Texto: "WhatsApp",
 }
 

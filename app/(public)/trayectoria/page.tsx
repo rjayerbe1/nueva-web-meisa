@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { TrayectoriaClient } from './TrayectoriaClient'
 import { prisma } from '@/lib/prisma'
-import { siteConfig } from '@/lib/site-config'
+import { aniosExperiencia } from '@/lib/site-meta'
 
 // Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
@@ -9,7 +9,7 @@ export const revalidate = 0
 
 export const metadata: Metadata = {
   title: 'Nuestra Trayectoria | MEISA',
-  description: `${siteConfig.empresa.aniosExperiencia} años construyendo Colombia. Conoce los proyectos más importantes que hemos desarrollado desde 1996.`,
+  description: `${aniosExperiencia()} años construyendo Colombia. Conoce los proyectos más importantes que hemos desarrollado desde 1996.`,
 }
 
 async function getProyectos() {
@@ -79,7 +79,7 @@ async function getStats() {
     proyectosPorAño,
     proyectosPorDepartamento,
     añoInicio: 1996,
-    añosExperiencia: siteConfig.empresa.aniosExperiencia
+    añosExperiencia: aniosExperiencia()
   }
 }
 

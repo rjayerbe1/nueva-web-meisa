@@ -121,6 +121,8 @@ export default async function HomePage() {
         eyebrow: home.seccionConfig.clientesEyebrow,
         titulo: home.seccionConfig.clientesTitulo,
         descripcion: home.seccionConfig.clientesDescripcion,
+        ctaTexto: home.seccionConfig.clientesCtaTexto,
+        ctaUrl: home.seccionConfig.clientesCtaUrl,
       }
     : null
 

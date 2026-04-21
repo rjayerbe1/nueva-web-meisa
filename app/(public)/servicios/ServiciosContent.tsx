@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { getServiceColors } from '@/lib/service-colors'
-import { siteConfig } from '@/lib/site-config'
+import { aniosExperiencia } from '@/lib/site-meta'
 
 interface ServicioData {
   id: string
@@ -216,7 +216,7 @@ export default function ServiciosContent({
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto mb-12">
               Soluciones completas en estructuras metálicas con{' '}
-              <span className="font-semibold text-blue-400">{siteConfig.empresa.aniosExperiencia}+ años de experiencia</span>{' '}
+              <span className="font-semibold text-blue-400">{aniosExperiencia()}+ años de experiencia</span>{' '}
               y tecnología de vanguardia
             </p>
             
@@ -694,7 +694,7 @@ export default function ServiciosContent({
               Trabajemos Juntos en su Próximo Proyecto
             </h2>
             <p className="text-xl mb-12 text-gray-200 max-w-2xl mx-auto">
-              Con {siteConfig.empresa.aniosExperiencia}+ años de experiencia y más de 500 proyectos exitosos,
+              Con {aniosExperiencia()}+ años de experiencia y más de 500 proyectos exitosos,
               estamos listos para hacer realidad su visión
             </p>
             
@@ -720,7 +720,7 @@ export default function ServiciosContent({
               {[
                 { numero: '500+', texto: 'Proyectos Exitosos' },
                 { numero: '15,000+', texto: 'Toneladas Fabricadas' },
-                { numero: `${siteConfig.empresa.aniosExperiencia}+`, texto: 'Años de Experiencia' },
+                { numero: `${aniosExperiencia()}+`, texto: 'Años de Experiencia' },
                 { numero: '100%', texto: 'Satisfacción Cliente' }
               ].map((stat, index) => (
                 <motion.div 

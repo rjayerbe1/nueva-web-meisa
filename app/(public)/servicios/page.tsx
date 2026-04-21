@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { prisma } from '@/lib/prisma'
 import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
-import { siteConfig } from '@/lib/site-config'
+import { aniosExperiencia } from '@/lib/site-meta'
 import { BreadcrumbSchema } from '@/components/seo/JsonLdSchema'
 import { getProcesoFases } from '@/lib/content/servicios-contacto'
 
@@ -82,7 +82,7 @@ export default async function ServiciosPage() {
 export const metadata = {
   title: 'Servicios de Estructuras Metálicas',
   description:
-    `Servicios completos de estructuras metálicas en Colombia: diseño estructural, fabricación con tecnología CNC, montaje especializado y consultoría BIM. Más de ${siteConfig.empresa.aniosExperiencia} años de experiencia. Certificación ISO.`,
+    `Servicios completos de estructuras metálicas en Colombia: diseño estructural, fabricación con tecnología CNC, montaje especializado y consultoría BIM. Más de ${aniosExperiencia()} años de experiencia. Certificación ISO.`,
   keywords: [
     'servicios estructuras metálicas',
     'diseño estructural Colombia',

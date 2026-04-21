@@ -12,16 +12,11 @@ import { InstalacionesSection } from '@/components/sections/empresa/Instalacione
 import { CompromisoSection } from '@/components/sections/empresa/CompromisoSection'
 
 interface EmpresaContentProps {
-  paginaData?: any
   plantas: PlantaPublica[]
   empresa: EmpresaData
 }
 
-export default function EmpresaContent({
-  paginaData,
-  plantas,
-  empresa,
-}: EmpresaContentProps) {
+export default function EmpresaContent({ plantas, empresa }: EmpresaContentProps) {
   const foundingYear = empresa.config?.fundacion ?? 1996
   const yearsExperience = new Date().getFullYear() - foundingYear
 

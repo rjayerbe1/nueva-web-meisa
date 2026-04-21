@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { BreadcrumbSchema } from '@/components/seo/JsonLdSchema'
-import { siteConfig } from '@/lib/site-config'
+import { aniosExperiencia } from '@/lib/site-meta'
 
 export const metadata: Metadata = {
   title: 'Contacto',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contacto MEISA | Estructuras Metálicas Colombia',
     description:
-      `Solicite cotización para su proyecto de estructuras metálicas. Sedes en Jamundí, Popayán y Villa Rica. +${siteConfig.empresa.aniosExperiencia} años de experiencia.`,
+      `Solicite cotización para su proyecto de estructuras metálicas. Sedes en Jamundí, Popayán y Villa Rica. +${aniosExperiencia()} años de experiencia.`,
     url: 'https://meisa.com.co/contacto',
     images: [
       {
