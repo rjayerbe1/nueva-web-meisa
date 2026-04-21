@@ -35,7 +35,7 @@ export default function ProjectsPageClient({ proyectos }: ProjectsPageClientProp
   }, [proyectos])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-slate-950">
       {/* Categories Section */}
       <ProjectCategoriesSection projectsByCategory={projectsByCategory} />
     </div>

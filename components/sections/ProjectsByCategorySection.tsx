@@ -294,38 +294,22 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
     fetchCategorias()
   }, [])
 
-  // Filtrar solo las categorías que tienen proyectos y excluir "OTRO"
-  const categoriesWithProjects = categorias.filter(categoria =>
-    categoria.key !== 'OTRO' &&
-    projectsByCategory[categoria.key] &&
-    projectsByCategory[categoria.key].length > 0
-  )
-
-  // Orden editorial: las 2 categorías "grandes" (row 2) van al final del array.
-  // El orden dentro de BIG_SLOTS define izquierda→derecha en la fila 2.
-  const BIG_SLOTS = ['comercial', 'industrial']
-  const smallCats = categoriesWithProjects.filter(c => !BIG_SLOTS.includes(c.slug)).slice(0, 3)
-  const bigCats = BIG_SLOTS
-    .map(slug => categoriesWithProjects.find(c => c.slug === slug))
-    .filter((c): c is Categoria => c !== undefined)
-  const orderedCategories = [...smallCats, ...bigCats]
+  // Mostrar todas las categorías visibles excepto "OTRO" (misma lógica que /proyectos)
+  const orderedCategories = categorias.filter(categoria => categoria.key !== 'OTRO')
 
   return (
     <section id="proyectos-categorias" className="bg-gray-900">
-      {/* Grid editorial: fila 1 de 3 columnas + fila 2 de 2 columnas más anchas */}
+      {/* Grid 3×2: 6 tarjetas de igual tamaño */}
       {loading ? (
         <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-0">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
           {orderedCategories.map((categoria, index) => {
             const projectCount = projectsByCategory[categoria.key]?.length || 0
-            // Primeras 3 ocupan 2 columnas cada una (3×2 = 6); las 2 siguientes ocupan 3 columnas cada una (2×3 = 6)
-            const colSpanClass = index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'
-            const heightClass = index < 3 ? 'h-[50vh] lg:h-[55vh]' : 'h-[50vh] lg:h-[65vh]'
             return (
               <div
                 key={categoria.id}
-                className={`${heightClass} ${colSpanClass}`}
+                className="h-[50vh] lg:h-[55vh]"
               >
                 <CategoryCard
                   categoria={categoria}
