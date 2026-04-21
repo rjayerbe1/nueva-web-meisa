@@ -3,229 +3,451 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { UserRole } from "@prisma/client"
-import { Building2, Users, Wrench, MessageSquare, BarChart3, Plus, TrendingUp, Clock } from "lucide-react"
 import Link from "next/link"
-import { UnifiedStatsGrid } from "@/components/ui/unified-stats-card"
+import {
+  Building2,
+  Home as HomeIcon,
+  Inbox,
+  ImageIcon,
+  MessageSquare,
+  FolderKanban,
+  ArrowUpRight,
+  Film,
+  FileText,
+  Clock,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
 
-async function getStats() {
-  const [proyectos, servicios, formularios] = await Promise.all([
+async function getDashboardData() {
+  const [
+    proyectosTotal,
+    proyectosVisibles,
+    mensajesSinLeer,
+    mensajesTotal,
+    mediaTotal,
+    brochuresPublicados,
+    proyectosRecientes,
+    mensajesRecientes,
+    mediaRecientes,
+  ] = await Promise.all([
     prisma.proyecto.count(),
-    prisma.servicio.count(),
+    prisma.proyecto.count({ where: { visible: true } }),
     prisma.contactForm.count({ where: { leido: false } }).catch(() => 0),
+    prisma.contactForm.count().catch(() => 0),
+    prisma.media.count().catch(() => 0),
+    prisma.brochure.count({ where: { publicado: true } }).catch(() => 0),
+    prisma.proyecto.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        titulo: true,
+        estado: true,
+        createdAt: true,
+        cliente: true,
+      },
+    }),
+    prisma.contactForm
+      .findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          nombre: true,
+          email: true,
+          mensaje: true,
+          createdAt: true,
+          leido: true,
+        },
+      })
+      .catch(() => []),
+    prisma.media
+      .findMany({
+        take: 6,
+        orderBy: { createdAt: "desc" },
+        select: { id: true, url: true, fileName: true, kind: true, folder: true },
+      })
+      .catch(() => []),
   ])
 
-  const proyectosRecientes = await prisma.proyecto.findMany({
-    take: 5,
-    orderBy: { createdAt: 'desc' },
-    select: {
-      id: true,
-      titulo: true,
-      estado: true,
-      createdAt: true,
-      cliente: true,
-    }
-  })
-
   return {
-    proyectos,
-    servicios,
-    formularios,
+    proyectosTotal,
+    proyectosVisibles,
+    mensajesSinLeer,
+    mensajesTotal,
+    mediaTotal,
+    brochuresPublicados,
     proyectosRecientes,
+    mensajesRecientes,
+    mediaRecientes,
   }
 }
 
+const FECHA_FMT = new Intl.DateTimeFormat("es-CO", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+})
+
+const HOY_FMT = new Intl.DateTimeFormat("es-CO", {
+  weekday: "long",
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+})
+
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
+  if (!session) redirect("/auth/signin")
+  if (session.user.role === UserRole.VIEWER) redirect("/")
 
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
-  if (session.user.role === UserRole.VIEWER) {
-    redirect("/")
-  }
-
-  const stats = await getStats()
+  const data = await getDashboardData()
+  const firstName = session.user.name?.split(" ")[0] ?? "Admin"
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Panel de Administración</h1>
-          <p className="mt-2 text-lg text-gray-600">
-            Bienvenido, {session.user.name || session.user.email}
-          </p>
-        </div>
-        <div className="mt-4 sm:mt-0">
-          <Link
-            href="/admin/projects/new"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-meisa-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-meisa-blue transition-colors"
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            Nuevo Proyecto
-          </Link>
-        </div>
+      {/* Hero */}
+      <div className="border-b border-slate-200 pb-6">
+        <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+          Panel de administración
+        </p>
+        <h1 className="font-bebas text-4xl uppercase leading-[0.95] text-slate-950 md:text-5xl">
+          Hola, {firstName}
+        </h1>
+        <p className="mt-2 font-lato text-sm text-slate-500">
+          {HOY_FMT.format(new Date())}
+        </p>
       </div>
 
-      {/* Stats Grid - Usando componente unificado */}
-      <UnifiedStatsGrid
-        title="Panel de Control"
-        subtitle="Estadísticas actuales del sistema administrativo"
-        stats={[
-          { number: stats.proyectos.toString(), label: "Total Proyectos", suffix: "" },
-          { number: stats.servicios.toString(), label: "Servicios Activos", suffix: "" },
-          { number: stats.formularios.toString(), label: "Mensajes Nuevos", suffix: "" },
-          { number: (stats.proyectos + stats.servicios).toString(), label: "Contenido Total", suffix: "" }
-        ]}
-        variant="compact"
-        colorScheme="blue"
-        columns={4}
-        showDecorator={false}
-      />
+      {/* KPIs */}
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <KpiCard
+          label="Proyectos visibles"
+          value={data.proyectosVisibles}
+          total={data.proyectosTotal}
+          icon={<FolderKanban className="h-4 w-4" />}
+          href="/admin/projects"
+        />
+        <KpiCard
+          label="Mensajes sin leer"
+          value={data.mensajesSinLeer}
+          total={data.mensajesTotal}
+          highlight={data.mensajesSinLeer > 0}
+          icon={<Inbox className="h-4 w-4" />}
+          href="/admin/messages"
+        />
+        <KpiCard
+          label="Biblioteca de medios"
+          value={data.mediaTotal}
+          icon={<ImageIcon className="h-4 w-4" />}
+          href="/admin/media-library"
+        />
+        <KpiCard
+          label="Brochures publicados"
+          value={data.brochuresPublicados}
+          icon={<FileText className="h-4 w-4" />}
+          href="/admin/brochures"
+        />
+      </div>
 
-      {/* Proyectos Recientes */}
-      <div className="bg-white shadow-sm border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900">Proyectos Recientes</h2>
-            <p className="text-sm text-gray-500 mt-1">Últimas actualizaciones de proyectos</p>
+      {/* Actividad reciente */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Proyectos recientes */}
+        <ActivityPanel
+          title="Proyectos recientes"
+          href="/admin/projects"
+          empty="Aún no hay proyectos."
+        >
+          {data.proyectosRecientes.map((p) => (
+            <Link
+              key={p.id}
+              href={`/admin/projects/${p.id}`}
+              className="group flex items-start gap-3 border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-stone-50"
+            >
+              <div className="mt-0.5 flex h-6 w-1 flex-shrink-0 bg-red-600" />
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-lato text-sm font-semibold text-slate-900">
+                  {p.titulo}
+                </p>
+                <p className="truncate font-lato text-xs text-slate-500">
+                  {p.cliente}
+                </p>
+              </div>
+              <div className="flex flex-col items-end gap-1 text-right">
+                <EstadoBadge estado={p.estado} />
+                <span className="font-lato text-[10px] text-slate-400">
+                  {FECHA_FMT.format(p.createdAt)}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </ActivityPanel>
+
+        {/* Mensajes recientes */}
+        <ActivityPanel
+          title="Mensajes recientes"
+          href="/admin/messages"
+          empty="Aún no hay mensajes."
+        >
+          {data.mensajesRecientes.map((m) => (
+            <Link
+              key={m.id}
+              href={`/admin/messages/${m.id}`}
+              className="group flex items-start gap-3 border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-stone-50"
+            >
+              <div
+                className={cn(
+                  "mt-1.5 h-2 w-2 flex-shrink-0 rounded-full",
+                  m.leido ? "bg-slate-300" : "bg-red-600",
+                )}
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-lato text-sm font-semibold text-slate-900">
+                  {m.nombre}
+                </p>
+                <p className="truncate font-lato text-xs text-slate-500">{m.email}</p>
+                {m.mensaje && (
+                  <p className="mt-1 line-clamp-2 font-lato text-xs text-slate-500">
+                    {m.mensaje}
+                  </p>
+                )}
+              </div>
+              <span className="flex-shrink-0 font-lato text-[10px] text-slate-400">
+                {FECHA_FMT.format(m.createdAt)}
+              </span>
+            </Link>
+          ))}
+        </ActivityPanel>
+
+        {/* Media reciente */}
+        <ActivityPanel
+          title="Uploads recientes"
+          href="/admin/media-library"
+          empty="Aún no hay medios."
+        >
+          <div className="grid grid-cols-3 gap-1 p-2">
+            {data.mediaRecientes.map((m) => (
+              <Link
+                key={m.id}
+                href="/admin/media-library"
+                className="group relative aspect-square overflow-hidden bg-slate-100"
+              >
+                {m.kind === "IMAGE" ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={m.url}
+                    alt=""
+                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  />
+                ) : m.kind === "VIDEO" ? (
+                  <div className="flex h-full w-full items-center justify-center bg-slate-900 text-white">
+                    <Film className="h-5 w-5" />
+                  </div>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-slate-400">
+                    <FileText className="h-5 w-5" />
+                  </div>
+                )}
+              </Link>
+            ))}
           </div>
-          <Link
-            href="/admin/projects"
-            className="text-meisa-blue hover:text-blue-700 text-sm font-medium flex items-center"
-          >
-            Ver todos
-            <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
-        <div className="divide-y divide-gray-200">
-          {stats.proyectosRecientes.length > 0 ? (
-            stats.proyectosRecientes.map((proyecto) => (
-              <Link
-                key={proyecto.id}
-                href={`/admin/projects/${proyecto.id}`}
-                className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0 w-2 h-12 bg-meisa-blue rounded-full" />
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-900">{proyecto.titulo}</h3>
-                    <p className="text-sm text-gray-500">{proyecto.cliente}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
-                    proyecto.estado === 'COMPLETADO' ? 'bg-green-100 text-green-800' :
-                    proyecto.estado === 'EN_PROGRESO' ? 'bg-blue-100 text-blue-800' :
-                    proyecto.estado === 'PAUSADO' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {proyecto.estado.replace('_', ' ')}
-                  </span>
-                  <div className="text-right">
-                    <p className="text-xs text-gray-500 flex items-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      {new Date(proyecto.createdAt).toLocaleDateString('es-ES')}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <div className="px-6 py-8 text-center text-gray-500">
-              <Building2 className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-              <p>No hay proyectos aún</p>
-              <Link
-                href="/admin/projects/new"
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-              >
-                Crear el primer proyecto
-              </Link>
-            </div>
-          )}
-        </div>
+        </ActivityPanel>
       </div>
 
-      {/* Acciones Rápidas */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Acciones Rápidas</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link
+      {/* Accesos rápidos */}
+      <section>
+        <div className="mb-4 flex items-end justify-between">
+          <div>
+            <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              Accesos rápidos
+            </p>
+            <h2 className="font-bebas text-2xl uppercase leading-tight text-slate-950">
+              Edita el sitio
+            </h2>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+          <QuickLink href="/admin/home" label="Inicio" icon={<HomeIcon className="h-4 w-4" />} />
+          <QuickLink
+            href="/admin/empresa"
+            label="Empresa"
+            icon={<Building2 className="h-4 w-4" />}
+          />
+          <QuickLink
             href="/admin/projects"
-            className="group relative bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-meisa-blue transition-all"
-          >
-            <div>
-              <span className="rounded-lg inline-flex p-3 bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
-                <Building2 className="h-6 w-6" />
-              </span>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-900 group-hover:text-meisa-blue transition-colors">
-                Gestionar Proyectos
-              </h3>
-              <p className="mt-2 text-sm text-gray-500">
-                Crear, editar y administrar todos los proyectos de MEISA
-              </p>
-            </div>
-            <span className="absolute top-6 right-6 text-gray-300 group-hover:text-meisa-blue transition-colors">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </Link>
-
-          <Link
-            href="/admin/services"
-            className="group relative bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-green-500 transition-all"
-          >
-            <div>
-              <span className="rounded-lg inline-flex p-3 bg-green-50 text-green-600 group-hover:bg-green-100 transition-colors">
-                <Wrench className="h-6 w-6" />
-              </span>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-900 group-hover:text-green-600 transition-colors">
-                Servicios
-              </h3>
-              <p className="mt-2 text-sm text-gray-500">
-                Administrar todos los servicios que ofrece MEISA
-              </p>
-            </div>
-            <span className="absolute top-6 right-6 text-gray-300 group-hover:text-green-500 transition-colors">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </Link>
-
-          <Link
+            label="Proyectos"
+            icon={<FolderKanban className="h-4 w-4" />}
+          />
+          <QuickLink
+            href="/admin/media-library"
+            label="Medios"
+            icon={<ImageIcon className="h-4 w-4" />}
+          />
+          <QuickLink
             href="/admin/messages"
-            className="group relative bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-orange-500 transition-all"
-          >
-            <div>
-              <span className="rounded-lg inline-flex p-3 bg-orange-50 text-orange-600 group-hover:bg-orange-100 transition-colors">
-                <MessageSquare className="h-6 w-6" />
-              </span>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
-                Mensajes
-              </h3>
-              <p className="mt-2 text-sm text-gray-500">
-                Ver y gestionar consultas de clientes potenciales
-              </p>
-            </div>
-            <span className="absolute top-6 right-6 text-gray-300 group-hover:text-orange-500 transition-colors">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </Link>
+            label="Mensajes"
+            icon={<Inbox className="h-4 w-4" />}
+            badge={data.mensajesSinLeer > 0 ? data.mensajesSinLeer : undefined}
+          />
+          <QuickLink
+            href="/admin/contactos-whatsapp"
+            label="WhatsApp"
+            icon={<MessageSquare className="h-4 w-4" />}
+          />
         </div>
-      </div>
+      </section>
     </div>
+  )
+}
+
+/* ─── KPI card ────────────────────────────────────────────────────────── */
+
+function KpiCard({
+  label,
+  value,
+  total,
+  highlight,
+  icon,
+  href,
+}: {
+  label: string
+  value: number
+  total?: number
+  highlight?: boolean
+  icon: React.ReactNode
+  href: string
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group block rounded-md border bg-white px-5 py-4 transition-all hover:-translate-y-0.5 hover:shadow-sm",
+        highlight
+          ? "border-red-200 hover:border-red-600"
+          : "border-slate-200 hover:border-slate-900",
+      )}
+    >
+      <div className="mb-3 flex items-center justify-between">
+        <p className="font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">
+          {label}
+        </p>
+        <span
+          className={cn(
+            "text-slate-400 transition-colors",
+            highlight ? "group-hover:text-red-600" : "group-hover:text-slate-900",
+          )}
+        >
+          {icon}
+        </span>
+      </div>
+      <div className="flex items-baseline gap-2">
+        <span
+          className={cn(
+            "font-bebas text-4xl uppercase leading-none",
+            highlight ? "text-red-600" : "text-slate-950",
+          )}
+        >
+          {value}
+        </span>
+        {typeof total === "number" && total !== value && (
+          <span className="font-lato text-xs text-slate-400">/ {total}</span>
+        )}
+      </div>
+    </Link>
+  )
+}
+
+/* ─── Activity panel ──────────────────────────────────────────────────── */
+
+function ActivityPanel({
+  title,
+  href,
+  empty,
+  children,
+}: {
+  title: string
+  href: string
+  empty: string
+  children: React.ReactNode
+}) {
+  const hasChildren = Array.isArray(children) ? children.length > 0 : Boolean(children)
+  return (
+    <div className="overflow-hidden rounded-md border border-slate-200 bg-white">
+      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+        <h3 className="font-bebas text-base uppercase tracking-wide text-slate-950">
+          {title}
+        </h3>
+        <Link
+          href={href}
+          className="flex items-center gap-1 font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500 transition-colors hover:text-red-600"
+        >
+          Ver todo
+          <ArrowUpRight className="h-3 w-3" />
+        </Link>
+      </div>
+      {hasChildren ? (
+        <div className="divide-y divide-slate-100">{children}</div>
+      ) : (
+        <div className="flex items-center justify-center p-8 font-lato text-xs text-slate-400">
+          {empty}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ─── Estado badge ────────────────────────────────────────────────────── */
+
+function EstadoBadge({ estado }: { estado: string }) {
+  const color =
+    estado === "COMPLETADO"
+      ? "bg-green-50 text-green-700 border-green-200"
+      : estado === "EN_PROGRESO"
+        ? "bg-blue-50 text-blue-700 border-blue-200"
+        : estado === "PAUSADO"
+          ? "bg-amber-50 text-amber-700 border-amber-200"
+          : "bg-slate-50 text-slate-700 border-slate-200"
+  return (
+    <span
+      className={cn(
+        "rounded-none border px-1.5 py-0.5 font-lato text-[9px] font-bold uppercase tracking-wider",
+        color,
+      )}
+    >
+      {estado.replace("_", " ")}
+    </span>
+  )
+}
+
+/* ─── Quick link ──────────────────────────────────────────────────────── */
+
+function QuickLink({
+  href,
+  label,
+  icon,
+  badge,
+}: {
+  href: string
+  label: string
+  icon: React.ReactNode
+  badge?: number
+}) {
+  return (
+    <Link
+      href={href}
+      className="group flex items-center justify-between gap-2 rounded-md border border-slate-200 bg-white px-4 py-3 transition-colors hover:border-red-600 hover:bg-red-50"
+    >
+      <div className="flex items-center gap-2.5">
+        <span className="text-slate-400 transition-colors group-hover:text-red-600">
+          {icon}
+        </span>
+        <span className="font-lato text-sm font-semibold text-slate-900">{label}</span>
+      </div>
+      {typeof badge === "number" && (
+        <span className="rounded-none bg-red-600 px-1.5 py-0.5 font-lato text-[10px] font-bold text-white">
+          {badge}
+        </span>
+      )}
+    </Link>
   )
 }
