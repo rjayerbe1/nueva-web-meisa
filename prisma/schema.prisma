@@ -1229,3 +1229,43 @@ model SocialLink {
 
   @@map("social_links")
 }
+
+// =====================================================================
+// Fase 3 (admin reorg): Media pool — repositorio centralizado de
+// imágenes/videos/documentos subidos al bucket GCS meisa-imagenes.
+// Los modelos existentes (Plant, Tecnologia, etc.) conservan su campo
+// imagen: String? (URL libre). El MediaPicker del admin lista contra
+// este pool y devuelve la URL para guardar. Sin FK obligatoria para no
+// tener que migrar data histórica — un script de reconciliación importa
+// URLs huérfanas al pool a posteriori.
+// =====================================================================
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+  DOC
+}
+
+model Media {
+  id           String    @id @default(cuid())
+  url          String    @unique
+  pathGcs      String?
+  fileName     String
+  contentType  String
+  kind         MediaKind
+  size         Int
+  width        Int?
+  height       Int?
+  durationS    Int?
+  altText      String?
+  title        String?
+  folder       String    @default("general")
+  tags         String[]  @default([])
+  uploadedById String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([kind, folder])
+  @@index([createdAt])
+  @@map("media")
+}

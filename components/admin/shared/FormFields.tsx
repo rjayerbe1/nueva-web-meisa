@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { X, Plus } from "lucide-react"
+import { MediaPicker } from "@/components/admin/media/MediaPicker"
 
 export type FieldKind =
   | "text"
@@ -23,6 +24,8 @@ export type FieldKind =
   | "select"
   | "url"
   | "color"
+  | "image"
+  | "video"
 
 export interface FieldDef {
   name: string
@@ -179,6 +182,20 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
             className="mt-1 font-mono text-sm"
           />
           {field.hint && <p className="mt-1 text-xs text-gray-500">{field.hint}</p>}
+        </div>
+      )
+
+    case "image":
+    case "video":
+      return (
+        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
+          <MediaPicker
+            value={(value as string) ?? null}
+            onChange={(v) => onChange(v)}
+            kind={field.kind === "video" ? "video" : "image"}
+            label={field.label}
+            hint={field.hint}
+          />
         </div>
       )
 

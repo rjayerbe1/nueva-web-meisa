@@ -74,10 +74,10 @@ const featuredFields: FieldDef[] = [
   },
   {
     name: "imagen",
-    label: "URL de imagen",
-    kind: "url",
-    placeholder: "https://storage.googleapis.com/meisa-imagenes/...",
+    label: "Imagen",
+    kind: "image",
     gridSpan: 2,
+    hint: "Aparece como fondo del destacado.",
   },
   {
     name: "proyectoSlug",
@@ -94,8 +94,8 @@ const servicioFields: FieldDef[] = [
   { name: "nombre", label: "Nombre", kind: "text", required: true },
   { name: "subtitulo", label: "Subtítulo", kind: "text" },
   { name: "descripcion", label: "Descripción", kind: "textarea", rows: 3, gridSpan: 2 },
-  { name: "imagen", label: "URL de imagen", kind: "url", gridSpan: 2 },
-  { name: "video", label: "URL de video (opcional)", kind: "url", gridSpan: 2 },
+  { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
+  { name: "video", label: "Video (opcional)", kind: "video", gridSpan: 2 },
   {
     name: "color",
     label: "Color de acento",

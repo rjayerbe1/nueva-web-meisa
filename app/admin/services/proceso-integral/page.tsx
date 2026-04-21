@@ -30,7 +30,7 @@ const fields: FieldDef[] = [
     kind: "text",
     placeholder: "Calculator | Cog | HardHat | Award",
   },
-  { name: "imagen", label: "URL imagen", kind: "url" },
+  { name: "imagen", label: "Imagen", kind: "image" },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]

@@ -24,7 +24,7 @@ const politicaFields: FieldDef[] = [
     gridSpan: 2,
     hint: "Lista de compromisos asociados a la política.",
   },
-  { name: "imagen", label: "URL imagen", kind: "url", gridSpan: 2 },
+  { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
   { name: "documentoUrl", label: "URL del documento", kind: "url", gridSpan: 2 },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
@@ -44,7 +44,7 @@ const normaFields: FieldDef[] = [
   { name: "codigo", label: "Código", kind: "text", required: true, placeholder: "NSR-10" },
   { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, required: true, gridSpan: 2 },
   { name: "categoria", label: "Categoría", kind: "text" },
-  { name: "logo", label: "URL logo", kind: "url" },
+  { name: "logo", label: "Logo", kind: "image" },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]

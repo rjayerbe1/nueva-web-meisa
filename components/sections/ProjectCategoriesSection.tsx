@@ -45,14 +45,54 @@ interface ProjectCategoriesSectionProps {
 }
 
 // Componente de categoría individual con parallax
-function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categoria: Categoria; index: number; projectCount: number; iconSize?: number }) {
+function CategoryCard({
+  categoria,
+  index,
+  projectCount,
+  iconSize = 48,
+  isActive = false,
+  onHoverStart,
+  onHoverEnd,
+}: {
+  categoria: Categoria
+  index: number
+  projectCount: number
+  iconSize?: number
+  isActive?: boolean
+  onHoverStart?: () => void
+  onHoverEnd?: () => void
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [videoLoaded, setVideoLoaded] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   })
+
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Video: solo se reproduce cuando la tarjeta está activa (hover en desktop)
+  useEffect(() => {
+    if (isMobile) return
+    const video = videoRef.current
+    if (!video) return
+    if (isActive) {
+      video.currentTime = 0
+      video.play().catch(() => {})
+    } else {
+      video.pause()
+    }
+  }, [isActive, isMobile])
 
   // Efecto parallax para la imagen - se mueve más lento que el scroll
   const imageY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
@@ -66,6 +106,10 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
     <Link
       href={`/proyectos/categoria/${categoria.slug}`}
       className="group block"
+      onMouseEnter={isMobile ? undefined : onHoverStart}
+      onMouseLeave={isMobile ? undefined : onHoverEnd}
+      onFocus={isMobile ? undefined : onHoverStart}
+      onBlur={isMobile ? undefined : onHoverEnd}
     >
       <motion.div
         ref={containerRef}
@@ -78,7 +122,7 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
         {/* Video o Imagen de fondo con parallax */}
         {(categoria.usarVideoCover && categoria.videoCover) ? (
           <div className="absolute inset-0">
-            {/* Imagen de fondo como placeholder mientras el video carga */}
+            {/* Imagen de fondo como poster siempre visible debajo del video */}
             {categoria.imagenCover && (
               <img
                 src={categoria.imagenCover}
@@ -86,25 +130,28 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
                 className="absolute inset-0 w-full h-full object-cover"
               />
             )}
-            {/* Video que aparece cuando está listo */}
-            <video
-              src={categoria.videoCover}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
-              style={{
-                objectFit: 'cover',
-                transform: `translate(${parsePosition(categoria.videoCoverPosition).x}%, ${parsePosition(categoria.videoCoverPosition).y}%) scale(${categoria.videoCoverScale || 1.0})`,
-                willChange: 'transform',
-                backfaceVisibility: 'hidden',
-                transformStyle: 'preserve-3d',
-                WebkitFontSmoothing: 'antialiased',
-                imageRendering: 'crisp-edges'
-              }}
-              autoPlay
-              muted
-              loop
-              playsInline
-              onCanPlayThrough={() => setVideoLoaded(true)}
-            />
+            {/* Video solo en desktop; se reproduce únicamente en hover */}
+            {!isMobile && (
+              <video
+                ref={videoRef}
+                src={categoria.videoCover}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                  objectFit: 'cover',
+                  transform: `translate(${parsePosition(categoria.videoCoverPosition).x}%, ${parsePosition(categoria.videoCoverPosition).y}%) scale(${categoria.videoCoverScale || 1.0})`,
+                  willChange: 'transform',
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d',
+                  WebkitFontSmoothing: 'antialiased',
+                  imageRendering: 'crisp-edges'
+                }}
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+              />
+            )}
           </div>
         ) : categoria.imagenCover ? (
           <motion.div
@@ -215,6 +262,7 @@ export default function ProjectCategoriesSection({ onCategorySelect, projectsByC
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [loading, setLoading] = useState(true)
   const [globalIconSize, setGlobalIconSize] = useState(48) // Tamaño global de iconos
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
 
   // Cargar configuración global (endpoint público)
   useEffect(() => {
@@ -267,6 +315,13 @@ export default function ProjectCategoriesSection({ onCategorySelect, projectsByC
                 index={index}
                 projectCount={projectCount}
                 iconSize={globalIconSize}
+                isActive={activeCategoryId === categoria.id}
+                onHoverStart={() => setActiveCategoryId(categoria.id)}
+                onHoverEnd={() =>
+                  setActiveCategoryId((current) =>
+                    current === categoria.id ? null : current,
+                  )
+                }
               />
             )
           })}

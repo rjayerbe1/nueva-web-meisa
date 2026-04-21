@@ -49,7 +49,7 @@ export const PLANT_FIELDS: FieldDef[] = [
   },
   { name: "lat", label: "Latitud", kind: "number", step: 0.00001 },
   { name: "lng", label: "Longitud", kind: "number", step: 0.00001 },
-  { name: "imagen", label: "URL imagen", kind: "url", gridSpan: 2 },
+  { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
   {
     name: "colorGradient",
     label: "Gradiente de color",

@@ -77,7 +77,8 @@ const navigation: NavItem[] = [
   { kind: "item", name: "Contactos WhatsApp", href: "/admin/contactos-whatsapp" },
 
   { kind: "section", label: "Sistema" },
-  { kind: "item", name: "Media", href: "/admin/media" },
+  { kind: "item", name: "Biblioteca de medios", href: "/admin/media-library" },
+  { kind: "item", name: "Media (legacy)", href: "/admin/media" },
   { kind: "item", name: "Imágenes hero", href: "/admin/hero-images" },
   { kind: "item", name: "Usuarios", href: "/admin/users" },
   { kind: "item", name: "Backups", href: "/admin/backup" },

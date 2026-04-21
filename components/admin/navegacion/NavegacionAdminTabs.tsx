@@ -15,7 +15,7 @@ interface Props {
 const menuFields: FieldDef[] = [
   { name: "label", label: "Etiqueta", kind: "text", required: true },
   { name: "href", label: "URL", kind: "text", required: true, placeholder: "/proyectos" },
-  { name: "imagen", label: "URL imagen (opcional)", kind: "url", gridSpan: 2 },
+  { name: "imagen", label: "Imagen (opcional)", kind: "image", gridSpan: 2 },
   {
     name: "target",
     label: "Target",

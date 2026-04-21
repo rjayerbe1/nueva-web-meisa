@@ -59,7 +59,7 @@ const tecnologiaFields: FieldDef[] = [
   { name: "categoria", label: "Categoría", kind: "select", required: true, options: tecnologiaCategorias },
   { name: "especialidad", label: "Especialidad", kind: "text" },
   { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
-  { name: "imagen", label: "URL imagen", kind: "url", gridSpan: 2 },
+  { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
@@ -81,7 +81,7 @@ const procesoFields: FieldDef[] = [
     kind: "stringArray",
     gridSpan: 2,
   },
-  { name: "imagen", label: "URL imagen", kind: "url", gridSpan: 2 },
+  { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
@@ -110,7 +110,7 @@ export function ProcesosTecnologiasAdminTabs({
     },
     { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
     { name: "specs", label: "Especificaciones", kind: "stringArray", gridSpan: 2 },
-    { name: "imagen", label: "URL imagen", kind: "url", gridSpan: 2 },
+    { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
     {
       name: "plantaId",
       label: "Planta asociada (opcional)",
