@@ -16,6 +16,11 @@ export interface HeroImageConfig {
   }
 }
 
+// Videos intro del hero (logo animado). Si los campos en DB están vacíos
+// se usan estos.
+export const DEFAULT_HERO_VIDEO_DESKTOP = "/videos/hero/logo-intro-desktop.mp4"
+export const DEFAULT_HERO_VIDEO_MOBILE = "/videos/hero/logo-intro-mobile.mp4"
+
 // Configuración por defecto
 export const defaultHeroImages: HeroImageConfig = {
   leftColumn: '/images/hero/techo-metalico.jpg',

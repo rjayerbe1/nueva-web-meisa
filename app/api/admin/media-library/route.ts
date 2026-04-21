@@ -79,9 +79,68 @@ const uploadMetaSchema = z.object({
   tags: z.string().optional(), // comma-separated
 })
 
+/** Schema para registrar una URL ya existente (sin re-upload) — p.ej. AI tools. */
+const registerSchema = z.object({
+  url: z.string().url(),
+  folder: z.string().default("general"),
+  altText: z.string().nullable().optional(),
+  title: z.string().nullable().optional(),
+  tags: z.array(z.string()).default([]),
+  kind: z.nativeEnum(MediaKind).optional(),
+})
+
 export async function POST(req: NextRequest) {
   try {
     const session = await requireAdmin()
+    const contentType = req.headers.get("content-type") ?? ""
+
+    /* ── Variante JSON: registrar una URL existente sin re-upload ── */
+    if (contentType.includes("application/json")) {
+      const body = await req.json()
+      const data = registerSchema.parse(body)
+
+      const existing = await prisma.media.findUnique({ where: { url: data.url } })
+      if (existing) return NextResponse.json(existing)
+
+      const inferredKind =
+        data.kind ??
+        (/\.(mp4|mov|webm|avi)(\?|$)/i.test(data.url)
+          ? MediaKind.VIDEO
+          : /\.(pdf|doc|docx)(\?|$)/i.test(data.url)
+            ? MediaKind.DOC
+            : MediaKind.IMAGE)
+
+      const fileName = data.url.split("/").pop()?.split("?")[0] ?? "registered"
+      const pathGcs = data.url.startsWith("https://storage.googleapis.com/")
+        ? data.url.replace(/^https:\/\/storage\.googleapis\.com\/[^/]+\//, "")
+        : null
+
+      const contentTypeGuess =
+        inferredKind === MediaKind.VIDEO
+          ? "video/mp4"
+          : inferredKind === MediaKind.DOC
+            ? "application/pdf"
+            : "image/jpeg"
+
+      const record = await prisma.media.create({
+        data: {
+          url: data.url,
+          pathGcs,
+          fileName,
+          contentType: contentTypeGuess,
+          kind: inferredKind,
+          size: 0,
+          folder: data.folder,
+          altText: data.altText ?? null,
+          title: data.title ?? null,
+          tags: data.tags,
+          uploadedById: session.user.id,
+        },
+      })
+      return NextResponse.json(record, { status: 201 })
+    }
+
+    /* ── Variante multipart: subir archivo nuevo ── */
     const form = await req.formData()
     const file = form.get("file") as File | null
 

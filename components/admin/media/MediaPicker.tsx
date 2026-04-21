@@ -1,10 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Dialog,
   DialogContent,
@@ -12,10 +8,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { ImagePlus, Upload, X, Loader2, Search, Film, FileText, Check } from "lucide-react"
+import { ImagePlus, Upload, X, Loader2, Search, Film, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { Media, MediaKind } from "@prisma/client"
+import type { Media } from "@prisma/client"
+import { MediaThumb } from "./MediaThumb"
 
 type Kind = "image" | "video" | "any"
 
@@ -42,15 +38,24 @@ export function MediaPicker({
 
   return (
     <div>
-      {label && <Label className="text-sm">{label}</Label>}
-      <div className="mt-1 space-y-2">
+      {label && (
+        <label className="mb-1.5 block font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+          {label}
+        </label>
+      )}
+      <div className="space-y-2">
         {value ? (
-          <MediaPreview value={value} kind={kind} onRemove={() => onChange(null)} onReplace={() => setOpen(true)} />
+          <MediaPreview
+            value={value}
+            kind={kind}
+            onRemove={() => onChange(null)}
+            onReplace={() => setOpen(true)}
+          />
         ) : (
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="flex h-32 w-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-sm text-gray-500 transition-colors hover:border-blue-400 hover:bg-blue-50"
+            className="flex h-32 w-full items-center justify-center rounded-none border-2 border-dashed border-slate-300 bg-white text-sm text-slate-500 transition-colors hover:border-red-600 hover:bg-red-50/30 hover:text-red-600"
           >
             <div className="flex flex-col items-center gap-1">
               <ImagePlus className="h-6 w-6" />
@@ -58,7 +63,7 @@ export function MediaPicker({
             </div>
           </button>
         )}
-        {hint && <p className="text-xs text-gray-500">{hint}</p>}
+        {hint && <p className="font-lato text-xs italic text-slate-500">{hint}</p>}
       </div>
 
       <MediaPickerModal
@@ -88,7 +93,7 @@ function MediaPreview({
   onReplace: () => void
 }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+    <div className="overflow-hidden rounded-none border border-slate-200 bg-slate-50">
       {kind === "video" ? (
         <div className="relative w-full bg-black">
           <video
@@ -103,26 +108,30 @@ function MediaPreview({
           </video>
         </div>
       ) : (
-        <div className="relative w-full bg-gray-100">
+        <div className="relative w-full bg-slate-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={value}
-            alt="preview"
-            className="block h-48 w-full object-contain"
-          />
+          <img src={value} alt="preview" className="block h-48 w-full object-contain" />
         </div>
       )}
-      <div className="flex items-center gap-3 border-t border-gray-200 bg-white p-3">
+      <div className="flex items-center gap-3 border-t border-slate-200 bg-white p-3">
         <div className="min-w-0 flex-1">
-          <p className="truncate font-mono text-xs text-gray-700">{value}</p>
+          <p className="truncate font-mono text-xs text-slate-700">{value}</p>
         </div>
         <div className="flex flex-shrink-0 gap-1">
-          <Button type="button" variant="outline" size="sm" onClick={onReplace}>
+          <button
+            type="button"
+            onClick={onReplace}
+            className="inline-flex items-center rounded-none border border-slate-300 bg-white px-3 py-1.5 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:text-slate-900"
+          >
             Cambiar
-          </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={onRemove}>
+          </button>
+          <button
+            type="button"
+            onClick={onRemove}
+            className="flex h-8 w-8 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600"
+          >
             <X className="h-4 w-4" />
-          </Button>
+          </button>
         </div>
       </div>
     </div>
@@ -139,43 +148,71 @@ interface ModalProps {
 }
 
 function MediaPickerModal({ open, onOpenChange, kind, folder, allowUrl, onPick }: ModalProps) {
+  const [tab, setTab] = useState<"library" | "upload" | "url">("library")
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl">
-        <DialogHeader>
-          <DialogTitle>Seleccionar {kind === "video" ? "video" : kind === "image" ? "imagen" : "archivo"}</DialogTitle>
-          <DialogDescription>
+      <DialogContent
+        className="grid h-[95vh] w-[95vw] max-w-none grid-rows-[auto_auto_1fr] gap-0 overflow-hidden rounded-none border-slate-200 bg-white p-0 shadow-2xl sm:rounded-none"
+      >
+        {/* Header */}
+        <DialogHeader className="border-b border-slate-200 bg-white px-6 py-4 text-left space-y-1">
+          <DialogTitle className="font-bebas text-2xl uppercase tracking-wide text-slate-950">
+            Seleccionar {kind === "video" ? "video" : kind === "image" ? "imagen" : "archivo"}
+          </DialogTitle>
+          <DialogDescription className="font-lato text-xs text-slate-500">
             Elige uno de la biblioteca, sube uno nuevo o pega una URL externa.
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="library" className="w-full">
-          <TabsList>
-            <TabsTrigger value="library">
-              <Search className="mr-1 h-4 w-4" /> Biblioteca
-            </TabsTrigger>
-            <TabsTrigger value="upload">
-              <Upload className="mr-1 h-4 w-4" /> Subir nuevo
-            </TabsTrigger>
-            {allowUrl && <TabsTrigger value="url">URL externa</TabsTrigger>}
-          </TabsList>
-
-          <TabsContent value="library" className="mt-4">
-            <LibraryTab kind={kind} onPick={onPick} />
-          </TabsContent>
-
-          <TabsContent value="upload" className="mt-4">
-            <UploadTab kind={kind} folder={folder} onPick={onPick} />
-          </TabsContent>
-
+        {/* Tabs — underline style */}
+        <div className="flex border-b border-slate-200 bg-white px-4">
+          <TabButton active={tab === "library"} onClick={() => setTab("library")}>
+            <Search className="h-3.5 w-3.5" /> Biblioteca
+          </TabButton>
+          <TabButton active={tab === "upload"} onClick={() => setTab("upload")}>
+            <Upload className="h-3.5 w-3.5" /> Subir nuevo
+          </TabButton>
           {allowUrl && (
-            <TabsContent value="url" className="mt-4">
-              <UrlTab onPick={onPick} />
-            </TabsContent>
+            <TabButton active={tab === "url"} onClick={() => setTab("url")}>
+              URL externa
+            </TabButton>
           )}
-        </Tabs>
+        </div>
+
+        {/* Content */}
+        <div className="overflow-y-auto bg-stone-50 px-6 py-5">
+          {tab === "library" && <LibraryTab kind={kind} onPick={onPick} />}
+          {tab === "upload" && <UploadTab kind={kind} folder={folder} onPick={onPick} />}
+          {tab === "url" && allowUrl && <UrlTab onPick={onPick} />}
+        </div>
       </DialogContent>
     </Dialog>
+  )
+}
+
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-1.5 border-b-2 px-4 py-3 font-lato text-sm font-medium transition-colors",
+        active
+          ? "border-red-600 text-red-600 font-semibold"
+          : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-900",
+      )}
+    >
+      {children}
+    </button>
   )
 }
 
@@ -183,12 +220,19 @@ function LibraryTab({ kind, onPick }: { kind: Kind; onPick: (url: string) => voi
   const [items, setItems] = useState<Media[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState("")
+  const [debouncedQuery, setDebouncedQuery] = useState("")
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQuery(query.trim()), 250)
+    return () => clearTimeout(t)
+  }, [query])
 
   useEffect(() => {
     const controller = new AbortController()
     setLoading(true)
     const kindParam = kind === "any" ? "" : `&kind=${kind}`
-    fetch(`/api/admin/media-library?limit=60${kindParam}${query ? `&q=${encodeURIComponent(query)}` : ""}`, {
+    const qParam = debouncedQuery ? `&q=${encodeURIComponent(debouncedQuery)}` : ""
+    fetch(`/api/admin/media-library?limit=120${kindParam}${qParam}`, {
       signal: controller.signal,
     })
       .then((r) => r.json())
@@ -196,63 +240,54 @@ function LibraryTab({ kind, onPick }: { kind: Kind; onPick: (url: string) => voi
       .catch(() => {})
       .finally(() => setLoading(false))
     return () => controller.abort()
-  }, [kind, query])
+  }, [kind, debouncedQuery])
 
   return (
-    <div>
-      <div className="mb-4 flex items-center gap-2">
-        <Input
-          placeholder="Buscar por nombre, título, alt, tag…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="max-w-sm"
-        />
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <div className="relative w-full max-w-md">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+          <input
+            placeholder="Buscar por nombre, título, alt, tag…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full rounded-none border border-slate-300 bg-white py-2 pl-9 pr-3 font-lato text-sm text-slate-950 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+          />
+        </div>
+        <p className="flex-shrink-0 font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
+          {items.length} resultados
+        </p>
       </div>
       {loading ? (
-        <div className="flex h-64 items-center justify-center text-gray-400">
-          <Loader2 className="h-6 w-6 animate-spin" />
+        <div className="flex h-96 items-center justify-center text-slate-300">
+          <Loader2 className="h-8 w-8 animate-spin" />
         </div>
       ) : items.length === 0 ? (
-        <div className="flex h-64 items-center justify-center text-sm text-gray-500">
-          No hay {kind === "video" ? "videos" : "imágenes"} todavía. Usa la pestaña &quot;Subir nuevo&quot;.
+        <div className="flex h-96 items-center justify-center font-lato text-sm text-slate-500">
+          No hay {kind === "video" ? "videos" : "imágenes"} todavía. Usa la pestaña &quot;Subir
+          nuevo&quot;.
         </div>
       ) : (
-        <div className="grid max-h-96 grid-cols-2 gap-3 overflow-y-auto md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {items.map((m) => (
-            <MediaThumb key={m.id} media={m} onClick={() => onPick(m.url)} />
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => onPick(m.url)}
+              className="group overflow-hidden rounded-none border border-slate-200 bg-white text-left transition-all hover:border-red-600 hover:shadow-md focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+            >
+              <MediaThumb media={m} />
+              <div className="p-2">
+                <p className="truncate font-lato text-xs font-semibold text-slate-800">
+                  {m.title ?? m.fileName}
+                </p>
+                <p className="truncate font-lato text-[10px] text-slate-400">{m.folder}</p>
+              </div>
+            </button>
           ))}
         </div>
       )}
     </div>
-  )
-}
-
-function MediaThumb({ media, onClick }: { media: Media; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition hover:border-blue-500 hover:shadow"
-    >
-      <div className="relative aspect-square w-full bg-gray-100">
-        {media.kind === "IMAGE" ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={media.url} alt={media.altText ?? ""} className="h-full w-full object-cover" />
-        ) : media.kind === "VIDEO" ? (
-          <div className="flex h-full w-full items-center justify-center bg-gray-900 text-white">
-            <Film className="h-8 w-8" />
-          </div>
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-gray-400">
-            <FileText className="h-8 w-8" />
-          </div>
-        )}
-      </div>
-      <div className="p-2">
-        <p className="truncate text-xs font-medium text-gray-700">{media.title ?? media.fileName}</p>
-        <p className="truncate text-[10px] text-gray-400">{media.folder}</p>
-      </div>
-    </button>
   )
 }
 
@@ -301,31 +336,38 @@ function UploadTab({
         ? "image/*"
         : "image/*,video/*,application/pdf"
 
+  const inputCls =
+    "w-full rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-xl space-y-5">
       <div>
-        <Label className="text-sm">Carpeta</Label>
-        <Input
+        <label className="mb-1.5 block font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+          Carpeta
+        </label>
+        <input
           value={currentFolder}
           onChange={(e) => setCurrentFolder(e.target.value)}
           placeholder="home | empresa | servicios…"
-          className="mt-1"
+          className={inputCls}
         />
       </div>
       {kind !== "video" && (
         <div>
-          <Label className="text-sm">Texto alternativo (alt)</Label>
-          <Input
+          <label className="mb-1.5 block font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+            Texto alternativo (alt)
+          </label>
+          <input
             value={altText}
             onChange={(e) => setAltText(e.target.value)}
             placeholder="Descripción para accesibilidad y SEO"
-            className="mt-1"
+            className={inputCls}
           />
         </div>
       )}
       <div
         className={cn(
-          "flex h-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-gray-500",
+          "flex h-64 flex-col items-center justify-center rounded-none border-2 border-dashed border-slate-300 bg-white text-slate-500",
           uploading && "opacity-60",
         )}
       >
@@ -334,16 +376,14 @@ function UploadTab({
         ) : (
           <>
             <Upload className="mb-2 h-8 w-8" />
-            <p className="text-sm">Arrastra un archivo o haz clic para elegir</p>
-            <Button
+            <p className="font-lato text-sm">Arrastra un archivo o haz clic para elegir</p>
+            <button
               type="button"
-              variant="outline"
-              size="sm"
-              className="mt-3"
               onClick={() => fileRef.current?.click()}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-none bg-red-600 px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700"
             >
               Elegir archivo
-            </Button>
+            </button>
           </>
         )}
         <input
@@ -358,7 +398,7 @@ function UploadTab({
         />
       </div>
       {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        <div className="rounded-none border border-red-300 bg-red-50 px-3 py-2 font-lato text-sm text-red-700">
           {error}
         </div>
       )}
@@ -369,28 +409,30 @@ function UploadTab({
 function UrlTab({ onPick }: { onPick: (url: string) => void }) {
   const [url, setUrl] = useState("")
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-xl space-y-4">
       <div>
-        <Label className="text-sm">URL externa</Label>
-        <Input
+        <label className="mb-1.5 block font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+          URL externa
+        </label>
+        <input
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://…"
-          className="mt-1"
+          className="w-full rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
         />
-        <p className="mt-1 text-xs text-gray-500">
-          No se guarda en la biblioteca. Si la necesitarás en varios lugares, prefiere subirla para
-          gestionarla desde el admin.
+        <p className="mt-1.5 font-lato text-xs italic text-slate-500">
+          No se guarda en la biblioteca. Si la necesitarás en varios lugares, mejor súbela.
         </p>
       </div>
       <div className="flex justify-end">
-        <Button
+        <button
           type="button"
           onClick={() => onPick(url.trim())}
           disabled={!url.trim()}
+          className="inline-flex items-center gap-1.5 rounded-none bg-red-600 px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:opacity-50"
         >
-          <Check className="mr-2 h-4 w-4" /> Usar esta URL
-        </Button>
+          <Check className="h-3.5 w-3.5" /> Usar esta URL
+        </button>
       </div>
     </div>
   )

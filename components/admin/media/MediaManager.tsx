@@ -23,6 +23,11 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Media, MediaKind } from "@prisma/client"
+import { MediaThumb } from "./MediaThumb"
+import { UpscaleButton } from "@/components/admin/UpscaleButton"
+import { ImageExpansionEditor } from "@/components/admin/ImageExpansionEditor"
+import { ImageInpaintingEditor } from "@/components/admin/ImageInpaintingEditor"
+import { Maximize2, Scissors, Sparkles } from "lucide-react"
 
 type KindFilter = "any" | "IMAGE" | "VIDEO" | "DOC"
 
@@ -271,16 +276,15 @@ export function MediaManager() {
               </p>
             </div>
           ) : (
-            <div className="[column-fill:_balance] gap-3 columns-2 md:columns-3 xl:columns-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
               {filteredItems.map((m) => (
-                <div key={m.id} className="mb-3 break-inside-avoid">
-                  <MediaCard
-                    media={m}
-                    onOpen={() => setLightbox(m)}
-                    onEdit={() => setEditing(m)}
-                    onDelete={() => del(m.id)}
-                  />
-                </div>
+                <MediaCard
+                  key={m.id}
+                  media={m}
+                  onOpen={() => setLightbox(m)}
+                  onEdit={() => setEditing(m)}
+                  onDelete={() => del(m.id)}
+                />
               ))}
             </div>
           )}
@@ -307,6 +311,10 @@ export function MediaManager() {
             setLightbox(null)
           }}
           onDelete={() => del(lightbox.id)}
+          onAiResult={(newMedia) => {
+            setItems((prev) => [newMedia, ...prev])
+            setLightbox(newMedia)
+          }}
         />
       )}
     </div>
@@ -384,38 +392,15 @@ function MediaCard({
     setTimeout(() => setCopied(false), 1500)
   }
 
-  const aspectStyle =
-    media.width && media.height
-      ? { aspectRatio: `${media.width} / ${media.height}` }
-      : { aspectRatio: "1 / 1" }
-
   return (
-    <div className="group relative overflow-hidden rounded-md border border-slate-200 bg-white transition-shadow hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-none border border-slate-200 bg-white transition-all hover:border-red-600 hover:shadow-md">
       <button
         type="button"
         onClick={onOpen}
         className="block w-full overflow-hidden"
         aria-label={`Abrir ${media.fileName}`}
       >
-        <div className="relative w-full bg-slate-100" style={aspectStyle}>
-          {media.kind === "IMAGE" ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={media.url}
-              alt={media.altText ?? ""}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-            />
-          ) : media.kind === "VIDEO" ? (
-            <div className="flex h-full w-full items-center justify-center bg-slate-900 text-white">
-              <Film className="h-10 w-10" />
-            </div>
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
-              <FileText className="h-10 w-10" />
-            </div>
-          )}
-        </div>
+        <MediaThumb media={media} />
       </button>
 
       {/* Hover overlay */}
@@ -493,112 +478,184 @@ function Lightbox({
   onClose,
   onEdit,
   onDelete,
+  onAiResult,
 }: {
   media: Media
   onClose: () => void
   onEdit: () => void
   onDelete: () => void
+  onAiResult?: (newMedia: Media) => void
 }) {
+  const [aiMode, setAiMode] = useState<"upscale" | "expand" | "inpaint" | null>(null)
+
+  async function registerAiResult(newUrl: string, tool: string) {
+    try {
+      const res = await fetch("/api/admin/media-library", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: newUrl,
+          folder: media.folder,
+          altText: media.altText,
+          title: media.title ? `${media.title} (${tool})` : `${media.fileName} (${tool})`,
+          tags: Array.from(new Set([...media.tags, `ai:${tool}`])),
+        }),
+      })
+      if (res.ok) {
+        const saved: Media = await res.json()
+        onAiResult?.(saved)
+      }
+    } catch {
+      /* ignore — tool modal already showed toast */
+    } finally {
+      setAiMode(null)
+    }
+  }
+
   return (
     <Dialog open onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-6xl p-0">
-        <div className="grid max-h-[85vh] grid-cols-1 md:grid-cols-[1fr_320px]">
-          {/* Media */}
-          <div className="flex items-center justify-center overflow-hidden bg-slate-950 p-6">
-            {media.kind === "IMAGE" ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={media.url}
-                alt={media.altText ?? ""}
-                className="max-h-[80vh] max-w-full object-contain"
-              />
-            ) : media.kind === "VIDEO" ? (
-              <video
-                src={media.url}
-                controls
-                autoPlay
-                className="max-h-[80vh] max-w-full"
-              />
-            ) : (
-              <div className="flex h-64 w-64 flex-col items-center justify-center gap-3 text-white">
-                <FileText className="h-16 w-16" />
-                <a
-                  href={media.url}
-                  target="_blank"
-                  rel="noopener"
-                  className="underline underline-offset-4"
-                >
-                  Abrir documento
-                </a>
-              </div>
-            )}
+      <DialogContent className="grid h-[95vh] w-[95vw] max-w-none grid-cols-1 gap-0 overflow-hidden rounded-none border-slate-200 bg-white p-0 shadow-2xl sm:rounded-none md:grid-cols-[1fr_360px]">
+        {/* Media */}
+        <div className="relative flex items-center justify-center overflow-hidden bg-slate-950">
+          {media.kind === "IMAGE" ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={media.url}
+              alt={media.altText ?? ""}
+              className="max-h-full max-w-full object-contain"
+            />
+          ) : media.kind === "VIDEO" ? (
+            <video
+              src={media.url}
+              controls
+              autoPlay
+              className="max-h-full max-w-full"
+            />
+          ) : (
+            <div className="flex h-64 w-64 flex-col items-center justify-center gap-3 text-white">
+              <FileText className="h-16 w-16" />
+              <a
+                href={media.url}
+                target="_blank"
+                rel="noopener"
+                className="underline underline-offset-4"
+              >
+                Abrir documento
+              </a>
+            </div>
+          )}
+        </div>
+
+        {/* Metadata panel */}
+        <div className="flex flex-col overflow-y-auto border-t border-slate-200 bg-white md:border-l md:border-t-0">
+          <div className="border-b border-slate-200 px-5 py-4">
+            <p className="mb-1 font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+              {media.kind}
+            </p>
+            <h2 className="font-bebas text-2xl uppercase leading-tight text-slate-950">
+              {media.title ?? media.fileName}
+            </h2>
           </div>
 
-          {/* Metadata panel */}
-          <div className="flex flex-col overflow-y-auto border-l border-slate-200 bg-white">
-            <div className="border-b border-slate-200 px-5 py-4">
-              <p className="mb-1 font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
-                {media.kind}
-              </p>
-              <h2 className="font-bebas text-2xl uppercase leading-tight text-slate-950">
-                {media.title ?? media.fileName}
-              </h2>
-            </div>
+          <div className="flex-1 space-y-4 px-5 py-4 text-sm">
+            {/* AI tools — solo para imágenes */}
+            {media.kind === "IMAGE" && (
+              <div>
+                <p className="mb-2 font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+                  Herramientas IA
+                </p>
+                <div className="grid grid-cols-1 gap-1.5">
+                  <UpscaleButton
+                    imageUrl={media.url}
+                    onUpscaleComplete={(url) => registerAiResult(url, "upscale")}
+                    className="w-full justify-start rounded-none border border-slate-300 bg-white text-slate-700 hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+                    variant="outline"
+                    size="sm"
+                  />
+                  <button
+                    onClick={() => setAiMode("expand")}
+                    className="flex w-full items-center justify-start gap-2 rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+                  >
+                    <Maximize2 className="h-3.5 w-3.5" />
+                    Expandir / recortar
+                  </button>
+                  <button
+                    onClick={() => setAiMode("inpaint")}
+                    className="flex w-full items-center justify-start gap-2 rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+                  >
+                    <Scissors className="h-3.5 w-3.5" />
+                    Quitar / reemplazar objeto
+                  </button>
+                </div>
+              </div>
+            )}
 
-            <div className="flex-1 space-y-4 px-5 py-4 text-sm">
-              {media.altText && (
-                <Field label="Alt text">{media.altText}</Field>
-              )}
-              <Field label="Archivo">{media.fileName}</Field>
-              <Field label="Carpeta">{media.folder}</Field>
-              {media.tags.length > 0 && (
-                <Field label="Tags">
-                  <div className="flex flex-wrap gap-1">
-                    {media.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-none border border-slate-200 bg-stone-50 px-2 py-0.5 font-lato text-xs text-slate-700"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </Field>
-              )}
-              {media.width && media.height && (
-                <Field label="Dimensiones">
-                  {media.width} × {media.height} px
-                </Field>
-              )}
-              <Field label="Tamaño">
-                {media.size ? `${(media.size / 1024).toFixed(1)} KB` : "—"}
+            {media.altText && <Field label="Alt text">{media.altText}</Field>}
+            <Field label="Archivo">{media.fileName}</Field>
+            <Field label="Carpeta">{media.folder}</Field>
+            {media.tags.length > 0 && (
+              <Field label="Tags">
+                <div className="flex flex-wrap gap-1">
+                  {media.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-none border border-slate-200 bg-stone-50 px-2 py-0.5 font-lato text-xs text-slate-700"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </Field>
-              <Field label="URL">
-                <code className="block break-all rounded bg-stone-100 px-2 py-1.5 font-mono text-[11px] text-slate-700">
-                  {media.url}
-                </code>
+            )}
+            {media.width && media.height && (
+              <Field label="Dimensiones">
+                {media.width} × {media.height} px
               </Field>
-            </div>
+            )}
+            <Field label="Tamaño">
+              {media.size ? `${(media.size / 1024).toFixed(1)} KB` : "—"}
+            </Field>
+            <Field label="URL">
+              <code className="block break-all rounded bg-stone-100 px-2 py-1.5 font-mono text-[11px] text-slate-700">
+                {media.url}
+              </code>
+            </Field>
+          </div>
 
-            <div className="flex gap-2 border-t border-slate-200 px-5 py-3">
-              <button
-                onClick={onEdit}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-none border border-slate-300 bg-white py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:text-slate-900"
-              >
-                <Pencil className="h-3.5 w-3.5" />
-                Editar
-              </button>
-              <button
-                onClick={onDelete}
-                className="flex items-center justify-center gap-1.5 rounded-none border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-600 transition-colors hover:border-red-600 hover:text-red-600"
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-                Eliminar
-              </button>
-            </div>
+          <div className="flex gap-2 border-t border-slate-200 px-5 py-3">
+            <button
+              onClick={onEdit}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-none border border-slate-300 bg-white py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:text-slate-900"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+              Editar
+            </button>
+            <button
+              onClick={onDelete}
+              className="flex items-center justify-center gap-1.5 rounded-none border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-600 transition-colors hover:border-red-600 hover:text-red-600"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              Eliminar
+            </button>
           </div>
         </div>
       </DialogContent>
+
+      {/* AI editors — full-screen overlays on top del lightbox */}
+      {aiMode === "expand" && (
+        <ImageExpansionEditor
+          imageUrl={media.url}
+          onComplete={(url) => registerAiResult(url, "expand")}
+          onClose={() => setAiMode(null)}
+        />
+      )}
+      {aiMode === "inpaint" && (
+        <ImageInpaintingEditor
+          imageUrl={media.url}
+          onComplete={(url) => registerAiResult(url, "inpaint")}
+          onClose={() => setAiMode(null)}
+        />
+      )}
     </Dialog>
   )
 }

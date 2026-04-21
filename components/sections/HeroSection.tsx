@@ -5,7 +5,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ChevronDown } from "lucide-react"
-import { HeroImageConfig } from "@/lib/hero-config"
+import {
+  HeroImageConfig,
+  DEFAULT_HERO_VIDEO_DESKTOP,
+  DEFAULT_HERO_VIDEO_MOBILE,
+} from "@/lib/hero-config"
 import { LogoHoverEffect } from "@/components/logo/LogoHoverEffect"
 import { HeroImageLoader } from "@/components/loading/HeroImageLoader"
 import { useLoading } from "@/contexts/LoadingContext"
@@ -22,9 +26,6 @@ interface HeroSectionProps {
   heroVideos?: { desktop: string | null; mobile: string | null }
   specialties?: string[]
 }
-
-const DEFAULT_HERO_VIDEO_DESKTOP = "/videos/hero/logo-intro-desktop.mp4"
-const DEFAULT_HERO_VIDEO_MOBILE = "/videos/hero/logo-intro-mobile.mp4"
 
 export function HeroSection({
   heroImages,

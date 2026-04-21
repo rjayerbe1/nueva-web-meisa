@@ -136,6 +136,11 @@ export default async function HomePage() {
       }
     : null
 
+  const heroVideos = {
+    desktop: home.seccionConfig?.heroVideoDesktop ?? null,
+    mobile: home.seccionConfig?.heroVideoMobile ?? null,
+  }
+
   const orden = Array.isArray(home.orden?.orden)
     ? ((home.orden?.orden as any) as Array<{ clave: string; activo: boolean }>)
     : []
@@ -144,6 +149,7 @@ export default async function HomePage() {
     <HomeContent
       projectsByCategory={projectsByCategory}
       heroImages={heroImages}
+      heroVideos={heroVideos}
       especialidades={especialidades}
       stats={stats}
       featured={featured}

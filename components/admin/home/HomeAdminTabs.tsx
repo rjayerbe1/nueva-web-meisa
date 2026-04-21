@@ -8,6 +8,8 @@ import {
 } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { OrdenSeccionesEditor, type SeccionItem } from "./OrdenSeccionesEditor"
+import { HeroImagesEditor } from "./HeroImagesEditor"
+import { HeroVideosEditor } from "./HeroVideosEditor"
 import type {
   HomeHeroEspecialidad,
   HomeStat,
@@ -127,26 +129,7 @@ const servicioFields: FieldDef[] = [
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
-const copySections: SingletonSection[] = [
-  {
-    id: "hero-videos",
-    title: "Hero — Videos intro",
-    description: "Videos del logo animado que aparecen tras el loader del home.",
-    fields: [
-      {
-        name: "heroVideoDesktop",
-        label: "Video intro (desktop)",
-        kind: "video",
-        gridSpan: 2,
-      },
-      {
-        name: "heroVideoMobile",
-        label: "Video intro (mobile)",
-        kind: "video",
-        gridSpan: 2,
-      },
-    ],
-  },
+const clientesSections: SingletonSection[] = [
   {
     id: "clientes",
     title: "Sección Clientes",
@@ -160,6 +143,9 @@ const copySections: SingletonSection[] = [
       { name: "clientesProyectosTitulo", label: "Título interno de proyectos", kind: "text", gridSpan: 2 },
     ],
   },
+]
+
+const contactoSections: SingletonSection[] = [
   {
     id: "contacto",
     title: "Sección Contacto",
@@ -188,19 +174,36 @@ export function HomeAdminTabs(props: Props) {
           label: "Hero",
           count: especialidades.length,
           content: (
-            <ListCrudEditor<HomeHeroEspecialidad>
-              items={especialidades}
-              fields={especialidadFields}
-              endpoint="/api/admin/home/especialidades"
-              emptyTemplate={{ label: "", orden: especialidades.length, activo: true }}
-              addLabel="Agregar especialidad"
-              renderPreview={(e) => (
-                <div>
-                  <div className="font-medium text-gray-900 whitespace-pre-line">{e.label}</div>
-                  <div className="text-xs text-gray-500">Orden: {e.orden}</div>
+            <div className="space-y-6">
+              <HeroImagesEditor />
+              <HeroVideosEditor initial={seccionConfig} />
+              <div className="rounded-md border border-slate-200 bg-white">
+                <div className="border-b border-slate-200 px-6 py-5">
+                  <h2 className="font-bebas text-2xl uppercase leading-tight text-slate-950">
+                    Especialidades del hero
+                  </h2>
+                  <p className="mt-1.5 max-w-2xl font-lato text-sm text-slate-600">
+                    Textos que rotan en el hero (ej. “DISEÑO / ESTRUCTURAL”). Usa{" "}
+                    <code className="font-mono text-xs">\n</code> para saltos de línea.
+                  </p>
                 </div>
-              )}
-            />
+                <div className="px-6 py-6">
+                  <ListCrudEditor<HomeHeroEspecialidad>
+                    items={especialidades}
+                    fields={especialidadFields}
+                    endpoint="/api/admin/home/especialidades"
+                    emptyTemplate={{ label: "", orden: especialidades.length, activo: true }}
+                    addLabel="Agregar especialidad"
+                    renderPreview={(e) => (
+                      <div>
+                        <div className="font-medium text-gray-900 whitespace-pre-line">{e.label}</div>
+                        <div className="text-xs text-gray-500">Orden: {e.orden}</div>
+                      </div>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
           ),
         },
         {
@@ -276,15 +279,28 @@ export function HomeAdminTabs(props: Props) {
           ),
         },
         {
-          id: "copy",
-          label: "Hero videos + Copy",
+          id: "clientes",
+          label: "Clientes",
           content: (
             <SingletonEditor<HomeSeccionConfig>
               data={seccionConfig}
-              sections={copySections}
+              sections={clientesSections}
               endpoint="/api/admin/home/seccion-config"
-              sectionTitle="Hero videos + textos editoriales"
-              description="Videos intro del hero, encabezados y CTAs de 'Clientes' y 'Contacto'."
+              sectionTitle="Franja de clientes"
+              description="Copy de la sección de logos de clientes."
+            />
+          ),
+        },
+        {
+          id: "contacto",
+          label: "Contacto",
+          content: (
+            <SingletonEditor<HomeSeccionConfig>
+              data={seccionConfig}
+              sections={contactoSections}
+              endpoint="/api/admin/home/seccion-config"
+              sectionTitle="Bloque de contacto del home"
+              description="Copy del bloque final de contacto. La info (teléfono, email, etc.) se gestiona en Contacto."
             />
           ),
         },
