@@ -18,10 +18,13 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
-# Build with dummy DATABASE_URL (will be replaced at runtime)
+# Next.js SSG consulta Prisma durante el build (páginas públicas migradas a DB).
+# Aceptamos DATABASE_URL como build-arg; fallback a dummy para builds locales
+# sin DB. En CI/CD se pasa la URL real via --build-arg.
+ARG DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
+ENV DATABASE_URL=$DATABASE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SKIP_ENV_VALIDATION=1
-ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npm run build
 
 # Production image
