@@ -38,16 +38,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       }
     }
 
-    const categoriaLabels: Record<string, string> = {
-      COMERCIAL: 'Centros Comerciales',
-      INDUSTRIAL: 'Industrial',
-      PUENTES: 'Puentes',
-      INFRAESTRUCTURA_URBANA: 'Infraestructura Urbana',
-      EDIFICACIONES: 'Edificaciones',
-      DEPORTES_EDUCACION: 'Deportes y Educación',
-    }
-
-    const categoriaLabel = categoriaLabels[proyecto.categoria] || proyecto.categoria
+    const categoria = await prisma.categoriaProyecto.findUnique({
+      where: { key: proyecto.categoria },
+      select: { nombre: true },
+    })
+    const categoriaLabel = categoria?.nombre ?? proyecto.categoria
     const imagen = proyecto.imagenes[0]
     const imageUrl = imagen?.urlOptimized || imagen?.url || '/images/og-image.jpg'
 
