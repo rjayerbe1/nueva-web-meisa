@@ -81,11 +81,9 @@ Required in `.env.local`:
 4. Admin features: Add to `/app/admin/` with proper auth checks
 
 ### Git Best Practices
-- **ALWAYS create commits on a feature branch, NEVER directly on main**
-- Create feature branches: `git checkout -b feature/your-feature-name`
-- Make commits on the feature branch: `git commit -m "your commit message"`
-- Push to feature branch: `git push origin feature/your-feature-name`
-- Create pull request to merge into main
+- Commits directos a `main` están permitidos — este repo despliega a producción desde `main` vía Cloud Run, así que no bloquear por política de branch
+- Solo crear feature branch si el usuario lo pide explícitamente, o si el cambio es grande/riesgoso y conviene revisarlo vía PR antes de ir a producción
+- Siempre confirmar con el usuario antes de hacer `git push` (push dispara deploy automático)
 
 ### MEISA Brand Colors & Design Guidelines
 
