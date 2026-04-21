@@ -2,7 +2,7 @@
 
 import { AdminTabsLayout } from "@/components/admin/AdminTabsLayout"
 import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
-import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
+import { SingletonEditor, type SingletonSection } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { PLANT_FIELDS, plantTemplate, PlantPreview } from "@/components/admin/empresa/PlantFields"
 import type { ConfiguracionContacto, FormOption, Plant } from "@prisma/client"
@@ -14,15 +14,29 @@ interface Props {
   plantas: Plant[]
 }
 
-const configFields: FieldDef[] = [
-  { name: "pbx", label: "PBX", kind: "text", placeholder: "+57 602 XXX XXXX" },
-  { name: "movil", label: "Móvil", kind: "text", placeholder: "+57 3XX XXX XXXX" },
-  { name: "email", label: "Email", kind: "text", placeholder: "info@meisa.com.co" },
-  { name: "whatsappNumero", label: "WhatsApp", kind: "text", placeholder: "573XXXXXXXXX (sin +)" },
-  { name: "horarioSemana", label: "Horario semana", kind: "text", placeholder: "Lun–Vie 7:00am – 5:00pm" },
-  { name: "horarioSabado", label: "Horario sábado", kind: "text", placeholder: "Sáb 7:00am – 12:00m" },
-  { name: "direccionLinea1", label: "Dirección — línea 1", kind: "text", gridSpan: 2 },
-  { name: "direccionLinea2", label: "Dirección — línea 2", kind: "text", gridSpan: 2 },
+const configSections: SingletonSection[] = [
+  {
+    id: "comunicacion",
+    title: "Teléfonos y email",
+    description: "Canales directos mostrados en la página Contacto y en el Footer.",
+    fields: [
+      { name: "pbx", label: "PBX", kind: "text", placeholder: "+57 602 XXX XXXX" },
+      { name: "movil", label: "Móvil", kind: "text", placeholder: "+57 3XX XXX XXXX" },
+      { name: "email", label: "Email", kind: "text", placeholder: "info@meisa.com.co" },
+      { name: "whatsappNumero", label: "WhatsApp", kind: "text", placeholder: "573XXXXXXXXX (sin +)" },
+    ],
+  },
+  {
+    id: "horarios",
+    title: "Horarios y dirección",
+    description: "Horario de atención y ubicación administrativa principal.",
+    fields: [
+      { name: "horarioSemana", label: "Horario semana", kind: "text", placeholder: "Lun–Vie 7:00am – 5:00pm" },
+      { name: "horarioSabado", label: "Horario sábado", kind: "text", placeholder: "Sáb 7:00am – 12:00m" },
+      { name: "direccionLinea1", label: "Dirección — línea 1", kind: "text", gridSpan: 2 },
+      { name: "direccionLinea2", label: "Dirección — línea 2", kind: "text", gridSpan: 2 },
+    ],
+  },
 ]
 
 const formOptionFields: FieldDef[] = [
@@ -54,7 +68,7 @@ export function ContactoAdminTabs({ config, formOptions, plantas }: Props) {
           content: (
             <SingletonEditor<ConfiguracionContacto>
               data={config}
-              fields={configFields}
+              sections={configSections}
               endpoint="/api/admin/contacto/config"
               sectionTitle="Información de contacto"
               description="Aparece en /contacto y en el Footer."

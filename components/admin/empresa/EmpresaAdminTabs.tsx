@@ -2,7 +2,7 @@
 
 import { AdminTabsLayout } from "@/components/admin/AdminTabsLayout"
 import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
-import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
+import { SingletonEditor, type SingletonSection } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { PLANT_FIELDS, plantTemplate, PlantPreview } from "./PlantFields"
 import type {
@@ -23,39 +23,80 @@ interface Props {
   plantas: Plant[]
 }
 
-const configFields: FieldDef[] = [
-  { name: "nombre", label: "Nombre corto", kind: "text", required: true },
-  { name: "nombreCompleto", label: "Nombre completo", kind: "text", required: true },
-  { name: "fundacion", label: "Año fundación", kind: "number", min: 1900, max: 2100, required: true },
-  { name: "mision", label: "Misión", kind: "textarea", rows: 3, required: true, gridSpan: 2 },
-  { name: "vision", label: "Visión", kind: "textarea", rows: 3, required: true, gridSpan: 2 },
-  { name: "descripcion", label: "Descripción general", kind: "textarea", rows: 3, required: true, gridSpan: 2 },
+const configSections: SingletonSection[] = [
   {
-    name: "historiaIntro",
-    label: "Historia — párrafos introductorios",
-    kind: "stringArray",
-    gridSpan: 2,
-    hint: "Cada item es un párrafo. El orden en que los pongas es el orden en que se muestran.",
+    id: "identidad",
+    title: "Identidad",
+    description: "Datos generales y propuesta de valor de la empresa.",
+    fields: [
+      { name: "nombre", label: "Nombre corto", kind: "text", required: true },
+      { name: "nombreCompleto", label: "Nombre completo", kind: "text", required: true },
+      { name: "fundacion", label: "Año fundación", kind: "number", min: 1900, max: 2100, required: true },
+      { name: "mision", label: "Misión", kind: "textarea", rows: 3, required: true, gridSpan: 2 },
+      { name: "vision", label: "Visión", kind: "textarea", rows: 3, required: true, gridSpan: 2 },
+      { name: "descripcion", label: "Descripción general", kind: "textarea", rows: 3, required: true, gridSpan: 2 },
+    ],
   },
   {
-    name: "frasesCreemos",
-    label: "\"Creemos en...\" — frases",
-    kind: "stringArray",
-    gridSpan: 2,
-    hint: "Frases cortas que aparecen en la sección 'Creemos en…'.",
+    id: "lider",
+    title: "Cita del líder",
+    description: "Texto destacado en la sección 'Creemos'. Autor, cargo e imagen.",
+    fields: [
+      { name: "liderQuoteTexto", label: "Texto de la cita", kind: "textarea", rows: 3, gridSpan: 2 },
+      { name: "liderQuoteAutor", label: "Autor", kind: "text" },
+      { name: "liderQuoteCargo", label: "Cargo", kind: "text" },
+      { name: "liderQuoteImagen", label: "Imagen del autor", kind: "image", gridSpan: 2 },
+    ],
   },
-  { name: "liderQuoteTexto", label: "Cita del líder — texto", kind: "textarea", rows: 3, gridSpan: 2 },
-  { name: "liderQuoteAutor", label: "Cita del líder — autor", kind: "text" },
-  { name: "liderQuoteCargo", label: "Cita del líder — cargo", kind: "text" },
-  { name: "liderQuoteImagen", label: "Cita del líder — Imagen", kind: "image", gridSpan: 2 },
-  { name: "seguridadTitulo", label: "Seguridad — título", kind: "text" },
-  { name: "seguridadSubtitulo", label: "Seguridad — subtítulo", kind: "text" },
-  { name: "seguridadItems", label: "Seguridad — items", kind: "stringArray", gridSpan: 2 },
-  { name: "seguridadMeta", label: "Seguridad — meta", kind: "text", gridSpan: 2 },
-  { name: "sostenibilidadTitulo", label: "Sostenibilidad — título", kind: "text" },
-  { name: "sostenibilidadSubtitulo", label: "Sostenibilidad — subtítulo", kind: "text" },
-  { name: "sostenibilidadItems", label: "Sostenibilidad — items", kind: "stringArray", gridSpan: 2 },
-  { name: "sostenibilidadCompromiso", label: "Sostenibilidad — compromiso", kind: "textarea", rows: 2, gridSpan: 2 },
+  {
+    id: "historia",
+    title: "Historia",
+    description: "Párrafos introductorios y frases de la sección 'Creemos en…'.",
+    fields: [
+      {
+        name: "historiaIntro",
+        label: "Párrafos introductorios",
+        kind: "stringArray",
+        gridSpan: 2,
+        hint: "Cada item es un párrafo. El orden en que los pongas es el orden en que se muestran.",
+      },
+      {
+        name: "frasesCreemos",
+        label: "Frases 'Creemos en…'",
+        kind: "stringArray",
+        gridSpan: 2,
+        hint: "Frases cortas editoriales.",
+      },
+    ],
+  },
+  {
+    id: "seguridad",
+    title: "Seguridad laboral",
+    description: "Mensaje de compromiso con seguridad en la sección Compromiso.",
+    fields: [
+      { name: "seguridadTitulo", label: "Título", kind: "text" },
+      { name: "seguridadSubtitulo", label: "Subtítulo", kind: "text" },
+      { name: "seguridadItems", label: "Items (bullets)", kind: "stringArray", gridSpan: 2 },
+      { name: "seguridadMeta", label: "Meta destacada", kind: "text", gridSpan: 2 },
+    ],
+  },
+  {
+    id: "sostenibilidad",
+    title: "Sostenibilidad",
+    description: "Mensaje de compromiso ambiental en la sección Compromiso.",
+    fields: [
+      { name: "sostenibilidadTitulo", label: "Título", kind: "text" },
+      { name: "sostenibilidadSubtitulo", label: "Subtítulo", kind: "text" },
+      { name: "sostenibilidadItems", label: "Items (bullets)", kind: "stringArray", gridSpan: 2 },
+      {
+        name: "sostenibilidadCompromiso",
+        label: "Compromiso (cierre)",
+        kind: "textarea",
+        rows: 2,
+        gridSpan: 2,
+      },
+    ],
+  },
 ]
 
 const valorFields: FieldDef[] = [
@@ -113,7 +154,7 @@ export function EmpresaAdminTabs(props: Props) {
           content: (
             <SingletonEditor<ConfiguracionEmpresa>
               data={props.config}
-              fields={configFields}
+              sections={configSections}
               endpoint="/api/admin/empresa/config"
               sectionTitle="Identidad corporativa"
               description="Datos generales, misión, visión, historia, citas y compromisos."

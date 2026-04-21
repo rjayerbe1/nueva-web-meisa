@@ -2,7 +2,10 @@
 
 import { AdminTabsLayout } from "@/components/admin/AdminTabsLayout"
 import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
-import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
+import {
+  SingletonEditor,
+  type SingletonSection,
+} from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { OrdenSeccionesEditor, type SeccionItem } from "./OrdenSeccionesEditor"
 import type {
@@ -124,32 +127,51 @@ const servicioFields: FieldDef[] = [
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
-const copyFields: FieldDef[] = [
+const copySections: SingletonSection[] = [
   {
-    name: "heroVideoDesktop",
-    label: "Hero — Video intro (desktop)",
-    kind: "video",
-    gridSpan: 2,
-    hint: "Video del logo que aparece al terminar el loader (versión desktop).",
+    id: "hero-videos",
+    title: "Hero — Videos intro",
+    description: "Videos del logo animado que aparecen tras el loader del home.",
+    fields: [
+      {
+        name: "heroVideoDesktop",
+        label: "Video intro (desktop)",
+        kind: "video",
+        gridSpan: 2,
+      },
+      {
+        name: "heroVideoMobile",
+        label: "Video intro (mobile)",
+        kind: "video",
+        gridSpan: 2,
+      },
+    ],
   },
   {
-    name: "heroVideoMobile",
-    label: "Hero — Video intro (mobile)",
-    kind: "video",
-    gridSpan: 2,
-    hint: "Video del logo que aparece al terminar el loader (versión móvil).",
+    id: "clientes",
+    title: "Sección Clientes",
+    description: "Textos y CTAs de la franja de clientes (logos).",
+    fields: [
+      { name: "clientesEyebrow", label: "Eyebrow", kind: "text" },
+      { name: "clientesTitulo", label: "Título", kind: "text" },
+      { name: "clientesDescripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+      { name: "clientesCtaTexto", label: "CTA — texto", kind: "text" },
+      { name: "clientesCtaUrl", label: "CTA — URL", kind: "url" },
+      { name: "clientesProyectosTitulo", label: "Título interno de proyectos", kind: "text", gridSpan: 2 },
+    ],
   },
-  { name: "clientesEyebrow", label: "Clientes — Eyebrow", kind: "text" },
-  { name: "clientesTitulo", label: "Clientes — Título", kind: "text" },
-  { name: "clientesDescripcion", label: "Clientes — Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
-  { name: "clientesCtaTexto", label: "Clientes — CTA texto", kind: "text" },
-  { name: "clientesCtaUrl", label: "Clientes — CTA URL", kind: "url" },
-  { name: "clientesProyectosTitulo", label: "Clientes — Título proyectos", kind: "text", gridSpan: 2 },
-  { name: "contactoEyebrow", label: "Contacto — Eyebrow", kind: "text" },
-  { name: "contactoTitulo", label: "Contacto — Título", kind: "text" },
-  { name: "contactoDescripcion", label: "Contacto — Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
-  { name: "contactoCta1Texto", label: "Contacto — CTA 1 texto", kind: "text" },
-  { name: "contactoCta2Texto", label: "Contacto — CTA 2 texto", kind: "text" },
+  {
+    id: "contacto",
+    title: "Sección Contacto",
+    description: "Copy del bloque final de contacto en el home.",
+    fields: [
+      { name: "contactoEyebrow", label: "Eyebrow", kind: "text" },
+      { name: "contactoTitulo", label: "Título", kind: "text" },
+      { name: "contactoDescripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+      { name: "contactoCta1Texto", label: "CTA principal — texto", kind: "text" },
+      { name: "contactoCta2Texto", label: "CTA secundaria — texto", kind: "text" },
+    ],
+  },
 ]
 
 export function HomeAdminTabs(props: Props) {
@@ -259,7 +281,7 @@ export function HomeAdminTabs(props: Props) {
           content: (
             <SingletonEditor<HomeSeccionConfig>
               data={seccionConfig}
-              fields={copyFields}
+              sections={copySections}
               endpoint="/api/admin/home/seccion-config"
               sectionTitle="Hero videos + textos editoriales"
               description="Videos intro del hero, encabezados y CTAs de 'Clientes' y 'Contacto'."
