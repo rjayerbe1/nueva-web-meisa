@@ -2,7 +2,6 @@
 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import {
   Select,
@@ -14,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { X, Plus } from "lucide-react"
 import { MediaPicker } from "@/components/admin/media/MediaPicker"
+import { cn } from "@/lib/utils"
 
 export type FieldKind =
   | "text"
@@ -49,55 +49,74 @@ interface FormFieldProps {
   disabled?: boolean
 }
 
+/* ─── Shared primitives ───────────────────────────────────────────────── */
+
+function FieldLabel({
+  children,
+  required,
+}: {
+  children: React.ReactNode
+  required?: boolean
+}) {
+  return (
+    <label className="mb-1.5 block font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+      {children}
+      {required && <span className="ml-1 text-red-600">*</span>}
+    </label>
+  )
+}
+
+function FieldHint({ children }: { children: React.ReactNode }) {
+  return <p className="mt-1.5 font-lato text-xs italic text-slate-500">{children}</p>
+}
+
+const INPUT_CLS =
+  "w-full rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 shadow-none transition-colors placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20 disabled:cursor-not-allowed disabled:opacity-60"
+
+/* ─── Main component ──────────────────────────────────────────────────── */
+
 export function FormField({ field, value, onChange, disabled }: FormFieldProps) {
+  const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
+
   switch (field.kind) {
     case "text":
     case "url":
       return (
-        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
-          <Label className="text-sm">
-            {field.label}
-            {field.required && <span className="text-red-500"> *</span>}
-          </Label>
-          <Input
+        <div className={spanClass}>
+          <FieldLabel required={field.required}>{field.label}</FieldLabel>
+          <input
             type={field.kind === "url" ? "url" : "text"}
             value={(value as string) ?? ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={field.placeholder}
             disabled={disabled}
-            className="mt-1"
+            className={INPUT_CLS}
           />
-          {field.hint && <p className="mt-1 text-xs text-gray-500">{field.hint}</p>}
+          {field.hint && <FieldHint>{field.hint}</FieldHint>}
         </div>
       )
 
     case "textarea":
       return (
-        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
-          <Label className="text-sm">
-            {field.label}
-            {field.required && <span className="text-red-500"> *</span>}
-          </Label>
-          <Textarea
+        <div className={spanClass}>
+          <FieldLabel required={field.required}>{field.label}</FieldLabel>
+          <textarea
             value={(value as string) ?? ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={field.placeholder}
             disabled={disabled}
             rows={field.rows ?? 3}
-            className="mt-1"
+            className={cn(INPUT_CLS, "resize-y leading-relaxed")}
           />
-          {field.hint && <p className="mt-1 text-xs text-gray-500">{field.hint}</p>}
+          {field.hint && <FieldHint>{field.hint}</FieldHint>}
         </div>
       )
 
     case "number":
       return (
-        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
-          <Label className="text-sm">
-            {field.label}
-            {field.required && <span className="text-red-500"> *</span>}
-          </Label>
-          <Input
+        <div className={spanClass}>
+          <FieldLabel required={field.required}>{field.label}</FieldLabel>
+          <input
             type="number"
             value={value === null || value === undefined ? "" : String(value)}
             onChange={(e) => {
@@ -109,40 +128,42 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
             step={field.step}
             placeholder={field.placeholder}
             disabled={disabled}
-            className="mt-1"
+            className={INPUT_CLS}
           />
-          {field.hint && <p className="mt-1 text-xs text-gray-500">{field.hint}</p>}
+          {field.hint && <FieldHint>{field.hint}</FieldHint>}
         </div>
       )
 
     case "boolean":
       return (
-        <div className={`flex items-center gap-3 ${field.gridSpan === 2 ? "col-span-2" : ""}`}>
+        <div className={cn("flex items-center gap-3 py-1", spanClass)}>
           <Switch
             checked={Boolean(value)}
             onCheckedChange={(checked) => onChange(checked)}
             disabled={disabled}
+            className="data-[state=checked]:bg-red-600"
           />
           <div>
-            <Label className="text-sm">{field.label}</Label>
-            {field.hint && <p className="text-xs text-gray-500">{field.hint}</p>}
+            <span className="font-lato text-sm font-medium text-slate-900">
+              {field.label}
+            </span>
+            {field.hint && (
+              <p className="font-lato text-xs text-slate-500">{field.hint}</p>
+            )}
           </div>
         </div>
       )
 
     case "select":
       return (
-        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
-          <Label className="text-sm">
-            {field.label}
-            {field.required && <span className="text-red-500"> *</span>}
-          </Label>
+        <div className={spanClass}>
+          <FieldLabel required={field.required}>{field.label}</FieldLabel>
           <Select
             value={(value as string) ?? ""}
             onValueChange={(v) => onChange(v)}
             disabled={disabled}
           >
-            <SelectTrigger className="mt-1">
+            <SelectTrigger className="h-auto rounded-none border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 shadow-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20">
               <SelectValue placeholder={field.placeholder ?? "Seleccionar…"} />
             </SelectTrigger>
             <SelectContent>
@@ -153,7 +174,7 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
               ))}
             </SelectContent>
           </Select>
-          {field.hint && <p className="mt-1 text-xs text-gray-500">{field.hint}</p>}
+          {field.hint && <FieldHint>{field.hint}</FieldHint>}
         </div>
       )
 
@@ -169,26 +190,23 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
 
     case "color":
       return (
-        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
-          <Label className="text-sm">
-            {field.label}
-            {field.required && <span className="text-red-500"> *</span>}
-          </Label>
-          <Input
+        <div className={spanClass}>
+          <FieldLabel required={field.required}>{field.label}</FieldLabel>
+          <input
             value={(value as string) ?? ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={field.placeholder ?? "from-blue-600 to-blue-700"}
             disabled={disabled}
-            className="mt-1 font-mono text-sm"
+            className={cn(INPUT_CLS, "font-mono")}
           />
-          {field.hint && <p className="mt-1 text-xs text-gray-500">{field.hint}</p>}
+          {field.hint && <FieldHint>{field.hint}</FieldHint>}
         </div>
       )
 
     case "image":
     case "video":
       return (
-        <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
+        <div className={spanClass}>
           <MediaPicker
             value={(value as string) ?? null}
             onChange={(v) => onChange(v)}
@@ -204,6 +222,8 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
   }
 }
 
+/* ─── String array (list of text inputs) ──────────────────────────────── */
+
 function StringArrayField({
   field,
   value,
@@ -215,14 +235,15 @@ function StringArrayField({
   onChange: (v: string[]) => void
   disabled?: boolean
 }) {
+  const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
   return (
-    <div className={field.gridSpan === 2 ? "col-span-2" : ""}>
-      <Label className="text-sm">{field.label}</Label>
-      {field.hint && <p className="mb-2 mt-1 text-xs text-gray-500">{field.hint}</p>}
-      <div className="space-y-2">
+    <div className={spanClass}>
+      <FieldLabel required={field.required}>{field.label}</FieldLabel>
+      {field.hint && <FieldHint>{field.hint}</FieldHint>}
+      <div className="mt-2 space-y-2">
         {value.map((item, idx) => (
           <div key={idx} className="flex gap-2">
-            <Input
+            <input
               value={item}
               onChange={(e) => {
                 const next = [...value]
@@ -231,16 +252,17 @@ function StringArrayField({
               }}
               disabled={disabled}
               placeholder={field.placeholder}
+              className={INPUT_CLS}
             />
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="sm"
               onClick={() => onChange(value.filter((_, i) => i !== idx))}
               disabled={disabled}
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-none border border-slate-200 text-slate-400 transition-colors hover:border-red-600 hover:text-red-600 disabled:opacity-50"
+              aria-label="Eliminar"
             >
               <X className="h-4 w-4" />
-            </Button>
+            </button>
           </div>
         ))}
         <Button
@@ -249,6 +271,7 @@ function StringArrayField({
           size="sm"
           onClick={() => onChange([...value, ""])}
           disabled={disabled}
+          className="rounded-none border-slate-300 font-lato text-xs font-semibold uppercase tracking-wide hover:border-red-600 hover:bg-red-50 hover:text-red-600"
         >
           <Plus className="mr-1 h-3 w-3" /> Agregar
         </Button>
