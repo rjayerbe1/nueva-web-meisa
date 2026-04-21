@@ -26,6 +26,7 @@ export type FieldKind =
   | "color"
   | "image"
   | "video"
+  | "imageArray"
   | "date"
 
 export interface FieldDef {
@@ -235,9 +236,116 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
         </div>
       )
 
+    case "imageArray":
+      return (
+        <ImageArrayField
+          field={field}
+          value={(value as string[]) ?? []}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      )
+
     default:
       return null
   }
+}
+
+/* ─── Image array (multi-imagen con MediaPicker por item) ─────────────── */
+
+function ImageArrayField({
+  field,
+  value,
+  onChange,
+  disabled,
+}: {
+  field: FieldDef
+  value: string[]
+  onChange: (v: unknown) => void
+  disabled?: boolean
+}) {
+  const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
+
+  const setAt = (idx: number, url: string | null) => {
+    if (!url) {
+      onChange(value.filter((_, i) => i !== idx))
+      return
+    }
+    const next = [...value]
+    next[idx] = url
+    onChange(next)
+  }
+
+  const add = () => onChange([...value, ""])
+
+  const move = (idx: number, dir: -1 | 1) => {
+    const target = idx + dir
+    if (target < 0 || target >= value.length) return
+    const next = [...value]
+    ;[next[idx], next[target]] = [next[target], next[idx]]
+    onChange(next)
+  }
+
+  return (
+    <div className={spanClass}>
+      <FieldLabel required={field.required}>{field.label}</FieldLabel>
+      {field.hint && <FieldHint>{field.hint}</FieldHint>}
+      <div className="mt-2 space-y-2">
+        {value.length === 0 && (
+          <p className="rounded-none border border-dashed border-slate-300 bg-white px-4 py-6 text-center font-lato text-xs text-slate-500">
+            Aún no hay imágenes. Agrega la primera con el botón.
+          </p>
+        )}
+        {value.map((url, idx) => (
+          <div
+            key={idx}
+            className="flex items-start gap-2 rounded-none border border-slate-200 bg-white p-2"
+          >
+            <div className="flex flex-col items-center gap-0.5 py-1">
+              <button
+                type="button"
+                onClick={() => move(idx, -1)}
+                disabled={disabled || idx === 0}
+                className="flex h-5 w-5 items-center justify-center text-[10px] text-slate-400 transition-colors hover:text-slate-900 disabled:opacity-30"
+                aria-label="Mover arriba"
+              >
+                ▲
+              </button>
+              <span className="font-mono text-[9px] text-slate-400">
+                {String(idx + 1).padStart(2, "0")}
+              </span>
+              <button
+                type="button"
+                onClick={() => move(idx, 1)}
+                disabled={disabled || idx === value.length - 1}
+                className="flex h-5 w-5 items-center justify-center text-[10px] text-slate-400 transition-colors hover:text-slate-900 disabled:opacity-30"
+                aria-label="Mover abajo"
+              >
+                ▼
+              </button>
+            </div>
+            <div className="flex-1">
+              <MediaPicker
+                value={url || null}
+                onChange={(v) => setAt(idx, v)}
+                kind="image"
+              />
+            </div>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={add}
+          disabled={disabled}
+          className="rounded-none border-slate-300 font-lato text-xs font-semibold uppercase tracking-wide hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+        >
+          <Plus className="mr-1 h-3 w-3" /> Agregar imagen
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 function normalizeDateInputValue(value: unknown): string {

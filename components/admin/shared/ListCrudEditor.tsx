@@ -95,11 +95,26 @@ export function ListCrudEditor<T extends BaseItem>({
 
   const autoThumbnailField = useMemo(() => {
     if (thumbnailField) return thumbnailField
-    const candidate = fields.find((f) =>
-      ["imagen", "logo", "image", "portada"].includes(f.name),
+    // Prefer single-image fields
+    const single = fields.find((f) =>
+      ["imagen", "logo", "image", "portada", "thumbnail"].includes(f.name),
     )
-    return candidate?.name
+    if (single) return single.name
+    // Fallback: array-like image fields (imagenes, imagenesFeatured, imagenesGaleria…)
+    const arr = fields.find((f) =>
+      ["imagenes", "imagenesFeatured", "imagenesGaleria", "fotos", "images"].includes(f.name),
+    )
+    return arr?.name
   }, [thumbnailField, fields])
+
+  /** Dado un valor (string | string[]), devuelve la URL primaria para thumbnail. */
+  const resolveThumbnail = (value: unknown): string | undefined => {
+    if (Array.isArray(value)) {
+      const first = value.find((v) => typeof v === "string" && v.trim().length > 0)
+      return typeof first === "string" ? first : undefined
+    }
+    return typeof value === "string" && value.length > 0 ? value : undefined
+  }
 
   const columns = useMemo(() => {
     if (tableColumns) return tableColumns
@@ -448,7 +463,8 @@ function CardRow<T extends BaseItem>({
     transition,
   }
 
-  const thumbnail = thumbnailField ? (item as any)[thumbnailField] : undefined
+  const thumbnailRaw = thumbnailField ? (item as any)[thumbnailField] : undefined
+  const thumbnail = Array.isArray(thumbnailRaw) ? thumbnailRaw.find((v) => typeof v === "string" && v.length > 0) : (typeof thumbnailRaw === "string" ? thumbnailRaw : undefined)
   const isActive = !("activo" in item) || item.activo
 
   return (
@@ -656,7 +672,8 @@ function TableRow<T extends BaseItem>({
     transition,
   }
 
-  const thumbnail = thumbnailField ? (item as any)[thumbnailField] : undefined
+  const thumbnailRaw = thumbnailField ? (item as any)[thumbnailField] : undefined
+  const thumbnail = Array.isArray(thumbnailRaw) ? thumbnailRaw.find((v) => typeof v === "string" && v.length > 0) : (typeof thumbnailRaw === "string" ? thumbnailRaw : undefined)
   const isActive = !("activo" in item) || item.activo
 
   return (

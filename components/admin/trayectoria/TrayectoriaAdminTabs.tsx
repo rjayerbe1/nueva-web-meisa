@@ -91,11 +91,10 @@ const proyectoFields: FieldDef[] = [
   { name: "moneda", label: "Moneda", kind: "select", options: monedaOptions },
   {
     name: "imagenes",
-    label: "URLs de imágenes",
-    kind: "stringArray",
-    multiline: false,
+    label: "Imágenes del proyecto",
+    kind: "imageArray",
     gridSpan: 2,
-    hint: "Pega aquí cada URL de imagen del proyecto (puedes copiarlas desde la biblioteca de medios).",
+    hint: "Cada imagen se selecciona desde la biblioteca o se sube directamente.",
   },
   { name: "destacado", label: "Destacado", kind: "boolean" },
   { name: "visible", label: "Visible en el sitio", kind: "boolean" },
@@ -111,9 +110,9 @@ const resumenFields: FieldDef[] = [
   {
     name: "imagenesFeatured",
     label: "Imágenes destacadas",
-    kind: "stringArray",
+    kind: "imageArray",
     gridSpan: 2,
-    hint: "URLs de imágenes asociadas al año.",
+    hint: "La primera aparece como miniatura en la lista del admin.",
   },
   { name: "visible", label: "Visible", kind: "boolean" },
 ]

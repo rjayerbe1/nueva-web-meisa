@@ -33,7 +33,7 @@ export default async function PublicLayout({
   return (
     <>
       <Navbar items={menuItems.length > 0 ? menuItems : undefined} />
-      <main className="w-full overflow-x-hidden">
+      <main className="w-full">
         {children}
       </main>
       <Footer />
