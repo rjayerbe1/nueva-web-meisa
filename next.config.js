@@ -67,6 +67,21 @@ const nextConfig = {
   env: {
     UPLOADCARE_PUBLIC_KEY: process.env.UPLOADCARE_PUBLIC_KEY,
   },
+  async redirects() {
+    return [
+      // Fase 3: las rutas viejas quedan con redirect 301 permanente
+      {
+        source: '/tecnologia',
+        destination: '/procesos-tecnologias',
+        permanent: true,
+      },
+      {
+        source: '/calidad',
+        destination: '/politicas',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

@@ -4,17 +4,20 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Quote } from 'lucide-react'
 import Image from 'next/image'
-import { LEADERSHIP_QUOTE } from '@/lib/company-data'
+import type { EmpresaConfig } from '@/lib/content/empresa'
 
-const frases = [
-  "en construir legado.",
-  "que la calidad es primero.",
-  "en estructuras que perduran.",
-  "en equipos comprometidos.",
-  "en pasión y disciplina."
-]
+interface Props {
+  config: EmpresaConfig | null
+}
 
-export function CreemosSection() {
+export function CreemosSection({ config }: Props) {
+  const frases = config?.frasesCreemos ?? []
+  const quoteText = config?.liderQuoteTexto ?? ''
+  const quoteAuthor = config?.liderQuoteAutor ?? ''
+  const quoteTitle = config?.liderQuoteCargo ?? ''
+  const quoteImage = config?.liderQuoteImagen ?? ''
+  const foundingYear = config?.fundacion ?? 1996
+
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -39,7 +42,7 @@ export function CreemosSection() {
                 style={{ y: yParallaxMobile }}
                 className="md:hidden relative z-10 mr-2 flex-shrink-0"
               >
-                <h3 className="text-2xl font-black text-blue-700 leading-none" style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}>
+                <h3 className="text-2xl font-black text-slate-950 leading-none" style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}>
                   creemos
                 </h3>
               </motion.div>
@@ -49,7 +52,7 @@ export function CreemosSection() {
                 style={{ y: yParallaxDesktop }}
                 className="hidden md:block relative z-10 mr-3 flex-shrink-0"
               >
-                <h3 className="text-4xl lg:text-5xl font-black text-blue-700 leading-none" style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}>
+                <h3 className="text-4xl lg:text-5xl font-black text-slate-950 leading-none" style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}>
                   creemos
                 </h3>
               </motion.div>
@@ -63,7 +66,7 @@ export function CreemosSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ delay: i * 0.1, duration: 0.6 }}
-                    className="text-xl md:text-3xl lg:text-4xl text-gray-700 leading-[1.1]"
+                    className="text-xl md:text-3xl lg:text-4xl text-slate-700 leading-[1.1]"
                     style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}
                   >
                     {frase}
@@ -83,46 +86,54 @@ export function CreemosSection() {
           >
             {/* Quote icon decorativo */}
             <div className="absolute -top-4 -left-4 md:-top-6 md:-left-6">
-              <Quote className="w-12 h-12 md:w-16 md:h-16 text-blue-100 rotate-180" />
+              <Quote className="w-12 h-12 md:w-16 md:h-16 text-slate-200 rotate-180" />
             </div>
 
             {/* Card de la cita */}
-            <div className="relative bg-white rounded-2xl p-5 md:p-6 shadow-xl border border-gray-100">
+            <div className="relative bg-white p-5 md:p-6 border border-slate-200">
               {/* Línea decorativa superior */}
-              <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full" />
+              <div className="absolute top-0 left-8 right-8 h-0.5 bg-slate-950" />
 
               {/* Cita */}
-              <blockquote className="text-base md:text-lg text-gray-700 italic leading-relaxed mb-4 pt-3">
-                "{LEADERSHIP_QUOTE.quote}"
-              </blockquote>
+              {quoteText && (
+                <blockquote className="text-base md:text-lg text-slate-700 italic leading-relaxed mb-4 pt-3">
+                  "{quoteText}"
+                </blockquote>
+              )}
 
               {/* Autor */}
-              <div className="flex items-center gap-3">
-                {/* Avatar con foto */}
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden shadow-lg border-2 border-blue-100 relative flex-shrink-0">
-                  <Image
-                    src={LEADERSHIP_QUOTE.image}
-                    alt={LEADERSHIP_QUOTE.name}
-                    fill
-                    className="object-cover object-top"
-                    sizes="56px"
-                    quality={90}
-                  />
-                </div>
+              {(quoteAuthor || quoteTitle) && (
+                <div className="flex items-center gap-3">
+                  {/* Avatar con foto */}
+                  {quoteImage && (
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-slate-200 relative flex-shrink-0">
+                      <Image
+                        src={quoteImage}
+                        alt={quoteAuthor}
+                        fill
+                        className="object-cover object-top"
+                        sizes="56px"
+                        quality={90}
+                      />
+                    </div>
+                  )}
 
-                <div>
-                  <p className="font-bold text-gray-900 text-sm md:text-base">
-                    {LEADERSHIP_QUOTE.name}
-                  </p>
-                  <p className="text-gray-500 text-xs">
-                    {LEADERSHIP_QUOTE.title}
-                  </p>
+                  <div>
+                    {quoteAuthor && (
+                      <p className="font-bold text-slate-950 text-sm md:text-base">
+                        {quoteAuthor}
+                      </p>
+                    )}
+                    {quoteTitle && (
+                      <p className="text-slate-500 text-xs">{quoteTitle}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Decoración esquina */}
               <div className="absolute bottom-4 right-4">
-                <Quote className="w-8 h-8 text-blue-50" />
+                <Quote className="w-8 h-8 text-slate-100" />
               </div>
             </div>
 
@@ -132,9 +143,9 @@ export function CreemosSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg font-bold text-sm"
+              className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-slate-950 text-white px-4 py-2 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.15em]"
             >
-              Desde 1996
+              Desde {foundingYear}
             </motion.div>
           </motion.div>
         </div>
@@ -142,8 +153,8 @@ export function CreemosSection() {
 
       {/* Patrón de fondo decorativo */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-10 w-40 h-40 border border-blue-500 rounded-full" />
-        <div className="absolute bottom-20 right-20 w-60 h-60 border border-blue-500 rounded-full" />
+        <div className="absolute top-20 left-10 w-40 h-40 border border-slate-500 rounded-full" />
+        <div className="absolute bottom-20 right-20 w-60 h-60 border border-slate-500 rounded-full" />
       </div>
     </section>
   )

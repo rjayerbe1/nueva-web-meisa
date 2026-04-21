@@ -59,8 +59,27 @@ interface ProjectsByCategorySectionProps {
 }
 
 // Componente de categoría individual con parallax
-function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categoria: Categoria; index: number; projectCount: number; iconSize?: number }) {
+function CategoryCard({
+  categoria,
+  index,
+  projectCount,
+  iconSize = 48,
+  isHero = false,
+  isActive = false,
+  onHoverStart,
+  onHoverEnd,
+}: {
+  categoria: Categoria
+  index: number
+  projectCount: number
+  iconSize?: number
+  isHero?: boolean
+  isActive?: boolean
+  onHoverStart?: () => void
+  onHoverEnd?: () => void
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   const { scrollYProgress } = useScroll({
@@ -71,12 +90,25 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
   // Detectar si es móvil
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640)
+      setIsMobile(window.innerWidth < 1024)
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  // Video: solo se reproduce cuando la tarjeta está activa (hover en desktop)
+  useEffect(() => {
+    if (isMobile) return
+    const video = videoRef.current
+    if (!video) return
+    if (isActive) {
+      video.currentTime = 0
+      video.play().catch(() => {})
+    } else {
+      video.pause()
+    }
+  }, [isActive, isMobile])
 
   // Efecto parallax para la imagen - se mueve más lento que el scroll
   const imageY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
@@ -86,13 +118,18 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
 
   const words = categoria.nombre.split(' ')
 
-  // Tamaño del icono: más pequeño en móvil
-  const finalIconSize = isMobile ? iconSize * 2 : iconSize * 4
+  // Tamaño del icono: más pequeño en móvil; más grande en hero
+  const baseIcon = isMobile ? iconSize * 2 : iconSize * (isHero ? 5 : 3)
+  const finalIconSize = baseIcon
 
   return (
     <Link
       href={`/proyectos/categoria/${categoria.slug}`}
-      className="group block"
+      className="group block h-full"
+      onMouseEnter={isMobile ? undefined : onHoverStart}
+      onMouseLeave={isMobile ? undefined : onHoverEnd}
+      onFocus={isMobile ? undefined : onHoverStart}
+      onBlur={isMobile ? undefined : onHoverEnd}
     >
       <motion.div
         ref={containerRef}
@@ -100,12 +137,13 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: index * 0.1 }}
         viewport={{ once: true, margin: "-50px" }}
-        className="relative h-[50vh] lg:h-[75vh] overflow-hidden"
+        className="relative h-full overflow-hidden"
       >
         {/* Video o Imagen de fondo con parallax */}
         {(categoria.usarVideoCover && categoria.videoCover) ? (
           <div className="absolute inset-0">
             <video
+              ref={videoRef}
               src={categoria.videoCover}
               className="w-full h-full"
               style={{
@@ -117,10 +155,11 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
                 WebkitFontSmoothing: 'antialiased',
                 imageRendering: 'crisp-edges'
               }}
-              autoPlay
-              muted
               loop
+              muted
               playsInline
+              preload="metadata"
+              aria-hidden="true"
             />
           </div>
         ) : categoria.imagenCover ? (
@@ -189,8 +228,8 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
             {getCategoryIconComponent(categoria.icono, "w-full h-full")}
           </motion.div>
 
-          {/* Título sin animación de letras - cada palabra en una línea, altura fija de 2 líneas */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight min-h-[6rem] sm:min-h-[7rem] lg:min-h-[9rem] xl:min-h-[11rem] flex flex-col justify-center">
+          {/* Título sin animación de letras - cada palabra en una línea */}
+          <h1 className={`${isHero ? 'text-5xl sm:text-6xl lg:text-7xl xl:text-8xl' : 'text-3xl sm:text-4xl lg:text-4xl xl:text-5xl'} font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight flex flex-col justify-center`}>
             {words.map((word, wordIndex) => (
               <span key={wordIndex} className="block">
                 {word}
@@ -198,27 +237,13 @@ function CategoryCard({ categoria, index, projectCount, iconSize = 48 }: { categ
             ))}
           </h1>
 
-          {/* Botón Descubrir */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-3 group/btn"
-          >
-            <span className="text-white font-lato uppercase tracking-wider text-sm lg:text-base font-semibold">
-              Descubrir
-            </span>
-
-            {/* Círculo con flecha */}
-            <div className="relative w-10 h-10 lg:w-12 lg:h-12">
-              <div className="absolute inset-0 rounded-full border-2 border-white/80 group-hover/btn:border-white transition-all duration-300 group-hover/btn:scale-110" />
-              <div className="absolute inset-0 rounded-full bg-white/0 group-hover/btn:bg-white transition-all duration-300" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover/btn:text-blue-600 transition-all duration-300 transform group-hover/btn:translate-x-1" />
-              </div>
-            </div>
-          </motion.div>
+          {/* Indicador sutil de interacción: aparece en hover */}
+          <div className="h-6 lg:h-8 flex items-center justify-center">
+            <ArrowRight
+              className="w-6 h-6 lg:w-7 lg:h-7 text-white opacity-0 -translate-x-2 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0"
+              aria-hidden="true"
+            />
+          </div>
         </motion.div>
 
         {/* Línea divisoria inferior */}
@@ -232,6 +257,7 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [loading, setLoading] = useState(true)
   const [globalIconSize, setGlobalIconSize] = useState(48) // Tamaño global de iconos
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
 
   // Cargar configuración global (endpoint público)
   useEffect(() => {
@@ -275,23 +301,46 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
     projectsByCategory[categoria.key].length > 0
   )
 
+  // Orden editorial: las 2 categorías "grandes" (row 2) van al final del array.
+  // El orden dentro de BIG_SLOTS define izquierda→derecha en la fila 2.
+  const BIG_SLOTS = ['comercial', 'industrial']
+  const smallCats = categoriesWithProjects.filter(c => !BIG_SLOTS.includes(c.slug)).slice(0, 3)
+  const bigCats = BIG_SLOTS
+    .map(slug => categoriesWithProjects.find(c => c.slug === slug))
+    .filter((c): c is Categoria => c !== undefined)
+  const orderedCategories = [...smallCats, ...bigCats]
+
   return (
     <section id="proyectos-categorias" className="bg-gray-900">
-      {/* Grid de categorías estilo Ferrari - 2 columnas */}
+      {/* Grid editorial: fila 1 de 3 columnas + fila 2 de 2 columnas más anchas */}
       {loading ? (
         <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-          {categoriesWithProjects.map((categoria, index) => {
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-0">
+          {orderedCategories.map((categoria, index) => {
             const projectCount = projectsByCategory[categoria.key]?.length || 0
+            // Primeras 3 ocupan 2 columnas cada una (3×2 = 6); las 2 siguientes ocupan 3 columnas cada una (2×3 = 6)
+            const colSpanClass = index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'
+            const heightClass = index < 3 ? 'h-[50vh] lg:h-[55vh]' : 'h-[50vh] lg:h-[65vh]'
             return (
-              <CategoryCard
+              <div
                 key={categoria.id}
-                categoria={categoria}
-                index={index}
-                projectCount={projectCount}
-                iconSize={globalIconSize}
-              />
+                className={`${heightClass} ${colSpanClass}`}
+              >
+                <CategoryCard
+                  categoria={categoria}
+                  index={index}
+                  projectCount={projectCount}
+                  iconSize={globalIconSize}
+                  isActive={activeCategoryId === categoria.id}
+                  onHoverStart={() => setActiveCategoryId(categoria.id)}
+                  onHoverEnd={() =>
+                    setActiveCategoryId((current) =>
+                      current === categoria.id ? null : current,
+                    )
+                  }
+                />
+              </div>
             )
           })}
         </div>

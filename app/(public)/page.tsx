@@ -1,23 +1,20 @@
 import { prisma } from '@/lib/prisma'
 import { HeroImageConfig, defaultHeroImages } from '@/lib/hero-config'
+import { getHomeData, resolveStatValue } from '@/lib/content/home'
+import { getConfiguracionContacto } from '@/lib/content/servicios-contacto'
+import { getConfiguracionEmpresa } from '@/lib/content/empresa'
 
-// Importaciones de componentes mejoradas con estilo de servicios
 import { HomeContent } from '@/components/home/HomeContent'
 
-// Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 async function getHeroImages(): Promise<HeroImageConfig> {
   try {
     const config = await prisma.configuracionSitio.findUnique({
-      where: { clave: 'hero_images' }
+      where: { clave: 'hero_images' },
     })
-
-    if (!config) {
-      return defaultHeroImages
-    }
-
+    if (!config) return defaultHeroImages
     return JSON.parse(config.valor) as HeroImageConfig
   } catch (error) {
     console.error('Error cargando imágenes del hero:', error)
@@ -31,22 +28,16 @@ async function getProjectsByCategory() {
       visible: true,
       destacadoEnCategoria: true,
     },
-    orderBy: {
-      createdAt: 'desc'
-    },
+    orderBy: { createdAt: 'desc' },
     include: {
-      imagenes: {
-        orderBy: {
-          orden: 'asc'
-        }
-      }
-    }
+      imagenes: { orderBy: { orden: 'asc' } },
+    },
   })
 
-  // Mapear los proyectos para incluir imagenPortada
-  const mappedProjects = projects.map(project => {
-    const imagenPortada = project.imagenes.find(img => img.tipo === 'PORTADA') || project.imagenes[0]
-    
+  const mappedProjects = projects.map((project) => {
+    const imagenPortada =
+      project.imagenes.find((img) => img.tipo === 'PORTADA') || project.imagenes[0]
+
     return {
       id: project.id,
       titulo: project.titulo,
@@ -55,16 +46,14 @@ async function getProjectsByCategory() {
       cliente: project.cliente,
       ubicacion: project.ubicacion,
       slug: project.slug,
-      imagenPortada: imagenPortada ? {
-        url: imagenPortada.url,
-        alt: imagenPortada.alt || project.titulo
-      } : undefined
+      imagenPortada: imagenPortada
+        ? { url: imagenPortada.url, alt: imagenPortada.alt || project.titulo }
+        : undefined,
     }
   })
 
-  // Agrupar por categoría
   const projectsByCategory: Record<string, typeof mappedProjects> = {}
-  mappedProjects.forEach(project => {
+  mappedProjects.forEach((project) => {
     if (!projectsByCategory[project.categoria]) {
       projectsByCategory[project.categoria] = []
     }
@@ -75,15 +64,93 @@ async function getProjectsByCategory() {
 }
 
 export default async function HomePage() {
-  const [projectsByCategory, heroImages] = await Promise.all([
-    getProjectsByCategory(),
-    getHeroImages()
-  ])
+  const [projectsByCategory, heroImages, home, contactoConfig, empresaConfig] =
+    await Promise.all([
+      getProjectsByCategory(),
+      getHeroImages(),
+      getHomeData(),
+      getConfiguracionContacto(),
+      getConfiguracionEmpresa(),
+    ])
+
+  const foundingYear = empresaConfig?.fundacion ?? 1996
+
+  // Transforma los stats de DB al formato que espera StatsStrip
+  const stats = home.stats.map((s) => ({
+    value: resolveStatValue(s, foundingYear),
+    suffix: s.valor === 'AUTO' ? '+' : s.valor.match(/^\d+$/) ? '+' : '',
+    label: s.label,
+  }))
+
+  // Especialidades del hero
+  const especialidades = home.especialidades.map((e) => e.label)
+
+  // Proyecto destacado (stats desde Json)
+  const featured = home.featured
+    ? {
+        name: home.featured.nombre,
+        location: home.featured.ubicacion,
+        image: home.featured.imagen,
+        description: home.featured.descripcion,
+        eyebrow: home.featured.eyebrowTexto,
+        ctaText: home.featured.ctaTexto,
+        ctaUrl: home.featured.ctaUrl,
+        stats: Array.isArray(home.featured.stats)
+          ? ((home.featured.stats as any) as Array<{ value: string; label: string }>)
+          : [],
+      }
+    : null
+
+  // Servicios destacados
+  const servicios = home.servicios.map((s) => ({
+    id: s.slug,
+    nombre: s.nombre,
+    subtitulo: s.subtitulo,
+    descripcion: s.descripcion,
+    video: s.video,
+    image: s.imagen,
+    color: s.color,
+    overlayColor: s.overlayColor,
+    overlayOpacity: s.overlayOpacity,
+    href: s.hrefAncla || `/servicios#${s.slug}`,
+  }))
+
+  // Copy
+  const clientesCopy = home.seccionConfig
+    ? {
+        eyebrow: home.seccionConfig.clientesEyebrow,
+        titulo: home.seccionConfig.clientesTitulo,
+        descripcion: home.seccionConfig.clientesDescripcion,
+      }
+    : null
+
+  const contactCopy = home.seccionConfig
+    ? {
+        eyebrow: home.seccionConfig.contactoEyebrow,
+        titulo: home.seccionConfig.contactoTitulo,
+        descripcion: home.seccionConfig.contactoDescripcion,
+        cta1: home.seccionConfig.contactoCta1Texto,
+        cta2: home.seccionConfig.contactoCta2Texto,
+      }
+    : null
+
+  const orden = Array.isArray(home.orden?.orden)
+    ? ((home.orden?.orden as any) as Array<{ clave: string; activo: boolean }>)
+    : []
 
   return (
     <HomeContent
       projectsByCategory={projectsByCategory}
       heroImages={heroImages}
+      especialidades={especialidades}
+      stats={stats}
+      featured={featured}
+      servicios={servicios}
+      clientesCopy={clientesCopy}
+      contactCopy={contactCopy}
+      contactoConfig={contactoConfig}
+      orden={orden}
+      foundingYear={foundingYear}
     />
   )
 }

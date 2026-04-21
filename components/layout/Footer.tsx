@@ -1,200 +1,127 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react"
-import { siteConfig } from "@/lib/site-config"
+import Link from 'next/link'
+import Image from 'next/image'
+import { Facebook, Instagram, Linkedin } from 'lucide-react'
 
-// Ícono de X (Twitter)
 const XIcon = ({ className }: { className?: string }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={className}
-    fill="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 )
 
 export function Footer() {
-  return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-4 md:py-12">
-        <div className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1.3fr_1fr] gap-4 md:gap-8">
-          {/* Información de la empresa */}
-          <div>
-            <div className="mb-3 md:mb-8">
-              <Image
-                src="/images/logo/logo-meisa-white.png"
-                alt="MEISA"
-                width={100}
-                height={28}
-                unoptimized
-                className="w-[100px] md:w-[120px] h-auto"
-              />
-            </div>
+  const year = new Date().getFullYear()
 
-            <div className="flex space-x-3 md:space-x-5">
-              <a
-                href="https://www.facebook.com/Metalicaseingenieria"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-blue-400 transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5 md:w-7 md:h-7" />
-              </a>
-              <a
-                href="https://www.instagram.com/meisa.s.a.s"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-blue-400 transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5 md:w-7 md:h-7" />
-              </a>
-              <a
-                href="https://co.linkedin.com/company/meisa-sas"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-blue-400 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5 md:w-7 md:h-7" />
-              </a>
-              <a
-                href="https://x.com/meisa_sas"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-blue-400 transition-colors"
-                aria-label="X (Twitter)"
-              >
-                <XIcon className="w-5 h-5 md:w-7 md:h-7" />
-              </a>
+  return (
+    <footer className="bg-slate-950 text-white border-t border-white/10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 py-14 md:py-20">
+        <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr_1.5fr] gap-10 md:gap-12">
+          <div className="col-span-2 md:col-span-1">
+            <Image
+              src="/images/logo/logo-meisa-white.png"
+              alt="MEISA"
+              width={120}
+              height={34}
+              unoptimized
+              className="w-[120px] h-auto mb-6"
+            />
+            <p className="text-white/50 font-lato text-sm max-w-sm leading-relaxed mb-6">
+              Metálicas e Ingeniería S.A.S. — Diseño, fabricación y montaje de estructuras metálicas desde 1996.
+            </p>
+            <div className="flex gap-5">
+              {[
+                { href: 'https://www.facebook.com/Metalicaseingenieria', icon: Facebook, label: 'Facebook' },
+                { href: 'https://www.instagram.com/meisa.s.a.s', icon: Instagram, label: 'Instagram' },
+                { href: 'https://co.linkedin.com/company/meisa-sas', icon: Linkedin, label: 'LinkedIn' },
+                { href: 'https://x.com/meisa_sas', icon: XIcon, label: 'X' },
+              ].map(({ href, icon: Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 hover:text-white transition-colors"
+                  aria-label={label}
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Enlaces rápidos */}
-          <div className="hidden md:block">
-            <h4 className="text-lg font-semibold mb-4">Empresa</h4>
-            <ul className="space-y-2">
+          <div>
+            <h4 className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-5">
+              Empresa
+            </h4>
+            <ul className="space-y-3 font-lato text-sm">
               <li>
-                <Link href="/empresa" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/empresa" className="text-white/80 hover:text-white transition-colors">
                   Sobre MEISA
                 </Link>
               </li>
               <li>
-                <Link href="/tecnologia" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/procesos-tecnologias" className="text-white/80 hover:text-white transition-colors">
                   Tecnología
                 </Link>
               </li>
               <li>
-                <Link href="/calidad" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/politicas" className="text-white/80 hover:text-white transition-colors">
                   Calidad y Certificaciones
                 </Link>
               </li>
               <li>
-                <Link href="/proyectos" className="text-gray-400 hover:text-white transition-colors">
-                  Portfolio de Proyectos
+                <Link href="/proyectos" className="text-white/80 hover:text-white transition-colors">
+                  Portfolio
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Ubicaciones */}
-          <div className="hidden md:block">
-            <h4 className="text-lg font-semibold mb-4">Nuestras Plantas</h4>
-            <div className="space-y-4">
-              <div>
-                <h5 className="text-white font-medium mb-1">Jamundí</h5>
-                <p className="text-gray-400 text-sm">
-                  Vía Panamericana 6 Sur – 195, Valle del Cauca
-                </p>
-              </div>
-              <div>
-                <h5 className="text-white font-medium mb-1">Popayán</h5>
-                <p className="text-gray-400 text-sm">
-                  Bodega E13 Parque Industrial, Cauca
-                </p>
-              </div>
-              <div>
-                <h5 className="text-white font-medium mb-1">Villa Rica</h5>
-                <p className="text-gray-400 text-sm">
-                  Vía Puerto Tejada, Cauca
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Contacto */}
           <div>
-            <h4 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Contacto Rápido</h4>
-            <div className="space-y-2 md:space-y-3">
-              <div className="flex items-start gap-2 md:gap-3">
-                <Phone className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mt-0.5" />
-                <p className="text-gray-400 text-xs md:text-sm leading-tight">
-                  <span className="text-white font-medium">+57 (2) 312 0050</span><br />
-                  <span className="text-xs hidden md:inline">Lun-Vie: 7AM-5PM</span>
-                </p>
-              </div>
-              <div className="flex items-start gap-2 md:gap-3">
-                <Mail className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mt-0.5" />
-                <p className="text-gray-400 text-xs md:text-sm leading-tight">
-                  <span className="text-white">contacto@meisa.com.co</span><br />
-                  <span className="text-xs hidden md:inline">Respuesta en 24h</span>
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-3 md:mt-6">
-              <Link
-                href="/contacto"
-                className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 text-white text-xs md:text-sm rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Solicitar Cotización
-              </Link>
-            </div>
+            <h4 className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-5">
+              Plantas
+            </h4>
+            <ul className="space-y-4 font-lato text-sm">
+              <li>
+                <p className="text-white font-semibold">Jamundí</p>
+                <p className="text-white/50 text-xs leading-relaxed">Vía Panamericana 6 Sur – 195, Valle del Cauca</p>
+              </li>
+              <li>
+                <p className="text-white font-semibold">Popayán</p>
+                <p className="text-white/50 text-xs leading-relaxed">Bodega E13 Parque Industrial, Cauca</p>
+              </li>
+              <li>
+                <p className="text-white font-semibold">Villa Rica</p>
+                <p className="text-white/50 text-xs leading-relaxed">Vía Puerto Tejada, Cauca</p>
+              </li>
+            </ul>
           </div>
+
         </div>
 
-        {/* Copyright */}
-        <div className="border-t border-gray-800 mt-3 md:mt-8 pt-3 md:pt-8">
-          <div className="text-center text-gray-400">
-            {/* Versión móvil - texto corto */}
-            <p className="text-[10px] leading-tight md:hidden">
-              &copy; {new Date().getFullYear()} MEISA S.A.S. Todos los derechos reservados
-            </p>
-            {/* Versión desktop - texto completo */}
-            <p className="hidden md:block text-sm leading-tight">
-              &copy; {new Date().getFullYear()} MEISA Metálicas e Ingeniería S.A.S. ® Todos los derechos reservados Colombia
-            </p>
-            <div className="mt-1 md:mt-2 flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-1 md:gap-0 md:space-x-4 text-[9px] md:text-xs">
-              <a
-                href="https://meisa.com.co/politica-tratamiento-datos/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors whitespace-nowrap"
-              >
-                Política de Datos
-              </a>
-              <span className="hidden md:inline">|</span>
-              <span className="md:hidden">•</span>
-              <a
-                href="https://meisa.com.co/manual-sagrilaft/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors whitespace-nowrap"
-              >
-                SAGRILAFT
-              </a>
-              <span className="hidden md:inline">|</span>
-              <span className="md:hidden">•</span>
-              <Link
-                href="/calidad"
-                className="hover:text-white transition-colors whitespace-nowrap"
-              >
-                Sistema de Gestión
-              </Link>
-            </div>
+        <div className="mt-14 md:mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <p className="font-lato text-white/40 text-xs">
+            © {year} MEISA Metálicas e Ingeniería S.A.S. · Todos los derechos reservados
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 font-lato text-white/40 text-xs">
+            <a
+              href="https://meisa.com.co/politica-tratamiento-datos/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Política de Datos
+            </a>
+            <a
+              href="https://meisa.com.co/manual-sagrilaft/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              SAGRILAFT
+            </a>
+            <Link href="/politicas" className="hover:text-white transition-colors">
+              Sistema de Gestión
+            </Link>
           </div>
         </div>
       </div>

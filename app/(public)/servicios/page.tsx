@@ -4,74 +4,24 @@ import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
 import { siteConfig } from '@/lib/site-config'
 import { BreadcrumbSchema } from '@/components/seo/JsonLdSchema'
+import { getProcesoFases } from '@/lib/content/servicios-contacto'
 
 // Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-// Proceso integral de MEISA - 4 fases optimizadas con toda la información clave
-const procesoIntegral = [
-  {
-    fase: 1,
-    titulo: 'Consultoría e Ingeniería BIM',
-    descripcion: 'Análisis estructural integral, modelado 3D avanzado y planeación detallada del proyecto',
-    fortalezas: [
-      'Análisis estructural y sísmico especializado',
-      'Modelado 3D con Tekla Structures y BIM 360',
-      'Software RISA-3D, RISAFloor, RISAConnection',
-      'Modelos BIM 3D con coordinación multidisciplinaria',
-      'Planos de fabricación y memorias de cálculo',
-      'Plan de ejecución integral del proyecto'
-    ],
+// Proceso integral — leído de la tabla ProcesoFase (Fase 4)
+async function getProcesoIntegral() {
+  const fases = await getProcesoFases()
+  return fases.map((f) => ({
+    fase: f.numero,
+    titulo: f.titulo,
+    descripcion: f.descripcion,
+    fortalezas: f.fortalezas,
     entregables: '',
-    icono: 'Calculator'
-  },
-  {
-    fase: 2,
-    titulo: 'Fabricación y Logística Integral',
-    descripcion: 'Producción especializada con tecnología CNC, gestión integrada y transporte de cargas pesadas',
-    fortalezas: [
-      'Corte CNC con FastCAM de alta precisión',
-      'Sistema de gestión de producción integrado',
-      'Soldadura calificada con certificación AWS',
-      'Protección anticorrosiva garantizada 50 años',
-      'Estructuras fabricadas con trazabilidad completa',
-      'Transporte especializado hasta 100 toneladas'
-    ],
-    entregables: '',
-    icono: 'Cog'
-  },
-  {
-    fase: 3,
-    titulo: 'Montaje Especializado',
-    descripcion: 'Instalación con equipos especializados, trabajo en altura certificado e inspección continua SIG',
-    fortalezas: [
-      'Izaje con grúas y equipos especializados',
-      'Trabajo en altura certificado',
-      'Inspección continua con Sistema SIG',
-      'Protocolos de seguridad ISO 45001',
-      'Estructura montada con documentación completa',
-      'Coordinación previa con modelo 3D'
-    ],
-    entregables: '',
-    icono: 'HardHat'
-  },
-  {
-    fase: 4,
-    titulo: 'Entrega y Garantía',
-    descripcion: 'Puesta en marcha documentada con garantía de calidad, capacitación y soporte especializado',
-    fortalezas: [
-      'Documentación As-Built completa',
-      'Capacitación técnica especializada al cliente',
-      'Garantía de calidad certificada',
-      'Soporte post-venta continuo',
-      'Transferencia completa de conocimiento',
-      'Seguimiento de desempeño del proyecto'
-    ],
-    entregables: '',
-    icono: 'Award'
-  }
-]
+    icono: f.icono ?? 'Settings',
+  }))
+}
 
 
 async function getServicios() {
@@ -106,7 +56,10 @@ async function getServicios() {
 }
 
 export default async function ServiciosPage() {
-  const servicios = await getServicios()
+  const [servicios, procesoIntegral] = await Promise.all([
+    getServicios(),
+    getProcesoIntegral(),
+  ])
 
   return (
     <>

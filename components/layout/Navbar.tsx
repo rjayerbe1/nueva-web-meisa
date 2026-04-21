@@ -1,423 +1,224 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react"
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 
-const menuItems = [
-  { name: "Inicio", href: "/" },
-  { name: "Proyectos", href: "/proyectos" },
-  { name: "Servicios", href: "/servicios" },
-  { name: "Empresa", href: "/empresa" },
-  { name: "Trayectoria", href: "/trayectoria" },
-  { name: "Procesos & Tecnologías", href: "/tecnologia" },
-  { name: "Políticas", href: "/calidad" },
-  { name: "Contacto", href: "/contacto" },
+export interface NavbarMenuItem {
+  name: string
+  href: string
+  image: string
+  target?: string
+}
+
+const DEFAULT_MENU_ITEMS: NavbarMenuItem[] = [
+  { name: 'Inicio', href: '/', image: '/images/proyectos/puente-destacado.jpg' },
+  { name: 'Proyectos', href: '/proyectos', image: '/images/hero/ciclopuente-atardecer.jpg' },
+  { name: 'Servicios', href: '/servicios', image: '/images/hero/estructura-perspectiva.jpg' },
+  { name: 'Empresa', href: '/empresa', image: '/images/about/meisa-planta-aerea.jpg' },
+  { name: 'Trayectoria', href: '/trayectoria', image: '/images/hero/coliseo-estructuras-rojas.jpg' },
+  { name: 'Procesos & Tecnologías', href: '/procesos-tecnologias', image: '/images/hero/montaje-grua.jpg' },
+  { name: 'Políticas', href: '/politicas', image: '/images/hero/techo-metalico.jpg' },
+  { name: 'Contacto', href: '/contacto', image: '/images/hero/hero-construccion-industrial.jpg' },
 ]
 
-export function Navbar() {
+interface NavbarProps {
+  items?: NavbarMenuItem[]
+}
+
+export function Navbar({ items }: NavbarProps = {}) {
+  const menuItems = items && items.length > 0 ? items : DEFAULT_MENU_ITEMS
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const pathname = usePathname()
+
+  const activeIndex = hoveredIndex ?? 0
+  const activeImage = menuItems[activeIndex]?.image ?? menuItems[0]?.image
 
   return (
     <>
-      {/* Navbar minimal - botón MENU mejorado con hamburguesa */}
-      <nav className="fixed top-8 right-8 z-50">
+      {/* Menu trigger */}
+      <nav className="fixed top-6 right-6 md:top-8 md:right-8 z-50">
         <button
           onClick={() => setMenuOpen(true)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="group flex items-center gap-2 bg-white px-3 py-2.5 text-xs hover:bg-gray-900 transition-all duration-300 tracking-wider uppercase font-lato font-bold shadow-lg border border-gray-200 hover:border-gray-900"
+          className="group flex items-center gap-3 bg-slate-950 text-white px-4 py-3 text-[11px] tracking-[0.22em] uppercase font-lato font-bold border border-white/20 hover:bg-white hover:text-slate-950 hover:border-white transition-colors duration-300"
+          aria-label="Abrir menú"
         >
-          {/* Icono hamburguesa animado */}
-          <div className="flex flex-col gap-1 w-4">
-            <motion.span
-              animate={{
-                rotate: isHovered ? 45 : 0,
-                y: isHovered ? 4 : 0,
-              }}
-              transition={{ duration: 0.3 }}
-              className="h-0.5 w-full bg-gray-900 group-hover:bg-white transition-colors duration-300"
-            />
-            <motion.span
-              animate={{
-                opacity: isHovered ? 0 : 1,
-                scaleX: isHovered ? 0 : 1,
-              }}
-              transition={{ duration: 0.3 }}
-              className="h-0.5 w-full bg-gray-900 group-hover:bg-white transition-colors duration-300"
-            />
-            <motion.span
-              animate={{
-                rotate: isHovered ? -45 : 0,
-                y: isHovered ? -4 : 0,
-              }}
-              transition={{ duration: 0.3 }}
-              className="h-0.5 w-full bg-gray-900 group-hover:bg-white transition-colors duration-300"
-            />
-          </div>
-
-          <span className="text-gray-900 group-hover:text-white transition-colors duration-300">
-            menu
+          <span className="flex flex-col gap-[5px] w-4">
+            <span className="h-px w-full bg-current" />
+            <span className="h-px w-full bg-current" />
+            <span className="h-px w-2/3 bg-current" />
           </span>
+          Menu
         </button>
       </nav>
 
-      {/* Menú Fullscreen - Estilo Arqui9 con imagen decorativa */}
+      {/* Fullscreen overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white z-50 overflow-hidden"
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="fixed inset-0 bg-slate-950 text-white z-50 overflow-hidden"
           >
-            {/* Logo centrado arriba - SOLO DESKTOP */}
-            <div className="hidden md:block absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
+            {/* Top bar */}
+            <div className="absolute top-0 left-0 right-0 p-6 md:p-8 flex items-center justify-between z-20">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="/images/logo/logo-meisa-white.png"
                 alt="MEISA"
-                width={180}
-                height={51}
-                style={{ height: "auto" }}
+                width={120}
+                height={34}
                 unoptimized
+                className="w-[100px] md:w-[120px] h-auto"
               />
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="group flex items-center gap-3 px-4 py-3 text-[11px] tracking-[0.22em] uppercase font-lato font-bold border border-white/20 hover:bg-white hover:text-slate-950 hover:border-white transition-colors duration-300"
+                aria-label="Cerrar menú"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <line x1="3" y1="3" x2="13" y2="13" />
+                  <line x1="13" y1="3" x2="3" y2="13" />
+                </svg>
+                Close
+              </button>
             </div>
 
-            {/* Botón Close - Mismo estilo y posición que el botón MENU */}
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="absolute top-8 right-8 z-50 group flex items-center gap-2 bg-white px-3 py-2.5 text-xs hover:bg-gray-900 transition-all duration-300 tracking-wider uppercase font-lato font-bold shadow-lg border border-gray-200 hover:border-gray-900"
-            >
-              {/* Icono X animado */}
-              <div className="flex items-center justify-center w-4 h-4">
-                <svg className="w-full h-full" viewBox="0 0 16 16" fill="none">
-                  <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" strokeWidth="2" className="text-gray-900 group-hover:text-white transition-colors duration-300"/>
-                  <line x1="14" y1="2" x2="2" y2="14" stroke="currentColor" strokeWidth="2" className="text-gray-900 group-hover:text-white transition-colors duration-300"/>
-                </svg>
-              </div>
-              <span className="text-gray-900 group-hover:text-white transition-colors duration-300">
-                close
-              </span>
-            </button>
-
             <div className="h-full flex flex-col md:flex-row">
-              {/* Izquierda - Contenedor Visual con formas decorativas - SOLO DESKTOP */}
-              <div className="hidden md:flex w-1/2 relative items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-white p-12">
-                {/* Contenedor principal - Tamaño reducido */}
-                <div className="relative w-full h-full max-w-[500px] max-h-[600px]">
-                  {/* Marco cuadrado decorativo exterior - con rotación sutil */}
+              {/* Left: rotating image based on hover */}
+              <div className="hidden md:block w-1/2 relative overflow-hidden">
+                <AnimatePresence mode="wait">
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-                    className="absolute inset-0 border border-gray-200"
-                  />
-
-                  {/* Línea diagonal 1 - con animación de dibujo */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.8 }}
-                    className="absolute inset-0 pointer-events-none"
-                  >
-                    <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
-                      <motion.line
-                        x1="0" y1="100" x2="100" y2="0"
-                        stroke="currentColor"
-                        strokeWidth="0.2"
-                        className="text-gray-300"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
-                      />
-                    </svg>
-                  </motion.div>
-
-                  {/* Línea diagonal 2 - con animación de dibujo inversa */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="absolute inset-0 pointer-events-none"
-                  >
-                    <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
-                      <motion.line
-                        x1="0" y1="0" x2="100" y2="100"
-                        stroke="currentColor"
-                        strokeWidth="0.2"
-                        className="text-gray-300"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ delay: 0.6, duration: 1, ease: "easeInOut" }}
-                      />
-                    </svg>
-                  </motion.div>
-
-                  {/* Imagen de fondo dentro del contenedor - Más pequeña con inset-16 */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 1.1 }}
+                    key={activeImage}
+                    initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.7, duration: 1, ease: "easeOut" }}
-                    whileHover={{ scale: 1.02 }}
-                    className="absolute inset-16 overflow-hidden cursor-pointer"
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="absolute inset-0"
                   >
                     <Image
-                      src="/images/hero/centro-comercial.webp"
-                      alt="MEISA Proyectos"
+                      src={activeImage}
+                      alt=""
                       fill
-                      className="object-cover transition-transform duration-700"
+                      sizes="50vw"
+                      priority
+                      className="object-cover"
                     />
-                    {/* Overlay sutil con animación de hover */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-blue-900/10"
-                      whileHover={{ opacity: 0.7 }}
-                      transition={{ duration: 0.3 }}
-                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-slate-950/10 to-slate-950/50" />
+                    <div className="absolute inset-0 bg-slate-950/20" />
                   </motion.div>
+                </AnimatePresence>
 
-                  {/* Pequeño marco decorativo en esquina superior - animado desde fuera */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -30, y: -30 }}
-                    animate={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{ delay: 0.8, duration: 0.6, type: "spring", bounce: 0.4 }}
-                    className="absolute -top-3 -left-3 w-16 h-16 border-l-2 border-t-2 border-blue-700"
-                  />
-
-                  {/* Pequeño marco decorativo en esquina inferior - animado desde fuera */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 30, y: 30 }}
-                    animate={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{ delay: 0.9, duration: 0.6, type: "spring", bounce: 0.4 }}
-                    className="absolute -bottom-3 -right-3 w-16 h-16 border-r-2 border-b-2 border-blue-700"
-                  />
-
-                  {/* Punto decorativo animado en esquina superior derecha */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1, duration: 0.4 }}
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-blue-700 rounded-full"
-                  />
-
-                  {/* Punto decorativo animado en esquina inferior izquierda */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.1, duration: 0.4 }}
-                    className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-700 rounded-full"
-                  />
+                {/* Current section label (bottom of image) */}
+                <div className="absolute bottom-8 left-8 md:left-10 z-10">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeIndex}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-white/60 font-lato text-[11px] uppercase tracking-[0.22em]">
+                        {String(activeIndex + 1).padStart(2, '0')} — {menuItems[activeIndex].name}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </div>
 
-              {/* Derecha - Menú */}
-              <div className="w-full md:w-1/2 flex flex-col justify-between md:justify-center px-8 md:px-20 py-20 md:py-0 relative z-10">
-                {/* Logo en móvil - arriba */}
-                <div className="md:hidden flex justify-center mb-8">
-                  <Image
-                    src="/images/logo/logo-meisa.png"
-                    alt="MEISA"
-                    width={160}
-                    height={46}
-                    unoptimized
-                  />
-                </div>
-
-                {/* Items del menú */}
-                <div className="space-y-4 md:space-y-4 flex-1 md:flex-initial flex flex-col justify-center">
-                  {menuItems.map((item, i) => (
-                    <motion.div
-                      key={item.name}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + i * 0.1 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className={`group flex items-center gap-3 md:gap-4 text-gray-900 text-3xl md:text-6xl font-bold hover:text-blue-700 transition-all duration-300 font-lato ${
-                          pathname === item.href ? 'text-blue-700' : ''
-                        }`}
-                        onClick={() => setMenuOpen(false)}
+              {/* Right: menu items */}
+              <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-28 pb-28 md:pt-0 md:pb-0 relative">
+                <ul className="space-y-2 md:space-y-3">
+                  {menuItems.map((item, i) => {
+                    const isActive = pathname === item.href
+                    return (
+                      <motion.li
+                        key={item.name}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 + i * 0.06, duration: 0.5 }}
+                        onMouseEnter={() => setHoveredIndex(i)}
+                        onFocus={() => setHoveredIndex(i)}
                       >
-                        {/* Icono decorativo pequeño */}
-                        <span className="w-5 h-6 md:w-8 md:h-10 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <svg viewBox="0 0 32 40" fill="none" className="w-full h-full">
-                            <path d="M16 0L32 10V30L16 40L0 30V10L16 0Z" fill="currentColor" fillOpacity="0.1" />
-                            <path d="M16 0L32 10M16 0L0 10M16 0V40M32 10V30M32 10L0 10M0 10V30M32 30L16 40M32 30L0 30M0 30L16 40" stroke="currentColor" strokeWidth="1" />
-                          </svg>
-                        </span>
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
+                        <Link
+                          href={item.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={`group relative flex items-baseline gap-4 md:gap-6 font-bebas uppercase leading-[0.95] tracking-tight transition-colors duration-300 ${
+                            isActive ? 'text-white' : 'text-white/40 hover:text-white'
+                          }`}
+                        >
+                          <span className="font-lato font-bold text-[10px] md:text-xs tracking-[0.22em] text-white/30 group-hover:text-white/70 transition-colors duration-300">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                          <span className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl">
+                            {item.name}
+                          </span>
+                        </Link>
+                      </motion.li>
+                    )
+                  })}
+                </ul>
 
-                {/* Info de contacto abajo - SOLO DESKTOP */}
+                {/* Bottom info */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                  className="hidden md:block absolute bottom-12 right-20"
+                  transition={{ delay: 0.7 }}
+                  className="absolute bottom-8 md:bottom-10 left-8 md:left-14 lg:left-20 right-8 md:right-14 lg:right-20 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
                 >
-                  <a
-                    href="mailto:contacto@meisa.com.co"
-                    className="text-gray-500 hover:text-blue-700 text-sm font-lato uppercase tracking-wide transition-colors duration-300"
-                  >
-                    contacto@meisa.com.co
-                  </a>
+                  <div>
+                    <p className="text-white/30 font-lato text-[10px] uppercase tracking-[0.22em] mb-2">
+                      Contacto
+                    </p>
+                    <a
+                      href="mailto:contacto@meisa.com.co"
+                      className="text-white font-lato font-bold text-sm md:text-base hover:text-white/70 transition-colors duration-300"
+                    >
+                      contacto@meisa.com.co
+                    </a>
+                  </div>
+                  <div className="flex gap-5 text-white/40">
+                    <a
+                      href="https://www.facebook.com/Metalicaseingenieria"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook"
+                      className="hover:text-white transition-colors"
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                      </svg>
+                    </a>
+                    <a
+                      href="https://www.instagram.com/meisa.s.a.s"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      className="hover:text-white transition-colors"
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.849.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.849.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                      </svg>
+                    </a>
+                    <a
+                      href="https://co.linkedin.com/company/meisa-sas"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="hover:text-white transition-colors"
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+                      </svg>
+                    </a>
+                  </div>
                 </motion.div>
               </div>
-            </div>
-
-            {/* Forma decorativa de fondo para desktop - Diseño estructural */}
-            <div className="hidden md:block absolute bottom-0 right-0 w-1/2 h-64 pointer-events-none overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="absolute inset-0"
-              >
-                <svg
-                  className="w-full h-full"
-                  viewBox="0 0 600 256"
-                  fill="none"
-                  preserveAspectRatio="xMaxYMax meet"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {/* Cuadrícula de fondo */}
-                  <defs>
-                    <pattern id="grid-desktop" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
-                    </pattern>
-                  </defs>
-
-                  {/* Aplicar cuadrícula */}
-                  <rect width="600" height="256" fill="url(#grid-desktop)" />
-
-                  {/* Líneas estructurales horizontales */}
-                  <line x1="0" y1="200" x2="600" y2="200" stroke="#1e40af" strokeWidth="1" opacity="0.12"/>
-                  <line x1="0" y1="150" x2="600" y2="150" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
-                  <line x1="0" y1="100" x2="600" y2="100" stroke="#1e40af" strokeWidth="0.5" opacity="0.06"/>
-
-                  {/* Líneas verticales principales */}
-                  <line x1="100" y1="120" x2="100" y2="256" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
-                  <line x1="250" y1="80" x2="250" y2="256" stroke="#1e40af" strokeWidth="1.5" opacity="0.15"/>
-                  <line x1="400" y1="100" x2="400" y2="256" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
-                  <line x1="550" y1="120" x2="550" y2="256" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
-
-                  {/* Rectángulos estructurales grandes */}
-                  <rect x="60" y="170" width="80" height="80" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
-                  <rect x="210" y="130" width="80" height="80" fill="none" stroke="#1e40af" strokeWidth="1.5" opacity="0.12"/>
-                  <rect x="360" y="170" width="80" height="80" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
-                  <rect x="510" y="190" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.08"/>
-
-                  {/* Pequeños cuadrados de detalle */}
-                  <rect x="150" y="210" width="30" height="30" fill="#1e40af" opacity="0.06"/>
-                  <rect x="320" y="210" width="30" height="30" fill="#1e40af" opacity="0.06"/>
-                  <rect x="480" y="220" width="25" height="25" fill="#1e40af" opacity="0.05"/>
-
-                  {/* Líneas diagonales de soporte */}
-                  <line x1="140" y1="200" x2="180" y2="150" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
-                  <line x1="290" y1="200" x2="330" y2="130" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
-                  <line x1="440" y1="200" x2="480" y2="150" stroke="#1e40af" strokeWidth="0.5" opacity="0.08"/>
-
-                  {/* Marco decorativo grande en esquina */}
-                  <rect x="450" y="40" width="120" height="120" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.08"/>
-
-                  {/* Círculos técnicos pequeños */}
-                  <circle cx="250" cy="80" r="4" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.1"/>
-                  <circle cx="540" cy="100" r="3" fill="#1e40af" opacity="0.06"/>
-
-                  {/* Gradiente de fondo para fade out */}
-                  <rect width="600" height="256" fill="url(#structural_gradient_desktop)" />
-
-                  <defs>
-                    <linearGradient
-                      id="structural_gradient_desktop"
-                      x1="300"
-                      y1="0"
-                      x2="300"
-                      y2="256"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0" stopColor="#ffffff" stopOpacity="0.95"/>
-                      <stop offset="0.5" stopColor="#ffffff" stopOpacity="0.3"/>
-                      <stop offset="1" stopColor="#ffffff" stopOpacity="0"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </motion.div>
-            </div>
-
-            {/* Forma decorativa de fondo para móvil - Diseño estructural */}
-            <div className="md:hidden absolute bottom-0 left-0 right-0 h-56 pointer-events-none overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="absolute inset-0"
-              >
-                <svg
-                  className="w-full h-full"
-                  viewBox="0 0 375 224"
-                  fill="none"
-                  preserveAspectRatio="xMidYMax meet"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {/* Cuadrícula de fondo */}
-                  <defs>
-                    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-                      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
-                    </pattern>
-                  </defs>
-
-                  {/* Aplicar cuadrícula */}
-                  <rect width="375" height="224" fill="url(#grid)" />
-
-                  {/* Líneas estructurales horizontales */}
-                  <line x1="0" y1="180" x2="375" y2="180" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
-                  <line x1="0" y1="140" x2="375" y2="140" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
-
-                  {/* Líneas verticales principales */}
-                  <line x1="50" y1="100" x2="50" y2="224" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
-                  <line x1="187.5" y1="80" x2="187.5" y2="224" stroke="#1e40af" strokeWidth="1.5" opacity="0.2"/>
-                  <line x1="325" y1="100" x2="325" y2="224" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
-
-                  {/* Rectángulos estructurales */}
-                  <rect x="30" y="160" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.12"/>
-                  <rect x="157.5" y="120" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.15"/>
-                  <rect x="285" y="160" width="60" height="60" fill="none" stroke="#1e40af" strokeWidth="1" opacity="0.12"/>
-
-                  {/* Pequeños cuadrados de detalle */}
-                  <rect x="100" y="190" width="20" height="20" fill="#1e40af" opacity="0.08"/>
-                  <rect x="255" y="190" width="20" height="20" fill="#1e40af" opacity="0.08"/>
-
-                  {/* Líneas diagonales de soporte */}
-                  <line x1="90" y1="180" x2="120" y2="140" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
-                  <line x1="255" y1="180" x2="285" y2="140" stroke="#1e40af" strokeWidth="0.5" opacity="0.1"/>
-
-                  {/* Gradiente de fondo */}
-                  <rect width="375" height="224" fill="url(#structural_gradient)" />
-
-                  <defs>
-                    <linearGradient
-                      id="structural_gradient"
-                      x1="187.5"
-                      y1="0"
-                      x2="187.5"
-                      y2="224"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0" stopColor="#ffffff" stopOpacity="0.9"/>
-                      <stop offset="1" stopColor="#ffffff" stopOpacity="0"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </motion.div>
             </div>
           </motion.div>
         )}

@@ -37,13 +37,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/tecnologia`,
+      url: `${BASE_URL}/procesos-tecnologias`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/calidad`,
+      url: `${BASE_URL}/politicas`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,

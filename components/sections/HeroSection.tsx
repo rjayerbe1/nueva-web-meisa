@@ -10,7 +10,7 @@ import { LogoHoverEffect } from "@/components/logo/LogoHoverEffect"
 import { HeroImageLoader } from "@/components/loading/HeroImageLoader"
 import { useLoading } from "@/contexts/LoadingContext"
 
-const specialties = [
+const DEFAULT_SPECIALTIES = [
   'DISEÑO\nESTRUCTURAL',
   'FABRICACIÓN\nMETÁLICA',
   'MONTAJE\nESPECIALIZADO',
@@ -19,9 +19,11 @@ const specialties = [
 
 interface HeroSectionProps {
   heroImages: HeroImageConfig
+  specialties?: string[]
 }
 
-export function HeroSection({ heroImages }: HeroSectionProps) {
+export function HeroSection({ heroImages, specialties: specialtiesProp }: HeroSectionProps) {
+  const specialties = specialtiesProp && specialtiesProp.length > 0 ? specialtiesProp : DEFAULT_SPECIALTIES
   const [currentSpecialty, setCurrentSpecialty] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const [isMobile, setIsMobile] = useState(false)

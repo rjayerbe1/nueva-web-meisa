@@ -773,3 +773,459 @@ enum TipoComponenteBrochure {
   SPACER
   CUSTOM_HTML
 }
+
+// =====================================================================
+// Admin v2 — Fase 1: Plantas
+// Fuente única para las 3 plantas de MEISA (Jamundí, Popayán, Villa Rica).
+// Reemplaza PLANTS en lib/company-data.ts y plantas hardcoded en
+// app/(public)/contacto/page.tsx — usadas por /empresa y /contacto.
+// =====================================================================
+model Plant {
+  id                    String   @id @default(cuid())
+  slug                  String   @unique
+  nombre                String
+  tipo                  String?
+  ubicacion             String
+  ciudad                String?
+  departamento          String?
+  areaM2                Int?
+  naves                 Int?
+  capacidadGruaTon      Int?
+  mesasCnc              Int?
+  equipamientoAdicional String[] @default([])
+  telefono              String?
+  email                 String?
+  horario               String?
+  googleMapsUrl         String?
+  mapEmbedUrl           String?
+  lat                   Float?
+  lng                   Float?
+  imagen                String?
+  descripcion           String?
+  colorGradient         String?
+  orden                 Int      @default(0)
+  activo                Boolean  @default(true)
+  esSedePrincipal       Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("plantas")
+}
+
+// =====================================================================
+// Admin v2 — Fase 2: Empresa
+// Reemplaza COMPANY_INFO, LEADERSHIP_QUOTE, COMPANY_HISTORY, SAFETY_CONTENT,
+// SUSTAINABILITY_CONTENT, CORPORATE_VALUES, CERTIFICATIONS,
+// STANDARDS_COMPLIANCE en lib/company-data.ts — usados en /empresa.
+// =====================================================================
+
+// Singleton (usa id = "default")
+model ConfiguracionEmpresa {
+  id                        String   @id @default("default")
+  // Identidad
+  nombre                    String   @default("MEISA")
+  nombreCompleto            String   @default("Metálicas e Ingeniería S.A.S.")
+  mision                    String
+  vision                    String
+  descripcion               String
+  fundacion                 Int      @default(1996)
+  // Liderazgo (cita)
+  liderQuoteTexto           String?
+  liderQuoteAutor           String?
+  liderQuoteCargo           String?
+  liderQuoteImagen          String?
+  // Historia
+  historiaIntro             String[] @default([])
+  // "Creemos en..."
+  frasesCreemos             String[] @default([])
+  // Compromiso — Seguridad
+  seguridadTitulo           String?
+  seguridadSubtitulo        String?
+  seguridadItems            String[] @default([])
+  seguridadMeta             String?
+  // Compromiso — Sostenibilidad
+  sostenibilidadTitulo      String?
+  sostenibilidadSubtitulo   String?
+  sostenibilidadItems       String[] @default([])
+  sostenibilidadCompromiso  String?
+  updatedAt                 DateTime @updatedAt
+
+  @@map("configuracion_empresa")
+}
+
+model CompanyValue {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  nombre      String
+  descripcion String
+  icono       String?
+  imagen      String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("valores_corporativos")
+}
+
+model TimelineHito {
+  id          String   @id @default(cuid())
+  periodo     String   // "1996", "2006-2010"
+  titulo      String
+  descripcion String
+  destacado   String?  // "Inicio de operaciones", "RUC Certificado"
+  icono       String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("timeline_hitos")
+}
+
+model Certificacion {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  nombre          String
+  nombreCompleto  String?
+  descripcion     String?
+  emisor          String?
+  importancia     String?
+  beneficios      String[] @default([])
+  logo            String?
+  documentoUrl    String?
+  vigenciaDesde   DateTime?
+  vigenciaHasta   DateTime?
+  orden           Int      @default(0)
+  activo          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("certificaciones")
+}
+
+model Norma {
+  id          String   @id @default(cuid())
+  codigo      String   @unique // "NSR-10", "AWS D1.1"
+  descripcion String
+  categoria   String?
+  logo        String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("normas")
+}
+
+// =====================================================================
+// Admin v2 — Fase 3: Procesos & Tecnologías + Políticas
+// Reemplaza arrays hardcoded en app/(public)/tecnologia/TecnologiaContent.tsx
+// y app/(public)/calidad/CalidadContent.tsx.
+// =====================================================================
+
+// Encabezados de sub-secciones en /procesos-tecnologias y /politicas
+model GrupoSeccion {
+  id            String   @id @default(cuid())
+  pagina        String   // "tecnologia" | "calidad"
+  clave         String   // "diseno-analisis", "sig", etc.
+  titulo        String
+  subtitulo     String?
+  descripcion   String?
+  icono         String?
+  colorGradient String?
+  orden         Int      @default(0)
+  activo        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([pagina, clave])
+  @@map("grupos_seccion")
+}
+
+// Software usado por MEISA — sección "Software" en /procesos-tecnologias
+model Tecnologia {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  categoria    String   // "bim-diseno" | "analisis-estructural" | "conexiones" | "otro"
+  nombre       String
+  especialidad String?
+  descripcion  String?
+  imagen       String?
+  orden        Int      @default(0)
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("tecnologias")
+}
+
+// Maquinaria y equipos — sección "Equipos" en /procesos-tecnologias
+model Equipo {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  categoria   String   // "corte-cnc" | "izaje" | "especializados" | "otro"
+  nombre      String
+  descripcion String?
+  specs       String[] @default([])
+  imagen      String?
+  plantaId    String?  // opcional: relaciona con Plant
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("equipos")
+}
+
+// Procesos digitales — sección "Control Digital" en /procesos-tecnologias
+model ProcesoDigital {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  nombre      String
+  descripcion String?
+  beneficios  String[] @default([])
+  imagen      String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("procesos_digitales")
+}
+
+// Políticas corporativas — sección "Políticas" en /politicas
+model Politica {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  titulo       String
+  descripcion  String?
+  compromisos  String[] @default([])
+  imagen       String?
+  documentoUrl String?
+  orden        Int      @default(0)
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("politicas")
+}
+
+// Pilares SIG — sección "Sistema Integrado de Gestión" en /politicas
+model PilarSIG {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titulo        String
+  descripcion   String?
+  icono         String?
+  colorGradient String?
+  orden         Int      @default(0)
+  activo        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("pilares_sig")
+}
+
+// =====================================================================
+// Admin v2 — Fase 4: Servicios "Proceso Integral" + Contacto
+// Reemplaza arrays hardcoded:
+//   - procesoIntegral en app/(public)/servicios/page.tsx
+//   - tiposProyecto, serviciosDisponibles en contacto/ContactoContent.tsx
+//   - datos de contacto generales (teléfonos, email, horario)
+// =====================================================================
+
+// 4 fases del Proceso Integral mostrado en /servicios
+model ProcesoFase {
+  id          String   @id @default(cuid())
+  numero      Int      @unique // 1, 2, 3, 4
+  titulo      String
+  descripcion String
+  fortalezas  String[] @default([])
+  icono       String?
+  imagen      String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("proceso_fases")
+}
+
+// Opciones reusables de selects — tipos de proyecto y servicios del formulario
+model FormOption {
+  id        String   @id @default(cuid())
+  grupo     String   // "TIPO_PROYECTO" | "SERVICIO_CONTACTO"
+  valor     String   // ej. "estructura-edificacion"
+  label     String   // ej. "Estructura metálica para edificación"
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([grupo, valor])
+  @@map("form_options")
+}
+
+// Singleton — datos generales de contacto (usado en /contacto y Footer)
+model ConfiguracionContacto {
+  id              String   @id @default("default")
+  pbx             String?
+  movil           String?
+  email           String?
+  horarioSemana   String?
+  horarioSabado   String?
+  whatsappNumero  String?
+  direccionLinea1 String?
+  direccionLinea2 String?
+  updatedAt       DateTime @updatedAt
+
+  @@map("configuracion_contacto")
+}
+
+// =====================================================================
+// Admin v2 — Fase 4b: Home (/) 100% editable
+// =====================================================================
+
+// Especialidades rotativas del hero (4 items en el sitio actual)
+model HomeHeroEspecialidad {
+  id        String   @id @default(cuid())
+  label     String   // Soporta saltos de línea: "DISEÑO\nESTRUCTURAL"
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("home_hero_especialidades")
+}
+
+// Stats de la franja StatsStrip (4 items actuales)
+model HomeStat {
+  id        String   @id @default(cuid())
+  clave     String   @unique
+  valor     String   // Puede ser número o "AUTO" para cálculos dinámicos
+  label     String
+  icono     String?
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("home_stats")
+}
+
+// Proyecto destacado del home (singleton — 1 activo por vez)
+model HomeFeaturedProject {
+  id            String   @id @default("default")
+  proyectoSlug  String?
+  nombre        String
+  ubicacion     String?
+  anioEntregado String?
+  imagen        String?
+  descripcion   String?
+  stats         Json?    // Array [{value, label}, ...] — 3 stats
+  ctaTexto      String?
+  ctaUrl        String?
+  eyebrowTexto  String?
+  updatedAt     DateTime @updatedAt
+
+  @@map("home_featured_project")
+}
+
+// 4 tarjetas de servicios destacados en el home (ServicesSectionNew)
+model HomeServicioDestacado {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  servicioSlug   String?
+  nombre         String
+  subtitulo      String?
+  descripcion    String?
+  video          String?
+  imagen         String?
+  color          String?
+  overlayColor   String?
+  overlayOpacity Float?   @default(0.4)
+  hrefAncla      String?
+  orden          Int      @default(0)
+  activo         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("home_servicios_destacados")
+}
+
+// Copy editable de secciones pequeñas del home
+model HomeSeccionConfig {
+  id                      String   @id @default("default")
+  clientesEyebrow         String?
+  clientesTitulo          String?
+  clientesDescripcion     String?
+  clientesCtaTexto        String?
+  clientesCtaUrl          String?
+  clientesProyectosTitulo String?
+  contactoEyebrow         String?
+  contactoTitulo          String?
+  contactoDescripcion     String?
+  contactoCta1Texto       String?
+  contactoCta2Texto       String?
+  updatedAt               DateTime @updatedAt
+
+  @@map("home_seccion_config")
+}
+
+// Orden y visibilidad de las 7 secciones del home
+model OrdenSeccionesHome {
+  id        String   @id @default("default")
+  orden     Json     // Array de { clave, activo, label }
+  updatedAt DateTime @updatedAt
+
+  @@map("orden_secciones_home")
+}
+
+// =====================================================================
+// Admin v2 — Fase 5: Navegación editable
+// =====================================================================
+
+// Items del menú principal (Navbar)
+model MenuItem {
+  id        String   @id @default(cuid())
+  label     String
+  href      String
+  imagen    String?
+  target    String?
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("menu_items")
+}
+
+// Enlaces del Footer agrupados
+model FooterLink {
+  id        String   @id @default(cuid())
+  grupo     String
+  label     String
+  href      String
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("footer_links")
+}
+
+// Redes sociales
+model SocialLink {
+  id        String   @id @default(cuid())
+  red       String   @unique
+  url       String
+  label     String?
+  icono     String?
+  orden     Int      @default(0)
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("social_links")
+}
