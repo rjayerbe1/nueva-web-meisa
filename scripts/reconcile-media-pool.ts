@@ -9,6 +9,8 @@
 import { prisma } from "../lib/prisma"
 import { MediaKind, Prisma } from "@prisma/client"
 import { pathFromPublicUrl } from "../lib/media/gcs"
+import fs from "node:fs"
+import path from "node:path"
 
 type Source = {
   model: string
@@ -384,7 +386,43 @@ async function collectSources(): Promise<Source[]> {
     urls: (await prisma.menuItem.findMany({ select: { imagen: true } })).map((m) => m.imagen),
   })
 
+  /* ── Archivos locales en /public/videos/ (recursivo) ── */
+  sources.push(...scanLocalVideos())
+
   return sources
+}
+
+/**
+ * Escanea /public/videos/ recursivamente y devuelve URLs relativas listas
+ * para ir al pool. Los archivos se sirven como estáticos por Next.js en
+ * la ruta /videos/... (sin /public prefix).
+ */
+function scanLocalVideos(): Source[] {
+  const publicDir = path.join(process.cwd(), "public", "videos")
+  if (!fs.existsSync(publicDir)) return []
+
+  const urls: string[] = []
+  const walk = (dir: string, prefix: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      const rel = prefix ? `${prefix}/${entry.name}` : entry.name
+      if (entry.isDirectory()) {
+        walk(full, rel)
+      } else if (/\.(mp4|mov|webm|avi|m4v)$/i.test(entry.name)) {
+        urls.push(`/videos/${rel}`)
+      }
+    }
+  }
+  walk(publicDir, "")
+
+  return [
+    {
+      model: "LocalFile:video",
+      folder: "local-videos",
+      urls,
+      kind: MediaKind.VIDEO,
+    },
+  ]
 }
 
 async function main() {

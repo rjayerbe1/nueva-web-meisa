@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma"
-import { PoliticasAdminTabs } from "@/components/admin/politicas/PoliticasAdminTabs"
+import { CalidadAdminTabs } from "@/components/admin/calidad/CalidadAdminTabs"
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
-export default async function PoliticasAdminPage() {
+export default async function CalidadAdminPage() {
   const [politicas, pilares, normas, gruposCalidad] = await Promise.all([
     prisma.politica.findMany({ orderBy: { orden: "asc" } }),
     prisma.pilarSIG.findMany({ orderBy: { orden: "asc" } }),
@@ -16,7 +16,7 @@ export default async function PoliticasAdminPage() {
   ])
 
   return (
-    <PoliticasAdminTabs
+    <CalidadAdminTabs
       politicas={politicas}
       pilares={pilares}
       normas={normas}

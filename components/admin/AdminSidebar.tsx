@@ -56,7 +56,7 @@ const navigation: NavItem[] = [
     href: "/admin/procesos-tecnologias",
     icon: Wrench,
   },
-  { kind: "item", name: "Políticas", href: "/admin/politicas", icon: Scroll },
+  { kind: "item", name: "Calidad", href: "/admin/calidad", icon: Scroll },
   {
     kind: "item",
     name: "Servicios",

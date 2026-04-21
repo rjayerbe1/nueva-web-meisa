@@ -9,7 +9,7 @@ const ROUTE_LABELS: Record<string, string> = {
   home: "Inicio",
   empresa: "Empresa",
   "procesos-tecnologias": "Procesos y Tecnologías",
-  politicas: "Políticas",
+  calidad: "Calidad",
   services: "Servicios",
   "proceso-integral": "Proceso Integral",
   contacto: "Contacto",

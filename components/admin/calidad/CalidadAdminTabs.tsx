@@ -62,10 +62,10 @@ const grupoCalidadFields: FieldDef[] = [
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
-export function PoliticasAdminTabs({ politicas, pilares, normas, gruposCalidad }: Props) {
+export function CalidadAdminTabs({ politicas, pilares, normas, gruposCalidad }: Props) {
   return (
     <AdminTabsLayout
-      title="Políticas"
+      title="Calidad"
       description="Contenido de /calidad: políticas corporativas, pilares del SIG y normas aplicables."
       tabs={[
         {
