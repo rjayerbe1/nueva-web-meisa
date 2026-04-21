@@ -83,18 +83,7 @@ const navigation: NavItem[] = [
       { name: "Categorías", href: "/admin/categories" },
     ],
   },
-  {
-    kind: "item",
-    name: "Trayectoria",
-    href: "/admin/trayectoria",
-    icon: BookOpen,
-    subItems: [
-      { name: "Proyectos", href: "/admin/trayectoria" },
-      { name: "Agregar proyecto", href: "/admin/trayectoria/nuevo" },
-      { name: "Resúmenes por año", href: "/admin/trayectoria/resumenes" },
-      { name: "Configuración", href: "/admin/trayectoria/configuracion" },
-    ],
-  },
+  { kind: "item", name: "Trayectoria", href: "/admin/trayectoria", icon: BookOpen },
   { kind: "item", name: "Clientes", href: "/admin/clientes", icon: Users },
   {
     kind: "item",

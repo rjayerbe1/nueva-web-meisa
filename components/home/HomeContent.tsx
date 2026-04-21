@@ -19,9 +19,11 @@ import {
 } from '@/components/sections/ContactSection'
 import type { ServicioItem } from '@/components/sections/ServicesSectionNew'
 import type { ClientesCopy } from '@/components/sections/ClientesSection'
+import type { CategoriaPublica } from '@/lib/content/categorias'
 
 export interface HomeContentProps {
   projectsByCategory: Record<string, any[]>
+  categorias: CategoriaPublica[]
   heroImages: HeroImageConfig
   heroVideos?: { desktop: string | null; mobile: string | null }
   especialidades: string[]
@@ -56,6 +58,7 @@ const DEFAULT_ORDEN: Array<{ clave: SeccionKey; activo: boolean }> = [
 
 export function HomeContent({
   projectsByCategory,
+  categorias,
   heroImages,
   heroVideos,
   especialidades,
@@ -106,7 +109,7 @@ export function HomeContent({
       case 'proyectos':
         return (
           <section id="proyectos" className="relative z-40 bg-white" key={clave}>
-            <ProjectsByCategorySection projectsByCategory={projectsByCategory} />
+            <ProjectsByCategorySection projectsByCategory={projectsByCategory} categorias={categorias} />
           </section>
         )
       case 'clientes':

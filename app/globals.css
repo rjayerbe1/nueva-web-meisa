@@ -118,9 +118,16 @@
     @apply bg-background text-foreground font-lato;
   }
   
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
+  /* Scroll natural — sin smooth global para evitar lag con trackpad/wheel.
+     Anclas internas pueden usar scrollIntoView({ behavior: 'smooth' }) en JS cuando se requiera. */
+
+  /* Única scrollbar: solo el body scrollea, html ajustado para evitar dobles scrollbars visuales
+     cuando algún descendente toca overflow. */
+  html, body {
+    overflow-x: hidden;
+  }
+  body {
+    min-height: 100vh;
   }
   
   /* Custom scrollbar */

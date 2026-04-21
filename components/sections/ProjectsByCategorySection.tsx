@@ -56,6 +56,7 @@ interface Categoria {
 
 interface ProjectsByCategorySectionProps {
   projectsByCategory: Record<string, Proyecto[]>
+  categorias: Categoria[]
 }
 
 // Componente de categoría individual con parallax
@@ -253,46 +254,8 @@ function CategoryCard({
   )
 }
 
-export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCategorySectionProps) {
-  const [categorias, setCategorias] = useState<Categoria[]>([])
-  const [loading, setLoading] = useState(true)
-  const [globalIconSize, setGlobalIconSize] = useState(48) // Tamaño global de iconos
+export function ProjectsByCategorySection({ projectsByCategory, categorias }: ProjectsByCategorySectionProps) {
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
-
-  // Cargar configuración global (endpoint público)
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch('/api/site-config')
-        if (response.ok) {
-          const config = await response.json()
-          setGlobalIconSize(config.categoryIconSize || 48)
-        }
-      } catch (error) {
-        console.error('Error fetching site config:', error)
-      }
-    }
-    fetchConfig()
-  }, [])
-
-  // Cargar categorías desde la base de datos
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const response = await fetch('/api/categories')
-        if (response.ok) {
-          const data = await response.json()
-          setCategorias(data)
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchCategorias()
-  }, [])
 
   // Mostrar todas las categorías visibles excepto "OTRO" (misma lógica que /proyectos)
   const orderedCategories = categorias.filter(categoria => categoria.key !== 'OTRO')
@@ -300,35 +263,30 @@ export function ProjectsByCategorySection({ projectsByCategory }: ProjectsByCate
   return (
     <section id="proyectos-categorias" className="bg-gray-900">
       {/* Grid 3×2: 6 tarjetas de igual tamaño */}
-      {loading ? (
-        <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
-          {orderedCategories.map((categoria, index) => {
-            const projectCount = projectsByCategory[categoria.key]?.length || 0
-            return (
-              <div
-                key={categoria.id}
-                className="h-[50vh] lg:h-[55vh]"
-              >
-                <CategoryCard
-                  categoria={categoria}
-                  index={index}
-                  projectCount={projectCount}
-                  iconSize={globalIconSize}
-                  isActive={activeCategoryId === categoria.id}
-                  onHoverStart={() => setActiveCategoryId(categoria.id)}
-                  onHoverEnd={() =>
-                    setActiveCategoryId((current) =>
-                      current === categoria.id ? null : current,
-                    )
-                  }
-                />
-              </div>
-            )
-          })}
-        </div>
-      )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
+        {orderedCategories.map((categoria, index) => {
+          const projectCount = projectsByCategory[categoria.key]?.length || 0
+          return (
+            <div
+              key={categoria.id}
+              className="h-[50vh] lg:h-[55vh]"
+            >
+              <CategoryCard
+                categoria={categoria}
+                index={index}
+                projectCount={projectCount}
+                isActive={activeCategoryId === categoria.id}
+                onHoverStart={() => setActiveCategoryId(categoria.id)}
+                onHoverEnd={() =>
+                  setActiveCategoryId((current) =>
+                    current === categoria.id ? null : current,
+                  )
+                }
+              />
+            </div>
+          )
+        })}
+      </div>
     </section>
   )
 }

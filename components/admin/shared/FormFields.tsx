@@ -26,6 +26,7 @@ export type FieldKind =
   | "color"
   | "image"
   | "video"
+  | "date"
 
 export interface FieldDef {
   name: string
@@ -219,9 +220,37 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
         </div>
       )
 
+    case "date":
+      return (
+        <div className={spanClass}>
+          <FieldLabel required={field.required}>{field.label}</FieldLabel>
+          <input
+            type="date"
+            value={normalizeDateInputValue(value)}
+            onChange={(e) => onChange(e.target.value || null)}
+            disabled={disabled}
+            className={INPUT_CLS}
+          />
+          {field.hint && <FieldHint>{field.hint}</FieldHint>}
+        </div>
+      )
+
     default:
       return null
   }
+}
+
+function normalizeDateInputValue(value: unknown): string {
+  if (!value) return ""
+  if (typeof value === "string") {
+    // Si ya es YYYY-MM-DD, devolver tal cual. Si es ISO, recortar al prefix.
+    const match = value.match(/^\d{4}-\d{2}-\d{2}/)
+    return match ? match[0] : ""
+  }
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10)
+  }
+  return ""
 }
 
 /* ─── String array (list of text inputs) ──────────────────────────────── */

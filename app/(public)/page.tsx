@@ -3,6 +3,7 @@ import { HeroImageConfig, defaultHeroImages } from '@/lib/hero-config'
 import { getHomeData, resolveStatValue } from '@/lib/content/home'
 import { getConfiguracionContacto } from '@/lib/content/servicios-contacto'
 import { getConfiguracionEmpresa } from '@/lib/content/empresa'
+import { getCategoriasPublicas } from '@/lib/content/categorias'
 
 import { HomeContent } from '@/components/home/HomeContent'
 
@@ -64,9 +65,10 @@ async function getProjectsByCategory() {
 }
 
 export default async function HomePage() {
-  const [projectsByCategory, heroImages, home, contactoConfig, empresaConfig] =
+  const [projectsByCategory, categorias, heroImages, home, contactoConfig, empresaConfig] =
     await Promise.all([
       getProjectsByCategory(),
+      getCategoriasPublicas(),
       getHeroImages(),
       getHomeData(),
       getConfiguracionContacto(),
@@ -148,6 +150,7 @@ export default async function HomePage() {
   return (
     <HomeContent
       projectsByCategory={projectsByCategory}
+      categorias={categorias}
       heroImages={heroImages}
       heroVideos={heroVideos}
       especialidades={especialidades}

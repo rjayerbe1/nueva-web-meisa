@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from 'react'
-import { AnimatedSection } from '@/components/animations/AnimatedSection'
+import { motion } from 'framer-motion'
 import { ProyectoListItem } from '@/components/trayectoria/ProyectoListItem'
 import { ProyectoModal } from '@/components/trayectoria/ProyectoModal'
 import { ResumenAnioCard } from '@/components/trayectoria/ResumenAnioCard'
@@ -131,119 +131,133 @@ export function TimelineByYear({ proyectos }: Props) {
   }, [proyectos])
 
   return (
-    <div className="py-20 bg-gradient-to-b from-slate-50 to-white">
-      <div className="container mx-auto px-6">
-        <AnimatedSection direction="up" className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Nuestra Trayectoria
-          </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Un recorrido cronológico por los proyectos que han marcado nuestra historia
+    <section className="py-20 md:py-28 bg-stone-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 md:mb-20 max-w-3xl"
+        >
+          <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+            Recorrido cronológico
           </p>
-        </AnimatedSection>
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-950">
+            Año a año
+          </h2>
+          <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-300">
+            construyendo.
+          </h3>
+          <p className="mt-6 text-base md:text-lg text-slate-700 font-lato leading-relaxed">
+            Cada proyecto entregado es parte de una historia técnica que se escribe en acero.
+          </p>
+        </motion.div>
 
-        {/* Zigzag Timeline */}
+        {/* Timeline zigzag */}
         <div className="relative max-w-6xl mx-auto">
-          {/* Vertical line in center */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 via-blue-600 to-blue-400 hidden md:block" />
+          {/* Vertical line central - sharp */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-300 hidden md:block" />
 
-          {/* Timeline items */}
-          <div className="space-y-16">
+          <div className="space-y-20 md:space-y-28">
             {proyectosPorAño.map(({ año, proyectos: proyectosAño }, index) => {
               const isLeft = index % 2 === 0
-
               const resumenAnio = resumenes[año]
 
               return (
                 <div key={año} className="relative">
-                  {/* Year badge - Always in center with connection lines */}
-                  <div className="absolute left-1/2 -translate-x-1/2 top-12 z-10 hidden md:flex items-center">
-                    {/* Left line */}
-                    <div className="w-6 h-0.5 bg-blue-400 mr-2"></div>
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-full shadow-xl border-4 border-white">
-                      <p className="text-2xl font-bold">{año}</p>
-                    </div>
-                    {/* Right line */}
-                    <div className="w-6 h-0.5 bg-blue-400 ml-2"></div>
-                  </div>
-
-                  {/* Year badge mobile - At top */}
-                  <div className="md:hidden mb-6 text-center">
-                    <div className="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-full shadow-xl">
-                      <p className="text-2xl font-bold">{año}</p>
+                  {/* Year block - brutalist, sharp, centered */}
+                  <div className="absolute left-1/2 -translate-x-1/2 top-0 z-10 hidden md:block">
+                    <div className="bg-slate-950 text-white px-6 py-3 border-4 border-stone-50">
+                      <p className="text-3xl font-bebas uppercase leading-none tracking-wider">
+                        {año}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Projects container - alternates left/right */}
-                  <AnimatedSection
-                    direction={isLeft ? 'right' : 'left'}
-                    delay={index * 0.05}
-                    className={`md:w-[calc(50%-4rem)] ${
-                      isLeft ? 'md:mr-auto md:pr-6' : 'md:ml-auto md:pl-6'
+                  {/* Year block mobile */}
+                  <div className="md:hidden mb-6">
+                    <div className="inline-block bg-slate-950 text-white px-6 py-3">
+                      <p className="text-3xl font-bebas uppercase leading-none tracking-wider">
+                        {año}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Projects container — alternates left/right */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.6, delay: index * 0.04 }}
+                    className={`md:w-[calc(50%-4rem)] md:pt-16 ${
+                      isLeft ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'
                     }`}
                   >
-                    {/* Projects list */}
-                    <div className="space-y-3 bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                      {/* Proyectos destacados siempre se muestran primero */}
-                      {(() => {
-                        const isExpanded = expandedYears.has(año)
-                        // Mostrar 7 proyectos si hay ResumenAnio con imágenes, 4 si no
-                        const hasResumenWithImages = resumenAnio && resumenAnio.imagenesFeatured && resumenAnio.imagenesFeatured.length > 0
-                        const defaultCount = hasResumenWithImages ? 7 : 4
-                        const proyectosAMostrar = isExpanded ? proyectosAño : proyectosAño.slice(0, defaultCount)
-                        const hayMas = proyectosAño.length > defaultCount
+                    <div className="bg-white border border-slate-200 p-6 md:p-8">
+                      <p className="text-slate-400 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+                        Proyectos del año
+                      </p>
+                      <div className="space-y-2">
+                        {(() => {
+                          const isExpanded = expandedYears.has(año)
+                          const hasResumenWithImages = resumenAnio && resumenAnio.imagenesFeatured && resumenAnio.imagenesFeatured.length > 0
+                          const defaultCount = hasResumenWithImages ? 7 : 4
+                          const proyectosAMostrar = isExpanded ? proyectosAño : proyectosAño.slice(0, defaultCount)
+                          const hayMas = proyectosAño.length > defaultCount
 
-                        return (
-                          <>
-                            {proyectosAMostrar.map((proyecto) => (
-                              <ProyectoListItem
-                                key={proyecto.id}
-                                proyecto={proyecto}
-                                onClick={() => setSelectedProyecto(proyecto)}
-                              />
-                            ))}
+                          return (
+                            <>
+                              {proyectosAMostrar.map((proyecto) => (
+                                <ProyectoListItem
+                                  key={proyecto.id}
+                                  proyecto={proyecto}
+                                  onClick={() => setSelectedProyecto(proyecto)}
+                                />
+                              ))}
 
-                            {/* Botón Mostrar más/menos */}
-                            {hayMas && (
-                              <button
-                                onClick={() => toggleYear(año)}
-                                className="w-full mt-4 py-3 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                              >
-                                {isExpanded ? (
-                                  <>
-                                    Mostrar menos
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                    </svg>
-                                  </>
-                                ) : (
-                                  <>
-                                    Mostrar más ({proyectosAño.length - defaultCount} proyectos adicionales)
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                  </>
-                                )}
-                              </button>
-                            )}
-                          </>
-                        )
-                      })()}
+                              {hayMas && (
+                                <button
+                                  onClick={() => toggleYear(año)}
+                                  className="group w-full mt-4 py-3 px-4 border border-slate-300 hover:border-slate-950 hover:bg-slate-950 hover:text-white text-slate-700 font-lato font-bold text-xs uppercase tracking-[0.15em] transition-colors duration-300 flex items-center justify-center gap-2"
+                                >
+                                  {isExpanded ? (
+                                    <>
+                                      Mostrar menos
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                      </svg>
+                                    </>
+                                  ) : (
+                                    <>
+                                      Mostrar {proyectosAño.length - defaultCount} más
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                      </svg>
+                                    </>
+                                  )}
+                                </button>
+                              )}
+                            </>
+                          )
+                        })()}
+                      </div>
                     </div>
-
-                  </AnimatedSection>
+                  </motion.div>
 
                   {/* Resumen Año Card - lado opuesto */}
                   {resumenAnio && (
-                    <AnimatedSection
-                      direction={isLeft ? 'left' : 'right'}
-                      delay={index * 0.05 + 0.2}
-                      className={`md:w-[calc(50%-4rem)] md:absolute md:top-0 mt-6 md:mt-0 ${
-                        isLeft ? 'md:ml-auto md:right-0 md:pl-6' : 'md:mr-auto md:left-0 md:pr-6'
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-60px' }}
+                      transition={{ duration: 0.6, delay: index * 0.04 + 0.1 }}
+                      className={`md:w-[calc(50%-4rem)] md:absolute md:top-16 mt-6 md:mt-0 ${
+                        isLeft ? 'md:ml-auto md:right-0 md:pl-8' : 'md:mr-auto md:left-0 md:pr-8'
                       }`}
                     >
                       <ResumenAnioCard resumen={resumenAnio} />
-                    </AnimatedSection>
+                    </motion.div>
                   )}
                 </div>
               )
@@ -252,13 +266,12 @@ export function TimelineByYear({ proyectos }: Props) {
         </div>
       </div>
 
-      {/* Modal de Detalles */}
       {selectedProyecto && (
         <ProyectoModal
           proyecto={selectedProyecto}
           onClose={() => setSelectedProyecto(null)}
         />
       )}
-    </div>
+    </section>
   )
 }

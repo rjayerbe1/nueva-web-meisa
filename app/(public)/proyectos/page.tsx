@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import ProjectsPageClient from "./ProjectsPageClient"
 import { BreadcrumbSchema } from "@/components/seo/JsonLdSchema"
 import { aniosExperiencia } from "@/lib/site-meta"
+import { getCategoriasPublicas } from "@/lib/content/categorias"
 
 // Force dynamic rendering (no static generation during build)
 export const dynamic = 'force-dynamic'
@@ -62,7 +63,10 @@ async function getProyectos() {
 }
 
 export default async function ProyectosPage() {
-  const proyectos = await getProyectos()
+  const [proyectos, categorias] = await Promise.all([
+    getProyectos(),
+    getCategoriasPublicas(),
+  ])
 
   return (
     <>
@@ -72,7 +76,7 @@ export default async function ProyectosPage() {
           { name: 'Proyectos', url: 'https://meisa.com.co/proyectos' },
         ]}
       />
-      <ProjectsPageClient proyectos={proyectos} />
+      <ProjectsPageClient proyectos={proyectos} categorias={categorias} />
     </>
   )
 }

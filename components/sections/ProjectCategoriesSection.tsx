@@ -42,6 +42,7 @@ interface Categoria {
 interface ProjectCategoriesSectionProps {
   onCategorySelect?: (categoryKey: string) => void
   projectsByCategory?: Record<string, any[]>
+  categorias: Categoria[]
 }
 
 // Componente de categoría individual con parallax
@@ -258,75 +259,32 @@ function CategoryCard({
   )
 }
 
-export default function ProjectCategoriesSection({ onCategorySelect, projectsByCategory = {} }: ProjectCategoriesSectionProps) {
-  const [categorias, setCategorias] = useState<Categoria[]>([])
-  const [loading, setLoading] = useState(true)
-  const [globalIconSize, setGlobalIconSize] = useState(48) // Tamaño global de iconos
+export default function ProjectCategoriesSection({ onCategorySelect, projectsByCategory = {}, categorias }: ProjectCategoriesSectionProps) {
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
-
-  // Cargar configuración global (endpoint público)
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch('/api/site-config')
-        if (response.ok) {
-          const config = await response.json()
-          setGlobalIconSize(config.categoryIconSize || 48)
-        }
-      } catch (error) {
-        console.error('Error fetching site config:', error)
-      }
-    }
-    fetchConfig()
-  }, [])
-
-  // Cargar categorías desde la base de datos
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const response = await fetch('/api/categories')
-        if (response.ok) {
-          const data = await response.json()
-          setCategorias(data)
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchCategorias()
-  }, [])
 
   return (
     <section className="bg-slate-950">
       {/* Grid 3×2: 6 tarjetas de igual tamaño */}
-      {loading ? (
-        <div className="text-center text-white font-lato py-20">Cargando categorías...</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 mobile-landscape-categories-grid">
-          {categorias.map((categoria, index) => {
-            const projectCount = projectsByCategory[categoria.key]?.length || 0
-            return (
-              <CategoryCard
-                key={categoria.id}
-                categoria={categoria}
-                index={index}
-                projectCount={projectCount}
-                iconSize={globalIconSize}
-                isActive={activeCategoryId === categoria.id}
-                onHoverStart={() => setActiveCategoryId(categoria.id)}
-                onHoverEnd={() =>
-                  setActiveCategoryId((current) =>
-                    current === categoria.id ? null : current,
-                  )
-                }
-              />
-            )
-          })}
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 mobile-landscape-categories-grid">
+        {categorias.map((categoria, index) => {
+          const projectCount = projectsByCategory[categoria.key]?.length || 0
+          return (
+            <CategoryCard
+              key={categoria.id}
+              categoria={categoria}
+              index={index}
+              projectCount={projectCount}
+              isActive={activeCategoryId === categoria.id}
+              onHoverStart={() => setActiveCategoryId(categoria.id)}
+              onHoverEnd={() =>
+                setActiveCategoryId((current) =>
+                  current === categoria.id ? null : current,
+                )
+              }
+            />
+          )
+        })}
+      </div>
 
       {/* CTA final — Dark brutalist */}
       <div className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">

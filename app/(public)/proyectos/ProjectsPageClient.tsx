@@ -2,6 +2,7 @@
 
 import { useMemo } from "react"
 import ProjectCategoriesSection from "@/components/sections/ProjectCategoriesSection"
+import type { CategoriaPublica } from "@/lib/content/categorias"
 
 interface Proyecto {
   id: string
@@ -19,9 +20,10 @@ interface Proyecto {
 
 interface ProjectsPageClientProps {
   proyectos: Proyecto[]
+  categorias: CategoriaPublica[]
 }
 
-export default function ProjectsPageClient({ proyectos }: ProjectsPageClientProps) {
+export default function ProjectsPageClient({ proyectos, categorias }: ProjectsPageClientProps) {
   // Agrupar proyectos por categoría para el conteo
   const projectsByCategory = useMemo(() => {
     const groups: Record<string, Proyecto[]> = {}
@@ -37,7 +39,7 @@ export default function ProjectsPageClient({ proyectos }: ProjectsPageClientProp
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Categories Section */}
-      <ProjectCategoriesSection projectsByCategory={projectsByCategory} />
+      <ProjectCategoriesSection projectsByCategory={projectsByCategory} categorias={categorias} />
     </div>
   )
 }
