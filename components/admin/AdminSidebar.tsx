@@ -25,7 +25,7 @@ const navigation: NavItem[] = [
   { kind: "section", label: "Contenido del sitio" },
   { kind: "item", name: "Inicio", href: "/admin/home" },
   { kind: "item", name: "Empresa", href: "/admin/empresa" },
-  { kind: "item", name: "Procesos y Tecnologías", href: "/admin/procesos-tecnologias", stub: true },
+  { kind: "item", name: "Procesos y Tecnologías", href: "/admin/procesos-tecnologias" },
   { kind: "item", name: "Políticas", href: "/admin/politicas", stub: true },
   {
     kind: "item",
