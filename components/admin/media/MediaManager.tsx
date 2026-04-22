@@ -105,9 +105,16 @@ async function itemsFromDataTransfer(dt: DataTransfer): Promise<{ file: File; re
   return out
 }
 
-export function MediaManager() {
-  const [items, setItems] = useState<Media[]>([])
-  const [loading, setLoading] = useState(true)
+interface MediaManagerProps {
+  initialItems?: Media[]
+  initialFolderData?: FolderApiPayload
+}
+
+export function MediaManager({ initialItems, initialFolderData }: MediaManagerProps = {}) {
+  const hasInitialData = initialItems !== undefined
+  const [items, setItems] = useState<Media[]>(initialItems ?? [])
+  // Si llegaron datos del server, arrancar con loading=false para evitar skeleton inicial
+  const [loading, setLoading] = useState(!hasInitialData)
   const [query, setQuery] = useState("")
   const [debouncedQuery, setDebouncedQuery] = useState("")
   const [kind, setKind] = useState<KindFilter>("any")
@@ -115,12 +122,16 @@ export function MediaManager() {
   const [tag, setTag] = useState<string | null>(null)
   const [editing, setEditing] = useState<Media | null>(null)
   const [lightbox, setLightbox] = useState<Media | null>(null)
-  const [folderData, setFolderData] = useState<FolderApiPayload>({ paths: [], counts: {} })
+  const [folderData, setFolderData] = useState<FolderApiPayload>(
+    initialFolderData ?? { paths: [], counts: {} },
+  )
   const [uploadQueue, setUploadQueue] = useState<EnqueuedUpload[]>([])
   const [queueOpen, setQueueOpen] = useState(true)
   const [isDragging, setIsDragging] = useState(false)
   const dragCounter = useRef(0)
   const fileRef = useRef<HTMLInputElement>(null)
+  // Skip primer fetch si tenemos initial data (ya son los mismos filtros default)
+  const skipInitialFetch = useRef(hasInitialData)
 
   /* ── Debounce search ── */
   useEffect(() => {
@@ -146,6 +157,12 @@ export function MediaManager() {
   }, [kind, folder, debouncedQuery])
 
   useEffect(() => {
+    // En el primer render, si ya tenemos data del server con los filtros por defecto,
+    // evitar el fetch redundante. Después el useEffect refiltra normalmente.
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false
+      return
+    }
     fetchList()
   }, [fetchList])
 
@@ -161,9 +178,11 @@ export function MediaManager() {
     }
   }, [])
 
+  // Si no llegaron folders iniciales, pedirlos en mount. Si sí, no hace falta.
   useEffect(() => {
+    if (initialFolderData) return
     fetchFolders()
-  }, [fetchFolders])
+  }, [fetchFolders, initialFolderData])
 
   /* ── Derived: tree + inmediate subfolders + tags ── */
   const folderTree: FolderNode[] = useMemo(
