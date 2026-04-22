@@ -314,21 +314,22 @@ export function ListCrudEditor<T extends BaseItem>({
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
             {view === "cards" ? (
-              <div className="space-y-2">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {items.map((item) =>
                   editingId === item.id ? (
-                    <EditForm
-                      key={item.id}
-                      fields={fields}
-                      draft={draft}
-                      setDraft={setDraft}
-                      saving={saving}
-                      error={error}
-                      onCancel={cancel}
-                      onSave={save}
-                    />
+                    <div key={item.id} className="sm:col-span-2 lg:col-span-3 xl:col-span-4">
+                      <EditForm
+                        fields={fields}
+                        draft={draft}
+                        setDraft={setDraft}
+                        saving={saving}
+                        error={error}
+                        onCancel={cancel}
+                        onSave={save}
+                      />
+                    </div>
                   ) : (
-                    <CardRow
+                    <CardGrid
                       key={item.id}
                       item={item}
                       fields={fields}
@@ -365,6 +366,124 @@ export function ListCrudEditor<T extends BaseItem>({
           </SortableContext>
         </DndContext>
       )}
+    </div>
+  )
+}
+
+/* ─── Card grid (stacked: imagen arriba, contenido abajo) ─────────────── */
+
+function CardGrid<T extends BaseItem>({
+  item,
+  fields,
+  thumbnailField,
+  renderPreview,
+  canReorder,
+  disabled,
+  onEdit,
+  onDelete,
+  onToggleActivo,
+}: {
+  item: T
+  fields: FieldDef[]
+  thumbnailField?: string
+  renderPreview?: (item: T) => React.ReactNode
+  canReorder: boolean
+  disabled: boolean
+  onEdit: () => void
+  onDelete: () => void
+  onToggleActivo: () => void
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: item.id, disabled: disabled || !canReorder })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
+  const thumbnailRaw = thumbnailField ? (item as any)[thumbnailField] : undefined
+  const thumbnail = Array.isArray(thumbnailRaw)
+    ? thumbnailRaw.find((v) => typeof v === "string" && v.length > 0)
+    : typeof thumbnailRaw === "string"
+      ? thumbnailRaw
+      : undefined
+  const isActive = !("activo" in item) || item.activo
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "group relative flex flex-col overflow-hidden rounded-md border border-slate-200 bg-white transition-all",
+        "hover:border-red-300 hover:shadow-md",
+        isDragging && "z-10 shadow-lg",
+        !isActive && "opacity-60",
+      )}
+    >
+      {/* Thumbnail area (imagen o placeholder) */}
+      <div className="relative w-full bg-slate-100" style={{ aspectRatio: "4 / 3" }}>
+        {thumbnail ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={thumbnail}
+            alt=""
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-slate-300">
+            <ImageOff className="h-10 w-10" />
+          </div>
+        )}
+
+        {/* Drag handle (esquina superior izquierda, aparece en hover) */}
+        {canReorder && (
+          <button
+            type="button"
+            className="absolute left-2 top-2 z-10 flex h-7 w-7 cursor-grab items-center justify-center rounded-none bg-white/90 text-slate-700 opacity-0 transition-opacity hover:bg-slate-950 hover:text-white group-hover:opacity-100 active:cursor-grabbing"
+            aria-label="Reordenar"
+            {...attributes}
+            {...listeners}
+          >
+            <GripVertical className="h-3.5 w-3.5" />
+          </button>
+        )}
+
+        {/* Actions overlay (esquina superior derecha, aparecen en hover) */}
+        <div className="absolute right-2 top-2 z-10 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+          {"activo" in item && (
+            <button
+              onClick={onToggleActivo}
+              disabled={disabled}
+              title={isActive ? "Ocultar del sitio" : "Mostrar en el sitio"}
+              className="flex h-7 w-7 items-center justify-center rounded-none bg-white/90 text-slate-700 transition-colors hover:bg-slate-950 hover:text-white disabled:opacity-50"
+            >
+              {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
+            </button>
+          )}
+          <button
+            onClick={onEdit}
+            disabled={disabled}
+            title="Editar"
+            className="flex h-7 w-7 items-center justify-center rounded-none bg-white/90 text-slate-700 transition-colors hover:bg-slate-950 hover:text-white disabled:opacity-50"
+          >
+            <Pencil className="h-3.5 w-3.5" />
+          </button>
+          <button
+            onClick={onDelete}
+            disabled={disabled}
+            title="Eliminar"
+            className="flex h-7 w-7 items-center justify-center rounded-none bg-white/90 text-slate-700 transition-colors hover:bg-red-600 hover:text-white disabled:opacity-50"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Content (abajo) */}
+      <div className="flex flex-1 flex-col px-4 py-3">
+        {renderPreview ? renderPreview(item) : <DefaultPreview item={item} fields={fields} />}
+      </div>
     </div>
   )
 }
