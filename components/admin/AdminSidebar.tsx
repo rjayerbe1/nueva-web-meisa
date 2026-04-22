@@ -61,17 +61,8 @@ const navigation: NavItem[] = [
   { kind: "item", name: "Navegación", href: "/admin/navegacion", icon: NavIcon },
 
   { kind: "section", label: "Operaciones", color: "blue" },
-  {
-    kind: "item",
-    name: "Proyectos",
-    href: "/admin/projects",
-    icon: FolderKanban,
-    subItems: [
-      { name: "Todos los proyectos", href: "/admin/projects" },
-      { name: "Historias", href: "/admin/historias" },
-      { name: "Categorías", href: "/admin/categories" },
-    ],
-  },
+  { kind: "item", name: "Proyectos", href: "/admin/projects", icon: FolderKanban },
+  { kind: "item", name: "Historias", href: "/admin/historias", icon: BookOpen },
   { kind: "item", name: "Trayectoria", href: "/admin/trayectoria", icon: BookOpen },
   { kind: "item", name: "Clientes", href: "/admin/clientes", icon: Users },
   {

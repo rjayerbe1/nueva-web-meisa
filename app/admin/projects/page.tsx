@@ -1,66 +1,54 @@
-import { getServerSession } from "next-auth"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { UserRole } from "@prisma/client"
-import { ProjectsPageClient } from "@/components/admin/ProjectsPageClient"
+import {
+  ProjectsAdminTabs,
+  type ProyectoSerializado,
+} from "@/components/admin/projects/ProjectsAdminTabs"
 
-async function getProjects() {
-  const projects = await prisma.proyecto.findMany({
-    orderBy: { createdAt: 'desc' },
-    select: {
-      id: true,
-      titulo: true,
-      codigoInterno: true,
-      categoria: true,
-      estado: true,
-      cliente: true,
-      ubicacion: true,
-      fechaInicio: true,
-      fechaFin: true,
-      presupuesto: true,
-      toneladas: true,
-      areaTotal: true,
-      destacado: true,
-      visible: true,
-      createdAt: true,
-      imagenes: {
-        where: { tipo: 'PORTADA' },
-        take: 1,
-        select: {
-          url: true,
-          alt: true
-        }
-      }
-    }
-  })
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
-  // Convertir Decimal a number y serializar fechas para el cliente
-  return projects.map(project => ({
-    ...project,
-    presupuesto: project.presupuesto ? Number(project.presupuesto) : null,
-    toneladas: project.toneladas ? Number(project.toneladas) : null,
-    areaTotal: project.areaTotal ? Number(project.areaTotal) : null,
-    fechaInicio: project.fechaInicio.toISOString(),
-    fechaFin: project.fechaFin?.toISOString() || null,
-    createdAt: project.createdAt.toISOString(),
-    imagenPortada: project.imagenes[0] || null,
-    imagenes: undefined // No necesitamos pasar el array completo al cliente
+async function getData() {
+  const [proyectosRaw, categorias] = await Promise.all([
+    prisma.proyecto.findMany({
+      orderBy: [{ destacado: "desc" }, { ordenFrontend: "asc" }, { createdAt: "desc" }],
+      include: {
+        imagenes: { where: { tipo: "PORTADA" }, take: 1, select: { url: true } },
+      },
+    }),
+    prisma.categoriaProyecto.findMany({ orderBy: { orden: "asc" } }),
+  ])
+
+  const proyectos: ProyectoSerializado[] = proyectosRaw.map((p: any) => ({
+    id: p.id,
+    titulo: p.titulo,
+    slug: p.slug,
+    descripcion: p.descripcion,
+    cliente: p.cliente,
+    ubicacion: p.ubicacion,
+    categoria: p.categoria,
+    estado: p.estado,
+    prioridad: p.prioridad,
+    fechaInicio: p.fechaInicio.toISOString(),
+    fechaFin: p.fechaFin ? p.fechaFin.toISOString() : null,
+    fechaEstimada: p.fechaEstimada ? p.fechaEstimada.toISOString() : null,
+    presupuesto: p.presupuesto != null ? Number(p.presupuesto) : null,
+    costoReal: p.costoReal != null ? Number(p.costoReal) : null,
+    moneda: p.moneda,
+    areaTotal: p.areaTotal != null ? Number(p.areaTotal) : null,
+    toneladas: p.toneladas != null ? Number(p.toneladas) : null,
+    codigoInterno: p.codigoInterno,
+    destacado: p.destacado,
+    destacadoEnCategoria: p.destacadoEnCategoria,
+    visible: p.visible,
+    ordenFrontend: p.ordenFrontend,
+    tags: p.tags,
+    portada: p.imagenes?.[0]?.url ?? null,
   }))
+
+  return { proyectos, categorias }
 }
 
-export default async function ProjectsPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
-  if (session.user.role === UserRole.VIEWER) {
-    redirect("/")
-  }
-
-  const projects = await getProjects()
-
-  return <ProjectsPageClient projects={projects} />
+export default async function ProjectsAdminPage() {
+  const { proyectos, categorias } = await getData()
+  return <ProjectsAdminTabs proyectos={proyectos} categorias={categorias} />
 }

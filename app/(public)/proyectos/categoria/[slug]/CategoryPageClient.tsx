@@ -4,18 +4,23 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ExternalLink, Building, Calendar, MapPin, User, BookOpen, ChevronDown, FileBadge } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  ChevronDown,
+  FileBadge,
+} from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
-import { UnifiedStatsCard } from '@/components/ui/unified-stats-card'
-import { CanvasRenderer } from '@/components/brochure/CanvasRenderer'
 import { EspecialidadesTabs } from '@/components/sections/EspecialidadesTabs'
 
-// Helper para parsear posición desde formato "X,Y"
-const parsePosition = (posStr: string | null): { x: number; y: number } => {
+const parsePosition = (
+  posStr: string | null,
+): { x: number; y: number } => {
   if (!posStr || posStr.includes(' ')) {
     return { x: 0, y: 0 }
   }
-  const [x, y] = posStr.split(',').map(v => parseFloat(v) || 0)
+  const [x, y] = posStr.split(',').map((v) => parseFloat(v) || 0)
   return { x, y }
 }
 
@@ -90,7 +95,6 @@ interface Categoria {
   overlayOpacity: number | null
   metaTitle: string | null
   metaDescription: string | null
-  // Campos adicionales para contenido ampliado
   descripcionAmpliada: string | null
   beneficios: any | null
   procesoTrabajo: any | null
@@ -113,7 +117,6 @@ export default function CategoryPageClient({
   const [downloadingPDF, setDownloadingPDF] = useState(false)
   const [heroBackground, setHeroBackground] = useState<string | null>(null)
 
-  // Handler para cambio de especialidad
   const handleEspecialidadChange = (especialidad: any) => {
     if (especialidad?.imagen) {
       setHeroBackground(especialidad.imagen)
@@ -126,9 +129,7 @@ export default function CategoryPageClient({
     try {
       setDownloadingPDF(true)
 
-      // Si existe un PDF pregenerado, descargarlo directamente
       if (brochure.pdfUrl && brochure.pdfUrl.trim() !== '') {
-        // Crear un enlace temporal para descargar el archivo
         const link = document.createElement('a')
         link.href = brochure.pdfUrl
         link.download = `${brochure.titulo.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`
@@ -146,459 +147,515 @@ export default function CategoryPageClient({
     }
   }
 
+  const proyectosConImagenes = proyectos.filter(
+    (p) => p.imagenes && p.imagenes.length > 0,
+  )
+  const proyectosSinImagenes = proyectos.filter(
+    (p) => !p.imagenes || p.imagenes.length === 0,
+  )
+
+  const proyectosDestacadosIds: string[] =
+    categoria.casosExitoIds && categoria.casosExitoIds.length > 0
+      ? categoria.casosExitoIds
+      : []
+
+  const proyectosConImagenesOrdenados = [...proyectosConImagenes].sort(
+    (a, b) => {
+      const aEsDestacado = proyectosDestacadosIds.includes(a.id)
+      const bEsDestacado = proyectosDestacadosIds.includes(b.id)
+      if (aEsDestacado && !bEsDestacado) return -1
+      if (!aEsDestacado && bEsDestacado) return 1
+      return 0
+    },
+  )
+
+  const stats = categoria.estadisticas || {}
+  const toneladas = stats.toneladasTotal as number | undefined
+  const proyectosCompletados = stats.proyectosCompletados as number | undefined
+  const anios = stats.aniosExperiencia as number | undefined
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section - 1 Pantalla (100vh) */}
-      <section className="relative h-screen overflow-hidden">
-        {/* Background - Video o Imagen de fondo (dinámico con especialidades) */}
-        {(heroBackground || categoria.videoBanner || categoria.imagenBanner || categoria.imagenCover) && (
+    <div className="min-h-screen bg-slate-950">
+      {/* HERO — h-screen con imagen/video banner + especialidades tabs */}
+      <section className="relative h-screen overflow-hidden bg-slate-950">
+        {/* Background: especialidad > video > imagen banner > cover */}
+        {(heroBackground ||
+          categoria.videoBanner ||
+          categoria.imagenBanner ||
+          categoria.imagenCover) && (
           <div className="absolute inset-0">
-            {/* Imagen de especialidad (si existe) */}
-            {heroBackground && (
+            {heroBackground ? (
               <motion.img
                 key={heroBackground}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 src={heroBackground}
-                alt="Fondo de especialidad"
+                alt=""
                 className="absolute inset-0 w-full h-full object-cover"
               />
+            ) : categoria.usarVideoBanner && categoria.videoBanner ? (
+              <video
+                src={categoria.videoBanner}
+                className="w-full h-full"
+                style={{
+                  objectFit: 'cover',
+                  transform: `translate(${parsePosition(categoria.videoBannerPosition).x}%, ${parsePosition(categoria.videoBannerPosition).y}%) scale(${categoria.videoBannerScale || 1.0})`,
+                  willChange: 'transform',
+                  backfaceVisibility: 'hidden',
+                }}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              <img
+                src={categoria.imagenBanner || categoria.imagenCover || ''}
+                alt=""
+                className="w-full h-full object-cover"
+              />
             )}
-            {/* Video o imagen de categoría como fallback */}
-            {!heroBackground && (
-              <>
-                {(categoria.usarVideoBanner && categoria.videoBanner) ? (
-                  <video
-                    src={categoria.videoBanner}
-                    className="w-full h-full"
-                    style={{
-                      objectFit: 'cover',
-                      transform: `translate(${parsePosition(categoria.videoBannerPosition).x}%, ${parsePosition(categoria.videoBannerPosition).y}%) scale(${categoria.videoBannerScale || 1.0})`,
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transformStyle: 'preserve-3d',
-                      WebkitFontSmoothing: 'antialiased',
-                      imageRendering: 'crisp-edges'
-                    }}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                  />
-                ) : (
-                  <img
-                    src={categoria.imagenBanner || categoria.imagenCover || ''}
-                    alt={`Banner de ${categoria.nombre}`}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </>
-            )}
-            {/* Overlay con gradiente oscuro graduado */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+            {/* Overlay sólido (sin gradient) */}
+            <div className="absolute inset-0 bg-slate-950/60" />
           </div>
         )}
 
-        {/* Contenido del Hero - Todo en 100vh */}
+        {/* Contenido del hero */}
         <div className="relative z-10 h-full flex flex-col py-6">
-          {/* SECCIÓN SUPERIOR - Edge to Edge (todo el ancho) */}
-          <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8">
+          <div className="flex-shrink-0 px-4 sm:px-6 lg:px-12">
             {/* Breadcrumb */}
             <motion.nav
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mb-4"
+              className="mb-6"
             >
-              <ol className="flex items-center gap-2 text-xs sm:text-sm text-white/70">
-                <li><Link href="/" className="hover:text-white transition-colors">Inicio</Link></li>
-                <li>/</li>
-                <li><Link href="/proyectos" className="hover:text-white transition-colors">Proyectos</Link></li>
-                <li>/</li>
-                <li className="text-white/90 font-medium">{categoria.nombre}</li>
+              <ol className="flex items-center gap-2 text-xs text-white/50 font-lato uppercase tracking-[0.15em]">
+                <li>
+                  <Link href="/" className="hover:text-white transition-colors">
+                    Inicio
+                  </Link>
+                </li>
+                <li className="text-white/30">/</li>
+                <li>
+                  <Link
+                    href="/proyectos"
+                    className="hover:text-white transition-colors"
+                  >
+                    Proyectos
+                  </Link>
+                </li>
+                <li className="text-white/30">/</li>
+                <li className="text-white/80">{categoria.nombre}</li>
               </ol>
             </motion.nav>
 
-            {/* Fila con Título y Extras */}
-            <div className="flex items-center gap-3 lg:gap-6 mb-4 lg:mb-6 mobile-landscape-header-section">
-              {/* Título principal */}
+            {/* Eyebrow */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-3"
+            >
+              Categoría
+            </motion.p>
+
+            {/* Título + botones brochure */}
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 lg:gap-6 mb-6 lg:mb-8 mobile-landscape-header-section">
               <motion.h1
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-5xl sm:text-6xl md:text-7xl font-bebas uppercase text-white leading-none mobile-landscape-title"
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase text-white leading-[0.95] mobile-landscape-title"
               >
                 {categoria.nombre}
               </motion.h1>
 
-              {/* Botones Brochure - Ver y Descargar (pegados al título) */}
               {brochure && brochure.publicado && brochure.activo && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="flex gap-1.5 lg:gap-2 mobile-landscape-brochure-buttons"
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="flex gap-2 mobile-landscape-brochure-buttons"
                 >
-                  {/* Ver Brochure */}
                   <Link
                     href={`/brochure/${brochure.urlAmigable}`}
-                    className="flex items-center gap-1.5 lg:gap-2 px-2 py-1 lg:px-3 lg:py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300"
+                    className="group inline-flex items-center gap-2 px-4 py-2 border border-white/30 text-white font-lato font-bold text-xs uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
                   >
-                    <BookOpen className="w-3 h-3 lg:w-4 lg:h-4" />
-                    <span className="text-[10px] lg:text-xs font-lato font-semibold">Brochure</span>
+                    <BookOpen className="w-4 h-4" />
+                    Brochure
                   </Link>
 
-                  {/* Descargar PDF */}
                   <button
                     onClick={handleDownloadPDF}
                     disabled={downloadingPDF}
-                    className="flex items-center gap-1.5 lg:gap-2 px-2 py-1 lg:px-3 lg:py-1.5 backdrop-blur-md bg-white/10 border border-white/30 rounded-lg hover:bg-white/20 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="group inline-flex items-center gap-2 px-4 py-2 border border-white/30 text-white font-lato font-bold text-xs uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <FileBadge className="w-3 h-3 lg:w-4 lg:h-4" />
-                    <span className="text-[10px] lg:text-xs font-lato font-semibold">
-                      {downloadingPDF ? '...' : 'PDF'}
-                    </span>
+                    <FileBadge className="w-4 h-4" />
+                    {downloadingPDF ? '...' : 'PDF'}
                   </button>
                 </motion.div>
               )}
-
-              {/* Estadísticas - Solo desktop, al final */}
-              {categoria.estadisticas && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="hidden lg:flex items-center gap-3 ml-auto"
-                >
-                  {categoria.estadisticas.toneladasTotal && (
-                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
-                      <span className="text-xl font-bebas text-white">{categoria.estadisticas.toneladasTotal.toLocaleString()}</span>
-                      <span className="text-white/70 font-lato text-xs uppercase">Ton</span>
-                    </div>
-                  )}
-                  {categoria.estadisticas.proyectosCompletados && (
-                    <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-white/20">
-                      <span className="text-xl font-bebas text-white">{categoria.estadisticas.proyectosCompletados}+</span>
-                      <span className="text-white/70 font-lato text-xs uppercase">Proy</span>
-                    </div>
-                  )}
-                </motion.div>
-              )}
             </div>
+
+            {/* Stats strip inline (si hay estadisticas) */}
+            {(toneladas || proyectosCompletados || anios) && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="hidden lg:grid grid-cols-3 gap-6 md:divide-x md:divide-white/10 border-y border-white/10 py-5 max-w-3xl"
+              >
+                {toneladas && (
+                  <div className="md:pl-6 first:md:pl-0">
+                    <div className="font-bebas text-4xl md:text-5xl leading-none text-white">
+                      {toneladas.toLocaleString('es-CO')}
+                      <span className="text-white/40 text-2xl md:text-3xl ml-1">
+                        ton
+                      </span>
+                    </div>
+                    <p className="mt-2 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
+                      Acero fabricado
+                    </p>
+                  </div>
+                )}
+                {proyectosCompletados && (
+                  <div className="md:pl-6">
+                    <div className="font-bebas text-4xl md:text-5xl leading-none text-white">
+                      {proyectosCompletados}
+                      <span className="text-white/40 text-2xl md:text-3xl ml-1">
+                        +
+                      </span>
+                    </div>
+                    <p className="mt-2 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
+                      Proyectos entregados
+                    </p>
+                  </div>
+                )}
+                {anios && (
+                  <div className="md:pl-6">
+                    <div className="font-bebas text-4xl md:text-5xl leading-none text-white">
+                      {anios}
+                      <span className="text-white/40 text-2xl md:text-3xl ml-1">
+                        años
+                      </span>
+                    </div>
+                    <p className="mt-2 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
+                      De experiencia
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            )}
           </div>
 
-          {/* Tabs de Especialidades - TODO EL ANCHO (sin padding lateral) */}
+          {/* Tabs de especialidades (full-width) */}
           {categoria.especialidades && categoria.especialidades.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex-1 w-full min-h-0"
+              className="flex-1 w-full min-h-0 mt-6"
             >
               <EspecialidadesTabs
                 especialidades={categoria.especialidades}
-                color={categoria.color || '#3b82f6'}
+                color={categoria.color || '#ffffff'}
                 onEspecialidadChange={handleEspecialidadChange}
               />
             </motion.div>
           )}
 
-          {/* Indicador de Scroll */}
+          {/* Indicador scroll */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
             className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 mt-4 mb-2 mobile-landscape-scroll-indicator"
           >
-            <span className="text-white/60 font-lato text-[11px] uppercase tracking-wider">
-              Ver Proyectos
+            <span className="text-white/40 font-lato text-[11px] uppercase tracking-[0.2em]">
+              Ver proyectos
             </span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center p-1 scroll-wheel"
-            >
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="w-1 h-1 bg-white rounded-full scroll-dot"
-              />
-            </motion.div>
-            <ChevronDown className="w-4 h-4 text-white/40 scroll-chevron" />
+            <ChevronDown className="w-4 h-4 text-white/40 scroll-chevron animate-bounce" />
           </motion.div>
         </div>
       </section>
 
-
-      {/* Proyectos - Estilo ProjectCategoriesSection */}
-      <section className="bg-gray-900">
-        {proyectos.length === 0 ? (
-          <div className="min-h-screen flex items-center justify-center px-4">
+      {/* PROYECTOS — empty state */}
+      {proyectos.length === 0 && (
+        <section className="bg-slate-950 border-t border-white/10">
+          <div className="min-h-[60vh] flex items-center justify-center px-4 py-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center py-20"
+              className="text-center max-w-xl"
             >
-              <div className="w-24 h-24 mx-auto mb-6 opacity-50">
-                {getCategoryIconComponent(categoria.icono, "w-24 h-24 text-white")}
+              <div className="w-24 h-24 mx-auto mb-6 opacity-40">
+                {getCategoryIconComponent(
+                  categoria.icono,
+                  'w-24 h-24 text-white',
+                )}
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                No hay proyectos disponibles
+              <p className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-3">
+                Sin resultados
+              </p>
+              <h3 className="text-3xl md:text-4xl font-bebas uppercase text-white mb-3 leading-[0.95]">
+                No hay proyectos
+                <br />
+                <span className="text-white/40">en esta categoría</span>
               </h3>
-              <p className="text-gray-400 mb-6">
-                Actualmente no tenemos proyectos publicados en esta categoría.
+              <p className="text-white/60 font-lato text-base mb-8 leading-relaxed">
+                Actualmente no hay proyectos publicados en {categoria.nombre}.
+                Explora otras categorías o contáctanos para una cotización
+                personalizada.
               </p>
               <Link
                 href="/proyectos"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                className="group inline-flex items-center gap-2 px-6 py-3 border border-white/30 text-white font-lato font-bold text-sm uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
               >
-                <ArrowLeft className="w-4 h-4" />
-                Ver todos los proyectos
+                <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+                Ver todas las categorías
               </Link>
             </motion.div>
           </div>
-        ) : (() => {
-          // Separar proyectos con y sin imágenes
-          const proyectosConImagenes = proyectos.filter(p => p.imagenes && p.imagenes.length > 0)
-          const proyectosSinImagenes = proyectos.filter(p => !p.imagenes || p.imagenes.length === 0)
+        </section>
+      )}
 
-          // Obtener IDs de proyectos destacados
-          const proyectosDestacadosIds: string[] = categoria.casosExitoIds && categoria.casosExitoIds.length > 0
-            ? categoria.casosExitoIds
-            : []
-
-          // Ordenar proyectos con imágenes: destacados primero, luego el resto
-          const proyectosConImagenesOrdenados = [...proyectosConImagenes].sort((a, b) => {
-            const aEsDestacado = proyectosDestacadosIds.includes(a.id)
-            const bEsDestacado = proyectosDestacadosIds.includes(b.id)
-            if (aEsDestacado && !bEsDestacado) return -1
-            if (!aEsDestacado && bEsDestacado) return 1
-            return 0
-          })
-
-          return (
-            <>
-              {/* Grid de proyectos con imágenes */}
-              {proyectosConImagenesOrdenados.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-0 mobile-landscape-projects-grid">
-                  {proyectosConImagenesOrdenados.map((proyecto, index) => {
-                    const esDestacado = proyectosDestacadosIds.includes(proyecto.id)
-
-                    return (
-                      <Link
-                        key={proyecto.id}
-                        href={`/proyectos/detalle/${proyecto.slug}`}
-                        className="group block"
-                      >
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          transition={{ duration: 0.8, delay: index * 0.1 }}
-                          viewport={{ once: true, margin: "-50px" }}
-                          className="relative h-[50vh] sm:h-[50vh] lg:h-[91vh] overflow-hidden mobile-landscape-project-card"
-                        >
-                          {/* Imagen de fondo con hover */}
-                          <div className="absolute inset-0">
-                            <Image
-                              src={proyecto.imagenes[0].urlOptimized || proyecto.imagenes[0].url}
-                              alt={proyecto.imagenes[0].alt}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 1024px) 100vw, 50vw"
-                            />
-                          </div>
-
-                        {/* Overlay sutil */}
-                        <div className="absolute inset-0 bg-black/25" />
-
-                        {/* Contenido - Centrado verticalmente, alineado a la izquierda */}
-                        <div className="absolute inset-0 flex flex-col items-start justify-center px-8 sm:px-12 lg:px-10 text-left">
-
-                          {/* Badge destacado */}
-                          {esDestacado && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
-                              viewport={{ once: true }}
-                              className="mb-2 bg-blue-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-lato font-bold uppercase tracking-wider border border-white/30"
-                            >
-                              Proyecto Destacado
-                            </motion.div>
-                          )}
-
-                          {/* Ubicación */}
-                          <p className="text-lg sm:text-xl lg:text-lg text-white/90 font-lato italic leading-tight" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
-                            {proyecto.ubicacion}
-                          </p>
-
-                          {/* Título del proyecto */}
-                          <h3 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bebas uppercase text-white leading-none" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-                            {proyecto.titulo}
-                          </h3>
-
-                          {/* Toneladas */}
-                          {proyecto.toneladas && (
-                            <p className="text-2xl sm:text-3xl lg:text-4xl font-lato font-light text-white/80 leading-none mt-1" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
-                              {Math.round(proyecto.toneladas).toLocaleString('es-CO')} TONS
-                            </p>
-                          )}
-
-                          {/* Botón Ver proyecto */}
-                          <div className="inline-flex items-center gap-2 mt-4 group/btn">
-                            <span className="text-white font-lato uppercase tracking-wider text-xs lg:text-sm font-medium" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
-                              Ver Proyecto
-                            </span>
-
-                            <div className="relative w-8 h-8 lg:w-10 lg:h-10">
-                              <div className="absolute inset-0 rounded-full border-2 border-white group-hover/btn:scale-110 transition-all duration-300" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }} />
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 text-white transition-all duration-300 transform group-hover/btn:translate-x-0.5" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }} />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Línea divisoria inferior */}
-                        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
-                      </motion.div>
-                    </Link>
-                  )
-                })}
-              </div>
+      {/* PROYECTOS — header editorial antes del grid */}
+      {proyectosConImagenesOrdenados.length > 0 && (
+        <section className="bg-slate-950 border-t border-white/10 pt-20 md:pt-24 pb-12 md:pb-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl"
+            >
+              <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                {proyectos.length}{' '}
+                {proyectos.length === 1 ? 'Proyecto' : 'Proyectos'} entregados
+              </p>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
+                Nuestros
+              </h2>
+              <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
+                trabajos.
+              </h3>
+              {categoria.descripcion && (
+                <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
+                  {categoria.descripcion}
+                </p>
               )}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
-              {/* Lista de proyectos sin imágenes */}
-              {proyectosSinImagenes.length > 0 && (
-                <div className="py-16 px-4 sm:px-6 lg:px-16 xl:px-24 bg-white">
-                  <div className="max-w-7xl mx-auto">
-                    {/* Título de la sección */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6 }}
-                      viewport={{ once: true }}
-                      className="mb-12"
-                    >
-                      <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bebas uppercase text-gray-900 text-center">
-                        Más Proyectos
-                      </h2>
-                    </motion.div>
+      {/* PROYECTOS — grid 3×2 coherente con home */}
+      {proyectosConImagenesOrdenados.length > 0 && (
+        <section className="bg-slate-950">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 mobile-landscape-projects-grid">
+            {proyectosConImagenesOrdenados.map((proyecto, index) => {
+              const esDestacado = proyectosDestacadosIds.includes(proyecto.id)
 
-                    {/* Contenedor centrado - ocupa 2 de 4 columnas */}
-                    <div className="max-w-5xl mx-auto">
-                      {/* Lista simple de proyectos estilo HTML clásico */}
-                      <motion.ul
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        viewport={{ once: true }}
-                        className="columns-1 md:columns-2 gap-x-20 gap-y-8"
-                        style={{ columnFill: 'balance' }}
-                      >
-                        {proyectosSinImagenes.map((proyecto, index) => (
-                          <motion.li
-                            key={proyecto.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: index * 0.02 }}
-                            viewport={{ once: true }}
-                            className="break-inside-avoid mb-8 border-l-[12px] border-blue-600 pl-6"
-                          >
-                            {/* Nombre del proyecto */}
-                            <div className="text-gray-900 font-lato font-bold text-xl md:text-2xl leading-tight">
-                              {proyecto.titulo}
-                            </div>
-
-                            {/* Ubicación */}
-                            <div className="text-gray-900 font-lato text-base leading-tight">
-                              {proyecto.ubicacion}
-                            </div>
-
-                            {/* Toneladas */}
-                            {proyecto.toneladas && (
-                              <div className="text-gray-500 font-lato text-sm tracking-wide">
-                                {proyecto.toneladas.toLocaleString()} TONS
-                              </div>
-                            )}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
+              return (
+                <Link
+                  key={proyecto.id}
+                  href={`/proyectos/detalle/${proyecto.slug}`}
+                  className="group block"
+                >
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: (index % 6) * 0.08 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    className="relative h-[50vh] lg:h-[55vh] overflow-hidden mobile-landscape-project-card"
+                  >
+                    {/* Imagen de fondo */}
+                    <div className="absolute inset-0">
+                      <Image
+                        src={
+                          proyecto.imagenes[0].urlOptimized ||
+                          proyecto.imagenes[0].url
+                        }
+                        alt={proyecto.imagenes[0].alt}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
                     </div>
+
+                    {/* Overlay sólido */}
+                    <div className="absolute inset-0 bg-slate-950/50 group-hover:bg-slate-950/35 transition-colors duration-500" />
+
+                    {/* Contenido */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8 text-left">
+                      {esDestacado && (
+                        <p className="text-red-500 font-lato font-bold text-[10px] uppercase tracking-[0.25em] mb-2">
+                          Destacado
+                        </p>
+                      )}
+
+                      <p
+                        className="text-white/70 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2"
+                        style={{
+                          textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        {proyecto.ubicacion}
+                      </p>
+
+                      <h3
+                        className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bebas uppercase text-white leading-[0.95]"
+                        style={{
+                          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        {proyecto.titulo}
+                      </h3>
+
+                      <div className="flex items-center justify-between mt-4">
+                        {proyecto.toneladas ? (
+                          <p
+                            className="text-white/60 font-lato text-sm"
+                            style={{
+                              textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                            }}
+                          >
+                            {Math.round(proyecto.toneladas).toLocaleString(
+                              'es-CO',
+                            )}{' '}
+                            ton
+                          </p>
+                        ) : (
+                          <span />
+                        )}
+
+                        <span className="inline-flex items-center gap-2 text-white font-lato font-bold text-xs uppercase tracking-wider">
+                          <span className="relative">
+                            Ver proyecto
+                            <span className="absolute left-0 -bottom-0.5 h-px w-full bg-white/40 transition-colors duration-300 group-hover:bg-white" />
+                          </span>
+                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* PROYECTOS sin imagen — lista compacta dark */}
+      {proyectosSinImagenes.length > 0 && (
+        <section className="bg-slate-950 border-t border-white/10 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl mb-12 md:mb-16"
+            >
+              <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                Más entregados
+              </p>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
+                Otros
+              </h2>
+              <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
+                proyectos.
+              </h3>
+            </motion.div>
+
+            <motion.ul
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="columns-1 md:columns-2 gap-x-16 gap-y-8"
+              style={{ columnFill: 'balance' }}
+            >
+              {proyectosSinImagenes.map((proyecto, index) => (
+                <motion.li
+                  key={proyecto.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.02 }}
+                  viewport={{ once: true }}
+                  className="break-inside-avoid mb-8 border-l-2 border-red-600 pl-5"
+                >
+                  <div className="text-white font-bebas uppercase text-2xl md:text-3xl leading-[0.95]">
+                    {proyecto.titulo}
                   </div>
-                </div>
-              )}
+                  <div className="text-white/60 font-lato text-sm mt-1">
+                    {proyecto.ubicacion}
+                  </div>
+                  {proyecto.toneladas && (
+                    <div className="text-white/40 font-lato text-xs uppercase tracking-wider mt-1">
+                      {proyecto.toneladas.toLocaleString('es-CO')} ton
+                    </div>
+                  )}
+                </motion.li>
+              ))}
+            </motion.ul>
+          </div>
+        </section>
+      )}
 
-              {/* CTA Section */}
-              <div className="py-20 px-4 sm:px-6 lg:px-16 xl:px-24 bg-gradient-to-br from-slate-900 to-slate-800">
-                <div className="max-w-6xl mx-auto text-center">
-                  {/* Título */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="mb-12"
-                  >
-                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bebas uppercase text-white mb-4">
-                      ¿Listo para tu próximo proyecto?
-                    </h2>
-                    <p className="text-lg sm:text-xl text-gray-300 font-lato max-w-3xl mx-auto">
-                      Descubre más sobre nuestros servicios, conoce nuestra trayectoria o solicita una cotización personalizada.
-                    </p>
-                  </motion.div>
+      {/* CTA FINAL — Dark brutalist */}
+      <section className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mb-10 md:mb-12"
+          >
+            <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+              ¿Tu proyecto aquí?
+            </p>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
+              Hablemos
+            </h2>
+            <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
+              de tu obra.
+            </h3>
+            <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
+              Cotización personalizada para proyectos de{' '}
+              {categoria.nombre.toLowerCase()}. Respuesta en menos de 48 horas.
+            </p>
+          </motion.div>
 
-                  {/* Botones CTA */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-                  >
-                    {/* Explorar categorías */}
-                    <Link
-                      href="/proyectos"
-                      className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-lato font-semibold rounded-lg transition-all duration-300 border border-white/20 hover:border-white/40 hover:scale-105"
-                    >
-                      <ArrowLeft className="w-5 h-5" />
-                      Explorar Categorías
-                    </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex flex-col sm:flex-row gap-3 md:gap-4"
+          >
+            <Link
+              href="/contacto"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700"
+            >
+              Solicitar cotización
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
 
-                    {/* Ver trayectoria */}
-                    <Link
-                      href="/trayectoria"
-                      className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
-                    >
-                      <Building className="w-5 h-5" />
-                      Nuestra Trayectoria
-                    </Link>
-
-                    {/* Cotizar proyecto */}
-                    <Link
-                      href="/contacto"
-                      className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-lato font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                      Cotizar Proyecto
-                    </Link>
-                  </motion.div>
-                </div>
-              </div>
-
-              </>
-            )
-          })()}
+            <Link
+              href="/proyectos"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
+            >
+              <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+              Otras categorías
+            </Link>
+          </motion.div>
+        </div>
       </section>
     </div>
   )

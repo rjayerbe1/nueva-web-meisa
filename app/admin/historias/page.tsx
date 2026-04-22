@@ -1,38 +1,30 @@
-import { prisma } from '@/lib/prisma'
-import HistoriasAdminClient from './HistoriasAdminClient'
+import { prisma } from "@/lib/prisma"
+import { HistoriasAdminList } from "@/components/admin/historias/HistoriasAdminList"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 export default async function HistoriasAdminPage() {
-  // SSR: fetchear data inicial para eliminar el skeleton "Cargando..."
-  const [historias, proyectosSinHistoria] = await Promise.all([
-    prisma.historiaProyecto.findMany({
-      include: {
-        proyecto: {
-          select: { titulo: true, cliente: true, categoria: true, slug: true },
-        },
-      },
-      orderBy: { fechaActualizacion: 'desc' },
-    }),
-    prisma.proyecto.findMany({
-      where: { historia: null, visible: true },
-      select: {
-        id: true,
-        titulo: true,
-        cliente: true,
-        categoria: true,
-        slug: true,
-        destacado: true,
-        fechaInicio: true,
-      },
-      orderBy: [{ destacado: 'desc' }, { fechaInicio: 'desc' }],
-    }),
-  ])
-
+  const items = await prisma.historiaProyecto.findMany({
+    orderBy: { fechaActualizacion: "desc" },
+    include: {
+      proyecto: { select: { titulo: true, slug: true, cliente: true } },
+    },
+  })
   return (
-    <HistoriasAdminClient
-      initialHistorias={JSON.parse(JSON.stringify(historias))}
-      initialProyectosSinHistoria={JSON.parse(JSON.stringify(proyectosSinHistoria))}
+    <HistoriasAdminList
+      items={items.map((h) => ({
+        id: h.id,
+        proyectoId: h.proyectoId,
+        activo: h.activo,
+        tituloAlternativo: h.tituloAlternativo,
+        resumenCorto: h.resumenCorto,
+        imagenDestacada: h.imagenDestacada,
+        videoUrl: h.videoUrl,
+        dificultadTecnica: h.dificultadTecnica,
+        innovacionNivel: h.innovacionNivel,
+        proyecto: h.proyecto,
+      }))}
     />
   )
 }
