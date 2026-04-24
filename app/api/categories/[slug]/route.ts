@@ -18,11 +18,6 @@ export async function GET(
         descripcion: true,
         slug: true,
         imagenCover: true,
-        imagenBanner: true,
-        videoBanner: true,
-        usarVideoBanner: true,
-        videoBannerScale: true,
-        videoBannerPosition: true,
         icono: true,
         color: true,
         colorSecundario: true,
@@ -30,9 +25,7 @@ export async function GET(
         overlayOpacity: true,
         metaTitle: true,
         metaDescription: true,
-        descripcionAmpliada: true,
         estadisticas: true,
-        procesoTrabajo: true,
         casosExitoIds: true,
         especialidades: true
       }

@@ -7,6 +7,8 @@ import { AdminTabsLayout } from "@/components/admin/AdminTabsLayout"
 import { FormField, type FieldDef } from "@/components/admin/shared/FormFields"
 import { ArrowLeft, ExternalLink, Save, Loader2, Check } from "lucide-react"
 import type { CategoriaProyecto } from "@prisma/client"
+import { CasosExitoPicker } from "./CasosExitoPicker"
+import { IconPreview } from "./IconPreview"
 
 const identidadFields: FieldDef[] = [
   { name: "nombre", label: "Nombre", kind: "text", required: true },
@@ -27,33 +29,41 @@ const identidadFields: FieldDef[] = [
     ],
     hint: "Identificador técnico interno. No cambiarlo a menos que sepas qué haces.",
   },
-  { name: "icono", label: "Icono (Lucide)", kind: "text", placeholder: "Building2" },
+  // icono se renderiza aparte via <IconPreview /> en el panel Identidad
   { name: "descripcion", label: "Descripción corta", kind: "textarea", rows: 2, gridSpan: 2 },
-  {
-    name: "descripcionAmpliada",
-    label: "Descripción ampliada",
-    kind: "textarea",
-    rows: 5,
-    gridSpan: 2,
-    hint: "Texto editorial largo que aparece en /proyectos/categoria/[slug].",
-  },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "visible", label: "Visible", kind: "boolean" },
   { name: "destacada", label: "Destacada", kind: "boolean" },
 ]
 
-const visualFields: FieldDef[] = [
-  { name: "imagenCover", label: "Imagen cover", kind: "image", gridSpan: 2 },
-  { name: "imagenBanner", label: "Imagen banner", kind: "image", gridSpan: 2 },
-  { name: "videoCover", label: "Video cover", kind: "video", gridSpan: 2 },
+// Grupo único — Tarjeta en el grid de categorías (home + /proyectos).
+// El hero de la página interna toma la imagen de la especialidad activa
+// (se sube desde tab "Contenido ampliado → Especialidades"). No hay campos
+// imagenBanner/videoBanner — deprecated y removidos del modelo.
+const gridHomeFields: FieldDef[] = [
+  {
+    name: "imagenCover",
+    label: "Imagen cover",
+    kind: "image",
+    gridSpan: 2,
+    hint: "Aparece en el grid de 6 tarjetas del home y /proyectos (también sirve de poster si hay video).",
+  },
+  {
+    name: "videoCover",
+    label: "Video cover (hover)",
+    kind: "video",
+    gridSpan: 2,
+    hint: "Se reproduce al pasar el mouse por la tarjeta en desktop.",
+  },
   {
     name: "usarVideoCover",
-    label: "Usar video cover (en vez de imagen)",
+    label: "Usar video cover (en vez de solo imagen)",
     kind: "boolean",
+    gridSpan: 2,
   },
   {
     name: "videoCoverScale",
-    label: "Escala video cover",
+    label: "Escala video",
     kind: "number",
     step: 0.05,
     min: 0.5,
@@ -61,41 +71,37 @@ const visualFields: FieldDef[] = [
   },
   {
     name: "videoCoverPosition",
-    label: "Posición video cover",
+    label: "Posición video (X,Y en %)",
     kind: "text",
-    placeholder: "center center",
-    gridSpan: 2,
-  },
-  { name: "videoBanner", label: "Video banner", kind: "video", gridSpan: 2 },
-  { name: "usarVideoBanner", label: "Usar video banner", kind: "boolean" },
-  {
-    name: "videoBannerScale",
-    label: "Escala video banner",
-    kind: "number",
-    step: 0.05,
-    min: 0.5,
-    max: 3,
+    placeholder: "center center · o -10,5",
   },
   {
-    name: "videoBannerPosition",
-    label: "Posición video banner",
+    name: "color",
+    label: "Color del ícono (hex)",
     kind: "text",
-    placeholder: "center center",
+    placeholder: "#1e40af",
     gridSpan: 2,
+    hint: "Color del ícono de la categoría dentro de la tarjeta del grid.",
   },
-  { name: "color", label: "Color primario (hex)", kind: "text", placeholder: "#1e40af" },
-  { name: "colorSecundario", label: "Color secundario", kind: "text", placeholder: "#dc2626" },
-]
-
-const overlayFields: FieldDef[] = [
-  { name: "overlayColor", label: "Overlay color (hex)", kind: "text", placeholder: "#000000" },
+  {
+    name: "overlayColor",
+    label: "Overlay color (hex)",
+    kind: "text",
+    placeholder: "#000000",
+  },
   {
     name: "overlayOpacity",
-    label: "Overlay opacity",
+    label: "Overlay opacity (0–1)",
     kind: "number",
     step: 0.05,
     min: 0,
     max: 1,
+  },
+  {
+    name: "enableHoverOverlay",
+    label: "Activar overlay adicional al hover",
+    kind: "boolean",
+    gridSpan: 2,
   },
   {
     name: "hoverOverlayColor",
@@ -105,47 +111,166 @@ const overlayFields: FieldDef[] = [
   },
   {
     name: "hoverOverlayOpacity",
-    label: "Hover overlay opacity",
+    label: "Hover overlay opacity (0–1)",
     kind: "number",
     step: 0.05,
     min: 0,
     max: 1,
   },
-  { name: "enableHoverOverlay", label: "Activar hover overlay", kind: "boolean", gridSpan: 2 },
 ]
 
-const contenidoFields: FieldDef[] = [
+// Textos UI — overrides editables de los textos hardcoded de la página pública.
+// Agrupados por sección. Dejar vacío = usar el default (branding MEISA coherente).
+// Soporta {nombre} en cualquiera — se reemplaza con el nombre de la categoría.
+type TextoDef = {
+  key: string
+  label: string
+  defaultValue: string
+  kind?: "text" | "textarea"
+  rows?: number
+}
+
+const textosUiGroups: { title: string; eyebrow: string; items: TextoDef[] }[] = [
   {
-    name: "especialidades",
-    label: "Especialidades (JSON libre)",
-    kind: "json",
-    rows: 8,
-    gridSpan: 2,
-    hint: "Estructura flexible. Ejemplo: array de {titulo, descripcion}.",
+    eyebrow: "01",
+    title: "Hero",
+    items: [
+      { key: "heroEyebrow", label: "Eyebrow del hero", defaultValue: "Categoría" },
+      { key: "heroIndicadorScroll", label: "Texto indicador de scroll", defaultValue: "Ver proyectos" },
+    ],
   },
   {
-    name: "estadisticas",
-    label: "Estadísticas (JSON libre)",
-    kind: "json",
-    rows: 8,
-    gridSpan: 2,
+    eyebrow: "02",
+    title: "Grid de proyectos (header + tarjetas)",
+    items: [
+      { key: "gridEyebrowSingular", label: "Eyebrow (1 proyecto)", defaultValue: "Proyecto entregado" },
+      { key: "gridEyebrowPlural", label: "Eyebrow (2+ proyectos)", defaultValue: "Proyectos entregados" },
+      { key: "gridTitulo1", label: "Título línea 1", defaultValue: "Nuestros" },
+      { key: "gridTitulo2", label: "Título línea 2", defaultValue: "trabajos." },
+      { key: "gridCardDestacado", label: "Label 'Destacado' en tarjeta", defaultValue: "Destacado" },
+      { key: "gridCardVerProyecto", label: "Label 'Ver proyecto' en tarjeta", defaultValue: "Ver proyecto" },
+    ],
   },
   {
-    name: "procesoTrabajo",
-    label: "Proceso de trabajo (JSON libre)",
-    kind: "json",
-    rows: 8,
-    gridSpan: 2,
+    eyebrow: "03",
+    title: "Otros proyectos (lista sin imagen)",
+    items: [
+      { key: "otrosEyebrow", label: "Eyebrow", defaultValue: "Más entregados" },
+      { key: "otrosTitulo1", label: "Título línea 1", defaultValue: "Otros" },
+      { key: "otrosTitulo2", label: "Título línea 2", defaultValue: "proyectos." },
+    ],
   },
   {
-    name: "casosExitoIds",
-    label: "IDs de casos de éxito (JSON array)",
-    kind: "json",
-    rows: 4,
-    gridSpan: 2,
-    hint: 'Ejemplo: ["proyecto-id-1", "proyecto-id-2"]',
+    eyebrow: "04",
+    title: "CTA final",
+    items: [
+      { key: "ctaEyebrow", label: "Eyebrow", defaultValue: "¿Tu proyecto aquí?" },
+      { key: "ctaTitulo1", label: "Título línea 1", defaultValue: "Hablemos" },
+      { key: "ctaTitulo2", label: "Título línea 2", defaultValue: "de tu obra." },
+      {
+        key: "ctaDescripcion",
+        label: "Descripción",
+        defaultValue: "Cotización personalizada para proyectos de {nombre}. Respuesta en menos de 48 horas.",
+        kind: "textarea",
+        rows: 2,
+      },
+      { key: "ctaBotonPrimarioLabel", label: "Botón primario", defaultValue: "Solicitar cotización" },
+      { key: "ctaBotonSecundarioLabel", label: "Botón secundario", defaultValue: "Otras categorías" },
+    ],
   },
 ]
+
+const especialidadesField: FieldDef = {
+  name: "especialidades",
+  label: "Especialidades (tabs del hero)",
+  kind: "objectArray",
+  gridSpan: 2,
+  collapsible: true,
+  hint: "Cada ítem aparece como un tab en el hero de la página. Al hacer click en el título, se despliegan los campos para editar.",
+  itemTemplate: {
+    id: "",
+    titulo: "",
+    descripcion: "",
+    imagen: "",
+    icono: "",
+    orden: 1,
+    activo: true,
+    proyectosEjemplo: [],
+  },
+  itemFields: [
+    { name: "titulo", label: "Título", kind: "text", required: true, gridSpan: 2 },
+    {
+      name: "descripcion",
+      label: "Descripción",
+      kind: "textarea",
+      rows: 6,
+      gridSpan: 2,
+      hint: "Usa **negrita** para resaltar y doble salto de línea para separar párrafos.",
+    },
+    { name: "imagen", label: "Imagen de fondo del hero", kind: "image", gridSpan: 2 },
+    {
+      name: "icono",
+      label: "Ícono (nombre Lucide)",
+      kind: "text",
+      placeholder: "Warehouse",
+    },
+    { name: "orden", label: "Orden", kind: "number" },
+    { name: "activo", label: "Activo (visible)", kind: "boolean" },
+    {
+      name: "proyectosEjemplo",
+      label: "Ideal para (tags)",
+      kind: "stringArray",
+      gridSpan: 2,
+      hint: 'Ej: "Bodegas industriales", "Centros de distribución"',
+    },
+  ],
+  itemLabel: (item, i) =>
+    typeof item.titulo === "string" && item.titulo
+      ? `${String(i + 1).padStart(2, "0")} — ${item.titulo}`
+      : `Especialidad ${String(i + 1).padStart(2, "0")}`,
+}
+
+const estadisticasField: FieldDef = {
+  name: "estadisticas",
+  label: "Estadísticas del hero",
+  kind: "objectArray",
+  gridSpan: 2,
+  collapsible: true,
+  hint: "Máximo 4. Aparecen en la esquina inferior derecha del hero. Ejemplos: 8.500 ton + Acero fabricado · 57 + + Proyectos entregados · 150 m + Luz máxima.",
+  itemTemplate: { valor: "", sufijo: "", label: "" },
+  itemFields: [
+    {
+      name: "valor",
+      label: "Valor",
+      kind: "text",
+      required: true,
+      placeholder: "8.500 · 57 · 150",
+      hint: "Número grande que destaca. Formato libre.",
+    },
+    {
+      name: "sufijo",
+      label: "Sufijo (opcional)",
+      kind: "text",
+      placeholder: "ton · + · años · m · %",
+      hint: "Aparece a la derecha del valor en color atenuado.",
+    },
+    {
+      name: "label",
+      label: "Etiqueta",
+      kind: "text",
+      gridSpan: 2,
+      placeholder: "Acero fabricado · Proyectos entregados · Luz máxima",
+      hint: "Texto pequeño uppercase bajo el valor.",
+    },
+  ],
+  itemLabel: (item, i) => {
+    const valor = typeof item.valor === "string" ? item.valor : ""
+    const label = typeof item.label === "string" ? item.label : ""
+    if (valor && label) return `${valor} — ${label}`
+    if (valor) return valor
+    return `Stat ${String(i + 1).padStart(2, "0")}`
+  },
+}
 
 const seoFields: FieldDef[] = [
   { name: "metaTitle", label: "SEO — título", kind: "text", gridSpan: 2 },
@@ -160,7 +285,30 @@ export function CategoriaDetailEditor({ categoria }: { categoria: CategoriaProye
   const [savedAt, setSavedAt] = useState<number | null>(null)
 
   const setField = (name: string, value: unknown) => {
+    if (name.includes(".")) {
+      const [root, key] = name.split(".", 2)
+      setForm((prev) => {
+        const parent = (prev[root] as Record<string, unknown>) ?? {}
+        const nextParent = { ...parent }
+        if (value === "" || value === null || value === undefined) {
+          delete nextParent[key]
+        } else {
+          nextParent[key] = value
+        }
+        return { ...prev, [root]: nextParent }
+      })
+      return
+    }
     setForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const getField = (name: string): unknown => {
+    if (name.includes(".")) {
+      const [root, key] = name.split(".", 2)
+      const parent = form[root] as Record<string, unknown> | null | undefined
+      return parent?.[key]
+    }
+    return form[name]
   }
 
   const save = async () => {
@@ -212,12 +360,208 @@ export function CategoriaDetailEditor({ categoria }: { categoria: CategoriaProye
           <FormField
             key={f.name}
             field={f}
-            value={form[f.name]}
+            value={getField(f.name)}
             onChange={(v) => setField(f.name, v)}
             disabled={saving}
           />
         ))}
       </div>
+    </div>
+  )
+
+  const identidadPanel = (
+    <div className="rounded-md border border-slate-200 bg-white">
+      <div className="grid grid-cols-1 gap-5 px-6 py-6 md:grid-cols-2">
+        {identidadFields.map((f) => (
+          <FormField
+            key={f.name}
+            field={f}
+            value={getField(f.name)}
+            onChange={(v) => setField(f.name, v)}
+            disabled={saving}
+          />
+        ))}
+        <IconPreview
+          value={(form.icono as string | null) ?? null}
+          onChange={(v) => setField("icono", v)}
+          disabled={saving}
+        />
+      </div>
+    </div>
+  )
+
+  const visualesPanel = (
+    <div className="space-y-6">
+      <div className="border-l-2 border-blue-400 bg-blue-50 px-4 py-3">
+        <p className="font-lato text-xs text-blue-900">
+          <strong>Nota</strong>: la imagen del hero de{" "}
+          <code className="font-mono text-[11px]">/proyectos/categoria/{(form.slug as string) || "…"}</code>{" "}
+          toma la foto de la <strong>especialidad activa</strong> (se sube en{" "}
+          <em>Contenido ampliado → Especialidades</em>). Si la categoría no
+          tiene especialidades, usa la <strong>imagen cover</strong> de abajo
+          como fallback.
+        </p>
+      </div>
+
+      <section className="rounded-md border border-slate-200 bg-white">
+        <header className="border-b border-slate-100 bg-stone-50 px-6 py-4">
+          <p className="font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+            Grid del home y /proyectos
+          </p>
+          <h3 className="mt-1 font-bebas text-2xl uppercase text-slate-950">
+            Tarjeta en el grid de categorías
+          </h3>
+          <p className="mt-1 font-lato text-xs text-slate-500">
+            Cómo se ve esta categoría dentro de la grilla 3×2 del home y del listado de proyectos.
+          </p>
+        </header>
+        <div className="grid grid-cols-1 gap-5 px-6 py-6 md:grid-cols-2">
+          {gridHomeFields.map((f) => (
+            <FormField
+              key={f.name}
+              field={f}
+              value={getField(f.name)}
+              onChange={(v) => setField(f.name, v)}
+              disabled={saving}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+
+  const textosUiPanel = (
+    <div className="space-y-6">
+      <div className="border-l-2 border-blue-400 bg-blue-50 px-4 py-3">
+        <p className="font-lato text-xs text-blue-900">
+          Deja los campos vacíos para usar los textos por defecto de MEISA. Los
+          campos que llenes sobrescriben al default <strong>solo en esta categoría</strong>.
+          Puedes usar <code className="font-mono text-[11px]">{"{nombre}"}</code>{" "}
+          en cualquier campo — se sustituye por el nombre de la categoría.
+        </p>
+      </div>
+
+      {textosUiGroups.map((group) => (
+        <section
+          key={group.eyebrow}
+          className="rounded-md border border-slate-200 bg-white"
+        >
+          <header className="border-b border-slate-100 bg-stone-50 px-6 py-4">
+            <p className="font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              {group.eyebrow}
+            </p>
+            <h3 className="mt-1 font-bebas text-2xl uppercase text-slate-950">
+              {group.title}
+            </h3>
+          </header>
+          <div className="grid grid-cols-1 gap-5 px-6 py-6 md:grid-cols-2">
+            {group.items.map((t) => {
+              const fieldName = `textosUi.${t.key}`
+              const field: FieldDef =
+                t.kind === "textarea"
+                  ? {
+                      name: fieldName,
+                      label: t.label,
+                      kind: "textarea",
+                      rows: t.rows ?? 2,
+                      gridSpan: 2,
+                      placeholder: t.defaultValue,
+                      hint: `Default: ${t.defaultValue}`,
+                    }
+                  : {
+                      name: fieldName,
+                      label: t.label,
+                      kind: "text",
+                      placeholder: t.defaultValue,
+                      hint: `Default: ${t.defaultValue}`,
+                    }
+              return (
+                <FormField
+                  key={fieldName}
+                  field={field}
+                  value={getField(fieldName)}
+                  onChange={(v) => setField(fieldName, v)}
+                  disabled={saving}
+                />
+              )
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+  )
+
+  const contenidoPanel = (
+    <div className="space-y-6">
+      {/* Especialidades — objectArray con image picker por item */}
+      <section className="rounded-md border border-slate-200 bg-white">
+        <header className="border-b border-slate-100 bg-stone-50 px-6 py-4">
+          <p className="font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+            01 — Hero interactivo
+          </p>
+          <h3 className="mt-1 font-bebas text-2xl uppercase text-slate-950">
+            Especialidades
+          </h3>
+        </header>
+        <div className="grid grid-cols-1 gap-5 px-6 py-6 md:grid-cols-2">
+          <FormField
+            field={especialidadesField}
+            value={form.especialidades as any}
+            onChange={(v) => setField("especialidades", v)}
+            disabled={saving}
+          />
+        </div>
+      </section>
+
+      {/* Estadísticas — array flexible editable por categoría */}
+      <section className="rounded-md border border-slate-200 bg-white">
+        <header className="border-b border-slate-100 bg-stone-50 px-6 py-4">
+          <p className="font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+            02 — Stats del hero
+          </p>
+          <h3 className="mt-1 font-bebas text-2xl uppercase text-slate-950">
+            Estadísticas
+          </h3>
+          <p className="mt-1 font-lato text-xs text-slate-500">
+            Aparecen en la esquina inferior derecha del hero. Cada categoría
+            puede tener sus propias métricas (ej: "Luz máxima" para puentes,
+            "Área construida" para edificios).
+          </p>
+        </header>
+        <div className="grid grid-cols-1 gap-5 px-6 py-6 md:grid-cols-2">
+          <FormField
+            field={estadisticasField}
+            value={form.estadisticas as any}
+            onChange={(v) => setField("estadisticas", v)}
+            disabled={saving}
+          />
+        </div>
+      </section>
+
+      {/* Proyectos destacados — picker visual de proyectos */}
+      <section className="rounded-md border border-slate-200 bg-white">
+        <header className="border-b border-slate-100 bg-stone-50 px-6 py-4">
+          <p className="font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+            03 — Orden del grid
+          </p>
+          <h3 className="mt-1 font-bebas text-2xl uppercase text-slate-950">
+            Proyectos destacados
+          </h3>
+          <p className="mt-1 font-lato text-xs text-slate-500">
+            Los seleccionados aparecen primero en el grid de la página pública
+            con el eyebrow rojo <strong className="text-red-600">"Destacado"</strong> sobre el título.
+          </p>
+        </header>
+        <div className="px-6 py-6">
+          <CasosExitoPicker
+            categoriaId={categoria.id}
+            value={(form.casosExitoIds as string[] | null) ?? []}
+            onChange={(v) => setField("casosExitoIds", v)}
+            disabled={saving}
+          />
+        </div>
+      </section>
+
     </div>
   )
 
@@ -256,10 +600,10 @@ export function CategoriaDetailEditor({ categoria }: { categoria: CategoriaProye
         title={(form.nombre as string) || "Categoría"}
         description={(form.descripcion as string) ?? undefined}
         tabs={[
-          { id: "identidad", label: "Identidad", content: renderFields(identidadFields) },
-          { id: "visuales", label: "Visuales", content: renderFields(visualFields) },
-          { id: "overlay", label: "Overlay & Hover", content: renderFields(overlayFields) },
-          { id: "contenido", label: "Contenido ampliado", content: renderFields(contenidoFields) },
+          { id: "identidad", label: "Identidad", content: identidadPanel },
+          { id: "visuales", label: "Visuales", content: visualesPanel },
+          { id: "contenido", label: "Contenido ampliado", content: contenidoPanel },
+          { id: "textos", label: "Textos UI", content: textosUiPanel },
           { id: "seo", label: "SEO", content: renderFields(seoFields) },
         ]}
       />

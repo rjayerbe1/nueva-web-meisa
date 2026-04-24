@@ -305,17 +305,11 @@ model CategoriaProyecto {
   hoverOverlayColor   String?       @default("#1e40af")
   hoverOverlayOpacity Float?        @default(0.2)
   enableHoverOverlay  Boolean       @default(true)
-  descripcionAmpliada String?
   estadisticas        Json?
-  procesoTrabajo      Json?
   casosExitoIds       Json?
-  imagenBanner        String?
-  videoBanner         String?
+  textosUi            Json?
   videoCover          String?
-  usarVideoBanner     Boolean       @default(false)
   usarVideoCover      Boolean       @default(false)
-  videoBannerPosition String?       @default("center center")
-  videoBannerScale    Float?        @default(1.0)
   videoCoverPosition  String?       @default("center center")
   videoCoverScale     Float?        @default(1.0)
   key                 CategoriaEnum @unique

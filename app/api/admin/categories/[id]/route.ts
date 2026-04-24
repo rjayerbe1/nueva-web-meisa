@@ -35,11 +35,6 @@ export async function GET(
         usarVideoCover: true,
         videoCoverScale: true,
         videoCoverPosition: true,
-        imagenBanner: true,
-        videoBanner: true,
-        usarVideoBanner: true,
-        videoBannerScale: true,
-        videoBannerPosition: true,
         icono: true,
         color: true,
         colorSecundario: true,
@@ -56,11 +51,10 @@ export async function GET(
         totalProyectos: true,
         createdAt: true,
         updatedAt: true,
-        descripcionAmpliada: true,
-        procesoTrabajo: true,
         estadisticas: true,
         casosExitoIds: true,
         especialidades: true,
+        textosUi: true,
       }
     })
 
@@ -137,18 +131,11 @@ export async function PUT(
       updateData.imagenCover = imageUrls.imagenCover
     }
 
-    if (data.imagenBanner !== undefined) updateData.imagenBanner = data.imagenBanner
-
-    // Handle video fields
+    // Handle video fields (grid home)
     if (data.videoCover !== undefined) updateData.videoCover = data.videoCover
-    if (data.videoBanner !== undefined) updateData.videoBanner = data.videoBanner
     if (data.usarVideoCover !== undefined) updateData.usarVideoCover = data.usarVideoCover
-    if (data.usarVideoBanner !== undefined) updateData.usarVideoBanner = data.usarVideoBanner
-    // Video adjustment fields
     if (data.videoCoverScale !== undefined) updateData.videoCoverScale = data.videoCoverScale
     if (data.videoCoverPosition !== undefined) updateData.videoCoverPosition = data.videoCoverPosition
-    if (data.videoBannerScale !== undefined) updateData.videoBannerScale = data.videoBannerScale
-    if (data.videoBannerPosition !== undefined) updateData.videoBannerPosition = data.videoBannerPosition
 
     if (data.icono !== undefined) {
       updateData.icono = data.icono
@@ -171,11 +158,10 @@ export async function PUT(
     if (data.destacada !== undefined) updateData.destacada = data.destacada
     
     // Handle new enhanced content fields
-    if (data.descripcionAmpliada !== undefined) updateData.descripcionAmpliada = data.descripcionAmpliada
-    if (data.procesoTrabajo !== undefined) updateData.procesoTrabajo = data.procesoTrabajo
     if (data.estadisticas !== undefined) updateData.estadisticas = data.estadisticas
     if (data.casosExitoIds !== undefined) updateData.casosExitoIds = data.casosExitoIds
     if (data.especialidades !== undefined) updateData.especialidades = data.especialidades
+    if (data.textosUi !== undefined) updateData.textosUi = data.textosUi
     console.log('Update object:', updateData) // Debug log
     
     const categoria = await prisma.categoriaProyecto.update({
@@ -192,11 +178,6 @@ export async function PUT(
         usarVideoCover: true,
         videoCoverScale: true,
         videoCoverPosition: true,
-        imagenBanner: true,
-        videoBanner: true,
-        usarVideoBanner: true,
-        videoBannerScale: true,
-        videoBannerPosition: true,
         icono: true,
         color: true,
         colorSecundario: true,
@@ -213,11 +194,10 @@ export async function PUT(
         totalProyectos: true,
         createdAt: true,
         updatedAt: true,
-        descripcionAmpliada: true,
-        procesoTrabajo: true,
         estadisticas: true,
         casosExitoIds: true,
         especialidades: true,
+        textosUi: true,
       }
     })
 

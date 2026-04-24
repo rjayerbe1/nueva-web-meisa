@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Especialidad {
@@ -8,7 +8,6 @@ interface Especialidad {
   titulo: string
   icono: string
   descripcion: string
-  metricas: string[]
   proyectosEjemplo: string[]
   orden: number
   activo: boolean
@@ -35,6 +34,8 @@ export function EspecialidadesTabs({
     }
   }
 
+  // Al montar, auto-seleccionar la primera especialidad activa
+  // para que la imagen del hero tenga una fuente.
   useEffect(() => {
     if (onEspecialidadChange && especialidadesActivas[0]) {
       onEspecialidadChange(especialidadesActivas[0])

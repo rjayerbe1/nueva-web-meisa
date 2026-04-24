@@ -14,16 +14,6 @@ import {
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
 import { EspecialidadesTabs } from '@/components/sections/EspecialidadesTabs'
 
-const parsePosition = (
-  posStr: string | null,
-): { x: number; y: number } => {
-  if (!posStr || posStr.includes(' ')) {
-    return { x: 0, y: 0 }
-  }
-  const [x, y] = posStr.split(',').map((v) => parseFloat(v) || 0)
-  return { x, y }
-}
-
 interface Brochure {
   id: string
   titulo: string
@@ -83,24 +73,14 @@ interface Categoria {
   descripcion: string | null
   slug: string
   imagenCover: string | null
-  imagenBanner: string | null
-  videoBanner: string | null
-  usarVideoBanner: boolean
-  videoBannerScale: number | null
-  videoBannerPosition: string | null
   icono: string | null
   color: string | null
-  colorSecundario: string | null
-  overlayColor: string | null
-  overlayOpacity: number | null
   metaTitle: string | null
   metaDescription: string | null
-  descripcionAmpliada: string | null
-  beneficios: any | null
-  procesoTrabajo: any | null
   estadisticas: any | null
   casosExitoIds: any | null
   especialidades: any | null
+  textosUi: Record<string, string> | null
 }
 
 interface CategoryPageClientProps {
@@ -114,6 +94,15 @@ export default function CategoryPageClient({
   proyectos,
   brochure,
 }: CategoryPageClientProps) {
+  // Helper: devuelve el override editable desde admin (textosUi) o el default.
+  // Soporta sustitución de {nombre} por el nombre de la categoría.
+  const txt = (key: string, fallback: string): string => {
+    const override = categoria.textosUi?.[key]
+    const value =
+      override && override.trim().length > 0 ? override : fallback
+    return value.replace(/\{nombre\}/g, categoria.nombre)
+  }
+
   const [downloadingPDF, setDownloadingPDF] = useState(false)
   const [heroBackground, setHeroBackground] = useState<string | null>(null)
 
@@ -169,20 +158,23 @@ export default function CategoryPageClient({
     },
   )
 
-  const stats = categoria.estadisticas || {}
-  const toneladas = stats.toneladasTotal as number | undefined
-  const proyectosCompletados = stats.proyectosCompletados as number | undefined
-  const anios = stats.aniosExperiencia as number | undefined
+  // estadisticas: array flexible [{valor, sufijo, label}]
+  const statsArr: Array<{
+    valor?: string | number
+    sufijo?: string
+    label?: string
+  }> = Array.isArray(categoria.estadisticas) ? categoria.estadisticas : []
+  const statsVisibles = statsArr
+    .filter(
+      (s) => s && (s.valor !== undefined && s.valor !== '' && s.valor !== null),
+    )
+    .slice(0, 4)
 
   return (
     <div className="min-h-screen bg-slate-950">
-      {/* HERO — h-screen con imagen/video banner + especialidades tabs */}
+      {/* HERO — h-screen con imagen de la especialidad activa o cover como fallback */}
       <section className="relative h-screen overflow-hidden bg-slate-950">
-        {/* Background: especialidad > video > imagen banner > cover */}
-        {(heroBackground ||
-          categoria.videoBanner ||
-          categoria.imagenBanner ||
-          categoria.imagenCover) && (
+        {(heroBackground || categoria.imagenCover) && (
           <div className="absolute inset-0">
             {heroBackground ? (
               <motion.img
@@ -194,24 +186,9 @@ export default function CategoryPageClient({
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
               />
-            ) : categoria.usarVideoBanner && categoria.videoBanner ? (
-              <video
-                src={categoria.videoBanner}
-                className="w-full h-full"
-                style={{
-                  objectFit: 'cover',
-                  transform: `translate(${parsePosition(categoria.videoBannerPosition).x}%, ${parsePosition(categoria.videoBannerPosition).y}%) scale(${categoria.videoBannerScale || 1.0})`,
-                  willChange: 'transform',
-                  backfaceVisibility: 'hidden',
-                }}
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
             ) : (
               <img
-                src={categoria.imagenBanner || categoria.imagenCover || ''}
+                src={categoria.imagenCover || ''}
                 alt=""
                 className="w-full h-full object-cover"
               />
@@ -258,7 +235,7 @@ export default function CategoryPageClient({
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-3"
             >
-              Categoría
+              {txt('heroEyebrow', 'Categoría')}
             </motion.p>
 
             {/* Título + botones brochure */}
@@ -299,55 +276,6 @@ export default function CategoryPageClient({
               )}
             </div>
 
-            {/* Stats strip inline (si hay estadisticas) */}
-            {(toneladas || proyectosCompletados || anios) && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.35 }}
-                className="hidden lg:grid grid-cols-3 gap-6 md:divide-x md:divide-white/10 border-y border-white/10 py-5 max-w-3xl"
-              >
-                {toneladas && (
-                  <div className="md:pl-6 first:md:pl-0">
-                    <div className="font-bebas text-4xl md:text-5xl leading-none text-white">
-                      {toneladas.toLocaleString('es-CO')}
-                      <span className="text-white/40 text-2xl md:text-3xl ml-1">
-                        ton
-                      </span>
-                    </div>
-                    <p className="mt-2 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
-                      Acero fabricado
-                    </p>
-                  </div>
-                )}
-                {proyectosCompletados && (
-                  <div className="md:pl-6">
-                    <div className="font-bebas text-4xl md:text-5xl leading-none text-white">
-                      {proyectosCompletados}
-                      <span className="text-white/40 text-2xl md:text-3xl ml-1">
-                        +
-                      </span>
-                    </div>
-                    <p className="mt-2 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
-                      Proyectos entregados
-                    </p>
-                  </div>
-                )}
-                {anios && (
-                  <div className="md:pl-6">
-                    <div className="font-bebas text-4xl md:text-5xl leading-none text-white">
-                      {anios}
-                      <span className="text-white/40 text-2xl md:text-3xl ml-1">
-                        años
-                      </span>
-                    </div>
-                    <p className="mt-2 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
-                      De experiencia
-                    </p>
-                  </div>
-                )}
-              </motion.div>
-            )}
           </div>
 
           {/* Tabs de especialidades (full-width) */}
@@ -374,11 +302,39 @@ export default function CategoryPageClient({
             className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 mt-4 mb-2 mobile-landscape-scroll-indicator"
           >
             <span className="text-white/40 font-lato text-[11px] uppercase tracking-[0.2em]">
-              Ver proyectos
+              {txt('heroIndicadorScroll', 'Ver proyectos')}
             </span>
             <ChevronDown className="w-4 h-4 text-white/40 scroll-chevron animate-bounce" />
           </motion.div>
         </div>
+
+        {/* Stats strip — esquina inferior derecha del hero */}
+        {statsVisibles.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="hidden lg:flex absolute bottom-6 right-4 sm:right-6 lg:right-12 z-20 items-end divide-x divide-white/15"
+          >
+            {statsVisibles.map((s, i) => (
+              <div key={i} className={i === 0 ? 'pr-5' : i === statsVisibles.length - 1 ? 'pl-5' : 'px-5'}>
+                <div className="font-bebas text-3xl xl:text-4xl leading-none text-white">
+                  {s.valor}
+                  {s.sufijo && (
+                    <span className="text-white/40 text-lg xl:text-xl ml-1">
+                      {s.sufijo}
+                    </span>
+                  )}
+                </div>
+                {s.label && (
+                  <p className="mt-1.5 text-white/50 font-lato text-[10px] uppercase tracking-[0.2em]">
+                    {s.label}
+                  </p>
+                )}
+              </div>
+            ))}
+          </motion.div>
+        )}
       </section>
 
       {/* PROYECTOS — empty state */}
@@ -435,13 +391,15 @@ export default function CategoryPageClient({
             >
               <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
                 {proyectos.length}{' '}
-                {proyectos.length === 1 ? 'Proyecto' : 'Proyectos'} entregados
+                {proyectos.length === 1
+                  ? txt('gridEyebrowSingular', 'Proyecto entregado')
+                  : txt('gridEyebrowPlural', 'Proyectos entregados')}
               </p>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
-                Nuestros
+                {txt('gridTitulo1', 'Nuestros')}
               </h2>
               <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-                trabajos.
+                {txt('gridTitulo2', 'trabajos.')}
               </h3>
               {categoria.descripcion && (
                 <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
@@ -494,7 +452,7 @@ export default function CategoryPageClient({
                     <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8 text-left">
                       {esDestacado && (
                         <p className="text-red-500 font-lato font-bold text-[10px] uppercase tracking-[0.25em] mb-2">
-                          Destacado
+                          {txt('gridCardDestacado', 'Destacado')}
                         </p>
                       )}
 
@@ -535,7 +493,7 @@ export default function CategoryPageClient({
 
                         <span className="inline-flex items-center gap-2 text-white font-lato font-bold text-xs uppercase tracking-wider">
                           <span className="relative">
-                            Ver proyecto
+                            {txt('gridCardVerProyecto', 'Ver proyecto')}
                             <span className="absolute left-0 -bottom-0.5 h-px w-full bg-white/40 transition-colors duration-300 group-hover:bg-white" />
                           </span>
                           <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -562,13 +520,13 @@ export default function CategoryPageClient({
               className="max-w-4xl mb-12 md:mb-16"
             >
               <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-                Más entregados
+                {txt('otrosEyebrow', 'Más entregados')}
               </p>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
-                Otros
+                {txt('otrosTitulo1', 'Otros')}
               </h2>
               <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-                proyectos.
+                {txt('otrosTitulo2', 'proyectos.')}
               </h3>
             </motion.div>
 
@@ -618,17 +576,19 @@ export default function CategoryPageClient({
             className="max-w-4xl mb-10 md:mb-12"
           >
             <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              ¿Tu proyecto aquí?
+              {txt('ctaEyebrow', '¿Tu proyecto aquí?')}
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
-              Hablemos
+              {txt('ctaTitulo1', 'Hablemos')}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-              de tu obra.
+              {txt('ctaTitulo2', 'de tu obra.')}
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-              Cotización personalizada para proyectos de{' '}
-              {categoria.nombre.toLowerCase()}. Respuesta en menos de 48 horas.
+              {txt(
+                'ctaDescripcion',
+                'Cotización personalizada para proyectos de {nombre}. Respuesta en menos de 48 horas.',
+              )}
             </p>
           </motion.div>
 
@@ -643,7 +603,7 @@ export default function CategoryPageClient({
               href="/contacto"
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700"
             >
-              Solicitar cotización
+              {txt('ctaBotonPrimarioLabel', 'Solicitar cotización')}
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
@@ -652,7 +612,7 @@ export default function CategoryPageClient({
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
             >
               <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
-              Otras categorías
+              {txt('ctaBotonSecundarioLabel', 'Otras categorías')}
             </Link>
           </motion.div>
         </div>

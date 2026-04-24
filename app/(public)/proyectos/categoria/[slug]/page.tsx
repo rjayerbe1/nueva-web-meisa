@@ -1,9 +1,64 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import CategoryPageClient from './CategoryPageClient'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
+  const categoria = await prisma.categoriaProyecto.findFirst({
+    where: { slug: params.slug, visible: true },
+    select: {
+      nombre: true,
+      descripcion: true,
+      metaTitle: true,
+      metaDescription: true,
+      imagenCover: true,
+    },
+  })
+
+  if (!categoria) {
+    return { title: 'Categoría no encontrada | MEISA' }
+  }
+
+  const customTitle = categoria.metaTitle?.trim()
+  // Si hay metaTitle custom lo usamos absoluto; si no, el template del layout
+  // padre le añade "| MEISA - Estructuras Metálicas Colombia".
+  const title = customTitle
+    ? { absolute: customTitle }
+    : `Proyectos de ${categoria.nombre}`
+
+  const description =
+    categoria.metaDescription?.trim() ||
+    categoria.descripcion ||
+    `Proyectos de ${categoria.nombre.toLowerCase()} desarrollados por MEISA — estructuras metálicas en Colombia desde 1996.`
+
+  const image = categoria.imagenCover || undefined
+
+  const ogTitle = customTitle || `Proyectos de ${categoria.nombre} | MEISA`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: ogTitle,
+      description,
+      images: image ? [{ url: image }] : undefined,
+      type: 'website',
+    },
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title: ogTitle,
+      description,
+      images: image ? [image] : undefined,
+    },
+  }
+}
 
 async function getCategoria(slug: string) {
   return await prisma.categoriaProyecto.findFirst({
@@ -15,23 +70,14 @@ async function getCategoria(slug: string) {
       descripcion: true,
       slug: true,
       imagenCover: true,
-      imagenBanner: true,
-      videoBanner: true,
-      usarVideoBanner: true,
-      videoBannerScale: true,
-      videoBannerPosition: true,
       icono: true,
       color: true,
-      colorSecundario: true,
-      overlayColor: true,
-      overlayOpacity: true,
       metaTitle: true,
       metaDescription: true,
-      descripcionAmpliada: true,
       estadisticas: true,
-      procesoTrabajo: true,
       casosExitoIds: true,
       especialidades: true,
+      textosUi: true,
     },
   })
 }

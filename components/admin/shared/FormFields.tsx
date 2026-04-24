@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { X, Plus } from "lucide-react"
+import { X, Plus, ChevronDown } from "lucide-react"
 import { MediaPicker, MediaPickerModal } from "@/components/admin/media/MediaPicker"
 import { useState } from "react"
 import { ImagePlus, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
@@ -54,6 +54,8 @@ export interface FieldDef {
   itemTemplate?: Record<string, unknown>
   /** Para objectArray: label corto del ítem en el header colapsable. */
   itemLabel?: (item: Record<string, unknown>, index: number) => string
+  /** Para objectArray: si true, cada ítem arranca colapsado y click en el header expande. */
+  collapsible?: boolean
 }
 
 interface FormFieldProps {
@@ -297,6 +299,13 @@ function ObjectArrayField({
   const spanClass = field.gridSpan === 2 ? "md:col-span-2" : ""
   const itemFields = field.itemFields ?? []
   const itemTemplate = field.itemTemplate ?? {}
+  const collapsible = field.collapsible === true
+
+  // Índice del ítem expandido. null = todos colapsados (solo si collapsible).
+  // Con collapsible=true, por defecto TODOS colapsados.
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(null)
+
+  const isExpanded = (idx: number) => !collapsible || expandedIdx === idx
 
   const updateItem = (idx: number, next: Record<string, unknown>) => {
     const copy = [...value]
@@ -306,10 +315,16 @@ function ObjectArrayField({
 
   const removeItem = (idx: number) => {
     onChange(value.filter((_, i) => i !== idx))
+    if (collapsible && expandedIdx === idx) setExpandedIdx(null)
+    else if (collapsible && expandedIdx !== null && expandedIdx > idx) {
+      setExpandedIdx(expandedIdx - 1)
+    }
   }
 
   const addItem = () => {
+    const nextIdx = value.length
     onChange([...value, { ...itemTemplate }])
+    if (collapsible) setExpandedIdx(nextIdx) // auto-expand nuevo ítem
   }
 
   const moveItem = (idx: number, dir: -1 | 1) => {
@@ -318,6 +333,12 @@ function ObjectArrayField({
     const copy = [...value]
     ;[copy[idx], copy[target]] = [copy[target], copy[idx]]
     onChange(copy)
+    if (collapsible && expandedIdx === idx) setExpandedIdx(target)
+    else if (collapsible && expandedIdx === target) setExpandedIdx(idx)
+  }
+
+  const toggleExpand = (idx: number) => {
+    setExpandedIdx((cur) => (cur === idx ? null : idx))
   }
 
   return (
@@ -336,15 +357,35 @@ function ObjectArrayField({
           const label = field.itemLabel
             ? field.itemLabel(item, idx)
             : `Ítem ${String(idx + 1).padStart(2, "0")}`
+          const expanded = isExpanded(idx)
           return (
             <div
               key={idx}
               className="rounded-none border border-slate-200 bg-white"
             >
               <div className="flex items-center justify-between gap-2 border-b border-slate-100 bg-stone-50 px-3 py-2">
-                <span className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
-                  {label}
-                </span>
+                {collapsible ? (
+                  <button
+                    type="button"
+                    onClick={() => toggleExpand(idx)}
+                    disabled={disabled}
+                    className="group flex min-w-0 flex-1 items-center gap-2 text-left transition-colors hover:text-slate-900"
+                    aria-expanded={expanded}
+                  >
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 flex-shrink-0 text-slate-400 transition-transform duration-200 group-hover:text-slate-700 ${
+                        expanded ? "" : "-rotate-90"
+                      }`}
+                    />
+                    <span className="truncate font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600 group-hover:text-slate-900">
+                      {label}
+                    </span>
+                  </button>
+                ) : (
+                  <span className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+                    {label}
+                  </span>
+                )}
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
@@ -375,17 +416,21 @@ function ObjectArrayField({
                   </button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
-                {itemFields.map((f) => (
-                  <FormField
-                    key={f.name}
-                    field={f}
-                    value={item[f.name]}
-                    onChange={(v) => updateItem(idx, { ...item, [f.name]: v })}
-                    disabled={disabled}
-                  />
-                ))}
-              </div>
+              {expanded && (
+                <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
+                  {itemFields.map((f) => (
+                    <FormField
+                      key={f.name}
+                      field={f}
+                      value={item[f.name]}
+                      onChange={(v) =>
+                        updateItem(idx, { ...item, [f.name]: v })
+                      }
+                      disabled={disabled}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )
         })}

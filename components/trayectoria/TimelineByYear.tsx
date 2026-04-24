@@ -74,6 +74,7 @@ export function TimelineByYear({ proyectos }: Props) {
   // Agrupar proyectos por año (distribución proporcional para multi-año)
   const proyectosPorAño = useMemo(() => {
     const grouped: Record<number, Array<Proyecto & { pesoKgProporcional?: number }>> = {}
+    const currentYear = new Date().getFullYear()
 
     proyectos.forEach((proyecto) => {
       const fechaInicio = new Date(proyecto.fechaInicio)
@@ -83,6 +84,7 @@ export function TimelineByYear({ proyectos }: Props) {
 
       // Si el proyecto está en un solo año
       if (yearInicio === yearFin) {
+        if (yearFin > currentYear) return // año futuro: aún no llega
         if (!grouped[yearFin]) grouped[yearFin] = []
         grouped[yearFin].push({
           ...proyecto,
@@ -93,6 +95,8 @@ export function TimelineByYear({ proyectos }: Props) {
         const mesesTotales = (yearFin - yearInicio) * 12 + (fechaFin.getMonth() - fechaInicio.getMonth()) + 1
 
         for (let year = yearInicio; year <= yearFin; year++) {
+          if (year > currentYear) continue // no crear bucket de años futuros
+
           let mesesEnAño = 0
 
           if (year === yearInicio) {
