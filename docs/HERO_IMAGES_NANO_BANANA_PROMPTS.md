@@ -108,47 +108,43 @@ suave desde el lado, sin logos de ninguna marca, sin personas.
 
 ---
 
-### 3. Entrepisos y Mezanines — Centro Comercial Armenia Plaza 🚨 Grave
+### 3. Entrepisos y Mezanines — Armenia Plaza (nueva imagen drone aéreo) ✅ Casi lista
 
-**URL actual:**
-`https://storage.googleapis.com/meisa-imagenes/projects/centro-comercial-armenia-plaza/centro-comercial-armenia-plaza-01-Centro-armenia-plaza-1-1600x1600.webp`
+**URL actual (ACTUALIZADA — gal3 drone aéreo):**
+`https://storage.googleapis.com/meisa-imagenes/projects/centro-comercial-armenia-plaza/centro-comercial-armenia-plaza-03-Centro-armenia-plaza-3-1600x1600.webp`
 
-**Qué se ve:** Foto de obra en proceso — trabajador con casco en silueta (primer plano), segunda silueta sobre viga metálica al fondo, grúa amarilla cortada en borde derecho, losa prefabricada siendo izada por cable, ladrillos apilados abajo, cielo azul con marco metálico del entrepiso encuadrando.
+**Qué se ve:** Vista aérea tipo drone del edificio comercial CON ESTRUCTURA DE ENTREPISO METÁLICO VISIBLE desde arriba — se ven las vigas y el marco del mezanine, edificio sobre solar con área pavimentada, casas/entorno urbano al fondo, vegetación.
 
-**Problemas:**
-- **2 trabajadores visibles** (uno con casco de seguridad en primer plano, otro pequeño arriba).
-- Grúa amarilla cortada.
-- Losa colgando del cable (momento operativo).
-- Ladrillos apilados, ambiente de obra activa.
-- No transmite "entrepisos de alta capacidad terminados".
+**Cambio clave:** reemplazamos la portada con trabajadores+grúa por esta foto aérea donde se ve exactamente la estructura de entrepiso desde arriba. Perfecto para "Entrepisos y Mezanines" porque se ve la geometría.
+
+**Retoques menores:**
+- Area de tierra alrededor del edificio (obra)
+- Re-encuadre a 16:9
 
 **PROMPT:**
 ```
-Transformá esta foto de obra del Centro Comercial Armenia Plaza en
-una imagen tipo hero 16:9 que muestre la estructura de entrepiso y
-mezanine metálica YA instalada, sin obra activa.
+Vista aérea drone del Centro Comercial Armenia Plaza mostrando la
+estructura metálica del entrepiso/mezanine desde arriba. Adaptala
+a hero 16:9 con cleanup ligero.
 
-QUITÁ:
-- El trabajador con casco en primer plano (silueta oscura)
-- El trabajador pequeño en la viga del fondo
-- La grúa amarilla del borde derecho
-- La losa prefabricada colgando por cable
-- Los ladrillos apilados abajo
-- Cualquier elemento temporal de obra (cintas, andamios)
+MANTENÉ EXACTAMENTE:
+- La estructura metálica de vigas y columnas del mezanine (es el
+  protagonista)
+- La perspectiva aérea oblicua
+- Las casas y vegetación del entorno urbano
+- La iluminación natural
 
-MANTENÉ:
-- El marco metálico del entrepiso (vigas horizontales y columnas) con
-  su geometría exacta
-- El cielo azul con nubes
-- La perspectiva ascendente mirando hacia arriba
-- La paleta industrial (metal gris, cielo azul)
+QUITÁ / MINIMIZÁ:
+- Las áreas de tierra de obra alrededor del edificio
+- Cualquier vehículo de obra o container visible
+- La malla verde de obra si aparece
 
-AGREGÁ (opcional): sensación de espacio comercial terminado vista
-desde el nivel del primer piso mirando hacia el entrepiso, con
-iluminación natural y algo de profundidad.
+MEJORÁ:
+- Re-encuadrá a horizontal 16:9
+- El piso del entorno que se vea terminado (pavimentado, no tierra)
 
-OUTPUT: PNG 1920x1080, sin personas, sin maquinaria activa, enfoque
-en la geometría estructural limpia.
+OUTPUT: PNG 1920x1080, protagonismo de la estructura metálica del
+entrepiso vista desde arriba, ambiente comercial terminado.
 ```
 
 ---
@@ -192,93 +188,76 @@ seguir siendo EL protagonista.
 
 ---
 
-### 2. Edificios Industriales de Múltiples Niveles — Torre Cogeneración Propal 🚨 Grave
+### 2. Edificios Industriales de Múltiples Niveles — Torre Propal (nueva gal2) ✅ Casi lista
 
-**URL actual:**
-`https://storage.googleapis.com/meisa-imagenes/projects/industria-torre-cogeneracion-propal/torre-cogeneracion-propal-01-industria-torre-cogeneracion-propal-01-Industria-torre-cogeneracion-propal-1-1600x1600.webp`
+**URL actual (ACTUALIZADA — gal2 estructura limpia):**
+`https://storage.googleapis.com/meisa-imagenes/projects/industria-torre-cogeneracion-propal/torre-cogeneracion-propal-02-industria-torre-cogeneracion-propal-02-Industria-torre-cogeneracion-propal-2-1600x1600.webp`
 
-**Qué se ve:** Edificio industrial alto con revestimiento gris-beige, ventanales reflectantes en franja superior, **brazo hidráulico azul (Genie tipo grúa articulada) dominando el primer plano**, cabina de operación arriba con persona visible, cielo nublado gris plano.
+**Qué se ve:** Estructura metálica azul de múltiples niveles vista desde abajo, perspectiva dramática mostrando las vigas y columnas cruzadas, chimenea industrial visible al fondo entre el marco, cielo con algunas nubes, materiales apilados abajo.
 
-**Problemas:**
-- **La grúa azul ocupa ~40% de la imagen** — es el elemento más dominante, no la torre.
-- Persona dentro de la cabina del brazo.
-- Cielo gris sin dramatismo.
-- Reflejos confusos en los ventanales.
+**Cambio clave:** reemplazamos la foto con grúa Genie dominando por esta perspectiva ascendente donde la ESTRUCTURA METÁLICA es la protagonista — muestra exactamente los "múltiples niveles" del edificio industrial.
+
+**Retoques menores:**
+- Un poco de obra/materiales apilados en la parte baja
+- Grúa naranja en borde superior izquierdo
 
 **PROMPT:**
 ```
-Limpiá esta foto de la Torre de Cogeneración Propal para que el
-protagonista sea el edificio industrial, no la maquinaria. Vamos
-a usarlo como hero 16:9.
+Foto de la estructura metálica de la Torre de Cogeneración Propal
+vista desde abajo — múltiples niveles industriales. Adaptala a
+hero 16:9 con cleanup ligero.
 
-QUITÁ COMPLETAMENTE:
-- El brazo hidráulico azul (Genie) que domina el primer plano y
-  sube hasta la ventana superior
-- La cabina azul de operación con el operario dentro
-- La pequeña caja eléctrica blanca adosada a la fachada
+MANTENÉ EXACTAMENTE:
+- La estructura metálica azul (vigas horizontales y columnas)
+- La perspectiva ascendente dramática
+- La chimenea industrial del fondo
+- El cielo con nubes
 
-MANTENÉ:
-- El edificio industrial beige/blanco completo
-- La franja de ventanales reflectantes en la parte superior
-- La geometría diagonal/trapezoidal de la fachada (es distintiva)
-- La escala imponente vista desde abajo
+QUITÁ:
+- Los materiales apilados en la parte baja
+- La grúa naranja del borde superior izquierdo (si visible)
+- Cualquier elemento de obra temporal
 
 MEJORÁ:
-- El cielo gris plano → reemplazalo por un cielo azul con nubes
-  dispersas (atmósfera industrial clara, no dramática)
-- Los reflejos en los ventanales que se vean limpios reflejando
-  el cielo
+- Re-encuadrá a 16:9
+- Un poco más de profundidad de campo para resaltar la geometría
+  estructural
 
-OUTPUT: PNG 1920x1080, sin grúas, sin operarios, enfoque en la
-escala arquitectónica del edificio industrial.
+OUTPUT: PNG 1920x1080, estructura industrial azul como
+protagonista, múltiples niveles claramente visibles.
 ```
 
 ---
 
-### 3. Estructuras Especializadas de Alta Resistencia — Tanque GLP Pitalito 🚨 Grave
+### 3. Estructuras Especializadas de Alta Resistencia — Planta industrial aérea (drone) ✅ Lista
 
-**URL actual:**
-`https://storage.googleapis.com/meisa-imagenes/projects/tanques-de-almacenamiento-glp/tanques-de-almacenamiento-glp-02-oil-and-gas-tanque-pulmon-02-Oil-gas-tanque-de-almacenamiento-gpl-1-1600x1600.webp`
+**URL actual (ACTUALIZADA — drone pool):**
+`https://storage.googleapis.com/meisa-imagenes/drone-pool/dji_fly_20230729.webp`
 
-**Qué se ve:** Tanque cilíndrico blanco horizontal con logo "SURGAS" y letra "S.A.E.S.P." en rojo/azul, rombos NFPA (1-4-0) de seguridad, soportes metálicos, suelo manchado, árboles al fondo, cables eléctricos cruzando el cielo.
+**Qué se ve:** Vista aérea tipo drone de una planta industrial — naves industriales con cubiertas metálicas blancas y azules, patios operativos, vehículos/camiones, entorno industrial limpio. 4000×2250 (4K). Sin logos de cliente.
 
-**Problemas:**
-- **Logo "SURGAS" + "S.A.E.S.P."** — marca ajena a MEISA muy prominente.
-- Rombos NFPA (aunque son reales, se ven comerciales).
-- Suelo sucio con manchas.
-- Cables eléctricos aéreos.
-- Ambiente de cliente comercial, no "alta resistencia estructural".
+**Cambio clave:** reemplazamos el tanque GLP con logos "SURGAS" por esta foto aérea genérica de planta industrial MEISA. **Ninguna limpieza necesaria** — ya está hero-ready.
+
+**PROMPT (opcional, si querés re-encuadrar):**
+```
+Adaptá esta vista aérea de planta industrial MEISA a proporción
+16:9 horizontal. La foto ya es limpia y bien compuesta.
+
+MANTENÉ EXACTAMENTE:
+- Todas las naves industriales con sus cubiertas metálicas
+- El patio operativo y vehículos
+- La iluminación natural
+- Los colores reales (sin saturar)
+
+SOLO AJUSTÁ:
+- Re-encuadre a 16:9 (ya es muy cercano)
+
+OUTPUT: PNG 1920x1080, vista aérea planta industrial, sin
+modificaciones al contenido.
+```
 
 **PROMPT:**
-```
-Transformá esta foto del tanque GLP Pitalito en un hero que
-comunique "estructuras especializadas de alta resistencia" para MEISA.
-El tanque debe ser el protagonista pero SIN ser publicidad del
-cliente final.
-
-QUITÁ:
-- El logo "SURGAS" y el texto "Distribuidor de Gas S.A.E.S.P." de
-  la parte lateral izquierda del tanque
-- Los rombos NFPA (1-4-0) de identificación de peligro
-- Los cables eléctricos cruzando el cielo arriba
-- Las manchas de aceite/petróleo en el suelo
-
-MANTENÉ:
-- El tanque cilíndrico blanco con su forma exacta y soportes
-  metálicos (son soldaduras estructurales MEISA)
-- Las válvulas y componentes superiores del tanque
-- La escala imponente
-- El fondo de árboles verdes
-
-MEJORÁ:
-- Un cielo más limpio, con algo de contraste atmosférico
-  (no saturado)
-- Suelo más limpio (tierra compactada o concreto industrial)
-
-OUTPUT: PNG 1920x1080, el tanque blanco sin marcas, soportes
-metálicos bien visibles como testimonio del trabajo estructural,
-sin publicidad comercial del cliente.
-```
+_(Prompt legacy para la imagen anterior — ya no aplicable. Ver prompt actualizado arriba.)_
 
 ---
 
@@ -377,45 +356,42 @@ Arco Metálico".
 
 ---
 
-### 3. Puentes Peatonales — Puente La Tertulia 🚨 Grave (compartida con Infraestructura #3)
+### 3. Puentes Peatonales — Puente La Tertulia (nueva gal2, terminado) ✅ Casi lista
 
-**URL actual:**
-`https://storage.googleapis.com/meisa-imagenes/projects/puente-peatonal-la-tertulia/puente-peatonal-la-tertulia-01-Puente-peatonal-la-tertulia-1-1600x1600.webp`
+**URL actual (ACTUALIZADA — gal2 puente terminado):**
+`https://storage.googleapis.com/meisa-imagenes/projects/puente-peatonal-la-tertulia/puente-peatonal-la-tertulia-02-Puente-peatonal-la-tertulia-2-1600x1600.webp`
 
-**Qué se ve:** Viga cajón de puente peatonal (acero oxidado o cor-ten) siendo instalada, **3 trabajadores con cascos de seguridad** (amarillo, azul, rojo+naranja) activamente trabajando, río con rocas y agua corriendo abajo, vegetación verde a ambos lados.
+**Qué se ve:** Puente peatonal La Tertulia TERMINADO — viga cajón color acero corten con baranda metálica, vista lateral con edificios residenciales blancos al fondo, árboles y vegetación urbana. **Sin trabajadores, sin obra.** Calle con autos visible al fondo.
 
-**Problemas:**
-- **3 trabajadores visibles** con cascos y arneses — 100% foto de instalación.
-- Es un momento operativo, no del puente terminado.
-- El río se ve bien pero la estructura se ve "en proceso".
+**Cambio clave:** reemplazamos la foto de 3 trabajadores con cascos instalando, por esta foto del puente ya terminado y funcional.
+
+**Retoques menores:**
+- Algo de maleza/pasto alto en primer plano
+- Algunos autos en el estacionamiento al fondo
 
 **PROMPT:**
 ```
-Esta foto del Puente Peatonal La Tertulia es un momento de
-instalación con trabajadores. Necesito reconvertirla en una imagen
-del puente TERMINADO y listo, para usar como hero 16:9.
+Foto del Puente Peatonal La Tertulia TERMINADO con baranda metálica.
+Adaptala a hero 16:9 con cleanup ligero.
 
-QUITÁ TODOS:
-- Los 3 trabajadores visibles (casco amarillo arriba derecha, casco
-  azul abajo, casco naranja/rojo en primer plano inferior)
-- Las herramientas, cables y arneses de seguridad
-- Cualquier elemento temporal de instalación
+MANTENÉ EXACTAMENTE:
+- La viga cajón color acero corten (weathering steel)
+- La baranda metálica superior
+- Los edificios residenciales blancos al fondo
+- La vegetación y árboles del entorno
+- La composición horizontal
 
-MANTENÉ:
-- La viga cajón metálica (color acero oxidado / weathering steel)
-  exactamente como está — es el protagonista estructural
-- El río con rocas y agua corriendo abajo
-- La vegetación verde densa de ambos lados
-- La perspectiva diagonal que cruza la imagen
+QUITÁ:
+- Los autos estacionados del fondo (si visibles)
+- La maleza alta en primer plano
+- Cualquier elemento que distraiga
 
-TRANSFORMÁ:
-- La viga que se ve parcialmente instalada → que se vea como un
-  puente peatonal completo, con tablero terminado, posiblemente
-  con baranda metálica arriba. El puente debe verse funcional
-  y listo para uso público.
+MEJORÁ:
+- Un poco de contraste en el acero corten para resaltar la textura
+- El cielo ligeramente más dramático
 
-OUTPUT: PNG 1920x1080, ambiente sereno (no obra), puente peatonal
-terminado cruzando el río con vegetación, sin personas.
+OUTPUT: PNG 1920x1080, puente peatonal terminado integrado al
+entorno urbano, sin personas, sin obra.
 ```
 
 ---
@@ -780,10 +756,10 @@ estructura metálica de cerchas, sin personas, sin distractores.
 | Código | Especialidad | Prioridad | Motivo |
 |---|---|---|---|
 | comercial-2 | Cubiertas y Fachadas Metálicas | 🚨 Alta | Logo mascota + "OUTLE" dominan |
-| comercial-3 | Entrepisos y Mezanines | 🚨 Alta | Obra activa + 2 trabajadores |
-| industrial-2 | Edificios Industriales Multinivel | 🚨 Alta | Grúa domina 40% |
-| industrial-3 | Estructuras Especializadas | 🚨 Alta | Logo cliente "SURGAS" |
-| puentes-3 + infra-3 | Puentes Peatonales (2) | 🚨 Alta | 3 trabajadores en acción |
+| comercial-3 | Entrepisos y Mezanines | ⚠️ Menor | Drone aéreo (swap hecho) — retoque de entorno |
+| industrial-2 | Edificios Industriales Multinivel | ⚠️ Menor | gal2 (swap hecho) — retoque menor |
+| industrial-3 | Estructuras Especializadas | ✅ Lista | dji_fly drone pool (swap hecho) — 0 cleanup |
+| puentes-3 + infra-3 | Puentes Peatonales Tertulia (2) | ⚠️ Menor | gal2 terminado (swap hecho) |
 | edif-2 | Estructuras para Estacionamiento | 🚨🚨 Crítica | Es render BIM, no foto |
 | infra-1 | Ciclopuentes y Pasarelas | 🚨 Alta | Madera de cofrado tapando |
 | infra-2 | Estaciones de Transporte | ⚠️ Media | Malla de obra abajo |
