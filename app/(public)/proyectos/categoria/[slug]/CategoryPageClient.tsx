@@ -105,7 +105,15 @@ export default function CategoryPageClient({
   }
 
   const [downloadingPDF, setDownloadingPDF] = useState(false)
-  const [heroBackground, setHeroBackground] = useState<string | null>(null)
+  // Inicializamos con la imagen de la primera especialidad activa para que
+  // no haya "flash" de la imagen de categoría en el primer render.
+  const firstEspecialidadImg =
+    (categoria.especialidades as any[] | null)
+      ?.filter((e) => e?.activo)
+      ?.[0]?.imagen || null
+  const [heroBackground, setHeroBackground] = useState<string | null>(
+    firstEspecialidadImg,
+  )
 
   const handleEspecialidadChange = (especialidad: any) => {
     if (especialidad?.imagen) {

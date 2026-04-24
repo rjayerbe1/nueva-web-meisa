@@ -34,8 +34,9 @@ export function EspecialidadesTabs({
     }
   }
 
-  // Al montar, auto-seleccionar la primera especialidad activa
-  // para que la imagen del hero tenga una fuente.
+  // Al montar, auto-seleccionar la primera especialidad activa para que la
+  // imagen de fondo del hero sea la de esa especialidad (no la cover de la
+  // categoría). El usuario quiere ver siempre imágenes de especialidades.
   useEffect(() => {
     if (onEspecialidadChange && especialidadesActivas[0]) {
       onEspecialidadChange(especialidadesActivas[0])
@@ -155,7 +156,7 @@ export function EspecialidadesTabs({
             transition={{ duration: 0.3 }}
             className="h-full flex flex-col"
           >
-            <div className="text-base sm:text-lg lg:text-xl text-white/80 font-lato mb-4 text-left flex-1 space-y-3 sm:space-y-4 leading-relaxed max-w-3xl">
+            <div className="text-base sm:text-lg lg:text-xl text-white/80 font-lato mb-4 text-left flex-1 space-y-3 sm:space-y-4 leading-relaxed text-pretty hyphens-auto max-w-3xl">
               {especialidadActual.descripcion.split('\n\n').map((parrafo, idx) => (
                 <p
                   key={idx}
