@@ -41,7 +41,7 @@ const MAPPING: Record<string, Array<string | null>> = {
   ],
   edificaciones: [
     "edificio-clinica-reina-victoria",
-    null, // Estacionamientos — sin match
+    "diego-maria-romero-parqueadero-tequendama",
     "edificio-modulos-medicos",
   ],
   institucional: [
