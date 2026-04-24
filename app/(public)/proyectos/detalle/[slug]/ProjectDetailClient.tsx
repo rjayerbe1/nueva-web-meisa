@@ -105,8 +105,10 @@ export default function ProjectDetailClient({
 }: ProjectDetailClientProps) {
   const toneladas = toNum(proyecto.toneladas)
   const areaTotal = toNum(proyecto.areaTotal)
+  // fechas se guardan en UTC (ej. "2021-06-01T00:00:00Z") — forzar UTC al leer
+  // para evitar que timezone local las baje un día.
   const anio = proyecto.fechaFin
-    ? new Date(proyecto.fechaFin).getFullYear()
+    ? Number(proyecto.fechaFin.slice(0, 4))
     : null
 
   const portada =
@@ -154,7 +156,11 @@ export default function ProjectDetailClient({
     const d = new Date(proyecto.fechaFin)
     specs.push({
       label: 'Entrega',
-      value: d.toLocaleDateString('es-CO', { year: 'numeric', month: 'short' }),
+      value: d.toLocaleDateString('es-CO', {
+        year: 'numeric',
+        month: 'short',
+        timeZone: 'UTC',
+      }),
     })
   }
   specs.push({ label: 'Cliente', value: proyecto.cliente })

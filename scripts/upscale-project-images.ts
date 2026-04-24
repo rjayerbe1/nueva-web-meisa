@@ -23,6 +23,11 @@
  *
  * Requiere: REPLICATE_API_TOKEN en .env, GCS credentials configurados.
  */
+import { config as loadEnv } from "dotenv"
+// Cargar ambos archivos — .env.local tiene override (patrón Next.js).
+loadEnv({ path: ".env" })
+loadEnv({ path: ".env.local", override: true })
+
 import { prisma } from "../lib/prisma"
 import { MediaKind, Prisma } from "@prisma/client"
 import Replicate from "replicate"
@@ -38,14 +43,23 @@ const BRIA_VERSION =
   "bria/increase-resolution:19266ced4be9ec28f269ab20a2622104cac9c518158b7761e7edeb30954bd01a"
 const GCS_PROJECT_ID = process.env.GCS_PROJECT_ID || "meisa-web-prod-2025"
 const GCS_BUCKET_NAME = process.env.GCS_BUCKET_NAME || "meisa-imagenes"
+/** Dominio público de dev para que Replicate pueda fetch imágenes locales `/images/...`. */
+const PUBLIC_BASE = process.env.PUBLIC_IMAGES_BASE || "https://dev.meisa.com.co"
+
+/** Convierte URL relativa a absoluta para que Replicate pueda fetcharla. */
+function toPublicUrl(url: string): string {
+  if (url.startsWith("http://") || url.startsWith("https://")) return url
+  if (url.startsWith("/")) return `${PUBLIC_BASE}${url}`
+  return `${PUBLIC_BASE}/${url}`
+}
 
 function fmt(ms: number) {
   return `${(ms / 1000).toFixed(1)}s`
 }
 
 async function main() {
-  if (!process.env.REPLICATE_API_TOKEN) {
-    console.error("❌ Falta REPLICATE_API_TOKEN en env")
+  if (!dryRun && !process.env.REPLICATE_API_TOKEN) {
+    console.error("❌ Falta REPLICATE_API_TOKEN en env (.env o export en shell)")
     process.exit(1)
   }
 
@@ -102,20 +116,34 @@ async function main() {
     timeMs: number
   }> = []
 
+  /** Llama Replicate con retry/backoff para rate-limit (429) y errores transitorios. */
+  async function runBriaWithRetry(imageUrl: string, attempt = 1): Promise<string> {
+    try {
+      return (await replicate.run(BRIA_VERSION, {
+        input: { image_url: imageUrl, desired_increase: 4, preserve_alpha: true },
+      })) as unknown as string
+    } catch (e: any) {
+      const msg = String(e?.message ?? "")
+      const retryAfterMatch = msg.match(/retry_after["\s:]+(\d+)/i)
+      const waitSec = retryAfterMatch ? parseInt(retryAfterMatch[1], 10) : 10
+      if ((msg.includes("429") || msg.includes("Too Many Requests")) && attempt <= 5) {
+        console.log(`     ⏳ Rate limited — esperando ${waitSec + 1}s (retry ${attempt}/5)`)
+        await new Promise((r) => setTimeout(r, (waitSec + 1) * 1000))
+        return runBriaWithRetry(imageUrl, attempt + 1)
+      }
+      throw e
+    }
+  }
+
   for (let i = 0; i < target.length; i++) {
     const im = target[i]
     const n = `[${String(i + 1).padStart(2, "0")}/${target.length}]`
     const startedAt = Date.now()
     try {
+      const publicUrl = toPublicUrl(im.url)
       console.log(`${n} ⚡ Enviando a Bria: ${im.url.split("/").pop()?.slice(0, 60)}`)
 
-      const output = (await replicate.run(BRIA_VERSION, {
-        input: {
-          image_url: im.url,
-          desired_increase: 4,
-          preserve_alpha: true,
-        },
-      })) as unknown as string
+      const output = await runBriaWithRetry(publicUrl)
 
       // Descargar resultado
       const res = await fetch(output)
