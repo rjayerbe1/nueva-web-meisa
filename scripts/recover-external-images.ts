@@ -97,8 +97,8 @@ function baseNameOf(filePath: string): string {
     .replace(/-\d$/, "") // strip trailing -N duplicates
 }
 
-async function parseMatches(): Promise<Map<string, Candidate[]>> {
-  const txt = await readFile("/tmp/matches.txt", "utf8")
+async function parseMatches(matchesFile = "/tmp/matches.txt"): Promise<Map<string, Candidate[]>> {
+  const txt = await readFile(matchesFile, "utf8")
   const lines = txt.split("\n")
   const result = new Map<string, Candidate[]>()
   let currentSlug: string | null = null
@@ -191,11 +191,17 @@ async function pickBestCandidates(
     }
     if (skip) continue
 
-    // 2. Requerir ≥2 tokens específicos del proyecto en filename
+    // 2. Requerir ≥2 tokens específicos en filename O ≥1 token raro (≥7 chars)
     const fileTokens = new Set(tokenizeLocal(filename))
     let specificMatches = 0
-    for (const t of projectSpecificTokens) if (fileTokens.has(t)) specificMatches++
-    if (specificMatches < 2) continue
+    let hasRareMatch = false
+    for (const t of projectSpecificTokens) {
+      if (fileTokens.has(t)) {
+        specificMatches++
+        if (t.length >= 7) hasRareMatch = true
+      }
+    }
+    if (specificMatches < 2 && !hasRareMatch) continue
 
     // 3. Leer dims con sharp — bloquear si extremo aspect ratio o muy chiquita
     try {
@@ -283,8 +289,10 @@ function tokenizeLocal(s: string): string[] {
 }
 
 async function main() {
-  console.log(`\n🔍 Parseando /tmp/matches.txt...`)
-  const byProject = await parseMatches()
+  const matchesArg = process.argv.find((a) => a.startsWith("--matches="))?.split("=")[1]
+  const matchesFile = matchesArg ?? "/tmp/matches.txt"
+  console.log(`\n🔍 Parseando ${matchesFile}...`)
+  const byProject = await parseMatches(matchesFile)
   console.log(`📦 Proyectos elegibles: ${byProject.size}`)
   if (limit > 0) console.log(`   Límite: ${limit}`)
   if (dryRun) console.log(`   DRY-RUN (no sube nada, no toca DB)\n`)

@@ -125,15 +125,18 @@ async function main() {
     )
     if (tokens.length === 0) continue
 
+    // Tokens rare: los que aparecen en pocos proyectos (definir después)
+    // Por ahora, considerar "raro" si el token es ≥7 chars y no está en STOPWORDS
+    const isRare = (t: string) => t.length >= 7
+
     const matches: Match[] = []
     for (const [file, fTokens] of fileTokens) {
       const matched: string[] = []
       for (const t of tokens) if (fTokens.has(t)) matched.push(t)
-      if (matched.length >= 2) {
+      // Requisito: al menos 1 token "raro" (no genérico) match, O ≥3 tokens matches
+      const hasRare = matched.some(isRare)
+      if (hasRare || matched.length >= 3) {
         matches.push({ file, score: matched.length, matchedTokens: matched })
-      } else if (matched.length === 1 && matched[0].length >= 7) {
-        // 1 token pero muy raro y largo (ej "frisoles", "saraconcho")
-        matches.push({ file, score: 1, matchedTokens: matched })
       }
     }
 
