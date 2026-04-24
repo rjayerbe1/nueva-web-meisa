@@ -86,7 +86,7 @@ export default function ContactoContent({
       {/* Hero full-bleed dark con imagen */}
       <section className="relative h-[70vh] md:h-[75vh] min-h-[500px] overflow-hidden bg-slate-950">
         <Image
-          src="/images/about/planta-produccion.webp"
+          src="https://storage.googleapis.com/meisa-imagenes/site/about/planta-produccion.webp"
           alt="MEISA — Contacto"
           fill
           priority

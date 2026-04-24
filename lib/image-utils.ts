@@ -68,7 +68,7 @@ export async function moveImageToNewCategory(
 ): Promise<string> {
   try {
     // Extraer ruta relativa de la URL
-    const urlPath = imageUrl.replace('/images/projects/', '')
+    const urlPath = imageUrl.replace('https://storage.googleapis.com/meisa-imagenes/site/projects/', '')
     const oldFullPath = path.join(process.cwd(), 'public', 'images', 'projects', urlPath)
     
     if (!fs.existsSync(oldFullPath)) {
@@ -88,7 +88,7 @@ export async function moveImageToNewCategory(
     fs.renameSync(oldFullPath, newFullPath)
     
     // Retornar nueva URL
-    return `/images/projects/${newImagePath}`
+    return `https://storage.googleapis.com/meisa-imagenes/site/projects/${newImagePath}`
     
   } catch (error) {
     console.error('Error moviendo imagen:', error)

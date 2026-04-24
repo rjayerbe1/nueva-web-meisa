@@ -18,47 +18,47 @@ export const IMAGE_ICONS = {
   'centros-comerciales': { 
     name: "Centros Comerciales", 
     type: "image" as const,
-    path: "/images/icons/icono-centros-comerciales_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-centros-comerciales_1.png"
   },
   'cubiertas-y-fachadas': { 
     name: "Cubiertas y Fachadas", 
     type: "image" as const,
-    path: "/images/icons/icono-cubiertas-y-fachadas_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-cubiertas-y-fachadas_1.png"
   },
   'edificios': { 
     name: "Edificios", 
     type: "image" as const,
-    path: "/images/icons/icono-edificios_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-edificios_1.png"
   },
   'escenarios-deportivos': { 
     name: "Escenarios Deportivos", 
     type: "image" as const,
-    path: "/images/icons/icono-escenarios-deportivos_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-escenarios-deportivos_1.png"
   },
   'estructuras-modulares': { 
     name: "Estructuras Modulares", 
     type: "image" as const,
-    path: "/images/icons/icono-estructuras-modulares_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-estructuras-modulares_1.png"
   },
   'industria': { 
     name: "Industria", 
     type: "image" as const,
-    path: "/images/icons/icono-industria_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-industria_1.png"
   },
   'oil-and-gas': { 
     name: "Oil & Gas", 
     type: "image" as const,
-    path: "/images/icons/icono-oil-and-gas_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-oil-and-gas_1.png"
   },
   'puentes-peatonales': { 
     name: "Puentes Peatonales", 
     type: "image" as const,
-    path: "/images/icons/icono-puentes-peatonales_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-puentes-peatonales_1.png"
   },
   'puentes-vehiculares': { 
     name: "Puentes Vehiculares", 
     type: "image" as const,
-    path: "/images/icons/icono-puentes-vehiculares_1.png"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/icons/icono-puentes-vehiculares_1.png"
   }
 }
 
@@ -66,39 +66,39 @@ export const IMAGE_ICONS = {
 export const CATEGORY_COVERS = {
   'centros-comerciales': {
     name: "Centros Comerciales",
-    path: "/images/categories/centros-comerciales-imagen-azul.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/centros-comerciales-imagen-azul.jpg"
   },
   'cubiertas-y-fachadas': {
     name: "Cubiertas y Fachadas", 
-    path: "/images/categories/cubiertas-y-fachadas.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/cubiertas-y-fachadas.jpg"
   },
   'edificios': {
     name: "Edificios",
-    path: "/images/categories/edificios.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/edificios.jpg"
   },
   'escenarios-deportivos': {
     name: "Escenarios Deportivos",
-    path: "/images/categories/escenarios-deportivos.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/escenarios-deportivos.jpg"
   },
   'estructuras-modulares': {
     name: "Estructuras Modulares",
-    path: "/images/categories/estructuras-modulares.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/estructuras-modulares.jpg"
   },
   'industria': {
     name: "Industria",
-    path: "/images/categories/industria.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/industria.jpg"
   },
   'oil-and-gas': {
     name: "Oil & Gas",
-    path: "/images/categories/oil-and-gas-1.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/oil-and-gas-1.jpg"
   },
   'puentes-peatonales': {
     name: "Puentes Peatonales",
-    path: "/images/categories/puentes-peatonales.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/puentes-peatonales.jpg"
   },
   'puentes-vehiculares': {
     name: "Puentes Vehiculares",
-    path: "/images/categories/puentes-vehiculares.jpg"
+    path: "https://storage.googleapis.com/meisa-imagenes/site/categories/puentes-vehiculares.jpg"
   }
 }
 
@@ -154,7 +154,7 @@ export function parseIconValue(iconValue: string | null) {
   if (!iconValue) return null
   
   // Nuevo formato: rutas SVG organizadas (/images/categories/[slug]/icon.svg)
-  if (iconValue.startsWith('/images/categories/') && iconValue.endsWith('/icon.svg')) {
+  if (iconValue.startsWith('https://storage.googleapis.com/meisa-imagenes/site/categories/') && iconValue.endsWith('/icon.svg')) {
     return {
       type: 'svg' as const,
       key: iconValue,
@@ -186,7 +186,7 @@ export function generateCategoryAssetPath(
   assetType: 'icons' | 'covers' | 'banners',
   fileName: string
 ): string {
-  return `/images/categories/${categorySlug}/${assetType}/${fileName}`
+  return `https://storage.googleapis.com/meisa-imagenes/site/categories/${categorySlug}/${assetType}/${fileName}`
 }
 
 // Función para organizar archivos de categorías

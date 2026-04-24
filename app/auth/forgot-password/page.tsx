@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
         <div className="text-center">
           <div className="mx-auto h-24 w-56 flex items-center justify-center mb-6">
             <Image
-              src="/images/logo/logo-meisa.png"
+              src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
               alt="MEISA - Metálicas e Ingeniería S.A.S."
               width={200}
               height={60}

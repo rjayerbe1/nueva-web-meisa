@@ -211,8 +211,8 @@ export function mapToLegacyCategory(category: CategoryData) {
     id: category.slug,
     name: category.nombre,
     description: category.descripcion || '',
-    icon: category.icono ? `/images/icons/${category.icono}.png` : '/images/icons/default.png',
-    image: category.imagenCover || '/images/categories/default.jpg',
+    icon: category.icono ? `https://storage.googleapis.com/meisa-imagenes/site/icons/${category.icono}.png` : 'https://storage.googleapis.com/meisa-imagenes/site/icons/default.png',
+    image: category.imagenCover || 'https://storage.googleapis.com/meisa-imagenes/site/categories/default.jpg',
     backgroundColor: category.color || '#2d2e80',
     exampleProject: category.slug,
     dbValue: category.key

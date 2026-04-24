@@ -17,7 +17,29 @@ export default async function ProyectoDetallePage({
     },
     include: {
       imagenes: { orderBy: { orden: 'asc' } },
-      historia: { where: { activo: true } },
+      obra: {
+        where: { activa: true },
+        include: {
+          proyectos: {
+            where: { visible: true },
+            select: {
+              id: true,
+              slug: true,
+              titulo: true,
+              fechaFin: true,
+              toneladas: true,
+              areaTotal: true,
+              ubicacion: true,
+              imagenes: {
+                orderBy: { orden: 'asc' },
+                take: 1,
+                select: { url: true, urlOptimized: true, alt: true },
+              },
+            },
+            orderBy: { fechaFin: 'asc' },
+          },
+        },
+      },
     },
   })
 

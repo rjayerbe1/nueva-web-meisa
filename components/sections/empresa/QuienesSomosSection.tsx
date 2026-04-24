@@ -158,7 +158,7 @@ export function QuienesSomosSection({ config, valores, hitos }: Props) {
               <div className="flex items-center gap-4 mb-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/iconos-animados/mision.gif"
+                  src="https://storage.googleapis.com/meisa-imagenes/site/iconos-animados/mision.gif"
                   alt="Misión"
                   className="w-12 h-12 object-contain"
                 />
@@ -177,7 +177,7 @@ export function QuienesSomosSection({ config, valores, hitos }: Props) {
               <div className="flex items-center gap-4 mb-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/iconos-animados/vision.gif"
+                  src="https://storage.googleapis.com/meisa-imagenes/site/iconos-animados/vision.gif"
                   alt="Visión"
                   className="w-12 h-12 object-contain"
                 />

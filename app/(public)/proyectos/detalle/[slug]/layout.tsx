@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     })
     const categoriaLabel = categoria?.nombre ?? proyecto.categoria
     const imagen = proyecto.imagenes[0]
-    const imageUrl = imagen?.urlOptimized || imagen?.url || '/images/og-image.jpg'
+    const imageUrl = imagen?.urlOptimized || imagen?.url || 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg'
 
     const title = proyecto.metaTitle || `${proyecto.titulo} - Proyecto ${categoriaLabel}`
     const description =

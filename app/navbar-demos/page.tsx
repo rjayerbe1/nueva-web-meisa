@@ -27,7 +27,7 @@ function Demo1() {
 
       {/* Hero con logo grande */}
       <div className="h-screen flex items-center justify-center">
-        <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={400} height={120} unoptimized />
+        <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={400} height={120} unoptimized />
       </div>
 
       {/* Menú Overlay Fullscreen */}
@@ -76,7 +76,7 @@ function Demo2() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-white border-b">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={120} height={35} unoptimized />
+          <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={120} height={35} unoptimized />
           <button
             onClick={() => setMenuOpen(true)}
             className="text-sm font-bold tracking-widest"
@@ -142,7 +142,7 @@ function Demo3() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-white border-b-2 border-blue-700">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={100} height={30} unoptimized />
+          <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={100} height={30} unoptimized />
           <button
             onClick={() => setMenuOpen(true)}
             className="text-sm font-bold tracking-widest hover:text-blue-700 transition-colors"
@@ -209,7 +209,7 @@ function Demo4() {
 
       {/* Hero con logo */}
       <div className="h-screen flex items-center justify-center">
-        <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={500} height={150} unoptimized />
+        <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={500} height={150} unoptimized />
       </div>
 
       {/* Split Screen Menu */}
@@ -278,7 +278,7 @@ function Demo5() {
 
       {/* Hero */}
       <div className="h-screen flex items-center justify-center">
-        <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={450} height={135} unoptimized />
+        <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={450} height={135} unoptimized />
       </div>
 
       {/* Overlay con info de contacto */}
@@ -340,7 +340,7 @@ function Demo6() {
           >
             <MenuIcon className="w-6 h-6" />
           </button>
-          <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={120} height={35} unoptimized />
+          <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={120} height={35} unoptimized />
           <div className="w-10"></div>
         </div>
       </nav>
@@ -410,7 +410,7 @@ function Demo7() {
 
       {/* Hero */}
       <div className="h-screen flex items-center justify-center">
-        <Image src="/images/logo/logo-meisa-white.png" alt="MEISA" width={500} height={150} unoptimized />
+        <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png" alt="MEISA" width={500} height={150} unoptimized />
       </div>
 
       {/* Overlay con blur */}
@@ -473,7 +473,7 @@ function Demo8() {
 
       {/* Hero */}
       <div className="h-screen flex items-center justify-center">
-        <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={500} height={150} unoptimized />
+        <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={500} height={150} unoptimized />
       </div>
 
       {/* Grid fullscreen */}
@@ -550,7 +550,7 @@ function Demo9() {
 
       {/* Hero */}
       <div className="h-screen flex items-center justify-center">
-        <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={450} height={135} unoptimized />
+        <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={450} height={135} unoptimized />
       </div>
 
       {/* Panel desde arriba */}
@@ -612,7 +612,7 @@ function Demo10() {
       {/* Hero - Logo como título editorial */}
       <div className="h-screen flex items-center justify-center px-16">
         <div className="text-center">
-          <Image src="/images/logo/logo-meisa.png" alt="MEISA" width={600} height={180} unoptimized className="mb-8" />
+          <Image src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png" alt="MEISA" width={600} height={180} unoptimized className="mb-8" />
           <p className="text-xl text-gray-600 tracking-wide">METÁLICAS E INGENIERÍA S.A.S.</p>
         </div>
       </div>

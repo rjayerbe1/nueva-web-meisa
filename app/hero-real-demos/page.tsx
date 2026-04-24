@@ -7,9 +7,9 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { X, ArrowRight } from "lucide-react"
 
 const heroImages = [
-  '/images/hero/centro-comercial.webp',
-  '/images/hero/puente-metalico.jpg',
-  '/images/hero/edificios.jpg',
+  'https://storage.googleapis.com/meisa-imagenes/site/hero/centro-comercial.webp',
+  'https://storage.googleapis.com/meisa-imagenes/site/hero/puente-metalico.jpg',
+  'https://storage.googleapis.com/meisa-imagenes/site/hero/edificios.jpg',
 ]
 
 const specialties = [
@@ -217,7 +217,7 @@ function Demo2() {
       <div className="h-screen flex items-center justify-center px-16">
         <div className="text-center max-w-4xl">
           <Image
-            src="/images/logo/logo-meisa-white.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
             alt="MEISA"
             width={600}
             height={180}
@@ -342,7 +342,7 @@ function Demo3() {
       <div className="h-screen flex items-center justify-center px-8">
         <div className="text-center max-w-4xl">
           <Image
-            src="/images/logo/logo-meisa.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
             alt="MEISA"
             width={700}
             height={210}
@@ -442,7 +442,7 @@ function Demo4() {
         <div className="w-1/2 bg-white flex items-center justify-center p-16">
           <div className="max-w-lg">
             <Image
-              src="/images/logo/logo-meisa.png"
+              src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
               alt="MEISA"
               width={400}
               height={120}
@@ -557,7 +557,7 @@ function Demo5() {
 
       <div className="h-screen flex flex-col items-center justify-center px-8">
         <Image
-          src="/images/logo/logo-meisa-white.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
           alt="MEISA"
           width={800}
           height={240}
@@ -703,7 +703,7 @@ function Demo6() {
             {/* Logo */}
             <div>
               <Image
-                src="/images/logo/logo-meisa-white.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
                 alt="MEISA"
                 width={300}
                 height={85}
@@ -837,7 +837,7 @@ function Demo6() {
 
             <div className="w-1/2 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa-white.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
                 alt="MEISA"
                 width={600}
                 height={180}

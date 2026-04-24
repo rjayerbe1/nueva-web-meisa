@@ -27,7 +27,7 @@ export function FeaturedProjectSection({ featured }: FeaturedProjectSectionProps
   const eyebrow = featured.eyebrow || 'Proyecto destacado'
   const ctaText = featured.ctaText || 'Ver todos los proyectos'
   const ctaUrl = featured.ctaUrl || '/proyectos'
-  const image = featured.image || '/images/proyectos/puente-destacado.jpg'
+  const image = featured.image || 'https://storage.googleapis.com/meisa-imagenes/site/proyectos/puente-destacado.jpg'
 
   const containerRef = useRef<HTMLDivElement>(null)
 

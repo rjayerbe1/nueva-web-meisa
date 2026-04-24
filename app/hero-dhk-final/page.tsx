@@ -73,7 +73,7 @@ export default function HeroDHKFinalPage() {
             {/* Logo Centrado */}
             <div className="flex justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={280}
                 height={79}
@@ -229,7 +229,7 @@ export default function HeroDHKFinalPage() {
                 {/* Izquierda - Logo */}
                 <div className="flex items-center justify-center">
                   <Image
-                    src="/images/logo/logo-meisa.png"
+                    src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                     alt="MEISA"
                     width={500}
                     height={142}

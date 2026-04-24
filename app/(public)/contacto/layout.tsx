@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: 'https://meisa.com.co/contacto',
     images: [
       {
-        url: '/images/og-contacto.jpg',
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-contacto.jpg',
         width: 1200,
         height: 630,
         alt: 'Contacto MEISA - Estructuras Metálicas Colombia',

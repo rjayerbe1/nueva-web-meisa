@@ -46,7 +46,7 @@ async function getServicios() {
         titulo: servicio.expertiseTitulo || 'Nuestra Experiencia',
         descripcion: servicio.expertiseDescripcion || ''
       },
-      imagen: servicio.imagen || `/images/servicios/${servicio.slug}.jpg`,
+      imagen: servicio.imagen || `https://storage.googleapis.com/meisa-imagenes/site/servicios/${servicio.slug}.jpg`,
       icono: servicio.icono || 'Settings',
       color: servicio.color || 'blue',
       bgGradient: servicio.bgGradient || colors.gradient
@@ -101,7 +101,7 @@ export const metadata = {
     url: 'https://meisa.com.co/servicios',
     images: [
       {
-        url: '/images/og-servicios.jpg',
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-servicios.jpg',
         width: 1200,
         height: 630,
         alt: 'Servicios de Estructuras Metálicas MEISA',

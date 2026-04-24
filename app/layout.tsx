@@ -71,7 +71,7 @@ export const metadata: Metadata = {
       `Empresa líder en estructuras metálicas en Colombia. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales. +${aniosExperiencia()} años de experiencia.`,
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'MEISA - Estructuras Metálicas en Colombia',
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     title: 'MEISA | Estructuras Metálicas en Colombia',
     description:
       'Líderes en diseño, fabricación y montaje de estructuras metálicas. Puentes, edificios, centros comerciales y más.',
-    images: ['/images/og-image.jpg'],
+    images: ['https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg'],
     creator: '@meisa_colombia',
   },
   alternates: {

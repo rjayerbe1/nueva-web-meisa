@@ -62,7 +62,7 @@ const navigation: NavItem[] = [
 
   { kind: "section", label: "Operaciones", color: "blue" },
   { kind: "item", name: "Proyectos", href: "/admin/projects", icon: FolderKanban },
-  { kind: "item", name: "Historias", href: "/admin/historias", icon: BookOpen },
+  { kind: "item", name: "Obras", href: "/admin/obras", icon: BookOpen },
   { kind: "item", name: "Trayectoria", href: "/admin/trayectoria", icon: BookOpen },
   { kind: "item", name: "Clientes", href: "/admin/clientes", icon: Users },
   {
@@ -136,7 +136,7 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
         <div className="flex h-16 items-center justify-between border-b border-slate-800 px-5">
           <Link href="/admin" className="flex items-center transition-opacity hover:opacity-80">
             <Image
-              src="/images/logo/logo-meisa.png"
+              src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
               alt="MEISA"
               width={120}
               height={34}

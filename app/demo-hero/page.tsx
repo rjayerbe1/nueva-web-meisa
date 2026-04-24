@@ -110,7 +110,7 @@ export default function DemoHeroPage() {
                 {/* Imagen Preview */}
                 <div className="relative w-full aspect-[3/4] bg-gray-200">
                   <Image
-                    src={`/images/demo/${img.name}`}
+                    src={`https://storage.googleapis.com/meisa-imagenes/site/demo/${img.name}`}
                     alt={img.desc}
                     fill
                     className="object-cover"

@@ -59,7 +59,7 @@ function CoverPageComponent(props: any) {
     title = 'PORTAFOLIO',
     subtitle = 'Proyectos Destacados',
     year = new Date().getFullYear(),
-    logo = '/images/logo/logo-meisa.png',
+    logo = 'https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png',
     backgroundImage,
     backgroundColor = 'linear-gradient(135deg, #1e40af 0%, #dc2626 100%)'
   } = props

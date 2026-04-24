@@ -17,7 +17,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr_1.5fr] gap-10 md:gap-12">
           <div className="col-span-2 md:col-span-1">
             <Image
-              src="/images/logo/logo-meisa-white.png"
+              src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
               alt="MEISA"
               width={120}
               height={34}

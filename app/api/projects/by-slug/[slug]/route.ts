@@ -15,8 +15,8 @@ export async function GET(
         imagenes: {
           orderBy: { orden: 'asc' }
         },
-        historia: {
-          where: { activo: true }
+        obra: {
+          where: { activa: true }
         }
       }
     })

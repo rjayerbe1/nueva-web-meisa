@@ -5,7 +5,7 @@ const mockMediaFiles = [
   // Imágenes Hero
   {
     id: 'hero-1',
-    url: '/images/hero/hero-construccion-industrial.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg',
     name: 'hero-construccion-industrial.jpg',
     type: 'image/jpeg',
     size: 559697,
@@ -14,7 +14,7 @@ const mockMediaFiles = [
   },
   {
     id: 'hero-2',
-    url: '/images/hero/puente-metalico.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/hero/puente-metalico.jpg',
     name: 'puente-metalico.jpg',
     type: 'image/jpeg',
     size: 387324,
@@ -23,7 +23,7 @@ const mockMediaFiles = [
   },
   {
     id: 'hero-3',
-    url: '/images/hero/edificios.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/hero/edificios.jpg',
     name: 'edificios.jpg',
     type: 'image/jpeg',
     size: 169532,
@@ -34,7 +34,7 @@ const mockMediaFiles = [
   // Imágenes de Servicios
   {
     id: 'servicios-1',
-    url: '/images/servicios/construccion-industrial-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/construccion-industrial-1.jpg',
     name: 'construccion-industrial-1.jpg',
     type: 'image/jpeg',
     size: 382434,
@@ -43,7 +43,7 @@ const mockMediaFiles = [
   },
   {
     id: 'servicios-2',
-    url: '/images/servicios/construccion-metalica-2.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/construccion-metalica-2.jpg',
     name: 'construccion-metalica-2.jpg',
     type: 'image/jpeg',
     size: 284889,
@@ -52,7 +52,7 @@ const mockMediaFiles = [
   },
   {
     id: 'servicios-3',
-    url: '/images/servicios/fabricacion-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/fabricacion-1.jpg',
     name: 'fabricacion-1.jpg',
     type: 'image/jpeg',
     size: 313486,
@@ -61,7 +61,7 @@ const mockMediaFiles = [
   },
   {
     id: 'servicios-4',
-    url: '/images/servicios/montaje-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/montaje-1.jpg',
     name: 'montaje-1.jpg',
     type: 'image/jpeg',
     size: 304653,
@@ -70,7 +70,7 @@ const mockMediaFiles = [
   },
   {
     id: 'servicios-5',
-    url: '/images/servicios/gestion-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/gestion-1.jpg',
     name: 'gestion-1.jpg',
     type: 'image/jpeg',
     size: 341543,
@@ -81,7 +81,7 @@ const mockMediaFiles = [
   // Imágenes de Tecnología
   {
     id: 'tecnologia-1',
-    url: '/images/tecnologia/tecnologia-industrial-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/tecnologia/tecnologia-industrial-1.jpg',
     name: 'tecnologia-industrial-1.jpg',
     type: 'image/jpeg',
     size: 227531,
@@ -90,7 +90,7 @@ const mockMediaFiles = [
   },
   {
     id: 'tecnologia-2',
-    url: '/images/tecnologia/equipamiento-industrial.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/tecnologia/equipamiento-industrial.jpg',
     name: 'equipamiento-industrial.jpg',
     type: 'image/jpeg',
     size: 161029,
@@ -99,7 +99,7 @@ const mockMediaFiles = [
   },
   {
     id: 'tecnologia-3',
-    url: '/images/tecnologia/software-diseno-cad.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/tecnologia/software-diseno-cad.jpg',
     name: 'software-diseno-cad.jpg',
     type: 'image/jpeg',
     size: 231698,
@@ -110,7 +110,7 @@ const mockMediaFiles = [
   // Imágenes de Certificaciones
   {
     id: 'certificaciones-1',
-    url: '/images/certificaciones/certificacion-calidad-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/certificaciones/certificacion-calidad-1.jpg',
     name: 'certificacion-calidad-1.jpg',
     type: 'image/jpeg',
     size: 495450,
@@ -119,7 +119,7 @@ const mockMediaFiles = [
   },
   {
     id: 'certificaciones-2',
-    url: '/images/certificaciones/iso-certificacion.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/certificaciones/iso-certificacion.jpg',
     name: 'iso-certificacion.jpg',
     type: 'image/jpeg',
     size: 210751,
@@ -130,7 +130,7 @@ const mockMediaFiles = [
   // Imágenes de Equipo
   {
     id: 'equipo-1',
-    url: '/images/equipo/equipo-industrial-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/equipo/equipo-industrial-1.jpg',
     name: 'equipo-industrial-1.jpg',
     type: 'image/jpeg',
     size: 216030,
@@ -141,7 +141,7 @@ const mockMediaFiles = [
   // Imágenes de Empresa
   {
     id: 'empresa-1',
-    url: '/images/empresa/instalaciones-planta.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/empresa/instalaciones-planta.jpg',
     name: 'instalaciones-planta.jpg',
     type: 'image/jpeg',
     size: 170718,
@@ -152,7 +152,7 @@ const mockMediaFiles = [
   // Imágenes de Proyectos
   {
     id: 'proyectos-1',
-    url: '/images/proyectos/obra-construccion.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/proyectos/obra-construccion.jpg',
     name: 'obra-construccion.jpg',
     type: 'image/jpeg',
     size: 299135,
@@ -161,7 +161,7 @@ const mockMediaFiles = [
   },
   {
     id: 'proyectos-2',
-    url: '/images/projects/edificios/tequendama/TEQUENDAMA-PARKING-CALI.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/projects/edificios/tequendama/TEQUENDAMA-PARKING-CALI.jpg',
     name: 'TEQUENDAMA-PARKING-CALI.jpg',
     type: 'image/jpeg',
     size: 230502,
@@ -170,7 +170,7 @@ const mockMediaFiles = [
   },
   {
     id: 'proyectos-3',
-    url: '/images/projects/industria/tecnofar/TECNOFAR-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/projects/industria/tecnofar/TECNOFAR-1.jpg',
     name: 'TECNOFAR-1.jpg',
     type: 'image/jpeg',
     size: 491277,
@@ -181,7 +181,7 @@ const mockMediaFiles = [
   // Imágenes Generales
   {
     id: 'general-1',
-    url: '/images/general/industria-general.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/general/industria-general.jpg',
     name: 'industria-general.jpg',
     type: 'image/jpeg',
     size: 324249,
@@ -190,7 +190,7 @@ const mockMediaFiles = [
   },
   {
     id: 'general-2',
-    url: '/images/banners/banner-proyectos-oscura.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/banners/banner-proyectos-oscura.jpg',
     name: 'banner-proyectos-oscura.jpg',
     type: 'image/jpeg',
     size: 2681164,
@@ -201,7 +201,7 @@ const mockMediaFiles = [
   // Imágenes para Brochures
   {
     id: 'brochures-1',
-    url: '/images/servicios/construccion-industrial-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/construccion-industrial-1.jpg',
     name: 'construccion-industrial.jpg',
     type: 'image/jpeg',
     size: 382434,
@@ -210,7 +210,7 @@ const mockMediaFiles = [
   },
   {
     id: 'brochures-2',
-    url: '/images/servicios/fabricacion-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/servicios/fabricacion-1.jpg',
     name: 'fabricacion.jpg',
     type: 'image/jpeg',
     size: 313486,
@@ -219,7 +219,7 @@ const mockMediaFiles = [
   },
   {
     id: 'brochures-3',
-    url: '/images/hero/hero-construccion-industrial.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg',
     name: 'hero-construccion.jpg',
     type: 'image/jpeg',
     size: 559697,
@@ -228,7 +228,7 @@ const mockMediaFiles = [
   },
   {
     id: 'brochures-4',
-    url: '/images/tecnologia/tecnologia-industrial-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/tecnologia/tecnologia-industrial-1.jpg',
     name: 'tecnologia-industrial.jpg',
     type: 'image/jpeg',
     size: 227531,
@@ -237,7 +237,7 @@ const mockMediaFiles = [
   },
   {
     id: 'brochures-5',
-    url: '/images/projects/edificios/tequendama/TEQUENDAMA-PARKING-CALI.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/projects/edificios/tequendama/TEQUENDAMA-PARKING-CALI.jpg',
     name: 'tequendama-parking.jpg',
     type: 'image/jpeg',
     size: 230502,
@@ -246,7 +246,7 @@ const mockMediaFiles = [
   },
   {
     id: 'brochures-6',
-    url: '/images/projects/industria/tecnofar/TECNOFAR-1.jpg',
+    url: 'https://storage.googleapis.com/meisa-imagenes/site/projects/industria/tecnofar/TECNOFAR-1.jpg',
     name: 'tecnofar-planta.jpg',
     type: 'image/jpeg',
     size: 491277,

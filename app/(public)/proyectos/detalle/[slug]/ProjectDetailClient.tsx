@@ -24,6 +24,36 @@ interface Imagen {
   tipo: string
 }
 
+interface ObraProyecto {
+  id: string
+  slug: string
+  titulo: string
+  fechaFin: string | null
+  toneladas: string | number | null
+  areaTotal: string | number | null
+  ubicacion: string
+  imagenes: { url: string; urlOptimized: string | null; alt: string }[]
+}
+
+interface Obra {
+  id: string
+  slug: string
+  titulo: string
+  resumenCorto: string | null
+  esCadena: boolean
+  contexto: string | null
+  problemasIniciales: string | null
+  desafios: any
+  solucionTecnica: string | null
+  innovaciones: any
+  resultados: any
+  impactoCliente: string | null
+  testimonioCliente: string | null
+  tagsTecnicos: any
+  leccionesAprendidas: string | null
+  proyectos: ObraProyecto[]
+}
+
 interface Proyecto {
   id: string
   titulo: string
@@ -40,19 +70,7 @@ interface Proyecto {
   areaTotal: string | number | null
   tags: string[]
   imagenes: Imagen[]
-  historia?: {
-    id: string
-    contexto: string | null
-    problemasIniciales: string | null
-    desafios: any
-    solucionTecnica: string | null
-    innovaciones: any
-    resultados: any
-    impactoCliente: string | null
-    testimonioCliente: string | null
-    tagsTecnicos: any
-    leccionesAprendidas: string | null
-  } | null
+  obra?: Obra | null
 }
 
 interface RelacionadoItem {
@@ -129,24 +147,26 @@ export default function ProjectDetailClient({
   const galeria = proyecto.imagenes.filter(
     (i) => !portada || i.id !== portada.id,
   )
-  const historia = proyecto.historia ?? null
-  const desafios = asStringArray(historia?.desafios)
-  const innovaciones = asStringArray(historia?.innovaciones)
-  const resultados = asStringArray(historia?.resultados)
-  const tagsTecnicos = asStringArray(historia?.tagsTecnicos)
-  const tieneHistoria =
-    historia !== null &&
+  const obra = proyecto.obra ?? null
+  const desafios = asStringArray(obra?.desafios)
+  const innovaciones = asStringArray(obra?.innovaciones)
+  const resultados = asStringArray(obra?.resultados)
+  const tagsTecnicos = asStringArray(obra?.tagsTecnicos)
+  const tieneObraNarrativa =
+    obra !== null &&
     !!(
-      historia.contexto ||
-      historia.problemasIniciales ||
+      obra.contexto ||
+      obra.problemasIniciales ||
       desafios.length > 0 ||
-      historia.solucionTecnica ||
+      obra.solucionTecnica ||
       innovaciones.length > 0 ||
       resultados.length > 0 ||
-      historia.impactoCliente ||
-      historia.testimonioCliente ||
-      historia.leccionesAprendidas
+      obra.impactoCliente ||
+      obra.testimonioCliente ||
+      obra.leccionesAprendidas
     )
+  // Otros proyectos de la misma obra (excluye el actual)
+  const otrosDeObra = (obra?.proyectos ?? []).filter((p) => p.id !== proyecto.id)
 
   // Specs inline del hero (3-6 ítems, solo los que existen)
   const specs: Array<{ label: string; value: string }> = []
@@ -201,7 +221,7 @@ export default function ProjectDetailClient({
                 </h2>
               </div>
               <div className="lg:col-span-7 lg:pt-4">
-                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed">
+                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty">
                   {proyecto.descripcion}
                 </p>
               </div>
@@ -219,14 +239,22 @@ export default function ProjectDetailClient({
         </section>
       )}
 
-      {/* 4. DETALLE TÉCNICO (historia) — múltiples secciones editoriales */}
-      {tieneHistoria && historia && (
-        <HistoriaBloques
-          historia={historia}
+      {/* 4. OBRA — narrativa editorial (cuando existe) */}
+      {tieneObraNarrativa && obra && (
+        <ObraBloques
+          obra={obra}
           desafios={desafios}
           innovaciones={innovaciones}
           resultados={resultados}
           tagsTecnicos={tagsTecnicos}
+        />
+      )}
+
+      {/* 5. OTROS PROYECTOS DE LA MISMA OBRA (si esta obra agrupa varios) */}
+      {obra && otrosDeObra.length > 0 && (
+        <OtrosDeLaObraSection
+          obra={obra}
+          otros={otrosDeObra}
         />
       )}
 
@@ -711,16 +739,16 @@ function Lightbox({
   )
 }
 
-/* ─── HISTORIA editorial — múltiples secciones con grids ────────────── */
+/* ─── OBRA editorial — narrativa en múltiples secciones con grids ─── */
 
-function HistoriaBloques({
-  historia,
+function ObraBloques({
+  obra: historia,
   desafios,
   innovaciones,
   resultados,
   tagsTecnicos,
 }: {
-  historia: NonNullable<Proyecto['historia']>
+  obra: Obra
   desafios: string[]
   innovaciones: string[]
   resultados: string[]
@@ -751,7 +779,7 @@ function HistoriaBloques({
                 </h3>
               </div>
               <div className="lg:col-span-7 lg:pt-4">
-                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed">
+                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty">
                   {historia.contexto}
                 </p>
               </div>
@@ -784,7 +812,7 @@ function HistoriaBloques({
               </div>
               {historia.problemasIniciales && (
                 <div className="lg:col-span-7 lg:pt-4">
-                  <p className="text-white/70 font-lato text-base md:text-lg leading-relaxed">
+                  <p className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty">
                     {historia.problemasIniciales}
                   </p>
                 </div>
@@ -810,7 +838,7 @@ function HistoriaBloques({
                         <span className="font-bebas text-4xl md:text-5xl leading-none text-white/30 block mb-3">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed">
+                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty">
                           {d}
                         </p>
                       </motion.div>
@@ -846,7 +874,7 @@ function HistoriaBloques({
               </div>
               <div className="lg:col-span-7 lg:pt-4">
                 {historia.solucionTecnica && (
-                  <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed mb-8">
+                  <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty mb-8">
                     {historia.solucionTecnica}
                   </p>
                 )}
@@ -859,7 +887,7 @@ function HistoriaBloques({
                       {innovaciones.map((inn, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <span className="flex-shrink-0 w-1.5 h-1.5 bg-red-500 mt-2" />
-                          <span className="text-white/80 font-lato text-base md:text-lg leading-relaxed">
+                          <span className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty">
                             {inn}
                           </span>
                         </li>
@@ -897,7 +925,7 @@ function HistoriaBloques({
               </div>
               {historia.impactoCliente && (
                 <div className="lg:col-span-7 lg:pt-4">
-                  <p className="text-white/80 font-lato text-base md:text-lg leading-relaxed">
+                  <p className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty">
                     {historia.impactoCliente}
                   </p>
                 </div>
@@ -923,7 +951,7 @@ function HistoriaBloques({
                         <span className="font-bebas text-4xl md:text-5xl leading-none text-white/30 block mb-3">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed">
+                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty">
                           {r}
                         </p>
                       </motion.div>
@@ -997,7 +1025,7 @@ function HistoriaBloques({
                   <p className="text-white/40 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4">
                     Notas técnicas
                   </p>
-                  <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed">
+                  <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed text-pretty">
                     {historia.leccionesAprendidas}
                   </p>
                 </div>
@@ -1007,6 +1035,93 @@ function HistoriaBloques({
         </section>
       )}
     </>
+  )
+}
+
+/* ─── OTROS PROYECTOS DE LA MISMA OBRA ──────────────────────────────── */
+
+function OtrosDeLaObraSection({
+  obra,
+  otros,
+}: {
+  obra: Obra
+  otros: ObraProyecto[]
+}) {
+  return (
+    <section className="bg-slate-950 border-t border-white/10 py-14 md:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mb-8 md:mb-10"
+        >
+          <p className="text-red-500 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-3">
+            Obra completa
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bebas uppercase leading-[0.95] text-white">
+            {obra.titulo}
+          </h2>
+          <p className="mt-4 text-white/60 font-lato text-sm md:text-base leading-relaxed text-pretty max-w-2xl">
+            {obra.esCadena
+              ? `Este proyecto forma parte de una obra con ${otros.length + 1} proyectos entregados. Explora los demás:`
+              : `Este proyecto es una de las ${otros.length + 1} fases de la obra. Explora las demás:`}
+          </p>
+        </motion.div>
+
+        <div className={`grid ${gridColsForCount(otros.length)} gap-px bg-white/10 border-y border-white/10`}>
+          {otros.slice(0, 4).map((p, i) => {
+            const thumb = p.imagenes[0]
+            const ton = toNum(p.toneladas)
+            const area = toNum(p.areaTotal)
+            const anio = p.fechaFin ? p.fechaFin.slice(0, 4) : null
+            return (
+              <Link
+                key={p.id}
+                href={`/proyectos/detalle/${p.slug}`}
+                className="group relative block bg-slate-950 overflow-hidden"
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: i * 0.06 }}
+                  className="relative h-[38vh]"
+                >
+                  {thumb ? (
+                    <Image
+                      src={thumb.urlOptimized || thumb.url}
+                      alt={thumb.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-slate-900" />
+                  )}
+                  <div className="absolute inset-0 bg-slate-950/60 group-hover:bg-slate-950/40 transition-colors duration-500" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6">
+                    {anio && (
+                      <p className="text-white/60 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-1">
+                        {anio}
+                      </p>
+                    )}
+                    <h3 className="text-xl md:text-2xl font-bebas uppercase text-white leading-[0.95]">
+                      {p.titulo}
+                    </h3>
+                    <div className="flex items-center gap-3 mt-3 text-white/70 font-lato text-xs">
+                      {ton && <span>{formatNum(ton)} ton</span>}
+                      {area && <span>· {formatNum(area)} m²</span>}
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+    </section>
   )
 }
 

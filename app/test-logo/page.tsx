@@ -19,7 +19,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-blue-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}
@@ -41,7 +41,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-green-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}
@@ -64,7 +64,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-purple-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={288}
                 height={80}
@@ -87,7 +87,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-red-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={288}
                 height={80}
@@ -109,7 +109,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-orange-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <img
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 className="h-10 w-auto"
               />
@@ -128,7 +128,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-teal-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}
@@ -152,7 +152,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-pink-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}
@@ -175,7 +175,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-yellow-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}
@@ -198,7 +198,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-indigo-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}
@@ -221,7 +221,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-cyan-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={432}
                 height={120}
@@ -244,8 +244,8 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-lime-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <img
-                src="/images/logo/logo-meisa.png"
-                srcSet="/images/logo/logo-meisa.png 1x, /images/logo/logo-meisa.png 2x"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
+                srcSet="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png 1x, /images/logo/logo-meisa.png 2x"
                 alt="MEISA"
                 className="h-10 w-auto"
                 style={{ imageRendering: 'auto' }}
@@ -265,7 +265,7 @@ export default function TestLogoPage() {
           <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-rose-500">
             <div className="bg-gray-100 p-4 rounded mb-4 h-20 flex items-center justify-center">
               <Image
-                src="/images/logo/logo-meisa.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                 alt="MEISA"
                 width={144}
                 height={40}

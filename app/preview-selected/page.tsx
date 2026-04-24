@@ -28,7 +28,7 @@ export default function PreviewSelectedPage() {
   }
 
   const copyPaths = () => {
-    const paths = selectedForHero.map(name => `/images/selected-hero/${name}`).join('\n')
+    const paths = selectedForHero.map(name => `https://storage.googleapis.com/meisa-imagenes/site/selected-hero/${name}`).join('\n')
     navigator.clipboard.writeText(paths)
     alert('Rutas copiadas al portapapeles!')
   }
@@ -86,7 +86,7 @@ export default function PreviewSelectedPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {selectedImages.map((img) => {
             const isSelected = selectedForHero.includes(img.name)
-            const imagePath = `/images/selected-hero/${img.name}`
+            const imagePath = `https://storage.googleapis.com/meisa-imagenes/site/selected-hero/${img.name}`
 
             return (
               <div

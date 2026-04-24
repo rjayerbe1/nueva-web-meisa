@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
 
         if (fs.existsSync(currentPath)) {
           fs.renameSync(currentPath, newPath)
-          finalUrl = `/images/projects/${newImagePath}`
+          finalUrl = `https://storage.googleapis.com/meisa-imagenes/site/projects/${newImagePath}`
         }
       } catch (moveError) {
         console.error('Error reorganizando archivo:', moveError)

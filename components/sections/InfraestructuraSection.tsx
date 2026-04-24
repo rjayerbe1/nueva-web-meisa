@@ -19,7 +19,7 @@ const plantas = [
     equiposEspeciales: ["Ensambladora de Perfiles"],
     googleMaps: "https://www.google.com/maps/place/Met%C3%A1licas+e+Ingenier%C3%ADa+S.A.S./@3.2487893,-76.5289749,17z/data=!3m1!4b1!4m6!3m5!1s0x8e309ea112757501:0x2cfda6d9126079df!8m2!3d3.2487839!4d-76.5263946!16s%2Fg%2F11c75_b9hv?entry=ttu",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.090874524427!2d-76.5289749!3d3.2487893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e309ea112757501%3A0x2cfda6d9126079df!2zTWV0w6FsaWNhcyBlIEluZ2VuaWVyw61hIFMuQS5TLg!5e0!3m2!1ses!2sco!4v1699999999999",
-    imagen: "/images/about/planta-produccion.webp",
+    imagen: "https://storage.googleapis.com/meisa-imagenes/site/about/planta-produccion.webp",
     color: "from-blue-500 to-blue-600"
   },
   {
@@ -35,7 +35,7 @@ const plantas = [
     equiposEspeciales: [],
     googleMaps: "https://www.google.com/maps/place/Met%C3%A1licas+E+Ingenier%C3%ADa+S.A./@2.5024221,-76.5623836,17z/data=!3m1!4b1!4m6!3m5!1s0x8e30042e3d132a67:0xedbc4d22716e928a!8m2!3d2.5024167!4d-76.5598033!16s%2Fg%2F1hdzvkr66?entry=ttu",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7609843675785!2d-76.5623836!3d2.5024221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e30042e3d132a67%3A0xedbc4d22716e928a!2zTWV0w6FsaWNhcyBFIEluZ2VuaWVyw61hIFMuQS4!5e0!3m2!1ses!2sco!4v1699999999998",
-    imagen: "/images/about/planta-produccion.webp",
+    imagen: "https://storage.googleapis.com/meisa-imagenes/site/about/planta-produccion.webp",
     color: "from-blue-600 to-blue-700"
   },
   {
@@ -51,7 +51,7 @@ const plantas = [
     equiposEspeciales: [],
     googleMaps: "https://www.google.com/maps/place/MEISA+-+VILLA+RICA/@3.1879019,-76.4511832,17z/data=!3m1!4b1!4m6!3m5!1s0x8e3a7700295ca9bf:0xa6b69c2179a47088!8m2!3d3.1878965!4d-76.4486029!16s%2Fg%2F11zkbv1dth?entry=ttu",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.5371893449743!2d-76.4511832!3d3.1879019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3a7700295ca9bf%3A0xa6b69c2179a47088!2sMEISA%20-%20VILLA%20RICA!5e0!3m2!1ses!2sco!4v1699999999997",
-    imagen: "/images/about/planta-produccion.webp",
+    imagen: "https://storage.googleapis.com/meisa-imagenes/site/about/planta-produccion.webp",
     color: "from-slate-600 to-slate-700"
   }
 ]

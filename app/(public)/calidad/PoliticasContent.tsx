@@ -41,7 +41,7 @@ export function PoliticasContent({
       {/* Hero full-bleed oscuro con imagen */}
       <section className="relative h-screen md:h-[88vh] overflow-hidden bg-slate-950">
         <Image
-          src="/images/hero/hero-construccion-industrial.jpg"
+          src="https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg"
           alt="Estructuras metálicas MEISA"
           fill
           priority
@@ -109,7 +109,7 @@ export function PoliticasContent({
       {/* Image break 1 — entre SIG y Políticas */}
       <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
         <Image
-          src="/images/hero/montaje-grua.jpg"
+          src="https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg"
           alt="Montaje de estructura metálica"
           fill
           sizes="100vw"
@@ -217,7 +217,7 @@ export function PoliticasContent({
       {/* Image break 2 — entre Normas y Control */}
       <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
         <Image
-          src="/images/hero/estructura-perspectiva.jpg"
+          src="https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg"
           alt="Estructura metálica en perspectiva"
           fill
           sizes="100vw"

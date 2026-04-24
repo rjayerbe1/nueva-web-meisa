@@ -41,7 +41,7 @@ function HeroDemo1() {
         {/* Logo Central Grande */}
         <div className="relative z-10 text-center">
           <Image
-            src="/images/logo/logo-meisa-white.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
             alt="MEISA"
             width={700}
             height={210}
@@ -220,7 +220,7 @@ function HeroDemo3() {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center px-8">
           <Image
-            src="/images/logo/logo-meisa.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
             alt="MEISA"
             width={800}
             height={240}
@@ -299,7 +299,7 @@ function HeroDemo4() {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <Image
-            src="/images/logo/logo-meisa-white.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
             alt="MEISA"
             width={900}
             height={270}
@@ -398,7 +398,7 @@ function HeroDemo5() {
       {/* Hero */}
       <div className="h-screen flex items-center justify-center">
         <Image
-          src="/images/logo/logo-meisa-white.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
           alt="MEISA"
           width={750}
           height={225}
@@ -479,7 +479,7 @@ function HeroDemo6() {
         {/* Parte superior - Logo */}
         <div className="h-1/2 bg-white flex items-center justify-center">
           <Image
-            src="/images/logo/logo-meisa.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
             alt="MEISA"
             width={600}
             height={180}

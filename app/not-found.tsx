@@ -27,7 +27,7 @@ export default function NotFound() {
       >
         <Link href="/">
           <Image
-            src="/images/logo/logo-meisa.png"
+            src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
             alt="MEISA"
             width={140}
             height={50}

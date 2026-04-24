@@ -55,6 +55,7 @@ interface Proyecto {
   destacado: boolean
   toneladas: number | null
   areaTotal: number | null
+  obraId: string | null
   imagenes: Array<{
     id: string
     url: string
@@ -143,15 +144,20 @@ export default function CategoryPageClient({
     (p) => !p.imagenes || p.imagenes.length === 0,
   )
 
-  const proyectosDestacadosIds: string[] =
+  // casosExitoIds ahora contiene IDs de Obra (no de Proyecto).
+  // Un proyecto es destacado si pertenece a una obra incluida en el array.
+  const obrasDestacadasIds: string[] =
     categoria.casosExitoIds && categoria.casosExitoIds.length > 0
       ? categoria.casosExitoIds
       : []
 
+  const esProyectoDestacado = (p: Proyecto): boolean =>
+    !!p.obraId && obrasDestacadasIds.includes(p.obraId)
+
   const proyectosConImagenesOrdenados = [...proyectosConImagenes].sort(
     (a, b) => {
-      const aEsDestacado = proyectosDestacadosIds.includes(a.id)
-      const bEsDestacado = proyectosDestacadosIds.includes(b.id)
+      const aEsDestacado = esProyectoDestacado(a)
+      const bEsDestacado = esProyectoDestacado(b)
       if (aEsDestacado && !bEsDestacado) return -1
       if (!aEsDestacado && bEsDestacado) return 1
       return 0
@@ -416,7 +422,7 @@ export default function CategoryPageClient({
         <section className="bg-slate-950">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 mobile-landscape-projects-grid">
             {proyectosConImagenesOrdenados.map((proyecto, index) => {
-              const esDestacado = proyectosDestacadosIds.includes(proyecto.id)
+              const esDestacado = esProyectoDestacado(proyecto)
 
               return (
                 <Link

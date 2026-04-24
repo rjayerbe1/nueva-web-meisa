@@ -54,11 +54,11 @@ export async function OrganizationSchema() {
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
-      url: `${SITE_URL}/images/logo-meisa.png`,
+      url: "https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png",
       width: 300,
       height: 100,
     },
-    image: `${SITE_URL}/images/og-image.jpg`,
+    image: `https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg`,
     description:
       (config?.descripcion ??
         "Empresa líder en diseño, fabricación y montaje de estructuras metálicas en Colombia.") +
@@ -113,7 +113,7 @@ export async function LocalBusinessSchema() {
       "@type": "LocalBusiness",
       "@id": `${SITE_URL}/#location-${plant.slug}`,
       name: `MEISA - ${plant.nombre}`,
-      image: `${SITE_URL}/images/og-image.jpg`,
+      image: `https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg`,
       url: SITE_URL,
       telephone: plant.telefono ?? "",
       priceRange: "$$$",
@@ -202,7 +202,7 @@ export function ServiceSchema({ name, description, url, image }: ServiceSchemaPr
     name,
     description,
     url,
-    image: image || `${SITE_URL}/images/og-image.jpg`,
+    image: image || `https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg`,
     provider: { "@id": `${SITE_URL}/#organization` },
     areaServed: { "@type": "Country", name: "Colombia" },
     serviceType: "Estructuras Metálicas",
@@ -265,7 +265,7 @@ export function ProjectSchema({
     name,
     description,
     url,
-    image: image || `${SITE_URL}/images/og-image.jpg`,
+    image: image || `https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg`,
     datePublished,
     creator: { "@id": `${SITE_URL}/#organization` },
     locationCreated: location

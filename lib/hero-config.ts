@@ -18,16 +18,16 @@ export interface HeroImageConfig {
 
 // Videos intro del hero (logo animado). Si los campos en DB están vacíos
 // se usan estos.
-export const DEFAULT_HERO_VIDEO_DESKTOP = "/videos/hero/logo-intro-desktop.mp4"
-export const DEFAULT_HERO_VIDEO_MOBILE = "/videos/hero/logo-intro-mobile.mp4"
+export const DEFAULT_HERO_VIDEO_DESKTOP = "https://storage.googleapis.com/meisa-imagenes/site/hero/logo-intro-desktop.mp4"
+export const DEFAULT_HERO_VIDEO_MOBILE = "https://storage.googleapis.com/meisa-imagenes/site/hero/logo-intro-mobile.mp4"
 
 // Configuración por defecto
 export const defaultHeroImages: HeroImageConfig = {
-  leftColumn: '/images/hero/techo-metalico.jpg',
-  centerTop: '/images/hero/ciclopuente-atardecer.jpg',
-  centerBottom: '/images/hero/estructura-perspectiva.jpg',
-  rightTop: '/images/hero/coliseo-estructuras-rojas.jpg',
-  rightBottom: '/images/hero/montaje-grua.jpg',
+  leftColumn: 'https://storage.googleapis.com/meisa-imagenes/site/hero/techo-metalico.jpg',
+  centerTop: 'https://storage.googleapis.com/meisa-imagenes/site/hero/ciclopuente-atardecer.jpg',
+  centerBottom: 'https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg',
+  rightTop: 'https://storage.googleapis.com/meisa-imagenes/site/hero/coliseo-estructuras-rojas.jpg',
+  rightBottom: 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg',
   mobile: {
     // Por defecto, usa las mismas imágenes de desktop
     row2Top: undefined,

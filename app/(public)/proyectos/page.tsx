@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: 'https://meisa.com.co/proyectos',
     images: [
       {
-        url: '/images/og-proyectos.jpg',
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-proyectos.jpg',
         width: 1200,
         height: 630,
         alt: 'Proyectos de Estructuras Metálicas MEISA',

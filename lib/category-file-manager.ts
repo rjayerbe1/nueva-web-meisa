@@ -29,8 +29,8 @@ export function getCategoryFileStructure(slug: string): CategoryFileStructure {
  */
 export function getCategoryImageUrls(slug: string) {
   return {
-    imagenCover: `/images/categories/${slug}/cover.jpg`,
-    icono: `/images/categories/${slug}/icon.svg`
+    imagenCover: `https://storage.googleapis.com/meisa-imagenes/site/categories/${slug}/cover.jpg`,
+    icono: `https://storage.googleapis.com/meisa-imagenes/site/categories/${slug}/icon.svg`
   }
 }
 

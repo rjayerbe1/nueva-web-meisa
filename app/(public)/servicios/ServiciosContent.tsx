@@ -146,7 +146,7 @@ export default function ServiciosContent({
       {/* Hero — Full-bleed dark con imagen industrial */}
       <section className="relative h-screen md:h-[85vh] overflow-hidden bg-slate-950">
         <Image
-          src="/images/hero/estructura-perspectiva.jpg"
+          src="https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg"
           alt="Estructura metálica — Servicios MEISA"
           fill
           priority

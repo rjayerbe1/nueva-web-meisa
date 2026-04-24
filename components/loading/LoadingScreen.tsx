@@ -64,7 +64,7 @@ function FadeScaleVariant() {
         }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={300}
           height={85}
@@ -95,7 +95,7 @@ function SpinnerVariant() {
         className="relative z-10"
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={240}
           height={68}
@@ -155,7 +155,7 @@ function MetallicVariant() {
         className="relative z-10"
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={240}
           height={68}
@@ -306,7 +306,7 @@ function PulseGlowVariant() {
         className="relative z-10"
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={240}
           height={68}
@@ -390,7 +390,7 @@ function FadeGlowVariant() {
         className="relative z-10 mb-8"
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={240}
           height={68}

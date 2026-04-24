@@ -14,14 +14,14 @@ export interface NavbarMenuItem {
 }
 
 const DEFAULT_MENU_ITEMS: NavbarMenuItem[] = [
-  { name: 'Inicio', href: '/', image: '/images/proyectos/puente-destacado.jpg' },
-  { name: 'Proyectos', href: '/proyectos', image: '/images/hero/ciclopuente-atardecer.jpg' },
-  { name: 'Servicios', href: '/servicios', image: '/images/hero/estructura-perspectiva.jpg' },
-  { name: 'Empresa', href: '/empresa', image: '/images/about/meisa-planta-aerea.jpg' },
-  { name: 'Trayectoria', href: '/trayectoria', image: '/images/hero/coliseo-estructuras-rojas.jpg' },
-  { name: 'Procesos & Tecnologías', href: '/procesos-tecnologias', image: '/images/hero/montaje-grua.jpg' },
-  { name: 'Calidad', href: '/calidad', image: '/images/hero/techo-metalico.jpg' },
-  { name: 'Contacto', href: '/contacto', image: '/images/hero/hero-construccion-industrial.jpg' },
+  { name: 'Inicio', href: '/', image: 'https://storage.googleapis.com/meisa-imagenes/site/proyectos/puente-destacado.jpg' },
+  { name: 'Proyectos', href: '/proyectos', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/ciclopuente-atardecer.jpg' },
+  { name: 'Servicios', href: '/servicios', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg' },
+  { name: 'Empresa', href: '/empresa', image: 'https://storage.googleapis.com/meisa-imagenes/site/about/meisa-planta-aerea.jpg' },
+  { name: 'Trayectoria', href: '/trayectoria', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/coliseo-estructuras-rojas.jpg' },
+  { name: 'Procesos & Tecnologías', href: '/procesos-tecnologias', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg' },
+  { name: 'Calidad', href: '/calidad', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/techo-metalico.jpg' },
+  { name: 'Contacto', href: '/contacto', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg' },
 ]
 
 interface NavbarProps {
@@ -68,7 +68,7 @@ export function Navbar({ items }: NavbarProps = {}) {
             {/* Top bar */}
             <div className="absolute top-0 left-0 right-0 p-6 md:p-8 flex items-center justify-between z-20">
               <Image
-                src="/images/logo/logo-meisa-white.png"
+                src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
                 alt="MEISA"
                 width={120}
                 height={34}

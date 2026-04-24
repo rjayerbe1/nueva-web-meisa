@@ -27,7 +27,7 @@ export function OptimizedImage({
   quality = 75,
   className,
   containerClassName,
-  fallbackSrc = '/images/placeholder.jpg'
+  fallbackSrc = 'https://storage.googleapis.com/meisa-imagenes/site/placeholder.jpg'
 }: OptimizedImageProps) {
   const [imgSrc, setImgSrc] = useState(src)
   const [isLoading, setIsLoading] = useState(true)

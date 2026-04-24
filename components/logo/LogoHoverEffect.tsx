@@ -140,7 +140,7 @@ function TiltEffect({ width, height }: { width: number; height: number }) {
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={width}
           height={height}
@@ -210,7 +210,7 @@ function MagneticEffect({ width, height }: { width: number; height: number }) {
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={width}
           height={height}
@@ -266,7 +266,7 @@ function GlitchEffect({ width, height }: { width: number; height: number }) {
         }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={width}
           height={height}
@@ -294,7 +294,7 @@ function GlitchEffect({ width, height }: { width: number; height: number }) {
             style={{ filter: 'brightness(1.2) hue-rotate(-20deg)' }}
           >
             <Image
-              src="/images/logo/logo-meisa.png"
+              src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
               alt=""
               width={width}
               height={height}
@@ -320,7 +320,7 @@ function GlitchEffect({ width, height }: { width: number; height: number }) {
             style={{ filter: 'brightness(1.2) hue-rotate(180deg)' }}
           >
             <Image
-              src="/images/logo/logo-meisa.png"
+              src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
               alt=""
               width={width}
               height={height}
@@ -399,7 +399,7 @@ function GlowScaleEffect({ width, height }: { width: number; height: number }) {
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={width}
           height={height}
@@ -493,7 +493,7 @@ function Parallax3DEffect({ width, height }: { width: number; height: number }) 
         }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt=""
           width={width}
           height={height}
@@ -514,7 +514,7 @@ function Parallax3DEffect({ width, height }: { width: number; height: number }) 
         }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt=""
           width={width}
           height={height}
@@ -539,7 +539,7 @@ function Parallax3DEffect({ width, height }: { width: number; height: number }) 
         }}
       >
         <Image
-          src="/images/logo/logo-meisa.png"
+          src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
           alt="MEISA"
           width={width}
           height={height}

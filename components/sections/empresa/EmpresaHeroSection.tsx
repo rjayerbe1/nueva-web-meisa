@@ -70,7 +70,7 @@ export function EmpresaHeroSection() {
           onLoadedData={() => setVideoLoaded(true)}
           className="absolute inset-0 w-full h-full object-cover scale-125"
         >
-          <source src="/videos/fabricacion-metalica.mp4" type="video/mp4" />
+          <source src="https://storage.googleapis.com/meisa-imagenes/site/hero/fabricacion-metalica.mp4" type="video/mp4" />
         </video>
 
         {/* Overlay gradiente lateral - oscuro izquierda, transparente derecha */}

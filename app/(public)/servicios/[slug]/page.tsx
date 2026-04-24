@@ -90,7 +90,7 @@ async function getServicio(slug: string) {
       titulo: servicio.expertiseTitulo || 'Nuestra Experiencia',
       descripcion: servicio.expertiseDescripcion || ''
     },
-    imagen: servicio.imagen || `/images/servicios/${servicio.slug}.jpg`,
+    imagen: servicio.imagen || `https://storage.googleapis.com/meisa-imagenes/site/servicios/${servicio.slug}.jpg`,
     icono: servicio.icono || 'Settings',
     color: servicio.color || 'blue',
     bgGradient: servicio.bgGradient || colors.gradient,
@@ -135,7 +135,7 @@ async function getOtrosServicios(currentSlug: string) {
       titulo: servicio.titulo || servicio.nombre,
       subtitulo: servicio.subtitulo || '',
       descripcion: servicio.descripcion,
-      imagen: servicio.imagen || `/images/servicios/${servicio.slug}.jpg`,
+      imagen: servicio.imagen || `https://storage.googleapis.com/meisa-imagenes/site/servicios/${servicio.slug}.jpg`,
       icono: servicio.icono || 'Settings',
       color: servicio.color || 'blue',
       bgGradient: colors.gradient

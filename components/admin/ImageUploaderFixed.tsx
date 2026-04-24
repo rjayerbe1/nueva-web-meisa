@@ -104,7 +104,7 @@ export function ImageUploaderFixed({
         const fileName = `client-logo-${timestamp}-${randomId}.webp`
         
         // Retornar URL relativa que se guardará en la BD
-        return `/images/clients/${fileName}`
+        return `https://storage.googleapis.com/meisa-imagenes/site/clients/${fileName}`
       } else {
         // En producción, hacer llamada real al endpoint de subida
         const response = await fetch('/api/upload', {

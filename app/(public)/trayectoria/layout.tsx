@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: 'https://meisa.com.co/trayectoria',
     images: [
       {
-        url: '/images/og-trayectoria.jpg',
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-trayectoria.jpg',
         width: 1200,
         height: 630,
         alt: 'Trayectoria MEISA - Estructuras Metálicas Colombia',

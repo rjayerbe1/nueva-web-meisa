@@ -41,7 +41,7 @@ export function HeroTrayectoria({ stats }: Props) {
         {/* Imagen (5/12) */}
         <div className="relative h-[50vh] lg:h-auto lg:col-span-5">
           <Image
-            src="/images/proyectos/puente-destacado.jpg"
+            src="https://storage.googleapis.com/meisa-imagenes/site/proyectos/puente-destacado.jpg"
             alt="Puente metálico — Proyecto destacado MEISA"
             fill
             priority

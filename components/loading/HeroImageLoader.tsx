@@ -75,7 +75,7 @@ export function HeroImageLoader({ isVisible, progress }: HeroImageLoaderProps) {
                   className="flex items-center justify-center"
                 >
                   <Image
-                    src="/images/logo/logo-meisa.png"
+                    src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png"
                     alt="MEISA"
                     width={160}
                     height={45}

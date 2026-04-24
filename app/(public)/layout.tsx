@@ -3,17 +3,17 @@ import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloatingWidget } from '@/components/WhatsAppFloatingWidget'
 import { getMenuItems } from '@/lib/content/navegacion'
 
-const DEFAULT_IMAGE = '/images/hero/montaje-grua.jpg'
+const DEFAULT_IMAGE = 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg'
 
 const IMAGE_BY_HREF: Record<string, string> = {
-  '/': '/images/proyectos/puente-destacado.jpg',
-  '/proyectos': '/images/hero/ciclopuente-atardecer.jpg',
-  '/servicios': '/images/hero/estructura-perspectiva.jpg',
-  '/empresa': '/images/about/meisa-planta-aerea.jpg',
-  '/trayectoria': '/images/hero/coliseo-estructuras-rojas.jpg',
-  '/procesos-tecnologias': '/images/hero/montaje-grua.jpg',
-  '/calidad': '/images/hero/techo-metalico.jpg',
-  '/contacto': '/images/hero/hero-construccion-industrial.jpg',
+  '/': 'https://storage.googleapis.com/meisa-imagenes/site/proyectos/puente-destacado.jpg',
+  '/proyectos': 'https://storage.googleapis.com/meisa-imagenes/site/hero/ciclopuente-atardecer.jpg',
+  '/servicios': 'https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg',
+  '/empresa': 'https://storage.googleapis.com/meisa-imagenes/site/about/meisa-planta-aerea.jpg',
+  '/trayectoria': 'https://storage.googleapis.com/meisa-imagenes/site/hero/coliseo-estructuras-rojas.jpg',
+  '/procesos-tecnologias': 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg',
+  '/calidad': 'https://storage.googleapis.com/meisa-imagenes/site/hero/techo-metalico.jpg',
+  '/contacto': 'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg',
 }
 
 export default async function PublicLayout({
