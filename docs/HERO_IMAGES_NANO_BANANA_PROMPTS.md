@@ -329,38 +329,50 @@ sin señales de obra activa.
 
 ---
 
-### 2. Puentes en Arco Metálico — Puente Vehicular Cascada ✅ Casi lista
+### 2. Puentes en Arco Metálico — Puente Arco Saraconcho ✅ Buena (retoque menor)
 
 **URL actual:**
-`https://storage.googleapis.com/meisa-imagenes/categories/1772479892894-5ehatt.jpeg`
+`https://storage.googleapis.com/meisa-imagenes/projects/consorcio-competitividad-puente-arco-saraconcho/Puente-vehicular-saraconcho-4.webp`
 
-**Qué se ve:** Vista aérea tipo drone del puente vehicular sobre valle con vegetación densa, casas al fondo, carretera adyacente, estructura metálica y de concreto del puente, estribo en construcción al fondo derecho.
+**Qué se ve:** Vista lateral frontal del puente de arco metálico tipo bowstring (acero corten color ocre) cruzando valle, contra cielo azul con nubes cúmulus dispersas, montañas verdes al fondo a la izquierda. Longitud 150 metros.
 
 **Problemas menores:**
-- Hay estribo en construcción al fondo derecho (andamios/obra).
-- Carretera parcialmente destruida/remodelada a la derecha.
-- La proporción es ya horizontal (bueno para hero).
+- Se ve algo de grúa amarilla en el borde izquierdo inferior (esquina).
+- Cables eléctricos delgados cruzando la parte superior del cielo.
+- Algún andamio mínimo en el extremo izquierdo.
+- Vegetación en primer plano algo desordenada.
 
 **PROMPT:**
 ```
-Esta vista aérea del Puente Vehicular Cascada es excelente para hero
-16:9 — ya tiene la proporción correcta. Solo limpieza ligera.
-
-QUITÁ:
-- El estribo en construcción al fondo derecho con andamios
-- La zona de obra/excavación al lado derecho del puente
-- Cualquier vehículo pequeño visible en la carretera
+Esta foto del Puente Arco Saraconcho (150m) es un ARCO METÁLICO
+REAL tipo bowstring — la más icónica del catálogo MEISA para esta
+especialidad. Adaptala a hero 16:9 con cleanup ligero.
 
 MANTENÉ EXACTAMENTE:
-- El puente vehicular completo (estructura metálica + losa de
-  concreto) exactamente como está
-- La vegetación verde densa del valle
-- Las casas del fondo (son parte del contexto territorial)
-- La perspectiva aérea oblicua
-- Los colores y la iluminación actual
+- El arco metálico completo (acero corten color ocre) — es el
+  protagonista absoluto
+- La geometría del arco con los tirantes verticales
+- El tablero del puente
+- El cielo azul con nubes cúmulus dispersas
+- Las montañas verdes del fondo
+- La iluminación natural diurna
 
-OUTPUT: PNG 1920x1080 mínimo, mantener el drama de la vista aérea
-con el puente terminado sobre el valle.
+QUITÁ:
+- La grúa amarilla visible en el borde izquierdo inferior
+- Los cables eléctricos delgados que cruzan el cielo en la
+  parte superior
+- Cualquier andamio temporal en los extremos
+- Vegetación desordenada en primer plano (dejar que se vea más
+  prolija y natural)
+
+MEJORÁ:
+- Que el arco se vea limpio, sin elementos parasitarios
+- Un poco más de contraste atmosférico (sin saturar)
+- Re-encuadrá a 16:9 horizontal manteniendo el arco entero visible
+
+OUTPUT: PNG 1920x1080, arco bowstring Saraconcho limpio sobre
+paisaje andino, perfecto para hero de especialidad "Puentes en
+Arco Metálico".
 ```
 
 ---
@@ -781,7 +793,7 @@ estructura metálica de cerchas, sin personas, sin distractores.
 | puentes-1 | Puentes de Vigas y Cerchas | ⚠️ Menor | Barrera + cinta peligro |
 | edif-1 | Pórticos Metálicos | ⚠️ Menor | Autos, entorno feo |
 | industrial-1 | Naves Industriales | ⚠️ Mínima | Solo retoque |
-| puentes-2 | Puentes en Arco | ⚠️ Mínima | Solo encuadre |
+| puentes-2 | Puentes en Arco Metálico (Saraconcho) | ⚠️ Menor | Grúa+cables, limpieza ligera |
 | inst-1 | Coliseos y Canchas | ⚠️ Mínima | Re-encuadre |
 | inst-2 | Piscinas Cubiertas | ⚠️ Mínima | Agua + retoque |
 
