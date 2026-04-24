@@ -773,7 +773,26 @@ estructura metálica de cerchas, sin personas, sin distractores.
 | inst-1 | Coliseos y Canchas | ⚠️ Mínima | Re-encuadre |
 | inst-2 | Piscinas Cubiertas | ⚠️ Mínima | Agua + retoque |
 
-**Mínimo esfuerzo (6 prioritarias):** comercial-2, comercial-3, industrial-2, industrial-3, puentes-3, edif-2
+## 📊 Estado actual (actualizado)
+
+**✅ Procesadas (9):** comercial-1, comercial-2, **~~comercial-3~~** (obsoleta por swap), industrial-1, **~~industrial-2~~** (obsoleta por swap), inst-1, inst-2, inst-3, puentes-1
+
+**⚠️ Ya listas sin procesamiento:** industrial-3 (dji_fly drone 4K)
+
+**🔴 Faltan por procesar (8):**
+
+| Código | Prioridad |
+|---|---|
+| edif-2 | 🚨🚨 Crítica (render 3D) |
+| infra-1 | 🚨 Alta |
+| infra-2 | ⚠️ Moderada |
+| edif-3 | ⚠️ Moderada |
+| edif-1 | ⚠️ Menor |
+| puentes-2 | ⚠️ Menor |
+| puentes-3 | ⚠️ Menor |
+| infra-3 | ⚠️ Menor (= puentes-3) |
+
+**Tip:** puentes-3 y infra-3 usan la MISMA imagen (Tertulia gal2) — procesás una sola vez y la usás para ambas.
 
 Esas 6 cambian totalmente la percepción de calidad del sitio. Las demás se pueden hacer después o dejar como están.
 
