@@ -331,9 +331,9 @@ re-encuadrado a hero, líneas estructurales nítidas.
 
 ### 9. `edif-3.webp` — CECUN Edificio Educativo (drone aéreo) ⚠️ Menor
 
-**Especialidad reformulada:** "Estructuras Livianas Modulares" → **"Edificios Institucionales y Sanitarios"** (cubre clínicas, hospitales, centros educativos, módulos sanitarios)
+**Especialidad reformulada:** "Estructuras Livianas Modulares" → **"Edificios Institucionales"** (cubre clínicas, hospitales, centros educativos, módulos sanitarios)
 
-**Qué se ve:** Vista aérea drone del **CECUN — Centro de Estudios Constitucionales Unicauca** TERMINADO. Edificio educativo con cubierta blanca arquitectónica tipo alas/asimétrica muy distintiva, vista oblicua mostrando la estructura completa, entorno urbano con casas y vegetación al fondo, carretera con vehículos visibles. **Hero de "Edificios Institucionales y Sanitarios"** en categoría Edificaciones.
+**Qué se ve:** Vista aérea drone del **CECUN — Centro de Estudios Constitucionales Unicauca** TERMINADO. Edificio educativo con cubierta blanca arquitectónica tipo alas/asimétrica muy distintiva, vista oblicua mostrando la estructura completa, entorno urbano con casas y vegetación al fondo, carretera con vehículos visibles. **Hero de "Edificios Institucionales"** en categoría Edificaciones.
 
 **Problemas menores:**
 - Algo de tierra/obra en primer plano (perímetro del predio)
