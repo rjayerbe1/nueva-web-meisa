@@ -66,37 +66,42 @@ de Alta Resistencia".
 
 ---
 
-### 2. `puentes-2.webp` — Puente Arco Saraconcho ⚠️ Menor
+### 2. `puentes-2.webp` — Puentes Cartón Colombia ✅ Casi lista
 
-**Qué se ve:** Vista lateral frontal del arco metálico tipo bowstring (acero corten ocre) cruzando valle, cielo azul con nubes cúmulus, montañas verdes al fondo izquierdo. **Hero de "Puentes en Arco Metálico"** en categoría Puentes.
+**Qué se ve:** Vista aérea cenital drone — arco metálico negro tipo bowstring/Pratt cruzando un cañón profundo con río de aguas cafés al fondo, carretera curva a la izquierda. Toma muy dramática y limpia, sin trabajadores ni obra. **Hero de "Puentes en Arco Metálico"** en categoría Puentes.
 
-**Problemas:**
-- Algo de grúa amarilla en el borde izquierdo inferior
-- Cables eléctricos delgados cruzando la parte superior del cielo
-- Vegetación desordenada en primer plano
+**Problemas menores:**
+- La imagen está algo subexpuesta/oscura
+- La sombra del puente en el río es muy oscura
+- Falta un poco de contraste en el arco metálico
 
 **PROMPT:**
 ```
-Esta foto del Puente Arco Saraconcho (150m, acero corten) es un ARCO
-METÁLICO REAL tipo bowstring — el más icónico del catálogo MEISA.
-Adaptala a hero 16:9 con cleanup ligero.
+Foto aérea drone del Puente Vehicular Cartón de Colombia — arco
+metálico negro tipo bowstring cruzando cañón con río. Adaptala a
+hero 16:9 con un ajuste de exposición.
 
 MANTENÉ EXACTAMENTE:
-- El arco metálico completo color ocre (acero corten / weathering steel)
-- La geometría del arco con tirantes verticales
-- El tablero del puente
-- El cielo azul con nubes cúmulus dispersas
-- Las montañas verdes del fondo
-- La iluminación natural diurna
+- El arco metálico negro completo (geometría bowstring/Pratt)
+- La carretera curva a la izquierda con el carro pequeño
+- El río de aguas cafés al fondo
+- La perspectiva cenital aérea
+- Las paredes del cañón con vegetación
+- La sombra natural del puente sobre el río
 
-QUITÁ:
-- La grúa amarilla del borde izquierdo inferior
-- Los cables eléctricos delgados que cruzan el cielo
-- Cualquier andamio temporal en los extremos
-- La vegetación desordenada en primer plano
+MEJORÁ:
+- Sube la exposición un poco (la foto se ve subexpuesta/oscura)
+- Más contraste en el arco metálico negro para que destaque
+- La sombra del puente que conserve textura (no quede negro plano)
+- El cielo / luz ambiental que se vea más natural día claro
 
-OUTPUT: PNG 1920x1080, arco bowstring Saraconcho limpio sobre paisaje
-andino, perfecto hero de "Puentes en Arco Metálico".
+NO ALTERES:
+- La composición ni el ángulo de la foto
+- La geometría del arco
+- La paleta de colores del entorno (paredes ocres, río café)
+
+OUTPUT: PNG 1920x1080, arco bowstring negro icónico sobre cañón
+colombiano, vista cenital aérea limpia y bien expuesta.
 ```
 
 ---
@@ -331,7 +336,7 @@ MEISA como protagonistas estructurales, paisaje natural al fondo.
 | infra-2 MIO Guadalupe | ⚠️ Menor | Persona + obra abajo |
 | infra-3 Tertulia | ⚠️ Menor | = puentes-3 |
 | edif-1 Reina Victoria | ⚠️ Menor | Autos + encuadre |
-| puentes-2 Saraconcho | ⚠️ Menor | Grúa + cables |
+| puentes-2 Cartón Colombia | ⚠️ Menor | Solo ajuste exposición |
 | puentes-3 Tertulia | ⚠️ Menor | Maleza + autos |
 
 **Tip:** infra-3 es el mismo archivo que puentes-3 — solo procesalo una vez y guardalo con ambos nombres.
