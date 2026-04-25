@@ -66,9 +66,11 @@ de Alta Resistencia".
 
 ---
 
-### 2. `puentes-2.webp` — Puentes Cartón Colombia ✅ Casi lista
+### 2. `puentes-2.webp` — Puente Arco Saraconcho (vista cenital aérea) ✅ Casi lista
 
-**Qué se ve:** Vista aérea cenital drone — arco metálico negro tipo bowstring/Pratt cruzando un cañón profundo con río de aguas cafés al fondo, carretera curva a la izquierda. Toma muy dramática y limpia, sin trabajadores ni obra. **Hero de "Puentes en Arco Metálico"** en categoría Puentes.
+**Qué se ve:** Vista aérea cenital drone del **Puente Arco Saraconcho** — arco metálico negro/oscuro tipo bowstring cruzando cañón profundo con río de aguas cafés, carretera curva a la izquierda. Toma muy dramática y limpia, sin trabajadores ni obra. **Hero de "Puentes en Arco Metálico"** en categoría Puentes.
+
+> **Nota**: esta imagen estaba mal asignada antes al proyecto "Cartón Colombia". Verificada y reubicada correctamente al proyecto Saraconcho (es el mismo arco que las otras 4 fotos de Saraconcho — vista lateral, lateral 2, cenital y otra).
 
 **Problemas menores:**
 - La imagen está algo subexpuesta/oscura
@@ -336,7 +338,7 @@ MEISA como protagonistas estructurales, paisaje natural al fondo.
 | infra-2 MIO Guadalupe | ⚠️ Menor | Persona + obra abajo |
 | infra-3 Tertulia | ⚠️ Menor | = puentes-3 |
 | edif-1 Reina Victoria | ⚠️ Menor | Autos + encuadre |
-| puentes-2 Cartón Colombia | ⚠️ Menor | Solo ajuste exposición |
+| puentes-2 Saraconcho cenital | ⚠️ Menor | Solo ajuste exposición |
 | puentes-3 Tertulia | ⚠️ Menor | Maleza + autos |
 
 **Tip:** infra-3 es el mismo archivo que puentes-3 — solo procesalo una vez y guardalo con ambos nombres.
