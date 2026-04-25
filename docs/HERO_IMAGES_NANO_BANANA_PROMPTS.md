@@ -179,41 +179,81 @@ al paisaje urbano, sin personas, sin obra.
 
 ---
 
-### 5. `infra-2.webp` — Estación MIO Guadalupe ⚠️ Menor
+### 5. `infra-2.jpg` — Estación MIO BRT terminada (vista urbana) ✅ Casi lista
 
-**Qué se ve:** Estructura metálica de techo de la estación MIO al ATARDECER con cielo dramático naranja-azul, columnas de concreto cilíndricas, vista perspectiva ascendente. **Hero de "Estaciones de Transporte Masivo"**.
+**Qué se ve:** Estación BRT terminada y operativa con plataforma cubierta blanca a la derecha, vías separadas (carril buses + carretera vehicular con autos en circulación), barreras amarillas de seguridad, cielo nublado dramático con luz dorada al fondo, vegetación, pasarela peatonal metálica gris a la derecha conectando con la estación. Composición horizontal natural. **Hero de "Estaciones de Transporte Masivo"** en categoría Infraestructura.
 
-**Problemas:**
-- Algo de obra abajo (estructura inacabada)
-- Trabajador pequeño arriba a la derecha (apenas visible)
+**Problemas menores:**
+- Cielo nublado gris (puede mejorarse a más claro o más dramático)
+- Algo de cables eléctricos
+- Re-encuadre 16:9
 
 **PROMPT:**
 ```
-Foto de la Estación MIO Guadalupe al atardecer con cielo dramático.
-Adaptala a hero 16:9.
+Foto urbana de Estación BRT terminada con vías separadas, plataforma
+cubierta blanca y pasarela peatonal metálica. Adaptala a hero 16:9.
 
 MANTENÉ EXACTAMENTE:
-- La estructura metálica del techo en silueta contra el cielo
-- El cielo dramático atardecer (anaranjado/azul)
-- Las columnas de concreto cilíndricas
-- La perspectiva ascendente
-- La iluminación natural de hora dorada
+- La estación BRT con su plataforma cubierta blanca
+- Las dos vías separadas (carril buses central y carretera vehicular)
+- Las barreras amarillas de seguridad
+- Los autos en circulación en la carretera lateral
+- La pasarela peatonal metálica gris a la derecha
+- La vegetación urbana
+- La composición horizontal con perspectiva del corredor
 
-QUITÁ:
-- El trabajador pequeño arriba a la derecha (si visible)
-- Cualquier malla de obra o andamio temporal
-- La estructura inacabada de la parte baja → completar visualmente
-  como si fuera una estación BRT terminada
+MEJORÁ:
+- El cielo nublado gris → más limpio (azul con nubes dispersas) o
+  más dramático (atardecer suave) sin perder realismo
+- Limpiar cables eléctricos visibles arriba
+- Más contraste para que la infraestructura destaque
 
-OUTPUT: PNG 1920x1080, estación de transporte masivo en hora dorada,
-estructura metálica MEISA como silueta arquitectónica.
+NO ALTERES:
+- La composición ni el ángulo
+- La paleta de colores del concreto, asfalto, autos
+- Las barreras amarillas (son parte del diseño)
+
+OUTPUT: PNG 1920x1080, estación de transporte masivo BRT operativa,
+infraestructura urbana terminada y en uso.
 ```
 
 ---
 
-### 6. `infra-3.webp` — Tertulia gal2 (mismo archivo que puentes-3)
+### 6. `infra-3.jpeg` — Pasarela peatonal urbana (cercha gris) ✅ Casi lista
 
-**Mismo prompt que puentes-3.** Procesalo una vez y guardalo dos veces (`infra-3.png` y `puentes-3.png`).
+**Qué se ve:** Pasarela peatonal metálica elevada con estructura de cercha triangular gris/blanca atravesando el predio, árbol grande con copa frondosa en primer plano, cielo azul espectacular con nubes blancas, edificios industriales blancos al fondo. Sin trabajadores. Composición horizontal natural. **Hero de "Puentes Peatonales Urbanos"** en categoría Infraestructura.
+
+**Problemas menores:**
+- Algunos elementos de obra al fondo (containers blancos)
+- Algunas marcas/manchas en el pavimento
+- Re-encuadre 16:9
+
+**PROMPT:**
+```
+Foto urbana de pasarela peatonal metálica elevada con estructura de
+cercha triangular y árbol icónico en primer plano. Adaptala a hero
+16:9 con cleanup ligero.
+
+MANTENÉ EXACTAMENTE:
+- La pasarela peatonal metálica con sus cerchas triangulares
+- El árbol grande con copa frondosa en primer plano (es feature
+  arquitectónico — la pasarela rodea el árbol)
+- El cielo azul con nubes blancas (espectacular)
+- La perspectiva horizontal con vista del predio
+- La paleta de colores: gris/blanco metal, verde árbol, azul cielo
+
+QUITÁ / MINIMIZÁ:
+- Los containers/casetas blancas del fondo (atenuarlos o quitarlos)
+- Las manchas/marcas oscuras en el pavimento
+- Cualquier elemento de obra residual
+
+MEJORÁ:
+- Re-encuadre a 16:9 horizontal manteniendo el árbol y la pasarela
+- Un poco más de contraste para resaltar la estructura metálica
+
+OUTPUT: PNG 1920x1080, pasarela peatonal urbana terminada con árbol
+emblemático, ambiente fotográfico arquitectónico.
+```
 
 ---
 
@@ -335,8 +375,8 @@ MEISA como protagonistas estructurales, paisaje natural al fondo.
 | edif-3 Módulos Médicos | ⚠️ Moderada | Quitar tablones + persona |
 | **industrial-3** Piedechinche | ⚠️ Moderada | Quitar vallas + completar nave |
 | infra-1 Escalinata | ⚠️ Menor | Trabajadores + valla obra |
-| infra-2 MIO Guadalupe | ⚠️ Menor | Persona + obra abajo |
-| infra-3 Tertulia | ⚠️ Menor | = puentes-3 |
+| infra-2 BRT urbano | ⚠️ Menor | Cielo + cables |
+| infra-3 Pasarela árbol | ⚠️ Menor | Containers fondo + 16:9 |
 | edif-1 Reina Victoria | ⚠️ Menor | Autos + encuadre |
 | puentes-2 Saraconcho cenital | ⚠️ Menor | Solo ajuste exposición |
 | puentes-3 Tertulia | ⚠️ Menor | Maleza + autos |
