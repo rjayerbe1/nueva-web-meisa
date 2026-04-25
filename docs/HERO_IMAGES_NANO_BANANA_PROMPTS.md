@@ -329,38 +329,45 @@ re-encuadrado a hero, líneas estructurales nítidas.
 
 ---
 
-### 9. `edif-3.webp` — Módulos Médicos Espíritu Santo ⚠️ Moderada
+### 9. `edif-3.webp` — CECUN Edificio Educativo (drone aéreo) ⚠️ Menor
 
-**Qué se ve:** Vista interior amplia desde debajo del entrepiso metálico, viguetas blancas en el techo, columnas blancas, paisaje verde con montañas al fondo a través de los vanos, **tablones de madera en el piso (obra)**, persona pequeña al fondo. **Hero de "Estructuras Livianas Modulares"**.
+**Especialidad reformulada:** "Estructuras Livianas Modulares" → **"Edificios Institucionales y Sanitarios"** (cubre clínicas, hospitales, centros educativos, módulos sanitarios)
 
-**Problemas:**
-- Tablones de madera en el piso (cofrado de obra)
-- Persona pequeña al fondo
-- Espacio se ve "sin terminar"
+**Qué se ve:** Vista aérea drone del **CECUN — Centro de Estudios Constitucionales Unicauca** TERMINADO. Edificio educativo con cubierta blanca arquitectónica tipo alas/asimétrica muy distintiva, vista oblicua mostrando la estructura completa, entorno urbano con casas y vegetación al fondo, carretera con vehículos visibles. **Hero de "Edificios Institucionales y Sanitarios"** en categoría Edificaciones.
+
+**Problemas menores:**
+- Algo de tierra/obra en primer plano (perímetro del predio)
+- Una camioneta y materiales pequeños al lado izquierdo
+- Re-encuadre 16:9
 
 **PROMPT:**
 ```
-Foto interior de los Módulos Médicos Espíritu Santo Parque Clínico.
-Convertila en hero 16:9 mostrando el espacio TERMINADO.
+Vista aérea drone del CECUN (Centro de Estudios Constitucionales
+Unicauca) — edificio educativo institucional terminado con cubierta
+blanca arquitectónica tipo alas. Adaptala a hero 16:9.
 
 MANTENÉ EXACTAMENTE:
-- Las viguetas metálicas blancas del techo (protagonista estructural)
-- Las columnas verticales blancas
-- El paisaje verde con montañas visible a través de los vanos
-- La perspectiva profunda del espacio
+- El edificio CECUN completo con su cubierta blanca asimétrica
+  tipo alas (es el protagonista — geometría arquitectónica icónica)
+- La perspectiva aérea oblicua
+- El entorno urbano de fondo (casas, vegetación)
+- La carretera con autos visible al lado izquierdo
+- La iluminación natural diurna
 
-QUITÁ:
-- Los tablones de madera en el piso (son cofrado de obra)
-- La persona pequeña al fondo
-- Cualquier herramienta o material de obra
+QUITÁ / MINIMIZÁ:
+- La tierra/obra del primer plano (reemplazar por pasto verde o
+  pavimento terminado)
+- La camioneta blanca y materiales pequeños del lado izquierdo
+- Cualquier escombro residual
+- La cobertura blanca pequeña abajo izquierda (parece de obra)
 
-TRANSFORMÁ:
-- El piso → concreto pulido terminado o piso técnico de clínica/módulo
-- El espacio → módulo médico recién terminado, iluminación natural
-  limpia, ambiente sereno
+MEJORÁ:
+- Re-encuadre a 16:9 horizontal centrando el edificio
+- Cielo ligeramente más dramático con nubes (mantener naturalidad)
+- Contraste suave para resaltar la cubierta blanca
 
-OUTPUT: PNG 1920x1080, espacio modular interior terminado, viguetas
-MEISA como protagonistas estructurales, paisaje natural al fondo.
+OUTPUT: PNG 1920x1080, edificio institucional educativo terminado,
+arquitectura icónica de cubierta blanca, entorno urbano limpio.
 ```
 
 ---
@@ -370,7 +377,7 @@ MEISA como protagonistas estructurales, paisaje natural al fondo.
 | Código | Prioridad | Esfuerzo |
 |---|---|---|
 | edif-2 Tequendama (render Tekla) | ⚠️ Menor | Solo re-encuadre 16:9 |
-| edif-3 Módulos Médicos | ⚠️ Moderada | Quitar tablones + persona |
+| edif-3 CECUN aérea | ⚠️ Menor | Tierra fondo + 16:9 |
 | **industrial-3** Piedechinche | ⚠️ Moderada | Quitar vallas + completar nave |
 | infra-1 Escalinata | ⚠️ Menor | Trabajadores + valla obra |
 | infra-2 BRT urbano | ⚠️ Menor | Cielo + cables |
