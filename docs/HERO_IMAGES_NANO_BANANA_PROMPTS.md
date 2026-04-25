@@ -292,41 +292,39 @@ urbano limpio.
 
 ---
 
-### 8. `edif-2.webp` — Tequendama 🚨🚨 CRÍTICA
+### 8. `edif-2.webp` — Tequendama (render Tekla, mantener) ✅ Casi lista
 
-**Qué se ve:** **RENDER 3D estructural (Tekla/BIM)** del Edificio Parqueadero Tequendama Cali — colores irreales rosa, verde lima, amarillo, cian, púrpura sobre fondo blanco. **Hero de "Estructuras Metálicas para Estacionamiento"**.
+**Qué se ve:** **Render 3D estructural (Tekla/BIM)** del Edificio Parqueadero Tequendama Cali — modelo multicolor (cian, púrpura, amarillo, rojo) sobre fondo blanco mostrando la geometría completa del edificio: pórticos metálicos en múltiples niveles, rampa curva interior (azul-naranja), estructura abierta. **Hero de "Estructuras Metálicas para Estacionamiento"**.
 
-**Problema crítico:** NO es una foto, es un modelo BIM. Las otras 3 fotos disponibles del proyecto son etapas tempranas de obra (excavación, cofrado) — peores como hero. No hay foto del edificio terminado.
+**Decisión:** mantener el render Tekla como hero (estilo BIM/diseño es válido para esta especialidad — comunica el tipo de proyecto: ingeniería estructural). Solo ajustar para que se vea bien en formato hero 16:9.
 
-**PROMPT (generar foto realista desde el render):**
+**PROMPT:**
 ```
-Esta imagen es un render estructural 3D (Tekla/BIM) del Edificio
-Parqueadero Tequendama en Cali. Convertilo en una imagen FOTOREALISTA
-del parqueadero terminado, hero 16:9.
+Esta imagen es un render estructural 3D Tekla del Edificio Parqueadero
+Tequendama Cali. Mantenelo COMO ESTÁ pero adaptado a hero 16:9.
 
-INTERPRETÁ el render:
-- Edificio de estacionamiento de múltiples niveles con pórticos
-  metálicos
-- Tiene una rampa curva interior (la parte curva blanca-naranja)
-- Estructura abierta (sin cerramiento completo, ventilación natural)
+MANTENÉ EXACTAMENTE:
+- Todos los colores Tekla del modelo BIM (cian, púrpura, amarillo,
+  rojo, azul, verde) — son parte de la identidad de ingeniería
+  estructural
+- La geometría completa del edificio (pórticos, niveles, rampa)
+- El fondo blanco limpio
+- La perspectiva 3D actual del modelo
 
-TRANSFORMÁ a foto realista:
-- Colores reales: acero gris/blanco estructural, NO los colores
-  Tekla (sin rosa, sin verde fluor, sin cian)
-- Concreto gris en losas
-- Luz natural diurna entrando por los lados abiertos
-- Contexto urbano: calle, edificios vecinos suaves, cielo claro
-- Perspectiva: ligeramente elevada, mostrando la fachada abierta
-  con los niveles visibles y la rampa curva
+SOLO AJUSTÁ:
+- Re-encuadre a horizontal 16:9 (el original es muy ancho con mucho
+  espacio blanco arriba y abajo)
+- Centrar el edificio en la composición
+- Si falta resolución, aumentar a 1920x1080 manteniendo nitidez de
+  las líneas estructurales
 
-MANTENÉ:
-- La geometría estructural exacta (pórticos, niveles, rampa)
-- La forma arquitectónica del edificio
-- La escala aparente
+NO MODIFIQUES:
+- Los colores del modelo BIM
+- La estructura ni la geometría
+- El estilo de render Tekla (no convertir a foto realista)
 
-OUTPUT: PNG 1920x1080, parqueadero Tequendama fotorealista terminado
-y en uso, sin personas, sin autos excesivos, sin elementos del render
-(colores BIM eliminados).
+OUTPUT: PNG 1920x1080, render Tekla del parqueadero Tequendama
+re-encuadrado a hero, líneas estructurales nítidas.
 ```
 
 ---
@@ -371,7 +369,7 @@ MEISA como protagonistas estructurales, paisaje natural al fondo.
 
 | Código | Prioridad | Esfuerzo |
 |---|---|---|
-| **edif-2** Tequendama | 🚨🚨 Crítica | Convertir render BIM a foto |
+| edif-2 Tequendama (render Tekla) | ⚠️ Menor | Solo re-encuadre 16:9 |
 | edif-3 Módulos Médicos | ⚠️ Moderada | Quitar tablones + persona |
 | **industrial-3** Piedechinche | ⚠️ Moderada | Quitar vallas + completar nave |
 | infra-1 Escalinata | ⚠️ Menor | Trabajadores + valla obra |
