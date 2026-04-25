@@ -91,27 +91,50 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Sin permisos" }, { status: 403 })
     }
 
-    const proyectos = await prisma.proyecto.findMany({
-      orderBy: { createdAt: 'desc' },
-      include: {
-        imagenes: {
-          where: { tipo: 'PORTADA' },
-          take: 1,
+    const url = new URL(req.url)
+    const q = url.searchParams.get("q")?.trim() ?? ""
+    const slim = url.searchParams.get("slim") === "1"
+    const ids = url.searchParams.get("ids")?.split(",").filter(Boolean) ?? null
+    const limit = Math.min(Number(url.searchParams.get("limit") || "30"), 200)
+
+    const where: any = {}
+    if (q) {
+      where.OR = [
+        { titulo: { contains: q, mode: "insensitive" } },
+        { cliente: { contains: q, mode: "insensitive" } },
+        { codigoInterno: { contains: q, mode: "insensitive" } },
+      ]
+    }
+    if (ids) where.id = { in: ids }
+
+    if (slim) {
+      const proyectos = await prisma.proyecto.findMany({
+        where,
+        orderBy: q ? { titulo: "asc" } : { createdAt: "desc" },
+        take: limit,
+        select: {
+          id: true,
+          titulo: true,
+          cliente: true,
+          categoria: true,
+          slug: true,
         },
-        _count: {
-          select: {
-            imagenes: true,
-            documentos: true,
-            comentarios: true,
-          }
-        }
-      }
+      })
+      return NextResponse.json(proyectos)
+    }
+
+    const proyectos = await prisma.proyecto.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      include: {
+        imagenes: { where: { tipo: "PORTADA" }, take: 1 },
+        _count: { select: { imagenes: true, documentos: true, comentarios: true } },
+      },
     })
 
     return NextResponse.json(proyectos)
-    
   } catch (error) {
-    console.error('Error obteniendo proyectos:', error)
+    console.error("Error obteniendo proyectos:", error)
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 })
   }
 }

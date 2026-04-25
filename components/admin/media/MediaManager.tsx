@@ -640,6 +640,10 @@ export function MediaManager({ initialItems, initialFolderData }: MediaManagerPr
             setLightbox(null)
           }}
           onDelete={() => del(lightbox.id)}
+          onUpdate={(updated) => {
+            setItems((prev) => prev.map((m) => (m.id === updated.id ? updated : m)))
+            setLightbox(updated)
+          }}
           onAiResult={(newMedia) => {
             setItems((prev) => [newMedia, ...prev])
             setLightbox(newMedia)
@@ -918,12 +922,14 @@ function Lightbox({
   onClose,
   onEdit,
   onDelete,
+  onUpdate,
   onAiResult,
 }: {
   media: Media
   onClose: () => void
   onEdit: () => void
   onDelete: () => void
+  onUpdate?: (updated: Media) => void
   onAiResult?: (newMedia: Media) => void
 }) {
   const [aiMode, setAiMode] = useState<"upscale" | "expand" | "inpaint" | null>(null)
@@ -1030,6 +1036,8 @@ function Lightbox({
               </div>
             )}
 
+            {onUpdate && <ProyectoAssigner media={media} onUpdate={onUpdate} />}
+
             {media.altText && <Field label="Alt text">{media.altText}</Field>}
             <Field label="Archivo">{media.fileName}</Field>
             <Field label="Carpeta">{media.folder}</Field>
@@ -1107,6 +1115,241 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
         {label}
       </p>
       <div className="font-lato text-sm text-slate-800">{children}</div>
+    </div>
+  )
+}
+
+/* ─── ProyectoAssigner (asigna proyectos a un Media desde el lightbox) ── */
+
+interface ProyectoSlim {
+  id: string
+  titulo: string
+  cliente: string | null
+  categoria: string
+  slug: string
+}
+
+function ProyectoAssigner({
+  media,
+  onUpdate,
+}: {
+  media: Media
+  onUpdate: (updated: Media) => void
+}) {
+  const [assigned, setAssigned] = useState<ProyectoSlim[]>([])
+  const [loadingAssigned, setLoadingAssigned] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
+  const [query, setQuery] = useState("")
+  const [results, setResults] = useState<ProyectoSlim[]>([])
+  const [searching, setSearching] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const ids = media.proyectoIds ?? []
+
+  // Hydrate assigned project metadata when ids change
+  useEffect(() => {
+    let cancelled = false
+    if (ids.length === 0) {
+      setAssigned([])
+      return
+    }
+    setLoadingAssigned(true)
+    fetch(`/api/admin/projects?slim=1&ids=${ids.join(",")}&limit=200`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: ProyectoSlim[]) => {
+        if (cancelled) return
+        const map = new Map(data.map((p) => [p.id, p]))
+        setAssigned(ids.map((id) => map.get(id)).filter(Boolean) as ProyectoSlim[])
+      })
+      .finally(() => !cancelled && setLoadingAssigned(false))
+    return () => {
+      cancelled = true
+    }
+  }, [ids.join(",")]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Debounced search
+  useEffect(() => {
+    const q = query.trim()
+    if (q.length < 2) {
+      setResults([])
+      return
+    }
+    const t = setTimeout(async () => {
+      setSearching(true)
+      try {
+        const r = await fetch(
+          `/api/admin/projects?slim=1&q=${encodeURIComponent(q)}&limit=10`,
+        )
+        if (r.ok) setResults(await r.json())
+      } finally {
+        setSearching(false)
+      }
+    }, 200)
+    return () => clearTimeout(t)
+  }, [query])
+
+  async function patch(newIds: string[]) {
+    setSaving(true)
+    try {
+      const r = await fetch(`/api/admin/media-library/${media.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proyectoIds: newIds }),
+      })
+      if (r.ok) {
+        const updated: Media = await r.json()
+        onUpdate(updated)
+      }
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  function add(p: ProyectoSlim) {
+    if (ids.includes(p.id)) return
+    void patch([...ids, p.id])
+    setQuery("")
+    setResults([])
+    setShowSearch(false)
+  }
+
+  function remove(id: string) {
+    void patch(ids.filter((x) => x !== id))
+  }
+
+  function openSearch() {
+    setShowSearch(true)
+    setTimeout(() => inputRef.current?.focus(), 30)
+  }
+
+  return (
+    <div>
+      <p className="mb-2 font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+        Proyectos asignados {saving && <Loader2 className="ml-1 inline h-3 w-3 animate-spin" />}
+      </p>
+
+      <div className="flex flex-wrap gap-1.5">
+        {assigned.map((p) => (
+          <span
+            key={p.id}
+            className="inline-flex items-center gap-1 rounded-none border border-red-200 bg-red-50 py-0.5 pl-2 pr-1 font-lato text-xs text-red-900"
+            title={p.cliente ?? undefined}
+          >
+            <a
+              href={`/admin/projects/${p.id}`}
+              target="_blank"
+              rel="noopener"
+              className="hover:underline"
+            >
+              {p.titulo}
+            </a>
+            <button
+              type="button"
+              onClick={() => remove(p.id)}
+              className="rounded-none p-0.5 text-red-600 hover:bg-red-200 hover:text-red-900"
+              aria-label="Quitar"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </span>
+        ))}
+        {loadingAssigned && ids.length > 0 && assigned.length === 0 && (
+          <Loader2 className="h-4 w-4 animate-spin text-slate-400" />
+        )}
+        {!showSearch && (
+          <button
+            type="button"
+            onClick={openSearch}
+            className="inline-flex items-center gap-1 rounded-none border border-dashed border-slate-300 bg-white px-2 py-0.5 font-lato text-xs text-slate-600 hover:border-red-600 hover:text-red-600"
+          >
+            + Asignar proyecto
+          </button>
+        )}
+      </div>
+
+      {showSearch && (
+        <div className="relative mt-2">
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar por título, cliente o código…"
+            className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1.5 font-lato text-sm text-slate-800 focus:border-red-600 focus:ring-2 focus:ring-red-600/20"
+            onBlur={() => {
+              blurTimer.current = setTimeout(() => {
+                setShowSearch(false)
+                setQuery("")
+                setResults([])
+              }, 150)
+            }}
+            onFocus={() => {
+              if (blurTimer.current) clearTimeout(blurTimer.current)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setShowSearch(false)
+                setQuery("")
+                setResults([])
+              }
+            }}
+          />
+          {(searching || results.length > 0) && (
+            <div className="absolute z-10 mt-1 w-full max-h-72 overflow-y-auto rounded-none border border-slate-200 bg-white shadow-lg">
+              {searching && results.length === 0 && (
+                <div className="px-3 py-2 font-lato text-xs text-slate-400">Buscando…</div>
+              )}
+              {results.map((p) => {
+                const already = ids.includes(p.id)
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    disabled={already}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      if (blurTimer.current) clearTimeout(blurTimer.current)
+                      if (!already) add(p)
+                    }}
+                    className={cn(
+                      "flex w-full items-start gap-2 border-b border-slate-100 px-3 py-2 text-left last:border-b-0",
+                      already
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:bg-red-50 hover:text-red-900",
+                    )}
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate font-lato text-sm font-semibold text-slate-900">
+                        {p.titulo}
+                      </div>
+                      <div className="truncate font-lato text-[11px] text-slate-500">
+                        {p.cliente ?? "(sin cliente)"} · {p.categoria}
+                      </div>
+                    </div>
+                    {already && (
+                      <span className="font-lato text-[10px] uppercase text-slate-400">
+                        Asignado
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+              {!searching && query.trim().length >= 2 && results.length === 0 && (
+                <div className="px-3 py-2 font-lato text-xs text-slate-400">
+                  Sin resultados para "{query}"
+                </div>
+              )}
+              {query.trim().length < 2 && (
+                <div className="px-3 py-2 font-lato text-xs text-slate-400">
+                  Escribe 2 o más caracteres para buscar
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

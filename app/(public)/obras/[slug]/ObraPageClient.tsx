@@ -201,7 +201,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.25 }}
-                  className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty mb-8"
+                  className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto mb-8"
                 >
                   {obra.resumenCorto}
                 </motion.p>
@@ -303,7 +303,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
                 </h2>
               </div>
               <div className="lg:col-span-7 lg:pt-4">
-                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty">
+                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty hyphens-auto">
                   {obra.contexto}
                 </p>
               </div>
@@ -336,7 +336,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
               </div>
               {obra.problemasIniciales && (
                 <div className="lg:col-span-7 lg:pt-4">
-                  <p className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty">
+                  <p className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto">
                     {obra.problemasIniciales}
                   </p>
                 </div>
@@ -358,7 +358,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
                         <span className="font-bebas text-4xl md:text-5xl leading-none text-white/30 block mb-3">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty">
+                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto">
                           {d}
                         </p>
                       </div>
@@ -394,7 +394,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
               </div>
               <div className="lg:col-span-7 lg:pt-4">
                 {obra.solucionTecnica && (
-                  <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty mb-8">
+                  <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty hyphens-auto mb-8">
                     {obra.solucionTecnica}
                   </p>
                 )}
@@ -407,7 +407,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
                       {innovaciones.map((inn, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <span className="flex-shrink-0 w-1.5 h-1.5 bg-red-500 mt-2" />
-                          <span className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty">
+                          <span className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto">
                             {inn}
                           </span>
                         </li>
@@ -445,7 +445,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
               </div>
               {obra.impactoCliente && (
                 <div className="lg:col-span-7 lg:pt-4">
-                  <p className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty">
+                  <p className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto">
                     {obra.impactoCliente}
                   </p>
                 </div>
@@ -467,7 +467,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
                         <span className="font-bebas text-4xl md:text-5xl leading-none text-white/30 block mb-3">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty">
+                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto">
                           {r}
                         </p>
                       </div>
@@ -651,7 +651,7 @@ export default function ObraPageClient({ obra, categoria }: Props) {
                   <p className="text-white/40 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4">
                     Notas técnicas
                   </p>
-                  <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed text-pretty">
+                  <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto">
                     {obra.leccionesAprendidas}
                   </p>
                 </div>

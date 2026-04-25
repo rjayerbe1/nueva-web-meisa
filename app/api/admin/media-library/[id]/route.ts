@@ -12,6 +12,7 @@ const patchSchema = z
     title: z.string().nullable(),
     folder: z.string().min(1),
     tags: z.array(z.string()),
+    proyectoIds: z.array(z.string()),
   })
   .partial()
 

@@ -18,7 +18,6 @@ model User {
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   accounts            Account[]
-  historias           HistoriaProyecto[]
   projects            Proyecto[]
   sessions            Session[]
   passwordResetTokens PasswordResetToken[]
@@ -103,9 +102,10 @@ model Proyecto {
   toneladas            Decimal?             @db.Decimal(10, 2)
   clienteId            String?
   categoria            CategoriaEnum        @default(COMERCIAL)
+  obraId               String?
+  obra                 Obra?                @relation(fields: [obraId], references: [id])
   comentarios          ComentarioProyecto[]
   documentos           DocumentoProyecto[]
-  historia             HistoriaProyecto?
   imagenes             ImagenProyecto[]
   progreso             ProgresoProyecto[]
   clienteRel           Cliente?             @relation(fields: [clienteId], references: [id])
@@ -113,7 +113,52 @@ model Proyecto {
   hojaVida             ProyectoHojaVida?
   timeline             TimelineEntry[]
 
+  @@index([obraId])
   @@map("proyectos")
+}
+
+// Obra: agrupa 1 o varios Proyectos bajo una misma narrativa (ej. CC Campanario
+// con original + ampliación, o Dollar City con N locales). Reemplaza al antiguo
+// HistoriaProyecto que estaba limitado a 1-a-1.
+model Obra {
+  id                  String        @id @default(cuid())
+  slug                String        @unique
+  titulo              String
+  resumenCorto        String?
+
+  // Narrativa editorial
+  contexto            String?
+  problemasIniciales  String?
+  desafios            Json?
+  solucionTecnica     String?
+  innovaciones        Json?
+  resultados          Json?
+  impactoCliente      String?
+  testimonioCliente   String?
+  leccionesAprendidas String?
+  tagsTecnicos        Json?
+
+  // Multimedia
+  imagenDestacada     String?
+  videoUrl            String?
+
+  // Control
+  activa              Boolean       @default(true)
+  destacada           Boolean       @default(false)
+  orden               Int           @default(0)
+  categoria           CategoriaEnum @default(COMERCIAL)
+  // esCadena=false → proyectos son FASES del mismo edificio (ej. Campanario 2008 + ampliación 2016)
+  // esCadena=true  → proyectos son INDEPENDIENTES agrupados (ej. Dollar City N locales, CC Único N ciudades)
+  esCadena            Boolean       @default(false)
+  metaTitle           String?
+  metaDescription     String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  // 1 obra agrupa N proyectos
+  proyectos           Proyecto[]
+
+  @@map("obras")
 }
 
 model ImagenProyecto {
@@ -317,49 +362,6 @@ model CategoriaProyecto {
   brochure            Brochure?
 
   @@map("categorias_proyecto")
-}
-
-model HistoriaProyecto {
-  id                  String   @id @default(cuid())
-  proyectoId          String   @unique
-  activo              Boolean  @default(false)
-  contexto            String?
-  desafios            Json?
-  problemasIniciales  String?
-  enfoque             String?
-  solucionTecnica     String?
-  innovaciones        Json?
-  equipoEspecialista  Json?
-  metodologia         String?
-  fasesEjecucion      Json?
-  tiempoTotal         String?
-  recursos            Json?
-  resultados          Json?
-  impactoCliente      String?
-  reconocimientos     Json?
-  datosInteres        Json?
-  leccionesAprendidas String?
-  valorAgregado       String?
-  testimonioCliente   String?
-  testimonioEquipo    String?
-  imagenDestacada     String?
-  videoUrl            String?
-  infografias         Json?
-  tagsTecnicos        Json?
-  dificultadTecnica   Int?
-  innovacionNivel     Int?
-  resumenCorto        String?
-  tituloAlternativo   String?
-  fechaCreacion       DateTime @default(now())
-  fechaActualizacion  DateTime @updatedAt
-  creadoPor           String
-  imagenesDesafio     Json?
-  imagenesResultado   Json?
-  imagenesSolucion    Json?
-  creador             User     @relation(fields: [creadoPor], references: [id])
-  proyecto            Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
-
-  @@map("historias_proyecto")
 }
 
 model ProyectoHojaVida {
@@ -1208,12 +1210,14 @@ model Media {
   title        String?
   folder       String    @default("general")
   tags         String[]  @default([])
+  proyectoIds  String[]  @default([])
   uploadedById String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   @@index([kind, folder])
   @@index([createdAt])
+  @@index([proyectoIds], type: Gin)
   @@map("media")
 }
 

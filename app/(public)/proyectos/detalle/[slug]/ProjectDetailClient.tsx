@@ -221,7 +221,7 @@ export default function ProjectDetailClient({
                 </h2>
               </div>
               <div className="lg:col-span-7 lg:pt-4">
-                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty">
+                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty hyphens-auto">
                   {proyecto.descripcion}
                 </p>
               </div>
@@ -779,7 +779,7 @@ function ObraBloques({
                 </h3>
               </div>
               <div className="lg:col-span-7 lg:pt-4">
-                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty">
+                <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty hyphens-auto">
                   {historia.contexto}
                 </p>
               </div>
@@ -812,7 +812,7 @@ function ObraBloques({
               </div>
               {historia.problemasIniciales && (
                 <div className="lg:col-span-7 lg:pt-4">
-                  <p className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty">
+                  <p className="text-white/70 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto">
                     {historia.problemasIniciales}
                   </p>
                 </div>
@@ -838,7 +838,7 @@ function ObraBloques({
                         <span className="font-bebas text-4xl md:text-5xl leading-none text-white/30 block mb-3">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty">
+                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto">
                           {d}
                         </p>
                       </motion.div>
@@ -874,7 +874,7 @@ function ObraBloques({
               </div>
               <div className="lg:col-span-7 lg:pt-4">
                 {historia.solucionTecnica && (
-                  <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty mb-8">
+                  <p className="text-white/80 font-lato text-lg md:text-xl leading-relaxed text-pretty hyphens-auto mb-8">
                     {historia.solucionTecnica}
                   </p>
                 )}
@@ -887,7 +887,7 @@ function ObraBloques({
                       {innovaciones.map((inn, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <span className="flex-shrink-0 w-1.5 h-1.5 bg-red-500 mt-2" />
-                          <span className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty">
+                          <span className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto">
                             {inn}
                           </span>
                         </li>
@@ -925,7 +925,7 @@ function ObraBloques({
               </div>
               {historia.impactoCliente && (
                 <div className="lg:col-span-7 lg:pt-4">
-                  <p className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty">
+                  <p className="text-white/80 font-lato text-base md:text-lg leading-relaxed text-pretty hyphens-auto">
                     {historia.impactoCliente}
                   </p>
                 </div>
@@ -951,7 +951,7 @@ function ObraBloques({
                         <span className="font-bebas text-4xl md:text-5xl leading-none text-white/30 block mb-3">
                           {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty">
+                        <p className="text-white/80 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto">
                           {r}
                         </p>
                       </motion.div>
@@ -1025,7 +1025,7 @@ function ObraBloques({
                   <p className="text-white/40 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4">
                     Notas técnicas
                   </p>
-                  <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed text-pretty">
+                  <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto">
                     {historia.leccionesAprendidas}
                   </p>
                 </div>
@@ -1063,7 +1063,7 @@ function OtrosDeLaObraSection({
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bebas uppercase leading-[0.95] text-white">
             {obra.titulo}
           </h2>
-          <p className="mt-4 text-white/60 font-lato text-sm md:text-base leading-relaxed text-pretty max-w-2xl">
+          <p className="mt-4 text-white/60 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto max-w-2xl">
             {obra.esCadena
               ? `Este proyecto forma parte de una obra con ${otros.length + 1} proyectos entregados. Explora los demás:`
               : `Este proyecto es una de las ${otros.length + 1} fases de la obra. Explora las demás:`}
