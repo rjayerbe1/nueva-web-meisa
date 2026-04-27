@@ -132,8 +132,8 @@ export function Navbar({ items }: NavbarProps = {}) {
               </div>
 
               {/* Right: menu items */}
-              <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-28 pb-28 md:pt-0 md:pb-0 relative">
-                <ul className="space-y-2 md:space-y-3">
+              <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-24 pb-32 md:pt-24 md:pb-28 relative">
+                <ul className="space-y-1.5 md:space-y-2 lg:space-y-2.5 max-h-[calc(100vh-12rem)] overflow-y-auto pr-2 -mr-2">
                   {menuItems.map((item, i) => {
                     const isActive = pathname === item.href
                     return (
@@ -155,7 +155,7 @@ export function Navbar({ items }: NavbarProps = {}) {
                           <span className="font-lato font-bold text-[10px] md:text-xs tracking-[0.22em] text-white/30 group-hover:text-white/70 transition-colors duration-300">
                             {String(i + 1).padStart(2, '0')}
                           </span>
-                          <span className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl">
+                          <span className="text-4xl sm:text-5xl md:text-[2.75rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
                             {item.name}
                           </span>
                         </Link>
