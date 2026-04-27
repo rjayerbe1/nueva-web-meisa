@@ -73,8 +73,9 @@ export function Navbar({ items }: NavbarProps = {}) {
                 width={120}
                 height={34}
                 unoptimized
-                className="w-[100px] md:w-[120px] h-auto"
+                className="md:hidden w-[80px] sm:w-[90px] h-auto"
               />
+              <span className="hidden md:block" aria-hidden="true" />
               <button
                 onClick={() => setMenuOpen(false)}
                 className="group flex items-center gap-3 px-4 py-3 text-[11px] tracking-[0.22em] uppercase font-lato font-bold border border-white/20 hover:bg-white hover:text-slate-950 hover:border-white transition-colors duration-300"
@@ -132,8 +133,17 @@ export function Navbar({ items }: NavbarProps = {}) {
               </div>
 
               {/* Right: menu items */}
-              <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-24 pb-32 md:pt-24 md:pb-28 relative">
-                <ul className="space-y-1.5 md:space-y-2 lg:space-y-2.5 max-h-[calc(100vh-12rem)] overflow-y-auto pr-2 -mr-2">
+              <div className="w-full md:w-1/2 flex flex-col px-8 md:px-14 lg:px-20 pt-24 pb-32 md:pt-10 md:pb-28 relative">
+                {/* Logo en esquina superior-izquierda de la columna oscura (solo desktop) */}
+                <Image
+                  src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
+                  alt="MEISA"
+                  width={140}
+                  height={40}
+                  unoptimized
+                  className="hidden md:block w-[80px] lg:w-[100px] xl:w-[120px] 2xl:w-[140px] h-auto opacity-90 mb-6 lg:mb-10"
+                />
+                <ul className="space-y-1 md:space-y-1.5 lg:space-y-2 flex-1 flex flex-col justify-center">
                   {menuItems.map((item, i) => {
                     const isActive = pathname === item.href
                     return (
@@ -148,14 +158,14 @@ export function Navbar({ items }: NavbarProps = {}) {
                         <Link
                           href={item.href}
                           onClick={() => setMenuOpen(false)}
-                          className={`group relative flex items-baseline gap-4 md:gap-6 font-bebas uppercase leading-[0.95] tracking-tight transition-colors duration-300 ${
+                          className={`group relative flex items-baseline gap-3 md:gap-4 lg:gap-6 font-bebas uppercase leading-[0.95] tracking-tight transition-colors duration-300 ${
                             isActive ? 'text-white' : 'text-white/40 hover:text-white'
                           }`}
                         >
-                          <span className="font-lato font-bold text-[10px] md:text-xs tracking-[0.22em] text-white/30 group-hover:text-white/70 transition-colors duration-300">
+                          <span className="font-lato font-bold text-[10px] md:text-[11px] lg:text-xs tracking-[0.22em] text-white/30 group-hover:text-white/70 transition-colors duration-300">
                             {String(i + 1).padStart(2, '0')}
                           </span>
-                          <span className="text-4xl sm:text-5xl md:text-[2.75rem] lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                          <span className="text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
                             {item.name}
                           </span>
                         </Link>
