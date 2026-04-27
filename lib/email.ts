@@ -117,6 +117,7 @@ const TIPO_PROYECTO_LABEL: Record<string, string> = {
   INFRAESTRUCTURA_URBANA: "Infraestructura Urbana",
   EDIFICACIONES: "Edificaciones",
   DEPORTES_EDUCACION: "Deportes & Educación",
+  OTRO: "Otro",
 }
 
 const ESCALA_UNIDAD_LABEL: Record<string, string> = {

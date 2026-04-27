@@ -33,6 +33,7 @@ const TIPO_LABEL: Record<string, string> = {
   INFRAESTRUCTURA_URBANA: "Infraestructura Urbana",
   EDIFICACIONES: "Edificaciones",
   DEPORTES_EDUCACION: "Deportes & Educación",
+  OTRO: "Otro",
 }
 
 const ETAPA_LABEL: Record<string, string> = {

@@ -80,6 +80,7 @@ export default function ContactoContent({
   )
   const [referencia, setReferencia] = useState<string | null>(null)
   const [adjuntos, setAdjuntos] = useState<UploadedFile[]>([])
+  const [otroDetalle, setOtroDetalle] = useState("")
   const [selectedPlanta, setSelectedPlanta] = useState<PlantaPublica | null>(
     null,
   )
@@ -109,6 +110,12 @@ export default function ContactoContent({
     setSubmitStatus("idle")
 
     try {
+      const otroDetalleClean = otroDetalle.trim()
+      const descripcionFinal =
+        data.tipoProyecto === "OTRO" && otroDetalleClean
+          ? `Tipo de proyecto (otro): ${otroDetalleClean}\n\n${data.descripcion}`
+          : data.descripcion
+
       const payload = {
         nombre: data.nombre,
         empresa: data.empresa || null,
@@ -119,7 +126,7 @@ export default function ContactoContent({
         etapa: data.etapa,
         escalaValor: data.escalaValor ?? null,
         escalaUnidad: data.escalaUnidad ?? null,
-        descripcion: data.descripcion,
+        descripcion: descripcionFinal,
         adjuntos,
       }
       const response = await fetch("/api/contact", {
@@ -134,6 +141,7 @@ export default function ContactoContent({
       setReferencia(json.referencia ?? null)
       setSubmitStatus("success")
       setAdjuntos([])
+      setOtroDetalle("")
       reset()
     } catch (error) {
       setSubmitStatus("error")
@@ -397,8 +405,13 @@ export default function ContactoContent({
                     render={({ field }) => (
                       <ProjectTypeSelector
                         value={field.value || null}
-                        onChange={field.onChange}
+                        onChange={(v) => {
+                          field.onChange(v)
+                          if (v !== "OTRO") setOtroDetalle("")
+                        }}
                         error={errors.tipoProyecto?.message}
+                        otroDetalle={otroDetalle}
+                        onChangeOtroDetalle={setOtroDetalle}
                       />
                     )}
                   />
