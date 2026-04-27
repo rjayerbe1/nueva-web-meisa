@@ -84,24 +84,17 @@ Required in `.env.local`:
 - Commits directos a `main` están permitidos — este repo despliega vía Cloud Run, no bloquear por política de branch
 - Solo crear feature branch si el usuario lo pide explícitamente, o si el cambio es grande/riesgoso y conviene revisarlo vía PR antes de ir a producción
 
-### Deploy: estado real de los dominios
+### Deploy: estado real (verificado 2026-04-27)
 
-**`main` push → service Cloud Run `meisa-web` (vía GitHub Actions automático).** Pero `meisa.com.co` **sigue apuntando a Hostinger**, no a Cloud Run. Hasta que el usuario migre el DNS, el push a main NO afecta lo que ven los visitantes en `meisa.com.co`. El service `meisa-web` queda actualizado pero sin tráfico real.
+**`main` push → GitHub Actions → service `meisa-web-dev` → `dev.meisa.com.co` (automático).** El workflow `.github/workflows/deploy-to-cloudrun.yml` se llama "Deploy to dev (Cloud Run)" y despliega al service `meisa-web-dev`, no a `meisa-web`. Tarda ~5–10 min en completar (build + deploy).
 
-**`dev.meisa.com.co` → service `meisa-web-dev` (deploy manual).** Es el ambiente que el usuario sí ve y prueba. Requiere correr a mano:
-```bash
-gcloud run deploy meisa-web-dev \
-  --source . \
-  --project=meisa-web-prod-2025 \
-  --region=us-central1 \
-  --platform=managed \
-  --quiet
-```
+**`meisa.com.co` (prod) sigue en Hostinger.** No hay auto-deploy a producción real. El service Cloud Run `meisa-web` existe pero no recibe tráfico hasta que se migre el DNS de Hostinger.
 
 **Implicaciones:**
-- Push a main es **seguro hoy** — no rompe nada visible en producción real (Hostinger).
-- Para que un cambio quede visible en `dev.meisa.com.co` hay que correr el `gcloud run deploy` manual además del push.
-- Si en algún momento el usuario migra `meisa.com.co` a Cloud Run, este punto cambia y push a main empezará a afectar producción real — actualizar este bloque cuando pase.
+- Push a main es seguro: solo afecta `dev.meisa.com.co`, no producción real.
+- **No correr `gcloud run deploy meisa-web-dev` manualmente** después de un push — el GH Actions ya lo hace, y dispararía un deploy redundante (race condition de revisiones).
+- Solo correr deploy manual a dev cuando se quiere probar código sin commitear (raro).
+- Cuando el usuario migre `meisa.com.co` a Cloud Run, habrá que añadir un workflow separado o cambiar el target del actual — actualizar este bloque cuando pase.
 
 Ver el skill `meisa-web` (`Skill("meisa-web")`) para detalles de Cloud Run, OAuth, Cloudflare, dominios custom y troubleshooting de deploys.
 
