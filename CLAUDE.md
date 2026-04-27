@@ -81,9 +81,29 @@ Required in `.env.local`:
 4. Admin features: Add to `/app/admin/` with proper auth checks
 
 ### Git Best Practices
-- Commits directos a `main` están permitidos — este repo despliega a producción desde `main` vía Cloud Run, así que no bloquear por política de branch
+- Commits directos a `main` están permitidos — este repo despliega vía Cloud Run, no bloquear por política de branch
 - Solo crear feature branch si el usuario lo pide explícitamente, o si el cambio es grande/riesgoso y conviene revisarlo vía PR antes de ir a producción
-- Siempre confirmar con el usuario antes de hacer `git push` (push dispara deploy automático)
+
+### Deploy: estado real de los dominios
+
+**`main` push → service Cloud Run `meisa-web` (vía GitHub Actions automático).** Pero `meisa.com.co` **sigue apuntando a Hostinger**, no a Cloud Run. Hasta que el usuario migre el DNS, el push a main NO afecta lo que ven los visitantes en `meisa.com.co`. El service `meisa-web` queda actualizado pero sin tráfico real.
+
+**`dev.meisa.com.co` → service `meisa-web-dev` (deploy manual).** Es el ambiente que el usuario sí ve y prueba. Requiere correr a mano:
+```bash
+gcloud run deploy meisa-web-dev \
+  --source . \
+  --project=meisa-web-prod-2025 \
+  --region=us-central1 \
+  --platform=managed \
+  --quiet
+```
+
+**Implicaciones:**
+- Push a main es **seguro hoy** — no rompe nada visible en producción real (Hostinger).
+- Para que un cambio quede visible en `dev.meisa.com.co` hay que correr el `gcloud run deploy` manual además del push.
+- Si en algún momento el usuario migra `meisa.com.co` a Cloud Run, este punto cambia y push a main empezará a afectar producción real — actualizar este bloque cuando pase.
+
+Ver el skill `meisa-web` (`Skill("meisa-web")`) para detalles de Cloud Run, OAuth, Cloudflare, dominios custom y troubleshooting de deploys.
 
 ### MEISA Brand Colors & Design Guidelines
 
