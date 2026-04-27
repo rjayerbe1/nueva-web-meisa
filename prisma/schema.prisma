@@ -301,17 +301,31 @@ model Cliente {
 }
 
 model ContactForm {
-  id         String   @id @default(cuid())
-  nombre     String
-  email      String
-  telefono   String?
-  empresa    String?
-  mensaje    String
-  origen     String?
-  leido      Boolean  @default(false)
-  respondido Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String   @id @default(cuid())
+  referencia    String?  @unique
+
+  nombre        String
+  email         String
+  telefono      String?
+  empresa       String?
+
+  ciudad        String?
+  tipoProyecto  String?
+  etapa         String?
+  escalaValor   Float?
+  escalaUnidad  String?
+
+  mensaje       String
+  adjuntos      Json?
+
+  origen        String?
+  estado        String   @default("NUEVO")
+  leido         Boolean  @default(false)
+  respondido    Boolean  @default(false)
+  notasInternas String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("formularios_contacto")
 }
@@ -878,6 +892,7 @@ model GrupoSeccion {
   descripcion   String?
   icono         String?
   colorGradient String?
+  imagenFondo   String?
   orden         Int      @default(0)
   activo        Boolean  @default(true)
   createdAt     DateTime @default(now())
@@ -885,6 +900,20 @@ model GrupoSeccion {
 
   @@unique([pagina, clave])
   @@map("grupos_seccion")
+}
+
+// Etapas del Control de Calidad — sección "Control de calidad" en /calidad
+model EtapaControlCalidad {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  titulo      String
+  descripcion String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("etapas_control_calidad")
 }
 
 // Software usado por MEISA — sección "Software" en /procesos-tecnologias

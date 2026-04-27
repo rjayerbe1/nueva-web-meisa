@@ -8,41 +8,51 @@ import type {
   GrupoSeccionItem,
   PilarSIGItem,
   PoliticaItem,
+  EtapaControlCalidadItem,
 } from '@/lib/content/tecnologia-politicas'
-import type { NormaItem } from '@/lib/content/empresa'
+import type { NormaItem, CertificacionItem } from '@/lib/content/empresa'
 
 interface Props {
   grupos: GrupoSeccionItem[]
   pilares: PilarSIGItem[]
   politicas: PoliticaItem[]
   normas: NormaItem[]
+  etapasControl: EtapaControlCalidadItem[]
+  certificaciones: CertificacionItem[]
 }
-
-const controlStages = [
-  { num: '01', titulo: 'Diseño', desc: 'Revisión por pares antes de emitir planos.' },
-  { num: '02', titulo: 'Fabricación', desc: 'Inspección continua en planta con checkpoints por pieza.' },
-  { num: '03', titulo: 'Montaje', desc: 'Protocolos de entrega documentados y trazables.' },
-  { num: '04', titulo: 'Liberación', desc: 'Visto bueno del Inspector SIG antes de cada hito.' },
-]
 
 export function PoliticasContent({
   grupos,
   pilares,
   politicas,
   normas,
+  etapasControl,
+  certificaciones,
 }: Props) {
+  const grupoHero = grupos.find((g) => g.clave === 'hero')
   const grupoSIG = grupos.find((g) => g.clave === 'sig')
   const grupoPoliticas = grupos.find((g) => g.clave === 'politicas')
   const grupoCumplimiento = grupos.find((g) => g.clave === 'cumplimiento')
   const grupoControl = grupos.find((g) => g.clave === 'control-calidad')
+
+  // Hero: lee del grupo "hero" si existe, con fallback razonable.
+  const heroEyebrow = grupoHero?.subtitulo ?? 'Sistema de Gestión'
+  const heroTituloRaw = grupoHero?.titulo ?? 'Calidad\nsin concesiones'
+  const [heroLinea1, heroLinea2] = heroTituloRaw.split(/\n+/)
+  const heroDescripcion =
+    grupoHero?.descripcion ??
+    'Sistema Integrado de Gestión, políticas corporativas y cumplimiento normativo — el marco que rige cada proyecto de MEISA.'
+  const heroImagen =
+    grupoHero?.imagenFondo ??
+    'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg'
 
   return (
     <main className="bg-stone-50 text-slate-950">
       {/* Hero full-bleed oscuro con imagen */}
       <section className="relative h-screen md:h-[88vh] overflow-hidden bg-slate-950">
         <Image
-          src="https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg"
-          alt="Estructuras metálicas MEISA"
+          src={heroImagen}
+          alt={`${heroLinea1 ?? 'Calidad'} — MEISA`}
           fill
           priority
           sizes="100vw"
@@ -58,16 +68,18 @@ export function PoliticasContent({
               className="max-w-4xl"
             >
               <p className="text-white/60 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-                Sistema de Gestión
+                {heroEyebrow}
               </p>
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white">
-                Calidad
+                {heroLinea1}
               </h1>
-              <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white/50">
-                sin concesiones
-              </h2>
-              <p className="mt-8 text-white/80 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-                Sistema Integrado de Gestión, políticas corporativas y cumplimiento normativo — el marco que rige cada proyecto de MEISA.
+              {heroLinea2 && (
+                <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white/50">
+                  {heroLinea2}
+                </h2>
+              )}
+              <p className="mt-8 text-white/80 font-lato text-base md:text-lg max-w-2xl leading-relaxed text-pretty hyphens-auto" lang="es">
+                {heroDescripcion}
               </p>
             </motion.div>
           </div>
@@ -106,17 +118,19 @@ export function PoliticasContent({
         </Section>
       )}
 
-      {/* Image break 1 — entre SIG y Políticas */}
-      <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
-        <Image
-          src="https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg"
-          alt="Montaje de estructura metálica"
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-50/30 to-transparent" />
-      </div>
+      {/* Image break 1 — entre SIG y Políticas (imagen del grupo "politicas") */}
+      {grupoPoliticas?.imagenFondo && (
+        <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
+          <Image
+            src={grupoPoliticas.imagenFondo}
+            alt={grupoPoliticas.titulo}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-50/30 to-transparent" />
+        </div>
+      )}
 
       {/* Políticas corporativas — formato documento oficial */}
       {grupoPoliticas && politicas.length > 0 && (
@@ -185,8 +199,64 @@ export function PoliticasContent({
       )}
 
       {/* Cumplimiento normativo */}
-      {grupoCumplimiento && normas.length > 0 && (
+      {grupoCumplimiento && (normas.length > 0 || certificaciones.length > 0) && (
         <Section grupo={grupoCumplimiento}>
+          {certificaciones.length > 0 && (
+            <div className="mb-12">
+              <p className="text-slate-400 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+                Certificaciones
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px bg-slate-200 border border-slate-200">
+                {certificaciones.map((cert, i) => (
+                  <motion.div
+                    key={cert.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.4, delay: i * 0.05 }}
+                    className="bg-stone-50 p-6 md:p-8 flex flex-col gap-4 min-h-[180px]"
+                  >
+                    {cert.logo && (
+                      <div className="relative h-12 w-full">
+                        <Image
+                          src={cert.logo}
+                          alt={cert.nombreCompleto ?? cert.nombre}
+                          fill
+                          sizes="(min-width: 768px) 25vw, 50vw"
+                          className="object-contain object-left"
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="text-2xl md:text-3xl font-bebas uppercase leading-none">
+                        {cert.nombre}
+                      </h4>
+                      {cert.emisor && (
+                        <p className="mt-1 text-slate-500 font-lato text-[11px] uppercase tracking-wider">
+                          {cert.emisor}
+                        </p>
+                      )}
+                      {cert.descripcion && (
+                        <p
+                          className="mt-3 text-slate-700 font-lato text-xs md:text-sm leading-relaxed text-pretty hyphens-auto"
+                          lang="es"
+                        >
+                          {cert.descripcion}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {normas.length > 0 && certificaciones.length > 0 && (
+            <p className="text-slate-400 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+              Normas técnicas
+            </p>
+          )}
+          {normas.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-slate-200 border border-slate-200">
             {normas.map((norma, i) => (
               <motion.div
@@ -211,28 +281,41 @@ export function PoliticasContent({
               </motion.div>
             ))}
           </div>
+          )}
         </Section>
       )}
 
-      {/* Image break 2 — entre Normas y Control */}
-      <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
-        <Image
-          src="https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg"
-          alt="Estructura metálica en perspectiva"
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-50/30 to-transparent" />
-      </div>
+      {/* Image break 2 — entre Normas y Control (imagen del grupo "control-calidad") */}
+      {grupoControl?.imagenFondo && (
+        <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden">
+          <Image
+            src={grupoControl.imagenFondo}
+            alt={grupoControl.titulo}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-50/30 to-transparent" />
+        </div>
+      )}
 
       {/* Control de calidad (informativo) */}
-      {grupoControl && (
+      {grupoControl && etapasControl.length > 0 && (
         <Section grupo={grupoControl}>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-slate-200 border border-slate-200">
-            {controlStages.map((etapa, i) => (
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 ${
+              etapasControl.length === 1
+                ? 'md:grid-cols-1'
+                : etapasControl.length === 2
+                  ? 'md:grid-cols-2'
+                  : etapasControl.length === 3
+                    ? 'md:grid-cols-3'
+                    : 'md:grid-cols-4'
+            } gap-px bg-slate-200 border border-slate-200`}
+          >
+            {etapasControl.map((etapa, i) => (
               <motion.div
-                key={etapa.num}
+                key={etapa.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
@@ -240,14 +323,19 @@ export function PoliticasContent({
                 className="bg-stone-50 p-8"
               >
                 <span className="text-slate-300 font-bebas text-5xl md:text-6xl leading-none">
-                  {etapa.num}
+                  {String(i + 1).padStart(2, '0')}
                 </span>
                 <h4 className="mt-4 text-xl md:text-2xl font-bebas uppercase leading-[0.95]">
                   {etapa.titulo}
                 </h4>
-                <p className="mt-3 text-slate-700 font-lato text-sm leading-relaxed">
-                  {etapa.desc}
-                </p>
+                {etapa.descripcion && (
+                  <p
+                    className="mt-3 text-slate-700 font-lato text-sm leading-relaxed text-pretty hyphens-auto"
+                    lang="es"
+                  >
+                    {etapa.descripcion}
+                  </p>
+                )}
               </motion.div>
             ))}
           </div>

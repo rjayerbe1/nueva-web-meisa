@@ -4,120 +4,134 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { UserRole } from '@prisma/client'
+import {
+  sendContactNotificationEmail,
+  sendContactConfirmationEmail,
+} from '@/lib/email'
 
-// Schema de validación para el contacto
+const adjuntoSchema = z.object({
+  name: z.string(),
+  url: z.string().url(),
+  size: z.number().optional(),
+  mime: z.string().optional(),
+})
+
 const contactSchema = z.object({
   nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   email: z.string().email('Email inválido'),
-  telefono: z.string().optional(),
-  empresa: z.string().optional(),
-  // Campos legacy y nuevos para compatibilidad entre formularios
-  mensaje: z.string().optional(),
-  descripcion: z.string().optional(),
-  ciudad: z.string().optional(),
-  tipoProyecto: z.string().optional(),
-  ubicacionProyecto: z.string().optional(),
-  tamanoProyecto: z.string().optional(),
-  serviciosRequeridos: z.array(z.string()).optional(),
-  plazoDeseado: z.string().optional(),
-  tienePlanos: z.string().optional(),
+  telefono: z.string().min(7, 'Teléfono inválido'),
+  empresa: z.string().nullable().optional(),
+  ciudad: z.string().min(2, 'Ciudad requerida'),
+  tipoProyecto: z.string().min(1, 'Tipo requerido'),
+  etapa: z.string().min(1, 'Etapa requerida'),
+  escalaValor: z.number().nullable().optional(),
+  escalaUnidad: z.enum(['M2', 'TON', 'NA']).nullable().optional(),
+  descripcion: z.string().min(10, 'Mensaje muy corto'),
+  adjuntos: z.array(adjuntoSchema).max(10).optional(),
 })
 
-function buildMensaje(data: z.infer<typeof contactSchema>) {
-  const mensajeBase = (data.mensaje || data.descripcion || '').trim()
-  if (!mensajeBase) {
-    return null
-  }
-
-  const detalles: string[] = []
-
-  if (data.ciudad) detalles.push(`Ciudad: ${data.ciudad}`)
-  if (data.tipoProyecto) detalles.push(`Tipo de proyecto: ${data.tipoProyecto}`)
-  if (data.ubicacionProyecto) detalles.push(`Ubicación del proyecto: ${data.ubicacionProyecto}`)
-  if (data.tamanoProyecto) detalles.push(`Tamaño del proyecto: ${data.tamanoProyecto}`)
-  if (data.serviciosRequeridos?.length) {
-    detalles.push(`Servicios requeridos: ${data.serviciosRequeridos.join(', ')}`)
-  }
-  if (data.plazoDeseado) detalles.push(`Plazo deseado: ${data.plazoDeseado}`)
-  if (data.tienePlanos) detalles.push(`Cuenta con planos: ${data.tienePlanos}`)
-
-  if (detalles.length === 0) {
-    return mensajeBase
-  }
-
-  return `${mensajeBase}\n\n--- Datos del proyecto ---\n${detalles.join('\n')}`
+function buildReferencia(id: string): string {
+  return `MEISA-${id.slice(-6).toUpperCase()}`
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
-    // Validar los datos
-    const validatedData = contactSchema.parse(body)
-    const mensaje = buildMensaje(validatedData)
+    const data = contactSchema.parse(body)
 
-    if (!mensaje || mensaje.length < 10) {
+    const origen = request.headers.get('referer') || 'contacto'
+
+    const contact = await prisma.contactForm.create({
+      data: {
+        nombre: data.nombre,
+        email: data.email,
+        telefono: data.telefono,
+        empresa: data.empresa || null,
+        ciudad: data.ciudad,
+        tipoProyecto: data.tipoProyecto,
+        etapa: data.etapa,
+        escalaValor: data.escalaValor ?? null,
+        escalaUnidad: data.escalaUnidad ?? null,
+        mensaje: data.descripcion,
+        adjuntos: data.adjuntos && data.adjuntos.length > 0 ? data.adjuntos : undefined,
+        origen,
+      },
+    })
+
+    const referencia = buildReferencia(contact.id)
+    await prisma.contactForm.update({
+      where: { id: contact.id },
+      data: { referencia },
+    })
+
+    // Notificaciones — no fallar el request si los emails fallan
+    const emailResults = await Promise.allSettled([
+      sendContactNotificationEmail({
+        contactId: contact.id,
+        referencia,
+        nombre: data.nombre,
+        empresa: data.empresa,
+        email: data.email,
+        telefono: data.telefono,
+        ciudad: data.ciudad,
+        tipoProyecto: data.tipoProyecto,
+        etapa: data.etapa,
+        escalaValor: data.escalaValor ?? null,
+        escalaUnidad: data.escalaUnidad ?? null,
+        mensaje: data.descripcion,
+        adjuntos: data.adjuntos as
+          | Array<{ name: string; url: string; size?: number; mime?: string }>
+          | undefined,
+        origen,
+      }),
+      sendContactConfirmationEmail({
+        to: data.email,
+        nombre: data.nombre,
+        referencia,
+      }),
+    ])
+
+    emailResults.forEach((res, i) => {
+      if (res.status === 'rejected') {
+        const tag = i === 0 ? 'admin' : 'cliente'
+        console.error(`[contact] email ${tag} falló:`, res.reason)
+      }
+    })
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Mensaje recibido correctamente',
+        id: contact.id,
+        referencia,
+      },
+      { status: 200 },
+    )
+  } catch (error) {
+    if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
           success: false,
           message: 'Datos inválidos',
-          errors: [{ path: ['mensaje'], message: 'El mensaje debe tener al menos 10 caracteres' }]
+          errors: error.errors,
         },
-        { status: 400 }
+        { status: 400 },
       )
     }
-    
-    // Guardar en la base de datos
-    const contact = await prisma.contactForm.create({
-      data: {
-        nombre: validatedData.nombre,
-        email: validatedData.email,
-        telefono: validatedData.telefono || null,
-        empresa: validatedData.empresa || null,
-        mensaje,
-        origen: request.headers.get('referer') || 'contacto',
-      }
-    })
-    
-    // Aquí podrías agregar lógica adicional como:
-    // - Enviar un email de notificación
-    // - Integrar con un servicio de CRM
-    // - Enviar confirmación al usuario
-    
-    return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Mensaje recibido correctamente',
-        id: contact.id 
-      },
-      { status: 200 }
-    )
-    
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Datos inválidos',
-          errors: error.errors 
-        },
-        { status: 400 }
-      )
-    }
-    
+
     console.error('Error al procesar contacto:', error)
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Error al procesar el mensaje. Por favor, intenta nuevamente.' 
+      {
+        success: false,
+        message: 'Error al procesar el mensaje. Por favor, intenta nuevamente.',
       },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }
 
-// GET para obtener contactos (solo para admin)
+// GET para listar contactos (admin)
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -127,34 +141,42 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: 'No autorizado'
+          message: 'No autorizado',
         },
-        { status: 401 }
+        { status: 401 },
       )
     }
-    
+
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '10')
-    const leido = searchParams.get('leido') === 'true' ? true : searchParams.get('leido') === 'false' ? false : undefined
-    const respondido = searchParams.get('respondido') === 'true' ? true : searchParams.get('respondido') === 'false' ? false : undefined
-    
+    const estado = searchParams.get('estado') || undefined
+    const search = searchParams.get('search') || undefined
+
     const skip = (page - 1) * limit
-    
-    const where: any = {}
-    if (leido !== undefined) where.leido = leido
-    if (respondido !== undefined) where.respondido = respondido
-    
+
+    const where: Record<string, unknown> = {}
+    if (estado) where.estado = estado
+    if (search) {
+      where.OR = [
+        { nombre: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { empresa: { contains: search, mode: 'insensitive' } },
+        { referencia: { contains: search, mode: 'insensitive' } },
+        { ciudad: { contains: search, mode: 'insensitive' } },
+      ]
+    }
+
     const [contactos, total] = await Promise.all([
       prisma.contactForm.findMany({
         where,
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       }),
-      prisma.contactForm.count({ where })
+      prisma.contactForm.count({ where }),
     ])
-    
+
     return NextResponse.json({
       success: true,
       data: contactos,
@@ -162,19 +184,18 @@ export async function GET(request: NextRequest) {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit)
-      }
+        totalPages: Math.ceil(total / limit),
+      },
     })
-    
   } catch (error) {
     console.error('Error al obtener contactos:', error)
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Error al obtener los contactos' 
+      {
+        success: false,
+        message: 'Error al obtener los contactos',
       },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }

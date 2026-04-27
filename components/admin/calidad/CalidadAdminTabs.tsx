@@ -3,7 +3,13 @@
 import { AdminTabsLayout } from "@/components/admin/AdminTabsLayout"
 import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
-import type { Politica, PilarSIG, Norma, GrupoSeccion } from "@prisma/client"
+import type {
+  Politica,
+  PilarSIG,
+  Norma,
+  GrupoSeccion,
+  EtapaControlCalidad,
+} from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
 
 interface Props {
@@ -11,6 +17,7 @@ interface Props {
   pilares: PilarSIG[]
   normas: Norma[]
   gruposCalidad: GrupoSeccion[]
+  etapasControl: EtapaControlCalidad[]
 }
 
 const politicaFields: FieldDef[] = [
@@ -51,18 +58,39 @@ const normaFields: FieldDef[] = [
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
+const etapaControlFields: FieldDef[] = [
+  { name: "slug", label: "Slug (único)", kind: "text", required: true, placeholder: "diseno" },
+  { name: "titulo", label: "Título", kind: "text", required: true, gridSpan: 2 },
+  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+  { name: "orden", label: "Orden", kind: "number" },
+  { name: "activo", label: "Activo", kind: "boolean" },
+]
+
 const grupoCalidadFields: FieldDef[] = [
   { name: "clave", label: "Clave técnica", kind: "text", required: true, placeholder: "sig" },
-  { name: "titulo", label: "Título", kind: "text", required: true },
-  { name: "subtitulo", label: "Subtítulo", kind: "text", gridSpan: 2 },
-  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+  { name: "titulo", label: "Título", kind: "text", required: true, hint: "Para el grupo hero acepta 2 líneas separadas por salto: la 2ª se renderiza en blanco/50." },
+  { name: "subtitulo", label: "Subtítulo / Eyebrow", kind: "text", gridSpan: 2 },
+  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 3, gridSpan: 2 },
+  {
+    name: "imagenFondo",
+    label: "Imagen de fondo",
+    kind: "image",
+    gridSpan: 2,
+    hint: "Para el grupo hero: imagen del hero principal. Para 'politicas' / 'control-calidad': se renderiza como image-break antes de la sección.",
+  },
   { name: "icono", label: "Icono", kind: "text" },
   { name: "colorGradient", label: "Gradiente", kind: "color" },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
-export function CalidadAdminTabs({ politicas, pilares, normas, gruposCalidad }: Props) {
+export function CalidadAdminTabs({
+  politicas,
+  pilares,
+  normas,
+  gruposCalidad,
+  etapasControl,
+}: Props) {
   return (
     <AdminTabsLayout
       title="Calidad"
@@ -146,6 +174,26 @@ export function CalidadAdminTabs({ politicas, pilares, normas, gruposCalidad }: 
           ),
         },
         {
+          id: "etapas-control",
+          label: "Control de calidad",
+          count: etapasControl.length,
+          content: (
+            <ListCrudEditor<EtapaControlCalidad>
+              items={etapasControl}
+              fields={etapaControlFields}
+              endpoint="/api/admin/etapas-control-calidad"
+              emptyTemplate={{
+                slug: "",
+                titulo: "",
+                descripcion: null,
+                orden: etapasControl.length,
+                activo: true,
+              }}
+              addLabel="Agregar etapa"
+            />
+          ),
+        },
+        {
           id: "grupos-calidad",
           label: "Grupos (sub-secciones)",
           count: gruposCalidad.length,
@@ -162,6 +210,7 @@ export function CalidadAdminTabs({ politicas, pilares, normas, gruposCalidad }: 
                 descripcion: null,
                 icono: null,
                 colorGradient: null,
+                imagenFondo: null,
                 orden: gruposCalidad.length,
                 activo: true,
               }}

@@ -13,7 +13,7 @@ const IMAGE_BY_HREF: Record<string, string> = {
   '/trayectoria': 'https://storage.googleapis.com/meisa-imagenes/site/hero/coliseo-estructuras-rojas.jpg',
   '/procesos-tecnologias': 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg',
   '/calidad': 'https://storage.googleapis.com/meisa-imagenes/site/hero/techo-metalico.jpg',
-  '/contacto': 'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg',
+  '/contacto': 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg',
 }
 
 export default async function PublicLayout({

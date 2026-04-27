@@ -1,6 +1,9 @@
 import { Metadata } from 'next'
 import { getPoliticasData } from '@/lib/content/tecnologia-politicas'
-import { getNormasActivas } from '@/lib/content/empresa'
+import {
+  getNormasActivas,
+  getCertificacionesActivas,
+} from '@/lib/content/empresa'
 import { PoliticasContent } from './PoliticasContent'
 
 export const revalidate = 60
@@ -21,9 +24,10 @@ export const metadata: Metadata = {
 }
 
 export default async function PoliticasPage() {
-  const [data, normas] = await Promise.all([
+  const [data, normas, certificaciones] = await Promise.all([
     getPoliticasData(),
     getNormasActivas(),
+    getCertificacionesActivas(),
   ])
   return (
     <PoliticasContent
@@ -31,6 +35,8 @@ export default async function PoliticasPage() {
       pilares={data.pilares}
       politicas={data.politicas}
       normas={normas}
+      etapasControl={data.etapasControl}
+      certificaciones={certificaciones}
     />
   )
 }

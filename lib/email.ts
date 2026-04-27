@@ -3,6 +3,10 @@ import { Resend } from "resend"
 const resendApiKey = process.env.RESEND_API_KEY
 const fromEmail = process.env.RESEND_FROM_EMAIL || "no-reply@meisa.com.co"
 const companyName = process.env.MEISA_COMPANY_NAME || "MEISA - Metálicas e Ingeniería S.A."
+const baseUrl =
+  process.env.NEXTAUTH_URL ||
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  "https://meisa.com.co"
 
 const resend = resendApiKey ? new Resend(resendApiKey) : null
 
@@ -78,6 +82,299 @@ Si no solicitaste este cambio, ignora este correo.`
     from: `${companyName} <${fromEmail}>`,
     to,
     subject: "Restablecer tu contraseña",
+    html,
+    text,
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Contacto — notificación al admin + confirmación al cliente
+
+const ETAPA_LABEL: Record<string, string> = {
+  IDEA: "Idea inicial",
+  ANTEPROYECTO: "Anteproyecto",
+  PLANOS_DEFINITIVOS: "Planos definitivos",
+  EN_OBRA: "Ya en obra",
+}
+
+const TIPO_PROYECTO_LABEL: Record<string, string> = {
+  COMERCIAL: "Comercial",
+  INDUSTRIAL: "Industrial",
+  PUENTES: "Puentes",
+  INFRAESTRUCTURA_URBANA: "Infraestructura Urbana",
+  EDIFICACIONES: "Edificaciones",
+  DEPORTES_EDUCACION: "Deportes & Educación",
+}
+
+const ESCALA_UNIDAD_LABEL: Record<string, string> = {
+  M2: "m²",
+  TON: "Toneladas",
+  NA: "Sin definir",
+}
+
+export interface ContactNotificationPayload {
+  referencia: string
+  nombre: string
+  empresa?: string | null
+  email: string
+  telefono: string
+  ciudad: string
+  tipoProyecto?: string | null
+  etapa?: string | null
+  escalaValor?: number | null
+  escalaUnidad?: string | null
+  mensaje: string
+  adjuntos?: Array<{ name: string; url: string; size?: number; mime?: string }>
+  origen?: string | null
+  contactId: string
+}
+
+function getNotifyRecipients(): string[] {
+  const list = process.env.MEISA_CONTACT_NOTIFY_TO
+  if (list && list.trim()) {
+    return list
+      .split(",")
+      .map((e) => e.trim())
+      .filter(Boolean)
+  }
+  const fallback = process.env.MEISA_ADMIN_EMAIL
+  return fallback ? [fallback] : []
+}
+
+function escapeHtml(input: string): string {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+}
+
+function row(label: string, value: string): string {
+  return `<tr>
+    <td style="padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;width:180px;vertical-align:top;">${escapeHtml(label)}</td>
+    <td style="padding:10px 16px;background:#ffffff;border-bottom:1px solid #e2e8f0;font-size:14px;color:#0f172a;vertical-align:top;">${value}</td>
+  </tr>`
+}
+
+export async function sendContactNotificationEmail(payload: ContactNotificationPayload) {
+  if (!resend) {
+    throw new Error("RESEND_API_KEY is not configured")
+  }
+  const recipients = getNotifyRecipients()
+  if (recipients.length === 0) {
+    throw new Error("No hay destinatarios configurados (MEISA_CONTACT_NOTIFY_TO o MEISA_ADMIN_EMAIL)")
+  }
+
+  const tipoLabel = payload.tipoProyecto ? TIPO_PROYECTO_LABEL[payload.tipoProyecto] || payload.tipoProyecto : "—"
+  const etapaLabel = payload.etapa ? ETAPA_LABEL[payload.etapa] || payload.etapa : "—"
+  const escalaTxt =
+    payload.escalaValor && payload.escalaUnidad
+      ? `${payload.escalaValor} ${ESCALA_UNIDAD_LABEL[payload.escalaUnidad] || payload.escalaUnidad}`
+      : payload.escalaUnidad === "NA"
+      ? "Sin definir"
+      : "—"
+
+  const adjuntosHtml = payload.adjuntos && payload.adjuntos.length > 0
+    ? payload.adjuntos
+        .map(
+          (a) =>
+            `<a href="${escapeHtml(a.url)}" style="display:block;padding:8px 12px;background:#f1f5f9;border:1px solid #cbd5e1;color:#0f172a;text-decoration:none;font-size:13px;margin-bottom:6px;">${escapeHtml(a.name)}${a.size ? ` <span style="color:#64748b;font-size:11px;">(${(a.size / 1024 / 1024).toFixed(1)} MB)</span>` : ""}</a>`
+        )
+        .join("")
+    : '<span style="color:#94a3b8;font-size:13px;">Sin adjuntos</span>'
+
+  const adminUrl = `${baseUrl}/admin/messages/${payload.contactId}`
+  const subject = `[MEISA] Nueva solicitud · ${payload.referencia} · ${tipoLabel} · ${payload.ciudad}`
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:32px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e2e8f0;">
+            <tr>
+              <td style="background:#0f172a;padding:24px 32px;">
+                <p style="margin:0 0 6px 0;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Nueva solicitud · ${escapeHtml(payload.referencia)}</p>
+                <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;">${escapeHtml(payload.nombre)}${payload.empresa ? ` · <span style="color:#94a3b8;font-weight:400;">${escapeHtml(payload.empresa)}</span>` : ""}</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 8px 32px;">
+                <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Identificación</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;">
+                  ${row("Email", `<a href="mailto:${escapeHtml(payload.email)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escapeHtml(payload.email)}</a>`)}
+                  ${row("Teléfono", `<a href="tel:${escapeHtml(payload.telefono)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escapeHtml(payload.telefono)}</a>`)}
+                  ${row("Ciudad", escapeHtml(payload.ciudad))}
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 8px 32px;">
+                <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Proyecto</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;">
+                  ${row("Tipo", escapeHtml(tipoLabel))}
+                  ${row("Etapa", escapeHtml(etapaLabel))}
+                  ${row("Escala estimada", escapeHtml(escalaTxt))}
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 8px 32px;">
+                <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Mensaje</p>
+                <div style="padding:16px;background:#f8fafc;border-left:3px solid #0f172a;font-size:14px;color:#0f172a;line-height:1.6;white-space:pre-wrap;">${escapeHtml(payload.mensaje)}</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 8px 32px;">
+                <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Adjuntos</p>
+                ${adjuntosHtml}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 32px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="background:#dc2626;">
+                      <a href="${adminUrl}" style="display:inline-block;padding:14px 28px;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">Ver y responder en el panel</a>
+                    </td>
+                  </tr>
+                </table>
+                ${payload.origen ? `<p style="margin:16px 0 0 0;font-size:11px;color:#94a3b8;">Origen: ${escapeHtml(payload.origen)}</p>` : ""}
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;">
+                <p style="margin:0;font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;">${escapeHtml(payload.referencia)} · ${new Date().toLocaleString("es-CO")}</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+
+  const text = `Nueva solicitud · ${payload.referencia}
+${payload.nombre}${payload.empresa ? " · " + payload.empresa : ""}
+
+Email: ${payload.email}
+Teléfono: ${payload.telefono}
+Ciudad: ${payload.ciudad}
+
+Tipo: ${tipoLabel}
+Etapa: ${etapaLabel}
+Escala: ${escalaTxt}
+
+Mensaje:
+${payload.mensaje}
+
+${payload.adjuntos && payload.adjuntos.length ? "Adjuntos:\n" + payload.adjuntos.map((a) => `- ${a.name}: ${a.url}`).join("\n") + "\n" : ""}
+Ver en panel: ${adminUrl}
+${payload.origen ? "Origen: " + payload.origen : ""}
+`
+
+  return resend.emails.send({
+    from: `${companyName} <${fromEmail}>`,
+    to: recipients,
+    replyTo: payload.email,
+    subject,
+    html,
+    text,
+  })
+}
+
+export interface ContactConfirmationPayload {
+  to: string
+  nombre: string
+  referencia: string
+}
+
+export async function sendContactConfirmationEmail(payload: ContactConfirmationPayload) {
+  if (!resend) {
+    throw new Error("RESEND_API_KEY is not configured")
+  }
+
+  const subject = `Recibimos tu solicitud · ${payload.referencia}`
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:32px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e2e8f0;">
+            <tr>
+              <td style="background:#0f172a;padding:32px 40px;">
+                <p style="margin:0 0 8px 0;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Solicitud recibida</p>
+                <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;">${escapeHtml(payload.referencia)}</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:40px;color:#0f172a;font-size:15px;line-height:1.6;">
+                <p style="margin:0 0 16px 0;">Hola <strong>${escapeHtml(payload.nombre)}</strong>,</p>
+                <p style="margin:0 0 16px 0;">Recibimos tu solicitud y nuestro equipo comercial ya está revisando los detalles.</p>
+                <p style="margin:0 0 16px 0;">Te contactaremos en menos de <strong>24 horas hábiles</strong> al correo y teléfono que registraste.</p>
+                <p style="margin:0 0 24px 0;color:#475569;font-size:14px;">Si necesitas adelantar información, responde este correo citando la referencia <strong>${escapeHtml(payload.referencia)}</strong> o escríbenos a <a href="mailto:contacto@meisa.com.co" style="color:#dc2626;text-decoration:none;font-weight:600;">contacto@meisa.com.co</a>.</p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:0;">
+                  <tr>
+                    <td style="padding:16px 0;">
+                      <p style="margin:0 0 6px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Tu referencia</p>
+                      <p style="margin:0;font-size:22px;font-weight:800;color:#0f172a;letter-spacing:1px;">${escapeHtml(payload.referencia)}</p>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:0;font-size:14px;color:#475569;">Gracias por considerar a MEISA para tu proyecto.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#f8fafc;padding:20px 40px;border-top:1px solid #e2e8f0;text-align:center;">
+                <p style="margin:0 0 4px 0;font-size:12px;color:#64748b;font-weight:700;">${companyName}</p>
+                <p style="margin:0;font-size:11px;color:#94a3b8;">Cali · Colombia · meisa.com.co</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+
+  const text = `Hola ${payload.nombre},
+
+Recibimos tu solicitud con la referencia ${payload.referencia}.
+
+Nuestro equipo comercial ya está revisando los detalles y te contactaremos en menos de 24 horas hábiles.
+
+Si necesitas adelantar información, responde este correo citando la referencia ${payload.referencia} o escríbenos a contacto@meisa.com.co.
+
+Gracias,
+${companyName}
+`
+
+  return resend.emails.send({
+    from: `${companyName} <${fromEmail}>`,
+    to: payload.to,
+    subject,
     html,
     text,
   })

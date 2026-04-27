@@ -7,6 +7,7 @@ import type {
   ProcesoDigital,
   Politica,
   PilarSIG,
+  EtapaControlCalidad,
 } from "@prisma/client"
 
 export type GrupoSeccionItem = GrupoSeccion
@@ -15,6 +16,7 @@ export type EquipoItem = Equipo
 export type ProcesoDigitalItem = ProcesoDigital
 export type PoliticaItem = Politica
 export type PilarSIGItem = PilarSIG
+export type EtapaControlCalidadItem = EtapaControlCalidad
 
 /* ------------------------------------------------------------------ */
 /*  Procesos & Tecnologías                                            */
@@ -76,10 +78,11 @@ export type PoliticasData = {
   grupos: GrupoSeccion[]
   pilares: PilarSIG[]
   politicas: Politica[]
+  etapasControl: EtapaControlCalidad[]
 }
 
 export const getPoliticasData = cache(async (): Promise<PoliticasData> => {
-  const [grupos, pilares, politicas] = await Promise.all([
+  const [grupos, pilares, politicas, etapasControl] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "calidad", activo: true },
       orderBy: { orden: "asc" },
@@ -92,18 +95,23 @@ export const getPoliticasData = cache(async (): Promise<PoliticasData> => {
       where: { activo: true },
       orderBy: { orden: "asc" },
     }),
+    prisma.etapaControlCalidad.findMany({
+      where: { activo: true },
+      orderBy: { orden: "asc" },
+    }),
   ])
-  return { grupos, pilares, politicas }
+  return { grupos, pilares, politicas, etapasControl }
 })
 
 export async function getAllPoliticasData() {
-  const [grupos, pilares, politicas] = await Promise.all([
+  const [grupos, pilares, politicas, etapasControl] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "calidad" },
       orderBy: { orden: "asc" },
     }),
     prisma.pilarSIG.findMany({ orderBy: { orden: "asc" } }),
     prisma.politica.findMany({ orderBy: { orden: "asc" } }),
+    prisma.etapaControlCalidad.findMany({ orderBy: { orden: "asc" } }),
   ])
-  return { grupos, pilares, politicas }
+  return { grupos, pilares, politicas, etapasControl }
 }
