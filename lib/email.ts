@@ -1,4 +1,5 @@
 import { Resend } from "resend"
+import { sendViaGmailDWD } from "./gmail-client"
 
 const resendApiKey = process.env.RESEND_API_KEY
 const fromEmail = process.env.RESEND_FROM_EMAIL || "no-reply@meisa.com.co"
@@ -9,6 +10,18 @@ const baseUrl =
   "https://meisa.com.co"
 
 const resend = resendApiKey ? new Resend(resendApiKey) : null
+
+// Subject del JWT (DWD) — DEBE ser un mailbox primario real del Workspace.
+// El alias contacto@/no-reply@ NO funciona como subject; usar archivo@/proyectistas@/etc.
+const contactSenderEmail =
+  process.env.MEISA_GMAIL_SENDER || "archivo@meisa.com.co"
+// From header que ven los destinatarios — puede ser alias si está configurado como "Send mail as"
+// en el mailbox primario impersonado.
+const contactFromEmail =
+  process.env.MEISA_CONTACT_FROM_EMAIL || contactSenderEmail
+const contactFromHeader = `${companyName} <${contactFromEmail}>`
+// Reply-To por defecto (para correos donde no se sobreescribe, ej. confirmación al cliente)
+const contactReplyTo = process.env.MEISA_CONTACT_REPLY_TO || "contacto@meisa.com.co"
 
 export async function sendPasswordResetEmail(
   to: string,
@@ -158,9 +171,6 @@ function row(label: string, value: string): string {
 }
 
 export async function sendContactNotificationEmail(payload: ContactNotificationPayload) {
-  if (!resend) {
-    throw new Error("RESEND_API_KEY is not configured")
-  }
   const recipients = getNotifyRecipients()
   if (recipients.length === 0) {
     throw new Error("No hay destinatarios configurados (MEISA_CONTACT_NOTIFY_TO o MEISA_ADMIN_EMAIL)")
@@ -288,8 +298,8 @@ Ver en panel: ${adminUrl}
 ${payload.origen ? "Origen: " + payload.origen : ""}
 `
 
-  return resend.emails.send({
-    from: `${companyName} <${fromEmail}>`,
+  return sendViaGmailDWD({
+    from: contactFromHeader,
     to: recipients,
     replyTo: payload.email,
     subject,
@@ -305,10 +315,6 @@ export interface ContactConfirmationPayload {
 }
 
 export async function sendContactConfirmationEmail(payload: ContactConfirmationPayload) {
-  if (!resend) {
-    throw new Error("RESEND_API_KEY is not configured")
-  }
-
   const subject = `Recibimos tu solicitud · ${payload.referencia}`
 
   const html = `<!DOCTYPE html>
@@ -334,7 +340,7 @@ export async function sendContactConfirmationEmail(payload: ContactConfirmationP
                 <p style="margin:0 0 16px 0;">Hola <strong>${escapeHtml(payload.nombre)}</strong>,</p>
                 <p style="margin:0 0 16px 0;">Recibimos tu solicitud y nuestro equipo comercial ya está revisando los detalles.</p>
                 <p style="margin:0 0 16px 0;">Te contactaremos en menos de <strong>24 horas hábiles</strong> al correo y teléfono que registraste.</p>
-                <p style="margin:0 0 24px 0;color:#475569;font-size:14px;">Si necesitas adelantar información, responde este correo citando la referencia <strong>${escapeHtml(payload.referencia)}</strong> o escríbenos a <a href="mailto:contacto@meisa.com.co" style="color:#dc2626;text-decoration:none;font-weight:600;">contacto@meisa.com.co</a>.</p>
+                <p style="margin:0 0 24px 0;color:#475569;font-size:14px;">Este es un correo automático <strong>no respondas a esta dirección</strong>. Si necesitas adelantar información, escríbenos a <a href="mailto:contacto@meisa.com.co" style="color:#dc2626;text-decoration:none;font-weight:600;">contacto@meisa.com.co</a> citando tu referencia <strong>${escapeHtml(payload.referencia)}</strong>.</p>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:0;">
                   <tr>
                     <td style="padding:16px 0;">
@@ -349,7 +355,7 @@ export async function sendContactConfirmationEmail(payload: ContactConfirmationP
             <tr>
               <td style="background:#f8fafc;padding:20px 40px;border-top:1px solid #e2e8f0;text-align:center;">
                 <p style="margin:0 0 4px 0;font-size:12px;color:#64748b;font-weight:700;">${companyName}</p>
-                <p style="margin:0;font-size:11px;color:#94a3b8;">Cali · Colombia · meisa.com.co</p>
+                <p style="margin:0;font-size:11px;color:#94a3b8;">Colombia · meisa.com.co</p>
               </td>
             </tr>
           </table>
@@ -365,15 +371,16 @@ Recibimos tu solicitud con la referencia ${payload.referencia}.
 
 Nuestro equipo comercial ya está revisando los detalles y te contactaremos en menos de 24 horas hábiles.
 
-Si necesitas adelantar información, responde este correo citando la referencia ${payload.referencia} o escríbenos a contacto@meisa.com.co.
+Este es un correo automático — no respondas a esta dirección. Si necesitas adelantar información, escríbenos a contacto@meisa.com.co citando tu referencia ${payload.referencia}.
 
 Gracias,
 ${companyName}
 `
 
-  return resend.emails.send({
-    from: `${companyName} <${fromEmail}>`,
+  return sendViaGmailDWD({
+    from: contactFromHeader,
     to: payload.to,
+    replyTo: contactReplyTo,
     subject,
     html,
     text,
