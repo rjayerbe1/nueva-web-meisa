@@ -158,6 +158,37 @@ export function ProjectsAdminTabs({ proyectos, categorias }: Props) {
               }}
               addLabel="Agregar proyecto"
               thumbnailField="portada"
+              defaultView="table"
+              searchPlaceholder="Buscar por título, cliente, ubicación, slug, código…"
+              searchableFields={[
+                "titulo",
+                "slug",
+                "cliente",
+                "ubicacion",
+                "codigoInterno",
+                "tags",
+                "descripcion",
+              ]}
+              filters={[
+                { key: "categoria", label: "Categoría", options: CATEGORIA_OPTIONS },
+                { key: "estado", label: "Estado", options: ESTADO_OPTIONS },
+                {
+                  key: "visible",
+                  label: "Visibilidad",
+                  options: [
+                    { value: "true", label: "Visibles" },
+                    { value: "false", label: "Ocultos" },
+                  ],
+                },
+                {
+                  key: "destacado",
+                  label: "Destacado",
+                  options: [
+                    { value: "true", label: "Destacados" },
+                    { value: "false", label: "No destacados" },
+                  ],
+                },
+              ]}
               tableColumns={[
                 { key: "titulo", label: "Título" },
                 { key: "cliente", label: "Cliente" },

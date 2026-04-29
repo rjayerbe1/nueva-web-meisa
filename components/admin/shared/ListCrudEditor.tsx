@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   DndContext,
   PointerSensor,
@@ -32,6 +32,8 @@ import {
   List as RowsIcon,
   ImageOff,
   Package,
+  Search,
+  SlidersHorizontal,
 } from "lucide-react"
 import { FormField, type FieldDef } from "./FormFields"
 import { cn } from "@/lib/utils"
@@ -43,6 +45,14 @@ type BaseItem = {
 }
 
 type ViewMode = "cards" | "table"
+
+export type ListFilterDef = {
+  /** Clave del campo a filtrar (ej. "categoria", "estado", "visible"). */
+  key: string
+  label: string
+  /** Opciones del dropdown. El valor especial "" representa "Todos". */
+  options: { value: string; label: string }[]
+}
 
 interface ListCrudEditorProps<T extends BaseItem> {
   items: T[]
@@ -58,6 +68,14 @@ interface ListCrudEditorProps<T extends BaseItem> {
   tableColumns?: { key: string; label: string; className?: string }[]
   /** Campo que contiene la URL de imagen para el thumbnail (ej. "imagen", "logo"). */
   thumbnailField?: string
+  /** Claves donde se buscará texto. Si se omite, se auto-detectan campos texto/textarea/stringArray. */
+  searchableFields?: string[]
+  /** Filtros tipo dropdown (categoría, estado, etc.) */
+  filters?: ListFilterDef[]
+  /** Placeholder del input de búsqueda */
+  searchPlaceholder?: string
+  /** Tamaño de página para paginación incremental. Default 48. */
+  pageSize?: number
 }
 
 export function ListCrudEditor<T extends BaseItem>({
@@ -72,6 +90,10 @@ export function ListCrudEditor<T extends BaseItem>({
   defaultView = "cards",
   tableColumns,
   thumbnailField,
+  searchableFields,
+  filters,
+  searchPlaceholder = "Buscar…",
+  pageSize = 48,
 }: ListCrudEditorProps<T>) {
   const [items, setItems] = useState<T[]>(initialItems)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -79,6 +101,10 @@ export function ListCrudEditor<T extends BaseItem>({
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [view, setView] = useState<ViewMode>(defaultView)
+  const [query, setQuery] = useState("")
+  const [filterValues, setFilterValues] = useState<Record<string, string>>({})
+  const [visibleCount, setVisibleCount] = useState(pageSize)
+  const searchRef = useRef<HTMLInputElement>(null)
 
   const storageKey = `admin.view.${endpoint}`
 
@@ -92,6 +118,85 @@ export function ListCrudEditor<T extends BaseItem>({
     setView(v)
     if (typeof window !== "undefined") window.localStorage.setItem(storageKey, v)
   }
+
+  /* ── Búsqueda + filtros ── */
+
+  const autoSearchableKeys = useMemo<string[]>(() => {
+    if (searchableFields && searchableFields.length) return searchableFields
+    const keys: string[] = []
+    for (const f of fields) {
+      if (
+        f.kind === "text" ||
+        f.kind === "textarea" ||
+        f.kind === "stringArray"
+      ) {
+        keys.push(f.name)
+      }
+    }
+    return keys
+  }, [searchableFields, fields])
+
+  const normalize = (v: unknown): string => {
+    if (v == null) return ""
+    if (Array.isArray(v)) return v.map((x) => normalize(x)).join(" ")
+    return String(v)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+  }
+
+  const queryNorm = useMemo(() => normalize(query.trim()), [query])
+
+  const filteredItems = useMemo(() => {
+    let list = items
+    // Filtros dropdown
+    for (const [key, value] of Object.entries(filterValues)) {
+      if (!value) continue
+      list = list.filter((it) => {
+        const raw = (it as any)[key]
+        if (typeof raw === "boolean") return String(raw) === value
+        if (raw == null) return value === "__null__"
+        return String(raw) === value
+      })
+    }
+    // Búsqueda texto
+    if (queryNorm) {
+      list = list.filter((it) =>
+        autoSearchableKeys.some((k) => normalize((it as any)[k]).includes(queryNorm)),
+      )
+    }
+    return list
+  }, [items, filterValues, queryNorm, autoSearchableKeys])
+
+  const hasActiveFilters =
+    queryNorm.length > 0 || Object.values(filterValues).some((v) => v)
+
+  const clearFilters = () => {
+    setQuery("")
+    setFilterValues({})
+  }
+
+  // Reset paginación al filtrar/buscar
+  useEffect(() => {
+    setVisibleCount(pageSize)
+  }, [queryNorm, filterValues, pageSize])
+
+  // Atajo "/" para enfocar búsqueda
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return
+      const t = e.target as HTMLElement | null
+      const tag = t?.tagName?.toLowerCase()
+      if (tag === "input" || tag === "textarea" || t?.isContentEditable) return
+      e.preventDefault()
+      searchRef.current?.focus()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [])
+
+  const visibleItems = filteredItems.slice(0, visibleCount)
+  const hasMore = filteredItems.length > visibleCount
 
   const autoThumbnailField = useMemo(() => {
     if (thumbnailField) return thumbnailField
@@ -227,14 +332,19 @@ export function ListCrudEditor<T extends BaseItem>({
 
   /* ── Render ── */
 
-  const itemIds = items.map((it) => it.id)
+  const itemIds = visibleItems.map((it) => it.id)
+
+  const showSearch = items.length >= 8 && autoSearchableKeys.length > 0
+  const showFilters = (filters?.length ?? 0) > 0
 
   return (
     <div className="space-y-4">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
-          {items.length} {items.length === 1 ? "elemento" : "elementos"}
+          {hasActiveFilters
+            ? `${filteredItems.length} de ${items.length} ${items.length === 1 ? "elemento" : "elementos"}`
+            : `${items.length} ${items.length === 1 ? "elemento" : "elementos"}`}
         </p>
         <div className="flex items-center gap-2">
           <div className="flex overflow-hidden rounded-none border border-slate-200 bg-white">
@@ -278,6 +388,60 @@ export function ListCrudEditor<T extends BaseItem>({
         </div>
       </div>
 
+      {/* Búsqueda y filtros */}
+      {(showSearch || showFilters) && (
+        <div className="flex flex-wrap items-center gap-2">
+          {showSearch && (
+            <div className="relative min-w-[240px] flex-1">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                ref={searchRef}
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={searchPlaceholder}
+                className="w-full rounded-none border border-slate-300 bg-white py-2 pl-9 pr-16 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+                aria-label="Buscar"
+              />
+              <kbd
+                aria-hidden
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 rounded-none border border-slate-200 bg-stone-50 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-400"
+              >
+                /
+              </kbd>
+            </div>
+          )}
+          {filters?.map((f) => (
+            <select
+              key={f.key}
+              value={filterValues[f.key] ?? ""}
+              onChange={(e) =>
+                setFilterValues((prev) => ({ ...prev, [f.key]: e.target.value }))
+              }
+              className="rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-xs font-semibold uppercase tracking-wide text-slate-700 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+              aria-label={f.label}
+            >
+              <option value="">{f.label}: todos</option>
+              {f.options.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          ))}
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="inline-flex items-center gap-1.5 rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-600 transition-colors hover:border-slate-900 hover:text-slate-900"
+            >
+              <X className="h-3.5 w-3.5" />
+              Limpiar
+            </button>
+          )}
+        </div>
+      )}
+
       {/* New form (top) */}
       {isNew && (
         <EditForm
@@ -309,13 +473,33 @@ export function ListCrudEditor<T extends BaseItem>({
         </div>
       )}
 
+      {/* Filtros sin resultados */}
+      {items.length > 0 && filteredItems.length === 0 && !isNew && (
+        <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+          <SlidersHorizontal className="mb-3 h-8 w-8 text-slate-300" />
+          <p className="mb-1 font-bebas text-base uppercase tracking-wide text-slate-700">
+            Sin resultados
+          </p>
+          <p className="max-w-sm font-lato text-sm text-slate-500">
+            Ningún elemento coincide con la búsqueda o los filtros aplicados.
+          </p>
+          <button
+            onClick={clearFilters}
+            className="mt-4 inline-flex items-center gap-1.5 rounded-none border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:text-slate-900"
+          >
+            <X className="h-3.5 w-3.5" />
+            Limpiar filtros
+          </button>
+        </div>
+      )}
+
       {/* List */}
-      {items.length > 0 && (
+      {filteredItems.length > 0 && (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
             {view === "cards" ? (
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {items.map((item) =>
+                {visibleItems.map((item) =>
                   editingId === item.id ? (
                     <div key={item.id} className="sm:col-span-2 lg:col-span-3 xl:col-span-4">
                       <EditForm
@@ -335,7 +519,7 @@ export function ListCrudEditor<T extends BaseItem>({
                       fields={fields}
                       thumbnailField={autoThumbnailField}
                       renderPreview={renderPreview}
-                      canReorder={canReorder}
+                      canReorder={canReorder && !hasActiveFilters}
                       disabled={editingId !== null}
                       onEdit={() => beginEdit(item)}
                       onDelete={() => del(item.id)}
@@ -346,11 +530,11 @@ export function ListCrudEditor<T extends BaseItem>({
               </div>
             ) : (
               <TableView
-                items={items}
+                items={visibleItems}
                 fields={fields}
                 columns={columns}
                 thumbnailField={autoThumbnailField}
-                canReorder={canReorder}
+                canReorder={canReorder && !hasActiveFilters}
                 editingId={editingId}
                 draft={draft}
                 setDraft={setDraft}
@@ -365,6 +549,22 @@ export function ListCrudEditor<T extends BaseItem>({
             )}
           </SortableContext>
         </DndContext>
+      )}
+
+      {/* Paginación incremental */}
+      {hasMore && (
+        <div className="flex flex-col items-center gap-1 py-2">
+          <button
+            type="button"
+            onClick={() => setVisibleCount((n) => n + pageSize)}
+            className="inline-flex items-center gap-1.5 rounded-none border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:bg-stone-50"
+          >
+            Mostrar más
+          </button>
+          <p className="font-lato text-[11px] text-slate-400">
+            {visibleItems.length} de {filteredItems.length}
+          </p>
+        </div>
       )}
     </div>
   )
