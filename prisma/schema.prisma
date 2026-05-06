@@ -121,10 +121,10 @@ model Proyecto {
 // con original + ampliación, o Dollar City con N locales). Reemplaza al antiguo
 // HistoriaProyecto que estaba limitado a 1-a-1.
 model Obra {
-  id                  String        @id @default(cuid())
-  slug                String        @unique
-  titulo              String
-  resumenCorto        String?
+  id           String  @id @default(cuid())
+  slug         String  @unique
+  titulo       String
+  resumenCorto String?
 
   // Narrativa editorial
   contexto            String?
@@ -139,24 +139,24 @@ model Obra {
   tagsTecnicos        Json?
 
   // Multimedia
-  imagenDestacada     String?
-  videoUrl            String?
+  imagenDestacada String?
+  videoUrl        String?
 
   // Control
-  activa              Boolean       @default(true)
-  destacada           Boolean       @default(false)
-  orden               Int           @default(0)
-  categoria           CategoriaEnum @default(COMERCIAL)
+  activa          Boolean       @default(true)
+  destacada       Boolean       @default(false)
+  orden           Int           @default(0)
+  categoria       CategoriaEnum @default(COMERCIAL)
   // esCadena=false → proyectos son FASES del mismo edificio (ej. Campanario 2008 + ampliación 2016)
   // esCadena=true  → proyectos son INDEPENDIENTES agrupados (ej. Dollar City N locales, CC Único N ciudades)
-  esCadena            Boolean       @default(false)
-  metaTitle           String?
-  metaDescription     String?
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
+  esCadena        Boolean       @default(false)
+  metaTitle       String?
+  metaDescription String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   // 1 obra agrupa N proyectos
-  proyectos           Proyecto[]
+  proyectos Proyecto[]
 
   @@map("obras")
 }
@@ -301,31 +301,31 @@ model Cliente {
 }
 
 model ContactForm {
-  id            String   @id @default(cuid())
-  referencia    String?  @unique
+  id         String  @id @default(cuid())
+  referencia String? @unique
 
-  nombre        String
-  email         String
-  telefono      String?
-  empresa       String?
+  nombre   String
+  email    String
+  telefono String?
+  empresa  String?
 
-  ciudad        String?
-  tipoProyecto  String?
-  etapa         String?
-  escalaValor   Float?
-  escalaUnidad  String?
+  ciudad       String?
+  tipoProyecto String?
+  etapa        String?
+  escalaValor  Float?
+  escalaUnidad String?
 
-  mensaje       String
-  adjuntos      Json?
+  mensaje  String
+  adjuntos Json?
 
   origen        String?
-  estado        String   @default("NUEVO")
-  leido         Boolean  @default(false)
-  respondido    Boolean  @default(false)
+  estado        String  @default("NUEVO")
+  leido         Boolean @default(false)
+  respondido    Boolean @default(false)
   notasInternas String?
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("formularios_contacto")
 }
@@ -431,172 +431,20 @@ model ResumenAnio {
   @@map("resumenes_anio")
 }
 
-model BrochureTemplate {
-  id                String                 @id @default(cuid())
-  nombre            String
-  descripcion       String?
-  thumbnail         String?
-  estructura        Json
-  componentsLibrary Json
-  estilosGlobales   Json?
-  isPublic          Boolean                @default(false)
-  isDefault         Boolean                @default(false)
-  createdBy         String
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
-  tipoCategoria     CategoriaEnum?
-  pages             BrochureTemplatePage[]
-  brochures         Brochure[]
-
-  @@map("brochure_templates")
-}
-
-model BrochureTemplatePage {
-  id         String           @id @default(cuid())
-  templateId String
-  nombre     String
-  orden      Int              @default(0)
-  estructura Json
-  estilos    Json?
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
-  template   BrochureTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-
-  @@map("brochure_template_pages")
-}
-
 model Brochure {
-  id                  String             @id @default(cuid())
-  titulo              String
-  descripcion         String?
-  templateId          String
-  categoriaId         String?            @unique
-  contenido           Json
-  datosPersonalizados Json?
-  configuracion       Json?
-  activo              Boolean            @default(false)
-  publicado           Boolean            @default(false)
-  fechaPublicacion    DateTime?
-  urlAmigable         String             @unique
-  versionNumero       Int                @default(1)
-  thumbnail           String?
-  pdfUrl              String?
-  createdBy           String
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
-  analytics           BrochureAnalytics?
-  pages               BrochurePage[]
-  categoria           CategoriaProyecto? @relation(fields: [categoriaId], references: [id])
-  template            BrochureTemplate   @relation(fields: [templateId], references: [id])
+  id          String             @id @default(cuid())
+  titulo      String
+  descripcion String?
+  urlAmigable String             @unique
+  pdfUrl      String?
+  categoriaId String?            @unique
+  publicado   Boolean            @default(false)
+  activo      Boolean            @default(true)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  categoria   CategoriaProyecto? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
 
   @@map("brochures")
-}
-
-model BrochurePage {
-  id              String        @id @default(cuid())
-  brochureId      String
-  pageTemplateId  String?
-  nombre          String
-  orden           Int           @default(0)
-  canvasData      Json?
-  contenido       Json?
-  componentesData Json?
-  configuracion   Json?
-  visible         Boolean       @default(true)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  brochure        Brochure      @relation(fields: [brochureId], references: [id], onDelete: Cascade)
-  pageTemplate    PageTemplate? @relation(fields: [pageTemplateId], references: [id])
-
-  @@map("brochure_pages")
-}
-
-model PageTemplate {
-  id            String         @id @default(cuid())
-  nombre        String
-  descripcion   String?
-  thumbnail     String?
-  categoria     String?
-  canvasData    Json
-  configuracion Json?
-  isPublic      Boolean        @default(true)
-  usageCount    Int            @default(0)
-  createdBy     String
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  pages         BrochurePage[]
-
-  @@map("page_templates")
-}
-
-model BrochureComponent {
-  id                String                 @id @default(cuid())
-  nombre            String
-  tipo              TipoComponenteBrochure
-  descripcion       String?
-  thumbnail         String?
-  htmlTemplate      String
-  cssEstilos        String
-  jsInteracciones   String?
-  propiedadesSchema Json
-  valorDefecto      Json?
-  categoria         String?
-  tags              String[]
-  isPublic          Boolean                @default(true)
-  usageCount        Int                    @default(0)
-  createdBy         String
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
-
-  @@map("brochure_components")
-}
-
-model BrochureStyle {
-  id               String   @id @default(cuid())
-  nombre           String
-  descripcion      String?
-  coloresPrimarios Json
-  tipografia       Json
-  espaciado        Json?
-  bordes           Json?
-  sombras          Json?
-  efectos          Json?
-  cssCustom        String?
-  isDefault        Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  @@map("brochure_styles")
-}
-
-model BrochureAnalytics {
-  id          String   @id @default(cuid())
-  brochureId  String   @unique
-  vistas      Int      @default(0)
-  descargas   Int      @default(0)
-  compartidos Int      @default(0)
-  fecha       DateTime @default(now())
-  brochure    Brochure @relation(fields: [brochureId], references: [id], onDelete: Cascade)
-
-  @@map("brochure_analytics")
-}
-
-model CustomFont {
-  id          String   @id @default(cuid())
-  nombre      String   @unique
-  fontFamily  String
-  fileUrl     String
-  fileName    String
-  fileFormat  String
-  fileSize    Int?
-  description String?
-  category    String?
-  isActive    Boolean  @default(true)
-  uploadedBy  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("custom_fonts")
 }
 
 model ContactoWhatsApp {
@@ -713,25 +561,6 @@ enum TipoConfig {
   EMAIL
 }
 
-enum TipoComponenteBrochure {
-  COVER_PAGE
-  PROJECT_CARD
-  PROJECT_GRID
-  STATS_BOX
-  STATS_GRID
-  IMAGE_GALLERY
-  HERO_SECTION
-  TEXT_BLOCK
-  TITLE_SECTION
-  CONTACT_INFO
-  TIMELINE
-  TECHNICAL_SPECS
-  CLIENT_LOGO
-  DIVIDER
-  SPACER
-  CUSTOM_HTML
-}
-
 // =====================================================================
 // Admin v2 — Fase 1: Plantas
 // Fuente única para las 3 plantas de MEISA (Jamundí, Popayán, Villa Rica).
@@ -779,34 +608,34 @@ model Plant {
 
 // Singleton (usa id = "default")
 model ConfiguracionEmpresa {
-  id                        String   @id @default("default")
+  id                       String   @id @default("default")
   // Identidad
-  nombre                    String   @default("MEISA")
-  nombreCompleto            String   @default("Metálicas e Ingeniería S.A.S.")
-  mision                    String
-  vision                    String
-  descripcion               String
-  fundacion                 Int      @default(1996)
+  nombre                   String   @default("MEISA")
+  nombreCompleto           String   @default("Metálicas e Ingeniería S.A.S.")
+  mision                   String
+  vision                   String
+  descripcion              String
+  fundacion                Int      @default(1996)
   // Liderazgo (cita)
-  liderQuoteTexto           String?
-  liderQuoteAutor           String?
-  liderQuoteCargo           String?
-  liderQuoteImagen          String?
+  liderQuoteTexto          String?
+  liderQuoteAutor          String?
+  liderQuoteCargo          String?
+  liderQuoteImagen         String?
   // Historia
-  historiaIntro             String[] @default([])
+  historiaIntro            String[] @default([])
   // "Creemos en..."
-  frasesCreemos             String[] @default([])
+  frasesCreemos            String[] @default([])
   // Compromiso — Seguridad
-  seguridadTitulo           String?
-  seguridadSubtitulo        String?
-  seguridadItems            String[] @default([])
-  seguridadMeta             String?
+  seguridadTitulo          String?
+  seguridadSubtitulo       String?
+  seguridadItems           String[] @default([])
+  seguridadMeta            String?
   // Compromiso — Sostenibilidad
-  sostenibilidadTitulo      String?
-  sostenibilidadSubtitulo   String?
-  sostenibilidadItems       String[] @default([])
-  sostenibilidadCompromiso  String?
-  updatedAt                 DateTime @updatedAt
+  sostenibilidadTitulo     String?
+  sostenibilidadSubtitulo  String?
+  sostenibilidadItems      String[] @default([])
+  sostenibilidadCompromiso String?
+  updatedAt                DateTime @updatedAt
 
   @@map("configuracion_empresa")
 }
@@ -828,10 +657,10 @@ model CompanyValue {
 
 model TimelineHito {
   id          String   @id @default(cuid())
-  periodo     String   // "1996", "2006-2010"
+  periodo     String // "1996", "2006-2010"
   titulo      String
   descripcion String
-  destacado   String?  // "Inicio de operaciones", "RUC Certificado"
+  destacado   String? // "Inicio de operaciones", "RUC Certificado"
   icono       String?
   orden       Int      @default(0)
   activo      Boolean  @default(true)
@@ -842,22 +671,22 @@ model TimelineHito {
 }
 
 model Certificacion {
-  id              String   @id @default(cuid())
-  slug            String   @unique
-  nombre          String
-  nombreCompleto  String?
-  descripcion     String?
-  emisor          String?
-  importancia     String?
-  beneficios      String[] @default([])
-  logo            String?
-  documentoUrl    String?
-  vigenciaDesde   DateTime?
-  vigenciaHasta   DateTime?
-  orden           Int      @default(0)
-  activo          Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String    @id @default(cuid())
+  slug           String    @unique
+  nombre         String
+  nombreCompleto String?
+  descripcion    String?
+  emisor         String?
+  importancia    String?
+  beneficios     String[]  @default([])
+  logo           String?
+  documentoUrl   String?
+  vigenciaDesde  DateTime?
+  vigenciaHasta  DateTime?
+  orden          Int       @default(0)
+  activo         Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@map("certificaciones")
 }
@@ -885,8 +714,8 @@ model Norma {
 // Encabezados de sub-secciones en /procesos-tecnologias y /calidad
 model GrupoSeccion {
   id            String   @id @default(cuid())
-  pagina        String   // "tecnologia" | "calidad"
-  clave         String   // "diseno-analisis", "sig", etc.
+  pagina        String // "tecnologia" | "calidad"
+  clave         String // "diseno-analisis", "sig", etc.
   titulo        String
   subtitulo     String?
   descripcion   String?
@@ -920,7 +749,7 @@ model EtapaControlCalidad {
 model Tecnologia {
   id           String   @id @default(cuid())
   slug         String   @unique
-  categoria    String   // "bim-diseno" | "analisis-estructural" | "conexiones" | "otro"
+  categoria    String // "bim-diseno" | "analisis-estructural" | "conexiones" | "otro"
   nombre       String
   especialidad String?
   descripcion  String?
@@ -937,12 +766,12 @@ model Tecnologia {
 model Equipo {
   id          String   @id @default(cuid())
   slug        String   @unique
-  categoria   String   // "corte-cnc" | "izaje" | "especializados" | "otro"
+  categoria   String // "corte-cnc" | "izaje" | "especializados" | "otro"
   nombre      String
   descripcion String?
   specs       String[] @default([])
   imagen      String?
-  plantaId    String?  // opcional: relaciona con Plant
+  plantaId    String? // opcional: relaciona con Plant
   orden       Int      @default(0)
   activo      Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -1028,9 +857,9 @@ model ProcesoFase {
 // Opciones reusables de selects — tipos de proyecto y servicios del formulario
 model FormOption {
   id        String   @id @default(cuid())
-  grupo     String   // "TIPO_PROYECTO" | "SERVICIO_CONTACTO"
-  valor     String   // ej. "estructura-edificacion"
-  label     String   // ej. "Estructura metálica para edificación"
+  grupo     String // "TIPO_PROYECTO" | "SERVICIO_CONTACTO"
+  valor     String // ej. "estructura-edificacion"
+  label     String // ej. "Estructura metálica para edificación"
   orden     Int      @default(0)
   activo    Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -1063,7 +892,7 @@ model ConfiguracionContacto {
 // Especialidades rotativas del hero (4 items en el sitio actual)
 model HomeHeroEspecialidad {
   id        String   @id @default(cuid())
-  label     String   // Soporta saltos de línea: "DISEÑO\nESTRUCTURAL"
+  label     String // Soporta saltos de línea: "DISEÑO\nESTRUCTURAL"
   orden     Int      @default(0)
   activo    Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -1076,7 +905,7 @@ model HomeHeroEspecialidad {
 model HomeStat {
   id        String   @id @default(cuid())
   clave     String   @unique
-  valor     String   // Puede ser número o "AUTO" para cálculos dinámicos
+  valor     String // Puede ser número o "AUTO" para cálculos dinámicos
   label     String
   icono     String?
   orden     Int      @default(0)
@@ -1096,7 +925,7 @@ model HomeFeaturedProject {
   anioEntregado String?
   imagen        String?
   descripcion   String?
-  stats         Json?    // Array [{value, label}, ...] — 3 stats
+  stats         Json? // Array [{value, label}, ...] — 3 stats
   ctaTexto      String?
   ctaUrl        String?
   eyebrowTexto  String?
@@ -1154,7 +983,7 @@ model HomeSeccionConfig {
 // Orden y visibilidad de las 7 secciones del home
 model OrdenSeccionesHome {
   id        String   @id @default("default")
-  orden     Json     // Array de { clave, activo, label }
+  orden     Json // Array de { clave, activo, label }
   updatedAt DateTime @updatedAt
 
   @@map("orden_secciones_home")

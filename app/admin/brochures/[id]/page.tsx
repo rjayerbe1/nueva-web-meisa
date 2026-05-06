@@ -1,163 +1,76 @@
-import { getServerSession } from "next-auth"
-import { redirect, notFound } from "next/navigation"
-import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
-import { UserRole } from "@prisma/client"
-import { BrochureForm } from "@/components/admin/BrochureForm"
+import { notFound } from "next/navigation"
 import Link from "next/link"
-import { FileText, ExternalLink } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
+import { prisma } from "@/lib/prisma"
+import { BrochureForm } from "@/components/admin/BrochureForm"
 
-async function getBrochureAndData(brochureId: string) {
-  const [brochure, categories] = await Promise.all([
+export const dynamic = "force-dynamic"
+
+async function getData(brochureId: string) {
+  const [brochure, categorias] = await Promise.all([
     prisma.brochure.findUnique({
       where: { id: brochureId },
-      include: {
-        template: {
-          select: {
-            id: true,
-            nombre: true
-          }
-        },
-        categoria: {
-          select: {
-            id: true,
-            nombre: true,
-            slug: true
-          }
-        },
-        _count: {
-          select: {
-            pages: true
-          }
-        }
-      }
+      select: {
+        id: true,
+        titulo: true,
+        descripcion: true,
+        urlAmigable: true,
+        pdfUrl: true,
+        categoriaId: true,
+        publicado: true,
+        activo: true,
+      },
     }),
     prisma.categoriaProyecto.findMany({
-      orderBy: { nombre: 'asc' },
+      orderBy: { nombre: "asc" },
       select: {
         id: true,
         nombre: true,
-        slug: true,
-        key: true,
-        brochure: {
-          select: {
-            id: true,
-            titulo: true
-          }
-        }
-      }
-    })
+        brochure: { select: { id: true } },
+      },
+    }),
   ])
-
-  if (!brochure) {
-    return null
-  }
-
-  // Filtrar categorías: incluir la actual o las que no tienen brochure
-  const availableCategories = categories.filter(
-    cat => !cat.brochure || cat.id === brochure.categoriaId
-  )
-
-  return { brochure, categories: availableCategories }
+  if (!brochure) return null
+  const available = categorias
+    .filter((c) => !c.brochure || c.id === brochure.categoriaId)
+    .map((c) => ({ id: c.id, nombre: c.nombre }))
+  return { brochure, categorias: available }
 }
 
 export default async function EditBrochurePage({ params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
-  if (session.user.role === UserRole.VIEWER) {
-    redirect("/admin")
-  }
-
-  const data = await getBrochureAndData(params.id)
-
-  if (!data) {
-    notFound()
-  }
-
-  const { brochure, categories } = data
+  const data = await getData(params.id)
+  if (!data) notFound()
+  const { brochure, categorias } = data
 
   return (
-    <div className="space-y-8 max-w-4xl">
-      {/* Header con acciones rápidas */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Editar Brochure</h1>
-          <p className="mt-2 text-lg text-gray-600">
-            {brochure.titulo}
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/admin/brochures/${brochure.id}/builder`}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-          >
-            <FileText className="w-4 h-4" />
-            Abrir Builder
-          </Link>
-          {brochure.publicado && (
-            <Link
-              href={`/brochure/${brochure.urlAmigable}`}
-              target="_blank"
-              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 rounded-lg transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-              Ver Brochure
-            </Link>
-          )}
-        </div>
-      </div>
+    <div className="px-6 py-8 md:px-10">
+      <Link
+        href="/admin/brochures"
+        className="mb-4 inline-flex items-center gap-1 font-lato text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900"
+      >
+        <ArrowLeft className="h-3 w-3" /> Brochures
+      </Link>
 
-      {/* Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <p className="text-sm text-gray-600">Template</p>
-          <p className="text-lg font-semibold text-gray-900">{brochure.template.nombre}</p>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <p className="text-sm text-gray-600">Páginas</p>
-          <p className="text-lg font-semibold text-gray-900">{brochure._count.pages}</p>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <p className="text-sm text-gray-600">Estado</p>
-          <div className="flex items-center gap-2 mt-1">
-            {brochure.publicado && (
-              <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                Publicado
-              </span>
-            )}
-            {brochure.activo && (
-              <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                Activo
-              </span>
-            )}
-            {!brochure.activo && !brochure.publicado && (
-              <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
-                Inactivo
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
+      <h1 className="font-bebas text-3xl uppercase tracking-wide text-slate-950">
+        Editar brochure
+      </h1>
+      <p className="mt-1 mb-8 font-lato text-sm text-slate-500">{brochure.titulo}</p>
 
-      {/* Form */}
-      <BrochureForm
-        categories={categories}
-        brochure={{
-          id: brochure.id,
-          titulo: brochure.titulo,
-          descripcion: brochure.descripcion,
-          templateId: brochure.templateId,
-          categoriaId: brochure.categoriaId,
-          urlAmigable: brochure.urlAmigable,
-          activo: brochure.activo,
-          publicado: brochure.publicado,
-          thumbnail: brochure.thumbnail
-        }}
-      />
+      <div className="max-w-4xl border border-slate-200 bg-white p-6 md:p-8">
+        <BrochureForm
+          initial={{
+            id: brochure.id,
+            titulo: brochure.titulo,
+            descripcion: brochure.descripcion,
+            urlAmigable: brochure.urlAmigable,
+            pdfUrl: brochure.pdfUrl,
+            categoriaId: brochure.categoriaId,
+            publicado: brochure.publicado,
+            activo: brochure.activo,
+          }}
+          categorias={categorias}
+        />
+      </div>
     </div>
   )
 }

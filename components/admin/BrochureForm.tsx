@@ -1,312 +1,263 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { FileText, Loader2, Save, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Loader2, Save, Trash2 } from "lucide-react"
+import { FormField, type FieldDef } from "@/components/admin/shared/FormFields"
 
-interface Template {
-  id: string
-  nombre: string
+interface BrochureData {
+  id?: string
+  titulo: string
   descripcion: string | null
-  thumbnail: string | null
-  tipoCategoria: string | null
-  isDefault: boolean
+  urlAmigable: string
+  pdfUrl: string | null
+  categoriaId: string | null
+  publicado: boolean
+  activo: boolean
 }
 
-interface Category {
+interface CategoriaOption {
   id: string
   nombre: string
-  slug: string
-  key: string
-  brochure?: {
-    id: string
-    titulo: string
-  } | null
 }
 
 interface BrochureFormProps {
-  templates?: Template[] // Opcional - ya no se usa
-  categories: Category[]
-  brochure?: {
-    id: string
-    titulo: string
-    descripcion: string | null
-    templateId: string
-    categoriaId: string | null
-    urlAmigable: string
-    activo: boolean
-    publicado: boolean
-    thumbnail: string | null
-  }
+  initial?: BrochureData
+  categorias: CategoriaOption[]
 }
 
-export function BrochureForm({ templates, categories, brochure }: BrochureFormProps) {
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80)
+
+const emptyDefaults: BrochureData = {
+  titulo: "",
+  descripcion: null,
+  urlAmigable: "",
+  pdfUrl: null,
+  categoriaId: null,
+  publicado: false,
+  activo: true,
+}
+
+export function BrochureForm({ initial, categorias }: BrochureFormProps) {
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const isEdit = Boolean(initial?.id)
+  const [form, setForm] = useState<BrochureData>(initial ?? emptyDefaults)
+  const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const [formData, setFormData] = useState({
-    titulo: brochure?.titulo || '',
-    descripcion: brochure?.descripcion || '',
-    templateId: brochure?.templateId || 'default-meisa-template-001', // Siempre usar template por defecto
-    categoriaId: brochure?.categoriaId || '',
-    urlAmigable: brochure?.urlAmigable || '',
-    activo: brochure?.activo ?? true,
-    publicado: brochure?.publicado ?? false,
-    thumbnail: brochure?.thumbnail || ''
-  })
+  const fields: FieldDef[] = [
+    {
+      name: "titulo",
+      label: "Título",
+      kind: "text",
+      required: true,
+      placeholder: "Portafolio Puentes 2026",
+      gridSpan: 2,
+    },
+    {
+      name: "urlAmigable",
+      label: "URL amigable (slug)",
+      kind: "text",
+      required: true,
+      placeholder: "portafolio-puentes-2026",
+      hint: "Se genera automáticamente desde el título si lo dejas vacío. Forma parte de la URL pública /brochure/<slug>.",
+    },
+    {
+      name: "categoriaId",
+      label: "Categoría",
+      kind: "select",
+      placeholder: "Sin categoría",
+      options: categorias.map((c) => ({ value: c.id, label: c.nombre })),
+      hint: "Solo una categoría puede tener un brochure. Si eliges una ya tomada, dará error al guardar.",
+    },
+    {
+      name: "descripcion",
+      label: "Descripción",
+      kind: "textarea",
+      rows: 3,
+      gridSpan: 2,
+    },
+    {
+      name: "pdfUrl",
+      label: "PDF del brochure",
+      kind: "document",
+      required: true,
+      gridSpan: 2,
+      hint: "Sube el PDF a la biblioteca o pega una URL. Se mostrará como flipbook en /brochure/<slug>.",
+    },
+    {
+      name: "publicado",
+      label: "Publicado",
+      kind: "boolean",
+      hint: "Si está apagado, la página pública devuelve 404.",
+    },
+    {
+      name: "activo",
+      label: "Activo",
+      kind: "boolean",
+      hint: "Apaga para esconder sin borrar.",
+    },
+  ]
+
+  const handleChange = (name: string, value: unknown) => {
+    setForm((prev) => {
+      const next = { ...prev, [name]: value } as BrochureData
+      if (name === "titulo" && !isEdit && !prev.urlAmigable) {
+        next.urlAmigable = slugify(String(value ?? ""))
+      }
+      return next
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    setSaving(true)
     setError(null)
 
+    const payload = {
+      titulo: form.titulo.trim(),
+      descripcion: form.descripcion?.trim() || null,
+      urlAmigable: (form.urlAmigable || slugify(form.titulo)).trim(),
+      pdfUrl: form.pdfUrl,
+      categoriaId: form.categoriaId || null,
+      publicado: form.publicado,
+      activo: form.activo,
+    }
+
+    if (!payload.titulo) {
+      setError("El título es obligatorio")
+      setSaving(false)
+      return
+    }
+    if (!payload.urlAmigable) {
+      setError("La URL amigable es obligatoria")
+      setSaving(false)
+      return
+    }
+    if (!payload.pdfUrl) {
+      setError("Debes subir o seleccionar un PDF")
+      setSaving(false)
+      return
+    }
+
     try {
-      // Validaciones
-      if (!formData.titulo.trim()) {
-        throw new Error('El título es requerido')
-      }
-      if (!formData.urlAmigable.trim()) {
-        throw new Error('La URL amigable es requerida')
-      }
-
-      const url = brochure
-        ? `/api/admin/brochures/${brochure.id}`
-        : '/api/admin/brochures'
-
-      const method = brochure ? 'PUT' : 'POST'
-
-      const response = await fetch(url, {
+      const endpoint = isEdit ? `/api/admin/brochures/${initial!.id}` : "/api/admin/brochures"
+      const method = isEdit ? "PUT" : "POST"
+      const res = await fetch(endpoint, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          categoriaId: formData.categoriaId || null
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Error al guardar el brochure')
+      if (!res.ok) {
+        const msg = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
+        throw new Error(msg.error ?? "Error guardando")
       }
-
-      const savedBrochure = await response.json()
-
-      // Redirigir a la página de edición o al listado
-      router.push(`/admin/brochures/${savedBrochure.id}`)
-      router.refresh()
-
-    } catch (err: any) {
-      console.error('Error saving brochure:', err)
-      setError(err.message || 'Error al guardar el brochure')
+      const saved = await res.json()
+      if (!isEdit) {
+        router.push(`/admin/brochures/${saved.id}`)
+      } else {
+        router.refresh()
+      }
+    } catch (e: any) {
+      setError(e.message ?? "Error guardando")
     } finally {
-      setLoading(false)
+      setSaving(false)
     }
   }
 
-  const generateSlug = () => {
-    const slug = formData.titulo
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
-
-    setFormData({ ...formData, urlAmigable: slug })
+  const handleDelete = async () => {
+    if (!isEdit || !initial?.id) return
+    if (!confirm("¿Eliminar este brochure? Esta acción no se puede deshacer.")) return
+    setDeleting(true)
+    setError(null)
+    try {
+      const res = await fetch(`/api/admin/brochures/${initial.id}`, { method: "DELETE" })
+      if (!res.ok) {
+        const msg = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
+        throw new Error(msg.error ?? "Error eliminando")
+      }
+      router.push("/admin/brochures")
+      router.refresh()
+    } catch (e: any) {
+      setError(e.message ?? "Error eliminando")
+      setDeleting(false)
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        {fields.map((f) => (
+          <FormField
+            key={f.name}
+            field={f}
+            value={(form as unknown as Record<string, unknown>)[f.name]}
+            onChange={(v) => handleChange(f.name, v)}
+            disabled={saving || deleting}
+          />
+        ))}
+      </div>
+
+      {form.publicado && form.pdfUrl && form.urlAmigable && (
+        <div className="border border-slate-200 bg-white px-4 py-3">
+          <p className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500">
+            URL pública
+          </p>
+          <a
+            href={`/brochure/${form.urlAmigable}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-sm text-red-600 hover:underline"
+          >
+            /brochure/{form.urlAmigable}
+          </a>
+        </div>
+      )}
+
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+        <div className="border border-red-300 bg-red-50 px-4 py-3 font-lato text-sm text-red-700">
           {error}
         </div>
       )}
 
-      {/* Información Básica */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Información Básica</h2>
-
-        <div className="space-y-6">
-          {/* Título */}
-          <div>
-            <label htmlFor="titulo" className="block text-sm font-medium text-gray-700 mb-2">
-              Título del Brochure *
-            </label>
-            <input
-              type="text"
-              id="titulo"
-              value={formData.titulo}
-              onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
-              onBlur={generateSlug}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Ej: Brochure de Centros Comerciales"
-              required
-            />
-          </div>
-
-          {/* Descripción */}
-          <div>
-            <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 mb-2">
-              Descripción
-            </label>
-            <textarea
-              id="descripcion"
-              value={formData.descripcion}
-              onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
-              rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Descripción breve del brochure..."
-            />
-          </div>
-
-          {/* URL Amigable */}
-          <div>
-            <label htmlFor="urlAmigable" className="block text-sm font-medium text-gray-700 mb-2">
-              URL Amigable *
-            </label>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">/brochure/</span>
-              <input
-                type="text"
-                id="urlAmigable"
-                value={formData.urlAmigable}
-                onChange={(e) => setFormData({ ...formData, urlAmigable: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') })}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="brochure-centros-comerciales"
-                required
-              />
-            </div>
-            <p className="mt-1 text-sm text-gray-500">
-              Se generará automáticamente del título. Solo letras minúsculas, números y guiones.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Template y Categoría */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Categoría</h2>
-
-        <div className="space-y-6">
-          {/* Categoría */}
-          <div>
-            <label htmlFor="categoriaId" className="block text-sm font-medium text-gray-700 mb-2">
-              Categoría (opcional)
-            </label>
-            <select
-              id="categoriaId"
-              value={formData.categoriaId}
-              onChange={(e) => setFormData({ ...formData, categoriaId: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Sin categoría asignada</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.nombre}
-                </option>
-              ))}
-            </select>
-            <p className="mt-1 text-sm text-gray-500">
-              Asigna este brochure a una categoría para mostrarlo en la página de esa categoría.
-            </p>
-          </div>
-
-          {/* Thumbnail URL */}
-          <div>
-            <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-2">
-              Thumbnail (URL)
-            </label>
-            <input
-              type="url"
-              id="thumbnail"
-              value={formData.thumbnail}
-              onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://..."
-            />
-            {formData.thumbnail && (
-              <div className="mt-2">
-                <Image
-                  src={formData.thumbnail}
-                  alt="Preview"
-                  width={200}
-                  height={150}
-                  className="rounded border border-gray-300"
-                />
-              </div>
+      <div className="flex items-center justify-between border-t border-slate-200 pt-5">
+        {isEdit ? (
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={saving || deleting}
+            className="inline-flex items-center gap-1.5 border border-red-300 bg-white px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-red-600 transition-colors hover:bg-red-600 hover:text-white disabled:opacity-50"
+          >
+            {deleting ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="h-3.5 w-3.5" />
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Estado y Publicación */}
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Estado</h2>
-
-        <div className="space-y-4">
-          {/* Activo */}
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={formData.activo}
-              onChange={(e) => setFormData({ ...formData, activo: e.target.checked })}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-            />
-            <div>
-              <span className="text-sm font-medium text-gray-900">Activo</span>
-              <p className="text-sm text-gray-500">El brochure estará disponible para edición y visualización</p>
-            </div>
-          </label>
-
-          {/* Publicado */}
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={formData.publicado}
-              onChange={(e) => setFormData({ ...formData, publicado: e.target.checked })}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-            />
-            <div>
-              <span className="text-sm font-medium text-gray-900">Publicado</span>
-              <p className="text-sm text-gray-500">El brochure será visible públicamente</p>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      {/* Botones de Acción */}
-      <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-        <Link
-          href="/admin/brochures"
-          className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Cancelar
-        </Link>
+            Eliminar
+          </button>
+        ) : (
+          <span />
+        )}
 
         <button
           type="submit"
-          disabled={loading}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={saving || deleting}
+          className="inline-flex items-center gap-1.5 bg-red-600 px-5 py-2 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:opacity-50"
         >
-          {loading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Guardando...
-            </>
+          {saving ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
           ) : (
-            <>
-              <Save className="w-4 h-4" />
-              {brochure ? 'Actualizar Brochure' : 'Crear Brochure'}
-            </>
+            <Save className="h-3.5 w-3.5" />
           )}
+          {isEdit ? "Guardar cambios" : "Crear brochure"}
         </button>
       </div>
     </form>

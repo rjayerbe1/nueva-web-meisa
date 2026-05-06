@@ -99,48 +99,23 @@ async function getProyectosByCategoria(key: string) {
 }
 
 async function getBrochureByCategoria(categoriaId: string) {
-  const brochure = await prisma.brochure.findFirst({
+  return prisma.brochure.findFirst({
     where: {
       categoriaId,
       publicado: true,
       activo: true,
+      pdfUrl: { not: null },
     },
     select: {
       id: true,
       titulo: true,
       descripcion: true,
       urlAmigable: true,
-      thumbnail: true,
       pdfUrl: true,
       publicado: true,
       activo: true,
-      fechaPublicacion: true,
-      pages: {
-        where: { visible: true },
-        select: {
-          id: true,
-          nombre: true,
-          canvasData: true,
-          configuracion: true,
-          orden: true,
-        },
-        orderBy: { orden: 'asc' },
-        take: 1,
-      },
     },
   })
-
-  if (!brochure) return null
-
-  const totalPages = await prisma.brochurePage.count({
-    where: { brochureId: brochure.id, visible: true },
-  })
-
-  return {
-    ...brochure,
-    totalPages,
-    primeraPagePreview: brochure.pages[0] || null,
-  }
 }
 
 export default async function CategoriaPage({

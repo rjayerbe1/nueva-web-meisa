@@ -19,26 +19,9 @@ interface Brochure {
   titulo: string
   descripcion: string | null
   urlAmigable: string
-  thumbnail: string | null
   pdfUrl: string | null
   publicado: boolean
   activo: boolean
-  fechaPublicacion: string | null
-  totalPages: number
-  primeraPagePreview: {
-    id: string
-    nombre: string
-    canvasData: any
-    configuracion: any
-    orden: number
-  } | null
-  pages: Array<{
-    id: string
-    nombre: string
-    canvasData: any
-    configuracion: any
-    orden: number
-  }>
 }
 
 interface Proyecto {
@@ -104,7 +87,6 @@ export default function CategoryPageClient({
     return value.replace(/\{nombre\}/g, categoria.nombre)
   }
 
-  const [downloadingPDF, setDownloadingPDF] = useState(false)
   // Inicializamos con la imagen de la primera especialidad activa para que
   // no haya "flash" de la imagen de categoría en el primer render.
   const firstEspecialidadImg =
@@ -118,30 +100,6 @@ export default function CategoryPageClient({
   const handleEspecialidadChange = (especialidad: any) => {
     if (especialidad?.imagen) {
       setHeroBackground(especialidad.imagen)
-    }
-  }
-
-  const handleDownloadPDF = async () => {
-    if (!brochure || downloadingPDF) return
-
-    try {
-      setDownloadingPDF(true)
-
-      if (brochure.pdfUrl && brochure.pdfUrl.trim() !== '') {
-        const link = document.createElement('a')
-        link.href = brochure.pdfUrl
-        link.download = `${brochure.titulo.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`
-        link.target = '_blank'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      } else {
-        return
-      }
-    } catch (error) {
-      console.error('Error al descargar PDF:', error)
-    } finally {
-      setDownloadingPDF(false)
     }
   }
 
@@ -263,7 +221,7 @@ export default function CategoryPageClient({
                 {categoria.nombre}
               </motion.h1>
 
-              {brochure && brochure.publicado && brochure.activo && (
+              {brochure && brochure.publicado && brochure.activo && brochure.pdfUrl && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -278,14 +236,16 @@ export default function CategoryPageClient({
                     Brochure
                   </Link>
 
-                  <button
-                    onClick={handleDownloadPDF}
-                    disabled={downloadingPDF}
-                    className="group inline-flex items-center gap-2 px-4 py-2 border border-white/30 text-white font-lato font-bold text-xs uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950 disabled:opacity-50 disabled:cursor-not-allowed"
+                  <a
+                    href={brochure.pdfUrl}
+                    download={`${brochure.titulo.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 px-4 py-2 border border-white/30 text-white font-lato font-bold text-xs uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
                   >
                     <FileBadge className="w-4 h-4" />
-                    {downloadingPDF ? '...' : 'PDF'}
-                  </button>
+                    PDF
+                  </a>
                 </motion.div>
               )}
             </div>

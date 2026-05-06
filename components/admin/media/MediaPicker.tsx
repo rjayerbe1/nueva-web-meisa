@@ -8,12 +8,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { ImagePlus, Upload, X, Loader2, Search, Film, Check } from "lucide-react"
+import { ImagePlus, Upload, X, Loader2, Search, Film, Check, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Media } from "@prisma/client"
 import { MediaThumb } from "./MediaThumb"
 
-type Kind = "image" | "video" | "any"
+type Kind = "image" | "video" | "doc" | "any"
+
+function pickerLabel(kind: Kind): string {
+  if (kind === "video") return "video"
+  if (kind === "doc") return "documento"
+  if (kind === "image") return "imagen"
+  return "archivo"
+}
 
 interface MediaPickerProps {
   value: string | null | undefined
@@ -58,8 +65,8 @@ export function MediaPicker({
             className="flex h-32 w-full items-center justify-center rounded-none border-2 border-dashed border-slate-300 bg-white text-sm text-slate-500 transition-colors hover:border-red-600 hover:bg-red-50/30 hover:text-red-600"
           >
             <div className="flex flex-col items-center gap-1">
-              <ImagePlus className="h-6 w-6" />
-              <span>Seleccionar {kind === "video" ? "video" : "imagen"}</span>
+              {kind === "doc" ? <FileText className="h-6 w-6" /> : <ImagePlus className="h-6 w-6" />}
+              <span>Seleccionar {pickerLabel(kind)}</span>
             </div>
           </button>
         )}
@@ -92,6 +99,13 @@ function MediaPreview({
   onRemove: () => void
   onReplace: () => void
 }) {
+  const fileName = (() => {
+    try {
+      return decodeURIComponent(value.split("/").pop() ?? value)
+    } catch {
+      return value.split("/").pop() ?? value
+    }
+  })()
   return (
     <div className="overflow-hidden rounded-none border border-slate-200 bg-slate-50">
       {kind === "video" ? (
@@ -106,6 +120,21 @@ function MediaPreview({
           >
             Tu navegador no soporta video.
           </video>
+        </div>
+      ) : kind === "doc" ? (
+        <div className="flex h-48 w-full items-center justify-center gap-3 bg-slate-100 text-slate-500">
+          <FileText className="h-10 w-10" />
+          <div className="min-w-0">
+            <p className="truncate font-lato text-sm font-semibold text-slate-700">{fileName}</p>
+            <a
+              href={value}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-lato text-xs text-red-600 hover:underline"
+            >
+              Abrir documento
+            </a>
+          </div>
         </div>
       ) : (
         <div className="relative w-full bg-slate-100">
@@ -158,7 +187,7 @@ export function MediaPickerModal({ open, onOpenChange, kind, folder, allowUrl, o
         {/* Header */}
         <DialogHeader className="border-b border-slate-200 bg-white px-6 py-4 text-left space-y-1">
           <DialogTitle className="font-bebas text-2xl uppercase tracking-wide text-slate-950">
-            Seleccionar {kind === "video" ? "video" : kind === "image" ? "imagen" : "archivo"}
+            Seleccionar {pickerLabel(kind)}
           </DialogTitle>
           <DialogDescription className="font-lato text-xs text-slate-500">
             Elige uno de la biblioteca, sube uno nuevo o pega una URL externa.
@@ -264,8 +293,8 @@ function LibraryTab({ kind, onPick }: { kind: Kind; onPick: (url: string) => voi
         </div>
       ) : items.length === 0 ? (
         <div className="flex h-96 items-center justify-center font-lato text-sm text-slate-500">
-          No hay {kind === "video" ? "videos" : "imágenes"} todavía. Usa la pestaña &quot;Subir
-          nuevo&quot;.
+          No hay {kind === "video" ? "videos" : kind === "doc" ? "documentos" : "imágenes"} todavía.
+          Usa la pestaña &quot;Subir nuevo&quot;.
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
@@ -334,7 +363,9 @@ function UploadTab({
       ? "video/mp4,video/quicktime,video/webm"
       : kind === "image"
         ? "image/*"
-        : "image/*,video/*,application/pdf"
+        : kind === "doc"
+          ? "application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain,text/csv"
+          : "image/*,video/*,application/pdf"
 
   const inputCls =
     "w-full rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"

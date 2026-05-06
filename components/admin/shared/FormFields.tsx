@@ -28,6 +28,7 @@ export type FieldKind =
   | "color"
   | "image"
   | "video"
+  | "document"
   | "imageArray"
   | "date"
   | "objectArray"
@@ -221,12 +222,16 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
 
     case "image":
     case "video":
+    case "document":
       return (
         <div className={spanClass}>
           <MediaPicker
             value={(value as string) ?? null}
             onChange={(v) => onChange(v)}
-            kind={field.kind === "video" ? "video" : "image"}
+            kind={
+              field.kind === "video" ? "video" : field.kind === "document" ? "doc" : "image"
+            }
+            folder={field.kind === "document" ? "brochures" : "general"}
             label={field.label}
             hint={field.hint}
           />

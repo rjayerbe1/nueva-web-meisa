@@ -1,58 +1,46 @@
-import { getServerSession } from "next-auth"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
 import { prisma } from "@/lib/prisma"
-import { UserRole } from "@prisma/client"
 import { BrochureForm } from "@/components/admin/BrochureForm"
 
-async function getCategories() {
-  const categories = await prisma.categoriaProyecto.findMany({
-    orderBy: { nombre: 'asc' },
+export const dynamic = "force-dynamic"
+
+async function getAvailableCategorias() {
+  const categorias = await prisma.categoriaProyecto.findMany({
+    orderBy: { nombre: "asc" },
     select: {
       id: true,
       nombre: true,
-      slug: true,
-      key: true,
-      brochure: {
-        select: {
-          id: true,
-          titulo: true
-        }
-      }
-    }
+      brochure: { select: { id: true } },
+    },
   })
-
-  return categories
+  return categorias
+    .filter((c) => !c.brochure)
+    .map((c) => ({ id: c.id, nombre: c.nombre }))
 }
 
 export default async function NewBrochurePage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
-  if (session.user.role === UserRole.VIEWER) {
-    redirect("/admin")
-  }
-
-  const categories = await getCategories()
-
-  // Filtrar categorías que no tengan brochure asignado
-  const availableCategories = categories.filter(cat => !cat.brochure)
+  const categorias = await getAvailableCategorias()
 
   return (
-    <div className="space-y-8 max-w-4xl">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Crear Nuevo Brochure</h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Crea un brochure digital vacío. Podrás agregar páginas usando templates desde el editor visual.
-        </p>
-      </div>
+    <div className="px-6 py-8 md:px-10">
+      <Link
+        href="/admin/brochures"
+        className="mb-4 inline-flex items-center gap-1 font-lato text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900"
+      >
+        <ArrowLeft className="h-3 w-3" /> Brochures
+      </Link>
 
-      <BrochureForm
-        categories={availableCategories}
-      />
+      <h1 className="font-bebas text-3xl uppercase tracking-wide text-slate-950">
+        Nuevo brochure
+      </h1>
+      <p className="mt-1 mb-8 font-lato text-sm text-slate-500">
+        Sube un PDF y queda disponible como flipbook público.
+      </p>
+
+      <div className="max-w-4xl border border-slate-200 bg-white p-6 md:p-8">
+        <BrochureForm categorias={categorias} />
+      </div>
     </div>
   )
 }

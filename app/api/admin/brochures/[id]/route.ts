@@ -1,206 +1,140 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { UserRole } from "@prisma/client"
+import { requireAdmin, apiErrorResponse } from "@/lib/auth-helpers"
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80)
+
+export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
-    }
-
+    await requireAdmin()
     const brochure = await prisma.brochure.findUnique({
       where: { id: params.id },
-      include: {
-        template: {
-          include: {
-            pages: {
-              orderBy: { orden: 'asc' }
-            }
-          }
-        },
-        categoria: true,
-        pages: {
-          orderBy: { orden: 'asc' }
-        },
-        _count: {
-          select: {
-            pages: true
-          }
-        }
-      }
+      select: {
+        id: true,
+        titulo: true,
+        descripcion: true,
+        urlAmigable: true,
+        pdfUrl: true,
+        categoriaId: true,
+        publicado: true,
+        activo: true,
+        createdAt: true,
+        updatedAt: true,
+        categoria: { select: { id: true, nombre: true, slug: true } },
+      },
     })
-
     if (!brochure) {
       return NextResponse.json({ error: "Brochure no encontrado" }, { status: 404 })
     }
-
     return NextResponse.json(brochure)
-
   } catch (error) {
-    console.error('Error obteniendo brochure:', error)
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 })
+    return apiErrorResponse(error)
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
-    }
-
-    if (session.user.role === UserRole.VIEWER) {
-      return NextResponse.json({ error: "Sin permisos" }, { status: 403 })
-    }
-
+    await requireAdmin()
     const body = await req.json()
 
-    // Verificar que el brochure existe
-    const existingBrochure = await prisma.brochure.findUnique({
-      where: { id: params.id }
-    })
-
-    if (!existingBrochure) {
+    const existing = await prisma.brochure.findUnique({ where: { id: params.id } })
+    if (!existing) {
       return NextResponse.json({ error: "Brochure no encontrado" }, { status: 404 })
     }
 
-    // Si se está cambiando la URL amigable, verificar que sea única
-    if (body.urlAmigable && body.urlAmigable !== existingBrochure.urlAmigable) {
-      const urlExists = await prisma.brochure.findUnique({
-        where: { urlAmigable: body.urlAmigable }
-      })
-
-      if (urlExists) {
-        return NextResponse.json({ error: "Esta URL ya está en uso" }, { status: 400 })
-      }
+    const titulo = body.titulo !== undefined ? String(body.titulo).trim() : existing.titulo
+    if (!titulo) {
+      return NextResponse.json({ error: "El título es obligatorio" }, { status: 400 })
     }
 
-    // Si se está cambiando la categoría, verificar que no tenga ya un brochure asignado
-    if (body.categoriaId && body.categoriaId !== existingBrochure.categoriaId) {
-      const existingCategoryBrochure = await prisma.brochure.findFirst({
-        where: {
-          categoriaId: body.categoriaId,
-          id: { not: params.id }
+    const pdfUrl =
+      body.pdfUrl !== undefined ? (body.pdfUrl ? String(body.pdfUrl).trim() : null) : existing.pdfUrl
+    if (!pdfUrl) {
+      return NextResponse.json({ error: "El PDF es obligatorio" }, { status: 400 })
+    }
+
+    let urlAmigable = existing.urlAmigable
+    if (body.urlAmigable !== undefined) {
+      const next = slugify(String(body.urlAmigable))
+      if (!next) {
+        return NextResponse.json({ error: "URL amigable inválida" }, { status: 400 })
+      }
+      if (next !== existing.urlAmigable) {
+        const taken = await prisma.brochure.findUnique({ where: { urlAmigable: next } })
+        if (taken && taken.id !== existing.id) {
+          return NextResponse.json({ error: "Esa URL amigable ya está en uso" }, { status: 400 })
         }
-      })
-
-      if (existingCategoryBrochure) {
-        return NextResponse.json({
-          error: "Esta categoría ya tiene un brochure asignado"
-        }, { status: 400 })
+        urlAmigable = next
       }
     }
 
-    // Preparar datos de actualización
-    const updateData: any = {}
-
-    if (body.titulo !== undefined) updateData.titulo = body.titulo
-    if (body.descripcion !== undefined) updateData.descripcion = body.descripcion
-    if (body.templateId !== undefined) updateData.templateId = body.templateId
-    if (body.categoriaId !== undefined) updateData.categoriaId = body.categoriaId
-    if (body.contenido !== undefined) updateData.contenido = body.contenido
-    if (body.datosPersonalizados !== undefined) updateData.datosPersonalizados = body.datosPersonalizados
-    if (body.configuracion !== undefined) updateData.configuracion = body.configuracion
-    if (body.activo !== undefined) updateData.activo = body.activo
-    if (body.thumbnail !== undefined) updateData.thumbnail = body.thumbnail
-    if (body.urlAmigable !== undefined) updateData.urlAmigable = body.urlAmigable
-
-    // Si se está publicando por primera vez, establecer la fecha de publicación
-    if (body.publicado === true && !existingBrochure.publicado) {
-      updateData.publicado = true
-      updateData.fechaPublicacion = new Date()
-    } else if (body.publicado !== undefined) {
-      updateData.publicado = body.publicado
-      if (!body.publicado) {
-        updateData.fechaPublicacion = null
-      }
-    }
-
-    // Incrementar versión si se modificó el contenido o configuración
-    if (body.contenido || body.configuracion || body.templateId) {
-      updateData.versionNumero = existingBrochure.versionNumero + 1
-    }
-
-    // Actualizar el brochure
-    const brochure = await prisma.brochure.update({
-      where: { id: params.id },
-      data: updateData,
-      include: {
-        template: {
-          select: {
-            id: true,
-            nombre: true,
-            thumbnail: true
-          }
-        },
-        categoria: {
-          select: {
-            id: true,
-            nombre: true,
-            slug: true,
-            key: true
-          }
-        },
-        _count: {
-          select: {
-            pages: true
-          }
+    let categoriaId = existing.categoriaId
+    if (body.categoriaId !== undefined) {
+      const next = body.categoriaId ? String(body.categoriaId) : null
+      if (next && next !== existing.categoriaId) {
+        const taken = await prisma.brochure.findUnique({ where: { categoriaId: next } })
+        if (taken && taken.id !== existing.id) {
+          return NextResponse.json(
+            { error: "Esa categoría ya tiene un brochure asignado." },
+            { status: 400 },
+          )
         }
       }
+      categoriaId = next
+    }
+
+    const updated = await prisma.brochure.update({
+      where: { id: existing.id },
+      data: {
+        titulo,
+        descripcion:
+          body.descripcion !== undefined
+            ? body.descripcion
+              ? String(body.descripcion).trim() || null
+              : null
+            : existing.descripcion,
+        urlAmigable,
+        pdfUrl,
+        categoriaId,
+        publicado: body.publicado !== undefined ? Boolean(body.publicado) : existing.publicado,
+        activo: body.activo !== undefined ? Boolean(body.activo) : existing.activo,
+      },
+      select: {
+        id: true,
+        titulo: true,
+        descripcion: true,
+        urlAmigable: true,
+        pdfUrl: true,
+        categoriaId: true,
+        publicado: true,
+        activo: true,
+        categoria: { select: { id: true, nombre: true } },
+      },
     })
 
-    return NextResponse.json(brochure)
-
+    return NextResponse.json(updated)
   } catch (error) {
-    console.error('Error actualizando brochure:', error)
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 })
+    return apiErrorResponse(error)
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
-    }
-
-    if (session.user.role !== UserRole.ADMIN && session.user.role !== UserRole.EDITOR) {
-      return NextResponse.json({ error: "Sin permisos" }, { status: 403 })
-    }
-
-    // Verificar que el brochure existe
-    const brochure = await prisma.brochure.findUnique({
-      where: { id: params.id }
-    })
-
-    if (!brochure) {
+    await requireAdmin()
+    const existing = await prisma.brochure.findUnique({ where: { id: params.id } })
+    if (!existing) {
       return NextResponse.json({ error: "Brochure no encontrado" }, { status: 404 })
     }
-
-    // Eliminar el brochure (las páginas y analytics se eliminan en cascada)
-    await prisma.brochure.delete({
-      where: { id: params.id }
-    })
-
-    return NextResponse.json({ message: "Brochure eliminado exitosamente" })
-
+    await prisma.brochure.delete({ where: { id: params.id } })
+    return NextResponse.json({ ok: true })
   } catch (error) {
-    console.error('Error eliminando brochure:', error)
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 })
+    return apiErrorResponse(error)
   }
 }
