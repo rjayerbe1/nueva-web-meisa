@@ -93,13 +93,17 @@ export function AdminHeader({ sidebarOpen, setSidebarOpen }: AdminHeaderProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Perfil</span>
+            <DropdownMenuItem asChild>
+              <Link href="/admin/users" className="cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                <span>Perfil</span>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Configuración</span>
+            <DropdownMenuItem asChild>
+              <Link href="/admin/configuracion" className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Configuración</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
