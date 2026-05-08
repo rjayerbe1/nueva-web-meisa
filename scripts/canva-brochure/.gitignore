@@ -1,0 +1,5 @@
+# Output local generado (PPTX pesado, ~10-26MB)
+out/
+
+# Thumbnails descargados de Canva para revisión visual (URLs firmadas, expiran)
+preview/
