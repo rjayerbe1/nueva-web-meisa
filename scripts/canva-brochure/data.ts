@@ -1,23 +1,47 @@
-// Datos REALES de MEISA + 5 puentes sample para validación de layouts.
-// Stats verificados contra Prisma DB (1996 fundación, 269 proyectos, 32.577 ton).
+// Datos REALES de MEISA. Stats verificados contra Prisma DB (1996 fundación,
+// 269 proyectos, 32.500+ ton). PROYECTOS_SAMPLE es legacy: solo regenera el
+// brochure de Puentes v12. El flujo principal carga proyectos vía Prisma con
+// scripts/canva-brochure/loaders.ts → loadProyectosByCategoria().
 
-export type LayoutKey = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O"
+export type LayoutKey =
+  | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J"
+  | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T"
 
-export interface ProyectoPuente {
+/**
+ * Tipo unificado para cualquier proyecto del brochure (puentes, edificaciones,
+ * industrial, etc.). Specs opcionales — el layout decide cuáles renderiza
+ * según `categorias.ts → specsVisibles`.
+ */
+export interface ProyectoBrochure {
   layout: LayoutKey
-  numero: number // "01 / 50" — posición en el portafolio puentes
-  tipo: string
+  numero: number // posición en el portafolio
+  tipo: string // "PUENTE VEHICULAR", "EDIFICACIÓN", "BODEGA INDUSTRIAL"...
   nombre: string
   ubicacionCorta: string
   anio: string
-  diseno: string
-  luzMax: string
-  material: string
-  longitud: string
-  ancho: string
-  peso: string
+
+  // Specs específicas de puentes
+  diseno?: string
+  luzMax?: string
+  material?: string
+  longitud?: string
+  ancho?: string
+
+  // Spec común a todos
+  peso?: string
+
+  // Specs típicas de edificaciones / industrial / comercial
+  area?: string
+  cliente?: string
+
+  // Texto editorial libre (e.g. "Construcción de Estructura Metálica...")
+  descripcion?: string
+
   fotos: string[]
 }
+
+/** Alias legacy — quitar cuando todos los call sites migren a ProyectoBrochure */
+export type ProyectoPuente = ProyectoBrochure
 
 const GCS = "https://storage.googleapis.com/meisa-imagenes/projects"
 const CATS = "https://storage.googleapis.com/meisa-imagenes/categories"
@@ -133,9 +157,10 @@ export const FOTOS_NARRATIVAS = {
 }
 
 // =============================================================================
-// PROYECTOS SAMPLE (5 puentes para validar layouts)
+// PROYECTOS SAMPLE (legacy — solo regenera el brochure de Puentes v12).
+// El flujo nuevo (multi-categoría) carga datos desde Prisma vía loaders.ts.
 // =============================================================================
-export const PROYECTOS_SAMPLE: ProyectoPuente[] = [
+export const PROYECTOS_SAMPLE: ProyectoBrochure[] = [
   {
     layout: "A",
     numero: 1,

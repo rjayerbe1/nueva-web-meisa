@@ -18,7 +18,9 @@ export const THEME = {
 
     // Acentos
     rojo: "DC2626", // rojo MEISA — máxima prioridad SOLAMENTE
+    rojoIntenso: "C41E3A", // variante para layout R (fondo rojo dominante)
     azul: "1A3672", // azul corporativo — solo en logo y acentos minoritarios
+    azulProfundo: "0F1B3F", // fondo más oscuro para layout S (mosaico azul)
 
     // Texto
     tinta: "0A0A0A",

@@ -4,18 +4,74 @@
 
 import type PptxGenJS from "pptxgenjs"
 import { THEME, FRAME, SPECS_ICONS, ASSETS } from "./theme"
-import type { ProyectoPuente } from "./data"
+import type { ProyectoBrochure, ProyectoPuente } from "./data"
 import { CAPACIDADES, EMPRESA, FOTOS_NARRATIVAS, PULL_QUOTE, STATS_GLOBAL, TIMELINE, UBICACIONES } from "./data"
+import type { SpecKey } from "./categorias"
+
+// ============================================================
+// Contexto de brochure — set por index.ts antes de generar páginas.
+// drawHeader y drawSpecsText/Dimensiones/Grid lo consultan para
+// adaptar tagline y specs según la categoría activa.
+// Default: Puentes (compatibilidad con regeneración del v12).
+// ============================================================
+
+interface BrochureContext {
+  tagline: string
+  specsVisibles: SpecKey[]
+}
+
+let __ctx: BrochureContext = {
+  tagline: "PORTAFOLIO PUENTES",
+  specsVisibles: ["DISEÑO", "LUZ_MAX", "MATERIAL", "LONGITUD", "ANCHO", "PESO"],
+}
+
+export function setBrochureContext(ctx: Partial<BrochureContext>) {
+  if (ctx.tagline) __ctx.tagline = ctx.tagline
+  if (ctx.specsVisibles) __ctx.specsVisibles = ctx.specsVisibles
+}
+
+export function resetBrochureContext() {
+  __ctx = {
+    tagline: "PORTAFOLIO PUENTES",
+    specsVisibles: ["DISEÑO", "LUZ_MAX", "MATERIAL", "LONGITUD", "ANCHO", "PESO"],
+  }
+}
+
+/** Devuelve {label, value} para una SpecKey, o null si el proyecto no tiene esa spec */
+function specPair(p: ProyectoBrochure, key: SpecKey): { label: string; value: string } | null {
+  const map: Record<SpecKey, string | undefined> = {
+    AREA: p.area,
+    PESO: p.peso,
+    CLIENTE: p.cliente,
+    DISEÑO: p.diseno,
+    LUZ_MAX: p.luzMax,
+    MATERIAL: p.material,
+    LONGITUD: p.longitud,
+    ANCHO: p.ancho,
+  }
+  const labelMap: Record<SpecKey, string> = {
+    AREA: "Área",
+    PESO: "Peso",
+    CLIENTE: "Cliente",
+    DISEÑO: "Diseño",
+    LUZ_MAX: "Luz Máx.",
+    MATERIAL: "Material",
+    LONGITUD: "Longitud",
+    ANCHO: "Ancho",
+  }
+  const value = map[key]
+  return value ? { label: labelMap[key], value } : null
+}
 
 // ============================================================
 // Helpers
 // ============================================================
 
-/** Header recurrente: "NN — PORTAFOLIO PUENTES" + línea roja */
+/** Header recurrente: "NN — PORTAFOLIO {CATEGORIA}" + línea roja */
 function drawHeader(slide: PptxGenJS.Slide, pageNumber?: number, dark = false) {
   const label = pageNumber
-    ? `${String(pageNumber).padStart(2, "0")}  —  PORTAFOLIO PUENTES`
-    : "—  PORTAFOLIO PUENTES"
+    ? `${String(pageNumber).padStart(2, "0")}  —  ${__ctx.tagline}`
+    : `—  ${__ctx.tagline}`
   const color = dark ? "94A3B8" : THEME.color.slate400
   slide.addText(label, {
     x: FRAME.headerLeftX,
@@ -130,32 +186,47 @@ function drawPhoto(
   })
 }
 
-/** Grid de specs con iconos — adapta tamaño a celda */
+/** Grid de specs con iconos — adapta tamaño a celda y respeta __ctx.specsVisibles */
 function drawSpecsGrid(
   slide: PptxGenJS.Slide,
   x: number,
   y: number,
   w: number,
   h: number,
-  proyecto: ProyectoPuente,
+  proyecto: ProyectoBrochure,
   textColor = THEME.color.slate950Text,
   labelColor?: string,
 ) {
+  // Construir items según specsVisibles del contexto
+  // Mapeo a labels uppercase para grid (estilo Puentes original)
+  const labelGrid: Record<SpecKey, string> = {
+    LONGITUD: "LONGITUD",
+    ANCHO: "ANCHO",
+    PESO: "PESO ESTRUCTURA",
+    LUZ_MAX: "LUZ MÁX.",
+    MATERIAL: "MATERIAL",
+    DISEÑO: "DISEÑO",
+    AREA: "ÁREA",
+    CLIENTE: "CLIENTE",
+  }
+  const items = __ctx.specsVisibles
+    .map((key) => {
+      const pair = specPair(proyecto, key)
+      return pair ? { label: labelGrid[key], value: pair.value } : null
+    })
+    .filter((x): x is { label: string; value: string } => x !== null)
+
+  if (items.length === 0) return
+
+  // Adaptar grid: 2 columnas, filas según items
+  const rows = Math.ceil(items.length / 2)
   const cellW = w / 2
-  const cellH = h / 3
+  const cellH = h / Math.max(rows, 1)
   const labelSize = cellH < 0.35 ? 7 : 9
   const labelH = cellH < 0.35 ? 0.14 : 0.18
   const valueSize = cellH < 0.35 ? 12 : cellH < 0.5 ? 14 : 18
   const valueSizeLong = cellH < 0.35 ? 9 : cellH < 0.5 ? 10 : 11
 
-  const items = [
-    { label: "LONGITUD", value: proyecto.longitud },
-    { label: "ANCHO", value: proyecto.ancho },
-    { label: "PESO ESTRUCTURA", value: proyecto.peso },
-    { label: "LUZ MÁX.", value: proyecto.luzMax },
-    { label: "MATERIAL", value: proyecto.material },
-    { label: "DISEÑO", value: proyecto.diseno },
-  ]
   items.forEach((item, i) => {
     const cx = x + (i % 2) * cellW
     const cy = y + Math.floor(i / 2) * cellH
@@ -765,58 +836,92 @@ export function drawMapa(pres: PptxGenJS, pageNumber: number) {
 // Bloque azul SOLO en Layout C.
 // ============================================================
 
-/** Specs en texto plano estilo PDF: "**Label:** valor" línea a línea */
+/** Specs en texto plano estilo PDF: "**Label:** valor" línea a línea.
+ *  Renderea Ubicación + las primeras 3-4 specs de __ctx.specsVisibles que tengan valor. */
 function drawSpecsText(
   slide: PptxGenJS.Slide,
   x: number,
   y: number,
   w: number,
   h: number,
-  proyecto: ProyectoPuente,
+  proyecto: ProyectoBrochure,
   textColor = THEME.color.tinta,
   size = 11,
 ) {
-  // Specs principales (Ubicación, Diseño, Luz Max, Material)
-  slide.addText(
-    [
-      { text: "Ubicación: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: `${proyecto.ubicacionCorta}\n`, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "Diseño: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: `${proyecto.diseno}\n`, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "Luz Max: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: `${proyecto.luzMax}\n`, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "Material: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: `${proyecto.material}`, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-    ],
-    { x, y, w, h, valign: "top", lineSpacingMultiple: 1.4 },
-  )
+  const baseOpts = { color: textColor, fontFace: THEME.font.body, fontSize: size }
+  const boldOpts = { ...baseOpts, bold: true }
+
+  // Siempre Ubicación primero
+  const lines: { text: string; options: typeof baseOpts | typeof boldOpts }[] = [
+    { text: "Ubicación: ", options: boldOpts },
+    { text: `${proyecto.ubicacionCorta}\n`, options: baseOpts },
+  ]
+
+  // Specs principales (excluye PESO, LONGITUD, ANCHO — esos van en drawDimensiones)
+  const specsAqui: SpecKey[] = ["DISEÑO", "LUZ_MAX", "MATERIAL", "CLIENTE", "AREA"]
+  const visiblesAqui = __ctx.specsVisibles.filter((k) => specsAqui.includes(k))
+
+  visiblesAqui.forEach((key, idx) => {
+    const pair = specPair(proyecto, key)
+    if (!pair) return
+    const isLast = idx === visiblesAqui.length - 1
+    lines.push({ text: `${pair.label}: `, options: boldOpts })
+    lines.push({ text: isLast ? pair.value : `${pair.value}\n`, options: baseOpts })
+  })
+
+  slide.addText(lines, { x, y, w, h, valign: "top", lineSpacingMultiple: 1.4 })
 }
 
-/** Sección "Dimensiones:" con bullets "°" (estilo PDF) */
+/** Sección "Dimensiones:" con bullets "°" (estilo PDF Puentes) o specs simples (Edificaciones).
+ *  Si specsVisibles incluye LONGITUD → render Puentes (header + bullets).
+ *  Si no → render Edificaciones (área/peso/cliente como specs simples sin header). */
 function drawDimensiones(
   slide: PptxGenJS.Slide,
   x: number,
   y: number,
   w: number,
   h: number,
-  proyecto: ProyectoPuente,
+  proyecto: ProyectoBrochure,
   textColor = THEME.color.tinta,
   size = 11,
 ) {
-  slide.addText(
-    [
-      { text: "Dimensiones:\n", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "°  ", options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "Longitud: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: `${proyecto.longitud}\n`, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "°  ", options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "Ancho: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: `${proyecto.ancho}\n`, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: "Peso estructura: ", options: { bold: true, color: textColor, fontFace: THEME.font.body, fontSize: size } },
-      { text: proyecto.peso, options: { color: textColor, fontFace: THEME.font.body, fontSize: size } },
-    ],
-    { x, y, w, h, valign: "top", lineSpacingMultiple: 1.4 },
-  )
+  const opts = { color: textColor, fontFace: THEME.font.body, fontSize: size }
+  const optsBold = { ...opts, bold: true }
+  const isPuentes = __ctx.specsVisibles.includes("LONGITUD")
+
+  if (isPuentes) {
+    // Render Puentes idéntico al original
+    slide.addText(
+      [
+        { text: "Dimensiones:\n", options: optsBold },
+        { text: "°  ", options: opts },
+        { text: "Longitud: ", options: optsBold },
+        { text: `${proyecto.longitud ?? ""}\n`, options: opts },
+        { text: "°  ", options: opts },
+        { text: "Ancho: ", options: optsBold },
+        { text: `${proyecto.ancho ?? ""}\n`, options: opts },
+        { text: "Peso estructura: ", options: optsBold },
+        { text: proyecto.peso ?? "", options: opts },
+      ],
+      { x, y, w, h, valign: "top", lineSpacingMultiple: 1.4 },
+    )
+    return
+  }
+
+  // Render Edificaciones — solo specs visibles (típicamente PESO, AREA, CLIENTE)
+  // Excluimos las que ya rendereó drawSpecsText (DISEÑO/LUZ_MAX/MATERIAL/CLIENTE/AREA)
+  // → quedan PESO + extras que no entraron arriba (típico: nada extra)
+  const aqui: SpecKey[] = ["PESO"]
+  const lines: { text: string; options: typeof opts }[] = []
+  aqui.forEach((key, idx) => {
+    const pair = specPair(proyecto, key)
+    if (!pair) return
+    const isLast = idx === aqui.length - 1
+    lines.push({ text: `${pair.label}: `, options: optsBold })
+    lines.push({ text: isLast ? pair.value : `${pair.value}\n`, options: opts })
+  })
+  if (lines.length === 0) return
+  slide.addText(lines, { x, y, w, h, valign: "top", lineSpacingMultiple: 1.4 })
 }
 
 /** Título "tipo + nombre" estilo PDF (sobre fondo claro u oscuro) */
