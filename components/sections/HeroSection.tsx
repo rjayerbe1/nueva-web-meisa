@@ -248,7 +248,7 @@ export function HeroSection({
             <div className={`absolute inset-0 flex items-center justify-center z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
               <video
                 ref={videoMobileRef}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain bg-white"
                 muted
                 playsInline
                 preload="auto"
@@ -366,7 +366,7 @@ export function HeroSection({
           <div className={`absolute inset-0 flex items-center justify-center z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
             <video
               ref={videoRef}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-white"
               muted
               playsInline
               preload="auto"
