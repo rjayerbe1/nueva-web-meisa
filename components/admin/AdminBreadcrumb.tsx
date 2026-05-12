@@ -36,9 +36,9 @@ const ROUTE_LABELS: Record<string, string> = {
   resumenes: "Resúmenes",
   visual: "Aspectos visuales",
   content: "Contenido",
-  "page-templates": "Plantillas de página",
   templates: "Plantillas",
   builder: "Constructor",
+  "documentos-institucionales": "Documentos institucionales",
 }
 
 function labelFor(segment: string): string {

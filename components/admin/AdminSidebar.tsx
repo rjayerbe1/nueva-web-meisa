@@ -59,6 +59,12 @@ const navigation: NavItem[] = [
   { kind: "item", name: "Servicios", href: "/admin/services", icon: Briefcase },
   { kind: "item", name: "Contacto", href: "/admin/contacto", icon: Phone },
   { kind: "item", name: "Navegación", href: "/admin/navegacion", icon: NavIcon },
+  {
+    kind: "item",
+    name: "Documentos institucionales",
+    href: "/admin/documentos-institucionales",
+    icon: FileText,
+  },
 
   { kind: "section", label: "Operaciones", color: "blue" },
   { kind: "item", name: "Proyectos", href: "/admin/projects", icon: FolderKanban },
@@ -70,10 +76,6 @@ const navigation: NavItem[] = [
     name: "Brochures digitales",
     href: "/admin/brochures",
     icon: FileText,
-    subItems: [
-      { name: "Todos los brochures", href: "/admin/brochures" },
-      { name: "Plantillas de páginas", href: "/admin/brochures/page-templates" },
-    ],
   },
   { kind: "item", name: "Mensajes", href: "/admin/messages", icon: Inbox },
   {

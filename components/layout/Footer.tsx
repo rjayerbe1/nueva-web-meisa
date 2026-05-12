@@ -103,22 +103,12 @@ export function Footer() {
             © {year} MEISA Metálicas e Ingeniería S.A.S. · Todos los derechos reservados
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 font-lato text-white/40 text-xs">
-            <a
-              href="https://meisa.com.co/politica-tratamiento-datos/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
+            <Link href="/politica-datos" className="hover:text-white transition-colors">
               Política de Datos
-            </a>
-            <a
-              href="https://meisa.com.co/manual-sagrilaft/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
+            </Link>
+            <Link href="/sagrilaft" className="hover:text-white transition-colors">
               SAGRILAFT
-            </a>
+            </Link>
             <Link href="/calidad" className="hover:text-white transition-colors">
               Sistema de Gestión
             </Link>
