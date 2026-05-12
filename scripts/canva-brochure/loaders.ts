@@ -98,8 +98,10 @@ function pickLayout(
   _allRows: ProyectoConImagenes[],
   used: { current: boolean },
 ): LayoutKey {
+  const downgrade = (l: LayoutKey): LayoutKey => downgradeIfBadFit(l, row)
+
   // Anchor: primer proyecto siempre layoutHero
-  if (idx === 0) return cfg.layoutHero
+  if (idx === 0) return downgrade(cfg.layoutHero)
 
   // Si la categoría tiene layoutDestacadoUnico (R) y este proyecto es el primero
   // marcado destacadoEnCategoria, asignárselo
@@ -115,7 +117,20 @@ function pickLayout(
   // Resto: rotación sobre layoutPool, saltando el hero (ya usado en idx 0)
   // y el layoutDestacadoUnico (no aparece en pool)
   const pool = cfg.layoutPool.filter((k) => k !== cfg.layoutHero)
-  return pool[(idx - 1) % pool.length]
+  return downgrade(pool[(idx - 1) % pool.length])
+}
+
+/** Reemplaza un layout cuando el proyecto no tiene material visual suficiente.
+ *  - S (mosaico 6 fotos): si <6 fotos únicas, downgrade a B.
+ *  - L (antes/después): si <2 fotos, downgrade a A.
+ */
+function downgradeIfBadFit(layout: LayoutKey, row: ProyectoConImagenes): LayoutKey {
+  const fotosUrls = row.imagenes.map((img) => img.urlOptimized || img.url).filter(Boolean)
+  const fotosUnicas = new Set(fotosUrls).size
+
+  if (layout === "S" && fotosUnicas < 6) return "B"
+  if (layout === "L" && fotosUnicas < 2) return "A"
+  return layout
 }
 
 // ---- helpers de formato -----------------------------------------------------

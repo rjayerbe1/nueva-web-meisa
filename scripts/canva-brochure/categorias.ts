@@ -76,7 +76,9 @@ export const CATEGORIAS: Record<CategoriaEnum, CategoriaConfig> = {
     portadaVariant: "angular",
     contraportadaVariant: "angular",
     specsVisibles: ["AREA", "PESO", "CLIENTE"],
-    layoutPool: ["P", "T", "B", "Q", "S", "A", "D", "E", "O"],
+    // Pool restringido a layouts que respetan __ctx.specsVisibles (sin specs hardcoded de Puentes).
+    // L (antes/después con render BIM) y O (cifra hero=longitud) excluidos — sin sentido sin specs Puentes.
+    layoutPool: ["P", "T", "B", "Q", "S", "A", "D", "E"],
     layoutHero: "P",
     layoutDestacadoUnico: "R",
   },
@@ -92,7 +94,7 @@ export const CATEGORIAS: Record<CategoriaEnum, CategoriaConfig> = {
     portadaVariant: "angular",
     contraportadaVariant: "angular",
     specsVisibles: ["AREA", "PESO", "CLIENTE"],
-    layoutPool: ["P", "T", "B", "Q", "S", "A", "D", "E", "F", "I", "L", "O"],
+    layoutPool: ["P", "T", "B", "Q", "S", "A", "D", "E", "F", "I"],
     layoutHero: "P",
     layoutDestacadoUnico: "R",
   },
@@ -108,7 +110,7 @@ export const CATEGORIAS: Record<CategoriaEnum, CategoriaConfig> = {
     portadaVariant: "angular",
     contraportadaVariant: "angular",
     specsVisibles: ["AREA", "PESO", "CLIENTE"],
-    layoutPool: ["P", "T", "B", "S", "A", "D", "E", "F", "I", "L", "O", "Q"],
+    layoutPool: ["P", "T", "B", "S", "A", "D", "E", "F", "I", "Q"],
     layoutHero: "P",
     layoutDestacadoUnico: "R",
   },
@@ -124,7 +126,7 @@ export const CATEGORIAS: Record<CategoriaEnum, CategoriaConfig> = {
     portadaVariant: "angular",
     contraportadaVariant: "angular",
     specsVisibles: ["AREA", "PESO", "CLIENTE"],
-    layoutPool: ["P", "T", "B", "Q", "S", "A", "D", "E", "O"],
+    layoutPool: ["P", "T", "B", "Q", "S", "A", "D", "E"],
     layoutHero: "P",
   },
 
@@ -139,7 +141,7 @@ export const CATEGORIAS: Record<CategoriaEnum, CategoriaConfig> = {
     portadaVariant: "angular",
     contraportadaVariant: "angular",
     specsVisibles: ["AREA", "PESO", "CLIENTE"],
-    layoutPool: ["P", "T", "B", "A", "D", "E", "O"],
+    layoutPool: ["P", "T", "B", "A", "D", "E"],
     layoutHero: "P",
   },
 }

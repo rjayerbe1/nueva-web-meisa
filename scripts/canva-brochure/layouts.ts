@@ -37,6 +37,102 @@ export function resetBrochureContext() {
   }
 }
 
+/** True si la categoría activa es Puentes (tiene LONGITUD en specsVisibles) */
+function isPuentesCtx(): boolean {
+  return __ctx.specsVisibles.includes("LONGITUD")
+}
+
+/**
+ * Calcula fontSize seguro para un título dentro de un bloque de ancho `widthIn`.
+ * Considera la PALABRA más larga (no longitud total) — evita word-wrap a media palabra.
+ * `factor` ≈ ancho promedio de char en pt por unidad de fontSize.
+ *   - Bebas Neue (condensed): 0.42
+ *   - Lato regular: 0.50
+ *   - Archivo Black (display heavy): 0.62
+ */
+export function fitTitleSize(
+  text: string,
+  widthIn: number,
+  maxFontSize: number,
+  factor = 0.6,
+  minFontSize = 18,
+): number {
+  const longestWord = text
+    .split(/\s+/)
+    .reduce((acc, w) => Math.max(acc, w.length), 1)
+  const widthPt = widthIn * 72
+  const calc = Math.floor(widthPt / (longestWord * factor))
+  return Math.min(maxFontSize, Math.max(minFontSize, calc))
+}
+
+/**
+ * Calcula fontSize considerando ANCHO (palabra más larga) Y ALTURA (líneas tras wrap).
+ * Más robusto que fitTitleSize cuando el bloque tiene altura limitada.
+ *
+ * Algoritmo: itera fontSize de maxFontSize hacia abajo; para cada size estima:
+ *   1. ¿Cabe la palabra más larga en widthIn?
+ *   2. ¿Caben las líneas estimadas tras wrap en heightIn?
+ * Retorna el primer size que cumple ambas condiciones (o minFontSize si nunca).
+ */
+export function fitTitleByLines(
+  text: string,
+  widthIn: number,
+  heightIn: number,
+  maxFontSize: number,
+  factor = 0.6,
+  lineSpacingMultiple = 0.92,
+  minFontSize = 16,
+): number {
+  const widthPt = widthIn * 72
+  const heightPt = heightIn * 72
+  const cleaned = text.replace(/\s+/g, " ").trim()
+  const totalChars = cleaned.length
+  const longestWord = cleaned
+    .split(" ")
+    .reduce((acc, w) => Math.max(acc, w.length), 1)
+
+  for (let size = maxFontSize; size >= minFontSize; size -= 2) {
+    // Check 1: palabra más larga entra en una línea
+    const longestWordWidth = longestWord * size * factor
+    if (longestWordWidth > widthPt) continue
+
+    // Check 2: líneas estimadas tras word-wrap entran en altura disponible
+    const charsPerLine = Math.max(1, Math.floor(widthPt / (size * factor)))
+    const estimatedLines = Math.ceil(totalChars / charsPerLine)
+    const totalHeight = estimatedLines * size * lineSpacingMultiple
+    if (totalHeight > heightPt) continue
+
+    return size
+  }
+  return minFontSize
+}
+
+/** Construye runs richtext con specs visibles según __ctx, separadas por separator.
+ *  Filtra automáticamente specs sin valor. Devuelve [] si no hay nada que renderizar. */
+function buildSpecsRichText(
+  p: ProyectoBrochure,
+  baseStyle: { fontSize: number; color: string },
+  separator: "newline" | "dot" | "comma" = "newline",
+  excludeKeys: SpecKey[] = [],
+): { text: string; options: Record<string, unknown> }[] {
+  const sep = separator === "dot" ? "  ·  " : separator === "comma" ? ", " : "\n"
+  const opts = { color: baseStyle.color, fontFace: THEME.font.body, fontSize: baseStyle.fontSize }
+  const optsBold = { ...opts, bold: true }
+
+  const pairs = __ctx.specsVisibles
+    .filter((k) => !excludeKeys.includes(k))
+    .map((k) => specPair(p, k))
+    .filter((x): x is { label: string; value: string } => x !== null)
+
+  const runs: { text: string; options: Record<string, unknown> }[] = []
+  pairs.forEach((pair, idx) => {
+    runs.push({ text: `${pair.label}: `, options: optsBold })
+    const isLast = idx === pairs.length - 1
+    runs.push({ text: isLast ? pair.value : `${pair.value}${sep}`, options: opts })
+  })
+  return runs
+}
+
 /** Devuelve {label, value} para una SpecKey, o null si el proyecto no tiene esa spec */
 function specPair(p: ProyectoBrochure, key: SpecKey): { label: string; value: string } | null {
   const map: Record<SpecKey, string | undefined> = {
@@ -935,7 +1031,11 @@ function drawTituloProyecto(
 ) {
   const tipoColor = opts.tipoColor || THEME.color.azul
   const nombreColor = opts.nombreColor || THEME.color.azul
-  const nombreSize = opts.nombreSize || 56
+  // nombreSize sirve como tope; fitTitleByLines ajusta considerando palabra más
+  // larga Y líneas estimadas tras wrap (h=1.6 disponible en este bloque).
+  const maxSize = opts.nombreSize || 56
+  const nombreClean = p.nombre.replace(/\n/g, " ")
+  const nombreSize = fitTitleByLines(nombreClean, w, 1.6, maxSize, 0.62, 0.9)
 
   slide.addText(p.tipo, {
     x,
@@ -1159,16 +1259,25 @@ export function drawLayoutD(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   // Foto render/detalle arriba derecha
   drawPhoto(slide, 7.2, 0.95, 5.6, 2.6, { url: p.fotos[1] || p.fotos[0], label: "FOTO RENDER" })
 
-  // Bloque "Dimensiones:" arriba derecha (entre fotos y bloque título)
-  slide.addText(
-    [
-      { text: "Dimensiones: ", options: { bold: true, fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: `Longitud:\n${p.longitud}, Ancho: ${p.ancho}\n`, options: { fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: "Peso estructura: ", options: { bold: true, fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: p.peso, options: { fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
-    ],
-    { x: 7.2, y: 3.7, w: 5.6, h: 1.2, valign: "top", lineSpacingMultiple: 1.4 },
-  )
+  // Bloque specs arriba derecha (entre fotos y bloque título)
+  // Puentes: "Dimensiones: Longitud:\n... Peso estructura:..."
+  // No-Puentes: specs visibles (Área/Peso/Cliente) separadas por línea
+  if (isPuentesCtx()) {
+    slide.addText(
+      [
+        { text: "Dimensiones: ", options: { bold: true, fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: `Longitud:\n${p.longitud ?? ""}, Ancho: ${p.ancho ?? ""}\n`, options: { fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: "Peso estructura: ", options: { bold: true, fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: p.peso ?? "", options: { fontSize: 11, fontFace: THEME.font.body, color: THEME.color.tinta } },
+      ],
+      { x: 7.2, y: 3.7, w: 5.6, h: 1.2, valign: "top", lineSpacingMultiple: 1.4 },
+    )
+  } else {
+    const runs = buildSpecsRichText(p, { fontSize: 11, color: THEME.color.tinta }, "newline")
+    if (runs.length > 0) {
+      slide.addText(runs, { x: 7.2, y: 3.7, w: 5.6, h: 1.2, valign: "top", lineSpacingMultiple: 1.4 })
+    }
+  }
 
   // Foto cuadrada centro inferior
   drawPhoto(slide, 5.0, 5.0, 3.5, 2.0, { url: p.fotos[1] || p.fotos[0], label: "FOTO 3" })
@@ -1228,12 +1337,13 @@ export function drawLayoutE(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   drawHeader(slide, pageNumber, true)
   drawFooter(slide, true)
 
-  // Bloque BLANCO bottom-left con texto AZUL (estilo PDF Santander)
+  // Bloque BLANCO bottom-left con texto AZUL — extendido a y=3.7 + h=3.35 para
+  // que cubra título + ubicación + specs aun cuando título wrappea a 3 líneas
   slide.addShape("rect", {
     x: 0.5,
-    y: 4.0,
+    y: 3.7,
     w: 6.5,
-    h: 3.05,
+    h: 3.35,
     fill: { color: THEME.color.white },
     line: { color: THEME.color.white, width: 0 },
   })
@@ -1241,7 +1351,7 @@ export function drawLayoutE(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   // Título "PUENTE PEATONAL / SANTANDER DE QUILICHAO"
   slide.addText(p.tipo, {
     x: 0.8,
-    y: 4.2,
+    y: 3.9,
     w: 6,
     h: 0.4,
     fontSize: 16,
@@ -1252,10 +1362,10 @@ export function drawLayoutE(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   })
   slide.addText(p.nombre, {
     x: 0.8,
-    y: 4.6,
+    y: 4.3,
     w: 5,
-    h: 1.4,
-    fontSize: 38,
+    h: 1.7,
+    fontSize: fitTitleByLines(p.nombre.replace(/\n/g, " "), 5, 1.7, 38, 0.62, 0.95),
     fontFace: THEME.font.displayHeavy,
     color: THEME.color.azul,
     bold: true,
@@ -1286,23 +1396,35 @@ export function drawLayoutE(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   })
 
   // Specs compactos
-  slide.addText(
-    [
-      { text: "Ubicación: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: `${p.ubicacionCorta}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: "Diseño: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: `${p.diseno}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: "Luz Max: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: `${p.luzMax}    `, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: "Material: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: `${p.material}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: "Dimensiones: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: `Longitud: ${p.longitud}, Ancho: ${p.ancho}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: "Peso estructura: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-      { text: p.peso, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
-    ],
-    { x: 0.8, y: 6.15, w: 6.0, h: 0.85, valign: "top", lineSpacingMultiple: 1.3 },
-  )
+  if (isPuentesCtx()) {
+    slide.addText(
+      [
+        { text: "Ubicación: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: `${p.ubicacionCorta}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: "Diseño: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: `${p.diseno ?? ""}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: "Luz Max: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: `${p.luzMax ?? ""}    `, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: "Material: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: `${p.material ?? ""}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: "Dimensiones: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: `Longitud: ${p.longitud ?? ""}, Ancho: ${p.ancho ?? ""}\n`, options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: "Peso estructura: ", options: { bold: true, fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+        { text: p.peso ?? "", options: { fontSize: 10, fontFace: THEME.font.body, color: THEME.color.tinta } },
+      ],
+      { x: 0.8, y: 6.15, w: 6.0, h: 0.85, valign: "top", lineSpacingMultiple: 1.3 },
+    )
+  } else {
+    // No-Puentes: ubicación + specs visibles, todas en una columna
+    const opts = { color: THEME.color.tinta, fontFace: THEME.font.body, fontSize: 10 }
+    const optsBold = { ...opts, bold: true }
+    const runs: { text: string; options: Record<string, unknown> }[] = [
+      { text: "Ubicación: ", options: optsBold },
+      { text: `${p.ubicacionCorta}\n`, options: opts },
+    ]
+    runs.push(...buildSpecsRichText(p, { fontSize: 10, color: THEME.color.tinta }, "newline"))
+    slide.addText(runs, { x: 0.8, y: 6.15, w: 6.0, h: 0.85, valign: "top", lineSpacingMultiple: 1.3 })
+  }
 
   // 2 fotos thumb der con borde blanco overlay
   if (p.fotos[1]) {
@@ -1513,12 +1635,27 @@ export function drawLayoutF(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   })
   slide.addText(p.nombre, {
     x: 0.5, y: 5.15, w: 12, h: 1.4,
-    fontSize: 80, fontFace: THEME.font.displayHeavy, color: "FFFFFF", bold: true, valign: "top", lineSpacingMultiple: 0.95,
+    fontSize: fitTitleByLines(p.nombre.replace(/\n/g, " "), 12, 1.4, 64, 0.62, 0.95),
+    fontFace: THEME.font.displayHeavy, color: "FFFFFF", bold: true, valign: "top", lineSpacingMultiple: 0.95,
   })
-  slide.addText(`${p.ubicacionCorta}  ·  ${p.anio}  ·  L: ${p.longitud}  ·  ${p.peso}`, {
-    x: 0.5, y: 6.7, w: 12, h: 0.3,
-    fontSize: 11, fontFace: THEME.font.body, color: "FFFFFF",
-  })
+  // Línea inferior: ubicación + año + specs visibles separados por punto
+  if (isPuentesCtx()) {
+    slide.addText(`${p.ubicacionCorta}  ·  ${p.anio}  ·  L: ${p.longitud ?? ""}  ·  ${p.peso ?? ""}`, {
+      x: 0.5, y: 6.7, w: 12, h: 0.3,
+      fontSize: 11, fontFace: THEME.font.body, color: "FFFFFF",
+    })
+  } else {
+    // No-Puentes: ubicación · año · specs visibles concatenados
+    const specsParts = __ctx.specsVisibles
+      .map((k) => specPair(p, k))
+      .filter((x): x is { label: string; value: string } => x !== null)
+      .map((s) => `${s.label}: ${s.value}`)
+    const line = [p.ubicacionCorta, p.anio, ...specsParts].filter(Boolean).join("  ·  ")
+    slide.addText(line, {
+      x: 0.5, y: 6.7, w: 12, h: 0.3,
+      fontSize: 11, fontFace: THEME.font.body, color: "FFFFFF",
+    })
+  }
 }
 
 // Layout G — Grid 3×2 fotos izquierda + info lateral derecha
@@ -1636,7 +1773,8 @@ export function drawLayoutI(pres: PptxGenJS, p: ProyectoPuente, pageNumber: numb
   })
   slide.addText(p.nombre, {
     x: 8.3, y: 2.85, w: 4.5, h: 1.5,
-    fontSize: 36, fontFace: THEME.font.displayHeavy, color: THEME.color.azul, bold: true, valign: "top", lineSpacingMultiple: 0.95,
+    fontSize: fitTitleByLines(p.nombre.replace(/\n/g, " "), 4.5, 1.5, 36, 0.62, 0.95),
+    fontFace: THEME.font.displayHeavy, color: THEME.color.azul, bold: true, valign: "top", lineSpacingMultiple: 0.95,
   })
   slide.addShape("line", { x: 8.3, y: 4.4, w: 1.5, h: 0, line: { color: THEME.color.rojo, width: 2 } })
   slide.addText(`${p.ubicacionCorta}\n${p.anio}`, {

@@ -5,6 +5,7 @@ import type PptxGenJS from "pptxgenjs"
 import { THEME, FRAME, ASSETS } from "./theme"
 import type { ProyectoBrochure } from "./data"
 import type { CategoriaConfig, SpecKey } from "./categorias"
+import { fitTitleSize, fitTitleByLines } from "./layouts"
 
 const W = THEME.slide.width // 13.333
 const H = THEME.slide.height // 7.5
@@ -129,98 +130,81 @@ export function drawPortadaAngular(
   const slide = pres.addSlide()
   slide.background = { color: "FFFFFF" }
 
-  // 1. Bloque azul superior — rectángulo grande cubriendo área del título
-  //    Inspirado en pág 1 PDF: gran triángulo azul ocupa 60% sup-izq
+  // 1. Foto a sangre cubriendo lado derecho
+  drawPhoto(slide, 7.5, 0, 5.833, 7.5, fotoPortada, true)
+
+  // 2. Bloque azul izquierdo — alto 6.5" para que aloje título + año sin colisionar con el rojo
   slide.addShape("rect", {
     x: 0,
     y: 0,
-    w: 8.5,
-    h: 5.0,
+    w: 7.5,
+    h: 6.5,
     fill: { color: THEME.color.azul },
     line: { color: THEME.color.azul, width: 0 },
   })
 
-  // 2. "Bisel" angular del bloque azul: triángulo blanco cortando esquina inf-der del azul
-  slide.addShape("rtTriangle", {
-    x: 5.5,
-    y: 2.5,
-    w: 3.5,
-    h: 2.5,
-    fill: { color: "FFFFFF" },
-    line: { color: "FFFFFF", width: 0 },
-  })
-
-  // 3. Foto a sangre cubriendo derecha
-  drawPhoto(slide, 7.5, 0, 5.833, 7.5, fotoPortada, true)
-
-  // 4. Banda roja diagonal cruzando la página (efecto del PDF)
-  //    Aprox: triángulo rojo de ancho amplio en la parte central-inferior
+  // 3. Banda roja diagonal solo en el último 1.0" (separador editorial inferior)
   slide.addShape("rtTriangle", {
     x: 0,
-    y: 5.0,
+    y: 6.5,
     w: 7.5,
-    h: 2.5,
+    h: 1.0,
     fill: { color: THEME.color.rojo },
     line: { color: THEME.color.rojo, width: 0 },
     flipV: true,
   })
   slide.addShape("rtTriangle", {
     x: 7.5,
-    y: 5.0,
+    y: 6.5,
     w: 5.833,
-    h: 2.5,
+    h: 1.0,
     fill: { color: THEME.color.rojo },
     line: { color: THEME.color.rojo, width: 0 },
     flipH: true,
     flipV: true,
   })
 
-  // 5. Título grande en blanco SOBRE el bloque azul
-  const lines = categoria.tituloPortada.split("\n")
-  const linea1 = lines[0] || categoria.tituloPortada // "PORTAFOLIO DE"
-  const linea2 = lines.slice(1).join(" ") // "EDIFICACIONES"
+  // 4. Título grande en blanco — fitTitleByLines garantiza que entra en h=4.2
+  const tituloFull = categoria.tituloPortada
+  const size = fitTitleByLines(tituloFull, 7.0, 4.2, 84, 0.62, 0.92)
 
-  // Línea 1 en tamaño moderado, blanco sobre azul
-  slide.addText(linea1, {
-    x: 0.5,
-    y: 0.7,
-    w: 7.5,
-    h: 1.0,
-    fontSize: 40,
+  slide.addText(tituloFull, {
+    x: 0.4,
+    y: 0.9,
+    w: 7.0,
+    h: 4.2,
+    fontSize: size,
+    fontFace: THEME.font.displayHeavy,
+    color: "FFFFFF",
+    bold: true,
+    valign: "top",
+    lineSpacingMultiple: 0.92,
+    charSpacing: 2,
+  })
+
+  // 5. Año dentro del bloque azul (no sobre el rojo) — fontSize moderado
+  slide.addText(categoria.subtituloPortada, {
+    x: 0.4,
+    y: 5.5,
+    w: 4.0,
+    h: 0.6,
+    fontSize: 28,
     fontFace: THEME.font.display,
     color: "FFFFFF",
     bold: true,
     valign: "top",
-    charSpacing: 4,
+    charSpacing: 12,
   })
 
-  // Línea 2 — el nombre de la categoría, ocupando más espacio
-  if (linea2) {
-    // Calcular tamaño según longitud
-    const len = linea2.length
-    const size = len > 24 ? 44 : len > 18 ? 56 : len > 12 ? 68 : 84
-    slide.addText(linea2, {
-      x: 0.5,
-      y: 1.9,
-      w: 7.5,
-      h: 2.5,
-      fontSize: size,
-      fontFace: THEME.font.displayHeavy,
-      color: "FFFFFF",
-      bold: true,
-      valign: "top",
-      lineSpacingMultiple: 0.92,
-    })
-  }
-
-  // 6. Logo MEISA color en abajo-izquierda (sobre fondo blanco que asoma entre rojos)
+  // 6. Logo MEISA blanco abajo izq — sobre la franja blanca debajo del rojo
+  //    (el rojo está en y=6.5 hasta y=7.0; el blanco asoma de y=7.0 a y=7.5)
   slide.addImage({
     path: ASSETS.logoWhite,
-    x: 0.5,
-    y: 4.4,
+    x: 0.4,
+    y: 6.7,
     w: 2.4,
-    h: 0.95,
-    sizing: { type: "contain", w: 2.4, h: 0.95 },
+    h: 0.7,
+    sizing: { type: "contain", w: 2.4, h: 0.7 },
   })
 }
 
@@ -232,141 +216,121 @@ export function drawContraportadaAngular(pres: PptxGenJS) {
   const slide = pres.addSlide()
   slide.background = { color: "FFFFFF" }
 
-  // 1. Bloque rojo triangular abajo-izquierda
+  // 1. Bloque azul ocupando 60% superior — solo decorativo (sin texto encima)
+  slide.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 13.333,
+    h: 4.5,
+    fill: { color: THEME.color.azul },
+    line: { color: THEME.color.azul, width: 0 },
+  })
+
+  // 2. Banda roja diagonal abajo del azul (separador editorial)
   slide.addShape("rtTriangle", {
     x: 0,
-    y: 0.5,
-    w: 8.0,
-    h: 7.0,
+    y: 4.5,
+    w: 7.5,
+    h: 1.5,
     fill: { color: THEME.color.rojo },
     line: { color: THEME.color.rojo, width: 0 },
     flipV: true,
   })
-
-  // 2. Bloque azul triangular arriba-derecha sobreponiéndose
   slide.addShape("rtTriangle", {
-    x: 4.0,
-    y: 0,
-    w: 9.333,
-    h: 6.0,
-    fill: { color: THEME.color.azul },
-    line: { color: THEME.color.azul, width: 0 },
+    x: 7.5,
+    y: 4.5,
+    w: 5.833,
+    h: 1.5,
+    fill: { color: THEME.color.rojo },
+    line: { color: THEME.color.rojo, width: 0 },
     flipH: true,
+    flipV: true,
   })
 
-  // 3. "CONTÁCTANOS" eyebrow blanco sobre el bloque azul
-  slide.addShape("rect", {
-    x: 8.0,
-    y: 0.8,
-    w: 4.5,
-    h: 0.6,
-    fill: { color: THEME.color.azulProfundo },
-    line: { color: THEME.color.azulProfundo, width: 0 },
-  })
+  // 3. "CONTÁCTANOS" hero sobre el bloque azul (centrado)
   slide.addText("CONTÁCTANOS", {
-    x: 8.0,
-    y: 0.8,
-    w: 4.5,
-    h: 0.6,
-    fontSize: 28,
-    fontFace: THEME.font.display,
+    x: 0.5,
+    y: 0.9,
+    w: 12.333,
+    h: 1.0,
+    fontSize: 56,
+    fontFace: THEME.font.displayHeavy,
     color: "FFFFFF",
     bold: true,
     align: "center",
     valign: "middle",
+    charSpacing: 14,
   })
 
-  // 4. Datos de contacto Jamundí
-  slide.addText("📍 JAMUNDÍ - COLOMBIA", {
-    x: 7.5,
-    y: 1.7,
-    w: 5.5,
-    h: 0.4,
-    fontSize: 16,
-    fontFace: THEME.font.display,
-    color: "FFFFFF",
-    bold: true,
-    valign: "top",
+  // 4. Línea roja decorativa debajo
+  slide.addShape("line", {
+    x: 6.0,
+    y: 1.95,
+    w: 1.333,
+    h: 0,
+    line: { color: THEME.color.rojo, width: 3 },
+  })
+
+  // 5. Tres columnas: Jamundí · Popayán · Web/email
+  const colY = 2.3
+  // Columna 1: Jamundí
+  slide.addText("JAMUNDÍ", {
+    x: 0.7, y: colY, w: 4.0, h: 0.4,
+    fontSize: 18, fontFace: THEME.font.display, color: "FFFFFF",
+    bold: true, valign: "top", charSpacing: 8,
   })
   slide.addText(
-    "Jamundí, Vía Panamericana # 6 sur - 196\n+57 (2) 312 0050 al 53 · Cel: 315 219 7001",
+    "Vía Panamericana # 6 sur - 196\n+57 (2) 312 0050 al 53\nCel: 315 219 7001",
     {
-      x: 7.5,
-      y: 2.15,
-      w: 5.5,
-      h: 0.7,
-      fontSize: 11,
-      fontFace: THEME.font.body,
-      color: "FFFFFF",
-      valign: "top",
-      lineSpacingMultiple: 1.3,
+      x: 0.7, y: colY + 0.5, w: 4.0, h: 1.4,
+      fontSize: 11, fontFace: THEME.font.body, color: "FFFFFF",
+      valign: "top", lineSpacingMultiple: 1.4,
     },
   )
 
-  // 5. Datos Popayán
-  slide.addText("📍 POPAYÁN - COLOMBIA", {
-    x: 7.5,
-    y: 3.0,
-    w: 5.5,
-    h: 0.4,
-    fontSize: 16,
-    fontFace: THEME.font.display,
-    color: "FFFFFF",
-    bold: true,
-    valign: "top",
+  // Columna 2: Popayán
+  slide.addText("POPAYÁN", {
+    x: 5.0, y: colY, w: 4.0, h: 0.4,
+    fontSize: 18, fontFace: THEME.font.display, color: "FFFFFF",
+    bold: true, valign: "top", charSpacing: 8,
   })
-  slide.addText("Parque Industrial · Bodega E13", {
-    x: 7.5,
-    y: 3.45,
-    w: 5.5,
-    h: 0.3,
-    fontSize: 11,
-    fontFace: THEME.font.body,
-    color: "FFFFFF",
-    valign: "top",
+  slide.addText(
+    "Parque Industrial · Bodega E13\nCauca - Colombia",
+    {
+      x: 5.0, y: colY + 0.5, w: 4.0, h: 1.4,
+      fontSize: 11, fontFace: THEME.font.body, color: "FFFFFF",
+      valign: "top", lineSpacingMultiple: 1.4,
+    },
+  )
+
+  // Columna 3: Web + email
+  slide.addText("ESCRÍBENOS", {
+    x: 9.3, y: colY, w: 3.7, h: 0.4,
+    fontSize: 18, fontFace: THEME.font.display, color: "FFFFFF",
+    bold: true, valign: "top", charSpacing: 8,
+  })
+  slide.addText(
+    "contacto@meisa.com.co\nwww.meisa.com.co",
+    {
+      x: 9.3, y: colY + 0.5, w: 3.7, h: 1.4,
+      fontSize: 12, fontFace: THEME.font.body, color: "FFFFFF",
+      bold: true, valign: "top", lineSpacingMultiple: 1.4,
+    },
+  )
+
+  // 6. Tagline cierre sobre el blanco inferior
+  slide.addText("ESTRUCTURAS METÁLICAS DESDE 1996", {
+    x: 0.5, y: 6.3, w: 9.0, h: 0.5,
+    fontSize: 16, fontFace: THEME.font.display,
+    color: THEME.color.azul, bold: true,
+    valign: "middle", charSpacing: 10,
   })
 
-  // 6. Email + web
-  slide.addShape("rect", {
-    x: 7.5,
-    y: 4.1,
-    w: 5.0,
-    h: 0.5,
-    fill: { color: "FFFFFF" },
-    line: { color: "FFFFFF", width: 0 },
-  })
-  slide.addText("✉  contacto@meisa.com.co", {
-    x: 7.5,
-    y: 4.1,
-    w: 5.0,
-    h: 0.5,
-    fontSize: 13,
-    fontFace: THEME.font.body,
-    bold: true,
-    color: THEME.color.azul,
-    align: "center",
-    valign: "middle",
-  })
-  slide.addText("www.meisa.com.co", {
-    x: 7.5,
-    y: 4.7,
-    w: 5.0,
-    h: 0.4,
-    fontSize: 12,
-    fontFace: THEME.font.body,
-    color: "FFFFFF",
-    align: "center",
-    valign: "top",
-  })
-
-  // 7. Logo MEISA color en abajo-derecha (fondo blanco que asoma)
+  // 7. Logo MEISA color en abajo-derecha sobre el blanco
   slide.addImage({
     path: ASSETS.logoColor,
-    x: 9.5,
-    y: 6.3,
-    w: 3.0,
-    h: 1.0,
-    sizing: { type: "contain", w: 3.0, h: 1.0 },
+    x: 10.0, y: 6.2, w: 2.8, h: 1.0,
+    sizing: { type: "contain", w: 2.8, h: 1.0 },
   })
 }
 
@@ -403,9 +367,9 @@ export function drawLayoutP(
     }
   }
 
-  // Título grande izquierda
+  // Título grande izquierda — fitTitleByLines considera palabra Y líneas
   const nombreClean = p.nombre.replace(/\n/g, " ").trim()
-  const nombreSize = nombreClean.length > 14 ? 56 : nombreClean.length > 10 ? 64 : 72
+  const nombreSize = fitTitleByLines(nombreClean, 5.5, 1.6, 60, 0.62, 0.92)
   slide.addText(nombreClean, {
     x: 0.5,
     y: 2.2,
@@ -531,9 +495,9 @@ export function drawLayoutQ(
   // Foto banner top-right cubriendo de fondo
   drawPhoto(slide, 7.5, 0, 5.833, 7.5, p.fotos[0], true)
 
-  // Título grande arriba izquierda
+  // Título grande arriba izquierda — fitTitleByLines + h=1.4 estricto
   const nombreClean = p.nombre.replace(/\n/g, " ").trim()
-  const nombreSize = nombreClean.length > 18 ? 38 : nombreClean.length > 12 ? 48 : 56
+  const nombreSize = fitTitleByLines(nombreClean, 7.0, 1.4, 48, 0.62, 0.92)
   slide.addText(nombreClean, {
     x: 0.5,
     y: 1.0,
@@ -547,10 +511,10 @@ export function drawLayoutQ(
     lineSpacingMultiple: 0.92,
   })
 
-  // Badge rojo ubicación + año
+  // Badge rojo ubicación + año — bajado a y=2.95 para no chocar con título h=1.4 (termina y=2.4)
   slide.addShape("rect", {
     x: 0.5,
-    y: 2.6,
+    y: 2.95,
     w: 3.5,
     h: 0.5,
     fill: { color: THEME.color.rojo },
@@ -558,7 +522,7 @@ export function drawLayoutQ(
   })
   slide.addText(`${p.ubicacionCorta.toUpperCase()} · ${p.anio}`, {
     x: 0.5,
-    y: 2.6,
+    y: 2.95,
     w: 3.5,
     h: 0.5,
     fontSize: 13,
@@ -668,11 +632,12 @@ export function drawLayoutR(
     line: { color: THEME.color.rojoIntenso, width: 0 },
   })
 
-  // "Striped" decorativo: líneas blancas diagonales (aprox con shapes line)
-  for (let i = 0; i < 5; i++) {
+  // "Striped" decorativo arriba: 3 líneas blancas SOLO en franja superior (y<1.8)
+  // — fuera del área de título (y>=2.5) para no cruzarlo nunca
+  for (let i = 0; i < 3; i++) {
     slide.addShape("line", {
       x: 0,
-      y: 0.5 + i * 0.4,
+      y: 0.6 + i * 0.4,
       w: 5.0,
       h: 0,
       line: { color: "FFFFFF", width: 0.5, transparency: 70 } as any,
@@ -682,14 +647,14 @@ export function drawLayoutR(
   // Header en blanco sobre rojo
   drawHeader(slide, pageNumber, cfg.tagline, true)
 
-  // Título mega
+  // Título mega — fitTitleByLines por línea, considerando ancho de bloque rojo (4.5")
   const nombreClean = p.nombre.replace(/\n/g, " ").trim()
   // Partir el nombre en líneas si es largo
   const palabras = nombreClean.split(" ")
   const linea1 = palabras[0] || ""
   const linea2 = palabras.slice(1).join(" ") || ""
-  const size1 = linea1.length > 8 ? 56 : 64
-  const size2 = linea2.length > 12 ? 56 : 64
+  const size1 = fitTitleByLines(linea1, 4.5, 1.0, 56, 0.55, 0.95)
+  const size2 = fitTitleByLines(linea2, 4.5, 1.8, 48, 0.62, 0.92)
 
   slide.addText(linea1, {
     x: 0.5,
@@ -707,7 +672,7 @@ export function drawLayoutR(
       x: 0.5,
       y: 3.5,
       w: 4.5,
-      h: 1.6,
+      h: 1.8,
       fontSize: size2,
       fontFace: THEME.font.displayHeavy,
       color: "FFFFFF",
@@ -843,14 +808,14 @@ export function drawLayoutT(
     valign: "top",
   })
 
-  // Nombre
+  // Nombre — fitTitleByLines con h=1.6 (ampliado) y valign top
   const nombreClean = p.nombre.replace(/\n/g, " ").trim()
-  const nombreSize = nombreClean.length > 18 ? 36 : nombreClean.length > 12 ? 44 : 52
+  const nombreSize = fitTitleByLines(nombreClean, 7.5, 1.6, 44, 0.62, 0.92)
   slide.addText(nombreClean, {
     x: 0.5,
     y: 5.4,
     w: 7.5,
-    h: 1.0,
+    h: 1.6,
     fontSize: nombreSize,
     fontFace: THEME.font.displayHeavy,
     color: THEME.color.azul,
