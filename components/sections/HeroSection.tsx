@@ -245,10 +245,10 @@ export function HeroSection({
             </div>
 
             {/* Video del logo - Aparece cuando termina el loader */}
-            <div className={`absolute inset-0 flex items-center justify-center z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`absolute inset-0 flex items-center justify-center bg-white overflow-hidden z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
               <video
                 ref={videoMobileRef}
-                className="w-full h-full object-contain bg-white"
+                className="w-full h-auto max-h-full scale-[1.8]"
                 muted
                 playsInline
                 preload="auto"
@@ -363,10 +363,10 @@ export function HeroSection({
           </div>
 
           {/* Video del logo - Aparece cuando termina el loader */}
-          <div className={`absolute inset-0 flex items-center justify-center z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`absolute inset-0 flex items-center justify-center bg-white overflow-hidden z-15 transition-opacity duration-500 ${videoStarted ? 'opacity-100' : 'opacity-0'}`}>
             <video
               ref={videoRef}
-              className="w-full h-full object-contain bg-white"
+              className="w-full h-auto max-h-full scale-[1.8]"
               muted
               playsInline
               preload="auto"
