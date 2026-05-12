@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   DndContext,
@@ -34,6 +35,7 @@ import {
   Package,
   Search,
   SlidersHorizontal,
+  ExternalLink,
 } from "lucide-react"
 import { FormField, type FieldDef } from "./FormFields"
 import { cn } from "@/lib/utils"
@@ -76,6 +78,14 @@ interface ListCrudEditorProps<T extends BaseItem> {
   searchPlaceholder?: string
   /** Tamaño de página para paginación incremental. Default 48. */
   pageSize?: number
+  /**
+   * URL del editor detallado por item (con galería de fotos, etc).
+   * Cuando se provee, la fila en tabla y el thumbnail en tarjetas se vuelven
+   * un link a esa URL, y las acciones se muestran siempre (no solo en hover).
+   */
+  detailHref?: (item: any) => string
+  /** Texto del link de detalle. Default "Editar fotos y detalle". */
+  detailLabel?: string
 }
 
 export function ListCrudEditor<T extends BaseItem>({
@@ -94,6 +104,8 @@ export function ListCrudEditor<T extends BaseItem>({
   filters,
   searchPlaceholder = "Buscar…",
   pageSize = 48,
+  detailHref,
+  detailLabel = "Editar fotos y detalle",
 }: ListCrudEditorProps<T>) {
   const [items, setItems] = useState<T[]>(initialItems)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -524,6 +536,7 @@ export function ListCrudEditor<T extends BaseItem>({
                       onEdit={() => beginEdit(item)}
                       onDelete={() => del(item.id)}
                       onToggleActivo={() => toggleActivo(item)}
+                      detailHref={detailHref ? detailHref(item) : undefined}
                     />
                   ),
                 )}
@@ -545,6 +558,8 @@ export function ListCrudEditor<T extends BaseItem>({
                 onToggleActivo={toggleActivo}
                 onCancel={cancel}
                 onSave={save}
+                detailHref={detailHref}
+                detailLabel={detailLabel}
               />
             )}
           </SortableContext>
@@ -582,6 +597,7 @@ function CardGrid<T extends BaseItem>({
   onEdit,
   onDelete,
   onToggleActivo,
+  detailHref,
 }: {
   item: T
   fields: FieldDef[]
@@ -592,6 +608,7 @@ function CardGrid<T extends BaseItem>({
   onEdit: () => void
   onDelete: () => void
   onToggleActivo: () => void
+  detailHref?: string
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id, disabled: disabled || !canReorder })
@@ -622,7 +639,27 @@ function CardGrid<T extends BaseItem>({
     >
       {/* Thumbnail area (imagen o placeholder) */}
       <div className="relative w-full bg-slate-100" style={{ aspectRatio: "4 / 3" }}>
-        {thumbnail ? (
+        {detailHref ? (
+          <Link
+            href={detailHref}
+            className="block h-full w-full"
+            aria-label="Editar fotos y detalle"
+          >
+            {thumbnail ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={thumbnail}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-slate-300">
+                <ImageOff className="h-10 w-10" />
+              </div>
+            )}
+          </Link>
+        ) : thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={thumbnail}
@@ -882,6 +919,8 @@ function TableView<T extends BaseItem>({
   onToggleActivo,
   onCancel,
   onSave,
+  detailHref,
+  detailLabel,
 }: {
   items: T[]
   fields: FieldDef[]
@@ -898,6 +937,8 @@ function TableView<T extends BaseItem>({
   onToggleActivo: (item: T) => void
   onCancel: () => void
   onSave: () => void
+  detailHref?: (item: any) => string
+  detailLabel?: string
 }) {
   return (
     <div className="overflow-hidden rounded-md border border-slate-200 bg-white">
@@ -953,6 +994,8 @@ function TableView<T extends BaseItem>({
                 onEdit={() => onEdit(item)}
                 onDelete={() => onDelete(item.id)}
                 onToggleActivo={() => onToggleActivo(item)}
+                detailHref={detailHref ? detailHref(item) : undefined}
+                detailLabel={detailLabel}
               />
             ),
           )}
@@ -972,6 +1015,8 @@ function TableRow<T extends BaseItem>({
   onEdit,
   onDelete,
   onToggleActivo,
+  detailHref,
+  detailLabel,
 }: {
   item: T
   fields: FieldDef[]
@@ -982,6 +1027,8 @@ function TableRow<T extends BaseItem>({
   onEdit: () => void
   onDelete: () => void
   onToggleActivo: () => void
+  detailHref?: string
+  detailLabel?: string
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id, disabled: disabled || !canReorder })
@@ -1021,14 +1068,29 @@ function TableRow<T extends BaseItem>({
       )}
       {thumbnailField && (
         <td className="w-12 px-2 py-2">
-          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded border border-slate-100 bg-slate-50">
-            {thumbnail ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={thumbnail} alt="" className="h-full w-full object-cover" />
-            ) : (
-              <ImageOff className="h-3.5 w-3.5 text-slate-300" />
-            )}
-          </div>
+          {detailHref ? (
+            <Link
+              href={detailHref}
+              className="flex h-10 w-10 items-center justify-center overflow-hidden rounded border border-slate-100 bg-slate-50 transition-all hover:border-red-300 hover:shadow-sm"
+              aria-label={detailLabel ?? "Editar fotos y detalle"}
+            >
+              {thumbnail ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={thumbnail} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <ImageOff className="h-3.5 w-3.5 text-slate-300" />
+              )}
+            </Link>
+          ) : (
+            <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded border border-slate-100 bg-slate-50">
+              {thumbnail ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={thumbnail} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <ImageOff className="h-3.5 w-3.5 text-slate-300" />
+              )}
+            </div>
+          )}
         </td>
       )}
       {columns.map((col) => {
@@ -1045,12 +1107,38 @@ function TableRow<T extends BaseItem>({
               col.className,
             )}
           >
-            <div className="truncate">{formatCell(raw)}</div>
+            {isPrimary && detailHref ? (
+              <Link
+                href={detailHref}
+                className="block truncate text-slate-900 hover:text-red-600 hover:underline"
+              >
+                {formatCell(raw)}
+              </Link>
+            ) : (
+              <div className="truncate">{formatCell(raw)}</div>
+            )}
           </td>
         )
       })}
       <td className="px-3 py-2.5">
-        <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+        <div
+          className={cn(
+            "flex items-center justify-end gap-1",
+            detailHref
+              ? "opacity-100"
+              : "opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100",
+          )}
+        >
+          {detailHref && (
+            <Link
+              href={detailHref}
+              title={detailLabel ?? "Editar fotos y detalle"}
+              className="flex h-7 items-center gap-1 rounded-none border border-slate-200 px-2 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-700 transition-colors hover:border-red-600 hover:bg-red-600 hover:text-white"
+            >
+              <ExternalLink className="h-3 w-3" />
+              Detalle
+            </Link>
+          )}
           {"activo" in item && (
             <button
               onClick={onToggleActivo}
@@ -1064,7 +1152,7 @@ function TableRow<T extends BaseItem>({
           <button
             onClick={onEdit}
             disabled={disabled}
-            title="Editar"
+            title="Edición rápida (sin fotos)"
             className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
           >
             <Pencil className="h-3.5 w-3.5" />

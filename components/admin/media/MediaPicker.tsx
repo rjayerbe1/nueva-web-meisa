@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import {
   Dialog,
   DialogContent,
@@ -8,10 +8,22 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { ImagePlus, Upload, X, Loader2, Search, Film, Check, FileText } from "lucide-react"
+import {
+  ImagePlus,
+  Upload,
+  X,
+  Loader2,
+  Search,
+  Film,
+  Check,
+  FileText,
+  ChevronRight,
+  Folder,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Media } from "@prisma/client"
 import { MediaThumb } from "./MediaThumb"
+import { buildFolderTree, type FolderNode } from "@/lib/media/folder-path"
 
 type Kind = "image" | "video" | "doc" | "any"
 
@@ -210,10 +222,18 @@ export function MediaPickerModal({ open, onOpenChange, kind, folder, allowUrl, o
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto bg-stone-50 px-6 py-5">
+        <div className="overflow-hidden bg-stone-50">
           {tab === "library" && <LibraryTab kind={kind} onPick={onPick} />}
-          {tab === "upload" && <UploadTab kind={kind} folder={folder} onPick={onPick} />}
-          {tab === "url" && allowUrl && <UrlTab onPick={onPick} />}
+          {tab === "upload" && (
+            <div className="h-full overflow-y-auto px-6 py-5">
+              <UploadTab kind={kind} folder={folder} onPick={onPick} />
+            </div>
+          )}
+          {tab === "url" && allowUrl && (
+            <div className="h-full overflow-y-auto px-6 py-5">
+              <UrlTab onPick={onPick} />
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
@@ -250,72 +270,292 @@ function LibraryTab({ kind, onPick }: { kind: Kind; onPick: (url: string) => voi
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState("")
   const [debouncedQuery, setDebouncedQuery] = useState("")
+  const [folder, setFolder] = useState<string | null>(null)
+  const [folderPaths, setFolderPaths] = useState<string[]>([])
+  const [folderCounts, setFolderCounts] = useState<Record<string, number>>({})
+  const [foldersLoading, setFoldersLoading] = useState(true)
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query.trim()), 250)
     return () => clearTimeout(t)
   }, [query])
 
+  // Load folders once
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch("/api/admin/media-library/folders", { signal: controller.signal })
+      .then((r) => r.json())
+      .then((data) => {
+        setFolderPaths(Array.isArray(data.paths) ? data.paths : [])
+        setFolderCounts(data.counts && typeof data.counts === "object" ? data.counts : {})
+      })
+      .catch(() => {})
+      .finally(() => setFoldersLoading(false))
+    return () => controller.abort()
+  }, [])
+
+  // Load items
   useEffect(() => {
     const controller = new AbortController()
     setLoading(true)
-    const kindParam = kind === "any" ? "" : `&kind=${kind}`
-    const qParam = debouncedQuery ? `&q=${encodeURIComponent(debouncedQuery)}` : ""
-    fetch(`/api/admin/media-library?limit=120${kindParam}${qParam}`, {
-      signal: controller.signal,
-    })
+    const params = new URLSearchParams()
+    params.set("limit", "120")
+    if (kind !== "any") params.set("kind", kind)
+    if (debouncedQuery) params.set("q", debouncedQuery)
+    if (folder) params.set("folder", folder)
+    fetch(`/api/admin/media-library?${params.toString()}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data) => setItems(data.items ?? []))
       .catch(() => {})
       .finally(() => setLoading(false))
     return () => controller.abort()
-  }, [kind, debouncedQuery])
+  }, [kind, debouncedQuery, folder])
+
+  const tree = useMemo(() => buildFolderTree(folderPaths, folderCounts), [folderPaths, folderCounts])
+  const rootCount = useMemo(
+    () => Object.values(folderCounts).reduce((a, b) => a + b, 0),
+    [folderCounts],
+  )
+
+  const breadcrumb = folder ? folder.split("/") : []
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <div className="relative w-full max-w-md">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
-          <input
-            placeholder="Buscar por nombre, título, alt, tag…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full rounded-none border border-slate-300 bg-white py-2 pl-9 pr-3 font-lato text-sm text-slate-950 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
-          />
-        </div>
-        <p className="flex-shrink-0 font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
-          {items.length} resultados
+    <div className="grid h-full grid-cols-[260px_1fr] overflow-hidden">
+      {/* Folder sidebar */}
+      <aside className="overflow-y-auto border-r border-slate-200 bg-white px-3 py-4">
+        <p className="mb-2 px-2 font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+          Carpetas
         </p>
-      </div>
-      {loading ? (
-        <div className="flex h-96 items-center justify-center text-slate-300">
-          <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-      ) : items.length === 0 ? (
-        <div className="flex h-96 items-center justify-center font-lato text-sm text-slate-500">
-          No hay {kind === "video" ? "videos" : kind === "doc" ? "documentos" : "imágenes"} todavía.
-          Usa la pestaña &quot;Subir nuevo&quot;.
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {items.map((m) => (
+        {foldersLoading ? (
+          <div className="flex h-32 items-center justify-center text-slate-300">
+            <Loader2 className="h-5 w-5 animate-spin" />
+          </div>
+        ) : (
+          <ReadOnlyFolderTree
+            nodes={tree}
+            currentPath={folder}
+            rootCount={rootCount}
+            onNavigate={setFolder}
+          />
+        )}
+      </aside>
+
+      {/* Content */}
+      <div className="flex flex-col overflow-hidden">
+        {/* Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-5 py-3">
+          <div className="flex flex-wrap items-center gap-2 font-lato text-xs text-slate-500">
             <button
-              key={m.id}
               type="button"
-              onClick={() => onPick(m.url)}
-              className="group overflow-hidden rounded-none border border-slate-200 bg-white text-left transition-all hover:border-red-600 hover:shadow-md focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+              onClick={() => setFolder(null)}
+              className="font-bold uppercase tracking-wider hover:text-red-600"
             >
-              <MediaThumb media={m} />
-              <div className="p-2">
-                <p className="truncate font-lato text-xs font-semibold text-slate-800">
-                  {m.title ?? m.fileName}
-                </p>
-                <p className="truncate font-lato text-[10px] text-slate-400">{m.folder}</p>
-              </div>
+              Todas
             </button>
-          ))}
+            {breadcrumb.map((seg, i) => {
+              const path = breadcrumb.slice(0, i + 1).join("/")
+              const isLast = i === breadcrumb.length - 1
+              return (
+                <span key={path} className="flex items-center gap-2">
+                  <ChevronRight className="h-3 w-3 text-slate-300" />
+                  <button
+                    type="button"
+                    onClick={() => setFolder(path)}
+                    className={cn(
+                      "font-bold uppercase tracking-wider",
+                      isLast ? "text-slate-900" : "hover:text-red-600",
+                    )}
+                  >
+                    {seg}
+                  </button>
+                </span>
+              )
+            })}
+          </div>
+          <div className="relative w-full max-w-xs">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+            <input
+              placeholder="Buscar nombre, título, alt, tag…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full rounded-none border border-slate-300 bg-white py-2 pl-9 pr-3 font-lato text-sm text-slate-950 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+            />
+          </div>
         </div>
-      )}
+
+        {/* Grid */}
+        <div className="flex-1 overflow-y-auto px-5 py-5">
+          <p className="mb-3 font-lato text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
+            {items.length} resultados {folder ? `· en ${folder}` : ""}
+          </p>
+          {loading ? (
+            <div className="flex h-96 items-center justify-center text-slate-300">
+              <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+          ) : items.length === 0 ? (
+            <div className="flex h-96 items-center justify-center font-lato text-sm text-slate-500">
+              No hay {kind === "video" ? "videos" : kind === "doc" ? "documentos" : "imágenes"}{" "}
+              {folder ? `en "${folder}"` : "todavía"}.
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {items.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => onPick(m.url)}
+                  className="group overflow-hidden rounded-none border border-slate-200 bg-white text-left transition-all hover:border-red-600 hover:shadow-md focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+                >
+                  <MediaThumb media={m} />
+                  <div className="p-2">
+                    <p className="truncate font-lato text-xs font-semibold text-slate-800">
+                      {m.title ?? m.fileName}
+                    </p>
+                    <p className="truncate font-lato text-[10px] text-slate-400">{m.folder}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Read-only folder tree for the picker ─────────────────────────────── */
+
+function ReadOnlyFolderTree({
+  nodes,
+  currentPath,
+  rootCount,
+  onNavigate,
+}: {
+  nodes: FolderNode[]
+  currentPath: string | null
+  rootCount: number
+  onNavigate: (path: string | null) => void
+}) {
+  const [expanded, setExpanded] = useState<Set<string>>(() => {
+    const s = new Set<string>()
+    if (currentPath) {
+      const parts = currentPath.split("/")
+      let acc = ""
+      for (const p of parts) {
+        acc = acc ? `${acc}/${p}` : p
+        s.add(acc)
+      }
+    }
+    return s
+  })
+
+  const toggle = (path: string) =>
+    setExpanded((prev) => {
+      const next = new Set(prev)
+      if (next.has(path)) next.delete(path)
+      else next.add(path)
+      return next
+    })
+
+  return (
+    <div className="space-y-0.5">
+      <button
+        type="button"
+        onClick={() => onNavigate(null)}
+        className={cn(
+          "flex w-full items-center gap-2 px-2 py-1.5 font-lato text-sm transition-colors",
+          currentPath === null
+            ? "bg-red-50 font-semibold text-red-700"
+            : "text-slate-700 hover:bg-stone-50 hover:text-slate-950",
+        )}
+      >
+        <Folder className="h-3.5 w-3.5 text-slate-400" />
+        <span className="flex-1 truncate text-left">Todas las carpetas</span>
+        <span className="text-[11px] text-slate-400">{rootCount}</span>
+      </button>
+      {nodes.map((n) => (
+        <PickerFolderRow
+          key={n.path}
+          node={n}
+          depth={0}
+          expanded={expanded}
+          toggle={toggle}
+          currentPath={currentPath}
+          onNavigate={onNavigate}
+        />
+      ))}
+    </div>
+  )
+}
+
+function PickerFolderRow({
+  node,
+  depth,
+  expanded,
+  toggle,
+  currentPath,
+  onNavigate,
+}: {
+  node: FolderNode
+  depth: number
+  expanded: Set<string>
+  toggle: (path: string) => void
+  currentPath: string | null
+  onNavigate: (path: string) => void
+}) {
+  const hasChildren = node.children.length > 0
+  const isExpanded = expanded.has(node.path)
+  const isActive = currentPath === node.path
+
+  return (
+    <div>
+      <div
+        className={cn(
+          "group flex items-center gap-1 px-2 py-1.5",
+          isActive && "bg-red-50",
+        )}
+        style={{ paddingLeft: 8 + depth * 14 }}
+      >
+        <button
+          type="button"
+          onClick={() => hasChildren && toggle(node.path)}
+          className={cn(
+            "flex h-4 w-4 items-center justify-center text-slate-400",
+            !hasChildren && "invisible",
+          )}
+          aria-label={isExpanded ? "Colapsar" : "Expandir"}
+        >
+          <ChevronRight
+            className={cn("h-3 w-3 transition-transform", isExpanded && "rotate-90")}
+          />
+        </button>
+        <button
+          type="button"
+          onClick={() => onNavigate(node.path)}
+          className={cn(
+            "flex flex-1 items-center gap-2 font-lato text-sm transition-colors",
+            isActive ? "font-semibold text-red-700" : "text-slate-700 hover:text-slate-950",
+          )}
+        >
+          <Folder className="h-3.5 w-3.5 text-slate-400" />
+          <span className="flex-1 truncate text-left">{node.name}</span>
+          {node.count > 0 && (
+            <span className="text-[11px] text-slate-400">{node.count}</span>
+          )}
+        </button>
+      </div>
+      {isExpanded &&
+        node.children.map((c) => (
+          <PickerFolderRow
+            key={c.path}
+            node={c}
+            depth={depth + 1}
+            expanded={expanded}
+            toggle={toggle}
+            currentPath={currentPath}
+            onNavigate={onNavigate}
+          />
+        ))}
     </div>
   )
 }

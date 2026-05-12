@@ -29,16 +29,15 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
       imagenes: true,
       documentos: true,
       progreso: {
-        orderBy: { orden: 'asc' }
-      }
-    }
+        orderBy: { orden: "asc" },
+      },
+    },
   })
 
   if (!project) {
     notFound()
   }
 
-  // Convert Decimal fields to numbers for the form
   const projectForForm = {
     ...project,
     presupuesto: project.presupuesto ? Number(project.presupuesto) : null,
@@ -48,16 +47,16 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
   }
 
   return (
-    <div className="space-y-8">
-      <EditProjectForm project={projectForForm as any} />
-      
-      {/* Galería de Imágenes */}
-      <ProjectImageGallery
-        projectId={project.id}
-        projectTitle={project.titulo}
-        images={project.imagenes}
-        canEdit={true}
-      />
-    </div>
+    <EditProjectForm
+      project={projectForForm as any}
+      galleryContent={
+        <ProjectImageGallery
+          projectId={project.id}
+          projectTitle={project.titulo}
+          images={project.imagenes}
+          canEdit={true}
+        />
+      }
+    />
   )
 }

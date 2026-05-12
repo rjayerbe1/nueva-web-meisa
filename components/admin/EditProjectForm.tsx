@@ -1,10 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Save, Calendar, MapPin, DollarSign, Scale, Ruler, Building, ExternalLink } from "lucide-react"
+import {
+  ArrowLeft,
+  Save,
+  Loader2,
+  Check,
+  ExternalLink,
+  Building,
+} from "lucide-react"
 import { CategoriaEnum, EstadoProyecto, PrioridadEnum } from "@prisma/client"
+import { AdminTabsLayout, type AdminTab } from "@/components/admin/AdminTabsLayout"
+import { FormField, type FieldDef } from "@/components/admin/shared/FormFields"
+import { cn } from "@/lib/utils"
 
 interface Project {
   id: string
@@ -14,8 +24,8 @@ interface Project {
   cliente: string
   clienteId: string | null
   ubicacion: string
-  fechaInicio: Date
-  fechaFin: Date
+  fechaInicio: Date | string
+  fechaFin: Date | string
   estado: EstadoProyecto
   prioridad: PrioridadEnum
   presupuesto: number | null
@@ -32,510 +42,533 @@ interface Project {
   slug: string
 }
 
-interface EditProjectFormProps {
-  project: Project
+interface Cliente {
+  id: string
+  nombre: string
+  sector: string
+  descripcion?: string | null
 }
 
-export default function EditProjectForm({ project }: EditProjectFormProps) {
+interface EditProjectFormProps {
+  project: Project
+  /** Contenido opcional para una pestaña adicional (ej: galería de imágenes). */
+  galleryContent?: React.ReactNode
+}
+
+const ESTADO_LABEL: Record<EstadoProyecto, string> = {
+  PLANIFICACION: "Planificación",
+  EN_PROGRESO: "En progreso",
+  PAUSADO: "Pausado",
+  COMPLETADO: "Completado",
+  CANCELADO: "Cancelado",
+}
+
+const PRIORIDAD_LABEL: Record<PrioridadEnum, string> = {
+  BAJA: "Baja",
+  MEDIA: "Media",
+  ALTA: "Alta",
+  URGENTE: "Urgente",
+}
+
+const ESTADO_TONE: Record<EstadoProyecto, string> = {
+  COMPLETADO: "bg-green-50 text-green-700 border-green-200",
+  EN_PROGRESO: "bg-blue-50 text-blue-700 border-blue-200",
+  PAUSADO: "bg-amber-50 text-amber-700 border-amber-200",
+  PLANIFICACION: "bg-slate-50 text-slate-700 border-slate-200",
+  CANCELADO: "bg-red-50 text-red-700 border-red-200",
+}
+
+export default function EditProjectForm({ project, galleryContent }: EditProjectFormProps) {
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [clientes, setClientes] = useState([])
-  const [selectedCliente, setSelectedCliente] = useState(null)
-  const [formData, setFormData] = useState({
+  const [clientes, setClientes] = useState<Cliente[]>([])
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [savedAt, setSavedAt] = useState<number | null>(null)
+  const [dirty, setDirty] = useState(false)
+
+  const [form, setForm] = useState({
     titulo: project.titulo,
     descripcion: project.descripcion,
-    categoria: project.categoria,
+    categoria: project.categoria as string,
     cliente: project.cliente,
-    clienteId: project.clienteId || '',
+    clienteId: project.clienteId || "",
     ubicacion: project.ubicacion,
-    fechaInicio: new Date(project.fechaInicio).toISOString().split('T')[0],
-    fechaFin: new Date(project.fechaFin).toISOString().split('T')[0],
-    estado: project.estado,
-    prioridad: project.prioridad,
-    presupuesto: project.presupuesto || '',
-    costoReal: project.costoReal || '',
-    toneladas: project.toneladas || '',
-    areaTotal: project.areaTotal || '',
-    moneda: project.moneda || 'COP',
-    contactoCliente: project.contactoCliente || '',
-    telefono: project.telefono || '',
-    email: project.email || '',
+    fechaInicio: new Date(project.fechaInicio).toISOString().split("T")[0],
+    fechaFin: new Date(project.fechaFin).toISOString().split("T")[0],
+    estado: project.estado as string,
+    prioridad: project.prioridad as string,
+    presupuesto: project.presupuesto as number | null,
+    costoReal: project.costoReal as number | null,
+    toneladas: project.toneladas as number | null,
+    areaTotal: project.areaTotal as number | null,
+    moneda: project.moneda || "COP",
+    contactoCliente: project.contactoCliente || "",
+    telefono: project.telefono || "",
+    email: project.email || "",
     destacado: project.destacado,
     destacadoEnCategoria: project.destacadoEnCategoria,
-    visible: project.visible
+    visible: project.visible,
   })
 
   useEffect(() => {
-    loadClientes()
+    let cancelled = false
+    fetch("/api/clientes")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => {
+        if (!cancelled) setClientes(Array.isArray(data) ? data : [])
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
   }, [])
 
-  useEffect(() => {
-    if (formData.clienteId && clientes.length > 0) {
-      const cliente = clientes.find(c => c.id === formData.clienteId)
-      setSelectedCliente(cliente)
-    }
-  }, [formData.clienteId, clientes])
+  const selectedCliente = useMemo(
+    () => clientes.find((c) => c.id === form.clienteId) ?? null,
+    [clientes, form.clienteId],
+  )
 
-  const loadClientes = async () => {
-    try {
-      const response = await fetch('/api/clientes')
-      if (response.ok) {
-        const data = await response.json()
-        setClientes(data)
-      }
-    } catch (error) {
-      console.error('Error loading clientes:', error)
-    }
+  const setField = (name: string, value: unknown) => {
+    setForm((prev) => ({ ...prev, [name]: value }))
+    setDirty(true)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-
+  const handleSave = async () => {
+    setSaving(true)
+    setError(null)
     try {
-      const response = await fetch(`/api/admin/projects/${project.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          presupuesto: formData.presupuesto ? Number(formData.presupuesto) : null,
-          costoReal: formData.costoReal ? Number(formData.costoReal) : null,
-          toneladas: formData.toneladas ? Number(formData.toneladas) : null,
-          areaTotal: formData.areaTotal ? Number(formData.areaTotal) : null,
-          clienteId: formData.clienteId || null,
-        }),
+      const payload = {
+        ...form,
+        presupuesto:
+          form.presupuesto !== null && form.presupuesto !== ("" as any)
+            ? Number(form.presupuesto)
+            : null,
+        costoReal:
+          form.costoReal !== null && form.costoReal !== ("" as any)
+            ? Number(form.costoReal)
+            : null,
+        toneladas:
+          form.toneladas !== null && form.toneladas !== ("" as any)
+            ? Number(form.toneladas)
+            : null,
+        areaTotal:
+          form.areaTotal !== null && form.areaTotal !== ("" as any)
+            ? Number(form.areaTotal)
+            : null,
+        clienteId: form.clienteId || null,
+      }
+      const res = await fetch(`/api/admin/projects/${project.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       })
-
-      if (response.ok) {
-        router.push(`/admin/projects/${project.id}`)
-        router.refresh()
-      } else {
-        const error = await response.json()
-        alert(error.error || 'Error al actualizar el proyecto')
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}))
+        throw new Error(j.error || "Error al guardar el proyecto")
       }
-    } catch (error) {
-      console.error('Error:', error)
-      alert('Error al actualizar el proyecto')
+      setSavedAt(Date.now())
+      setDirty(false)
+      router.refresh()
+    } catch (e: any) {
+      setError(e.message || "Error guardando")
     } finally {
-      setLoading(false)
+      setSaving(false)
     }
   }
+
+  /* ─── Field definitions ──────────────────────────────────────────────── */
+
+  const infoFields: FieldDef[] = [
+    { name: "titulo", label: "Título del proyecto", kind: "text", required: true, gridSpan: 2 },
+    {
+      name: "descripcion",
+      label: "Descripción",
+      kind: "textarea",
+      rows: 4,
+      required: true,
+      gridSpan: 2,
+    },
+    {
+      name: "categoria",
+      label: "Categoría",
+      kind: "select",
+      required: true,
+      options: Object.values(CategoriaEnum).map((c) => ({
+        value: c,
+        label: c.replace(/_/g, " "),
+      })),
+    },
+    { name: "ubicacion", label: "Ubicación", kind: "text", required: true },
+    { name: "fechaInicio", label: "Fecha de inicio", kind: "date", required: true },
+    { name: "fechaFin", label: "Fecha de fin", kind: "date", required: true },
+  ]
+
+  const estadoFields: FieldDef[] = [
+    {
+      name: "estado",
+      label: "Estado",
+      kind: "select",
+      required: true,
+      options: Object.values(EstadoProyecto).map((e) => ({
+        value: e,
+        label: ESTADO_LABEL[e],
+      })),
+    },
+    {
+      name: "prioridad",
+      label: "Prioridad",
+      kind: "select",
+      required: true,
+      options: Object.values(PrioridadEnum).map((p) => ({
+        value: p,
+        label: PRIORIDAD_LABEL[p],
+      })),
+    },
+    {
+      name: "destacado",
+      label: "Proyecto destacado",
+      kind: "boolean",
+      gridSpan: 2,
+      hint: "Aparece como destacado a nivel global del sitio.",
+    },
+    {
+      name: "destacadoEnCategoria",
+      label: "Destacado en categoría",
+      kind: "boolean",
+      gridSpan: 2,
+      hint: "Aparece en el home dentro de su categoría.",
+    },
+    {
+      name: "visible",
+      label: "Visible en el sitio",
+      kind: "boolean",
+      gridSpan: 2,
+      hint: "Si está apagado, no aparece públicamente.",
+    },
+  ]
+
+  const especFields: FieldDef[] = [
+    {
+      name: "toneladas",
+      label: "Toneladas de acero",
+      kind: "number",
+      step: 0.01,
+      placeholder: "Ej: 125.5",
+      hint: "Peso total en toneladas del acero utilizado.",
+    },
+    {
+      name: "areaTotal",
+      label: "Área total (m²)",
+      kind: "number",
+      step: 0.01,
+      placeholder: "Ej: 5000",
+      hint: "Área total de construcción en metros cuadrados.",
+    },
+  ]
+
+  const finanFields: FieldDef[] = [
+    {
+      name: "presupuesto",
+      label: "Presupuesto",
+      kind: "number",
+      step: 1000,
+      placeholder: "Ej: 500000000",
+      hint: "Presupuesto inicial del proyecto.",
+    },
+    {
+      name: "costoReal",
+      label: "Costo real",
+      kind: "number",
+      step: 1000,
+      placeholder: "Ej: 480000000",
+      hint: "Costo real final del proyecto.",
+    },
+    {
+      name: "moneda",
+      label: "Moneda",
+      kind: "select",
+      options: [
+        { value: "COP", label: "COP — Peso colombiano" },
+        { value: "USD", label: "USD — Dólar" },
+        { value: "EUR", label: "EUR — Euro" },
+      ],
+    },
+  ]
+
+  const contactoFields: FieldDef[] = [
+    {
+      name: "contactoCliente",
+      label: "Contacto del cliente",
+      kind: "text",
+      placeholder: "Nombre del contacto",
+    },
+    { name: "telefono", label: "Teléfono", kind: "text", placeholder: "+57 …" },
+    { name: "email", label: "Email", kind: "text", placeholder: "contacto@empresa.com" },
+  ]
+
+  /* ─── Render helpers ─────────────────────────────────────────────────── */
+
+  const renderFields = (fields: FieldDef[]) => (
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      {fields.map((f) => (
+        <FormField
+          key={f.name}
+          field={f}
+          value={(form as any)[f.name]}
+          onChange={(v) => setField(f.name, v)}
+          disabled={saving}
+        />
+      ))}
+    </div>
+  )
+
+  const SectionCard = ({
+    title,
+    description,
+    children,
+  }: {
+    title: string
+    description?: string
+    children: React.ReactNode
+  }) => (
+    <div className="border border-slate-200 bg-white">
+      <div className="border-b border-slate-200 px-6 py-5">
+        <h2 className="font-bebas text-xl uppercase leading-tight text-slate-950">{title}</h2>
+        {description && (
+          <p className="mt-1 font-lato text-sm text-slate-600">{description}</p>
+        )}
+      </div>
+      <div className="px-6 py-6">{children}</div>
+    </div>
+  )
+
+  /* ─── Cliente section (custom) ───────────────────────────────────────── */
+
+  const clienteSection = (
+    <div className="border border-slate-200 bg-white">
+      <div className="border-b border-slate-200 px-6 py-5">
+        <h2 className="font-bebas text-xl uppercase leading-tight text-slate-950">Cliente</h2>
+        <p className="mt-1 font-lato text-sm text-slate-600">
+          Nombre del cliente y, opcionalmente, vinculación con un cliente del CRM.
+        </p>
+      </div>
+      <div className="px-6 py-6">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <FormField
+            field={{
+              name: "cliente",
+              label: "Nombre del cliente",
+              kind: "text",
+              required: true,
+              placeholder: "Nombre tal como debe aparecer",
+            }}
+            value={form.cliente}
+            onChange={(v) => setField("cliente", v)}
+            disabled={saving}
+          />
+          <FormField
+            field={{
+              name: "clienteId",
+              label: "Conectar a cliente existente",
+              kind: "select",
+              placeholder: "Sin conexión",
+              options: [
+                { value: "__none__", label: "Sin conexión" },
+                ...clientes.map((c) => ({
+                  value: c.id,
+                  label: `${c.nombre} (${c.sector})`,
+                })),
+              ],
+              hint: "Opcional. Vincula con un cliente del CRM.",
+            }}
+            value={form.clienteId || "__none__"}
+            onChange={(v) => {
+              const clienteId = v === "__none__" ? "" : (v as string)
+              setField("clienteId", clienteId)
+              if (clienteId) {
+                const c = clientes.find((cl) => cl.id === clienteId)
+                if (c) setField("cliente", c.nombre)
+              }
+            }}
+            disabled={saving}
+          />
+        </div>
+        {selectedCliente && (
+          <div className="mt-5 border border-blue-200 bg-blue-50 px-4 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-2">
+                <Building className="h-4 w-4 flex-shrink-0 text-blue-600" />
+                <span className="truncate font-lato font-semibold text-blue-900">
+                  {selectedCliente.nombre}
+                </span>
+                <span className="flex-shrink-0 font-lato text-xs text-blue-600">
+                  ({selectedCliente.sector})
+                </span>
+              </div>
+              <Link
+                href={`/admin/clientes/${selectedCliente.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 text-blue-600 transition-colors hover:text-blue-800"
+                title="Abrir cliente en nueva pestaña"
+              >
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            </div>
+            {selectedCliente.descripcion && (
+              <p className="mt-1.5 font-lato text-xs text-blue-700">
+                {selectedCliente.descripcion}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+
+  /* ─── Tabs ───────────────────────────────────────────────────────────── */
+
+  const baseTabs: AdminTab[] = [
+    {
+      id: "info",
+      label: "Información",
+      content: (
+        <div className="space-y-6">
+          <SectionCard title="Datos generales" description="Título, descripción, categoría, ubicación y fechas del proyecto.">
+            {renderFields(infoFields)}
+          </SectionCard>
+          {clienteSection}
+        </div>
+      ),
+    },
+    {
+      id: "estado",
+      label: "Estado y visibilidad",
+      content: (
+        <SectionCard title="Estado, prioridad y publicación" description="Cómo aparece el proyecto en el sitio público.">
+          {renderFields(estadoFields)}
+        </SectionCard>
+      ),
+    },
+    {
+      id: "especs",
+      label: "Especificaciones",
+      content: (
+        <SectionCard title="Especificaciones técnicas" description="Toneladas de acero y área construida.">
+          {renderFields(especFields)}
+        </SectionCard>
+      ),
+    },
+    {
+      id: "finan",
+      label: "Financiero",
+      content: (
+        <SectionCard title="Información financiera" description="Presupuesto, costo real y moneda.">
+          {renderFields(finanFields)}
+        </SectionCard>
+      ),
+    },
+    {
+      id: "contacto",
+      label: "Contacto",
+      content: (
+        <SectionCard title="Contacto del cliente" description="Datos de contacto opcionales para el seguimiento.">
+          {renderFields(contactoFields)}
+        </SectionCard>
+      ),
+    },
+  ]
+
+  const tabs: AdminTab[] = galleryContent
+    ? [
+        ...baseTabs,
+        {
+          id: "galeria",
+          label: "Galería",
+          content: galleryContent,
+        },
+      ]
+    : baseTabs
+
+  const justSaved = savedAt !== null && Date.now() - savedAt < 3000
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <Link
-            href={`/admin/projects/${project.id}`}
-            className="flex items-center justify-center w-8 h-8 rounded-lg border border-gray-300 hover:bg-gray-50"
+    <div className="space-y-6 pb-24">
+      {/* Top bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Link
+          href="/admin/projects"
+          className="inline-flex items-center gap-1.5 font-lato text-xs font-bold uppercase tracking-wider text-slate-500 transition-colors hover:text-slate-900"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Volver a proyectos
+        </Link>
+        <div className="flex items-center gap-3">
+          <span
+            className={cn(
+              "rounded-none border px-2 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider",
+              ESTADO_TONE[project.estado],
+            )}
           >
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Editar Proyecto</h1>
-            <p className="text-gray-600">Modifica la información del proyecto</p>
-          </div>
+            {ESTADO_LABEL[project.estado]}
+          </span>
+          {project.visible && (
+            <Link
+              href={`/proyectos/${project.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-lato text-xs font-bold uppercase tracking-wider text-red-600 transition-colors hover:text-red-700"
+            >
+              Ver público
+              <ExternalLink className="h-3 w-3" />
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Información Básica */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Información Básica</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Título del Proyecto *
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.titulo}
-                onChange={(e) => setFormData(prev => ({ ...prev, titulo: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
+      <AdminTabsLayout
+        title={project.titulo || "Proyecto sin título"}
+        eyebrow="Editar proyecto"
+        description={`${project.cliente || "Sin cliente"} · ${project.ubicacion || "Sin ubicación"}`}
+        tabs={tabs}
+        defaultTab="info"
+      />
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Descripción *
-              </label>
-              <textarea
-                required
-                rows={4}
-                value={formData.descripcion}
-                onChange={(e) => setFormData(prev => ({ ...prev, descripcion: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Categoría *
-              </label>
-              <select
-                required
-                value={formData.categoria}
-                onChange={(e) => setFormData(prev => ({ ...prev, categoria: e.target.value as CategoriaEnum }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              >
-                {Object.values(CategoriaEnum).map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat.replace('_', ' ')}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cliente *
-              </label>
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  required
-                  value={formData.cliente}
-                  onChange={(e) => setFormData(prev => ({ ...prev, cliente: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-                  placeholder="Nombre del cliente"
-                />
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
-                    Conectar a cliente existente (opcional)
-                  </label>
-                  <select
-                    value={formData.clienteId}
-                    onChange={(e) => {
-                      const clienteId = e.target.value
-                      setFormData(prev => ({ ...prev, clienteId }))
-                      if (clienteId) {
-                        const cliente = clientes.find(c => c.id === clienteId)
-                        if (cliente) {
-                          setFormData(prev => ({ ...prev, cliente: cliente.nombre }))
-                        }
-                      }
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent text-sm"
-                  >
-                    <option value="">No conectar a cliente</option>
-                    {clientes.map((cliente) => (
-                      <option key={cliente.id} value={cliente.id}>
-                        {cliente.nombre} ({cliente.sector})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {selectedCliente && (
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <Building className="h-4 w-4 text-blue-600" />
-                        <span className="font-medium text-blue-900">{selectedCliente.nombre}</span>
-                        <span className="text-sm text-blue-600">({selectedCliente.sector})</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => window.open(`/admin/clientes/${selectedCliente.id}`, '_blank')}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </button>
-                    </div>
-                    {selectedCliente.descripcion && (
-                      <p className="text-sm text-blue-700 mt-1">{selectedCliente.descripcion}</p>
-                    )}
-                  </div>
-                )}
+      {/* Sticky save bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-200 bg-white/95 backdrop-blur lg:left-64">
+        <div className="flex items-center justify-between gap-4 px-6 py-3 md:px-10">
+          <div className="min-w-0 flex-1">
+            {error ? (
+              <div className="font-lato text-sm text-red-700">{error}</div>
+            ) : dirty ? (
+              <div className="font-lato text-xs uppercase tracking-wider text-slate-400">
+                Cambios sin guardar
               </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <MapPin className="inline h-4 w-4 mr-1" />
-                Ubicación *
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.ubicacion}
-                onChange={(e) => setFormData(prev => ({ ...prev, ubicacion: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Calendar className="inline h-4 w-4 mr-1" />
-                Fecha de Inicio *
-              </label>
-              <input
-                type="date"
-                required
-                value={formData.fechaInicio}
-                onChange={(e) => setFormData(prev => ({ ...prev, fechaInicio: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Calendar className="inline h-4 w-4 mr-1" />
-                Fecha de Fin *
-              </label>
-              <input
-                type="date"
-                required
-                value={formData.fechaFin}
-                onChange={(e) => setFormData(prev => ({ ...prev, fechaFin: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
+            ) : null}
+          </div>
+          <div className="flex flex-shrink-0 items-center gap-3">
+            {justSaved && (
+              <span className="flex items-center gap-1.5 font-lato text-xs font-semibold uppercase tracking-wide text-green-700">
+                <Check className="h-3.5 w-3.5" />
+                Guardado
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="inline-flex items-center gap-2 bg-red-600 px-5 py-2.5 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Save className="h-3.5 w-3.5" />
+              )}
+              Guardar cambios
+            </button>
           </div>
         </div>
-
-        {/* Estado y Prioridad */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Estado y Prioridad</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Estado *
-              </label>
-              <select
-                required
-                value={formData.estado}
-                onChange={(e) => setFormData(prev => ({ ...prev, estado: e.target.value as EstadoProyecto }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              >
-                {Object.values(EstadoProyecto).map((estado) => (
-                  <option key={estado} value={estado}>
-                    {estado.replace('_', ' ')}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Prioridad *
-              </label>
-              <select
-                required
-                value={formData.prioridad}
-                onChange={(e) => setFormData(prev => ({ ...prev, prioridad: e.target.value as PrioridadEnum }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              >
-                {Object.values(PrioridadEnum).map((prioridad) => (
-                  <option key={prioridad} value={prioridad}>
-                    {prioridad}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="md:col-span-2 space-y-4">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.destacado}
-                  onChange={(e) => setFormData(prev => ({ ...prev, destacado: e.target.checked }))}
-                  className="h-4 w-4 text-meisa-blue focus:ring-meisa-blue border-gray-300 rounded"
-                />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Proyecto Destacado
-                </span>
-              </label>
-
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.destacadoEnCategoria}
-                  onChange={(e) => setFormData(prev => ({ ...prev, destacadoEnCategoria: e.target.checked }))}
-                  className="h-4 w-4 text-meisa-blue focus:ring-meisa-blue border-gray-300 rounded"
-                />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Destacado en Categoría (Aparece en el home)
-                </span>
-              </label>
-
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.visible}
-                  onChange={(e) => setFormData(prev => ({ ...prev, visible: e.target.checked }))}
-                  className="h-4 w-4 text-meisa-blue focus:ring-meisa-blue border-gray-300 rounded"
-                />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Visible en el sitio web
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        {/* Especificaciones Técnicas */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Especificaciones Técnicas</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Scale className="inline h-4 w-4 mr-1" />
-                Toneladas de Acero
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="Ej: 125.5"
-                value={formData.toneladas}
-                onChange={(e) => setFormData(prev => ({ ...prev, toneladas: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-1">Peso total en toneladas del acero utilizado</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Ruler className="inline h-4 w-4 mr-1" />
-                Área Total (m²)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="Ej: 5000"
-                value={formData.areaTotal}
-                onChange={(e) => setFormData(prev => ({ ...prev, areaTotal: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-1">Área total de construcción en metros cuadrados</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Información Financiera */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Información Financiera</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <DollarSign className="inline h-4 w-4 mr-1" />
-                Presupuesto
-              </label>
-              <input
-                type="number"
-                step="1000"
-                placeholder="Ej: 500000000"
-                value={formData.presupuesto}
-                onChange={(e) => setFormData(prev => ({ ...prev, presupuesto: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-1">Presupuesto inicial del proyecto</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <DollarSign className="inline h-4 w-4 mr-1" />
-                Costo Real
-              </label>
-              <input
-                type="number"
-                step="1000"
-                placeholder="Ej: 480000000"
-                value={formData.costoReal}
-                onChange={(e) => setFormData(prev => ({ ...prev, costoReal: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-1">Costo real final del proyecto</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Moneda
-              </label>
-              <select
-                value={formData.moneda}
-                onChange={(e) => setFormData(prev => ({ ...prev, moneda: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              >
-                <option value="COP">COP - Peso Colombiano</option>
-                <option value="USD">USD - Dólar</option>
-                <option value="EUR">EUR - Euro</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Información de Contacto */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Información de Contacto</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contacto del Cliente
-              </label>
-              <input
-                type="text"
-                value={formData.contactoCliente}
-                onChange={(e) => setFormData(prev => ({ ...prev, contactoCliente: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Teléfono
-              </label>
-              <input
-                type="tel"
-                value={formData.telefono}
-                onChange={(e) => setFormData(prev => ({ ...prev, telefono: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-meisa-blue focus:border-transparent"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Botones */}
-        <div className="flex justify-end space-x-3">
-          <Link
-            href={`/admin/projects/${project.id}`}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-          >
-            Cancelar
-          </Link>
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-meisa-blue border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            <Save className="h-4 w-4 mr-2" />
-            {loading ? 'Guardando...' : 'Guardar Cambios'}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   )
 }

@@ -159,6 +159,8 @@ export function ProjectsAdminTabs({ proyectos, categorias }: Props) {
               addLabel="Agregar proyecto"
               thumbnailField="portada"
               defaultView="table"
+              detailHref={(p) => `/admin/projects/${p.id}/edit`}
+              detailLabel="Editar fotos y detalle"
               searchPlaceholder="Buscar por título, cliente, ubicación, slug, código…"
               searchableFields={[
                 "titulo",
@@ -263,6 +265,8 @@ export function ProjectsAdminTabs({ proyectos, categorias }: Props) {
               }}
               addLabel="Agregar categoría"
               thumbnailField="imagenCover"
+              detailHref={(c) => `/admin/categories/${c.id}/editar`}
+              detailLabel="Editar detalle (visuales, overlay, SEO…)"
               renderPreview={(c) => (
                 <div>
                   <div className="flex items-center gap-2">
