@@ -36,6 +36,9 @@ import {
   Search,
   SlidersHorizontal,
   ExternalLink,
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
 } from "lucide-react"
 import { FormField, type FieldDef } from "./FormFields"
 import { cn } from "@/lib/utils"
@@ -47,6 +50,8 @@ type BaseItem = {
 }
 
 type ViewMode = "cards" | "table"
+type SortDir = "asc" | "desc"
+type SortState = { key: string; dir: SortDir } | null
 
 export type ListFilterDef = {
   /** Clave del campo a filtrar (ej. "categoria", "estado", "visible"). */
@@ -115,20 +120,46 @@ export function ListCrudEditor<T extends BaseItem>({
   const [view, setView] = useState<ViewMode>(defaultView)
   const [query, setQuery] = useState("")
   const [filterValues, setFilterValues] = useState<Record<string, string>>({})
+  const [sort, setSort] = useState<SortState>(null)
   const [visibleCount, setVisibleCount] = useState(pageSize)
   const searchRef = useRef<HTMLInputElement>(null)
 
   const storageKey = `admin.view.${endpoint}`
+  const sortStorageKey = `admin.sort.${endpoint}`
 
   useEffect(() => {
     if (typeof window === "undefined") return
     const saved = window.localStorage.getItem(storageKey) as ViewMode | null
     if (saved === "cards" || saved === "table") setView(saved)
-  }, [storageKey])
+    const savedSort = window.localStorage.getItem(sortStorageKey)
+    if (savedSort) {
+      try {
+        const parsed = JSON.parse(savedSort)
+        if (parsed && typeof parsed.key === "string" && (parsed.dir === "asc" || parsed.dir === "desc")) {
+          setSort(parsed)
+        }
+      } catch {}
+    }
+  }, [storageKey, sortStorageKey])
 
   const changeView = (v: ViewMode) => {
     setView(v)
     if (typeof window !== "undefined") window.localStorage.setItem(storageKey, v)
+  }
+
+  /** Cicla el orden de una columna: ninguno → asc → desc → ninguno. */
+  const cycleSort = (key: string) => {
+    setSort((prev) => {
+      let next: SortState
+      if (!prev || prev.key !== key) next = { key, dir: "asc" }
+      else if (prev.dir === "asc") next = { key, dir: "desc" }
+      else next = null
+      if (typeof window !== "undefined") {
+        if (next) window.localStorage.setItem(sortStorageKey, JSON.stringify(next))
+        else window.localStorage.removeItem(sortStorageKey)
+      }
+      return next
+    })
   }
 
   /* ── Búsqueda + filtros ── */
@@ -177,21 +208,42 @@ export function ListCrudEditor<T extends BaseItem>({
         autoSearchableKeys.some((k) => normalize((it as any)[k]).includes(queryNorm)),
       )
     }
+    // Orden por columna (estable, ignora drag-and-drop mientras esté activo)
+    if (sort) {
+      const { key, dir } = sort
+      const factor = dir === "asc" ? 1 : -1
+      const compare = (a: any, b: any): number => {
+        const av = (a as any)[key]
+        const bv = (b as any)[key]
+        if (av == null && bv == null) return 0
+        if (av == null) return 1
+        if (bv == null) return -1
+        if (typeof av === "number" && typeof bv === "number") return (av - bv) * factor
+        if (typeof av === "boolean" && typeof bv === "boolean") {
+          return (Number(av) - Number(bv)) * factor
+        }
+        const as = String(av)
+        const bs = String(bv)
+        return as.localeCompare(bs, "es", { sensitivity: "base", numeric: true }) * factor
+      }
+      list = [...list].sort(compare)
+    }
     return list
-  }, [items, filterValues, queryNorm, autoSearchableKeys])
+  }, [items, filterValues, queryNorm, autoSearchableKeys, sort])
 
   const hasActiveFilters =
     queryNorm.length > 0 || Object.values(filterValues).some((v) => v)
+  const hasActiveSort = sort !== null
 
   const clearFilters = () => {
     setQuery("")
     setFilterValues({})
   }
 
-  // Reset paginación al filtrar/buscar
+  // Reset paginación al filtrar/buscar/ordenar
   useEffect(() => {
     setVisibleCount(pageSize)
-  }, [queryNorm, filterValues, pageSize])
+  }, [queryNorm, filterValues, sort, pageSize])
 
   // Atajo "/" para enfocar búsqueda
   useEffect(() => {
@@ -531,7 +583,7 @@ export function ListCrudEditor<T extends BaseItem>({
                       fields={fields}
                       thumbnailField={autoThumbnailField}
                       renderPreview={renderPreview}
-                      canReorder={canReorder && !hasActiveFilters}
+                      canReorder={canReorder && !hasActiveFilters && !hasActiveSort}
                       disabled={editingId !== null}
                       onEdit={() => beginEdit(item)}
                       onDelete={() => del(item.id)}
@@ -547,7 +599,7 @@ export function ListCrudEditor<T extends BaseItem>({
                 fields={fields}
                 columns={columns}
                 thumbnailField={autoThumbnailField}
-                canReorder={canReorder && !hasActiveFilters}
+                canReorder={canReorder && !hasActiveFilters && !hasActiveSort}
                 editingId={editingId}
                 draft={draft}
                 setDraft={setDraft}
@@ -560,6 +612,8 @@ export function ListCrudEditor<T extends BaseItem>({
                 onSave={save}
                 detailHref={detailHref}
                 detailLabel={detailLabel}
+                sort={sort}
+                onSortColumn={cycleSort}
               />
             )}
           </SortableContext>
@@ -921,6 +975,8 @@ function TableView<T extends BaseItem>({
   onSave,
   detailHref,
   detailLabel,
+  sort,
+  onSortColumn,
 }: {
   items: T[]
   fields: FieldDef[]
@@ -939,6 +995,8 @@ function TableView<T extends BaseItem>({
   onSave: () => void
   detailHref?: (item: any) => string
   detailLabel?: string
+  sort: SortState
+  onSortColumn: (key: string) => void
 }) {
   return (
     <div className="overflow-hidden rounded-md border border-slate-200 bg-white">
@@ -947,17 +1005,45 @@ function TableView<T extends BaseItem>({
           <tr className="border-b border-slate-200 bg-stone-50">
             {canReorder && <th className="w-8" />}
             {thumbnailField && <th className="w-12" />}
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                className={cn(
-                  "px-3 py-2.5 text-left font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500",
-                  col.className,
-                )}
-              >
-                {col.label}
-              </th>
-            ))}
+            {columns.map((col) => {
+              const active = sort?.key === col.key
+              const dir = active ? sort!.dir : null
+              return (
+                <th
+                  key={col.key}
+                  className={cn(
+                    "px-3 py-2.5 text-left font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500",
+                    col.className,
+                  )}
+                >
+                  <button
+                    type="button"
+                    onClick={() => onSortColumn(col.key)}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 transition-colors hover:text-slate-900",
+                      active && "text-slate-900",
+                    )}
+                    aria-label={`Ordenar por ${col.label}`}
+                    aria-sort={
+                      active
+                        ? dir === "asc"
+                          ? "ascending"
+                          : "descending"
+                        : "none"
+                    }
+                  >
+                    <span>{col.label}</span>
+                    {dir === "asc" ? (
+                      <ArrowUp className="h-3 w-3" />
+                    ) : dir === "desc" ? (
+                      <ArrowDown className="h-3 w-3" />
+                    ) : (
+                      <ArrowUpDown className="h-3 w-3 opacity-40" />
+                    )}
+                  </button>
+                </th>
+              )
+            })}
             <th className="w-28 px-3 py-2.5 text-right font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">
               Acciones
             </th>
