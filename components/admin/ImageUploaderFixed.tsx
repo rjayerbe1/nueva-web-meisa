@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useCallback, useRef } from "react"
-import { Upload, X, Image as ImageIcon, AlertCircle } from "lucide-react"
+import { Upload, X, Image as ImageIcon, AlertCircle, Crop } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import NextImage from "next/image"
 import { toast } from "react-hot-toast"
+import ImageCropModal from "./ImageCropModal"
 
 interface ImageUploaderProps {
   images?: string[]
@@ -26,7 +26,9 @@ export function ImageUploaderFixed({
   label = 'Subir imágenes'
 }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [cropFile, setCropFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   const maxCount = maxFiles || maxImages
@@ -85,48 +87,26 @@ export function ImageUploaderFixed({
     })
   }
 
-  // Función de subida simulada (en desarrollo)
   const uploadToServer = async (file: File): Promise<string> => {
-    // Crear FormData para enviar el archivo
     const formData = new FormData()
     formData.append('file', file)
-    
-    try {
-      // En desarrollo, podemos crear una URL temporal
-      // En producción, esto debería ser una llamada real al servidor
-      if (process.env.NODE_ENV === 'development') {
-        // Simular tiempo de subida
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        
-        // Generar un nombre único para el archivo WebP
-        const timestamp = Date.now()
-        const randomId = Math.random().toString(36).substring(7)
-        const fileName = `client-logo-${timestamp}-${randomId}.webp`
-        
-        // Retornar URL relativa que se guardará en la BD
-        return `https://storage.googleapis.com/meisa-imagenes/site/clients/${fileName}`
-      } else {
-        // En producción, hacer llamada real al endpoint de subida
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        })
-        
-        if (!response.ok) {
-          throw new Error('Error al subir archivo')
-        }
-        
-        const data = await response.json()
-        return data.url
-      }
-    } catch (error) {
-      console.error('Error uploading file:', error)
-      throw error
+    formData.append('folder', 'clientes')
+
+    const response = await fetch('/api/admin/upload', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}))
+      throw new Error(err?.error || `Error al subir archivo (${response.status})`)
     }
+
+    const data = await response.json()
+    return data.url
   }
 
-  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
+  const processFiles = useCallback(async (files: File[]) => {
     if (files.length === 0) return
 
     setError(null)
@@ -138,7 +118,7 @@ export function ImageUploaderFixed({
         if (file.size > 10 * 1024 * 1024) { // 10MB
           throw new Error(`El archivo ${file.name} es demasiado grande (máximo 10MB)`)
         }
-        
+
         if (!file.type.startsWith('image/')) {
           throw new Error(`El archivo ${file.name} no es una imagen válida`)
         }
@@ -146,39 +126,34 @@ export function ImageUploaderFixed({
 
       // Procesar archivos
       const urls: string[] = []
-      
+
       for (const file of files.slice(0, maxCount)) {
         try {
-          // Convertir a WebP para optimizar tamaño
           const webpDataUrl = await convertToWebP(file, 0.9)
-          
-          if (process.env.NODE_ENV === 'development') {
-            // En desarrollo, usar la imagen WebP convertida
-            urls.push(webpDataUrl)
-          } else {
-            // En producción, crear un blob WebP y subirlo
-            const response = await fetch(webpDataUrl)
-            const blob = await response.blob()
-            const webpFile = new File([blob], `${file.name.split('.')[0]}.webp`, { type: 'image/webp' })
-            const url = await uploadToServer(webpFile)
-            urls.push(url)
-          }
+          const response = await fetch(webpDataUrl)
+          const blob = await response.blob()
+          const baseName = file.name.replace(/\.[^.]+$/, '') || 'logo'
+          const webpFile = new File([blob], `${baseName}.webp`, { type: 'image/webp' })
+          const url = await uploadToServer(webpFile)
+          urls.push(url)
         } catch (fileError) {
           console.error(`Error processing file ${file.name}:`, fileError)
-          throw new Error(`Error procesando ${file.name}`)
+          const msg = fileError instanceof Error ? fileError.message : 'error desconocido'
+          throw new Error(`Error procesando ${file.name}: ${msg}`)
         }
       }
-      
+
       // Llamar callback correspondiente
       if (onUpload) {
         onUpload(urls)
         toast.success(`${urls.length} imagen(es) subida(s) correctamente`)
       } else if (onImagesChange) {
-        const updatedImages = [...currentImages, ...urls].slice(0, maxCount)
+        // En modo de 1 sola imagen, reemplazar; en galería, agregar
+        const updatedImages = (maxCount === 1 ? urls : [...currentImages, ...urls]).slice(0, maxCount)
         onImagesChange(updatedImages)
         toast.success(`${urls.length} imagen(es) agregada(s)`)
       }
-      
+
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error al subir imagen'
       setError(errorMessage)
@@ -192,6 +167,61 @@ export function ImageUploaderFixed({
       }
     }
   }, [currentImages, maxCount, onImagesChange, onUpload])
+
+  // En modo de 1 sola imagen, permitir reemplazar aunque el cupo esté lleno
+  const isSingle = maxCount === 1
+  const slotsFull = currentImages.length >= maxCount
+  const canAcceptDrop = !isUploading && (!slotsFull || isSingle)
+
+  // En modo de 1 imagen el archivo pasa primero por el modal de recorte;
+  // en modo galería se procesa directo.
+  const handleIncomingFiles = useCallback((files: File[]) => {
+    if (files.length === 0) return
+    if (isSingle) {
+      const file = files[0]
+      if (!file.type.startsWith('image/')) {
+        toast.error('Solo se permiten imágenes')
+        return
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('La imagen es demasiado grande (máximo 10MB)')
+        return
+      }
+      setCropFile(file)
+    } else {
+      processFiles(files)
+    }
+  }, [isSingle, processFiles])
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    handleIncomingFiles(Array.from(e.target.files || []))
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }, [handleIncomingFiles])
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+    if (!canAcceptDrop) return
+    const files = Array.from(e.dataTransfer.files || []).filter((f) => f.type.startsWith('image/'))
+    if (files.length === 0) {
+      toast.error('Solo se permiten imágenes')
+      return
+    }
+    handleIncomingFiles(files)
+  }, [canAcceptDrop, handleIncomingFiles])
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (canAcceptDrop && !isDragging) setIsDragging(true)
+  }, [canAcceptDrop, isDragging])
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsDragging(false)
+  }, [])
 
   const removeImage = useCallback((index: number) => {
     if (onImagesChange) {
@@ -209,10 +239,177 @@ export function ImageUploaderFixed({
     }
   }
 
+  const errorBox = error && (
+    <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
+      <AlertCircle className="h-4 w-4 flex-shrink-0" />
+      <span className="text-sm">{error}</span>
+    </div>
+  )
+
+  // ── Modo de 1 sola imagen: caja única (dropzone + preview combinados) ──
+  if (isSingle) {
+    const image = currentImages[0]
+    const hasImage =
+      !!image &&
+      (image.startsWith('data:') || image.startsWith('http') || image.startsWith('/'))
+
+    // Abre el modal de recorte sobre la imagen ya subida
+    const openCropForExisting = async () => {
+      if (!image) return
+      try {
+        const res = await fetch(image)
+        if (!res.ok) throw new Error('fetch failed')
+        const blob = await res.blob()
+        const type = blob.type || 'image/png'
+        const ext = type.split('/')[1] || 'png'
+        setCropFile(new File([blob], `logo-actual.${ext}`, { type }))
+      } catch (e) {
+        console.error('Error abriendo imagen para recortar:', e)
+        toast.error('No se pudo abrir la imagen para recortar')
+      }
+    }
+
+    return (
+      <div className="space-y-2">
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={canAcceptDrop && !hasImage ? handleUploadClick : undefined}
+          className={`group relative mx-auto aspect-[2/1] w-full max-w-sm overflow-hidden rounded-lg border-2 transition-colors ${
+            isDragging
+              ? 'border-solid border-blue-500 bg-blue-50'
+              : hasImage
+              ? 'border-solid border-gray-200 bg-white'
+              : 'cursor-pointer border-dashed border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={acceptedFileTypes.join(',')}
+            onChange={handleFileChange}
+            className="hidden"
+            disabled={!canAcceptDrop}
+          />
+
+          {hasImage && !isDragging ? (
+            <>
+              <img
+                key={image}
+                src={image}
+                alt={label || 'Imagen'}
+                className="h-full w-full object-contain p-5"
+                onLoad={(e) => {
+                  e.currentTarget.style.display = ''
+                }}
+                onError={(e) => {
+                  console.error(`Error loading image: ${image}`)
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/55 opacity-0 transition-opacity group-hover:opacity-100">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="secondary"
+                  onClick={handleUploadClick}
+                  disabled={isUploading}
+                  className="h-8 w-36 justify-start px-3 text-xs"
+                >
+                  <Upload className="mr-2 h-3.5 w-3.5" />
+                  Reemplazar
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="secondary"
+                  onClick={openCropForExisting}
+                  disabled={isUploading}
+                  className="h-8 w-36 justify-start px-3 text-xs"
+                >
+                  <Crop className="mr-2 h-3.5 w-3.5" />
+                  Recortar
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => removeImage(0)}
+                  disabled={isUploading}
+                  className="h-8 w-36 justify-start px-3 text-xs"
+                >
+                  <X className="mr-2 h-3.5 w-3.5" />
+                  Quitar
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+              <Upload
+                className={`mb-2 h-9 w-9 ${isDragging ? 'text-blue-500' : 'text-gray-400'}`}
+              />
+              <p className="text-sm font-medium text-gray-600">
+                {isUploading
+                  ? 'Subiendo imagen…'
+                  : isDragging
+                  ? 'Suelta la imagen aquí'
+                  : label || 'Click o arrastra una imagen'}
+              </p>
+              <p className="mt-0.5 text-xs text-gray-400">
+                PNG, JPG · se convierte a WebP · máx 10MB
+              </p>
+            </div>
+          )}
+
+          {isUploading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/70">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-700" />
+            </div>
+          )}
+        </div>
+
+        {hasImage && (
+          <p className="text-xs text-gray-400 text-center">
+            Vista previa al tamaño real — así se mostrará en la página
+          </p>
+        )}
+        {errorBox}
+
+        <ImageCropModal
+          isOpen={!!cropFile}
+          imageFile={cropFile}
+          freeCrop
+          outputType="image/webp"
+          folder="clientes"
+          onClose={() => setCropFile(null)}
+          onCropComplete={(url) => {
+            setCropFile(null)
+            if (onUpload) {
+              onUpload([url])
+            } else if (onImagesChange) {
+              onImagesChange([url])
+            }
+          }}
+        />
+      </div>
+    )
+  }
+
+  // ── Modo galería (varias imágenes) ──
   return (
     <div className="space-y-4">
       {/* Upload area */}
-      <div className="border-2 border-dashed border-gray-300 hover:border-gray-400 rounded-lg p-6 text-center transition-colors">
+      <div
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+          isDragging
+            ? 'border-blue-500 bg-blue-50'
+            : 'border-gray-300 hover:border-gray-400'
+        }`}
+      >
         <input
           ref={fileInputRef}
           type="file"
@@ -220,22 +417,22 @@ export function ImageUploaderFixed({
           accept={acceptedFileTypes.join(',')}
           onChange={handleFileChange}
           className="hidden"
-          disabled={isUploading || currentImages.length >= maxCount}
+          disabled={!canAcceptDrop}
         />
-        
-        <div 
-          onClick={currentImages.length >= maxCount || isUploading ? undefined : handleUploadClick}
-          className={`cursor-pointer ${
-            currentImages.length >= maxCount || isUploading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+
+        <div
+          onClick={canAcceptDrop ? handleUploadClick : undefined}
+          className={`cursor-pointer ${canAcceptDrop ? "" : "opacity-50 cursor-not-allowed"}`}
         >
-          <Upload className="mx-auto h-12 w-12 text-gray-400" />
+          <Upload className={`mx-auto h-12 w-12 ${isDragging ? 'text-blue-500' : 'text-gray-400'}`} />
           <p className="mt-2 text-sm text-gray-600">
             {isUploading
               ? "Subiendo imagen..."
-              : currentImages.length >= maxCount
-              ? `Máximo ${maxCount} ${maxCount === 1 ? 'imagen' : 'imágenes'}`
-              : label || "Click para subir imagen"}
+              : isDragging
+              ? "Suelta la imagen aquí"
+              : slotsFull
+              ? `Máximo ${maxCount} imágenes`
+              : label || "Click o arrastra una imagen aquí"}
           </p>
           <p className="text-xs text-gray-500">
 PNG, JPG (se convertirá a WebP) hasta 10MB
@@ -244,12 +441,7 @@ PNG, JPG (se convertirá a WebP) hasta 10MB
       </div>
 
       {/* Error message */}
-      {error && (
-        <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          <AlertCircle className="h-4 w-4" />
-          <span className="text-sm">{error}</span>
-        </div>
-      )}
+      {errorBox}
 
       {/* Images grid */}
       {currentImages.length > 0 && (
@@ -264,9 +456,13 @@ PNG, JPG (se convertirá a WebP) hasta 10MB
               {/* Imagen */}
               {image.startsWith("data:") || image.startsWith("http") || image.startsWith("/") ? (
                 <img
+                  key={image}
                   src={image}
                   alt={`Imagen ${index + 1}`}
                   className="w-full h-full object-cover"
+                  onLoad={(e) => {
+                    e.currentTarget.style.display = ''
+                  }}
                   onError={(e) => {
                     console.error(`Error loading image: ${image}`)
                     e.currentTarget.style.display = 'none'

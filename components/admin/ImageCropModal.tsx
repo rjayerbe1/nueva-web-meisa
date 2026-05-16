@@ -13,6 +13,8 @@ interface ImageCropModalProps {
   imageFile: File | null
   aspectRatio?: number // Nuevo prop para aspect ratio (ancho/alto)
   folder?: string // Carpeta en GCS donde subir la imagen
+  freeCrop?: boolean // Recorte libre sin proporción fija (ideal para logos)
+  outputType?: 'image/jpeg' | 'image/png' | 'image/webp' // Formato de salida
 }
 
 export default function ImageCropModal({
@@ -21,7 +23,9 @@ export default function ImageCropModal({
   onCropComplete,
   imageFile,
   aspectRatio = 1, // Default 1:1 (cuadrado)
-  folder = 'hero' // Default folder
+  folder = 'hero', // Default folder
+  freeCrop = false,
+  outputType = 'image/jpeg'
 }: ImageCropModalProps) {
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -60,7 +64,19 @@ export default function ImageCropModal({
     let canvasWidth: number
     let canvasHeight: number
 
-    if (aspectRatio >= 1) {
+    if (freeCrop) {
+      // Recorte libre: tamaño real del recorte, limitado a 1600px en el lado mayor
+      let w = crop.width * scaleX
+      let h = crop.height * scaleY
+      const max = 1600
+      if (w > max || h > max) {
+        const r = Math.min(max / w, max / h)
+        w *= r
+        h *= r
+      }
+      canvasWidth = Math.max(1, Math.round(w))
+      canvasHeight = Math.max(1, Math.round(h))
+    } else if (aspectRatio >= 1) {
       // Landscape or square
       canvasWidth = 1600
       canvasHeight = Math.round(1600 / aspectRatio)
@@ -92,7 +108,7 @@ export default function ImageCropModal({
           return
         }
         resolve(blob)
-      }, 'image/jpeg', 0.95)
+      }, outputType, 0.95)
     })
   }
 
@@ -114,7 +130,8 @@ export default function ImageCropModal({
 
       // Subir a Google Cloud Storage
       const formData = new FormData()
-      const fileName = `cropped-${Date.now()}.jpg`
+      const ext = outputType === 'image/png' ? 'png' : outputType === 'image/webp' ? 'webp' : 'jpg'
+      const fileName = `cropped-${Date.now()}.${ext}`
       formData.append('file', croppedBlob, fileName)
       formData.append('folder', folder)
 
@@ -144,11 +161,16 @@ export default function ImageCropModal({
 
   const resetCrop = () => {
     if (imgRef.current) {
+      if (freeCrop) {
+        const { width, height } = imgRef.current
+        setCrop({ unit: 'px', x: 0, y: 0, width, height })
+        return
+      }
       const { width, height } = imgRef.current
-      
+
       let cropWidth: number
       let cropHeight: number
-      
+
       if (aspectRatio >= 1) {
         cropWidth = Math.min(width, height * aspectRatio) * 0.8
         cropHeight = cropWidth / aspectRatio
@@ -191,14 +213,16 @@ export default function ImageCropModal({
         {/* Content - Scrollable */}
         <div className="p-4 overflow-y-auto flex-1">
           <p className="text-sm text-gray-600 mb-4">
-            Arrastra para seleccionar el área que quieres mantener. La imagen se recortará con proporción {aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`}.
+            {freeCrop
+              ? 'Arrastra las esquinas para seleccionar el área del logo que quieres mantener.'
+              : `Arrastra para seleccionar el área que quieres mantener. La imagen se recortará con proporción ${aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`}.`}
           </p>
 
           <div className="flex justify-center mb-4">
             <ReactCrop
               crop={crop}
               onChange={(c) => setCrop(c)}
-              aspect={aspectRatio} // Usar aspect ratio dinámico
+              aspect={freeCrop ? undefined : aspectRatio}
               circularCrop={false}
               className="max-w-full"
             >
@@ -209,11 +233,16 @@ export default function ImageCropModal({
                 className="max-w-full max-h-[50vh] object-contain"
                 onLoad={() => {
                   // Inicializar el crop cuando la imagen se carga
+                  if (freeCrop) {
+                    const { width, height } = imgRef.current!
+                    setCrop({ unit: 'px', x: 0, y: 0, width, height })
+                    return
+                  }
                   const { width, height } = imgRef.current!
-                  
+
                   let cropWidth: number
                   let cropHeight: number
-                  
+
                   if (aspectRatio >= 1) {
                     // Landscape: basar en el ancho
                     cropWidth = Math.min(width, height * aspectRatio) * 0.8
@@ -240,34 +269,36 @@ export default function ImageCropModal({
           </div>
 
           {/* Preview */}
-          <div className="flex items-center gap-4 mb-6">
-            <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">Vista previa:</p>
-              <div 
-                className="border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50"
-                style={{
-                  width: aspectRatio >= 1 ? '96px' : `${Math.round(80 * aspectRatio)}px`,
-                  height: aspectRatio >= 1 ? `${Math.round(96 / aspectRatio)}px` : '80px'
-                }}
-              >
-                {imageUrl && crop.width && crop.height && (
-                  <div
-                    className="w-full h-full bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url(${imageUrl})`,
-                      backgroundPosition: `${-crop.x}px ${-crop.y}px`,
-                      backgroundSize: `${imgRef.current?.width || 0}px ${imgRef.current?.height || 0}px`,
-                    }}
-                  />
-                )}
+          {!freeCrop && (
+            <div className="flex items-center gap-4 mb-6">
+              <div>
+                <p className="text-sm font-medium text-gray-700 mb-2">Vista previa:</p>
+                <div
+                  className="border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-50"
+                  style={{
+                    width: aspectRatio >= 1 ? '96px' : `${Math.round(80 * aspectRatio)}px`,
+                    height: aspectRatio >= 1 ? `${Math.round(96 / aspectRatio)}px` : '80px'
+                  }}
+                >
+                  {imageUrl && crop.width && crop.height && (
+                    <div
+                      className="w-full h-full bg-cover bg-center"
+                      style={{
+                        backgroundImage: `url(${imageUrl})`,
+                        backgroundPosition: `${-crop.x}px ${-crop.y}px`,
+                        backgroundSize: `${imgRef.current?.width || 0}px ${imgRef.current?.height || 0}px`,
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-gray-600">
+                  La imagen será redimensionada manteniendo la proporción {aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`} y la calidad.
+                </p>
               </div>
             </div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-600">
-                La imagen será redimensionada manteniendo la proporción {aspectRatio >= 1 ? `${Math.round(aspectRatio * 100) / 100}:1` : `1:${Math.round(100 / aspectRatio) / 100}`} y la calidad.
-              </p>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Footer - Always visible */}

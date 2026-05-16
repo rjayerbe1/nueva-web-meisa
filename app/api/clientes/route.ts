@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
     const clientes = await prisma.cliente.findMany({
       where,
       orderBy: [
-        { destacado: 'desc' },
         { orden: 'asc' },
         { nombre: 'asc' }
       ]
