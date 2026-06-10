@@ -87,6 +87,8 @@ function FieldHint({ children }: { children: React.ReactNode }) {
   return <p className="mt-1.5 font-lato text-xs italic text-slate-500">{children}</p>
 }
 
+const SELECT_NONE = "__none__"
+
 const INPUT_CLS =
   "w-full rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 shadow-none transition-colors placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20 disabled:cursor-not-allowed disabled:opacity-60"
 
@@ -171,13 +173,17 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
         </div>
       )
 
-    case "select":
+    case "select": {
+      // Radix Select prohíbe <SelectItem value="">; las opciones "sin valor"
+      // (value: "") se mapean a un sentinel y se guardan como null.
+      const hasEmptyOption = field.options?.some((o) => o.value === "")
+      const rawValue = (value as string | null | undefined) ?? ""
       return (
         <div className={spanClass}>
           <FieldLabel required={field.required}>{field.label}</FieldLabel>
           <Select
-            value={(value as string) ?? ""}
-            onValueChange={(v) => onChange(v)}
+            value={rawValue === "" ? (hasEmptyOption ? SELECT_NONE : "") : rawValue}
+            onValueChange={(v) => onChange(v === SELECT_NONE ? null : v)}
             disabled={disabled}
           >
             <SelectTrigger className="h-auto rounded-none border-slate-300 bg-white px-3 py-2 font-lato text-sm text-slate-950 shadow-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20">
@@ -185,7 +191,7 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
             </SelectTrigger>
             <SelectContent>
               {field.options?.map((o) => (
-                <SelectItem key={o.value} value={o.value}>
+                <SelectItem key={o.value || SELECT_NONE} value={o.value || SELECT_NONE}>
                   {o.label}
                 </SelectItem>
               ))}
@@ -194,6 +200,7 @@ export function FormField({ field, value, onChange, disabled }: FormFieldProps) 
           {field.hint && <FieldHint>{field.hint}</FieldHint>}
         </div>
       )
+    }
 
     case "stringArray":
       return (

@@ -106,8 +106,8 @@ export function Footer() {
             <Link href="/politica-datos" className="hover:text-white transition-colors">
               Política de Datos
             </Link>
-            <Link href="/sagrilaft" className="hover:text-white transition-colors">
-              SAGRILAFT
+            <Link href="/empresa#gobierno-corporativo" className="hover:text-white transition-colors">
+              Gobierno Corporativo
             </Link>
             <Link href="/calidad" className="hover:text-white transition-colors">
               Sistema de Gestión

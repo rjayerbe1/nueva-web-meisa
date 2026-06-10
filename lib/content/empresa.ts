@@ -6,6 +6,7 @@ import type {
   TimelineHito,
   Certificacion,
   Norma,
+  GobiernoItem,
 } from "@prisma/client"
 
 export type EmpresaConfig = ConfiguracionEmpresa
@@ -13,6 +14,7 @@ export type Valor = CompanyValue
 export type Hito = TimelineHito
 export type CertificacionItem = Certificacion
 export type NormaItem = Norma
+export type GobiernoItemPublic = GobiernoItem
 
 export const getConfiguracionEmpresa = cache(async (): Promise<EmpresaConfig | null> => {
   return prisma.configuracionEmpresa.findUnique({ where: { id: "default" } })
@@ -46,23 +48,32 @@ export const getNormasActivas = cache(async (): Promise<NormaItem[]> => {
   })
 })
 
+export const getGobiernoItemsActivos = cache(async (): Promise<GobiernoItemPublic[]> => {
+  return prisma.gobiernoItem.findMany({
+    where: { activo: true },
+    orderBy: { orden: "asc" },
+  })
+})
+
 export type EmpresaData = {
   config: EmpresaConfig | null
   valores: Valor[]
   hitos: Hito[]
   certificaciones: CertificacionItem[]
   normas: NormaItem[]
+  gobierno: GobiernoItemPublic[]
 }
 
 export async function getEmpresaData(): Promise<EmpresaData> {
-  const [config, valores, hitos, certificaciones, normas] = await Promise.all([
+  const [config, valores, hitos, certificaciones, normas, gobierno] = await Promise.all([
     getConfiguracionEmpresa(),
     getValoresActivos(),
     getHitosActivos(),
     getCertificacionesActivas(),
     getNormasActivas(),
+    getGobiernoItemsActivos(),
   ])
-  return { config, valores, hitos, certificaciones, normas }
+  return { config, valores, hitos, certificaciones, normas, gobierno }
 }
 
 // Versión "completa" para admin (incluye inactivos)

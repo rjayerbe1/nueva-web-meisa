@@ -12,6 +12,7 @@ import type {
   Certificacion,
   Norma,
   Plant,
+  GobiernoItem,
 } from "@prisma/client"
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
   certificaciones: Certificacion[]
   normas: Norma[]
   plantas: Plant[]
+  gobierno: GobiernoItem[]
 }
 
 const configSections: SingletonSection[] = [
@@ -140,6 +142,38 @@ const normaFields: FieldDef[] = [
   { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, required: true, gridSpan: 2 },
   { name: "categoria", label: "Categoría", kind: "text" },
   { name: "logo", label: "URL logo", kind: "url" },
+  { name: "orden", label: "Orden", kind: "number" },
+  { name: "activo", label: "Activo", kind: "boolean" },
+]
+
+const gobiernoFields: FieldDef[] = [
+  { name: "slug", label: "Slug", kind: "text", required: true, placeholder: "manual-sagrilaft" },
+  { name: "titulo", label: "Título", kind: "text", required: true },
+  {
+    name: "tipo",
+    label: "Tipo",
+    kind: "select",
+    options: [
+      { value: "documento", label: "Documento (PDF)" },
+      { value: "formulario", label: "Formulario / Link externo" },
+    ],
+  },
+  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 3, gridSpan: 2 },
+  {
+    name: "documentoUrl",
+    label: "PDF (subir documento)",
+    kind: "document",
+    gridSpan: 2,
+    hint: "Si subes un PDF, el botón del sitio abre este documento.",
+  },
+  {
+    name: "linkExterno",
+    label: "Link externo o página interna",
+    kind: "url",
+    gridSpan: 2,
+    hint: "Ej: link de Microsoft Forms o /politica-datos. Se usa si no hay PDF subido.",
+  },
+  { name: "textoBoton", label: "Texto del botón", kind: "text", placeholder: "Abrir PDF" },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
@@ -289,6 +323,47 @@ export function EmpresaAdminTabs(props: Props) {
               emptyTemplate={plantTemplate(props.plantas.length)}
               addLabel="Agregar planta"
               renderPreview={(p) => <PlantPreview plant={p} />}
+            />
+          ),
+        },
+        {
+          id: "gobierno",
+          label: "Gobierno Corporativo",
+          count: props.gobierno.length,
+          content: (
+            <ListCrudEditor<GobiernoItem>
+              items={props.gobierno}
+              fields={gobiernoFields}
+              endpoint="/api/admin/gobierno"
+              emptyTemplate={{
+                slug: "",
+                titulo: "",
+                descripcion: null,
+                tipo: "documento",
+                documentoUrl: null,
+                linkExterno: null,
+                textoBoton: null,
+                orden: props.gobierno.length,
+                activo: true,
+              }}
+              addLabel="Agregar documento o formulario"
+              renderPreview={(g) => (
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded bg-blue-100 px-2 py-0.5 text-xs font-mono text-blue-700">
+                      {g.tipo}
+                    </span>
+                    <span className="font-medium text-gray-900">{g.titulo}</span>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-600">
+                    {g.documentoUrl
+                      ? "PDF subido"
+                      : g.linkExterno
+                        ? g.linkExterno
+                        : "Sin PDF ni link — el botón no aparece en el sitio"}
+                  </p>
+                </div>
+              )}
             />
           ),
         },

@@ -813,6 +813,24 @@ model Politica {
   @@map("politicas")
 }
 
+// Gobierno Corporativo — sección en /empresa (documentos PDF + formularios externos)
+model GobiernoItem {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  titulo       String
+  descripcion  String?
+  tipo         String   @default("documento") // "documento" | "formulario"
+  documentoUrl String? // PDF subido a la biblioteca
+  linkExterno  String? // formulario externo (Microsoft Forms) o página interna
+  textoBoton   String?
+  orden        Int      @default(0)
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("gobierno_items")
+}
+
 // Pilares SIG — sección "Sistema Integrado de Gestión" en /calidad
 model PilarSIG {
   id            String   @id @default(cuid())

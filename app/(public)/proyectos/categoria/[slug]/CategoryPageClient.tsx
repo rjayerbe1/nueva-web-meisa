@@ -414,7 +414,7 @@ export default function CategoryPageClient({
                         }
                         alt={proyecto.imagenes[0].alt}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     </div>

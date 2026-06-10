@@ -10,6 +10,7 @@ import { CreemosSection } from '@/components/sections/empresa/CreemosSection'
 import { QuienesSomosSection } from '@/components/sections/empresa/QuienesSomosSection'
 import { InstalacionesSection } from '@/components/sections/empresa/InstalacionesSection'
 import { CompromisoSection } from '@/components/sections/empresa/CompromisoSection'
+import { GobiernoCorporativoSection } from '@/components/sections/empresa/GobiernoCorporativoSection'
 
 interface EmpresaContentProps {
   plantas: PlantaPublica[]
@@ -37,6 +38,8 @@ export default function EmpresaContent({ plantas, empresa }: EmpresaContentProps
         certificaciones={empresa.certificaciones}
         normas={empresa.normas}
       />
+
+      <GobiernoCorporativoSection items={empresa.gobierno} />
 
       {/* CTA Final — brutalist dark */}
       <section id="contacto" className="relative bg-slate-950 text-white py-20 md:py-28">
