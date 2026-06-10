@@ -29,7 +29,7 @@ export function CreemosSection({ config }: Props) {
   const yParallaxDesktop = useTransform(scrollYProgress, [0, 0.7, 1], [0, 150, 150])
 
   return (
-    <section ref={containerRef} className="relative py-16 md:py-28 overflow-hidden bg-gradient-to-br from-gray-50 to-white">
+    <section ref={containerRef} className="relative py-16 md:py-28 overflow-hidden bg-white">
       <div className="container mx-auto px-6 md:px-12">
         {/* Grid: Frases (70%) | Cita del liderazgo (30%) */}
         <div className="grid md:grid-cols-10 gap-12 md:gap-10 items-center">
@@ -42,7 +42,7 @@ export function CreemosSection({ config }: Props) {
                 style={{ y: yParallaxMobile }}
                 className="md:hidden relative z-10 mr-2 flex-shrink-0"
               >
-                <h3 className="text-2xl font-black text-slate-950 leading-none" style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}>
+                <h3 className="text-2xl font-bebas text-slate-950 leading-none uppercase">
                   creemos
                 </h3>
               </motion.div>
@@ -52,7 +52,7 @@ export function CreemosSection({ config }: Props) {
                 style={{ y: yParallaxDesktop }}
                 className="hidden md:block relative z-10 mr-3 flex-shrink-0"
               >
-                <h3 className="text-4xl lg:text-5xl font-black text-slate-950 leading-none" style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}>
+                <h3 className="text-4xl lg:text-5xl font-bebas text-slate-950 leading-none uppercase">
                   creemos
                 </h3>
               </motion.div>
@@ -66,8 +66,7 @@ export function CreemosSection({ config }: Props) {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ delay: i * 0.1, duration: 0.6 }}
-                    className="text-xl md:text-3xl lg:text-4xl text-slate-700 leading-[1.1]"
-                    style={{ fontFamily: 'HelveticaNowDisplay, Arial, sans-serif' }}
+                    className="text-xl md:text-3xl lg:text-4xl font-lato text-slate-700 leading-[1.1]"
                   >
                     {frase}
                   </motion.p>
@@ -151,11 +150,6 @@ export function CreemosSection({ config }: Props) {
         </div>
       </div>
 
-      {/* Patrón de fondo decorativo */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-10 w-40 h-40 border border-slate-500 rounded-full" />
-        <div className="absolute bottom-20 right-20 w-60 h-60 border border-slate-500 rounded-full" />
-      </div>
     </section>
   )
 }

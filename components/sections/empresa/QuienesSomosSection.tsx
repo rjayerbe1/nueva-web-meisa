@@ -76,7 +76,7 @@ export function QuienesSomosSection({ config, valores, hitos }: Props) {
 
             <div className="relative">
               {hitos.length > 1 && (
-                <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-blue-300" />
+                <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-slate-200" />
               )}
 
               <div
@@ -96,7 +96,7 @@ export function QuienesSomosSection({ config, valores, hitos }: Props) {
                   >
                     {/* Icono */}
                     {item.icono && (
-                      <div className="w-16 h-16 bg-white rounded-full shadow-lg z-10 mb-4 flex items-center justify-center border-2 border-blue-200">
+                      <div className="w-16 h-16 bg-white rounded-full z-10 mb-4 flex items-center justify-center border-2 border-slate-200">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={item.icono}
@@ -107,12 +107,12 @@ export function QuienesSomosSection({ config, valores, hitos }: Props) {
                     )}
 
                     {/* Card */}
-                    <div className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-blue-300 transition-all w-full text-center">
-                      <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-bold mb-2">
+                    <div className="bg-white border border-slate-200 hover:border-slate-400 transition-colors w-full text-center p-4">
+                      <span className="inline-block border border-slate-300 px-2.5 py-1 text-xs font-lato font-bold uppercase tracking-wider text-slate-700 mb-2">
                         {item.periodo}
                       </span>
-                      <h4 className="font-bold text-gray-900 mb-2">{item.titulo}</h4>
-                      <p className="text-sm text-gray-600 leading-snug">
+                      <h4 className="font-bold text-slate-950 mb-2">{item.titulo}</h4>
+                      <p className="text-sm text-slate-600 leading-snug">
                         {item.descripcion}
                       </p>
                     </div>
