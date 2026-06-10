@@ -256,7 +256,7 @@ export function ProcesosTecnologiasContent({
       {/* ============================================================ */}
       {grupoControlDigital && procesos.length > 0 && (
         <Section id="control" grupo={grupoControlDigital}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10 md:[&>*:last-child:nth-child(odd)]:col-span-2">
             {procesos.map((proc, i) => (
               <motion.div
                 key={proc.id}

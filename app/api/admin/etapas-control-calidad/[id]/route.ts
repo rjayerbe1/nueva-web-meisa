@@ -9,6 +9,7 @@ const handlers = itemHandlers({
       slug: z.string().min(1),
       titulo: z.string().min(1),
       descripcion: z.string().nullable(),
+      puntos: z.array(z.string()),
       orden: z.number().int(),
       activo: z.boolean(),
     })

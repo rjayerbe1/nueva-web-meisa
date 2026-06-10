@@ -4,40 +4,43 @@ import {
   getNormasActivas,
   getCertificacionesActivas,
 } from '@/lib/content/empresa'
-import { PoliticasContent } from './PoliticasContent'
+import { CalidadContent } from './CalidadContent'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
   alternates: { canonical: '/calidad' },
-  title: 'Calidad | MEISA — SIG, Políticas, Certificaciones y Normas',
+  title: 'Calidad | MEISA — Control de Calidad, Trazabilidad Digital y RUC',
   description:
-    'Sistema Integrado de Gestión, políticas corporativas, certificaciones y cumplimiento normativo de MEISA. NSR-10, AWS D1.1, AISC, ICONTEC.',
+    'Control de calidad en estructura metálica: soldadores calificados AWS D1.1, ensayos no destructivos (VT, PT, UT), trazabilidad QR por pieza y dossier digital en tiempo real. Certificación RUC del CCS.',
   keywords: [
-    'política de calidad MEISA',
-    'SIG',
-    'Sistema Integrado de Gestión',
+    'control de calidad estructuras metálicas',
+    'soldadura calificada AWS D1.1',
+    'WPS PQR',
+    'ensayos no destructivos',
+    'trazabilidad QR',
+    'dossier de calidad',
+    'RUC CCS',
     'NSR-10',
-    'AWS D1.1',
     'AISC',
-    'SARLAFT',
   ],
 }
 
-export default async function PoliticasPage() {
+export default async function CalidadPage() {
   const [data, normas, certificaciones] = await Promise.all([
     getPoliticasData(),
     getNormasActivas(),
     getCertificacionesActivas(),
   ])
   return (
-    <PoliticasContent
+    <CalidadContent
       grupos={data.grupos}
       pilares={data.pilares}
       politicas={data.politicas}
       normas={normas}
       etapasControl={data.etapasControl}
       certificaciones={certificaciones}
+      procesos={data.procesos}
     />
   )
 }

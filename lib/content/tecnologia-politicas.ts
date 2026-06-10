@@ -79,10 +79,11 @@ export type PoliticasData = {
   pilares: PilarSIG[]
   politicas: Politica[]
   etapasControl: EtapaControlCalidad[]
+  procesos: ProcesoDigital[]
 }
 
 export const getPoliticasData = cache(async (): Promise<PoliticasData> => {
-  const [grupos, pilares, politicas, etapasControl] = await Promise.all([
+  const [grupos, pilares, politicas, etapasControl, procesos] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "calidad", activo: true },
       orderBy: { orden: "asc" },
@@ -99,12 +100,16 @@ export const getPoliticasData = cache(async (): Promise<PoliticasData> => {
       where: { activo: true },
       orderBy: { orden: "asc" },
     }),
+    prisma.procesoDigital.findMany({
+      where: { activo: true },
+      orderBy: { orden: "asc" },
+    }),
   ])
-  return { grupos, pilares, politicas, etapasControl }
+  return { grupos, pilares, politicas, etapasControl, procesos }
 })
 
 export async function getAllPoliticasData() {
-  const [grupos, pilares, politicas, etapasControl] = await Promise.all([
+  const [grupos, pilares, politicas, etapasControl, procesos] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "calidad" },
       orderBy: { orden: "asc" },
@@ -112,6 +117,7 @@ export async function getAllPoliticasData() {
     prisma.pilarSIG.findMany({ orderBy: { orden: "asc" } }),
     prisma.politica.findMany({ orderBy: { orden: "asc" } }),
     prisma.etapaControlCalidad.findMany({ orderBy: { orden: "asc" } }),
+    prisma.procesoDigital.findMany({ orderBy: { orden: "asc" } }),
   ])
-  return { grupos, pilares, politicas, etapasControl }
+  return { grupos, pilares, politicas, etapasControl, procesos }
 }

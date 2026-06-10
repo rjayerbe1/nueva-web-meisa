@@ -8,6 +8,7 @@ const handlers = listHandlers({
     slug: z.string().min(1),
     titulo: z.string().min(1),
     descripcion: z.string().nullable().optional(),
+    puntos: z.array(z.string()).default([]),
     orden: z.number().int().default(0),
     activo: z.boolean().default(true),
   }),

@@ -737,6 +737,7 @@ model EtapaControlCalidad {
   slug        String   @unique
   titulo      String
   descripcion String?
+  puntos      String[] @default([])
   orden       Int      @default(0)
   activo      Boolean  @default(true)
   createdAt   DateTime @default(now())

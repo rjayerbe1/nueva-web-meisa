@@ -9,6 +9,8 @@ import type {
   Norma,
   GrupoSeccion,
   EtapaControlCalidad,
+  Certificacion,
+  ProcesoDigital,
 } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
 
@@ -18,6 +20,8 @@ interface Props {
   normas: Norma[]
   gruposCalidad: GrupoSeccion[]
   etapasControl: EtapaControlCalidad[]
+  certificaciones: Certificacion[]
+  procesos: ProcesoDigital[]
 }
 
 const politicaFields: FieldDef[] = [
@@ -62,6 +66,46 @@ const etapaControlFields: FieldDef[] = [
   { name: "slug", label: "Slug (único)", kind: "text", required: true, placeholder: "diseno" },
   { name: "titulo", label: "Título", kind: "text", required: true, gridSpan: 2 },
   { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+  {
+    name: "puntos",
+    label: "Puntos de control",
+    kind: "stringArray",
+    multiline: true,
+    rows: 2,
+    gridSpan: 2,
+    hint: "Lista de controles ejecutados en esta etapa (viñetas en la página pública).",
+  },
+  { name: "orden", label: "Orden", kind: "number" },
+  { name: "activo", label: "Activo", kind: "boolean" },
+]
+
+const certFields: FieldDef[] = [
+  { name: "slug", label: "Slug", kind: "text", required: true },
+  { name: "nombre", label: "Nombre corto", kind: "text", required: true },
+  { name: "nombreCompleto", label: "Nombre completo", kind: "text", gridSpan: 2 },
+  { name: "emisor", label: "Emisor", kind: "text" },
+  { name: "importancia", label: "Importancia (texto)", kind: "text" },
+  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+  { name: "beneficios", label: "Beneficios / Alcance", kind: "stringArray", multiline: true, rows: 2, gridSpan: 2 },
+  { name: "logo", label: "Logo", kind: "image" },
+  { name: "documentoUrl", label: "URL documento", kind: "url" },
+  { name: "orden", label: "Orden", kind: "number" },
+  { name: "activo", label: "Activo", kind: "boolean" },
+]
+
+const procesoDigitalFields: FieldDef[] = [
+  { name: "slug", label: "Slug (único)", kind: "text", required: true },
+  { name: "nombre", label: "Nombre", kind: "text", required: true },
+  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 3, gridSpan: 2 },
+  {
+    name: "beneficios",
+    label: "Beneficios",
+    kind: "stringArray",
+    multiline: true,
+    rows: 2,
+    gridSpan: 2,
+  },
+  { name: "imagen", label: "Imagen", kind: "image", gridSpan: 2 },
   { name: "orden", label: "Orden", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
@@ -90,11 +134,13 @@ export function CalidadAdminTabs({
   normas,
   gruposCalidad,
   etapasControl,
+  certificaciones,
+  procesos,
 }: Props) {
   return (
     <AdminTabsLayout
       title="Calidad"
-      description="Contenido de /calidad: políticas corporativas, pilares del SIG y normas aplicables."
+      description="Contenido de /calidad: SIG, etapas de control, trazabilidad digital, certificaciones, normas y políticas."
       tabs={[
         {
           id: "politicas",
@@ -186,10 +232,59 @@ export function CalidadAdminTabs({
                 slug: "",
                 titulo: "",
                 descripcion: null,
+                puntos: [],
                 orden: etapasControl.length,
                 activo: true,
               }}
               addLabel="Agregar etapa"
+            />
+          ),
+        },
+        {
+          id: "trazabilidad",
+          label: "Trazabilidad digital",
+          count: procesos.length,
+          content: (
+            <ListCrudEditor<ProcesoDigital>
+              items={procesos}
+              fields={procesoDigitalFields}
+              endpoint="/api/admin/procesos-digitales"
+              emptyTemplate={{
+                slug: "",
+                nombre: "",
+                descripcion: null,
+                beneficios: [],
+                imagen: null,
+                orden: procesos.length,
+                activo: true,
+              }}
+              addLabel="Agregar proceso"
+            />
+          ),
+        },
+        {
+          id: "certificaciones",
+          label: "Certificaciones",
+          count: certificaciones.length,
+          content: (
+            <ListCrudEditor<Certificacion>
+              items={certificaciones}
+              fields={certFields}
+              endpoint="/api/admin/empresa/certificaciones"
+              emptyTemplate={{
+                slug: "",
+                nombre: "",
+                nombreCompleto: null,
+                descripcion: null,
+                emisor: null,
+                importancia: null,
+                beneficios: [],
+                logo: null,
+                documentoUrl: null,
+                orden: certificaciones.length,
+                activo: true,
+              }}
+              addLabel="Agregar certificación"
             />
           ),
         },
