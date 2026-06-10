@@ -159,10 +159,9 @@ export function ProcesosTecnologiasContent({
       {/* ============================================================ */}
       {grupoDiseno && tecnologias.length > 0 && (
         <Section id="diseno" grupo={grupoDiseno}>
-          {/* Grid unificado: la categoría vive como eyebrow de cada tarjeta y
-              la última fila siempre llena el ancho (reglas de span) — evita
-              categorías de 1–2 items con la fila a medio llenar. */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2 lg:[&>*:last-child:nth-child(3n+1)]:col-span-3 lg:[&>*:last-child:nth-child(3n+2)]:col-span-2">
+          {/* Grid unificado: la categoría vive como eyebrow de cada tarjeta —
+              todas las tarjetas del mismo tamaño, sin spans. */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2">
             {tecnologias.map((tech, i) => (
               <motion.div
                 key={tech.id}
