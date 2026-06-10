@@ -66,7 +66,7 @@ interface ContactoContentProps {
 }
 
 const inputClass =
-  "w-full px-4 py-3 bg-slate-900 border border-white/20 text-white placeholder-white/30 focus:outline-none focus:border-red-600 transition-colors font-lato"
+  "w-full px-4 py-3 bg-slate-900 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-red-600 transition-colors font-lato"
 const labelClass =
   "block text-white/60 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.18em] mb-2"
 const errorClass = "mt-1 text-xs text-red-500 font-lato"
@@ -81,6 +81,7 @@ export default function ContactoContent({
   const [referencia, setReferencia] = useState<string | null>(null)
   const [adjuntos, setAdjuntos] = useState<UploadedFile[]>([])
   const [otroDetalle, setOtroDetalle] = useState("")
+  const [honeypot, setHoneypot] = useState("")
   const [selectedPlanta, setSelectedPlanta] = useState<PlantaPublica | null>(
     null,
   )
@@ -128,6 +129,7 @@ export default function ContactoContent({
         escalaUnidad: data.escalaUnidad ?? null,
         descripcion: descripcionFinal,
         adjuntos,
+        website: honeypot,
       }
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -316,6 +318,20 @@ export default function ContactoContent({
                   onSubmit={handleSubmit(onSubmit)}
                   className="space-y-6 md:space-y-7"
                 >
+                  {/* Honeypot anti-spam: invisible para humanos, los bots lo llenan */}
+                  <div className="absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+                    <label htmlFor="website">No llenar este campo</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </div>
+
                   {/* Nombre + Empresa */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>

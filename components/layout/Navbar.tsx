@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -37,6 +37,16 @@ export function Navbar({ items }: NavbarProps = {}) {
   const activeIndex = hoveredIndex ?? 0
   const activeImage = menuItems[activeIndex]?.image ?? menuItems[0]?.image
 
+  // Cerrar el menú con Escape (accesibilidad por teclado)
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [menuOpen])
+
   return (
     <>
       {/* Menu trigger */}
@@ -45,6 +55,8 @@ export function Navbar({ items }: NavbarProps = {}) {
           onClick={() => setMenuOpen(true)}
           className="group flex items-center gap-3 bg-slate-950 text-white px-4 py-3 text-[11px] tracking-[0.22em] uppercase font-lato font-bold border border-white/20 hover:bg-white hover:text-slate-950 hover:border-white transition-colors duration-300"
           aria-label="Abrir menú"
+          aria-expanded={menuOpen}
+          aria-haspopup="dialog"
         >
           <span className="flex flex-col gap-[5px] w-4">
             <span className="h-px w-full bg-current" />

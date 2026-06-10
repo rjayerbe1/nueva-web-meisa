@@ -28,6 +28,8 @@ const contactSchema = z.object({
   escalaUnidad: z.enum(['M2', 'TON', 'NA']).nullable().optional(),
   descripcion: z.string().min(10, 'Mensaje muy corto'),
   adjuntos: z.array(adjuntoSchema).max(10).optional(),
+  // Honeypot anti-spam: campo invisible para humanos; si llega con valor, es un bot
+  website: z.string().optional(),
 })
 
 function buildReferencia(id: string): string {
@@ -38,6 +40,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const data = contactSchema.parse(body)
+
+    if (data.website && data.website.trim() !== '') {
+      // Bot detectado: responder éxito falso sin crear registro ni enviar emails
+      return NextResponse.json(
+        { success: true, message: 'Mensaje recibido correctamente' },
+        { status: 200 },
+      )
+    }
 
     const origen = request.headers.get('referer') || 'contacto'
 
