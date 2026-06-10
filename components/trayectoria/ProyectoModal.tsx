@@ -1,14 +1,13 @@
 "use client"
 
 import { useState } from 'react'
-import { X, MapPin, Calendar, Weight, Maximize2, Building2, ChevronLeft, ChevronRight, Image } from 'lucide-react'
+import { MapPin, Calendar, Weight, Maximize2, Building2, ChevronLeft, ChevronRight, Image } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
 interface Proyecto {
@@ -41,11 +40,6 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
     })
   }
 
-  const formatWeight = (kg: number) => {
-    const tons = kg / 1000
-    return `${tons.toFixed(2)} toneladas (${kg.toLocaleString()} kg)`
-  }
-
   const hasImages = proyecto.imagenes && proyecto.imagenes.length > 0
 
   const nextImage = () => {
@@ -64,23 +58,21 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto rounded-none border-slate-200">
         <DialogHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <DialogTitle className="text-2xl font-bold text-slate-900 mb-2">
+              {proyecto.destacado && (
+                <p className="text-red-600 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-2">
+                  Proyecto destacado
+                </p>
+              )}
+              <DialogTitle className="text-2xl md:text-3xl font-bebas uppercase leading-[0.98] text-slate-950 mb-2">
                 {proyecto.objetoContrato}
               </DialogTitle>
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-2 text-blue-600 font-medium">
-                  <Building2 className="w-4 h-4" />
-                  {proyecto.entidadContratante}
-                </div>
-                {proyecto.destacado && (
-                  <Badge className="bg-amber-100 text-amber-800 border-amber-300">
-                    Proyecto Destacado
-                  </Badge>
-                )}
+              <div className="flex items-center gap-2 text-slate-600 font-lato font-semibold text-sm">
+                <Building2 className="w-4 h-4 text-slate-400" />
+                {proyecto.entidadContratante}
               </div>
             </div>
           </div>
@@ -89,7 +81,7 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
         <div className="space-y-6">
           {/* Image Carousel - Solo si el proyecto tiene imágenes */}
           {hasImages && (
-            <div className="relative bg-slate-900 rounded-lg overflow-hidden aspect-video">
+            <div className="relative bg-slate-950 overflow-hidden aspect-video">
               {/* Current Image */}
               <img
                 src={proyecto.imagenes![currentImageIndex]}
@@ -104,7 +96,7 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
                     variant="ghost"
                     size="icon"
                     onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-none"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </Button>
@@ -113,13 +105,13 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
                     variant="ghost"
                     size="icon"
                     onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-none"
                   >
                     <ChevronRight className="w-6 h-6" />
                   </Button>
 
                   {/* Image Counter */}
-                  <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5">
+                  <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 text-sm flex items-center gap-1.5">
                     <Image className="w-4 h-4" />
                     <span>
                       {currentImageIndex + 1} / {proyecto.imagenes!.length}
@@ -132,7 +124,7 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${
+                        className={`w-2 h-2 transition-all ${
                           index === currentImageIndex
                             ? 'bg-white w-6'
                             : 'bg-white/50 hover:bg-white/75'
@@ -148,73 +140,68 @@ export function ProyectoModal({ proyecto, onClose }: Props) {
 
           {/* Ubicación y Fechas */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-slate-50 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-slate-600 mb-2">
-                <MapPin className="w-5 h-5 text-blue-600" />
-                <span className="font-semibold">Ubicación</span>
+            <div className="border border-slate-200 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <MapPin className="w-4 h-4 text-slate-400" />
+                <span className="font-lato font-bold text-[11px] uppercase tracking-[0.15em] text-slate-500">Ubicación</span>
               </div>
-              <p className="text-slate-900 font-medium">{proyecto.ubicacion}</p>
+              <p className="text-slate-950 font-lato font-semibold">{proyecto.ubicacion}</p>
               {proyecto.departamento && (
                 <p className="text-sm text-slate-600 mt-1">{proyecto.departamento}</p>
               )}
             </div>
 
-            <div className="bg-slate-50 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-slate-600 mb-2">
-                <Calendar className="w-5 h-5 text-blue-600" />
-                <span className="font-semibold">Período de Ejecución</span>
+            <div className="border border-slate-200 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Calendar className="w-4 h-4 text-slate-400" />
+                <span className="font-lato font-bold text-[11px] uppercase tracking-[0.15em] text-slate-500">Período de ejecución</span>
               </div>
-              <p className="text-sm text-slate-900">
-                <span className="font-medium">Inicio:</span> {formatDate(proyecto.fechaInicio)}
+              <p className="text-sm text-slate-950">
+                <span className="font-semibold">Inicio:</span> {formatDate(proyecto.fechaInicio)}
               </p>
-              <p className="text-sm text-slate-900 mt-1">
-                <span className="font-medium">Fin:</span> {formatDate(proyecto.fechaFin)}
+              <p className="text-sm text-slate-950 mt-1">
+                <span className="font-semibold">Fin:</span> {formatDate(proyecto.fechaFin)}
               </p>
             </div>
           </div>
 
           {/* Información Técnica - Sin mostrar valores */}
           {(proyecto.pesoKg || proyecto.areaM2) && (
-            <div>
-              <h4 className="font-semibold text-slate-900 mb-3 text-lg">
-                Información Técnica
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {proyecto.pesoKg && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-blue-700 mb-2">
-                      <Weight className="w-5 h-5" />
-                      <span className="font-semibold text-sm">Peso Total</span>
-                    </div>
-                    <p className="text-2xl font-bold text-blue-800">
-                      {Math.round(Number(proyecto.pesoKg) / 1000)}
-                    </p>
-                    <p className="text-xs text-blue-600 mt-1">Toneladas</p>
+            <div className="flex flex-wrap gap-x-10 gap-y-4 py-4 border-y border-slate-200">
+              {proyecto.pesoKg && (
+                <div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Weight className="w-4 h-4 text-slate-400" />
+                    <span className="font-lato font-bold text-[11px] uppercase tracking-[0.15em] text-slate-500">Peso total</span>
                   </div>
-                )}
+                  <p className="font-bebas text-3xl md:text-4xl text-slate-950 leading-none">
+                    {Math.round(Number(proyecto.pesoKg) / 1000)}
+                    <span className="text-slate-400 text-xl md:text-2xl ml-1.5">ton</span>
+                  </p>
+                </div>
+              )}
 
-                {proyecto.areaM2 && (
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-purple-700 mb-2">
-                      <Maximize2 className="w-5 h-5" />
-                      <span className="font-semibold text-sm">Área Construida</span>
-                    </div>
-                    <p className="text-2xl font-bold text-purple-800">
-                      {Math.round(Number(proyecto.areaM2)).toLocaleString()}
-                    </p>
-                    <p className="text-xs text-purple-600 mt-1">Metros cuadrados</p>
+              {proyecto.areaM2 && (
+                <div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Maximize2 className="w-4 h-4 text-slate-400" />
+                    <span className="font-lato font-bold text-[11px] uppercase tracking-[0.15em] text-slate-500">Área construida</span>
                   </div>
-                )}
-              </div>
+                  <p className="font-bebas text-3xl md:text-4xl text-slate-950 leading-none">
+                    {Math.round(Number(proyecto.areaM2)).toLocaleString()}
+                    <span className="text-slate-400 text-xl md:text-2xl ml-1.5">m²</span>
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
           {/* Descripción */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h4 className="font-semibold text-blue-900 mb-3">
-              Descripción del Proyecto
+          <div>
+            <h4 className="font-lato font-bold text-[11px] uppercase tracking-[0.15em] text-slate-500 mb-2">
+              Descripción del proyecto
             </h4>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 font-lato leading-relaxed">
               {proyecto.objetoContrato}
             </p>
           </div>
