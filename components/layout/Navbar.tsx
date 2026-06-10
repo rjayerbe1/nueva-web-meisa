@@ -15,9 +15,9 @@ export interface NavbarMenuItem {
 
 const DEFAULT_MENU_ITEMS: NavbarMenuItem[] = [
   { name: 'Inicio', href: '/', image: 'https://storage.googleapis.com/meisa-imagenes/site/proyectos/puente-destacado.jpg' },
-  { name: 'Proyectos', href: '/proyectos', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/ciclopuente-atardecer.jpg' },
-  { name: 'Servicios', href: '/servicios', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg' },
   { name: 'Empresa', href: '/empresa', image: 'https://storage.googleapis.com/meisa-imagenes/site/about/meisa-planta-aerea.jpg' },
+  { name: 'Servicios', href: '/servicios', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg' },
+  { name: 'Proyectos', href: '/proyectos', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/ciclopuente-atardecer.jpg' },
   { name: 'Trayectoria', href: '/trayectoria', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/coliseo-estructuras-rojas.jpg' },
   { name: 'Procesos & Tecnologías', href: '/procesos-tecnologias', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg' },
   { name: 'Calidad', href: '/calidad', image: 'https://storage.googleapis.com/meisa-imagenes/site/hero/techo-metalico.jpg' },
