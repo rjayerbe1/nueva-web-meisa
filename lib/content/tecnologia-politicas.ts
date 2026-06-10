@@ -8,6 +8,7 @@ import type {
   Politica,
   PilarSIG,
   EtapaControlCalidad,
+  FaseFlujoTecnologia,
 } from "@prisma/client"
 
 export type GrupoSeccionItem = GrupoSeccion
@@ -17,6 +18,7 @@ export type ProcesoDigitalItem = ProcesoDigital
 export type PoliticaItem = Politica
 export type PilarSIGItem = PilarSIG
 export type EtapaControlCalidadItem = EtapaControlCalidad
+export type FaseFlujoTecnologiaItem = FaseFlujoTecnologia
 
 /* ------------------------------------------------------------------ */
 /*  Procesos & Tecnologías                                            */
@@ -27,11 +29,12 @@ export type ProcesosTecnologiasData = {
   tecnologias: Tecnologia[]
   equipos: Equipo[]
   procesos: ProcesoDigital[]
+  fasesFlujo: FaseFlujoTecnologia[]
 }
 
 export const getProcesosTecnologiasData = cache(
   async (): Promise<ProcesosTecnologiasData> => {
-    const [grupos, tecnologias, equipos, procesos] = await Promise.all([
+    const [grupos, tecnologias, equipos, procesos, fasesFlujo] = await Promise.all([
       prisma.grupoSeccion.findMany({
         where: { pagina: "tecnologia", activo: true },
         orderBy: { orden: "asc" },
@@ -48,13 +51,17 @@ export const getProcesosTecnologiasData = cache(
         where: { activo: true },
         orderBy: { orden: "asc" },
       }),
+      prisma.faseFlujoTecnologia.findMany({
+        where: { activo: true },
+        orderBy: { orden: "asc" },
+      }),
     ])
-    return { grupos, tecnologias, equipos, procesos }
+    return { grupos, tecnologias, equipos, procesos, fasesFlujo }
   }
 )
 
 export async function getAllProcesosTecnologiasData() {
-  const [grupos, tecnologias, equipos, procesos] = await Promise.all([
+  const [grupos, tecnologias, equipos, procesos, fasesFlujo] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "tecnologia" },
       orderBy: { orden: "asc" },
@@ -66,8 +73,9 @@ export async function getAllProcesosTecnologiasData() {
       orderBy: [{ categoria: "asc" }, { orden: "asc" }],
     }),
     prisma.procesoDigital.findMany({ orderBy: { orden: "asc" } }),
+    prisma.faseFlujoTecnologia.findMany({ orderBy: { orden: "asc" } }),
   ])
-  return { grupos, tecnologias, equipos, procesos }
+  return { grupos, tecnologias, equipos, procesos, fasesFlujo }
 }
 
 /* ------------------------------------------------------------------ */

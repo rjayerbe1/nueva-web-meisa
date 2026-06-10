@@ -29,6 +29,7 @@ export default async function ProcesosTecnologiasPage() {
       tecnologias={data.tecnologias}
       equipos={data.equipos}
       procesos={data.procesos}
+      fasesFlujo={data.fasesFlujo}
     />
   )
 }

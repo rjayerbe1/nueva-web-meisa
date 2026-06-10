@@ -9,6 +9,7 @@ import type {
   Equipo,
   ProcesoDigital,
   Plant,
+  FaseFlujoTecnologia,
 } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
 
@@ -18,6 +19,7 @@ interface Props {
   equipos: Equipo[]
   procesos: ProcesoDigital[]
   plantas: Plant[]
+  fasesFlujo: FaseFlujoTecnologia[]
 }
 
 const grupoFields: FieldDef[] = [
@@ -71,6 +73,21 @@ const equipoCategorias = [
   { value: "otro", label: "Otro" },
 ]
 
+const faseFlujoFields: FieldDef[] = [
+  { name: "slug", label: "Slug (único)", kind: "text", required: true, placeholder: "modelado-bim" },
+  { name: "titulo", label: "Título", kind: "text", required: true, gridSpan: 2 },
+  { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+  {
+    name: "herramientas",
+    label: "Herramientas",
+    kind: "stringArray",
+    gridSpan: 2,
+    hint: "Software o equipos usados en esta fase (chips en la página pública).",
+  },
+  { name: "orden", label: "Orden", kind: "number" },
+  { name: "activo", label: "Activo", kind: "boolean" },
+]
+
 const procesoFields: FieldDef[] = [
   { name: "slug", label: "Slug (único)", kind: "text", required: true },
   { name: "nombre", label: "Nombre", kind: "text", required: true },
@@ -94,6 +111,7 @@ export function ProcesosTecnologiasAdminTabs({
   equipos,
   procesos,
   plantas,
+  fasesFlujo,
 }: Props) {
   const plantaOptions = [
     { value: "", label: "— Sin planta asociada —" },
@@ -235,6 +253,35 @@ export function ProcesosTecnologiasAdminTabs({
           ),
         },
         {
+          id: "flujo",
+          label: "Flujo digital",
+          count: fasesFlujo.length,
+          content: (
+            <ListCrudEditor<FaseFlujoTecnologia>
+              items={fasesFlujo}
+              fields={faseFlujoFields}
+              endpoint="/api/admin/fases-flujo-tecnologia"
+              emptyTemplate={{
+                slug: "",
+                titulo: "",
+                descripcion: null,
+                herramientas: [],
+                orden: fasesFlujo.length,
+                activo: true,
+              }}
+              addLabel="Agregar fase"
+              renderPreview={(f) => (
+                <div>
+                  <span className="font-medium text-gray-900">{f.titulo}</span>
+                  {f.herramientas.length > 0 && (
+                    <p className="mt-1 text-sm text-gray-600">{f.herramientas.join(" · ")}</p>
+                  )}
+                </div>
+              )}
+            />
+          ),
+        },
+        {
           id: "procesos",
           label: "Procesos digitales",
           count: procesos.length,
@@ -253,6 +300,14 @@ export function ProcesosTecnologiasAdminTabs({
                 activo: true,
               }}
               addLabel="Agregar proceso"
+              renderPreview={(p) => (
+                <div>
+                  <span className="font-medium text-gray-900">{p.nombre}</span>
+                  {p.descripcion && (
+                    <p className="mt-1 line-clamp-2 text-sm text-gray-600">{p.descripcion}</p>
+                  )}
+                </div>
+              )}
             />
           ),
         },

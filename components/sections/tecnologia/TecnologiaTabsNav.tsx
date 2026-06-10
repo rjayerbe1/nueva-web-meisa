@@ -9,10 +9,10 @@ type Tab = {
 }
 
 const TABS: Tab[] = [
-  { id: 'diseno', index: '01', label: 'Diseño' },
-  { id: 'fabricacion', index: '02', label: 'Fabricación' },
-  { id: 'control', index: '03', label: 'Control digital' },
-  { id: 'normas', index: '04', label: 'Normas' },
+  { id: 'flujo', index: '01', label: 'Flujo' },
+  { id: 'diseno', index: '02', label: 'Software' },
+  { id: 'fabricacion', index: '03', label: 'Planta y equipos' },
+  { id: 'control', index: '04', label: 'Control digital' },
 ]
 
 export function TecnologiaTabsNav() {

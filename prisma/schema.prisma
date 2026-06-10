@@ -732,6 +732,20 @@ model GrupoSeccion {
 }
 
 // Etapas del Control de Calidad — sección "Control de calidad" en /calidad
+model FaseFlujoTecnologia {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  titulo       String
+  descripcion  String?
+  herramientas String[] @default([])
+  orden        Int      @default(0)
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("fases_flujo_tecnologia")
+}
+
 model EtapaControlCalidad {
   id          String   @id @default(cuid())
   slug        String   @unique

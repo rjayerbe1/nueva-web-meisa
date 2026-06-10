@@ -23,6 +23,10 @@ interface Props {
   procesos: ProcesoDigitalItem[]
 }
 
+// /calidad muestra solo los procesos digitales de calidad; los de producción
+// (ej. gestion-produccion) viven en /procesos-tecnologias.
+const PROCESOS_CALIDAD = ['trazabilidad-qr', 'reportes-digitales', 'dossier-digital']
+
 export function CalidadContent({
   grupos,
   pilares,
@@ -32,6 +36,7 @@ export function CalidadContent({
   certificaciones,
   procesos,
 }: Props) {
+  const procesosCalidad = procesos.filter((p) => PROCESOS_CALIDAD.includes(p.slug))
   const grupoHero = grupos.find((g) => g.clave === 'hero')
   const grupoIntro = grupos.find((g) => g.clave === 'intro')
   const grupoSIG = grupos.find((g) => g.clave === 'sig')
@@ -251,10 +256,10 @@ export function CalidadContent({
       )}
 
       {/* Trazabilidad digital — sistema QC propio */}
-      {grupoTrazabilidad && procesos.length > 0 && (
+      {grupoTrazabilidad && procesosCalidad.length > 0 && (
         <Section grupo={grupoTrazabilidad}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
-            {procesos.map((proc, i) => (
+            {procesosCalidad.map((proc, i) => (
               <motion.div
                 key={proc.id}
                 initial={{ opacity: 0, y: 20 }}

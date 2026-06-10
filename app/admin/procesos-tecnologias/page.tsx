@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 export default async function ProcesosTecnologiasAdminPage() {
-  const [grupos, tecnologias, equipos, procesos, plantas] = await Promise.all([
+  const [grupos, tecnologias, equipos, procesos, plantas, fasesFlujo] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "tecnologia" },
       orderBy: { orden: "asc" },
@@ -14,6 +14,7 @@ export default async function ProcesosTecnologiasAdminPage() {
     prisma.equipo.findMany({ orderBy: { orden: "asc" } }),
     prisma.procesoDigital.findMany({ orderBy: { orden: "asc" } }),
     prisma.plant.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }),
+    prisma.faseFlujoTecnologia.findMany({ orderBy: { orden: "asc" } }),
   ])
 
   return (
@@ -23,6 +24,7 @@ export default async function ProcesosTecnologiasAdminPage() {
       equipos={equipos}
       procesos={procesos}
       plantas={plantas}
+      fasesFlujo={fasesFlujo}
     />
   )
 }
