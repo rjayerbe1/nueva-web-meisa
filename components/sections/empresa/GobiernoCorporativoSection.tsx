@@ -5,7 +5,7 @@ import { FileText, ArrowUpRight } from 'lucide-react'
 import type { GobiernoItemPublic } from '@/lib/content/empresa'
 
 interface Props {
-  items: GobiernoItemPublic[]
+  items?: GobiernoItemPublic[]
 }
 
 function ItemButton({ item }: { item: GobiernoItemPublic }) {
@@ -35,7 +35,7 @@ function ItemButton({ item }: { item: GobiernoItemPublic }) {
   )
 }
 
-export function GobiernoCorporativoSection({ items }: Props) {
+export function GobiernoCorporativoSection({ items = [] }: Props) {
   if (items.length === 0) return null
 
   const documentos = items.filter((i) => i.tipo !== 'formulario')
