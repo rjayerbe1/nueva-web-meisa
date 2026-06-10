@@ -9,6 +9,7 @@ import { PoliticasContent } from './PoliticasContent'
 export const revalidate = 60
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/calidad' },
   title: 'Calidad | MEISA — SIG, Políticas, Certificaciones y Normas',
   description:
     'Sistema Integrado de Gestión, políticas corporativas, certificaciones y cumplimiento normativo de MEISA. NSR-10, AWS D1.1, AISC, ICONTEC.',

@@ -168,6 +168,7 @@ export async function generateMetadata({ params }: ServicioPageProps) {
   return {
     title: servicio.metaTitle || `${servicio.titulo} | MEISA - Estructuras Metálicas`,
     description: servicio.metaDescription || servicio.descripcion.slice(0, 160),
+    alternates: { canonical: `/servicios/${params.slug}` },
     openGraph: {
       title: servicio.titulo,
       description: servicio.descripcion.slice(0, 160),

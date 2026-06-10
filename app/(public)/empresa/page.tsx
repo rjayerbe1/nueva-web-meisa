@@ -9,11 +9,13 @@ export const revalidate = 60
 export async function generateMetadata(): Promise<Metadata> {
   const config = await prisma.configuracionEmpresa.findUnique({ where: { id: 'default' } })
 
+  const description =
+    config?.descripcion ??
+    'MEISA - Metálicas e Ingeniería S.A.S. Conoce nuestra historia, misión, visión, valores y políticas corporativas.'
+
   return {
     title: 'Nuestra Empresa | MEISA - Líderes en Estructuras Metálicas',
-    description:
-      config?.descripcion ??
-      'MEISA - Metálicas e Ingeniería S.A.S. Conoce nuestra historia, misión, visión, valores y políticas corporativas.',
+    description,
     keywords: [
       'MEISA empresa',
       'estructuras metálicas Colombia',
@@ -21,6 +23,18 @@ export async function generateMetadata(): Promise<Metadata> {
       'misión visión valores',
       'gobierno corporativo',
     ],
+    alternates: { canonical: '/empresa' },
+    openGraph: {
+      title: 'Nuestra Empresa | MEISA',
+      description,
+      url: '/empresa',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Nuestra Empresa | MEISA',
+      description,
+    },
   }
 }
 

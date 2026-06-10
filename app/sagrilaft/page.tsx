@@ -26,6 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${doc.titulo} — MEISA`,
     description: doc.descripcion ?? undefined,
+    alternates: { canonical: "/sagrilaft" },
   }
 }
 
