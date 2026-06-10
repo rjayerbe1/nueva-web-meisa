@@ -41,7 +41,7 @@ export const getProcesosTecnologiasData = cache(
       }),
       prisma.tecnologia.findMany({
         where: { activo: true },
-        orderBy: [{ categoria: "asc" }, { orden: "asc" }],
+        orderBy: { orden: "asc" },
       }),
       prisma.equipo.findMany({
         where: { activo: true },

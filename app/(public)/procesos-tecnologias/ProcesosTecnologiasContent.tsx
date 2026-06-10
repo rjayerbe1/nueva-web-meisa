@@ -159,66 +159,59 @@ export function ProcesosTecnologiasContent({
       {/* ============================================================ */}
       {grupoDiseno && tecnologias.length > 0 && (
         <Section id="diseno" grupo={grupoDiseno}>
-          <div className="space-y-16 md:space-y-20">
-            {Object.entries(SOFTWARE_LABELS).map(([categoria, label]) => {
-              const items = tecnologias.filter((t) => t.categoria === categoria)
-              if (items.length === 0) return null
-              return (
-                <div key={categoria}>
-                  <p className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-6">
-                    {label}
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2">
-                    {items.map((tech, i) => (
-                      <motion.div
-                        key={tech.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: '-60px' }}
-                        transition={{ duration: 0.5, delay: i * 0.05 }}
-                        className="flex flex-col"
-                      >
-                        {/* Placa blanca: logo oficial o wordmark tipográfico */}
-                        <div className="bg-white aspect-[5/2] flex items-center justify-center p-6 md:p-8">
-                          {tech.imagen ? (
-                            <div className="relative w-full h-full max-h-12 md:max-h-14">
-                              <Image
-                                src={tech.imagen}
-                                alt={tech.nombre}
-                                fill
-                                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                                className="object-contain"
-                              />
-                            </div>
-                          ) : (
-                            <span className="font-lato font-extrabold text-slate-950 text-xl md:text-2xl tracking-tight text-center leading-tight">
-                              {tech.nombre}
-                            </span>
-                          )}
-                        </div>
-                        <div className="border border-white/10 border-t-0 p-5 md:p-6 flex-1">
-                          {tech.imagen && (
-                            <h3 className="text-xl md:text-2xl font-bebas uppercase leading-none mb-2">
-                              {tech.nombre}
-                            </h3>
-                          )}
-                          {tech.especialidad && (
-                            <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">
-                              {tech.especialidad}
-                            </p>
-                          )}
-                          {tech.descripcion && (
-                            <p className="text-white/60 font-lato text-sm leading-relaxed">
-                              {tech.descripcion}
-                            </p>
-                          )}
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
+          {/* Grid unificado: la categoría vive como eyebrow de cada tarjeta y
+              la última fila siempre llena el ancho (reglas de span) — evita
+              categorías de 1–2 items con la fila a medio llenar. */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2 lg:[&>*:last-child:nth-child(3n+1)]:col-span-3 lg:[&>*:last-child:nth-child(3n+2)]:col-span-2">
+            {tecnologias.map((tech, i) => (
+              <motion.div
+                key={tech.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.05 }}
+                className="flex flex-col"
+              >
+                {/* Placa blanca: logo oficial o wordmark tipográfico */}
+                <div className="bg-white aspect-[5/2] lg:aspect-auto lg:h-32 flex items-center justify-center p-6 md:p-8">
+                  {tech.imagen ? (
+                    <div className="relative w-full h-full max-h-12 md:max-h-14">
+                      <Image
+                        src={tech.imagen}
+                        alt={tech.nombre}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <span className="font-lato font-extrabold text-slate-950 text-xl md:text-2xl tracking-tight text-center leading-tight">
+                      {tech.nombre}
+                    </span>
+                  )}
                 </div>
-              )
-            })}
+                <div className="border border-white/10 border-t-0 p-5 md:p-6 flex-1">
+                  <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-2">
+                    {SOFTWARE_LABELS[tech.categoria] ?? tech.categoria}
+                  </p>
+                  {tech.imagen && (
+                    <h3 className="text-xl md:text-2xl font-bebas uppercase leading-none mb-2">
+                      {tech.nombre}
+                    </h3>
+                  )}
+                  {tech.especialidad && (
+                    <p className="text-white/70 font-lato font-bold text-xs mb-2">
+                      {tech.especialidad}
+                    </p>
+                  )}
+                  {tech.descripcion && (
+                    <p className="text-white/60 font-lato text-sm leading-relaxed">
+                      {tech.descripcion}
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </Section>
       )}
@@ -359,13 +352,13 @@ export function ProcesosTecnologiasContent({
             className="max-w-3xl"
           >
             <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Sistema de gestión
+              Toda esta tecnología se inspecciona
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95]">
-              La calidad
+              Calidad
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-              tiene página propia.
+              sin concesiones.
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
               Soldadores calificados AWS D1.1, ensayos no destructivos, certificación RUC y el dossier digital que el cliente consulta en tiempo real: todo el sistema de calidad, documentado.
