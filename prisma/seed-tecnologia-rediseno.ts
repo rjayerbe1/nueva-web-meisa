@@ -122,9 +122,9 @@ const TECNOLOGIAS_IMAGEN: Record<string, string | null> = {
   sap2000: null,
   midas: null,
   "dc-cad": null,
-  "idea-statica": null,
-  strumis: null,
-  fastcam: null,
+  "idea-statica": "/images/software/idea-statica.svg",
+  strumis: "/images/software/strumis.png",
+  fastcam: "/images/software/fastcam.png",
 }
 
 const TECNOLOGIAS_DESCRIPCION: Record<string, string> = {
