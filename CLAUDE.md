@@ -84,17 +84,17 @@ Required in `.env.local`:
 - Commits directos a `main` están permitidos — este repo despliega vía Cloud Run, no bloquear por política de branch
 - Solo crear feature branch si el usuario lo pide explícitamente, o si el cambio es grande/riesgoso y conviene revisarlo vía PR antes de ir a producción
 
-### Deploy: estado real (verificado 2026-04-27)
+### Deploy: estado real (actualizado 2026-06-12)
 
-**`main` push → GitHub Actions → service `meisa-web-dev` → `dev.meisa.com.co` (automático).** El workflow `.github/workflows/deploy-to-cloudrun.yml` se llama "Deploy to dev (Cloud Run)" y despliega al service `meisa-web-dev`, no a `meisa-web`. Tarda ~5–10 min en completar (build + deploy).
+**Dev:** `main` push → GitHub Actions ("Deploy to dev (Cloud Run)", `.github/workflows/deploy-to-cloudrun.yml`) → service `meisa-web-dev` → `dev.meisa.com.co` (automático, ~5–10 min).
 
-**`meisa.com.co` (prod) sigue en Hostinger.** No hay auto-deploy a producción real. El service Cloud Run `meisa-web` existe pero no recibe tráfico hasta que se migre el DNS de Hostinger.
+**Prod:** workflow MANUAL "Deploy to prod (Cloud Run)" (`.github/workflows/deploy-to-prod.yml`, workflow_dispatch) → service `meisa-web` → `meisa.com.co`. NO rebuildea: **promueve la imagen que corre en dev** (lo probado en dev es lo que va a prod). Dispararlo: `gh workflow run "Deploy to prod (Cloud Run)"` o desde la UI de Actions. Tarda <1 min.
 
 **Implicaciones:**
-- Push a main es seguro: solo afecta `dev.meisa.com.co`, no producción real.
-- **No correr `gcloud run deploy meisa-web-dev` manualmente** después de un push — el GH Actions ya lo hace, y dispararía un deploy redundante (race condition de revisiones).
-- Solo correr deploy manual a dev cuando se quiere probar código sin commitear (raro).
-- Cuando el usuario migre `meisa.com.co` a Cloud Run, habrá que añadir un workflow separado o cambiar el target del actual — actualizar este bloque cuando pase.
+- Push a main solo afecta `dev.meisa.com.co`. Prod solo cambia cuando se dispara el workflow manual.
+- **No correr `gcloud run deploy` manualmente** después de un push — GH Actions ya lo hace.
+- dev.meisa.com.co lleva `X-Robots-Tag: noindex` (header por host en next.config.js).
+- El WordPress viejo de Hostinger quedó respaldado en `wordpress-backup/` (gitignored) y el plan Hostinger sigue activo hasta 2027-03 como rollback (revertir DNS en Cloudflare).
 
 Ver el skill `meisa-web` (`Skill("meisa-web")`) para detalles de Cloud Run, OAuth, Cloudflare, dominios custom y troubleshooting de deploys.
 
