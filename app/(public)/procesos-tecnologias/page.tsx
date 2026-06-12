@@ -19,6 +19,16 @@ export const metadata: Metadata = {
     'StruM.I.S',
     'tecnología estructural',
   ],
+  openGraph: {
+    images: [
+      {
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'MEISA — Procesos y tecnologías BIM, CNC y trazabilidad digital',
+      },
+    ],
+  },
 }
 
 export default async function ProcesosTecnologiasPage() {

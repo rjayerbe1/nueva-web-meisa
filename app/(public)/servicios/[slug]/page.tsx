@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ServicioDetailEnhanced from './ServicioDetailEnhanced'
+import { ServiceSchema } from '@/components/seo/JsonLdSchema'
 import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 
@@ -195,9 +196,17 @@ export default async function ServicioPage({ params }: ServicioPageProps) {
   }
 
   return (
-    <ServicioDetailEnhanced 
-      servicio={servicio}
-      otrosServicios={otrosServicios}
-    />
+    <>
+      <ServiceSchema
+        name={servicio.titulo}
+        description={servicio.descripcion}
+        url={`https://meisa.com.co/servicios/${params.slug}`}
+        image={servicio.imagen || undefined}
+      />
+      <ServicioDetailEnhanced
+        servicio={servicio}
+        otrosServicios={otrosServicios}
+      />
+    </>
   )
 }

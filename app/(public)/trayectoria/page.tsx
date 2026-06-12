@@ -7,8 +7,19 @@ import { aniosExperiencia } from '@/lib/site-meta'
 export const revalidate = 60
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/trayectoria' },
   title: 'Nuestra Trayectoria | MEISA',
   description: `${aniosExperiencia()} años construyendo Colombia. Conoce los proyectos más importantes que hemos desarrollado desde 1996.`,
+  openGraph: {
+    images: [
+      {
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'MEISA — Trayectoria en estructuras metálicas desde 1996',
+      },
+    ],
+  },
 }
 
 async function getProyectos() {

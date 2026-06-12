@@ -113,5 +113,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching categories for sitemap:', error)
   }
 
-  return [...staticPages, ...servicePages, ...categoryPages, ...projectPages]
+  // Obras (landings editoriales /obras/[slug])
+  let obraPages: MetadataRoute.Sitemap = []
+  try {
+    const obras = await prisma.obra.findMany({
+      where: { activa: true },
+      select: { slug: true, updatedAt: true },
+    })
+
+    obraPages = obras.map((obra) => ({
+      url: `${BASE_URL}/obras/${obra.slug}`,
+      lastModified: obra.updatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }))
+  } catch (error) {
+    console.error('Error fetching obras for sitemap:', error)
+  }
+
+  return [...staticPages, ...servicePages, ...categoryPages, ...projectPages, ...obraPages]
 }

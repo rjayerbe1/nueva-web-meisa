@@ -6,8 +6,15 @@ import { getConfiguracionEmpresa } from '@/lib/content/empresa'
 import { getCategoriasPublicas } from '@/lib/content/categorias'
 
 import { HomeContent } from '@/components/home/HomeContent'
+import type { Metadata } from 'next'
 
 export const revalidate = 60
+
+// El title/description/OG vienen del layout raíz (ya optimizados con keywords).
+// Aquí solo fijamos el canonical explícito del home.
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 async function getHeroImages(): Promise<HeroImageConfig> {
   try {

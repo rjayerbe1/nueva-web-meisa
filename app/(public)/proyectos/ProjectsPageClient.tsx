@@ -40,6 +40,10 @@ export default function ProjectsPageClient({ proyectos, categorias }: ProjectsPa
 
   return (
     <div className="min-h-screen bg-slate-950">
+      {/* Único h1 de la página — el grid de categorías usa h2 */}
+      <h1 className="sr-only">
+        Proyectos de estructuras metálicas en Colombia — puentes, edificaciones, industria y más
+      </h1>
       <ProjectsByCategorySection projectsByCategory={projectsByCategory} categorias={categorias} />
 
       {/* CTA final — Dark brutalist */}

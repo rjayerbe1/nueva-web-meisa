@@ -230,13 +230,14 @@ function CategoryCard({
           </motion.div>
 
           {/* Título sin animación de letras - cada palabra en una línea */}
-          <h1 className={`${isHero ? 'text-5xl sm:text-6xl lg:text-7xl xl:text-8xl' : 'text-3xl sm:text-4xl lg:text-4xl xl:text-5xl'} font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight flex flex-col justify-center`}>
+          {/* h2: el h1 de cada página lo define la página misma (un solo h1 por página) */}
+          <h2 className={`${isHero ? 'text-5xl sm:text-6xl lg:text-7xl xl:text-8xl' : 'text-3xl sm:text-4xl lg:text-4xl xl:text-5xl'} font-bebas uppercase text-white mb-6 drop-shadow-2xl leading-tight flex flex-col justify-center`}>
             {words.map((word, wordIndex) => (
               <span key={wordIndex} className="block">
                 {word}
               </span>
             ))}
-          </h1>
+          </h2>
 
           {/* Indicador sutil de interacción: aparece en hover */}
           <div className="h-6 lg:h-8 flex items-center justify-center">

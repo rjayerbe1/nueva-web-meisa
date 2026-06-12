@@ -49,7 +49,9 @@ export async function generateMetadata({
     openGraph: {
       title: ogTitle,
       description,
-      images: image ? [{ url: image }] : undefined,
+      images: image
+        ? [{ url: image, width: 1200, height: 630, alt: ogTitle }]
+        : undefined,
       type: 'website',
     },
     twitter: {

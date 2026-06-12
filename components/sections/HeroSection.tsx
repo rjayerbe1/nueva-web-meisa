@@ -223,6 +223,11 @@ export function HeroSection({
       <HeroImageLoader isVisible={!allResourcesLoaded} progress={displayProgress} />
 
       <section ref={containerRef} className="relative h-[150vh] md:h-[180vh]">
+      {/* H1 de la página: el hero es visual (imágenes/video), el título queda
+          para lectores de pantalla y crawlers. Único h1 del home. */}
+      <h1 className="sr-only">
+        MEISA — Estructuras Metálicas en Colombia: Diseño, Fabricación y Montaje
+      </h1>
       {/* Grid de 3 columnas en DESKTOP - permanece FIJO mientras se anima, se oculta al salir */}
       <div
         className={`fixed top-0 left-0 w-full h-screen flex z-30 transition-opacity duration-300 ${

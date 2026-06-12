@@ -24,6 +24,16 @@ export const metadata: Metadata = {
     'NSR-10',
     'AISC',
   ],
+  openGraph: {
+    images: [
+      {
+        url: 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'MEISA — Control de calidad en estructuras metálicas',
+      },
+    ],
+  },
 }
 
 export default async function CalidadPage() {
