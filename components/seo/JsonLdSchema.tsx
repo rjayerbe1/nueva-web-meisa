@@ -50,8 +50,10 @@ export async function OrganizationSchema() {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
     name: config?.nombreCompleto ?? "MEISA - Metálicas e Ingeniería S.A.S.",
+    legalName: "Metálicas e Ingeniería S.A.S.",
     alternateName: config?.nombre ?? "MEISA",
     url: SITE_URL,
+    ...(contact?.email ? { email: contact.email } : {}),
     logo: {
       "@type": "ImageObject",
       url: "https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa.png",
