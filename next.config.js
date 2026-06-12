@@ -67,6 +67,18 @@ const nextConfig = {
   env: {
     UPLOADCARE_PUBLIC_KEY: process.env.UPLOADCARE_PUBLIC_KEY,
   },
+  async headers() {
+    return [
+      // dev.meisa.com.co no debe indexarse en Google (contenido duplicado
+      // del dominio principal). Mismo build sirve ambos dominios, por eso
+      // el header se condiciona por host.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'dev.meisa.com.co' }],
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+    ]
+  },
   async redirects() {
     return [
       // Fase 3: las rutas viejas quedan con redirect 301 permanente
