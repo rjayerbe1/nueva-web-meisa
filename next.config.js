@@ -81,6 +81,14 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // www → apex (canonical). El mapping de Cloud Run sirve ambos hosts
+      // con el mismo container; canonicalizamos aquí.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.meisa.com.co' }],
+        destination: 'https://meisa.com.co/:path*',
+        permanent: true,
+      },
       // Fase 3: las rutas viejas quedan con redirect 301 permanente
       {
         source: '/tecnologia',
