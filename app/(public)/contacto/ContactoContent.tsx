@@ -18,6 +18,7 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import type { PlantaPublica } from "@/lib/content/plantas"
+import { sendGAEvent } from "@next/third-parties/google"
 
 import { ProjectTypeSelector } from "@/components/contacto/ProjectTypeSelector"
 import {
@@ -145,6 +146,10 @@ export default function ContactoContent({
       setAdjuntos([])
       setOtroDetalle("")
       reset()
+      sendGAEvent("event", "generate_lead", {
+        tipo_proyecto: data.tipoProyecto,
+        ciudad: data.ciudad,
+      })
     } catch (error) {
       setSubmitStatus("error")
       console.error("Error:", error)

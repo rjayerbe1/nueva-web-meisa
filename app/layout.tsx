@@ -3,6 +3,7 @@ import { Bebas_Neue, Lato } from 'next/font/google'
 import './globals.css'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { GlobalSchemas } from '@/components/seo/JsonLdSchema'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { aniosExperiencia } from '@/lib/site-meta'
 
 // Bebas Neue para títulos - alto impacto, condensada
@@ -114,6 +115,8 @@ export default function RootLayout({
         <SessionProvider>
           {children}
         </SessionProvider>
+        {/* GA4 — el measurement ID es público por naturaleza (visible en el HTML) */}
+        <GoogleAnalytics gaId="G-4KPN0N39VK" />
       </body>
     </html>
   )

@@ -25,6 +25,7 @@ import {
   UserCog,
   Database,
   BarChart3,
+  TrendingUp,
   Settings,
   type LucideIcon,
 } from "lucide-react"
@@ -95,6 +96,7 @@ const navigation: NavItem[] = [
   { kind: "item", name: "Media (legacy)", href: "/admin/media", icon: ImageIcon },
   { kind: "item", name: "Usuarios", href: "/admin/users", icon: UserCog },
   { kind: "item", name: "Backups", href: "/admin/backup", icon: Database },
+  { kind: "item", name: "Analítica", href: "/admin/analytics", icon: TrendingUp },
   { kind: "item", name: "Reportes", href: "/admin/reports", icon: BarChart3 },
   { kind: "item", name: "Configuración", href: "/admin/configuracion", icon: Settings },
 ]
