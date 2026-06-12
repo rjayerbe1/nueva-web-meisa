@@ -95,3 +95,4 @@ service-account*.json
 *-keys.json
 # Imágenes archived (se sirven desde ubicación externa)
 public/images/archived/
+wordpress-backup/
