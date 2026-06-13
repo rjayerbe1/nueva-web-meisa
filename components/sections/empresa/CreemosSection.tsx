@@ -24,8 +24,10 @@ export function CreemosSection({ config }: Props) {
     offset: ["start center", "end center"]
   })
 
-  // Parallax responsive
-  const yParallaxMobile = useTransform(scrollYProgress, [0, 0.7, 1], [0, 60, 60])
+  // Parallax responsive: CREEMOS recorre desde la primera frase hasta la
+  // última. El desplazamiento ≈ distancia top-a-top entre 1ª y última línea
+  // (N-1 líneas). Móvil: 5 frases × ~22px de línea ≈ 88px. Desktop: ≈150px.
+  const yParallaxMobile = useTransform(scrollYProgress, [0, 0.7, 1], [0, 88, 88])
   const yParallaxDesktop = useTransform(scrollYProgress, [0, 0.7, 1], [0, 150, 150])
 
   return (
