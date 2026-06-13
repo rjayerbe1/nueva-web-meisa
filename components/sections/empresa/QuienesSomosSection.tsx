@@ -1,5 +1,6 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import { Award, Building, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
@@ -80,10 +81,12 @@ export function QuienesSomosSection({ config, valores, hitos }: Props) {
               )}
 
               <div
-                className="grid grid-cols-1 gap-4"
-                style={{
-                  gridTemplateColumns: `repeat(${Math.min(hitos.length, 5)}, minmax(0, 1fr))`,
-                }}
+                className="grid grid-cols-1 gap-6 md:gap-4 md:[grid-template-columns:var(--timeline-cols)]"
+                style={
+                  {
+                    '--timeline-cols': `repeat(${Math.min(hitos.length, 5)}, minmax(0, 1fr))`,
+                  } as CSSProperties
+                }
               >
                 {hitos.map((item, index) => (
                   <motion.div

@@ -48,10 +48,12 @@ export function TecnologiaTabsNav() {
   return (
     <nav
       ref={navRef}
-      className="sticky top-0 z-30 bg-slate-950/95 border-b border-white/10"
+      className="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-md border-b border-white/10"
       aria-label="Secciones de tecnología"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+      {/* pr-28 en móvil reserva el espacio del botón MENU flotante (fixed,
+          esquina sup. derecha) para que el último tab no quede tapado */}
+      <div className="mx-auto max-w-7xl pl-4 pr-28 sm:px-6 lg:px-12">
         <ul
           className="flex items-stretch gap-1 sm:gap-2 md:gap-6 overflow-x-auto"
           style={{ scrollbarWidth: 'none' }}
@@ -63,10 +65,10 @@ export function TecnologiaTabsNav() {
                 <button
                   type="button"
                   onClick={() => handleClick(tab.id)}
-                  className="group relative flex items-baseline gap-2 px-3 md:px-4 py-4 md:py-5 transition-colors duration-200"
+                  className="group relative flex items-baseline gap-2 px-2.5 sm:px-3 md:px-4 py-4 md:py-5 transition-colors duration-200"
                 >
                   <span
-                    className={`font-bebas text-xs md:text-sm leading-none transition-colors ${
+                    className={`hidden sm:inline font-bebas text-xs md:text-sm leading-none transition-colors ${
                       isActive ? 'text-red-500' : 'text-white/30 group-hover:text-white/60'
                     }`}
                   >
