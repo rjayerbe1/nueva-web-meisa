@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
@@ -74,6 +74,10 @@ function ServiceCard({
 
   const contentY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
 
+  // Montar el video solo cuando la card se acerca al viewport — evita
+  // descargar los mp4 de toda la sección al cargar la página
+  const nearViewport = useInView(containerRef, { once: true, margin: '300px' })
+
   useEffect(() => {
     if (isMobile) return
     const video = videoRef.current
@@ -105,7 +109,7 @@ function ServiceCard({
         className="relative h-[50vh] lg:h-[85vh] overflow-hidden"
       >
         <div className="absolute inset-0">
-          {servicio.video && (
+          {servicio.video && nearViewport && (
             <video
               ref={videoRef}
               loop

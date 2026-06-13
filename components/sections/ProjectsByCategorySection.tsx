@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
@@ -98,6 +98,10 @@ function CategoryCard({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Montar el video solo cuando la card se acerca al viewport — evita
+  // descargar los mp4 de toda la sección al cargar la página
+  const nearViewport = useInView(containerRef, { once: true, margin: '300px' })
+
   // Video: solo se reproduce cuando la tarjeta está activa (hover en desktop)
   useEffect(() => {
     if (isMobile) return
@@ -143,6 +147,7 @@ function CategoryCard({
         {/* Video o Imagen de fondo con parallax */}
         {(categoria.usarVideoCover && categoria.videoCover) ? (
           <div className="absolute inset-0">
+            {nearViewport && (
             <video
               ref={videoRef}
               src={categoria.videoCover}
@@ -162,6 +167,7 @@ function CategoryCard({
               preload="metadata"
               aria-hidden="true"
             />
+            )}
           </div>
         ) : categoria.imagenCover ? (
           <motion.div
