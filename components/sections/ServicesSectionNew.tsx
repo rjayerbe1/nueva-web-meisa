@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { videoPoster } from '@/lib/video-poster'
 
 const AnimatedTitle = ({ text, className = '' }: { text: string; className?: string }) => {
   const words = text.split(' ')
@@ -123,6 +124,7 @@ function ServiceCard({
               muted
               playsInline
               preload="metadata"
+              poster={videoPoster(servicio.video)}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               style={
                 servicio.id === 'diseno'

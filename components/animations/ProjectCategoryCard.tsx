@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
+import { videoPoster } from '@/lib/video-poster'
 
 // Helper para parsear posición desde formato "X,Y"
 const parsePosition = (posStr: string | null): { x: number; y: number } => {
@@ -74,6 +75,7 @@ export default function ProjectCategoryCard({
             {(category.usarVideoCover && category.videoCover) ? (
               <video
                 src={category.videoCover}
+                poster={videoPoster(category.videoCover)}
                 className="w-full h-full"
                 style={{
                   objectFit: 'cover',

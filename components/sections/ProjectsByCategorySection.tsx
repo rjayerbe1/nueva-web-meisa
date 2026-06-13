@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getCategoryIconComponent } from '@/lib/get-category-icon'
+import { videoPoster } from '@/lib/video-poster'
 
 // Helper para parsear posición desde formato "X,Y"
 const parsePosition = (posStr: string | null): { x: number; y: number } => {
@@ -158,6 +159,7 @@ function CategoryCard({
             <video
               ref={videoRef}
               src={categoria.videoCover}
+              poster={videoPoster(categoria.videoCover)}
               className="w-full h-full"
               style={{
                 objectFit: 'cover',
