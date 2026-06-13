@@ -52,7 +52,6 @@ export function FeaturedProjectSection({ featured }: FeaturedProjectSectionProps
           src={image}
           alt={`${featured.name} — ${featured.location ?? ''}`}
           fill
-          priority
           sizes="100vw"
           className="object-cover"
           style={{ objectPosition: 'center 40%' }}

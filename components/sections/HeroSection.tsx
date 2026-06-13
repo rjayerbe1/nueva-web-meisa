@@ -41,27 +41,30 @@ export function HeroSection({
   const [displayProgress, setDisplayProgress] = useState(0)
   const [minTimeElapsed, setMinTimeElapsed] = useState(false)
   const [videoStarted, setVideoStarted] = useState(false)
+  const [forceLoaded, setForceLoaded] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const hasRegistered = useRef(false)
+  const trackedUrls = useRef<Set<string>>(new Set())
   const videoRef = useRef<HTMLVideoElement>(null)
   const videoMobileRef = useRef<HTMLVideoElement>(null)
 
   // Usar el contexto de carga global
   const { loadedCount, totalResources, markResourceLoaded, registerResource } = useLoading()
 
-  // Registrar las imágenes del hero al montar el componente (solo una vez)
+  // Registrar solo las imágenes visibles al abrir según el viewport — las de
+  // scroll-reveal cargan lazy en segundo plano y no bloquean el loader
   useEffect(() => {
     if (!hasRegistered.current) {
-      // Registrar las 5 imágenes del hero
-      const imagesToRegister = [
-        heroImages.leftColumn,
-        heroImages.centerTop,
-        heroImages.centerBottom,
-        heroImages.rightTop,
-        heroImages.rightBottom
-      ]
+      const mobileViewport = window.innerWidth < 768
+      const visibleUrls = mobileViewport
+        ? [
+            heroImages.mobile?.row2Top || heroImages.centerTop,
+            heroImages.mobile?.row3Top || heroImages.rightTop,
+          ]
+        : [heroImages.centerTop, heroImages.rightTop]
 
-      imagesToRegister.forEach(() => {
+      Array.from(new Set(visibleUrls)).forEach((url) => {
+        trackedUrls.current.add(url)
         registerResource()
       })
 
@@ -70,9 +73,12 @@ export function HeroSection({
   }, [heroImages, registerResource])
 
   // Calcular progreso real de carga basado en recursos totales
-  const targetProgress = totalResources > 0 ? (loadedCount / totalResources) * 100 : 0
-  // Solo mostrar como cargado si TODO está listo: recursos cargados, tiempo mínimo Y animación llegó a 100%
-  const allResourcesLoaded = loadedCount >= totalResources && totalResources > 0 && minTimeElapsed && displayProgress >= 99.9
+  const targetProgress = forceLoaded ? 100 : totalResources > 0 ? (loadedCount / totalResources) * 100 : 0
+  // Cargado cuando los recursos visibles están listos (o saltó el timeout de
+  // seguridad), pasó el tiempo mínimo y la animación llegó a 100%
+  const allResourcesLoaded =
+    minTimeElapsed &&
+    (forceLoaded || (loadedCount >= totalResources && totalResources > 0 && displayProgress >= 99.9))
 
   // Animar el progreso mostrado para que siempre se vea crecer suavemente
   useEffect(() => {
@@ -101,9 +107,11 @@ export function HeroSection({
     }
   }, [targetProgress, displayProgress])
 
-  // Handler para cuando una imagen carga - usa el contexto global
+  // Handler para cuando una imagen carga - solo cuentan las visibles registradas
   const handleImageLoad = (imageUrl: string) => {
-    markResourceLoaded(imageUrl)
+    if (trackedUrls.current.has(imageUrl)) {
+      markResourceLoaded(imageUrl)
+    }
   }
 
   // Detectar si es móvil
@@ -135,6 +143,13 @@ export function HeroSection({
     }, 1500)
     return () => clearTimeout(timeout)
   }, [minTimeElapsed])
+
+  // Timeout de seguridad del loader: si una imagen falla o nunca dispara
+  // onLoad, no dejar la página atrapada detrás del loader
+  useEffect(() => {
+    const timeout = setTimeout(() => setForceLoaded(true), 5000)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -276,7 +291,6 @@ export function HeroSection({
                 sizes="100vw"
                 quality={70}
                 className="object-cover"
-                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.leftColumn)}
               />
             </motion.div>
@@ -293,7 +307,6 @@ export function HeroSection({
                 sizes="100vw"
                 quality={70}
                 className="object-cover"
-                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Top || heroImages.centerTop)}
               />
             </div>
@@ -312,7 +325,6 @@ export function HeroSection({
                 sizes="100vw"
                 quality={70}
                 className="object-cover"
-                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Bottom || heroImages.centerBottom)}
               />
             </motion.div>
@@ -329,7 +341,6 @@ export function HeroSection({
                 sizes="100vw"
                 quality={70}
                 className="object-cover"
-                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Top || heroImages.rightTop)}
               />
             </div>
@@ -348,7 +359,6 @@ export function HeroSection({
                 sizes="100vw"
                 quality={70}
                 className="object-cover"
-                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Bottom || heroImages.rightBottom)}
               />
             </motion.div>
@@ -392,7 +402,6 @@ export function HeroSection({
               sizes="(max-width: 768px) 100vw, 33vw"
               quality={70}
               className="object-cover"
-              loading="eager"
               onLoad={() => handleImageLoad(heroImages.leftColumn)}
             />
           </motion.div>
@@ -426,7 +435,6 @@ export function HeroSection({
               sizes="(max-width: 768px) 100vw, 33vw"
               quality={70}
               className="object-cover"
-              loading="eager"
               onLoad={() => handleImageLoad(heroImages.centerBottom)}
             />
           </motion.div>
@@ -460,7 +468,6 @@ export function HeroSection({
               sizes="(max-width: 768px) 100vw, 33vw"
               quality={70}
               className="object-cover"
-              loading="eager"
               onLoad={() => handleImageLoad(heroImages.rightBottom)}
             />
           </motion.div>
