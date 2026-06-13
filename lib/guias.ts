@@ -1,0 +1,984 @@
+// Configuración tipada de las 4 guías técnicas SEO standalone:
+//   /precios-estructuras-metalicas    (variante "precios", layout propio)
+//   /estructura-metalica-vs-concreto  (variante "template", GuiaTemplate)
+//   /tipos-de-estructuras-metalicas   (variante "template", GuiaTemplate)
+//   /peso-estructura-metalica-por-m2  (variante "template", GuiaTemplate)
+//
+// Este archivo es la FUENTE DE FALLBACK: el contenido editable vive en la
+// tabla `landings_seo` (tipo GUIA) y se lee vía lib/content/landings.ts.
+// Si la fila no existe o su Json no valida, las páginas usan estos configs.
+import type { GuiaConfig } from '@/components/guias/GuiaTemplate'
+
+/* ─── Contenido de la guía de precios (layout propio) ────────────────── */
+
+export interface RangoPrecio {
+  /** Etiqueta del tipo de estructura (col 1 de la tabla). */
+  tipo: string
+  /** Descripción / ejemplos (col 2). */
+  ejemplos: string
+  /** Rango COP/kg instalado (col 3), ej. "$9.000 – $13.000". */
+  rango: string
+}
+
+export interface FactorPrecio {
+  titulo: string
+  descripcion: string
+}
+
+export interface GuiaPreciosFaq {
+  pregunta: string
+  respuesta: string
+}
+
+export interface GuiaPreciosContenido {
+  variante: 'precios'
+  heroEyebrow: string
+  heroTitulo1: string
+  heroTitulo2: string
+  heroSub: string
+  breadcrumbName: string
+  cotizacionEyebrow: string
+  cotizacionTitulo1: string
+  cotizacionTitulo2: string
+  cotizacionParrafos: string[]
+  rangosEyebrow: string
+  rangosTitulo1: string
+  rangosTitulo2: string
+  rangosSubtitulo: string
+  rangos: RangoPrecio[]
+  /** Nota bajo la tabla (se antepone "Nota:" en negrita en el render). */
+  rangosNota: string
+  factoresEyebrow: string
+  factoresTitulo1: string
+  factoresTitulo2: string
+  factores: FactorPrecio[]
+  conversionEyebrow: string
+  conversionTitulo1: string
+  conversionTitulo2: string
+  /** Párrafos; admiten **negrita** con doble asterisco. */
+  conversionParrafos: string[]
+  faqTitulo1: string
+  faqTitulo2: string
+  faq: GuiaPreciosFaq[]
+  ctaEyebrow: string
+  ctaTitulo1: string
+  ctaTitulo2: string
+  ctaDescripcion: string
+}
+
+/* ─── Wrapper común de guía ──────────────────────────────────────────── */
+
+export interface GuiaTemplateContenido extends GuiaConfig {
+  variante: 'template'
+}
+
+export type GuiaContenido = GuiaTemplateContenido | GuiaPreciosContenido
+
+export interface GuiaLanding {
+  slug: string
+  /** Label legible en el admin. */
+  titulo: string
+  metaTitle: string
+  metaDescription: string
+  contenido: GuiaContenido
+}
+
+/* ─── Guía 1: precios ────────────────────────────────────────────────── */
+
+const GUIA_PRECIOS: GuiaLanding = {
+  slug: 'precios-estructuras-metalicas',
+  titulo: 'Guía de precios — ¿Cuánto cuesta una estructura metálica?',
+  metaTitle:
+    '¿Cuánto Cuesta una Estructura Metálica en Colombia? Guía de Precios 2026 | MEISA',
+  metaDescription:
+    'Guía honesta de precios de estructura metálica en Colombia 2026: la estructura se cotiza por kg de acero fabricado y montado. Rangos orientativos por tipo de proyecto, factores que mueven el precio y conversión aproximada a m².',
+  contenido: {
+    variante: 'precios',
+    heroEyebrow: 'Guía de precios 2026',
+    heroTitulo1: '¿Cuánto cuesta una',
+    heroTitulo2: 'estructura metálica?',
+    heroSub:
+      'Rangos reales del mercado colombiano, qué incluyen, qué los hace variar y cómo pasar de kilogramos a metros cuadrados — sin humo.',
+    breadcrumbName: '¿Cuánto cuesta una estructura metálica en Colombia?',
+    cotizacionEyebrow: '01 — Cómo se cotiza',
+    cotizacionTitulo1: 'Por kilogramo,',
+    cotizacionTitulo2: 'no por m²',
+    cotizacionParrafos: [
+      'En Colombia las estructuras metálicas se cotizan por kilogramo de acero fabricado y montado, no por metro cuadrado. La razón es simple: dos edificios con la misma área pueden requerir cantidades de acero muy distintas según la luz libre, la altura, las cargas y la zona sísmica. El kilogramo instalado refleja el trabajo real: material, ingeniería de detalle, fabricación, protección anticorrosiva, transporte y montaje.',
+      'Por eso, cuando alguien le cotiza una estructura "por m²" sin haber calculado el peso, está adivinando. El camino serio es: estimar (o calcular) los kilogramos de acero del proyecto y multiplicarlos por un precio por kg acorde con su complejidad. Esta guía le da los rangos del mercado para hacer ese ejercicio de manera informada.',
+    ],
+    rangosEyebrow: '02 — Rangos 2026',
+    rangosTitulo1: 'Precio por kg',
+    rangosTitulo2: 'instalado',
+    rangosSubtitulo:
+      'Rangos orientativos del mercado colombiano — cada proyecto se cotiza sobre planos',
+    rangos: [
+      {
+        tipo: 'Estructura liviana de bodega',
+        ejemplos: 'Bodegas, naves industriales, cubiertas de luces medias',
+        rango: '$9.000 – $13.000',
+      },
+      {
+        tipo: 'Estructura media',
+        ejemplos: 'Edificios, entrepisos, mezzanines, plataformas industriales',
+        rango: '$11.000 – $16.000',
+      },
+      {
+        tipo: 'Estructura especial',
+        ejemplos: 'Puentes, grandes luces, arcos, geometrías complejas',
+        rango: '$14.000 – $22.000',
+      },
+    ],
+    rangosNota:
+      'los rangos incluyen fabricación, pintura y montaje. Excluyen cimentación, cubierta y acabados. Precios de referencia 2026 en pesos colombianos; varían según los factores de la siguiente sección.',
+    factoresEyebrow: '03 — Las variables',
+    factoresTitulo1: 'Qué hace variar',
+    factoresTitulo2: 'el precio',
+    factores: [
+      {
+        titulo: 'Peso de acero por m²',
+        descripcion:
+          'A mayor luz libre y mayores cargas (cubierta, puente grúa, sismo, viento), más kilogramos de acero por metro cuadrado. Es la variable que más mueve el costo total: una bodega liviana puede usar 25 kg/m² y una estructura de grandes luces superar los 60 kg/m².',
+      },
+      {
+        titulo: 'Complejidad de las conexiones',
+        descripcion:
+          'Conexiones soldadas de momento, nudos de celosía o empalmes de obra exigen más horas de fabricación e inspección que conexiones simples apernadas. La geometría repetitiva abarata; la geometría única encarece.',
+      },
+      {
+        titulo: 'Acabado y protección',
+        descripcion:
+          'Una pintura alquídica estándar, un sistema epóxico de alto desempeño o el galvanizado en caliente tienen costos muy distintos. El ambiente del proyecto (industrial, costero, urbano) define el sistema requerido.',
+      },
+      {
+        titulo: 'Sitio y logística',
+        descripcion:
+          'La distancia desde planta, el estado de las vías, los permisos de carga extradimensionada y la disponibilidad de espacio en obra afectan el transporte y el montaje. Un sitio urbano congestionado o una zona de montaña cuestan más que un parque industrial plano.',
+      },
+      {
+        titulo: 'Alturas y método de montaje',
+        descripcion:
+          'Montar a 6 m con grúa telescópica desde piso firme no cuesta lo mismo que izar a 30 m, lanzar un puente sobre un cauce o trabajar en jornadas nocturnas con cierres viales. El plan de izaje define equipos y rendimientos.',
+      },
+      {
+        titulo: 'Volumen total del proyecto',
+        descripcion:
+          'El tonelaje total diluye los costos fijos de ingeniería, alistamiento de planta y movilización. Por eso el precio por kilogramo de un proyecto de 800 toneladas suele ser mejor que el de uno de 40.',
+      },
+    ],
+    conversionEyebrow: '04 — De kg a m²',
+    conversionTitulo1: 'Conversión',
+    conversionTitulo2: 'aproximada',
+    conversionParrafos: [
+      'Si solo necesita un orden de magnitud temprano, puede convertir los rangos a metro cuadrado. Una bodega liviana típica consume entre **25 y 45 kg de acero por m²** según la luz libre, la altura y las cargas. Multiplicando por el rango de estructura liviana ($9.000 – $13.000 COP/kg), la sola estructura de una bodega se ubica aproximadamente entre **$225.000 y $585.000 COP por m²**.',
+      'Insistimos: es una aproximación para presupuestar en etapa temprana, no una cotización. El peso real por m² solo se conoce con el diseño estructural, y es la cifra que separa un presupuesto serio de una sorpresa en obra.',
+    ],
+    faqTitulo1: 'Sobre costos',
+    faqTitulo2: 'y cotizaciones',
+    faq: [
+      {
+        pregunta:
+          '¿Por qué las estructuras metálicas se cotizan por kilogramo y no por m²?',
+        respuesta:
+          'Porque el metro cuadrado no describe la estructura: dos bodegas de 1.000 m² pueden necesitar cantidades de acero muy distintas según la luz libre, la altura y las cargas. El kilogramo de acero fabricado y montado sí captura el trabajo real — material, fabricación, pintura, transporte y montaje — y permite comparar ofertas de manera transparente. El m² solo sirve como aproximación temprana, multiplicando el peso estimado por m² por el precio por kg.',
+      },
+      {
+        pregunta: '¿La estructura metálica es más cara que el concreto?',
+        respuesta:
+          'Por kilogramo el acero parece más costoso, pero la comparación correcta es el costo total de obra terminada. La estructura metálica pesa menos (cimentaciones más económicas), se fabrica en planta mientras avanza la cimentación (meses menos de plazo) y elimina cimbras, encofrados y tiempos de curado. En bodegas de grandes luces, entrepisos sobre estructuras existentes y puentes, el costo total y la velocidad suelen favorecer al acero; en edificaciones de luces cortas el concreto puede competir. Cada proyecto merece su comparación con números reales.',
+      },
+      {
+        pregunta: '¿Cuánto cuesta el diseño estructural?',
+        respuesta:
+          'Cuando MEISA desarrolla el proyecto completo (diseño + fabricación + montaje), la ingeniería de detalle está incluida en el precio por kilogramo. El diseño estructural como servicio independiente se cotiza según la complejidad y el alcance — típicamente como suma fija basada en el área o el tonelaje estimado del proyecto. Contar con diseño y fabricación en la misma casa evita sobrecostos por estructuras difíciles de fabricar o montar.',
+      },
+      {
+        pregunta: '¿Cómo pido una cotización formal?',
+        respuesta:
+          'Envíenos los planos estructurales o el anteproyecto arquitectónico a través del formulario de contacto, indicando ubicación de la obra y plazos esperados. Con planos estructurales entregamos cotización detallada por kilogramo con peso calculado; con un anteproyecto entregamos un estimado preliminar y, si lo necesita, la propuesta de diseño estructural. No cotizamos cifras definitivas sin planos: sería engañarlo.',
+      },
+    ],
+    ctaEyebrow: 'Pase de rangos a números reales',
+    ctaTitulo1: 'Cotice con planos,',
+    ctaTitulo2: 'no con promedios.',
+    ctaDescripcion:
+      'Envíenos los planos estructurales o el anteproyecto y reciba una cotización formal con peso de acero calculado, alcance y plazo.',
+  },
+}
+
+/* ─── Guía 2: acero vs concreto ──────────────────────────────────────── */
+
+const GUIA_VS_CONCRETO: GuiaLanding = {
+  slug: 'estructura-metalica-vs-concreto',
+  titulo: 'Guía — Estructura metálica vs concreto',
+  metaTitle:
+    'Estructura Metálica vs Concreto en Colombia: Comparación Real | MEISA',
+  metaDescription:
+    'Comparamos estructura metálica y concreto en Colombia: costo real, velocidad, luces libres, sismo y mantenimiento. Guía técnica con datos de 264 proyectos.',
+  contenido: {
+    variante: 'template',
+    path: '/estructura-metalica-vs-concreto',
+    breadcrumbName: 'Estructura metálica vs concreto: ¿cuál conviene?',
+    heroEyebrow: 'Guía técnica de decisión',
+    heroTitulo1: 'Acero vs',
+    heroTitulo2: 'concreto',
+    heroSub:
+      'Estructura metálica vs concreto: comparación honesta, criterio por criterio, para que decida con datos y no con dogmas.',
+    introEyebrow: '01 — La decisión',
+    introTitulo1: '¿Cuál sistema',
+    introTitulo2: 'conviene?',
+    intro:
+      'Elegir entre estructura metálica y concreto reforzado es una de las decisiones que más impacta el costo, el plazo y la flexibilidad de una obra. No hay un ganador universal: cada sistema tiene terrenos donde es claramente superior. En esta guía comparamos ambos, criterio por criterio, con la experiencia de MEISA fabricando y montando más de 32.000 toneladas de acero estructural en 264 proyectos desde 1996. El objetivo no es venderle acero: es que usted decida con datos y sepa exactamente cuándo conviene cada sistema.',
+    categoriaHero: 'EDIFICACIONES',
+    stats: [
+      { valor: '264', label: 'Proyectos entregados' },
+      { valor: '32.000', sufijo: '+', label: 'Toneladas de acero' },
+      { valor: '59', label: 'Ciudades de Colombia' },
+      { valor: '29', sufijo: '+', label: 'Años de experiencia' },
+    ],
+    secciones: [
+      {
+        titulo: 'Comparación honesta, criterio por criterio',
+        parrafos: [
+          "La discusión seria no es 'acero o concreto', sino qué criterio pesa más en su proyecto: presupuesto total, fecha de entrega, luces libres, condiciones del suelo o vida útil. Aquí está la comparación directa, sin inflar ninguno de los dos sistemas.",
+        ],
+        items: [
+          {
+            nombre: 'Costo directo de la estructura',
+            descripcion:
+              'En edificaciones de pórticos convencionales y luces cortas, el concreto suele tener menor costo directo por metro cuadrado de estructura: materiales locales, mano de obra abundante y formaletería amortizada. El acero, cotizado por kilogramo fabricado y montado, puede verse más caro en esa comparación aislada. Por eso este criterio, solo, nunca debería definir la decisión.',
+          },
+          {
+            nombre: 'Costo total de obra',
+            descripcion:
+              'Cuando se suma el cuadro completo —cimentaciones más pequeñas por menor peso, semanas o meses menos de obra, menos equipos y campamento, menores costos financieros y apertura anticipada del negocio— la ecuación cambia. En bodegas, centros comerciales y ampliaciones, el costo total con acero es con frecuencia igual o menor que con concreto, y el lucro cesante evitado suele inclinar la balanza.',
+          },
+          {
+            nombre: 'Velocidad de construcción',
+            descripcion:
+              'Es la ventaja más contundente del acero: la estructura se fabrica en planta mientras en obra avanzan las cimentaciones, y el montaje es atornillado, sin tiempos de fraguado ni formaleta. En proyectos comparables, una estructura metálica se entrega entre 40 % y 60 % más rápido que su equivalente en concreto vaciado en sitio.',
+          },
+          {
+            nombre: 'Luces libres',
+            descripcion:
+              'El acero domina sin discusión. Con cerchas y vigas de alma llena se logran luces de 20, 30 o más de 40 metros sin columnas intermedias, algo que en concreto convencional resulta antieconómico por encima de 10 a 12 metros. Para bodegas, escenarios deportivos y plantas de espacios flexibles, esta es la razón técnica de fondo.',
+          },
+          {
+            nombre: 'Peso sobre la cimentación',
+            descripcion:
+              'Una estructura metálica pesa típicamente entre la mitad y un tercio de su equivalente en concreto. Eso se traduce en cimentaciones más pequeñas y económicas, y es decisivo en suelos blandos —comunes en el Valle del Cauca y la costa— o al ampliar verticalmente un edificio existente sin reforzar toda su fundación.',
+          },
+          {
+            nombre: 'Comportamiento sísmico',
+            descripcion:
+              'Ambos sistemas, bien diseñados bajo la NSR-10, son seguros en zonas de amenaza sísmica alta. El acero parte con dos ventajas físicas: alta ductilidad (disipa energía deformándose sin colapsar) y menor masa, que reduce la fuerza sísmica que la estructura debe resistir. El concreto bien detallado y supervisado también logra excelente desempeño; la diferencia real la hace la calidad del diseño y la construcción.',
+          },
+          {
+            nombre: 'Mantenimiento y vida útil',
+            descripcion:
+              'El acero exige protección anticorrosiva —sistemas de pintura, galvanizado en ambientes agresivos— e inspecciones periódicas del recubrimiento; bien protegido, supera los 50 años de servicio. El concreto requiere menos mantenimiento superficial, pero no es inmune: fisuración, carbonatación y corrosión del refuerzo embebido son patologías reales y costosas de reparar porque ocurren dentro del elemento.',
+          },
+          {
+            nombre: 'Sostenibilidad y reciclaje',
+            descripcion:
+              'El acero estructural es reciclable prácticamente al 100 % y conserva sus propiedades; gran parte del acero nuevo ya proviene de chatarra. Una estructura metálica además se puede desmontar, ampliar o reutilizar. El concreto carga con la huella de carbono del cemento y su demolición genera escombro de bajo aprovechamiento, aunque el sector avanza con cementos adicionados y agregados reciclados.',
+          },
+        ],
+      },
+      {
+        titulo: '¿Cuál sistema gana según el tipo de obra?',
+        parrafos: [
+          'Si los criterios anteriores le parecen empate técnico, esta tabla mental resuelve el 90 % de los casos reales. Está construida sobre lo que vemos cotización tras cotización: hay tipos de obra donde el acero gana con claridad y otros donde el concreto sigue siendo la respuesta correcta.',
+        ],
+        items: [
+          {
+            nombre: 'Bodegas y naves industriales: acero',
+            descripcion:
+              'Grandes luces, alturas libres para puente grúa, montaje rápido y posibilidad de ampliar después. Es el terreno natural de la estructura metálica y donde la diferencia de plazo y costo total es más evidente.',
+          },
+          {
+            nombre: 'Grandes luces y espacios abiertos: acero',
+            descripcion:
+              'Centros comerciales, coliseos, terminales de transporte y cubiertas especiales. Donde el diseño pide plantas libres sin columnas, el concreto convencional simplemente no compite. Proyectos como el C.C. Bochalema Plaza en Cali (1.781 t) existen con esa flexibilidad gracias al acero.',
+          },
+          {
+            nombre: 'Ampliaciones sobre edificios existentes: acero',
+            descripcion:
+              'Su bajo peso evita reforzar cimentaciones, y el montaje atornillado permite trabajar con el negocio operando. Las ampliaciones del C.C. Campanario en Popayán (2.455 t) y del C.C. Único en Cali (1.800 t) se ejecutaron sobre centros comerciales en funcionamiento.',
+          },
+          {
+            nombre: 'Plazos cortos u obra con fecha inamovible: acero',
+            descripcion:
+              'Si la obra debe abrir para una temporada comercial, una cosecha o un contrato con fecha de inicio, la fabricación en paralelo con la cimentación recorta el cronograma de forma que el concreto vaciado en sitio no puede igualar.',
+          },
+          {
+            nombre: 'Puentes vehiculares y peatonales: acero o mixto',
+            descripcion:
+              'Luces grandes, montaje sobre vías o cauces sin suspender el tráfico y menor peso sobre apoyos hacen del acero —solo o en sección compuesta con losa de concreto— la opción dominante en puentes de luz media y grande.',
+          },
+          {
+            nombre: 'Vivienda multifamiliar tipo: el concreto compite fuerte',
+            descripcion:
+              'Torres de apartamentos con plantas repetitivas y luces cortas son el terreno donde el concreto industrializado (muros vaciados, formaleta tipo túnel) logra costos y ritmos excelentes, con masa que favorece la acústica entre unidades. Aquí el acero rara vez es la opción más económica y hay que decirlo.',
+          },
+          {
+            nombre: 'Sótanos y estructuras enterradas: concreto',
+            descripcion:
+              'Muros de contención, tanques y todo lo que trabaja contra el suelo y la humedad permanente es territorio del concreto reforzado. Ningún fabricante serio de estructura metálica propone otra cosa.',
+          },
+          {
+            nombre: 'La respuesta frecuente: sistema híbrido',
+            descripcion:
+              'Muchos de los mejores proyectos combinan ambos: cimentación, sótanos y núcleos de circulación en concreto, con esqueleto metálico y entrepisos en lámina colaborante (steel deck) que aprovechan la velocidad y las luces del acero. No es una concesión: es ingeniería usando cada material donde rinde más.',
+          },
+        ],
+      },
+      {
+        titulo: 'Mitos comunes que conviene aclarar',
+        parrafos: [
+          'Buena parte de las decisiones equivocadas —en ambas direcciones— nacen de ideas heredadas que la práctica ya desmintió. Estos son los mitos que más escuchamos en mesas de diseño y comités de obra.',
+        ],
+        items: [
+          {
+            nombre: '“El acero siempre es más caro”',
+            descripcion:
+              'Confunde costo directo de la estructura con costo total de obra. Cuando se incluyen cimentación, plazo, costos financieros y apertura anticipada, el acero empata o gana en bodegas, comercio, industria y ampliaciones. En vivienda tipo, en cambio, el mito suele ser cierto: por eso la comparación hay que hacerla por proyecto, no por dogma.',
+          },
+          {
+            nombre: '“El acero se oxida y dura poco”',
+            descripcion:
+              'Con preparación de superficie y sistemas de protección correctos —pinturas epóxicas o poliuretano, galvanizado en caliente en ambientes agresivos— una estructura metálica supera los 50 años con mantenimiento razonable. Hay puentes metálicos en Colombia con más de un siglo en servicio. La corrosión es un riesgo de especificación deficiente, no una sentencia del material.',
+          },
+          {
+            nombre: '“En un incendio el acero colapsa de inmediato”',
+            descripcion:
+              'El acero pierde resistencia a altas temperaturas, y por eso la norma exige protección pasiva —pinturas intumescentes, morteros proyectados, recubrimientos— calculada según el tiempo de resistencia requerido. Con esa protección cumple los mismos estándares exigidos a cualquier sistema. El concreto resiste mejor de forma inherente, pero también se degrada y descascara en incendios severos: ninguno se diseña ignorando el fuego.',
+          },
+          {
+            nombre: '“Las estructuras metálicas vibran y suenan”',
+            descripcion:
+              'Un entrepiso metálico mal dimensionado puede vibrar, igual que una losa de concreto demasiado esbelta. El control de vibraciones es un criterio de diseño estándar (rigidez, masa, amortiguamiento) y los entrepisos en sección compuesta con steel deck logran el confort de una losa tradicional. Es un problema de diseño, no del material.',
+          },
+          {
+            nombre: '“El concreto es tecnología del pasado”',
+            descripcion:
+              'Falso, y un fabricante de estructura metálica debería ser el primero en decirlo. El concreto sigue siendo insuperable en cimentaciones, sótanos, muros de contención y vivienda industrializada, y evoluciona con cementos adicionados y aditivos de alto desempeño. Desconfíe de quien descalifica en bloque al otro sistema: probablemente está vendiendo, no asesorando.',
+          },
+        ],
+      },
+      {
+        titulo: 'Cómo evaluarlo para su proyecto',
+        parrafos: [
+          'La decisión correcta sale de comparar alternativas reales sobre el mismo anteproyecto: estructura en concreto, en acero y, casi siempre, una opción híbrida. Esa comparación debe incluir cimentación, plazo de obra y costo financiero, no solo el presupuesto de la estructura. Hecha así, la respuesta suele ser evidente.',
+          'En MEISA hacemos esa evaluación desde la ingeniería: modelamos la alternativa metálica con software de análisis y BIM, la cotizamos sobre planos con peso real por kilogramo, y le decimos con franqueza cuándo el acero es la mejor opción y cuándo no lo es. Veintinueve años, 264 proyectos y 32.000 toneladas montadas en 59 ciudades nos permiten sostener esa franqueza: el acero gana lo suficiente por mérito propio como para no tener que exagerar.',
+        ],
+      },
+    ],
+    proyectosSlugs: [
+      'arinsa-ampliacion-cc-campanario-popayan',
+      'cc-unico-ampliacion-centro-comercial-cali',
+      'centro-comercial-bochalema-plaza',
+      'ingenio-providencia-complejo-piedechinche',
+    ],
+    proyectosIntro:
+      'La comparación está respaldada por obra real ejecutada en acero: la ampliación del Centro Comercial Campanario en Popayán (2.454 toneladas montadas con el centro operando), la ampliación del Único en Cali (1.800 toneladas), el Centro Comercial Bochalema Plaza (1.781 toneladas) y el Complejo Industrial Piedechinche en El Cerrito (812 toneladas), entre 264 proyectos entregados desde 1996.',
+    faq: [
+      {
+        pregunta:
+          '¿Cuánto cuesta una estructura metálica frente a una de concreto en Colombia?',
+        respuesta:
+          'El costo del acero depende del peso por metro cuadrado, la complejidad de las conexiones, el acabado (pintura o galvanizado) y la logística de montaje. Como rango orientativo de mercado en 2026: estructura liviana entre $9.000 y $13.000 COP/kg instalado, estructura media entre $11.000 y $16.000, y estructuras especiales o puentes entre $14.000 y $22.000. La comparación justa con concreto se hace sobre costo total de obra —incluyendo cimentación y plazo—, donde el acero suele empatar o ganar en bodegas, comercio y ampliaciones. La cifra real solo sale de una cotización sobre planos.',
+      },
+      {
+        pregunta: '¿Qué tanto más rápida es la construcción con estructura metálica?',
+        respuesta:
+          'En proyectos comparables, entre un 40 % y un 60 % más rápida que el concreto vaciado en sitio. La razón es estructural al proceso: mientras en obra se ejecutan las cimentaciones, la estructura ya se está fabricando en planta con corte CNC y soldadura calificada. El montaje es atornillado y no depende de fraguados ni formaleta, y los entrepisos en lámina colaborante reciben el vaciado de varios niveles en paralelo. En ampliaciones de edificios en operación, además, reduce drásticamente la interferencia con el negocio.',
+      },
+      {
+        pregunta: '¿La estructura metálica es segura en un país sísmico como Colombia?',
+        respuesta:
+          'Sí. La NSR-10 regula ambos materiales para zonas de amenaza sísmica alta, y el acero parte con dos ventajas físicas: ductilidad, que le permite disipar energía deformándose sin colapso súbito, y menor masa, que reduce la fuerza sísmica sobre la estructura y la cimentación. Por eso es el material preferido en hospitales, puentes y edificios esenciales de países sísmicos como Japón y Chile. Un concreto bien detallado también es seguro: lo determinante es la calidad del diseño estructural, la fabricación y la supervisión.',
+      },
+      {
+        pregunta: '¿Se pueden combinar estructura metálica y concreto en un mismo edificio?',
+        respuesta:
+          'No solo se puede: es la solución más frecuente en proyectos medianos y grandes. Lo típico es cimentación, sótanos y núcleos de ascensores en concreto reforzado, con esqueleto de columnas y vigas metálicas y entrepisos en sección compuesta con lámina colaborante (steel deck), donde el concreto y el acero trabajan juntos. Así cada material hace lo que mejor sabe: el concreto resiste el contacto con el suelo y aporta masa y rigidez, y el acero aporta luces libres, bajo peso y velocidad de montaje.',
+      },
+    ],
+    faqTitulo1: 'Acero o concreto:',
+    faqTitulo2: 'lo que nos preguntan',
+    relacionados: [
+      {
+        href: '/precios-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: '¿Cuánto cuesta una estructura metálica?',
+        descripcion:
+          'Rangos reales de precio por kilogramo instalado en Colombia, factores que mueven el precio y conversión aproximada a m².',
+      },
+      {
+        href: '/peso-estructura-metalica-por-m2',
+        eyebrow: 'Guía',
+        titulo: '¿Cuántos kg/m² pesa una estructura metálica?',
+        descripcion:
+          'Rangos reales de peso por metro cuadrado según el tipo de obra, con casos documentados de proyectos MEISA.',
+      },
+      {
+        href: '/tipos-de-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Tipos de estructuras metálicas',
+        descripcion:
+          'Pórticos, cerchas, arcos y viga cajón: sistemas estructurales, perfiles, conexiones y normativa NSR-10 explicados.',
+      },
+      {
+        href: '/soluciones/estructura-metalica-para-bodegas',
+        eyebrow: 'Solución',
+        titulo: 'Estructura metálica para bodegas',
+        descripcion:
+          'Diseño, fabricación y montaje de bodegas y naves industriales: 72 proyectos y más de 6.200 toneladas entregadas.',
+      },
+      {
+        href: '/soluciones/edificios-en-estructura-metalica',
+        eyebrow: 'Solución',
+        titulo: 'Edificios en estructura metálica',
+        descripcion:
+          'Edificios corporativos, clínicos e industriales en acero: más de 3.500 toneladas en 14 ciudades desde 1998.',
+      },
+      {
+        href: '/soluciones/estructura-metalica-centros-comerciales',
+        eyebrow: 'Solución',
+        titulo: 'Estructura metálica para centros comerciales',
+        descripcion:
+          'Más de 14.600 toneladas en retail, incluyendo ampliaciones ejecutadas sin cerrar la operación del centro comercial.',
+      },
+    ],
+    ctaEyebrow: 'Compare con números reales',
+    ctaTitulo1: 'Evalúe su proyecto',
+    ctaTitulo2: 'sin dogmas.',
+    ctaDescripcion:
+      'Envíenos los planos o el anteproyecto y reciba la evaluación de la alternativa en acero: peso real, costo por kilogramo y plazo — y una opinión franca sobre si le conviene.',
+  },
+}
+
+/* ─── Guía 3: tipos de estructuras ───────────────────────────────────── */
+
+const GUIA_TIPOS: GuiaLanding = {
+  slug: 'tipos-de-estructuras-metalicas',
+  titulo: 'Guía — Tipos de estructuras metálicas',
+  metaTitle: 'Tipos de Estructuras Metálicas: Guía Completa | MEISA',
+  metaDescription:
+    'Tipos de estructuras metálicas: pórticos, cerchas, arcos y viga cajón. Perfiles, conexiones y normativa NSR-10 explicados por MEISA, fabricante desde 1996.',
+  contenido: {
+    variante: 'template',
+    path: '/tipos-de-estructuras-metalicas',
+    breadcrumbName: 'Tipos de estructuras metálicas: guía completa',
+    heroEyebrow: 'Guías técnicas',
+    heroTitulo1: 'Tipos de estructuras',
+    heroTitulo2: 'metálicas: guía completa',
+    heroSub:
+      'Pórticos, cerchas, arcos, sistemas colgantes y viga cajón: qué sistema conviene en cada proyecto, con qué perfiles se construye y qué exige la NSR-10.',
+    introEyebrow: '01 — La guía',
+    introTitulo1: 'Elegir el sistema',
+    introTitulo2: 'define el proyecto',
+    intro:
+      'Las estructuras metálicas se clasifican por su sistema estructural — pórticos rígidos, cerchas, arcos, sistemas colgantes, vigas cajón — y por su uso: bodegas, puentes, edificios, cubiertas o escenarios. Elegir bien el sistema define el costo, el plazo y el comportamiento sísmico del proyecto. Esta guía explica cada tipo con criterios prácticos de selección, los perfiles y aceros que se usan en Colombia, las conexiones disponibles y la normativa aplicable. La escribe MEISA, fabricante colombiano con 264 proyectos y más de 32.000 toneladas montadas desde 1996.',
+    categoriaHero: 'PUENTES',
+    stats: [
+      { valor: '264', label: 'Proyectos entregados' },
+      { valor: '32.000', sufijo: '+', label: 'Toneladas de acero' },
+      { valor: '59', label: 'Ciudades de Colombia' },
+      { valor: '1996', label: 'Fabricando desde' },
+    ],
+    secciones: [
+      {
+        titulo: 'Clasificación por sistema estructural',
+        parrafos: [
+          'El sistema estructural describe cómo la estructura lleva las cargas hasta la cimentación: por flexión, por trabajo axial en tracción y compresión, o por una combinación de ambos. Es la clasificación más útil para entender por qué un mismo programa — cubrir 40 metros de luz, por ejemplo — puede resolverse con soluciones de peso y costo muy distintos.',
+          'En la práctica colombiana, cinco sistemas cubren la gran mayoría de los proyectos en acero. Cada uno tiene un rango de luces donde es competitivo; salirse de ese rango suele encarecer el kilo de acero sin ganar desempeño.',
+        ],
+        items: [
+          {
+            nombre: 'Pórticos rígidos',
+            descripcion:
+              'Columnas y vigas unidas con conexiones a momento que forman marcos estables en su propio plano. Es el sistema más usado en bodegas y naves industriales de 15 a 40 m de luz, con perfiles de alma llena o armados de altura variable que concentran el material donde el momento flector es mayor. Permite alturas libres a la medida de estanterías y puentes grúa.',
+          },
+          {
+            nombre: 'Cerchas y celosías',
+            descripcion:
+              'Estructuras trianguladas cuyos elementos trabajan solo a tracción o compresión, sin flexión significativa. Son la opción más liviana para luces mayores de 30-40 m: cubiertas de centros comerciales, coliseos y naves sin columnas intermedias. La ampliación del C.C. Campanario en Popayán — 2.454 toneladas fabricadas y montadas por MEISA — resolvió sus grandes luces con este sistema.',
+          },
+          {
+            nombre: 'Arcos',
+            descripcion:
+              'Trabajan predominantemente a compresión transfiriendo las cargas por su geometría curva. Cubren grandes luces con secciones esbeltas y aportan valor arquitectónico, por lo que son frecuentes en coliseos, hangares y cubiertas emblemáticas. Exigen controlar el empuje horizontal en los apoyos mediante tirantes o contrafuertes.',
+          },
+          {
+            nombre: 'Sistemas colgantes y atirantados',
+            descripcion:
+              'Cables o tirantes a tracción sostienen el tablero o la cubierta desde pilones o mástiles. Aprovechan al máximo el acero — la tracción pura no pandea — y permiten luces que otros sistemas no alcanzan. En Colombia se usan en puentes peatonales, ciclopuentes y cubiertas de escenarios donde se busca despejar por completo el espacio inferior.',
+          },
+          {
+            nombre: 'Viga cajón',
+            descripcion:
+              'Sección cerrada armada de lámina con gran rigidez a torsión y flexión. Es el sistema típico de los puentes vehiculares metálicos de luces medias y grandes, incluyendo trazados curvos donde la torsión gobierna el diseño. MEISA la ha fabricado en puentes como el Cascada (537 t) y el Ovejas (536 t) en el Cauca.',
+          },
+        ],
+      },
+      {
+        titulo: 'Clasificación por uso: qué sistema conviene en cada proyecto',
+        parrafos: [
+          'El uso del proyecto acota rápidamente los sistemas viables: las cargas, las luces y las condiciones de montaje de una bodega no se parecen a las de un puente o un coliseo. Esta es la correspondencia más frecuente en los proyectos que MEISA ha entregado en 59 ciudades de Colombia.',
+        ],
+        items: [
+          {
+            nombre: 'Bodegas y naves industriales',
+            descripcion:
+              'Pórticos rígidos a dos aguas para luces de 15 a 40 m; cerchas cuando la luz o la carga de cubierta lo exigen. Se complementan con correas formadas en frío y, si la operación lo requiere, vigas carrileras para puente grúa. Es la tipología que MEISA desarrolla en su solución de estructura metálica para bodegas, con 72 proyectos industriales entregados, como el CEDI Tecnosur en Villa Rica (840 t).',
+          },
+          {
+            nombre: 'Puentes vehiculares y peatonales',
+            descripcion:
+              'Vigas cajón y vigas armadas de alma llena para puentes vehiculares; celosías, arcos y sistemas atirantados para puentes peatonales y ciclopuentes. La fabricación en planta y el montaje por lanzamiento o izaje reducen la afectación al tráfico. MEISA ha fabricado 46 puentes — más de 4.600 toneladas — detallados en su solución de puentes metálicos.',
+          },
+          {
+            nombre: 'Edificios de varios pisos',
+            descripcion:
+              'Pórticos resistentes a momento o combinados con arriostramientos, con entrepisos de vigas, viguetas y lámina colaborante que se funden sin formaleta. El acero reduce el peso sísmico del edificio y acelera el ciclo por piso. Ejemplos MEISA: el edificio Colpatria en Neiva (902 t) y la estructura del World Trade Center (247 t).',
+          },
+          {
+            nombre: 'Cubiertas y grandes luces comerciales',
+            descripcion:
+              'Cerchas, arcos y estructuras espaciales para centros comerciales, terminales y plazas cubiertas donde el área libre es el requisito dominante. Aquí el acero compite sin rival: en concreto, esas luces son antieconómicas o inviables. MEISA suma 54 proyectos comerciales con más de 14.600 toneladas.',
+          },
+          {
+            nombre: 'Escenarios deportivos y educativos',
+            descripcion:
+              'Cerchas de gran luz, arcos y voladizos para graderías cubiertas, coliseos y aulas múltiples. La estructura suele quedar a la vista, así que el detallado y el acabado pesan tanto como el cálculo. MEISA fabricó el coliseo de fútbol sala de los Juegos Nacionales de Popayán (267 t) y cinco coliseos del Plan Colombia en el Cauca.',
+          },
+          {
+            nombre: 'Infraestructura urbana',
+            descripcion:
+              'Estaciones de transporte masivo, paraderos, pérgolas y puentes peatonales urbanos que combinan pórticos, celosías y secciones tubulares a la vista. MEISA fabricó la Terminal Intermedia del MIO en Cali (654 t) y estaciones de Transmilenio en Bogotá (424 t).',
+          },
+        ],
+      },
+      {
+        titulo: 'Perfiles y materiales: con qué se construye',
+        parrafos: [
+          'Definido el sistema, el ingeniero selecciona los perfiles. La elección depende de la solicitación de cada elemento — flexión, compresión, tracción — y de la disponibilidad comercial en Colombia, donde conviven perfiles importados de catálogo americano y europeo con perfiles armados fabricados en planta.',
+          'En materiales, las especificaciones dominantes son ASTM A36 (esfuerzo de fluencia de 250 MPa) para elementos secundarios y láminas de uso general, y ASTM A572 Grado 50 (345 MPa) para elementos principales: con 38 % más de fluencia a un costo por kilo similar, el A572-50 produce estructuras más livianas y es hoy el estándar de facto en perfiles armados y puentes. Toda compra seria debe exigir certificados de calidad de acería (mill certificates) que garanticen la trazabilidad del material.',
+        ],
+        items: [
+          {
+            nombre: 'Perfiles laminados en caliente (W, HEA, IPE)',
+            descripcion:
+              'Secciones en I producidas en acería: serie W americana (AISC) y series HEA/HEB e IPE europeas. Son la primera opción para columnas y vigas de edificios y estructuras industriales por su disponibilidad, propiedades certificadas y rapidez de detallado.',
+          },
+          {
+            nombre: 'Perfiles armados de lámina',
+            descripcion:
+              'Secciones en I, H o cajón soldadas en planta a partir de lámina cortada con CNC. Permiten dimensiones exactas a la demanda del cálculo — incluyendo altura variable — y son la base de los pórticos de bodegas optimizados y de las vigas de puentes. Su calidad depende directamente del control de soldadura del fabricante.',
+          },
+          {
+            nombre: 'Perfiles tubulares (HSS)',
+            descripcion:
+              'Secciones huecas circulares, cuadradas o rectangulares (típicamente ASTM A500). Excelente desempeño a compresión y torsión y apariencia limpia, por lo que dominan en celosías a la vista, arcos, pérgolas y estructuras arquitectónicas de escenarios y espacio público.',
+          },
+          {
+            nombre: 'Perfiles formados en frío (correas C y Z)',
+            descripcion:
+              'Láminas delgadas dobladas en frío que conforman correas de cubierta y fachada, viguetas livianas y elementos secundarios. Aportan poco peso por metro cuadrado y se traslapan para dar continuidad. Se diseñan por el capítulo F.4 de la NSR-10.',
+          },
+        ],
+      },
+      {
+        titulo: 'Conexiones: pernadas, soldadas y precalificadas',
+        parrafos: [
+          'Las conexiones son el punto crítico de toda estructura metálica: por ellas pasan las cargas entre elementos y en ellas se concentra la demanda sísmica. La regla de oro de la industria es soldar en planta y pernar en obra — la soldadura de taller se ejecuta en posición, bajo techo y con inspección directa, mientras el perno permite un montaje rápido, verificable y sin dependencia del clima.',
+          'Para edificaciones con capacidad de disipación de energía moderada o especial (DMO/DES), la NSR-10 exige que las conexiones a momento demuestren su desempeño cíclico. Lo usual es emplear conexiones precalificadas — geometrías ya ensayadas y normalizadas como las del estándar AISC 358: placa de extremo extendida (end-plate), viga de sección reducida (RBS) o placas de ala soldadas — que evitan ensayos de laboratorio proyecto por proyecto.',
+        ],
+        items: [
+          {
+            nombre: 'Conexiones pernadas',
+            descripcion:
+              'Usan pernos de alta resistencia ASTM F3125 (grados A325 y A490) en juntas de aplastamiento o de deslizamiento crítico. Ventajas: montaje veloz, control en obra por torque o tensión calibrada, y posibilidad de desmontar o ampliar. Son el estándar para empalmes de campo en vigas, columnas y celosías.',
+          },
+          {
+            nombre: 'Conexiones soldadas',
+            descripcion:
+              'Filetes y penetraciones completas ejecutadas bajo AWS D1.1, con procedimientos (WPS) calificados y soldadores certificados. Logran continuidad total y nudos rígidos compactos. Las soldaduras críticas se verifican con ensayos no destructivos: ultrasonido, tintas penetrantes o partículas magnéticas.',
+          },
+          {
+            nombre: 'Conexiones precalificadas a momento',
+            descripcion:
+              'Configuraciones normalizadas (AISC 358 / NSR-10 F.3.9) cuyo comportamiento ante carga cíclica ya fue demostrado en laboratorio. Garantizan que la rótula plástica se forme en la viga y no en la conexión, condición esencial del diseño sismo resistente en pórticos DMO y DES.',
+          },
+        ],
+      },
+      {
+        titulo: 'Normativa colombiana: NSR-10, AWS y AISC',
+        parrafos: [
+          'En Colombia toda estructura metálica de edificación se rige por el Título F de la NSR-10 (Reglamento Colombiano de Construcción Sismo Resistente). El capítulo F.2 — basado en la especificación AISC 360 — cubre el diseño de miembros y conexiones; el F.3 — basado en AISC 341 — establece las provisiones sísmicas para pórticos y arriostramientos con disipación de energía; y el F.4 regula los perfiles formados en frío. Los puentes se diseñan por el Código Colombiano de Puentes CCP-14, basado en AASHTO LRFD.',
+          'La normativa no se queda en el cálculo: exige calidad verificable en la ejecución. La soldadura estructural debe cumplir AWS D1.1, lo que implica procedimientos de soldadura calificados, soldadores certificados por posición y proceso, e inspección con ensayos no destructivos según el tipo de junta. Los materiales deben llegar con certificados ASTM trazables, y los proyectos de cierta envergadura requieren supervisión técnica independiente conforme al Título I de la NSR-10.',
+          'Para quien contrata, la implicación práctica es directa: el fabricante debe poder demostrar — con WPS, certificados de soldadores, registros dimensionales y de ensayos — que lo que sale de su planta cumple lo que el diseñador especificó. MEISA fabrica bajo estos estándares en sus plantas de Jamundí y Popayán, con corte CNC, soldadores calificados AWS D1.1 y trazabilidad por pieza desde el modelo BIM hasta el montaje.',
+        ],
+      },
+      {
+        titulo: 'Cómo elegir el tipo de estructura para su proyecto',
+        parrafos: [
+          'La selección parte de tres preguntas: cuál es la luz libre que el uso exige, qué cargas debe resistir la estructura (cubierta liviana, entrepisos, puente grúa, tráfico vehicular) y qué condiciones impone el sitio (sismicidad, viento, acceso para montaje). Con esas variables, el rango de sistemas competitivos se reduce a uno o dos candidatos, y la decisión final la dan el peso de acero por metro cuadrado y el plazo de fabricación y montaje.',
+          'Un buen fabricante participa desde la ingeniería: optimizar el sistema y las conexiones antes de comprar el acero ahorra más que cualquier descuento posterior. Si está evaluando un proyecto, el equipo de ingeniería de MEISA puede revisar sus planos o anteproyecto y proponer la alternativa estructural más eficiente, con cotización formal sobre cantidades reales.',
+        ],
+      },
+    ],
+    proceso: [
+      {
+        titulo: 'Ingeniería y modelado BIM',
+        descripcion:
+          'Diseño o revisión estructural según NSR-10 y modelado de detalle en 3D: cada pieza, conexión y perno queda definido antes de cortar el primer perfil.',
+      },
+      {
+        titulo: 'Fabricación con corte CNC',
+        descripcion:
+          'Corte CNC, armado y soldadura bajo AWS D1.1 con soldadores calificados y control dimensional por conjunto en las plantas de Jamundí y Popayán.',
+      },
+      {
+        titulo: 'Acabado y logística',
+        descripcion:
+          'Limpieza, pintura o galvanizado según especificación, codificación pieza por pieza y despachos coordinados a cualquier región del país.',
+      },
+      {
+        titulo: 'Montaje certificado',
+        descripcion:
+          'Izaje y conexión en obra con personal propio certificado para trabajo en alturas, equipos de izaje adecuados al sitio y entrega con registros de calidad.',
+      },
+    ],
+    procesoTitulo1: 'Cualquier tipo,',
+    procesoTitulo2: 'el mismo rigor',
+    proyectosSlugs: [
+      'arinsa-ampliacion-cc-campanario-popayan',
+      'estructura-metalica-y-cubierta-en-neiva',
+      'tecnosur-centro-distribucion-villa-rica',
+      'consorcio-metrovial-sb-terminal-intermedio',
+      'casa-puente-cascada',
+      'consorcio-mj-2011-coliseo-futbol-sala',
+    ],
+    proyectosIntro:
+      'Cada sistema de esta guía está construido en obra real: cerchas de gran luz en la ampliación del C.C. Campanario (2.454 t), pórticos de edificio en el Colpatria de Neiva (902 t), pórticos industriales en el CEDI Tecnosur (840 t), celosías urbanas en la Terminal Intermedia del MIO (654 t), viga cajón en el Puente Cascada (537 t) y arcos y cerchas deportivas en el Coliseo de Fútbol Sala de Popayán (267 t).',
+    faq: [
+      {
+        pregunta: '¿Cuál es el tipo de estructura metálica más usado en Colombia?',
+        respuesta:
+          'El pórtico rígido es el sistema más extendido porque resuelve la tipología más demandada: bodegas y naves industriales de 15 a 40 metros de luz, con buen comportamiento sísmico y peso optimizado mediante perfiles armados de altura variable. Le siguen las cerchas y celosías, dominantes en cubiertas de grandes luces — centros comerciales, coliseos — y los entrepisos con lámina colaborante en edificios. La elección correcta depende de la luz libre, las cargas y el uso, no de la popularidad del sistema.',
+      },
+      {
+        pregunta: '¿Cuándo conviene usar cerchas en lugar de vigas de alma llena?',
+        respuesta:
+          'Como regla práctica, a partir de 25 a 30 metros de luz la cercha empieza a ganar: al triangular la estructura, sus elementos trabajan a tracción y compresión puras y el peso de acero crece mucho más lento con la luz que en una viga de alma llena. Por debajo de ese rango, la viga de alma llena suele ser más económica porque su fabricación es más simple y rápida. También favorecen a la cercha las cargas pesadas de cubierta y la necesidad de pasar instalaciones a través de la estructura.',
+      },
+      {
+        pregunta: '¿Qué es mejor: conexiones pernadas o soldadas?',
+        respuesta:
+          'No compiten: se complementan. La práctica óptima es soldar en planta — donde la junta se ejecuta en posición, bajo techo y con inspección directa según AWS D1.1 — y pernar en obra con pernos de alta resistencia ASTM F3125 (A325/A490), que permiten un montaje rápido y verificable sin depender del clima. En zonas de amenaza sísmica alta, las conexiones a momento de pórticos DMO y DES deben además ser precalificadas (AISC 358 / NSR-10 F.3.9) para garantizar su desempeño ante carga cíclica.',
+      },
+      {
+        pregunta: '¿Qué acero se usa en las estructuras metálicas en Colombia?',
+        respuesta:
+          'Los dos materiales dominantes son ASTM A36, con fluencia de 250 MPa, para elementos secundarios y láminas de uso general, y ASTM A572 Grado 50, con fluencia de 345 MPa, para elementos principales, perfiles armados y puentes. El A572-50 ofrece 38 % más resistencia a un costo por kilo similar, por lo que produce estructuras más livianas y es el estándar actual. Los tubulares suelen ser ASTM A500. En todos los casos debe exigirse el certificado de calidad de acería que garantiza la trazabilidad del material.',
+      },
+      {
+        pregunta: '¿Cuánto cuesta una estructura metálica por kilo instalado?',
+        respuesta:
+          'Depende del tipo de estructura, la complejidad de las conexiones, el acabado (pintura o galvanizado), la ciudad de montaje y el precio del acero del momento. Como rango orientativo de mercado en Colombia: estructura liviana (correas, cubiertas simples) entre $9.000 y $13.000 COP/kg instalado; estructura media (pórticos de bodegas, edificios) entre $11.000 y $16.000; y estructura especial o puentes entre $14.000 y $22.000. Son referencias para presupuestar en etapa temprana — la cotización real se hace sobre planos y cantidades.',
+      },
+    ],
+    faqTitulo1: 'Sobre tipos',
+    faqTitulo2: 'y sistemas',
+    relacionados: [
+      {
+        href: '/soluciones/estructura-metalica-para-bodegas',
+        eyebrow: 'Solución',
+        titulo: 'Estructura metálica para bodegas',
+        descripcion:
+          'Pórticos rígidos, cerchas y mezzanines para bodegas y naves industriales: 72 proyectos y más de 6.200 toneladas entregadas.',
+      },
+      {
+        href: '/soluciones/puentes-metalicos',
+        eyebrow: 'Solución',
+        titulo: 'Puentes metálicos',
+        descripcion:
+          'Viga cajón, celosías y arcos para puentes vehiculares y peatonales: 46 puentes y más de 4.600 toneladas bajo CCP-14.',
+      },
+      {
+        href: '/soluciones/cubiertas-metalicas',
+        eyebrow: 'Solución',
+        titulo: 'Cubiertas metálicas para grandes luces',
+        descripcion:
+          'Cerchas, arcos y cubiertas autoportantes para coliseos, colegios e industria: más de 57.000 m² instalados.',
+      },
+      {
+        href: '/soluciones/estructura-metalica-escenarios-deportivos',
+        eyebrow: 'Solución',
+        titulo: 'Coliseos y escenarios deportivos',
+        descripcion:
+          '28 escenarios deportivos y educativos en acero, incluidos los Juegos Nacionales 2012 y los Juegos Mundiales 2013.',
+      },
+      {
+        href: '/precios-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: '¿Cuánto cuesta una estructura metálica?',
+        descripcion:
+          'Rangos reales de precio por kilogramo instalado en Colombia y los factores que lo hacen variar.',
+      },
+      {
+        href: '/estructura-metalica-vs-concreto',
+        eyebrow: 'Guía',
+        titulo: 'Estructura metálica vs concreto',
+        descripcion:
+          'Comparación honesta criterio por criterio: costo, velocidad, luces, sismo y mantenimiento.',
+      },
+    ],
+    ctaEyebrow: 'Defina el sistema correcto',
+    ctaTitulo1: 'Su proyecto merece',
+    ctaTitulo2: 'ingeniería real.',
+    ctaDescripcion:
+      'Envíenos los planos o el anteproyecto: proponemos el sistema estructural más eficiente y entregamos cotización formal con peso de acero, alcance y plazo.',
+  },
+}
+
+/* ─── Guía 4: peso por m² ────────────────────────────────────────────── */
+
+const GUIA_PESO: GuiaLanding = {
+  slug: 'peso-estructura-metalica-por-m2',
+  titulo: 'Guía — Peso de estructura metálica por m²',
+  metaTitle:
+    '¿Cuántos kg/m² pesa una estructura metálica? Rangos reales | MEISA',
+  metaDescription:
+    'Rangos reales de peso por m²: bodegas 25-45 kg/m², con puente grúa 45-70, entrepisos 60-100. Datos de 264 proyectos ejecutados por MEISA en Colombia.',
+  contenido: {
+    variante: 'template',
+    path: '/peso-estructura-metalica-por-m2',
+    breadcrumbName: '¿Cuántos kilos por m² pesa una estructura metálica?',
+    heroEyebrow: 'Guía técnica para presupuestar',
+    heroTitulo1: 'Kilos por m²:',
+    heroTitulo2: 'rangos reales',
+    heroSub:
+      '¿Cuántos kilos por m² pesa una estructura metálica? Rangos por tipo de obra, qué dispara el peso y cómo convertirlo en presupuesto.',
+    introEyebrow: '01 — El dato que falta',
+    introTitulo1: 'Del anteproyecto',
+    introTitulo2: 'al presupuesto',
+    intro:
+      'El peso por metro cuadrado es el dato que convierte un anteproyecto en un presupuesto: kg/m² × precio por kilo instalado da el orden de magnitud de la estructura antes de tener planos de taller. El problema es que los valores que circulan en internet mezclan tipologías que no se parecen en nada. En esta guía MEISA comparte los rangos que observamos en nuestra práctica real —más de 32.000 toneladas fabricadas en 264 proyectos desde 1996— separados por tipo de obra, con los factores que disparan el peso y un método claro para estimar presupuesto.',
+    categoriaHero: 'INDUSTRIAL',
+    stats: [
+      { valor: '264', label: 'Proyectos entregados' },
+      { valor: '32.000', sufijo: '+', label: 'Toneladas de acero' },
+      { valor: '59', label: 'Ciudades de Colombia' },
+      { valor: '2', label: 'Plantas de fabricación' },
+    ],
+    secciones: [
+      {
+        titulo: 'Rangos reales de peso por tipo de obra',
+        parrafos: [
+          'No existe un kg/m² universal: una cubierta liviana de bodega y un entrepiso farmacéutico pueden diferir por un factor de 5. Los rangos siguientes son orientativos de la práctica MEISA, calculados sobre proyectos ejecutados con tonelaje y área documentados. Úselos para predimensionar; el peso real solo sale del cómputo del modelo estructural.',
+          'Una aclaración importante: el kg/m² depende de qué incluye el alcance. Estos rangos cubren la estructura principal y secundaria (columnas, vigas o cerchas, correas, arriostramientos y conexiones), sin teja, sin lámina colaborante ni concreto de losa.',
+        ],
+        items: [
+          {
+            nombre: 'Bodega liviana (solo cubierta, luces 15–25 m): 25–45 kg/m²',
+            descripcion:
+              'Pórticos o cerchas con correas, sin cargas colgadas relevantes. Es el rango típico de bodegas de almacenamiento y naves logísticas. Cubiertas muy optimizadas en luces cortas pueden bajar de 25 kg/m².',
+          },
+          {
+            nombre: 'Bodega con puente grúa o carga de proceso: 45–70 kg/m²',
+            descripcion:
+              'Las vigas carrilera, las ménsulas y las columnas robustecidas suben el ratio frente a una bodega de solo cubierta. Es el rango habitual de plantas de producción y centros de distribución con equipos de izaje.',
+          },
+          {
+            nombre: 'Entrepisos de edificios y centros comerciales: 60–100 kg/m²',
+            descripcion:
+              'Vigas de piso para lámina colaborante más columnas y sistema sismorresistente. Con cargas industriales pesadas (equipos de proceso en varios niveles) el ratio puede superar con creces el rango típico — esos casos se evalúan siempre con el calculista.',
+          },
+          {
+            nombre: 'Cubiertas deportivas de grandes luces: 35–60 kg/m²',
+            descripcion:
+              'Cerchas y celosías espaciales que salvan entre 30 y 60 metros sin apoyos intermedios, típicas de coliseos y escenarios deportivos. La geometría de la cubierta y las cargas colgadas (iluminación, sonido, tableros) pueden empujar el ratio hacia arriba.',
+          },
+          {
+            nombre: 'Puentes: no se miden en kg/m², se miden por luz y metro lineal',
+            descripcion:
+              'En puentes vehiculares el peso lo gobiernan la luz libre, el ancho de calzada y la carga viva de la norma CCP-14, no el área. Para presupuestar un puente pida toneladas por luz sobre el perfil del cruce, nunca un kg/m² genérico.',
+          },
+        ],
+      },
+      {
+        titulo: 'Qué dispara el peso de una estructura metálica',
+        parrafos: [
+          'Dos bodegas del mismo tamaño pueden diferir 30 kg/m² por decisiones que se toman en la etapa de diseño. Si está presupuestando, estos son los cinco factores que debe verificar antes de fijar un ratio:',
+        ],
+        items: [
+          {
+            nombre: 'Luz libre entre apoyos',
+            descripcion:
+              'Es el factor dominante. El momento flector crece con el cuadrado de la luz: pasar de 20 a 30 m de luz no sube el peso 50%, puede subirlo 80–100% en los elementos principales. Cada columna intermedia que el proceso permita instalar es acero que se ahorra.',
+          },
+          {
+            nombre: 'Cargas de uso y equipos colgados',
+            descripcion:
+              'Tuberías, ductos HVAC, bandejas eléctricas, cielos y equipos suspendidos suman carga muerta que a veces no aparece en la solicitud inicial. En plantas industriales y farmacéuticas las cargas de proceso por nivel son la razón de ratios de 120–185 kg/m² en entrepisos.',
+          },
+          {
+            nombre: 'Puente grúa',
+            descripcion:
+              'No solo agrega la viga carrilera: introduce cargas dinámicas de impacto y frenado que robustecen columnas, ménsulas y arriostramientos. Una grúa de 10 t puede mover el ratio de la nave 15–25 kg/m² respecto a la misma bodega sin grúa.',
+          },
+          {
+            nombre: 'Zona de amenaza sísmica',
+            descripcion:
+              'Colombia se divide en amenaza baja, intermedia y alta según NSR-10. En zona alta —Cali, Popayán, el Eje Cafetero— el sistema de resistencia sísmica exige más arriostramientos, conexiones precalificadas y secciones con requisitos de ductilidad, lo que sube el peso frente al mismo edificio en zona baja.',
+          },
+          {
+            nombre: 'Deflexiones y vibraciones',
+            descripcion:
+              'Muchas veces no manda la resistencia sino el estado límite de servicio: límites de deflexión en cubiertas con equipos, control de vibración en entrepisos de oficinas o laboratorios. Cumplir L/360 en lugar de L/240 implica secciones con más inercia, es decir, más kilos.',
+          },
+        ],
+      },
+      {
+        titulo: 'Cómo estimar el presupuesto: kg/m² × precio por kilo',
+        parrafos: [
+          'El método para una cifra de anteproyecto tiene tres pasos. Primero, ubique su obra en el rango de tipología correcto y elija un valor conservador dentro del rango si todavía hay incertidumbre en cargas o luces. Segundo, multiplique por el área cubierta o construida en estructura metálica. Tercero, multiplique las toneladas resultantes por el precio por kilo instalado vigente, que detallamos en nuestra guía de precios de estructuras metálicas.',
+          'Ejemplo: una bodega de 2.000 m² con puente grúa de 5 t. Ratio estimado: 55 kg/m² → 110 toneladas. Con un precio de referencia de $12.000 COP/kg instalado, el orden de magnitud de la estructura es de unos $1.320 millones COP, sin incluir cimentación, cerramientos ni teja. Esa cifra sirve para evaluar viabilidad y comparar alternativas; la cotización real se hace sobre planos o, mejor, sobre un modelo estructural.',
+          'Dos errores frecuentes al aplicar el método: usar el área del lote en vez del área cubierta en acero, y aplicar el ratio de bodega liviana a una nave que sí lleva grúa o mezanines. Ambos producen presupuestos que después no cierran contra la cotización.',
+        ],
+      },
+      {
+        titulo: 'Optimizar peso con BIM ahorra más que negociar el precio por kilo',
+        parrafos: [
+          'En la negociación típica el comprador pelea $300–$500 COP por kilo. Pero el ahorro grande no está en el precio: está en los kilos. Una optimización de ingeniería que baje el ratio de 48 a 40 kg/m² en una nave de 10.000 m² elimina 80 toneladas; a $12.000/kg son unos $960 millones COP, varias veces lo que se obtiene regateando el precio unitario sobre el mismo tonelaje.',
+          'Por eso MEISA modela cada proyecto en Tekla Structures antes de fabricar. El modelo BIM permite comparar alternativas de configuración —pórtico contra cercha, separación de pórticos, posición de arriostramientos—, verificar conexiones con IDEA StatiCa y obtener el cómputo de peso exacto, pieza por pieza, antes de comprar el primer perfil. El peso que cotizamos es el del modelo estructural, no un estimado inflado con márgenes de seguridad comerciales.',
+          'La conclusión práctica para quien presupuesta: involucre al fabricante en la etapa de ingeniería. Un diseño revisado por quien fabrica y monta encuentra kilos innecesarios que un ajuste de precio nunca va a compensar, y reduce además sorpresas de plazo en taller y en obra.',
+        ],
+      },
+    ],
+    proceso: [
+      {
+        titulo: 'Datos básicos de la obra',
+        descripcion:
+          'Definimos con usted área cubierta, luces requeridas, uso, cargas de equipos, puente grúa y municipio (zona de amenaza sísmica NSR-10). Con esto se ubica la tipología correcta.',
+      },
+      {
+        titulo: 'Estimación con ratios reales',
+        descripcion:
+          'Aplicamos los kg/m² de proyectos MEISA comparables ya ejecutados para entregar un orden de magnitud de toneladas y presupuesto en días, no semanas.',
+      },
+      {
+        titulo: 'Modelo estructural en Tekla',
+        descripcion:
+          'Si el proyecto avanza, modelamos la estructura completa en BIM, optimizamos secciones y conexiones, y obtenemos el peso exacto pieza por pieza.',
+      },
+      {
+        titulo: 'Cotización cerrada sobre el modelo',
+        descripcion:
+          'Cotizamos fabricación y montaje sobre el tonelaje del modelo, con cronograma de taller en nuestras plantas de Jamundí y Popayán y plan de montaje en obra.',
+      },
+    ],
+    procesoTitulo1: 'Del ratio',
+    procesoTitulo2: 'al peso exacto',
+    proyectosSlugs: [
+      'cc-unico-ampliacion-centro-comercial-cali',
+      'tecnosur-centro-distribucion-villa-rica',
+      'puente-vehicular-ovejas',
+      'consorcio-mj-2011-coliseo-futbol-sala',
+    ],
+    proyectosIntro:
+      'Los ratios de esta guía salen de la práctica real de MEISA: más de 250 proyectos documentados con tonelaje y área en bodegas, centros comerciales, edificios, cubiertas deportivas y puentes en toda Colombia desde 1996.',
+    faq: [
+      {
+        pregunta: '¿Cuántos kilos por m² pesa una bodega metálica estándar?',
+        respuesta:
+          'Una bodega liviana de solo cubierta, con luces de 15 a 25 metros y sin cargas colgadas, pesa entre 25 y 45 kg/m² de estructura metálica en la práctica MEISA. Si la nave lleva puente grúa o cargas de proceso, el rango sube a 45–70 kg/m². Son valores orientativos para predimensionar: el peso real depende de la luz libre, la zona sísmica y las cargas, y solo lo confirma el cálculo estructural del proyecto.',
+      },
+      {
+        pregunta: '¿Cuánto cuesta una estructura metálica por kilo instalado en Colombia?',
+        respuesta:
+          'Como rango orientativo de mercado: estructura liviana entre $9.000 y $13.000 COP/kg instalado, estructura media (entrepisos, naves con grúa) entre $11.000 y $16.000, y estructura especial o de puentes entre $14.000 y $22.000. El valor final depende del tonelaje total, la complejidad de conexiones, el acabado de pintura o galvanizado y la logística de montaje. La cotización real siempre se hace sobre planos o modelo estructural; consulte también nuestra guía de precios de estructuras metálicas.',
+      },
+      {
+        pregunta: '¿El kg/m² incluye correas, teja y lámina colaborante?',
+        respuesta:
+          'Los rangos de esta guía incluyen estructura principal y secundaria: columnas, vigas o cerchas, correas, arriostramientos y conexiones. No incluyen teja, cerramientos, lámina colaborante ni el concreto de la losa. Al comparar cotizaciones verifique siempre el alcance del kilo: una propuesta que incluye correas y otra que no pueden diferir 8–12 kg/m² sin que ninguna esté mal. Pida el desglose de tonelaje por tipo de elemento.',
+      },
+      {
+        pregunta: '¿Por qué los puentes no se estiman en kg/m²?',
+        respuesta:
+          'Porque el peso de un puente lo gobiernan la luz libre del cruce, el ancho de calzada y las cargas vivas de la norma CCP-14, no el área de tablero. Dos puentes con la misma área pero luces distintas pueden diferir más del doble en tonelaje. En MEISA los presupuestamos por toneladas según la luz y la sección — para un estimado serio se necesita el perfil del cruce.',
+      },
+    ],
+    faqTitulo1: 'Sobre pesos',
+    faqTitulo2: 'y presupuestos',
+    relacionados: [
+      {
+        href: '/precios-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: '¿Cuánto cuesta una estructura metálica?',
+        descripcion:
+          'El complemento de esta guía: rangos de precio por kilogramo instalado en Colombia y los factores que lo hacen variar.',
+      },
+      {
+        href: '/tipos-de-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Tipos de estructuras metálicas',
+        descripcion:
+          'Pórticos, cerchas, arcos y viga cajón: qué sistema conviene en cada proyecto y cómo afecta el peso por m².',
+      },
+      {
+        href: '/estructura-metalica-vs-concreto',
+        eyebrow: 'Guía',
+        titulo: 'Estructura metálica vs concreto',
+        descripcion:
+          'Comparación honesta criterio por criterio para decidir el sistema estructural de su proyecto.',
+      },
+      {
+        href: '/soluciones/estructura-metalica-para-bodegas',
+        eyebrow: 'Solución',
+        titulo: 'Estructura metálica para bodegas',
+        descripcion:
+          'La tipología con los ratios más consultados: 72 proyectos industriales y más de 6.200 toneladas entregadas.',
+      },
+      {
+        href: '/soluciones/edificios-en-estructura-metalica',
+        eyebrow: 'Solución',
+        titulo: 'Edificios en estructura metálica',
+        descripcion:
+          'Entrepisos, sistemas sísmicos y ampliaciones verticales: más de 3.500 toneladas en 14 ciudades desde 1998.',
+      },
+      {
+        href: '/soluciones/puentes-metalicos',
+        eyebrow: 'Solución',
+        titulo: 'Puentes metálicos',
+        descripcion:
+          '46 puentes vehiculares y peatonales fabricados y montados bajo CCP-14, presupuestados por luz y tonelaje.',
+      },
+    ],
+    ctaEyebrow: 'Pase del ratio al peso real',
+    ctaTitulo1: 'Cotice con el peso',
+    ctaTitulo2: 'real del modelo.',
+    ctaDescripcion:
+      'Envíenos los datos básicos de su obra y reciba un orden de magnitud con ratios reales — y si avanza, la cotización cerrada sobre el modelo BIM.',
+  },
+}
+
+export const GUIAS: GuiaLanding[] = [
+  GUIA_PRECIOS,
+  GUIA_VS_CONCRETO,
+  GUIA_TIPOS,
+  GUIA_PESO,
+]
+
+export function getGuiaFallback(slug: string): GuiaLanding | undefined {
+  return GUIAS.find((g) => g.slug === slug)
+}
+
+export function getGuiaSlugs(): string[] {
+  return GUIAS.map((g) => g.slug)
+}

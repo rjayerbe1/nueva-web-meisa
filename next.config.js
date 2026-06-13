@@ -100,6 +100,12 @@ const nextConfig = {
         destination: '/calidad',
         permanent: true,
       },
+      // Landing local Cali migrada a la ruta dinámica /estructuras-metalicas/[ciudad]
+      {
+        source: '/estructuras-metalicas-cali',
+        destination: '/estructuras-metalicas/cali',
+        permanent: true,
+      },
       // Migración WordPress (Hostinger) → Next.js, junio 2026.
       // URLs tomadas del sitemap del sitio viejo (All in One SEO).
       { source: '/nuestra-empresa', destination: '/empresa', permanent: true },

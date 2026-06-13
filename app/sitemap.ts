@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
+import { getSolucionSlugs } from '@/lib/soluciones'
+import { getCiudadSlugs } from '@/lib/ciudades'
 
 const BASE_URL = 'https://meisa.com.co'
 
@@ -54,6 +56,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Landings SEO de soluciones
+    ...getSolucionSlugs().map((slug) => ({
+      url: `${BASE_URL}/soluciones/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    })),
+    // Guías técnicas SEO
+    {
+      url: `${BASE_URL}/precios-estructuras-metalicas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/estructura-metalica-vs-concreto`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/tipos-de-estructuras-metalicas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/peso-estructura-metalica-por-m2`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    // Landings locales por ciudad (cali, bogota, popayan)
+    ...getCiudadSlugs().map((slug) => ({
+      url: `${BASE_URL}/estructuras-metalicas/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    })),
   ]
 
   // Obtener proyectos de la base de datos

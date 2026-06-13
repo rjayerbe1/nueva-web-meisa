@@ -218,6 +218,32 @@ export function ServiceSchema({ name, description, url, image }: ServiceSchemaPr
   )
 }
 
+interface FAQSchemaProps {
+  items: Array<{ pregunta: string; respuesta: string }>
+}
+
+export function FAQSchema({ items }: FAQSchemaProps) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.pregunta,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.respuesta,
+      },
+    })),
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
 interface BreadcrumbSchemaProps {
   items: Array<{ name: string; url: string }>
 }

@@ -1119,3 +1119,33 @@ model MediaFolder {
 
   @@map("media_folder")
 }
+
+// ============================================
+// LANDINGS SEO (soluciones, guías, ciudades)
+// Contenido editorial completo editable desde /admin/landings.
+// El Json `contenido` sigue los types de lib/soluciones.ts,
+// lib/ciudades.ts y lib/guias.ts (validados con lib/landings-schema.ts).
+// ============================================
+
+enum LandingTipo {
+  SOLUCION
+  GUIA
+  CIUDAD
+}
+
+model LandingSeo {
+  id              String      @id @default(cuid())
+  slug            String      @unique
+  tipo            LandingTipo
+  titulo          String // label legible en el admin
+  metaTitle       String
+  metaDescription String
+  contenido       Json // objeto config completo según tipo (ver lib/landings-schema.ts)
+  activa          Boolean     @default(true)
+  orden           Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([tipo, orden])
+  @@map("landings_seo")
+}

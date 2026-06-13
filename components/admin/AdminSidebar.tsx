@@ -20,6 +20,7 @@ import {
   Users,
   FileText,
   Inbox,
+  Megaphone,
   MessageSquare,
   ImageIcon,
   UserCog,
@@ -60,6 +61,7 @@ const navigation: NavItem[] = [
   { kind: "item", name: "Servicios", href: "/admin/services", icon: Briefcase },
   { kind: "item", name: "Contacto", href: "/admin/contacto", icon: Phone },
   { kind: "item", name: "Navegación", href: "/admin/navegacion", icon: NavIcon },
+  { kind: "item", name: "Landings SEO", href: "/admin/landings", icon: Megaphone },
   {
     kind: "item",
     name: "Documentos institucionales",
