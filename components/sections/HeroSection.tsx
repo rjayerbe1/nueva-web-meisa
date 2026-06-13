@@ -157,14 +157,14 @@ export function HeroSection({
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Iniciar video cuando termina el loader
+  // Iniciar video cuando termina el loader — solo el del viewport activo,
+  // para no descargar ambos mp4 en todos los dispositivos
   useEffect(() => {
     if (allResourcesLoaded && !videoStarted) {
       setVideoStarted(true)
-      // Iniciar reproducción de ambos videos después de un pequeño delay
       setTimeout(() => {
-        videoRef.current?.play().catch(err => console.log('Error playing desktop video:', err))
-        videoMobileRef.current?.play().catch(err => console.log('Error playing mobile video:', err))
+        const target = window.innerWidth < 768 ? videoMobileRef.current : videoRef.current
+        target?.play().catch(err => console.log('Error playing hero video:', err))
       }, 100)
     }
   }, [allResourcesLoaded, videoStarted])
@@ -256,7 +256,7 @@ export function HeroSection({
                 className="w-full h-auto max-h-full scale-[1.8]"
                 muted
                 playsInline
-                preload="auto"
+                preload="metadata"
               >
                 <source src={videoMobileSrc} type="video/mp4" />
               </video>
@@ -274,9 +274,9 @@ export function HeroSection({
                 alt="MEISA - Estructura metálica de techo"
                 fill
                 sizes="100vw"
-                quality={95}
+                quality={70}
                 className="object-cover"
-                priority
+                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.leftColumn)}
               />
             </motion.div>
@@ -291,9 +291,9 @@ export function HeroSection({
                 alt="MEISA - Ciclopuente al atardecer"
                 fill
                 sizes="100vw"
-                quality={95}
+                quality={70}
                 className="object-cover"
-                priority
+                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Top || heroImages.centerTop)}
               />
             </div>
@@ -310,9 +310,9 @@ export function HeroSection({
                 alt="MEISA - Estructura metálica perspectiva"
                 fill
                 sizes="100vw"
-                quality={95}
+                quality={70}
                 className="object-cover"
-                priority
+                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row2Bottom || heroImages.centerBottom)}
               />
             </motion.div>
@@ -327,9 +327,9 @@ export function HeroSection({
                 alt="MEISA - Coliseo estructuras rojas"
                 fill
                 sizes="100vw"
-                quality={95}
+                quality={70}
                 className="object-cover"
-                priority
+                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Top || heroImages.rightTop)}
               />
             </div>
@@ -346,9 +346,9 @@ export function HeroSection({
                 alt="MEISA - Montaje con grúa"
                 fill
                 sizes="100vw"
-                quality={95}
+                quality={70}
                 className="object-cover"
-                priority
+                loading="eager"
                 onLoad={() => handleImageLoad(heroImages.mobile?.row3Bottom || heroImages.rightBottom)}
               />
             </motion.div>
@@ -374,7 +374,7 @@ export function HeroSection({
               className="w-full h-auto max-h-full scale-[1.8]"
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
             >
               <source src={videoDesktopSrc} type="video/mp4" />
             </video>
@@ -390,9 +390,9 @@ export function HeroSection({
               alt="Estructura metálica de techo - MEISA"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
-              quality={95}
+              quality={70}
               className="object-cover"
-              priority
+              loading="eager"
               onLoad={() => handleImageLoad(heroImages.leftColumn)}
             />
           </motion.div>
@@ -407,7 +407,7 @@ export function HeroSection({
               alt="Ciclopuente al atardecer - Estructura metálica MEISA"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
-              quality={95}
+              quality={70}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.centerTop)}
@@ -424,9 +424,9 @@ export function HeroSection({
               alt="Vista interior de estructura metálica - Perspectiva"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
-              quality={95}
+              quality={70}
               className="object-cover"
-              priority
+              loading="eager"
               onLoad={() => handleImageLoad(heroImages.centerBottom)}
             />
           </motion.div>
@@ -441,7 +441,7 @@ export function HeroSection({
               alt="Coliseo con estructuras metálicas rojas MEISA"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
-              quality={95}
+              quality={70}
               className="object-cover"
               priority
               onLoad={() => handleImageLoad(heroImages.rightTop)}
@@ -458,9 +458,9 @@ export function HeroSection({
               alt="Montaje de viga metálica con grúa - MEISA en acción"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
-              quality={95}
+              quality={70}
               className="object-cover"
-              priority
+              loading="eager"
               onLoad={() => handleImageLoad(heroImages.rightBottom)}
             />
           </motion.div>
