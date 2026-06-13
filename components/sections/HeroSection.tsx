@@ -85,7 +85,7 @@ export function HeroSection({
     if (displayProgress < targetProgress) {
       // Si el salto es muy grande (ej: todo en caché), usar más tiempo
       const progressJump = targetProgress - displayProgress
-      const baseDuration = progressJump > 80 ? 500 : 150 // Si salta >80%, animar por 500ms
+      const baseDuration = progressJump > 80 ? 250 : 100 // Si salta >80%, animar por 250ms
       const steps = 25
       const stepValue = progressJump / steps
       const stepDuration = baseDuration / steps
@@ -124,12 +124,12 @@ export function HeroSection({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Tiempo mínimo de visualización del loader: 700ms
+  // Tiempo mínimo de visualización del loader: 300ms
   useEffect(() => {
     const minTimeout = setTimeout(() => {
       setMinTimeElapsed(true)
       console.log('⏱️ Tiempo mínimo de loader transcurrido')
-    }, 700)
+    }, 300)
     return () => clearTimeout(minTimeout)
   }, [])
 
