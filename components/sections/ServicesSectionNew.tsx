@@ -91,6 +91,13 @@ function ServiceCard({
     }
   }, [isActive, isMobile])
 
+  // En móvil no hay hover: reproducir al entrar al viewport (muted +
+  // playsInline — iOS no pinta ningún frame si el video nunca reproduce)
+  useEffect(() => {
+    if (!isMobile || !nearViewport) return
+    videoRef.current?.play().catch(() => {})
+  }, [isMobile, nearViewport])
+
   return (
     <Link
       href={servicio.href}

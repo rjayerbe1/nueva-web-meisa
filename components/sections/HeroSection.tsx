@@ -172,15 +172,30 @@ export function HeroSection({
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Iniciar video cuando termina el loader — solo el del viewport activo,
-  // para no descargar ambos mp4 en todos los dispositivos
+  // Pre-buffer del video del viewport activo mientras corre el loader,
+  // para que tenga frames listos cuando le toque reproducir
+  useEffect(() => {
+    const target = window.innerWidth < 768 ? videoMobileRef.current : videoRef.current
+    if (target) {
+      target.preload = 'auto'
+      target.load()
+    }
+  }, [])
+
+  // Iniciar video cuando termina el loader — solo el del viewport activo.
+  // El logo solo se desvanece cuando el video REALMENTE reproduce (en iOS
+  // play() puede fallar — p. ej. bajo consumo — y el logo queda de fallback)
   useEffect(() => {
     if (allResourcesLoaded && !videoStarted) {
-      setVideoStarted(true)
-      setTimeout(() => {
-        const target = window.innerWidth < 768 ? videoMobileRef.current : videoRef.current
-        target?.play().catch(err => console.log('Error playing hero video:', err))
+      const target = window.innerWidth < 768 ? videoMobileRef.current : videoRef.current
+      if (!target) return
+      const timeout = setTimeout(() => {
+        target
+          .play()
+          .then(() => setVideoStarted(true))
+          .catch(err => console.log('Error playing hero video:', err))
       }, 100)
+      return () => clearTimeout(timeout)
     }
   }, [allResourcesLoaded, videoStarted])
 
