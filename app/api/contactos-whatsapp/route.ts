@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
+// Leer siempre de la DB en cada request (sin caché estático),
+// para que los cambios de contactos/horario se reflejen de inmediato.
+export const dynamic = "force-dynamic"
+
 // GET - Obtener contactos activos y configuración (API PÚBLICA)
 export async function GET() {
   try {
