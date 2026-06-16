@@ -125,6 +125,14 @@ const nextConfig = {
       // catch-all para el resto del taxonomy "industry" (cubiertas-y-fachadas,
       // estructuras-modulares y cualquier otro) — no tienen equivalente directo
       { source: '/industry/:slug*', destination: '/proyectos', permanent: true },
+      // Proyectos del WP viejo (/project/*). Eran páginas indexadas; sin esta
+      // regla daban 404. Los 2 slugs que coinciden exacto van a su detalle;
+      // el resto (slugs viejos sin equivalente directo) al hub /proyectos.
+      { source: '/project/industria-ampliacion-cargill', destination: '/proyectos/detalle/industria-ampliacion-cargill', permanent: true },
+      { source: '/project/centro-comercial-campanario', destination: '/proyectos/detalle/centro-comercial-campanario', permanent: true },
+      { source: '/project/:slug*', destination: '/proyectos', permanent: true },
+      // Páginas/feeds de autor del WP viejo — basura, al home
+      { source: '/author/:path*', destination: '/', permanent: true },
     ]
   },
 }
