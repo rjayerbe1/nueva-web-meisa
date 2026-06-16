@@ -85,7 +85,7 @@ export const metadata: Metadata = {
     description:
       'Líderes en diseño, fabricación y montaje de estructuras metálicas. Puentes, edificios, centros comerciales y más.',
     images: ['https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg'],
-    creator: '@meisa_colombia',
+    creator: '@meisa_sas',
   },
   alternates: {
     canonical: 'https://meisa.com.co',

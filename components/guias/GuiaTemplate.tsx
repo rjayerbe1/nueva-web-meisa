@@ -9,6 +9,7 @@ import { ArrowRight, MapPin, Plus } from 'lucide-react'
 import type { CategoriaEnum } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
+import { OtrasGuias } from '@/components/guias/OtrasGuias'
 
 export const SITE_URL = 'https://meisa.com.co'
 export const FALLBACK_HERO =
@@ -511,6 +512,9 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
           </div>
         </div>
       </section>
+
+      {/* Otras guías técnicas — cross-links del clúster */}
+      <OtrasGuias currentPath={config.path} />
 
       {/* CTA final — Patrón E dark */}
       <section className="relative bg-slate-950 text-white py-20 md:py-28">

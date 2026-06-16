@@ -122,14 +122,20 @@ const nextConfig = {
       { source: '/industry/puentes-vehiculares', destination: '/proyectos/categoria/puentes', permanent: true },
       { source: '/industry/puentes-peatonales', destination: '/proyectos/categoria/puentes', permanent: true },
       { source: '/industry/escenarios-deportivos', destination: '/proyectos/categoria/institucional', permanent: true },
-      // catch-all para el resto del taxonomy "industry" (cubiertas-y-fachadas,
-      // estructuras-modulares y cualquier otro) — no tienen equivalente directo
+      // cubiertas-y-fachadas rankeaba pos 2 (214 impr) en el WP viejo: consolidar
+      // esa autoridad en la landing optimizada, no en el listado genérico.
+      { source: '/industry/cubiertas-y-fachadas', destination: '/soluciones/cubiertas-metalicas', permanent: true },
+      // catch-all para el resto del taxonomy "industry" (estructuras-modulares
+      // y cualquier otro) — no tienen equivalente directo
       { source: '/industry/:slug*', destination: '/proyectos', permanent: true },
       // Proyectos del WP viejo (/project/*). Eran páginas indexadas; sin esta
       // regla daban 404. Los 2 slugs que coinciden exacto van a su detalle;
       // el resto (slugs viejos sin equivalente directo) al hub /proyectos.
       { source: '/project/industria-ampliacion-cargill', destination: '/proyectos/detalle/industria-ampliacion-cargill', permanent: true },
       { source: '/project/centro-comercial-campanario', destination: '/proyectos/detalle/centro-comercial-campanario', permanent: true },
+      // rankeaba para "complejo deportivo popayan" (la única query comercial con
+      // volumen real de MEISA): mandarlo al detalle del proyecto, no al hub.
+      { source: '/project/escenarios-deportivos-complejo-acuatico-popayan', destination: '/proyectos/detalle/complejo-acuatico-popayan', permanent: true },
       { source: '/project/:slug*', destination: '/proyectos', permanent: true },
       // Páginas/feeds de autor del WP viejo — basura, al home
       { source: '/author/:path*', destination: '/', permanent: true },

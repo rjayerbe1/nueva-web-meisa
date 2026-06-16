@@ -18,6 +18,13 @@ const SITE_URL = 'https://meisa.com.co'
 const FALLBACK_HERO =
   'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg'
 
+// Cross-link a las landings locales (interlinking soluciones → ciudades).
+const CIUDADES_COBERTURA = [
+  { slug: 'cali', nombre: 'Cali y el Valle' },
+  { slug: 'bogota', nombre: 'Bogotá' },
+  { slug: 'popayan', nombre: 'Popayán y el Cauca' },
+]
+
 export async function generateStaticParams() {
   const slugs = await getSolucionSlugsDb()
   return slugs.map((slug) => ({ slug }))
@@ -138,7 +145,6 @@ export default async function SolucionPage({
       <BreadcrumbSchema
         items={[
           { name: 'Inicio', url: SITE_URL },
-          { name: 'Soluciones', url: `${SITE_URL}/soluciones/${solucion.slug}` },
           {
             name: solucion.keywordH1,
             url: `${SITE_URL}/soluciones/${solucion.slug}`,
@@ -498,6 +504,39 @@ export default async function SolucionPage({
               </span>
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 8.5 Cobertura por ciudad — interlinking a las landings locales */}
+      <section className="pb-20 md:pb-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="mb-10 md:mb-12 max-w-4xl">
+            <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+              Cobertura nacional
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-slate-950">
+              Dónde construimos
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
+            {CIUDADES_COBERTURA.map((ciudad) => (
+              <Link
+                key={ciudad.slug}
+                href={`/estructuras-metalicas/${ciudad.slug}`}
+                className="group bg-white p-8 md:p-10 flex items-center justify-between gap-4"
+              >
+                <div>
+                  <p className="text-slate-400 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-2">
+                    Estructuras metálicas en
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-bebas uppercase leading-[0.95] text-slate-950">
+                    {ciudad.nombre}
+                  </h3>
+                </div>
+                <ArrowRight className="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-slate-950" />
+              </Link>
+            ))}
           </div>
         </div>
       </section>

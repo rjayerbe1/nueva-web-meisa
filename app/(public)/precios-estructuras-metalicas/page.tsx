@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 import { getGuiaDb, getSolucionesDb } from '@/lib/content/landings'
 import { getGuiaFallback, type GuiaPreciosContenido } from '@/lib/guias'
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
+import { OtrasGuias } from '@/components/guias/OtrasGuias'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -378,6 +379,9 @@ export default async function PreciosEstructurasMetalicasPage() {
           </div>
         </div>
       </section>
+
+      {/* Otras guías técnicas — cross-links del clúster */}
+      <OtrasGuias currentPath={`/${SLUG}`} />
 
       {/* CTA final — Patrón E dark */}
       <section className="relative bg-slate-950 text-white py-20 md:py-28">
