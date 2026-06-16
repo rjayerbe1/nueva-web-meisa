@@ -1,45 +1,25 @@
 # robots.txt para MEISA - Metálicas e Ingeniería S.A.
 # https://meisa.com.co
+#
+# Un solo grupo User-agent: * aplica a todos los crawlers (Googlebot, Bingbot,
+# etc.). Importante: un grupo por-bot NO hereda del grupo *, lo reemplaza por
+# completo — por eso evitamos grupos separados que causaban que Googlebot
+# pudiera rastrear /_next/ y /private/.
 
 User-agent: *
 Allow: /
 
-# Bloquear rutas privadas
+# Rutas privadas
 Disallow: /admin/
 Disallow: /api/
 Disallow: /_next/
 Disallow: /private/
 
-# Bloquear archivos de configuración
-Disallow: /*.json$
-Disallow: /*.xml$
+# Nota: NO bloquear /*.xml$ — el sitemap es XML y un Disallow genérico lo
+# rompía (y solo se salvaba por un Allow de mayor especificidad, frágil).
 
-# Permitir sitemap
-Allow: /sitemap.xml
-
-# Sitemap location
-Sitemap: https://meisa.com.co/sitemap.xml
-
-# Crawl delay para ser amigable con el servidor
+# Crawl-delay: lo respeta Bing; Google lo ignora (se controla en Search Console)
 Crawl-delay: 1
 
-# Google específico
-User-agent: Googlebot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-# Bing específico
-User-agent: Bingbot
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-
-# Google Images
-User-agent: Googlebot-Image
-Allow: /
-Allow: /*.jpg$
-Allow: /*.jpeg$
-Allow: /*.png$
-Allow: /*.webp$
-Allow: /*.gif$
+# Sitemap
+Sitemap: https://meisa.com.co/sitemap.xml
