@@ -228,7 +228,7 @@ export function Navbar({ items }: NavbarProps = {}) {
                       </svg>
                     </a>
                     <a
-                      href="https://www.linkedin.com/in/meisasas"
+                      href="https://www.linkedin.com/company/meisa-sas"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="LinkedIn"
