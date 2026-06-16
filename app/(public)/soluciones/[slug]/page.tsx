@@ -44,7 +44,7 @@ export async function generateMetadata({
     where: { key: solucion.categoriaEnum },
     select: { imagenCover: true },
   })
-  const image = categoria?.imagenCover || FALLBACK_HERO
+  const image = solucion.heroImagen || categoria?.imagenCover || FALLBACK_HERO
 
   return {
     title: { absolute: solucion.metaTitle },
@@ -112,7 +112,7 @@ export default async function SolucionPage({
     }),
   ])
 
-  const heroImagen = categoria?.imagenCover || FALLBACK_HERO
+  const heroImagen = solucion.heroImagen || categoria?.imagenCover || FALLBACK_HERO
   const categoriaSlug = categoria?.slug || solucion.categoriaSlug
   const totalProyectos = agregados._count._all
   const totalToneladas = agregados._sum.toneladas

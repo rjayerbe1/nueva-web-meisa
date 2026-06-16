@@ -18,6 +18,16 @@ const categoriaEnum = z.enum(CATEGORIA_ENUM_VALUES)
 
 const faqItem = z.object({ pregunta: z.string(), respuesta: z.string() })
 const nombreDescripcion = z.object({ nombre: z.string(), descripcion: z.string() })
+// Ítem de sección de guía con apoyo visual opcional.
+//   - ilustracion: imagen subida, centrada y de altura contenida (tipos)
+//   - imagen / categoria: foto a sangre del tile (usos)
+const guiaSeccionItem = z.object({
+  nombre: z.string(),
+  descripcion: z.string(),
+  ilustracion: z.string().optional(),
+  imagen: z.string().optional(),
+  categoria: z.string().optional(),
+})
 const tituloDescripcion = z.object({ titulo: z.string(), descripcion: z.string() })
 const statValorLabel = z.object({ valor: z.string(), label: z.string() })
 const statConSufijo = z.object({
@@ -40,6 +50,8 @@ export const solucionContenidoSchema = z
     heroEyebrow: z.string(),
     heroTitulo1: z.string().min(1),
     heroTitulo2: z.string(),
+    // Si está vacío, la página usa imagenCover de la categoría como fallback.
+    heroImagen: z.string().optional(),
     intro: z.string().min(1),
     secciones: z.array(
       z.object({
@@ -66,6 +78,8 @@ export const ciudadContenidoSchema = z
     nombre: z.string().min(1),
     h1: z.string().min(1),
     heroCategoriaKey: categoriaEnum,
+    // Si está vacío, la página usa imagenCover de heroCategoriaKey como fallback.
+    heroImagen: z.string().optional(),
     heroEyebrow: z.string(),
     heroTitulo1: z.string(),
     heroTitulo2: z.string(),
@@ -114,12 +128,14 @@ export const guiaTemplateContenidoSchema = z
     introTitulo2: z.string(),
     intro: z.string(),
     categoriaHero: categoriaEnum,
+    // Si está vacío, la página usa imagenCover de categoriaHero como fallback.
+    heroImagen: z.string().optional(),
     stats: z.array(statConSufijo),
     secciones: z.array(
       z.object({
         titulo: z.string(),
         parrafos: z.array(z.string()),
-        items: z.array(nombreDescripcion).optional(),
+        items: z.array(guiaSeccionItem).optional(),
       }),
     ),
     proceso: z.array(tituloDescripcion).optional(),
@@ -145,6 +161,8 @@ export const guiaPreciosContenidoSchema = z
     heroTitulo1: z.string(),
     heroTitulo2: z.string(),
     heroSub: z.string(),
+    // Si está vacío, la página usa imagenCover de INDUSTRIAL como fallback.
+    heroImagen: z.string().optional(),
     breadcrumbName: z.string(),
     cotizacionEyebrow: z.string(),
     cotizacionTitulo1: z.string(),

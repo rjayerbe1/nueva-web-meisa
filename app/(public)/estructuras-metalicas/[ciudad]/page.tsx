@@ -33,6 +33,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ciudad = await getCiudadDb(params.ciudad)
   if (!ciudad) return {}
 
+  const ogImage = ciudad.heroImagen || FALLBACK_HERO
+
   return {
     title: { absolute: ciudad.metaTitle },
     description: ciudad.metaDescription,
@@ -42,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: ciudad.metaDescription,
       images: [
         {
-          url: FALLBACK_HERO,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: `${ciudad.h1} — MEISA`,
@@ -54,7 +56,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title: ciudad.metaTitle,
       description: ciudad.metaDescription,
-      images: [FALLBACK_HERO],
+      images: [ogImage],
     },
   }
 }
@@ -187,7 +189,7 @@ export default async function EstructurasMetalicasCiudadPage({
     })),
   }
 
-  let heroImagen = FALLBACK_HERO
+  let heroImagen = ciudad.heroImagen || FALLBACK_HERO
   let totalProyectos = 0
   let totalToneladas = 0
   let topCards: ProyectoCard[] = []
@@ -232,7 +234,7 @@ export default async function EstructurasMetalicasCiudadPage({
         },
       }),
     ])
-    if (categoria?.imagenCover) heroImagen = categoria.imagenCover
+    if (!ciudad.heroImagen && categoria?.imagenCover) heroImagen = categoria.imagenCover
     totalProyectos = agregados._count._all
     totalToneladas = agregados._sum.toneladas
       ? Number(agregados._sum.toneladas)

@@ -12,7 +12,7 @@
 // Proyecto.ubicacion).
 //
 // Rangos de costos en las FAQ: mismos rangos orientativos que lib/soluciones.ts
-// (liviana $9.000–$13.000 · media $11.000–$16.000 · especial $14.000–$22.000
+// (liviana $10.900–$13.000 · media $13.000–$17.000 · especial $17.000–$25.000
 // COP por kg instalado).
 
 import type { CategoriaEnum } from '@prisma/client'
@@ -49,8 +49,10 @@ export interface CiudadConfig {
   metaTitle: string
   /** <= 160 caracteres */
   metaDescription: string
-  /** Key de CategoriaProyecto cuya imagenCover sirve de hero */
+  /** Key de CategoriaProyecto cuya imagenCover sirve de hero (fallback) */
   heroCategoriaKey: CategoriaEnum
+  /** Imagen de portada del hero. Si no se define, se usa imagenCover de heroCategoriaKey. */
+  heroImagen?: string
   heroEyebrow: string
   heroTitulo1: string
   heroTitulo2: string
@@ -179,7 +181,7 @@ export const CIUDADES: CiudadConfig[] = [
       {
         pregunta: '¿Cuánto cuesta una estructura metálica en Cali?',
         respuesta:
-          'Como rango orientativo de mercado: estructura liviana de bodegas y cubiertas entre $9.000 y $13.000 COP por kilogramo instalado, estructura media de edificios y entrepisos entre $11.000 y $16.000, y estructuras especiales o de grandes luces entre $14.000 y $22.000. Para obras en Cali y el área metropolitana la logística desde nuestra planta de Jamundí es mínima, lo que favorece el costo final. La cotización real se elabora sobre planos o anteproyecto.',
+          'Como rango orientativo de mercado: estructura liviana de bodegas y cubiertas entre $10.900 y $13.000 COP por kilogramo instalado, estructura media de edificios y entrepisos entre $13.000 y $17.000, y estructuras especiales o de grandes luces entre $17.000 y $25.000. Para obras en Cali y el área metropolitana la logística desde nuestra planta de Jamundí es mínima, lo que favorece el costo final. La cotización real se elabora sobre planos o anteproyecto.',
       },
       {
         pregunta:
@@ -333,7 +335,7 @@ export const CIUDADES: CiudadConfig[] = [
       {
         pregunta: '¿Cuánto cuesta una estructura metálica en Bogotá?',
         respuesta:
-          'Como rango orientativo de mercado: estructura liviana de bodegas y cubiertas entre $9.000 y $13.000 COP por kilogramo instalado, estructura media de edificios y entrepisos entre $11.000 y $16.000, y estructuras especiales o de grandes luces — como puentes — entre $14.000 y $22.000. En Bogotá el flete pesa más que en una obra del suroccidente, pero se compensa con los costos competitivos de fabricación de nuestras plantas. La cotización real se elabora sobre planos o anteproyecto.',
+          'Como rango orientativo de mercado: estructura liviana de bodegas y cubiertas entre $10.900 y $13.000 COP por kilogramo instalado, estructura media de edificios y entrepisos entre $13.000 y $17.000, y estructuras especiales o de grandes luces — como puentes — entre $17.000 y $25.000. En Bogotá el flete pesa más que en una obra del suroccidente, pero se compensa con los costos competitivos de fabricación de nuestras plantas. La cotización real se elabora sobre planos o anteproyecto.',
       },
       {
         pregunta: '¿Hacen visita técnica en Bogotá?',
@@ -474,7 +476,7 @@ export const CIUDADES: CiudadConfig[] = [
       {
         pregunta: '¿Cuánto cuesta una estructura metálica en Popayán?',
         respuesta:
-          'Como rango orientativo de mercado: estructura liviana de bodegas y cubiertas entre $9.000 y $13.000 COP por kilogramo instalado, estructura media de edificios y entrepisos entre $11.000 y $16.000, y estructuras especiales o de grandes luces entre $14.000 y $22.000. Para obras en Popayán la fabricación es local, así que el flete prácticamente desaparece del costo — una ventaja directa frente a estructuras fabricadas en otras ciudades. La cotización real se elabora sobre planos o anteproyecto.',
+          'Como rango orientativo de mercado: estructura liviana de bodegas y cubiertas entre $10.900 y $13.000 COP por kilogramo instalado, estructura media de edificios y entrepisos entre $13.000 y $17.000, y estructuras especiales o de grandes luces entre $17.000 y $25.000. Para obras en Popayán la fabricación es local, así que el flete prácticamente desaparece del costo — una ventaja directa frente a estructuras fabricadas en otras ciudades. La cotización real se elabora sobre planos o anteproyecto.',
       },
       {
         pregunta:

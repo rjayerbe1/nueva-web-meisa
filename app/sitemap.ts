@@ -88,6 +88,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/granallado-y-pintura-estructuras-metalicas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     // Landings locales por ciudad (cali, bogota, popayan)
     ...getCiudadSlugs().map((slug) => ({
       url: `${BASE_URL}/estructuras-metalicas/${slug}`,

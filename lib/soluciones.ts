@@ -45,6 +45,8 @@ export interface Solucion {
   heroEyebrow: string
   heroTitulo1: string
   heroTitulo2: string
+  /** Imagen de portada del hero. Si no se define, se usa imagenCover de la categoría. */
+  heroImagen?: string
   /** Lead paragraph de la intro (Patrón A). */
   intro: string
   secciones: SolucionSeccion[]
@@ -160,7 +162,7 @@ export const SOLUCIONES: Solucion[] = [
       {
         pregunta: '¿Cuánto cuesta una bodega en estructura metálica en Colombia?',
         respuesta:
-          'El precio de una estructura metálica se cotiza por kilogramo de acero fabricado y montado, no por metro cuadrado. Como referencia orientativa del mercado colombiano en 2026, una estructura liviana de bodega se ubica entre $9.000 y $13.000 COP por kg instalado (incluye fabricación, pintura y montaje; excluye cimentación, cubierta y acabados). Una bodega típica consume entre 25 y 45 kg de acero por m², según la luz libre y las cargas. El valor final depende de la luz, la altura, el acabado y el sitio de la obra: toda cotización formal se hace sobre planos o anteproyecto.',
+          'El precio de una estructura metálica se cotiza por kilogramo de acero fabricado y montado, no por metro cuadrado. Como referencia orientativa del mercado colombiano en 2026, una estructura liviana de bodega se ubica entre $10.900 y $13.000 COP por kg instalado (incluye fabricación, pintura y montaje; excluye cimentación, cubierta y acabados). Una bodega típica consume entre 25 y 45 kg de acero por m², según la luz libre y las cargas. El valor final depende de la luz, la altura, el acabado y el sitio de la obra: toda cotización formal se hace sobre planos o anteproyecto.',
       },
       {
         pregunta: '¿Cuánto se demora construir una bodega en estructura metálica?',
@@ -281,7 +283,7 @@ export const SOLUCIONES: Solucion[] = [
       {
         pregunta: '¿Cuánto cuesta un puente metálico por kilogramo en Colombia?',
         respuesta:
-          'Los puentes se cotizan por kilogramo de acero fabricado y montado. Como rango orientativo del mercado colombiano en 2026, la estructura especial de puentes se ubica entre $14.000 y $22.000 COP por kg instalado, incluyendo fabricación, protección anticorrosiva y montaje. El valor depende de la tipología (viga, cajón, celosía, arco), la luz, los ensayos no destructivos exigidos, la logística de transporte y el método de montaje. Cada puente se cotiza sobre planos o prediseño.',
+          'Los puentes se cotizan por kilogramo de acero fabricado y montado. Como rango orientativo del mercado colombiano en 2026, la estructura especial de puentes se ubica entre $17.000 y $25.000 COP por kg instalado, incluyendo fabricación, protección anticorrosiva y montaje. El valor depende de la tipología (viga, cajón, celosía, arco), la luz, los ensayos no destructivos exigidos, la logística de transporte y el método de montaje. Cada puente se cotiza sobre planos o prediseño.',
       },
       {
         pregunta: '¿Cuánto tarda fabricar y montar un puente metálico?',
@@ -415,7 +417,7 @@ export const SOLUCIONES: Solucion[] = [
       {
         pregunta: '¿Cuánto cuesta una cubierta metálica por metro cuadrado o por kilo?',
         respuesta:
-          'El costo depende de la luz libre, el tipo estructural (cercha, arco o autoportante), el sistema de teja, la altura de montaje y la ubicación de la obra. Como rango orientativo de mercado, la estructura metálica instalada se mueve entre $9.000 y $13.000 COP/kg en cubiertas livianas convencionales, $11.000 a $16.000 COP/kg en estructuras de complejidad media, y $14.000 a $22.000 COP/kg en geometrías especiales o grandes luces. Una cubierta típica pesa entre 25 y 60 kg/m², sin incluir la teja. La cotización real se elabora sobre planos o anteproyecto.',
+          'El costo depende de la luz libre, el tipo estructural (cercha, arco o autoportante), el sistema de teja, la altura de montaje y la ubicación de la obra. Como rango orientativo de mercado, la estructura metálica instalada se mueve entre $10.900 y $13.000 COP/kg en cubiertas livianas convencionales, $13.000 a $17.000 COP/kg en estructuras de complejidad media, y $17.000 a $25.000 COP/kg en geometrías especiales o grandes luces. Una cubierta típica pesa entre 25 y 60 kg/m², sin incluir la teja. La cotización real se elabora sobre planos o anteproyecto.',
       },
       {
         pregunta: '¿Qué luz máxima puede cubrir una estructura metálica sin apoyos intermedios?',
@@ -556,7 +558,7 @@ export const SOLUCIONES: Solucion[] = [
       {
         pregunta: '¿Cuánto cuesta la estructura metálica de un centro comercial?',
         respuesta:
-          'Depende de las luces, el número de niveles, la complejidad de cubiertas y pasarelas, los acabados arquitectónicos y la logística (el montaje nocturno en un centro operando cuesta más que en lote libre). Como rango orientativo de mercado: estructura liviana de cubiertas entre $9.000 y $13.000 COP/kg instalado, estructura principal de entrepisos y luces medias entre $11.000 y $16.000, y elementos especiales de gran luz entre $14.000 y $22.000. La cotización real se hace sobre planos estructurales del proyecto.',
+          'Depende de las luces, el número de niveles, la complejidad de cubiertas y pasarelas, los acabados arquitectónicos y la logística (el montaje nocturno en un centro operando cuesta más que en lote libre). Como rango orientativo de mercado: estructura liviana de cubiertas entre $10.900 y $13.000 COP/kg instalado, estructura principal de entrepisos y luces medias entre $13.000 y $17.000, y elementos especiales de gran luz entre $17.000 y $25.000. La cotización real se hace sobre planos estructurales del proyecto.',
       },
       {
         pregunta: '¿Pueden ampliar el centro comercial sin cerrar la operación?',
@@ -691,7 +693,7 @@ export const SOLUCIONES: Solucion[] = [
       {
         pregunta: '¿Cuánto cuesta la cubierta metálica de un escenario deportivo por metro cuadrado?',
         respuesta:
-          'Depende de la luz libre, el tipo de estructura (cercha, arco o pórtico), si incluye graderías y cerramientos, y las condiciones del sitio. Como rango orientativo de mercado, la estructura de una cubierta deportiva se ubica entre $11.000 y $16.000 COP por kilogramo instalado; con incidencias típicas de 30 a 50 kg de acero por m² según la luz, eso equivale a un orden de magnitud de $330.000 a $800.000 COP/m² solo en estructura, sin teja ni canales. La cotización real se elabora sobre planos o anteproyecto.',
+          'Depende de la luz libre, el tipo de estructura (cercha, arco o pórtico), si incluye graderías y cerramientos, y las condiciones del sitio. Como rango orientativo de mercado, la estructura de una cubierta deportiva se ubica entre $13.000 y $17.000 COP por kilogramo instalado; con incidencias típicas de 30 a 50 kg de acero por m² según la luz, eso equivale a un orden de magnitud de $330.000 a $800.000 COP/m² solo en estructura, sin teja ni canales. La cotización real se elabora sobre planos o anteproyecto.',
       },
       {
         pregunta: '¿Qué luz libre necesita una cancha y cómo se logra sin columnas?',
@@ -830,7 +832,7 @@ export const SOLUCIONES: Solucion[] = [
       {
         pregunta: '¿Cuánto cuesta un edificio en estructura metálica comparado con uno en concreto?',
         respuesta:
-          'El costo depende del número de pisos, las luces, las cargas de uso, el sistema sísmico, el tipo de conexiones y el acabado de protección. Como rango orientativo de mercado, la estructura metálica de un edificio típico está entre $11.000 y $16.000 COP por kilogramo instalado; estructuras livianas pueden bajar a $9.000–$13.000 y las especiales subir a $14.000–$22.000. El costo directo puede ser similar o algo superior al concreto, pero se compensa con cimentaciones menores y meses de obra ahorrados. La cotización real se hace sobre planos.',
+          'El costo depende del número de pisos, las luces, las cargas de uso, el sistema sísmico, el tipo de conexiones y el acabado de protección. Como rango orientativo de mercado, la estructura metálica de un edificio típico está entre $13.000 y $17.000 COP por kilogramo instalado; estructuras livianas pueden bajar a $10.900–$13.000 y las especiales subir a $17.000–$25.000. El costo directo puede ser similar o algo superior al concreto, pero se compensa con cimentaciones menores y meses de obra ahorrados. La cotización real se hace sobre planos.',
       },
       {
         pregunta: '¿Cuántos pisos puede tener un edificio en estructura metálica?',

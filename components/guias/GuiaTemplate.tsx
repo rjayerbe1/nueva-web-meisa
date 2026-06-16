@@ -18,6 +18,12 @@ export const FALLBACK_HERO =
 export interface GuiaSeccionItem {
   nombre: string
   descripcion: string
+  /** Imagen subida que se muestra centrada y de altura contenida (tipos). Tiene prioridad. */
+  ilustracion?: string
+  /** URL de imagen a sangre para el tile. */
+  imagen?: string
+  /** Categoría cuya imagenCover se usa como imagen a sangre del tile (si no hay `imagen`). */
+  categoria?: string
 }
 
 export interface GuiaSeccion {
@@ -63,8 +69,10 @@ export interface GuiaConfig {
   introTitulo1: string
   introTitulo2: string
   intro: string
-  /** Categoría cuya imagenCover se usa como hero. */
+  /** Categoría cuya imagenCover se usa como hero (fallback). */
   categoriaHero: CategoriaEnum
+  /** Imagen de portada del hero. Si no se define, se usa imagenCover de categoriaHero. */
+  heroImagen?: string
   stats: GuiaStat[]
   secciones: GuiaSeccion[]
   proceso?: GuiaPasoProceso[]
@@ -84,7 +92,9 @@ export interface GuiaConfig {
 }
 
 export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
-  let heroImagen = FALLBACK_HERO
+  let heroImagen = config.heroImagen || FALLBACK_HERO
+  // Cover por categoría, para los tiles "por uso" que declaran `categoria`.
+  const coverPorCategoria = new Map<string, string>()
   let proyectos: Array<{
     id: string
     titulo: string
@@ -95,7 +105,7 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
   }> = []
 
   try {
-    const [categoria, proyectosDb] = await Promise.all([
+    const [categoria, proyectosDb, categoriasCovers] = await Promise.all([
       prisma.categoriaProyecto.findUnique({
         where: { key: config.categoriaHero },
         select: { imagenCover: true },
@@ -115,8 +125,14 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
           },
         },
       }),
+      prisma.categoriaProyecto.findMany({
+        select: { key: true, imagenCover: true },
+      }),
     ])
-    if (categoria?.imagenCover) heroImagen = categoria.imagenCover
+    if (!config.heroImagen && categoria?.imagenCover) heroImagen = categoria.imagenCover
+    for (const c of categoriasCovers) {
+      if (c.imagenCover) coverPorCategoria.set(c.key, c.imagenCover)
+    }
     // Preservar el orden curado del config
     proyectos = config.proyectosSlugs
       .map((slug) => proyectosDb.find((p) => p.slug === slug))
@@ -248,21 +264,77 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
-                    {seccion.items.map((item, i) => (
-                      <div key={item.nombre} className="bg-white p-8 md:p-10">
-                        <div className="flex items-baseline gap-4 mb-4">
-                          <span className="text-slate-300 font-bebas text-4xl md:text-5xl leading-none">
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
-                          <h3 className="text-xl md:text-2xl font-bebas uppercase leading-[0.95] text-slate-950">
-                            {item.nombre}
-                          </h3>
+                    {seccion.items.map((item, i) => {
+                      const numero = String(i + 1).padStart(2, '0')
+                      const ilustracion = item.ilustracion
+                      const fotoSangre =
+                        !ilustracion &&
+                        (item.imagen ||
+                          (item.categoria
+                            ? coverPorCategoria.get(item.categoria)
+                            : undefined))
+
+                      // Foto a sangre (tipos "por uso" → cover de categoría)
+                      if (fotoSangre) {
+                        return (
+                          <div
+                            key={item.nombre}
+                            className="group bg-white flex flex-col"
+                          >
+                            <div className="relative aspect-[16/10] overflow-hidden">
+                              <Image
+                                src={fotoSangre}
+                                alt={item.nombre}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                              />
+                            </div>
+                            <div className="p-8 md:p-10">
+                              <div className="flex items-baseline gap-4 mb-4">
+                                <span className="text-slate-300 font-bebas text-4xl md:text-5xl leading-none">
+                                  {numero}
+                                </span>
+                                <h3 className="text-xl md:text-2xl font-bebas uppercase leading-[0.95] text-slate-950">
+                                  {item.nombre}
+                                </h3>
+                              </div>
+                              <p className="text-slate-700 font-lato text-sm md:text-base leading-relaxed">
+                                {item.descripcion}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      // Ilustración centrada (sistemas, perfiles, conexiones) o solo texto
+                      return (
+                        <div key={item.nombre} className="bg-white p-8 md:p-10">
+                          {ilustracion && (
+                            <div className="relative mb-6 h-28 md:h-32">
+                              <Image
+                                src={ilustracion}
+                                alt={item.nombre}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-contain object-center"
+                              />
+                            </div>
+                          )}
+                          <div className="flex items-baseline gap-4 mb-4">
+                            <span className="text-slate-300 font-bebas text-4xl md:text-5xl leading-none">
+                              {numero}
+                            </span>
+                            <h3 className="text-xl md:text-2xl font-bebas uppercase leading-[0.95] text-slate-950">
+                              {item.nombre}
+                            </h3>
+                          </div>
+                          <p className="text-slate-700 font-lato text-sm md:text-base leading-relaxed">
+                            {item.descripcion}
+                          </p>
                         </div>
-                        <p className="text-slate-700 font-lato text-sm md:text-base leading-relaxed">
-                          {item.descripcion}
-                        </p>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </>
               ) : (
@@ -465,7 +537,7 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
                   <Plus className="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-300 group-open:rotate-45" />
                 </summary>
                 <p
-                  className="pb-6 pr-10 text-slate-700 font-lato text-sm md:text-base leading-relaxed max-w-3xl text-pretty hyphens-auto"
+                  className="pb-6 md:pr-12 text-slate-700 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto"
                   lang="es"
                 >
                   {item.respuesta}

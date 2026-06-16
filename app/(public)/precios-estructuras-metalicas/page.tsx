@@ -29,7 +29,8 @@ async function getGuiaPrecios() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { metaTitle, metaDescription } = await getGuiaPrecios()
+  const { metaTitle, metaDescription, contenido } = await getGuiaPrecios()
+  const ogImage = contenido.heroImagen || FALLBACK_HERO
   return {
     title: { absolute: metaTitle },
     description: metaDescription,
@@ -39,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: metaDescription,
       images: [
         {
-          url: FALLBACK_HERO,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: 'Precios de estructuras metálicas en Colombia — MEISA',
@@ -51,7 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: metaTitle,
       description: metaDescription,
-      images: [FALLBACK_HERO],
+      images: [ogImage],
     },
   }
 }
@@ -76,13 +77,13 @@ export default async function PreciosEstructurasMetalicasPage() {
     getSolucionesDb(),
   ])
 
-  let heroImagen = FALLBACK_HERO
+  let heroImagen = contenido.heroImagen || FALLBACK_HERO
   try {
     const categoria = await prisma.categoriaProyecto.findUnique({
       where: { key: 'INDUSTRIAL' },
       select: { imagenCover: true },
     })
-    if (categoria?.imagenCover) heroImagen = categoria.imagenCover
+    if (!contenido.heroImagen && categoria?.imagenCover) heroImagen = categoria.imagenCover
   } catch {
     // fallback estático
   }
@@ -332,7 +333,7 @@ export default async function PreciosEstructurasMetalicasPage() {
                   <Plus className="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-300 group-open:rotate-45" />
                 </summary>
                 <p
-                  className="pb-6 pr-10 text-slate-700 font-lato text-sm md:text-base leading-relaxed max-w-3xl text-pretty hyphens-auto"
+                  className="pb-6 md:pr-12 text-slate-700 font-lato text-sm md:text-base leading-relaxed text-pretty hyphens-auto"
                   lang="es"
                 >
                   {item.respuesta}

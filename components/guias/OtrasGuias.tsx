@@ -25,6 +25,11 @@ export const GUIAS_NAV = [
     titulo: 'Peso por m² de una estructura metálica',
     descripcion: 'Rangos orientativos de kg/m² según el tipo de obra.',
   },
+  {
+    path: '/granallado-y-pintura-estructuras-metalicas',
+    titulo: 'Granallado y pintura',
+    descripcion: 'Preparación de superficie, sistemas de pintura y control de calidad.',
+  },
 ]
 
 export function OtrasGuias({ currentPath }: { currentPath: string }) {

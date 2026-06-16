@@ -16,7 +16,7 @@ export interface RangoPrecio {
   tipo: string
   /** Descripción / ejemplos (col 2). */
   ejemplos: string
-  /** Rango COP/kg instalado (col 3), ej. "$9.000 – $13.000". */
+  /** Rango COP/kg instalado (col 3), ej. "$10.900 – $13.000". */
   rango: string
 }
 
@@ -36,6 +36,8 @@ export interface GuiaPreciosContenido {
   heroTitulo1: string
   heroTitulo2: string
   heroSub: string
+  /** Imagen de portada del hero. Si no se define, se usa imagenCover de INDUSTRIAL. */
+  heroImagen?: string
   breadcrumbName: string
   cotizacionEyebrow: string
   cotizacionTitulo1: string
@@ -114,23 +116,23 @@ const GUIA_PRECIOS: GuiaLanding = {
       'Rangos orientativos del mercado colombiano — cada proyecto se cotiza sobre planos',
     rangos: [
       {
-        tipo: 'Estructura liviana de bodega',
+        tipo: 'Estructura estándar (repetitiva)',
         ejemplos: 'Bodegas, naves industriales, cubiertas de luces medias',
-        rango: '$9.000 – $13.000',
+        rango: '$10.900 – $13.000',
       },
       {
-        tipo: 'Estructura media',
+        tipo: 'Estructura de edificación / entrepiso',
         ejemplos: 'Edificios, entrepisos, mezzanines, plataformas industriales',
-        rango: '$11.000 – $16.000',
+        rango: '$13.000 – $17.000',
       },
       {
-        tipo: 'Estructura especial',
-        ejemplos: 'Puentes, grandes luces, arcos, geometrías complejas',
-        rango: '$14.000 – $22.000',
+        tipo: 'Estructura especial / alta complejidad',
+        ejemplos: 'Puentes, grandes luces, cerchas, arcos, geometrías singulares',
+        rango: '$17.000 – $25.000',
       },
     ],
     rangosNota:
-      'los rangos incluyen fabricación, pintura y montaje. Excluyen cimentación, cubierta y acabados. Precios de referencia 2026 en pesos colombianos; varían según los factores de la siguiente sección.',
+      'el $/kg sube con la complejidad de fabricación y montaje, no con el peso. Una estructura liviana pero muy detallada (cerchas de gran luz, perfilería plegada) puede costar más por kilo que un pórtico pesado y repetitivo: lo liviano ahorra en kilos totales, no necesariamente en el precio por kilo. Los rangos incluyen fabricación, pintura y montaje; excluyen cimentación, cubierta y acabados. Precios de referencia 2026 en pesos colombianos.',
     factoresEyebrow: '03 — Las variables',
     factoresTitulo1: 'Qué hace variar',
     factoresTitulo2: 'el precio',
@@ -170,7 +172,7 @@ const GUIA_PRECIOS: GuiaLanding = {
     conversionTitulo1: 'Conversión',
     conversionTitulo2: 'aproximada',
     conversionParrafos: [
-      'Si solo necesita un orden de magnitud temprano, puede convertir los rangos a metro cuadrado. Una bodega liviana típica consume entre **25 y 45 kg de acero por m²** según la luz libre, la altura y las cargas. Multiplicando por el rango de estructura liviana ($9.000 – $13.000 COP/kg), la sola estructura de una bodega se ubica aproximadamente entre **$225.000 y $585.000 COP por m²**.',
+      'Si solo necesita un orden de magnitud temprano, puede convertir los rangos a metro cuadrado. Una bodega liviana típica consume entre **25 y 45 kg de acero por m²** según la luz libre, la altura y las cargas. Multiplicando por el rango de estructura estándar ($10.900 – $13.000 COP/kg), la sola estructura de una bodega se ubica aproximadamente entre **$272.000 y $585.000 COP por m²**.',
       'Insistimos: es una aproximación para presupuestar en etapa temprana, no una cotización. El peso real por m² solo se conoce con el diseño estructural, y es la cifra que separa un presupuesto serio de una sorpresa en obra.',
     ],
     faqTitulo1: 'Sobre costos',
@@ -387,7 +389,7 @@ const GUIA_VS_CONCRETO: GuiaLanding = {
         pregunta:
           '¿Cuánto cuesta una estructura metálica frente a una de concreto en Colombia?',
         respuesta:
-          'El costo del acero depende del peso por metro cuadrado, la complejidad de las conexiones, el acabado (pintura o galvanizado) y la logística de montaje. Como rango orientativo de mercado en 2026: estructura liviana entre $9.000 y $13.000 COP/kg instalado, estructura media entre $11.000 y $16.000, y estructuras especiales o puentes entre $14.000 y $22.000. La comparación justa con concreto se hace sobre costo total de obra —incluyendo cimentación y plazo—, donde el acero suele empatar o ganar en bodegas, comercio y ampliaciones. La cifra real solo sale de una cotización sobre planos.',
+          'El costo del acero depende del peso por metro cuadrado, la complejidad de las conexiones, el acabado (pintura o galvanizado) y la logística de montaje. Como rango orientativo de mercado en 2026: estructura estándar y repetitiva (bodegas, naves) entre $10.900 y $13.000 COP/kg instalado, edificación y entrepisos entre $13.000 y $17.000, y estructuras especiales o puentes entre $17.000 y $25.000. La comparación justa con concreto se hace sobre costo total de obra —incluyendo cimentación y plazo—, donde el acero suele empatar o ganar en bodegas, comercio y ampliaciones. La cifra real solo sale de una cotización sobre planos.',
       },
       {
         pregunta: '¿Qué tanto más rápida es la construcción con estructura metálica?',
@@ -531,31 +533,37 @@ const GUIA_TIPOS: GuiaLanding = {
         items: [
           {
             nombre: 'Bodegas y naves industriales',
+            categoria: 'INDUSTRIAL',
             descripcion:
               'Pórticos rígidos a dos aguas para luces de 15 a 40 m; cerchas cuando la luz o la carga de cubierta lo exigen. Se complementan con correas formadas en frío y, si la operación lo requiere, vigas carrileras para puente grúa. Es la tipología que MEISA desarrolla en su solución de estructura metálica para bodegas, con 72 proyectos industriales entregados, como el CEDI Tecnosur en Villa Rica (840 t).',
           },
           {
             nombre: 'Puentes vehiculares y peatonales',
+            categoria: 'PUENTES',
             descripcion:
               'Vigas cajón y vigas armadas de alma llena para puentes vehiculares; celosías, arcos y sistemas atirantados para puentes peatonales y ciclopuentes. La fabricación en planta y el montaje por lanzamiento o izaje reducen la afectación al tráfico. MEISA ha fabricado 46 puentes — más de 4.600 toneladas — detallados en su solución de puentes metálicos.',
           },
           {
             nombre: 'Edificios de varios pisos',
+            categoria: 'EDIFICACIONES',
             descripcion:
               'Pórticos resistentes a momento o combinados con arriostramientos, con entrepisos de vigas, viguetas y lámina colaborante que se funden sin formaleta. El acero reduce el peso sísmico del edificio y acelera el ciclo por piso. Ejemplos MEISA: el edificio Colpatria en Neiva (902 t) y la estructura del World Trade Center (247 t).',
           },
           {
             nombre: 'Cubiertas y grandes luces comerciales',
+            categoria: 'COMERCIAL',
             descripcion:
               'Cerchas, arcos y estructuras espaciales para centros comerciales, terminales y plazas cubiertas donde el área libre es el requisito dominante. Aquí el acero compite sin rival: en concreto, esas luces son antieconómicas o inviables. MEISA suma 54 proyectos comerciales con más de 14.600 toneladas.',
           },
           {
             nombre: 'Escenarios deportivos y educativos',
+            categoria: 'DEPORTES_EDUCACION',
             descripcion:
               'Cerchas de gran luz, arcos y voladizos para graderías cubiertas, coliseos y aulas múltiples. La estructura suele quedar a la vista, así que el detallado y el acabado pesan tanto como el cálculo. MEISA fabricó el coliseo de fútbol sala de los Juegos Nacionales de Popayán (267 t) y cinco coliseos del Plan Colombia en el Cauca.',
           },
           {
             nombre: 'Infraestructura urbana',
+            categoria: 'INFRAESTRUCTURA_URBANA',
             descripcion:
               'Estaciones de transporte masivo, paraderos, pérgolas y puentes peatonales urbanos que combinan pórticos, celosías y secciones tubulares a la vista. MEISA fabricó la Terminal Intermedia del MIO en Cali (654 t) y estaciones de Transmilenio en Bogotá (424 t).',
           },
@@ -587,6 +595,16 @@ const GUIA_TIPOS: GuiaLanding = {
             nombre: 'Perfiles formados en frío (correas C y Z)',
             descripcion:
               'Láminas delgadas dobladas en frío que conforman correas de cubierta y fachada, viguetas livianas y elementos secundarios. Aportan poco peso por metro cuadrado y se traslapan para dar continuidad. Se diseñan por el capítulo F.4 de la NSR-10.',
+          },
+          {
+            nombre: 'Ángulos, platinas y barras',
+            descripcion:
+              'Perfiles L (ángulos), platinas y barras macizas, casi siempre en ASTM A36. Son los elementos secundarios por excelencia: arriostramientos, montantes y diagonales de celosías livianas, cartelas y platinas de conexión. Se cortan, punzonan y barrenan en planta a la medida exacta del despiece.',
+          },
+          {
+            nombre: 'Lámina colaborante (steel deck)',
+            descripcion:
+              'Lámina de acero grecada y galvanizada que funciona a la vez como formaleta y como refuerzo a tracción en entrepisos compuestos acero-concreto, eliminando la formaleta tradicional. Con conectores de cortante hace que la losa trabaje en conjunto con las vigas: es el sistema de piso estándar en edificios metálicos.',
           },
         ],
       },
@@ -688,7 +706,7 @@ const GUIA_TIPOS: GuiaLanding = {
       {
         pregunta: '¿Cuánto cuesta una estructura metálica por kilo instalado?',
         respuesta:
-          'Depende del tipo de estructura, la complejidad de las conexiones, el acabado (pintura o galvanizado), la ciudad de montaje y el precio del acero del momento. Como rango orientativo de mercado en Colombia: estructura liviana (correas, cubiertas simples) entre $9.000 y $13.000 COP/kg instalado; estructura media (pórticos de bodegas, edificios) entre $11.000 y $16.000; y estructura especial o puentes entre $14.000 y $22.000. Son referencias para presupuestar en etapa temprana — la cotización real se hace sobre planos y cantidades.',
+          'Depende del tipo de estructura, la complejidad de las conexiones, el acabado (pintura o galvanizado), la ciudad de montaje y el precio del acero del momento. Como rango orientativo de mercado en Colombia: estructura estándar y repetitiva (correas, cubiertas y pórticos de bodega) entre $10.900 y $13.000 COP/kg instalado; edificación y entrepisos entre $13.000 y $17.000; y estructura especial o puentes entre $17.000 y $25.000. Son referencias para presupuestar en etapa temprana — la cotización real se hace sobre planos y cantidades.',
       },
     ],
     faqTitulo1: 'Sobre tipos',
@@ -847,14 +865,14 @@ const GUIA_PESO: GuiaLanding = {
         titulo: 'Cómo estimar el presupuesto: kg/m² × precio por kilo',
         parrafos: [
           'El método para una cifra de anteproyecto tiene tres pasos. Primero, ubique su obra en el rango de tipología correcto y elija un valor conservador dentro del rango si todavía hay incertidumbre en cargas o luces. Segundo, multiplique por el área cubierta o construida en estructura metálica. Tercero, multiplique las toneladas resultantes por el precio por kilo instalado vigente, que detallamos en nuestra guía de precios de estructuras metálicas.',
-          'Ejemplo: una bodega de 2.000 m² con puente grúa de 5 t. Ratio estimado: 55 kg/m² → 110 toneladas. Con un precio de referencia de $12.000 COP/kg instalado, el orden de magnitud de la estructura es de unos $1.320 millones COP, sin incluir cimentación, cerramientos ni teja. Esa cifra sirve para evaluar viabilidad y comparar alternativas; la cotización real se hace sobre planos o, mejor, sobre un modelo estructural.',
+          'Ejemplo: una bodega de 2.000 m² con puente grúa de 5 t. Ratio estimado: 55 kg/m² → 110 toneladas. Con un precio de referencia de $14.000 COP/kg instalado, el orden de magnitud de la estructura es de unos $1.540 millones COP, sin incluir cimentación, cerramientos ni teja. Esa cifra sirve para evaluar viabilidad y comparar alternativas; la cotización real se hace sobre planos o, mejor, sobre un modelo estructural.',
           'Dos errores frecuentes al aplicar el método: usar el área del lote en vez del área cubierta en acero, y aplicar el ratio de bodega liviana a una nave que sí lleva grúa o mezanines. Ambos producen presupuestos que después no cierran contra la cotización.',
         ],
       },
       {
         titulo: 'Optimizar peso con BIM ahorra más que negociar el precio por kilo',
         parrafos: [
-          'En la negociación típica el comprador pelea $300–$500 COP por kilo. Pero el ahorro grande no está en el precio: está en los kilos. Una optimización de ingeniería que baje el ratio de 48 a 40 kg/m² en una nave de 10.000 m² elimina 80 toneladas; a $12.000/kg son unos $960 millones COP, varias veces lo que se obtiene regateando el precio unitario sobre el mismo tonelaje.',
+          'En la negociación típica el comprador pelea $300–$500 COP por kilo. Pero el ahorro grande no está en el precio: está en los kilos. Una optimización de ingeniería que baje el ratio de 48 a 40 kg/m² en una nave de 10.000 m² elimina 80 toneladas; a $14.000/kg son unos $1.120 millones COP, varias veces lo que se obtiene regateando el precio unitario sobre el mismo tonelaje.',
           'Por eso MEISA modela cada proyecto en Tekla Structures antes de fabricar. El modelo BIM permite comparar alternativas de configuración —pórtico contra cercha, separación de pórticos, posición de arriostramientos—, verificar conexiones con IDEA StatiCa y obtener el cómputo de peso exacto, pieza por pieza, antes de comprar el primer perfil. El peso que cotizamos es el del modelo estructural, no un estimado inflado con márgenes de seguridad comerciales.',
           'La conclusión práctica para quien presupuesta: involucre al fabricante en la etapa de ingeniería. Un diseño revisado por quien fabrica y monta encuentra kilos innecesarios que un ajuste de precio nunca va a compensar, y reduce además sorpresas de plazo en taller y en obra.',
         ],
@@ -901,7 +919,7 @@ const GUIA_PESO: GuiaLanding = {
       {
         pregunta: '¿Cuánto cuesta una estructura metálica por kilo instalado en Colombia?',
         respuesta:
-          'Como rango orientativo de mercado: estructura liviana entre $9.000 y $13.000 COP/kg instalado, estructura media (entrepisos, naves con grúa) entre $11.000 y $16.000, y estructura especial o de puentes entre $14.000 y $22.000. El valor final depende del tonelaje total, la complejidad de conexiones, el acabado de pintura o galvanizado y la logística de montaje. La cotización real siempre se hace sobre planos o modelo estructural; consulte también nuestra guía de precios de estructuras metálicas.',
+          'Como rango orientativo de mercado: estructura estándar entre $10.900 y $13.000 COP/kg instalado, edificación y entrepisos (incluidas naves con puente grúa) entre $13.000 y $17.000, y estructura especial o de puentes entre $17.000 y $25.000. El valor final depende del tonelaje total, la complejidad de conexiones, el acabado de pintura o galvanizado y la logística de montaje. La cotización real siempre se hace sobre planos o modelo estructural; consulte también nuestra guía de precios de estructuras metálicas.',
       },
       {
         pregunta: '¿El kg/m² incluye correas, teja y lámina colaborante?',
@@ -968,11 +986,192 @@ const GUIA_PESO: GuiaLanding = {
   },
 }
 
+/* ─── Guía 5: granallado y pintura ───────────────────────────────────── */
+
+const GUIA_GRANALLADO: GuiaLanding = {
+  slug: 'granallado-y-pintura-estructuras-metalicas',
+  titulo: 'Guía — Granallado y pintura de estructuras metálicas',
+  metaTitle:
+    'Granallado y Pintura de Estructuras Metálicas: Guía Técnica 2026 | MEISA',
+  metaDescription:
+    'Cómo se prepara y protege el acero estructural: granallado a grado Sa 2½ (SP10), perfil de anclaje, sistemas epóxico-poliuretano e intumescente, y el control de calidad real (DFT, adherencia). MEISA granalla en planta en Jamundí y Popayán.',
+  contenido: {
+    variante: 'template',
+    path: '/granallado-y-pintura-estructuras-metalicas',
+    breadcrumbName: 'Granallado y pintura de estructuras metálicas',
+    heroEyebrow: 'Guía técnica de protección · 2026',
+    heroTitulo1: 'Granallado y',
+    heroTitulo2: 'pintura',
+    heroSub:
+      'Cómo se prepara y se protege de verdad el acero estructural —del grado de limpieza al sistema de pintura— con el control de calidad que separa una estructura que dura 25 años de una que se oxida en 3.',
+    categoriaHero: 'INDUSTRIAL',
+    introEyebrow: '01 — Por qué el acabado define la vida útil',
+    introTitulo1: 'La pintura no se echa:',
+    introTitulo2: 'se especifica',
+    intro:
+      'El acero es el material estructural más eficiente que existe, pero tiene un enemigo serio: la corrosión. Y la corrosión no se combate con "una manito de anticorrosivo", sino con un sistema diseñado para el ambiente de la obra, aplicado sobre una superficie correctamente preparada y verificado con instrumentos. La verdad del oficio es incómoda: el 80% de la durabilidad de una pintura no está en la pintura, está en la preparación de la superficie. Por eso esta guía empieza por la limpieza, no por el color.',
+    stats: [
+      { valor: '2', label: 'Granalladoras en planta (Jamundí y Popayán)' },
+      { valor: 'Sa 2½', label: 'Grado de limpieza estándar (SP10)' },
+      { valor: '3', label: 'Capas: primer, barrera y acabado' },
+      { valor: '264', label: 'Proyectos fabricados y protegidos' },
+    ],
+    secciones: [
+      {
+        titulo: 'Preparación de superficie: el 80% del resultado',
+        parrafos: [
+          'Antes de la primera capa hay que quitar del acero todo lo que impide que la pintura agarre: óxido, calamina de laminación (mill scale), grasa, polvo y sales. Y hay que dejar una rugosidad controlada —el perfil de anclaje— para que la pintura se ancle mecánicamente.',
+          'Granallado y sandblasting no son lo mismo. El granallado lanza abrasivo metálico (granalla de acero) con turbinas en planta: es automatizado, recuperable, sin polvo de sílice y muy consistente. El sandblasting impulsa el abrasivo con aire comprimido de forma manual; sirve para piezas muy grandes o retoques en obra, pero es menos uniforme. MEISA granalla en planta como estándar.',
+          'El perfil de anclaje se mide en mils (1 mil = 25,4 micras). MEISA especifica 1,5 – 3,0 mils (≈ 38 – 76 µm) y lo verifica con cinta réplica Testex (ISO 8503): muy liso y la pintura no ancla; demasiado rugoso y los picos quedan sin cubrir y se oxidan.',
+        ],
+        items: [
+          { nombre: 'Sa 1 · SP7', descripcion: 'Barrido ligero (brush-off). Solo quita lo suelto; se reserva para casos menores.' },
+          { nombre: 'Sa 2 · SP6', descripcion: 'Chorro comercial. Limpieza intermedia para ambientes poco agresivos.' },
+          { nombre: 'Sa 2½ · SP10', descripcion: 'Metal casi blanco: al menos el 95% del área libre de óxido, calamina y contaminantes. El estándar MEISA para sistemas de alto desempeño.' },
+          { nombre: 'Sa 3 · SP5', descripcion: 'Metal blanco. La limpieza más exigente, para ambientes extremos o inmersión.' },
+        ],
+      },
+      {
+        titulo: 'El sistema de pintura, capa por capa',
+        parrafos: [
+          'Pintar acero en serio es aplicar un sistema de capas, donde cada una cumple una función distinta. Se miden dos espesores: el de película húmeda (WFT, al aplicar) y el de película seca (DFT, ya curada). El que protege y el que se exige en obra es el DFT; un sistema típico suma 6 – 9 mils (≈ 150 – 230 µm). MEISA controla el espesor capa por capa, no solo el total.',
+        ],
+        items: [
+          { nombre: 'Primer epóxico-zinc', descripcion: 'La primera capa, sobre el acero granallado (≈ 4–6 mils). Ancla al sustrato y da protección activa: el zinc se sacrifica y se corroe antes que el acero. Es la capa más crítica.' },
+          { nombre: 'Barrera epóxica', descripcion: 'La intermedia y el grueso del sistema. Aporta cuerpo y bloquea la entrada de humedad, oxígeno y cloruros. En ambientes agresivos, aquí va la mayor parte de las micras.' },
+          { nombre: 'Acabado poliuretano', descripcion: 'La cara externa (≈ 2–3 mils). Resiste UV e intemperie y conserva el color (RAL). El epóxico solo se "tiza" con el sol; el poliuretano alifático no.' },
+        ],
+      },
+      {
+        titulo: 'Qué sistema según el ambiente (ISO 12944)',
+        parrafos: [
+          'No todo lleva el mismo sistema. La norma ISO 12944 clasifica la agresividad del ambiente en categorías de corrosividad: a mayor categoría, más espesor y mejor sistema. Especificar de más es botar plata; especificar de menos es repintar en tres años. La categoría correcta sale del uso y la ubicación, y se define idealmente desde el diseño.',
+        ],
+        items: [
+          { nombre: 'C2 — Baja', descripcion: 'Ambientes rurales e interiores con poca condensación. Sistemas livianos.' },
+          { nombre: 'C3 — Media', descripcion: 'Urbano e industrial moderado. La mayoría de bodegas y edificios en ciudad.' },
+          { nombre: 'C4 — Alta', descripcion: 'Industria y zonas costeras moderadas. Más espesor y mejor primer.' },
+          { nombre: 'C5 — Muy alta', descripcion: 'Industria agresiva o ambiente marino con alta salinidad.' },
+          { nombre: 'CX — Extrema', descripcion: 'Offshore y altísima salinidad. Sistemas de máximo desempeño.' },
+        ],
+      },
+      {
+        titulo: 'Protección contra fuego: pintura intumescente',
+        parrafos: [
+          'El acero pierde resistencia con el calor: hacia los 550 °C ya está cerca de su límite. En edificios, centros comerciales o industria donde la norma exige resistencia al fuego, se usa pintura intumescente como protección pasiva.',
+          'Funciona así: al superar unos 300 °C, el recubrimiento se hincha hasta varias veces su espesor y forma una espuma carbonizada aislante que retrasa el calentamiento del acero, dando tiempo a evacuar y a que actúen los bomberos.',
+          'Lo clave: su espesor no depende del ambiente sino del factor de forma del perfil (qué tan "masivo" es) y de la resistencia exigida —RF60, RF90, RF120 (minutos)—. Por eso se calcula perfil por perfil y se mide aparte del sistema anticorrosivo: la intumescente no lo reemplaza, lo complementa.',
+        ],
+      },
+      {
+        titulo: 'Control de calidad: lo que se mide y por qué',
+        parrafos: [
+          'Aquí está la diferencia entre un trabajo serio y uno improvisado: "incluye pintura" no significa nada sin números. MEISA registra cada prueba con instrumentos calibrados y un protocolo de liberación antes de despachar el acero a obra.',
+        ],
+        items: [
+          { nombre: 'Perfil de anclaje', descripcion: 'Rugosidad del granallado medida con cinta réplica Testex (ISO 8503). Especificado: 1,5 – 3,0 mils.' },
+          { nombre: 'Espesor seco (DFT)', descripcion: 'Con medidor PosiTector 6000, varios puntos por m² y capa por capa. Es el espesor que realmente protege.' },
+          { nombre: 'Adherencia (pull-off)', descripcion: 'Ensayo de tracción según ASTM D4541. Verifica que el sistema esté de verdad pegado al acero.' },
+          { nombre: 'Condiciones ambientales', descripcion: 'Temperatura del sustrato, humedad relativa y punto de rocío. No se pinta si el sustrato condensa o la humedad supera el límite.' },
+        ],
+      },
+      {
+        titulo: 'Cómo comparar una cotización que "incluye pintura"',
+        parrafos: [
+          'Dos propuestas pueden decir "incluye pintura" y costar muy distinto porque protegen distinto. Antes de comparar precios, pida que cada oferta responda lo mismo:',
+        ],
+        items: [
+          { nombre: '¿Qué grado de limpieza?', descripcion: 'No es lo mismo Sa 2½ (SP10) que un barrido ligero. El grado define qué tanto dura todo el sistema.' },
+          { nombre: '¿Cuántas micras (DFT)?', descripcion: 'Pida el espesor de película seca por capa y total. Sin micras, el "anticorrosivo" puede ser una sola mano insuficiente.' },
+          { nombre: '¿Qué sistema y ambiente?', descripcion: 'Primer, barrera y acabado deben corresponder a la categoría ISO 12944 de la obra, no a "lo de siempre".' },
+          { nombre: '¿Hay control de calidad?', descripcion: 'Si nadie mide perfil, DFT y adherencia, nadie puede garantizar la durabilidad. Exija el protocolo.' },
+        ],
+      },
+    ],
+    procesoTitulo1: 'Granallado en planta,',
+    procesoTitulo2: 'no en obra',
+    proceso: [
+      { titulo: 'Recepción e inspección', descripcion: 'Se recibe el acero y se verifica su certificado de calidad antes de procesarlo.' },
+      { titulo: 'Granallado a Sa 2½', descripcion: 'Granallado con granalla de acero en planta, verificando el perfil de anclaje con cinta Testex.' },
+      { titulo: 'Sistema de pintura', descripcion: 'Primer dentro de la ventana antes de re-oxidación, más barrera y acabado, con control de DFT y condiciones ambientales.' },
+      { titulo: 'Inspección y liberación', descripcion: 'Verificación final con protocolo y registro fotográfico. El acero llega a obra ya protegido y listo para montar.' },
+    ],
+    proyectosSlugs: [],
+    proyectosIntro:
+      'Estructuras fabricadas y protegidas en planta por MEISA, en ambientes que van desde naves industriales hasta puentes y obra expuesta.',
+    faqTitulo1: 'Sobre protección',
+    faqTitulo2: 'y mantenimiento',
+    faq: [
+      {
+        pregunta: '¿Cuánto dura la pintura de una estructura metálica?',
+        respuesta:
+          'Según la norma ISO 12944, la durabilidad de un sistema bien aplicado va de unos 7 años (baja) a más de 25 (muy alta), según el ambiente, el sistema y —sobre todo— la preparación de la superficie. Un acero granallado a Sa 2½ con un sistema epóxico-poliuretano correcto en ambiente C3–C4 apunta a alta durabilidad; el dato real depende del mantenimiento.',
+      },
+      {
+        pregunta: '¿Cuál es el mejor sistema de pintura para acero estructural?',
+        respuesta:
+          'El que corresponde a la categoría de corrosividad ISO 12944 del proyecto. No hay un "mejor" universal: una bodega urbana (C3) no necesita lo mismo que una planta junto al mar (C5). El sistema típico es primer epóxico rico en zinc, barrera epóxica y acabado de poliuretano alifático, ajustando los espesores al ambiente.',
+      },
+      {
+        pregunta: '¿Qué es el grado Sa 2½ (SP10) y por qué importa tanto?',
+        respuesta:
+          'Es el grado de limpieza "metal casi blanco": al menos el 95% de cada área queda libre de óxido, calamina y contaminantes. Es la base sobre la que se sostiene todo el sistema de pintura — sin esa limpieza, hasta la mejor pintura se desprende. Es el estándar que MEISA usa para estructura que va a recibir sistema epóxico.',
+      },
+      {
+        pregunta: '¿Granallado o sandblasting: cuál es mejor?',
+        respuesta:
+          'Para fabricación en planta, el granallado: es más uniforme, recuperable y sin polvo de sílice, lo que da un acabado consistente y trazable. El sandblasting (chorro abrasivo manual) es útil en obra o en piezas muy grandes. MEISA granalla en planta en sus dos sedes (Jamundí y Popayán) como estándar.',
+      },
+      {
+        pregunta: '¿Cuánto cuesta granallar y pintar una estructura?',
+        respuesta:
+          'En los proyectos de MEISA la protección está incluida en el precio por kilogramo instalado (ver la guía de precios de estructuras metálicas). Lo que mueve el costo es el sistema —cuántas capas y micras—, el grado de limpieza exigido y si lleva pintura intumescente. No tiene sentido cotizar "la pintura aparte" sin definir el sistema.',
+      },
+      {
+        pregunta: '¿Cada cuánto hay que mantener o repintar?',
+        respuesta:
+          'Con buena preparación y un sistema acorde al ambiente, el mantenimiento suele ser por puntos (retoques en zonas de golpe o de soldadura de campo) y no un repintado total. Los ciclos dependen de la categoría ISO 12944: cuanto más agresivo el ambiente, más seguido se inspecciona.',
+      },
+      {
+        pregunta: '¿La pintura intumescente reemplaza el anticorrosivo?',
+        respuesta:
+          'No. La intumescente protege contra el fuego (retrasa el colapso del acero en un incendio); el sistema anticorrosivo protege contra la corrosión. Son funciones distintas y se complementan: normalmente va primer, capa intumescente y un sello o acabado.',
+      },
+    ],
+    relacionados: [
+      {
+        href: '/precios-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Precios de estructuras metálicas',
+        descripcion: 'La protección va incluida en el $/kg instalado: vea qué más mueve el costo.',
+      },
+      {
+        href: '/tipos-de-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Tipos de estructuras metálicas',
+        descripcion: 'Pórticos, cerchas y entrepisos: qué se fabrica y se protege en cada caso.',
+      },
+      {
+        href: '/estructura-metalica-vs-concreto',
+        eyebrow: 'Guía',
+        titulo: 'Estructura metálica vs concreto',
+        descripcion: 'Costo total, plazo y mantenimiento — donde el acero bien protegido gana.',
+      },
+    ],
+    ctaEyebrow: 'Proteja su inversión desde el diseño',
+    ctaTitulo1: 'Especifique la protección,',
+    ctaTitulo2: 'no la improvise.',
+    ctaDescripcion:
+      'Envíenos los planos o cuéntenos el ambiente de su obra y le proponemos el sistema correcto: granallado en planta, sistema de pintura por categoría ISO 12944 y control de calidad con protocolo.',
+  },
+}
+
 export const GUIAS: GuiaLanding[] = [
   GUIA_PRECIOS,
   GUIA_VS_CONCRETO,
   GUIA_TIPOS,
   GUIA_PESO,
+  GUIA_GRANALLADO,
 ]
 
 export function getGuiaFallback(slug: string): GuiaLanding | undefined {

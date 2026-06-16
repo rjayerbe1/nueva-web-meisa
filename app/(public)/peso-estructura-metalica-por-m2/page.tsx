@@ -17,6 +17,7 @@ async function getGuia() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const guia = await getGuia()
+  const ogImage = (guia.contenido as GuiaConfig).heroImagen || FALLBACK_HERO
   return {
     title: { absolute: guia.metaTitle },
     description: guia.metaDescription,
@@ -26,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: guia.metaDescription,
       images: [
         {
-          url: FALLBACK_HERO,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: 'Peso de estructura metálica por metro cuadrado — rangos reales MEISA',
@@ -38,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: guia.metaTitle,
       description: guia.metaDescription,
-      images: [FALLBACK_HERO],
+      images: [ogImage],
     },
   }
 }

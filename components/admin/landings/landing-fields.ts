@@ -39,6 +39,18 @@ const CATEGORIA_OPTIONS = CATEGORIA_ENUM_VALUES.map((v) => ({
 
 /* ─── Helpers de campos repetidos ─────────────────────────────────────── */
 
+/**
+ * Selector de imagen del hero. Si se deja vacío, la página pública cae a la
+ * imagenCover de la categoría asociada (comportamiento histórico).
+ */
+const heroImagenField = (fallbackHint: string): FieldDef => ({
+  name: "heroImagen",
+  label: "Imagen del hero (portada)",
+  kind: "image",
+  gridSpan: 2,
+  hint: `Imagen de fondo del encabezado. Si se deja vacía, ${fallbackHint}`,
+})
+
 const faqField = (name = "faq"): FieldDef => ({
   name,
   label: "Preguntas frecuentes",
@@ -141,6 +153,7 @@ const SOLUCION_SECTIONS: LandingSection[] = [
       },
       { name: "heroTitulo1", label: "Título — línea 1", kind: "text" },
       { name: "heroTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
+      heroImagenField("se usa la imagen de portada de la categoría asociada."),
     ],
   },
   {
@@ -284,10 +297,11 @@ const CIUDAD_SECTIONS: LandingSection[] = [
       { name: "h1", label: "H1 completo", kind: "text" },
       {
         name: "heroCategoriaKey",
-        label: "Categoría del hero (imagen de portada)",
+        label: "Categoría del hero (imagen de respaldo)",
         kind: "select",
         options: CATEGORIA_OPTIONS,
       },
+      heroImagenField("se usa la imagen de portada de la categoría seleccionada arriba."),
       { name: "heroEyebrow", label: "Eyebrow", kind: "text" },
       { name: "heroTitulo1", label: "Título — línea 1", kind: "text" },
       { name: "heroTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
@@ -455,10 +469,11 @@ const GUIA_TEMPLATE_SECTIONS: LandingSection[] = [
       },
       {
         name: "categoriaHero",
-        label: "Categoría del hero (imagen de portada)",
+        label: "Categoría del hero (imagen de respaldo)",
         kind: "select",
         options: CATEGORIA_OPTIONS,
       },
+      heroImagenField("se usa la imagen de portada de la categoría seleccionada arriba."),
       {
         name: "path",
         label: "Path canónico",
@@ -546,6 +561,31 @@ const GUIA_TEMPLATE_SECTIONS: LandingSection[] = [
                 rows: 4,
                 gridSpan: 2,
               },
+              {
+                name: "ilustracion",
+                label: "Ilustración (imagen centrada)",
+                kind: "image",
+                gridSpan: 2,
+                hint: "Imagen del tipo que se muestra centrada y de altura contenida sobre fondo blanco. Tiene prioridad sobre la foto.",
+              },
+              {
+                name: "categoria",
+                label: "Foto desde categoría (a sangre)",
+                kind: "select",
+                options: [
+                  { value: "", label: "— Sin foto de categoría" },
+                  ...CATEGORIA_OPTIONS,
+                ],
+                gridSpan: 1,
+                hint: "Usa la portada de la categoría como foto a sangre del tile (si no hay ilustración).",
+              },
+              {
+                name: "imagen",
+                label: "Foto propia a sangre (opcional)",
+                kind: "image",
+                gridSpan: 1,
+                hint: "Foto específica a sangre. Sobrescribe la foto de categoría.",
+              },
             ],
           },
         ],
@@ -631,6 +671,7 @@ const GUIA_PRECIOS_SECTIONS: LandingSection[] = [
         rows: 3,
         gridSpan: 2,
       },
+      heroImagenField("se usa la imagen de portada de la categoría Industrial."),
     ],
   },
   {
@@ -686,7 +727,7 @@ const GUIA_PRECIOS_SECTIONS: LandingSection[] = [
             name: "rango",
             label: "Rango COP/kg",
             kind: "text",
-            placeholder: "$9.000 – $13.000",
+            placeholder: "$10.900 – $13.000",
             gridSpan: 2,
           },
         ],
