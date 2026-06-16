@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Instagram, Linkedin } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Globe } from 'lucide-react'
+
+type IconComponent = React.ComponentType<{ className?: string }>
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -8,57 +10,93 @@ const XIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-// Columnas de enlaces internos. Las landings SEO (Soluciones / Guías / Ciudades)
-// se enlazan desde aquí para que no queden como páginas huérfanas: el footer
-// está en todas las páginas, así Google las descubre y les pasa autoridad.
-const linkColumns: { title: string; links: { label: string; href: string }[] }[] = [
-  {
-    title: 'Soluciones',
-    links: [
-      { label: 'Bodegas y naves', href: '/soluciones/estructura-metalica-para-bodegas' },
-      { label: 'Puentes metálicos', href: '/soluciones/puentes-metalicos' },
-      { label: 'Cubiertas y fachadas', href: '/soluciones/cubiertas-metalicas' },
-      { label: 'Centros comerciales', href: '/soluciones/estructura-metalica-centros-comerciales' },
-      { label: 'Escenarios deportivos', href: '/soluciones/estructura-metalica-escenarios-deportivos' },
-      { label: 'Edificios', href: '/soluciones/edificios-en-estructura-metalica' },
-    ],
-  },
-  {
-    title: 'Guías',
-    links: [
-      { label: 'Precios y costos', href: '/precios-estructuras-metalicas' },
-      { label: 'Acero vs. concreto', href: '/estructura-metalica-vs-concreto' },
-      { label: 'Tipos de estructuras', href: '/tipos-de-estructuras-metalicas' },
-      { label: 'Peso por m²', href: '/peso-estructura-metalica-por-m2' },
-    ],
-  },
-  {
-    title: 'Ciudades',
-    links: [
-      { label: 'Cali', href: '/estructuras-metalicas/cali' },
-      { label: 'Bogotá', href: '/estructuras-metalicas/bogota' },
-      { label: 'Popayán', href: '/estructuras-metalicas/popayan' },
-    ],
-  },
-  {
-    title: 'Empresa',
-    links: [
-      { label: 'Sobre MEISA', href: '/empresa' },
-      { label: 'Tecnología', href: '/procesos-tecnologias' },
-      { label: 'Calidad y Certificaciones', href: '/calidad' },
-      { label: 'Portfolio', href: '/proyectos' },
-    ],
-  },
+// Formas mínimas (desacopladas de Prisma) que el footer necesita para renderizar.
+export interface FooterLinkItem { grupo: string; label: string; href: string }
+export interface FooterSocialItem { red: string; url: string; label?: string | null; icono?: string | null }
+export interface FooterPlantaItem { nombre: string; ubicacion: string }
+
+interface FooterProps {
+  links?: FooterLinkItem[]
+  social?: FooterSocialItem[]
+  plantas?: FooterPlantaItem[]
+}
+
+// Orden y títulos de las columnas. Un grupo nuevo creado en el admin que no
+// esté aquí se muestra al final con su nombre capitalizado.
+const COLUMN_ORDER = ['soluciones', 'guias', 'ciudades', 'empresa']
+const GROUP_TITLES: Record<string, string> = {
+  soluciones: 'Soluciones',
+  guias: 'Guías',
+  ciudades: 'Ciudades',
+  empresa: 'Empresa',
+}
+
+// --- Fallbacks: si la DB no devuelve datos, el footer nunca queda vacío. ---
+const DEFAULT_LINKS: FooterLinkItem[] = [
+  { grupo: 'soluciones', label: 'Bodegas y naves', href: '/soluciones/estructura-metalica-para-bodegas' },
+  { grupo: 'soluciones', label: 'Puentes metálicos', href: '/soluciones/puentes-metalicos' },
+  { grupo: 'soluciones', label: 'Cubiertas y fachadas', href: '/soluciones/cubiertas-metalicas' },
+  { grupo: 'soluciones', label: 'Centros comerciales', href: '/soluciones/estructura-metalica-centros-comerciales' },
+  { grupo: 'soluciones', label: 'Escenarios deportivos', href: '/soluciones/estructura-metalica-escenarios-deportivos' },
+  { grupo: 'soluciones', label: 'Edificios', href: '/soluciones/edificios-en-estructura-metalica' },
+  { grupo: 'guias', label: 'Precios y costos', href: '/precios-estructuras-metalicas' },
+  { grupo: 'guias', label: 'Acero vs. concreto', href: '/estructura-metalica-vs-concreto' },
+  { grupo: 'guias', label: 'Tipos de estructuras', href: '/tipos-de-estructuras-metalicas' },
+  { grupo: 'guias', label: 'Peso por m²', href: '/peso-estructura-metalica-por-m2' },
+  { grupo: 'ciudades', label: 'Cali', href: '/estructuras-metalicas/cali' },
+  { grupo: 'ciudades', label: 'Bogotá', href: '/estructuras-metalicas/bogota' },
+  { grupo: 'ciudades', label: 'Popayán', href: '/estructuras-metalicas/popayan' },
+  { grupo: 'empresa', label: 'Sobre MEISA', href: '/empresa' },
+  { grupo: 'empresa', label: 'Tecnología', href: '/procesos-tecnologias' },
+  { grupo: 'empresa', label: 'Calidad y Certificaciones', href: '/calidad' },
+  { grupo: 'empresa', label: 'Portfolio', href: '/proyectos' },
+  { grupo: 'legal', label: 'Política de Datos', href: '/politica-datos' },
+  { grupo: 'legal', label: 'Gobierno Corporativo', href: '/empresa#gobierno-corporativo' },
+  { grupo: 'legal', label: 'Sistema de Gestión', href: '/calidad' },
 ]
 
-const plantas = [
-  { ciudad: 'Jamundí', direccion: 'Vía Panamericana 6 Sur – 195, Valle del Cauca' },
-  { ciudad: 'Popayán', direccion: 'Bodega E13 Parque Industrial, Cauca' },
-  { ciudad: 'Villa Rica', direccion: 'Vía Puerto Tejada, Cauca' },
+const DEFAULT_SOCIAL: FooterSocialItem[] = [
+  { red: 'facebook', url: 'https://www.facebook.com/Metalicaseingenieria', icono: 'Facebook' },
+  { red: 'instagram', url: 'https://www.instagram.com/meisa.sas', icono: 'Instagram' },
+  { red: 'linkedin', url: 'https://www.linkedin.com/company/meisa-sas', icono: 'Linkedin' },
+  { red: 'twitter', url: 'https://x.com/meisa_sas', icono: 'Twitter' },
 ]
 
-export function Footer() {
+const DEFAULT_PLANTAS: FooterPlantaItem[] = [
+  { nombre: 'Jamundí', ubicacion: 'Vía Panamericana 6 Sur – 195, Valle del Cauca' },
+  { nombre: 'Popayán', ubicacion: 'Bodega E13 Parque Industrial, Cauca' },
+  { nombre: 'Villa Rica', ubicacion: 'Vía Puerto Tejada, Cauca' },
+]
+
+function resolveSocialIcon(s: FooterSocialItem): IconComponent {
+  const key = `${s.red} ${s.icono ?? ''} ${s.url}`.toLowerCase()
+  if (key.includes('facebook')) return Facebook
+  if (key.includes('instagram')) return Instagram
+  if (key.includes('linkedin')) return Linkedin
+  if (key.includes('twitter') || key.includes('x.com')) return XIcon
+  return Globe
+}
+
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+
+export function Footer({ links, social, plantas }: FooterProps = {}) {
   const year = new Date().getFullYear()
+  const allLinks = links && links.length > 0 ? links : DEFAULT_LINKS
+  const socialLinks = social && social.length > 0 ? social : DEFAULT_SOCIAL
+  const plantList = plantas && plantas.length > 0 ? plantas : DEFAULT_PLANTAS
+
+  // Agrupar enlaces por grupo, preservando el orden de llegada.
+  const byGroup = new Map<string, FooterLinkItem[]>()
+  for (const l of allLinks) {
+    const arr = byGroup.get(l.grupo) ?? []
+    arr.push(l)
+    byGroup.set(l.grupo, arr)
+  }
+  const legalLinks = byGroup.get('legal') ?? []
+  const columnKeys = [
+    ...COLUMN_ORDER.filter((g) => byGroup.has(g)),
+    ...Array.from(byGroup.keys()).filter((g) => g !== 'legal' && !COLUMN_ORDER.includes(g)),
+  ]
 
   return (
     <footer className="bg-slate-950 text-white border-t border-white/10">
@@ -79,36 +117,34 @@ export function Footer() {
             </p>
           </div>
           <div className="flex gap-5">
-            {[
-              { href: 'https://www.facebook.com/Metalicaseingenieria', icon: Facebook, label: 'Facebook' },
-              { href: 'https://www.instagram.com/meisa.sas', icon: Instagram, label: 'Instagram' },
-              { href: 'https://www.linkedin.com/company/meisa-sas', icon: Linkedin, label: 'LinkedIn' },
-              { href: 'https://x.com/meisa_sas', icon: XIcon, label: 'X' },
-            ].map(({ href, icon: Icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/50 hover:text-white transition-colors"
-                aria-label={label}
-              >
-                <Icon className="w-5 h-5" />
-              </a>
-            ))}
+            {socialLinks.map((s) => {
+              const Icon = resolveSocialIcon(s)
+              return (
+                <a
+                  key={s.red || s.url}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 hover:text-white transition-colors"
+                  aria-label={s.label || capitalize(s.red)}
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              )
+            })}
           </div>
         </div>
 
         {/* Columnas de enlaces */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10">
-          {linkColumns.map((col) => (
-            <div key={col.title}>
+          {columnKeys.map((grupo) => (
+            <div key={grupo}>
               <h4 className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-5">
-                {col.title}
+                {GROUP_TITLES[grupo] ?? capitalize(grupo)}
               </h4>
               <ul className="space-y-3 font-lato text-sm">
-                {col.links.map((link) => (
-                  <li key={link.href}>
+                {(byGroup.get(grupo) ?? []).map((link) => (
+                  <li key={link.href + link.label}>
                     <Link href={link.href} className="text-white/80 hover:text-white transition-colors">
                       {link.label}
                     </Link>
@@ -124,10 +160,10 @@ export function Footer() {
               Plantas
             </h4>
             <ul className="space-y-4 font-lato text-sm">
-              {plantas.map((p) => (
-                <li key={p.ciudad}>
-                  <p className="text-white font-semibold">{p.ciudad}</p>
-                  <p className="text-white/50 text-xs leading-relaxed">{p.direccion}</p>
+              {plantList.map((p) => (
+                <li key={p.nombre}>
+                  <p className="text-white font-semibold">{p.nombre}</p>
+                  <p className="text-white/50 text-xs leading-relaxed">{p.ubicacion}</p>
                 </li>
               ))}
             </ul>
@@ -139,17 +175,15 @@ export function Footer() {
           <p className="font-lato text-white/40 text-xs">
             © {year} MEISA Metálicas e Ingeniería S.A.S. · Todos los derechos reservados
           </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 font-lato text-white/40 text-xs">
-            <Link href="/politica-datos" className="hover:text-white transition-colors">
-              Política de Datos
-            </Link>
-            <Link href="/empresa#gobierno-corporativo" className="hover:text-white transition-colors">
-              Gobierno Corporativo
-            </Link>
-            <Link href="/calidad" className="hover:text-white transition-colors">
-              Sistema de Gestión
-            </Link>
-          </div>
+          {legalLinks.length > 0 && (
+            <div className="flex flex-wrap gap-x-6 gap-y-2 font-lato text-white/40 text-xs">
+              {legalLinks.map((link) => (
+                <Link key={link.href + link.label} href={link.href} className="hover:text-white transition-colors">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </footer>

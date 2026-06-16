@@ -29,19 +29,21 @@ const menuFields: FieldDef[] = [
 const footerFields: FieldDef[] = [
   {
     name: "grupo",
-    label: "Grupo",
+    label: "Columna del footer",
     kind: "select",
     required: true,
+    hint: "Dónde aparece el enlace. 'legal' va en la barra inferior; el resto son columnas.",
     options: [
-      { value: "servicios", label: "Servicios" },
+      { value: "soluciones", label: "Soluciones" },
+      { value: "guias", label: "Guías" },
+      { value: "ciudades", label: "Ciudades" },
       { value: "empresa", label: "Empresa" },
-      { value: "legal", label: "Legal" },
-      { value: "recursos", label: "Recursos" },
+      { value: "legal", label: "Legal (barra inferior)" },
     ],
   },
   { name: "label", label: "Etiqueta", kind: "text", required: true },
   { name: "href", label: "URL", kind: "text", required: true },
-  { name: "orden", label: "Orden", kind: "number" },
+  { name: "orden", label: "Orden (dentro de la columna)", kind: "number" },
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
@@ -106,13 +108,14 @@ export function NavegacionAdminTabs({ menuItems, footerLinks, socialLinks }: Pro
               fields={footerFields}
               endpoint="/api/admin/footer-links"
               emptyTemplate={{
-                grupo: "servicios",
+                grupo: "soluciones",
                 label: "",
                 href: "",
                 orden: 0,
                 activo: true,
               }}
               addLabel="Agregar enlace"
+              canReorder
               renderPreview={(f) => (
                 <div>
                   <div className="flex items-center gap-2">

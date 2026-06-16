@@ -1,7 +1,8 @@
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloatingWidget } from '@/components/WhatsAppFloatingWidget'
-import { getMenuItems } from '@/lib/content/navegacion'
+import { getNavegacionData } from '@/lib/content/navegacion'
+import { getPlantasPublicas } from '@/lib/content/plantas'
 
 const DEFAULT_IMAGE = 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg'
 
@@ -21,22 +22,46 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode
 }) {
-  const menuItemsDB = await getMenuItems().catch(() => [])
+  const [nav, plantasDB] = await Promise.all([
+    getNavegacionData().catch(() => ({ menu: [], footer: [], social: [] })),
+    getPlantasPublicas().catch(() => []),
+  ])
 
-  const menuItems = menuItemsDB.map((m) => ({
+  const menuItems = nav.menu.map((m) => ({
     name: m.label,
     href: m.href,
     image: m.imagen || IMAGE_BY_HREF[m.href] || DEFAULT_IMAGE,
     target: m.target ?? undefined,
   }))
 
+  const social = nav.social.map((s) => ({
+    red: s.red,
+    url: s.url,
+    label: s.label,
+    icono: s.icono,
+  }))
+
+  const footerLinks = nav.footer.map((f) => ({
+    grupo: f.grupo,
+    label: f.label,
+    href: f.href,
+  }))
+
+  const plantas = plantasDB.map((p) => ({
+    nombre: p.nombre,
+    ubicacion: p.ubicacion,
+  }))
+
   return (
     <>
-      <Navbar items={menuItems.length > 0 ? menuItems : undefined} />
+      <Navbar
+        items={menuItems.length > 0 ? menuItems : undefined}
+        social={social.length > 0 ? social : undefined}
+      />
       <main className="w-full">
         {children}
       </main>
-      <Footer />
+      <Footer links={footerLinks} social={social} plantas={plantas} />
       <WhatsAppFloatingWidget />
     </>
   )
