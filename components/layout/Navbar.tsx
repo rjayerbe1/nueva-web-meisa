@@ -217,7 +217,7 @@ export function Navbar({ items }: NavbarProps = {}) {
                       </svg>
                     </a>
                     <a
-                      href="https://www.instagram.com/meisa.s.a.s"
+                      href="https://www.instagram.com/meisa.sas"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Instagram"
@@ -228,7 +228,7 @@ export function Navbar({ items }: NavbarProps = {}) {
                       </svg>
                     </a>
                     <a
-                      href="https://co.linkedin.com/company/meisa-sas"
+                      href="https://www.linkedin.com/in/meisasas"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="LinkedIn"

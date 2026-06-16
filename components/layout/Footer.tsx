@@ -81,8 +81,8 @@ export function Footer() {
           <div className="flex gap-5">
             {[
               { href: 'https://www.facebook.com/Metalicaseingenieria', icon: Facebook, label: 'Facebook' },
-              { href: 'https://www.instagram.com/meisa.s.a.s', icon: Instagram, label: 'Instagram' },
-              { href: 'https://co.linkedin.com/company/meisa-sas', icon: Linkedin, label: 'LinkedIn' },
+              { href: 'https://www.instagram.com/meisa.sas', icon: Instagram, label: 'Instagram' },
+              { href: 'https://www.linkedin.com/in/meisasas', icon: Linkedin, label: 'LinkedIn' },
               { href: 'https://x.com/meisa_sas', icon: XIcon, label: 'X' },
             ].map(({ href, icon: Icon, label }) => (
               <a
