@@ -254,12 +254,13 @@ function CategoryCard({
             ))}
           </h2>
 
-          {/* Indicador sutil de interacción: aparece en hover */}
-          <div className="h-6 lg:h-8 flex items-center justify-center">
-            <ArrowRight
-              className="w-6 h-6 lg:w-7 lg:h-7 text-white opacity-0 -translate-x-2 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0"
-              aria-hidden="true"
-            />
+          {/* Indicador de interacción: persistente en móvil (sin hover),
+              aparición animada en hover en desktop */}
+          <div className="h-7 lg:h-8 flex items-center justify-center">
+            <span className="inline-flex items-center gap-2 text-white font-lato font-bold text-[11px] sm:text-xs uppercase tracking-[0.2em] drop-shadow-lg transition-all duration-500 ease-out opacity-100 translate-x-0 lg:opacity-0 lg:-translate-x-2 lg:group-hover:opacity-100 lg:group-hover:translate-x-0">
+              Ver proyectos
+              <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5" aria-hidden="true" />
+            </span>
           </div>
         </motion.div>
 

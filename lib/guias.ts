@@ -98,7 +98,7 @@ const GUIA_PRECIOS: GuiaLanding = {
     heroTitulo1: '¿Cuánto cuesta una',
     heroTitulo2: 'estructura metálica?',
     heroSub:
-      'Rangos reales del mercado colombiano, qué incluyen, qué los hace variar y cómo pasar de kilogramos a metros cuadrados — sin humo.',
+      'Rangos reales del mercado colombiano, qué incluyen, qué los hace variar y cómo pasar de kilogramos a metros cuadrados. Sin rodeos ni promesas infladas.',
     breadcrumbName: '¿Cuánto cuesta una estructura metálica en Colombia?',
     cotizacionEyebrow: '01 — Cómo se cotiza',
     cotizacionTitulo1: 'Por kilogramo,',
