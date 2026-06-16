@@ -8,14 +8,64 @@ const XIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Columnas de enlaces internos. Las landings SEO (Soluciones / Guías / Ciudades)
+// se enlazan desde aquí para que no queden como páginas huérfanas: el footer
+// está en todas las páginas, así Google las descubre y les pasa autoridad.
+const linkColumns: { title: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: 'Soluciones',
+    links: [
+      { label: 'Bodegas y naves', href: '/soluciones/estructura-metalica-para-bodegas' },
+      { label: 'Puentes metálicos', href: '/soluciones/puentes-metalicos' },
+      { label: 'Cubiertas y fachadas', href: '/soluciones/cubiertas-metalicas' },
+      { label: 'Centros comerciales', href: '/soluciones/estructura-metalica-centros-comerciales' },
+      { label: 'Escenarios deportivos', href: '/soluciones/estructura-metalica-escenarios-deportivos' },
+      { label: 'Edificios', href: '/soluciones/edificios-en-estructura-metalica' },
+    ],
+  },
+  {
+    title: 'Guías',
+    links: [
+      { label: 'Precios y costos', href: '/precios-estructuras-metalicas' },
+      { label: 'Acero vs. concreto', href: '/estructura-metalica-vs-concreto' },
+      { label: 'Tipos de estructuras', href: '/tipos-de-estructuras-metalicas' },
+      { label: 'Peso por m²', href: '/peso-estructura-metalica-por-m2' },
+    ],
+  },
+  {
+    title: 'Ciudades',
+    links: [
+      { label: 'Cali', href: '/estructuras-metalicas/cali' },
+      { label: 'Bogotá', href: '/estructuras-metalicas/bogota' },
+      { label: 'Popayán', href: '/estructuras-metalicas/popayan' },
+    ],
+  },
+  {
+    title: 'Empresa',
+    links: [
+      { label: 'Sobre MEISA', href: '/empresa' },
+      { label: 'Tecnología', href: '/procesos-tecnologias' },
+      { label: 'Calidad y Certificaciones', href: '/calidad' },
+      { label: 'Portfolio', href: '/proyectos' },
+    ],
+  },
+]
+
+const plantas = [
+  { ciudad: 'Jamundí', direccion: 'Vía Panamericana 6 Sur – 195, Valle del Cauca' },
+  { ciudad: 'Popayán', direccion: 'Bodega E13 Parque Industrial, Cauca' },
+  { ciudad: 'Villa Rica', direccion: 'Vía Puerto Tejada, Cauca' },
+]
+
 export function Footer() {
   const year = new Date().getFullYear()
 
   return (
     <footer className="bg-slate-950 text-white border-t border-white/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 py-14 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr_1.5fr] gap-10 md:gap-12">
-          <div className="col-span-2 md:col-span-1">
+        {/* Marca + redes */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 pb-10 md:pb-12 mb-12 md:mb-16 border-b border-white/10">
+          <div className="max-w-sm">
             <Image
               src="https://storage.googleapis.com/meisa-imagenes/site/logo/logo-meisa-white.png"
               alt="MEISA"
@@ -24,80 +74,67 @@ export function Footer() {
               unoptimized
               className="w-[120px] h-auto mb-6"
             />
-            <p className="text-white/50 font-lato text-sm max-w-sm leading-relaxed mb-6">
+            <p className="text-white/50 font-lato text-sm leading-relaxed">
               Metálicas e Ingeniería S.A.S. — Diseño, fabricación y montaje de estructuras metálicas desde 1996.
             </p>
-            <div className="flex gap-5">
-              {[
-                { href: 'https://www.facebook.com/Metalicaseingenieria', icon: Facebook, label: 'Facebook' },
-                { href: 'https://www.instagram.com/meisa.s.a.s', icon: Instagram, label: 'Instagram' },
-                { href: 'https://co.linkedin.com/company/meisa-sas', icon: Linkedin, label: 'LinkedIn' },
-                { href: 'https://x.com/meisa_sas', icon: XIcon, label: 'X' },
-              ].map(({ href, icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/50 hover:text-white transition-colors"
-                  aria-label={label}
-                >
-                  <Icon className="w-5 h-5" />
-                </a>
-              ))}
+          </div>
+          <div className="flex gap-5">
+            {[
+              { href: 'https://www.facebook.com/Metalicaseingenieria', icon: Facebook, label: 'Facebook' },
+              { href: 'https://www.instagram.com/meisa.s.a.s', icon: Instagram, label: 'Instagram' },
+              { href: 'https://co.linkedin.com/company/meisa-sas', icon: Linkedin, label: 'LinkedIn' },
+              { href: 'https://x.com/meisa_sas', icon: XIcon, label: 'X' },
+            ].map(({ href, icon: Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/50 hover:text-white transition-colors"
+                aria-label={label}
+              >
+                <Icon className="w-5 h-5" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Columnas de enlaces */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10">
+          {linkColumns.map((col) => (
+            <div key={col.title}>
+              <h4 className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-5">
+                {col.title}
+              </h4>
+              <ul className="space-y-3 font-lato text-sm">
+                {col.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-white/80 hover:text-white transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          ))}
 
-          <div>
-            <h4 className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-5">
-              Empresa
-            </h4>
-            <ul className="space-y-3 font-lato text-sm">
-              <li>
-                <Link href="/empresa" className="text-white/80 hover:text-white transition-colors">
-                  Sobre MEISA
-                </Link>
-              </li>
-              <li>
-                <Link href="/procesos-tecnologias" className="text-white/80 hover:text-white transition-colors">
-                  Tecnología
-                </Link>
-              </li>
-              <li>
-                <Link href="/calidad" className="text-white/80 hover:text-white transition-colors">
-                  Calidad y Certificaciones
-                </Link>
-              </li>
-              <li>
-                <Link href="/proyectos" className="text-white/80 hover:text-white transition-colors">
-                  Portfolio
-                </Link>
-              </li>
-            </ul>
-          </div>
-
+          {/* Plantas */}
           <div>
             <h4 className="text-white/40 font-lato font-bold text-xs uppercase tracking-[0.2em] mb-5">
               Plantas
             </h4>
             <ul className="space-y-4 font-lato text-sm">
-              <li>
-                <p className="text-white font-semibold">Jamundí</p>
-                <p className="text-white/50 text-xs leading-relaxed">Vía Panamericana 6 Sur – 195, Valle del Cauca</p>
-              </li>
-              <li>
-                <p className="text-white font-semibold">Popayán</p>
-                <p className="text-white/50 text-xs leading-relaxed">Bodega E13 Parque Industrial, Cauca</p>
-              </li>
-              <li>
-                <p className="text-white font-semibold">Villa Rica</p>
-                <p className="text-white/50 text-xs leading-relaxed">Vía Puerto Tejada, Cauca</p>
-              </li>
+              {plantas.map((p) => (
+                <li key={p.ciudad}>
+                  <p className="text-white font-semibold">{p.ciudad}</p>
+                  <p className="text-white/50 text-xs leading-relaxed">{p.direccion}</p>
+                </li>
+              ))}
             </ul>
           </div>
-
         </div>
 
+        {/* Barra inferior */}
         <div className="mt-14 md:mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="font-lato text-white/40 text-xs">
             © {year} MEISA Metálicas e Ingeniería S.A.S. · Todos los derechos reservados
