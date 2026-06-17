@@ -310,7 +310,11 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
             flippingTime={700}
             usePortrait={isMobile}
             startPage={0}
-            showCover
+            // showCover desactivado: con showCover la portada es una "tapa dura"
+            // especial desde la que react-pageflip NO deja navegar (ni por API ni
+            // por clic). Sin él, la página 1 es una página normal y el avance
+            // funciona desde el inicio.
+            showCover={false}
             mobileScrollSupport
             clickEventForward
             useMouseEvents
