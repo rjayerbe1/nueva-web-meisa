@@ -887,6 +887,44 @@ model ProcesoFase {
   @@map("proceso_fases")
 }
 
+// Contenido editable de la página /servicios (hero, cifras, intro proceso,
+// sección "Sectores", CTA). Singleton id="default". El catálogo de servicios
+// y las fases viven en Servicio / ProcesoFase.
+model ServiciosPagina {
+  id                 String   @id @default("default")
+  // Hero
+  heroEyebrow        String?
+  heroTitulo1        String?
+  heroTitulo2        String?
+  heroParrafo        String?
+  // Franja de cifras — [{clave, valor, sufijo, label}]; valor "AUTO" se calcula
+  stats              Json?
+  // Intro del Proceso Integral (las 4 fases viven en ProcesoFase)
+  procesoEyebrow     String?
+  procesoTitulo1     String?
+  procesoTitulo2     String?
+  procesoParrafo     String?
+  // Sección "Sectores que atendemos"
+  sectoresEyebrow    String?
+  sectoresTitulo1    String?
+  sectoresTitulo2    String?
+  sectoresParrafo    String?
+  sectores           Json? // [{label, desc, slug}]
+  // CTA final
+  ctaEyebrow         String?
+  ctaTitulo1         String?
+  ctaTitulo2         String?
+  ctaParrafo         String?
+  ctaPrimarioTexto   String?
+  ctaPrimarioHref    String?
+  ctaSecundarioTexto String?
+  ctaSecundarioHref  String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("servicios_pagina")
+}
+
 // Opciones reusables de selects — tipos de proyecto y servicios del formulario
 model FormOption {
   id        String   @id @default(cuid())

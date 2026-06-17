@@ -4,7 +4,7 @@ import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
 import { aniosExperiencia } from '@/lib/site-meta'
 import { BreadcrumbSchema } from '@/components/seo/JsonLdSchema'
-import { getProcesoFases } from '@/lib/content/servicios-contacto'
+import { getProcesoFases, getServiciosPagina, type ServiciosStatConfig } from '@/lib/content/servicios-contacto'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -23,8 +23,9 @@ async function getProcesoIntegral() {
 }
 
 
-// Cifras reales derivadas de la DB (mismo origen que /soluciones → nunca se contradicen)
-async function getStats() {
+// Resuelve la franja de cifras: valores "AUTO" se calculan en vivo desde la DB
+// (mismo origen que /soluciones → nunca se contradicen); literales se usan tal cual.
+async function getStats(config: ServiciosStatConfig[]) {
   const agg = await prisma.proyecto.aggregate({
     where: { visible: true },
     _count: { _all: true },
@@ -32,15 +33,17 @@ async function getStats() {
   })
   const floorTo = (n: number, step: number) => Math.floor(n / step) * step
   const fmt = (n: number) => n.toLocaleString('es-CO')
-  const proyectos = agg._count._all
-  const toneladas = Math.round(Number(agg._sum.toneladas || 0))
-  const m2 = Math.round(Number(agg._sum.areaTotal || 0))
-  return [
-    { value: `${aniosExperiencia()}`, suffix: '+', label: 'Años de experiencia' },
-    { value: fmt(floorTo(proyectos, 10)), suffix: '+', label: 'Proyectos entregados' },
-    { value: fmt(floorTo(toneladas, 1000)), suffix: '+', label: 'Toneladas de acero' },
-    { value: fmt(floorTo(m2, 10000)), suffix: '+', label: 'm² construidos' },
-  ]
+  const auto: Record<string, string> = {
+    anios: `${aniosExperiencia()}`,
+    proyectos: fmt(floorTo(agg._count._all, 10)),
+    toneladas: fmt(floorTo(Math.round(Number(agg._sum.toneladas || 0)), 1000)),
+    m2: fmt(floorTo(Math.round(Number(agg._sum.areaTotal || 0)), 10000)),
+  }
+  return config.map((s) => ({
+    value: s.valor === 'AUTO' ? auto[s.clave] ?? s.valor : s.valor,
+    suffix: s.sufijo || undefined,
+    label: s.label,
+  }))
 }
 
 async function getServicios() {
@@ -75,11 +78,12 @@ async function getServicios() {
 }
 
 export default async function ServiciosPage() {
-  const [servicios, procesoIntegral, stats] = await Promise.all([
+  const [servicios, procesoIntegral, pagina] = await Promise.all([
     getServicios(),
     getProcesoIntegral(),
-    getStats(),
+    getServiciosPagina(),
   ])
+  const stats = await getStats(pagina.stats)
 
   return (
     <>
@@ -94,6 +98,7 @@ export default async function ServiciosPage() {
           servicios={servicios}
           procesoIntegral={procesoIntegral}
           stats={stats}
+          pagina={pagina}
         />
       </Suspense>
     </>

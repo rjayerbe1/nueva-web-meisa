@@ -8,16 +8,7 @@ import { ArrowRight } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { aniosExperiencia } from '@/lib/site-meta'
 import { StatsStrip, type StatItem } from '@/components/sections/StatsStrip'
-
-// Sectores → landings SEO /soluciones (interlinking)
-const SECTORES = [
-  { label: 'Edificaciones', desc: 'Edificios institucionales, oficinas y vivienda en altura.', slug: 'edificios-en-estructura-metalica' },
-  { label: 'Bodegas e industria', desc: 'Naves industriales, bodegas y plantas de proceso.', slug: 'estructura-metalica-para-bodegas' },
-  { label: 'Centros comerciales', desc: 'Construcción y ampliación de centros comerciales.', slug: 'estructura-metalica-centros-comerciales' },
-  { label: 'Puentes', desc: 'Puentes vehiculares y peatonales en acero.', slug: 'puentes-metalicos' },
-  { label: 'Escenarios deportivos', desc: 'Coliseos, estadios y complejos deportivos.', slug: 'estructura-metalica-escenarios-deportivos' },
-  { label: 'Cubiertas y fachadas', desc: 'Cubiertas de gran luz y fachadas metálicas.', slug: 'cubiertas-metalicas' },
-]
+import type { ServiciosPaginaData } from '@/lib/content/servicios-contacto'
 
 interface ServicioData {
   id: string
@@ -49,13 +40,17 @@ interface ServiciosContentProps {
   servicios: ServicioData[]
   procesoIntegral: ProcesoStep[]
   stats: StatItem[]
+  pagina: ServiciosPaginaData
 }
 
 export default function ServiciosContent({
   servicios,
   procesoIntegral,
   stats,
+  pagina,
 }: ServiciosContentProps) {
+  // Reemplaza el token {anios} por los años de experiencia
+  const T = (s: string) => s.replace(/\{anios\}/g, String(aniosExperiencia()))
   const [activeSection, setActiveSection] = useState('')
   const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({})
   const navRef = useRef<HTMLDivElement>(null)
@@ -139,18 +134,16 @@ export default function ServiciosContent({
               className="max-w-4xl"
             >
               <p className="text-white/60 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-5">
-                Servicios integrales — {aniosExperiencia()}+ años de experiencia
+                {T(pagina.heroEyebrow)}
               </p>
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white">
-                Soluciones
+                {pagina.heroTitulo1}
               </h1>
               <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas uppercase leading-[0.95] text-white/50">
-                en acero.
+                {pagina.heroTitulo2}
               </h2>
               <p className="mt-8 text-base md:text-lg text-white/70 font-lato leading-relaxed max-w-2xl">
-                Diseñamos, fabricamos en plantas propias y montamos en obra. Un solo equipo controla
-                todo el flujo —del modelo BIM al acero instalado— bajo un mismo Sistema Integrado
-                de Gestión.
+                {T(pagina.heroParrafo)}
               </p>
             </motion.div>
           </div>
@@ -171,17 +164,16 @@ export default function ServiciosContent({
             className="mb-14 md:mb-20 max-w-4xl"
           >
             <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Metodología
+              {pagina.procesoEyebrow}
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
-              Proceso
+              {pagina.procesoTitulo1}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-              integral.
+              {pagina.procesoTitulo2}
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-              Un enfoque sistemático que garantiza resultados excepcionales en cada proyecto,
-              desde la conceptualización hasta la entrega final.
+              {T(pagina.procesoParrafo)}
             </p>
           </motion.div>
 
@@ -384,22 +376,21 @@ export default function ServiciosContent({
             className="mb-12 md:mb-16 max-w-4xl"
           >
             <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Dónde trabajamos
+              {pagina.sectoresEyebrow}
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
-              Sectores
+              {pagina.sectoresTitulo1}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-              que atendemos.
+              {pagina.sectoresTitulo2}
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-              Seis frentes en los que hemos construido en acero a lo largo del país.
-              Cada uno con su propia ingeniería, normativa y logística.
+              {T(pagina.sectoresParrafo)}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10">
-            {SECTORES.map((sector, index) => (
+            {pagina.sectores.map((sector, index) => (
               <motion.div
                 key={sector.slug}
                 initial={{ opacity: 0, y: 20 }}
@@ -444,17 +435,16 @@ export default function ServiciosContent({
             className="max-w-4xl mb-12 md:mb-16"
           >
             <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Trabajemos juntos
+              {pagina.ctaEyebrow}
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
-              Tu próximo
+              {pagina.ctaTitulo1}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-              proyecto.
+              {pagina.ctaTitulo2}
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-              Con {aniosExperiencia()}+ años de experiencia, más de 260 proyectos y 32.000 toneladas
-              entregadas, estamos listos para ejecutar tu visión en acero.
+              {T(pagina.ctaParrafo)}
             </p>
           </motion.div>
 
@@ -466,17 +456,17 @@ export default function ServiciosContent({
             className="flex flex-col sm:flex-row gap-3 md:gap-4"
           >
             <Link
-              href="/contacto"
+              href={pagina.ctaPrimarioHref}
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700"
             >
-              Solicitar cotización
+              {pagina.ctaPrimarioTexto}
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
-              href="/proyectos"
+              href={pagina.ctaSecundarioHref}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
             >
-              Ver proyectos
+              {pagina.ctaSecundarioTexto}
             </Link>
           </motion.div>
         </div>

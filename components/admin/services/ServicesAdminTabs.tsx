@@ -3,15 +3,115 @@
 import Link from "next/link"
 import { AdminTabsLayout } from "@/components/admin/AdminTabsLayout"
 import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
+import { SingletonEditor, type SingletonSection } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
-import type { Servicio, ProcesoFase } from "@prisma/client"
+import type { Servicio, ProcesoFase, ServiciosPagina } from "@prisma/client"
 import { ExternalLink, Pencil } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface Props {
   servicios: Servicio[]
   procesoFases: ProcesoFase[]
+  paginaConfig: ServiciosPagina | null
 }
+
+// Tab "Página": contenido editable de /servicios (hero, cifras, intro proceso, sectores, CTA)
+const paginaSections: SingletonSection[] = [
+  {
+    id: "hero",
+    title: "Hero",
+    description: "Encabezado superior de la página. Usa {anios} para insertar los años de experiencia automáticamente.",
+    fields: [
+      { name: "heroEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2, placeholder: "Servicios integrales — {anios}+ años de experiencia" },
+      { name: "heroTitulo1", label: "Título línea 1", kind: "text" },
+      { name: "heroTitulo2", label: "Título línea 2 (gris)", kind: "text" },
+      { name: "heroParrafo", label: "Párrafo", kind: "textarea", rows: 3, gridSpan: 2 },
+    ],
+  },
+  {
+    id: "cifras",
+    title: "Franja de cifras",
+    description: 'Valor "AUTO" se calcula solo desde los proyectos (clave: anios/proyectos/toneladas/m2). O escribe un número fijo y deja la clave vacía.',
+    fields: [
+      {
+        name: "stats",
+        label: "Cifras",
+        kind: "objectArray",
+        gridSpan: 2,
+        itemTemplate: { clave: "", valor: "AUTO", sufijo: "+", label: "" },
+        itemFields: [
+          {
+            name: "clave",
+            label: "Origen automático",
+            kind: "select",
+            options: [
+              { value: "", label: "Literal (manual)" },
+              { value: "anios", label: "Años (auto)" },
+              { value: "proyectos", label: "Proyectos (auto)" },
+              { value: "toneladas", label: "Toneladas (auto)" },
+              { value: "m2", label: "m² (auto)" },
+            ],
+          },
+          { name: "valor", label: "Valor", kind: "text", placeholder: 'AUTO o "30"' },
+          { name: "sufijo", label: "Sufijo", kind: "text", placeholder: "+" },
+          { name: "label", label: "Etiqueta", kind: "text", required: true, gridSpan: 2 },
+        ],
+        itemLabel: (item, i) =>
+          typeof item.label === "string" && item.label ? String(item.label) : `Cifra ${String(i + 1).padStart(2, "0")}`,
+      },
+    ],
+  },
+  {
+    id: "proceso",
+    title: "Intro del Proceso Integral",
+    description: 'Los textos de las 4 fases se editan en la pestaña "Proceso Integral".',
+    fields: [
+      { name: "procesoEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "procesoTitulo1", label: "Título línea 1", kind: "text" },
+      { name: "procesoTitulo2", label: "Título línea 2 (gris)", kind: "text" },
+      { name: "procesoParrafo", label: "Párrafo", kind: "textarea", rows: 3, gridSpan: 2 },
+    ],
+  },
+  {
+    id: "sectores",
+    title: "Sectores que atendemos",
+    description: 'Cada tarjeta enlaza a /soluciones/[slug]. El "slug" debe coincidir con una landing existente.',
+    fields: [
+      { name: "sectoresEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "sectoresTitulo1", label: "Título línea 1", kind: "text" },
+      { name: "sectoresTitulo2", label: "Título línea 2 (gris)", kind: "text" },
+      { name: "sectoresParrafo", label: "Párrafo", kind: "textarea", rows: 3, gridSpan: 2 },
+      {
+        name: "sectores",
+        label: "Tarjetas de sector",
+        kind: "objectArray",
+        gridSpan: 2,
+        itemTemplate: { label: "", desc: "", slug: "" },
+        itemFields: [
+          { name: "label", label: "Nombre", kind: "text", required: true, gridSpan: 2 },
+          { name: "desc", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+          { name: "slug", label: "Slug de /soluciones", kind: "text", required: true, gridSpan: 2, placeholder: "puentes-metalicos" },
+        ],
+        itemLabel: (item, i) =>
+          typeof item.label === "string" && item.label ? String(item.label) : `Sector ${String(i + 1).padStart(2, "0")}`,
+      },
+    ],
+  },
+  {
+    id: "cta",
+    title: "CTA final",
+    fields: [
+      { name: "ctaEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "ctaTitulo1", label: "Título línea 1", kind: "text" },
+      { name: "ctaTitulo2", label: "Título línea 2 (gris)", kind: "text" },
+      { name: "ctaParrafo", label: "Párrafo", kind: "textarea", rows: 3, gridSpan: 2 },
+      { name: "ctaPrimarioTexto", label: "Botón primario — texto", kind: "text" },
+      { name: "ctaPrimarioHref", label: "Botón primario — enlace", kind: "text", placeholder: "/contacto" },
+      { name: "ctaSecundarioTexto", label: "Botón secundario — texto", kind: "text" },
+      { name: "ctaSecundarioHref", label: "Botón secundario — enlace", kind: "text", placeholder: "/proyectos" },
+    ],
+  },
+]
 
 const COLOR_OPTIONS = [
   { value: "blue", label: "Azul" },
@@ -76,13 +176,26 @@ const procesoFaseFields: FieldDef[] = [
   { name: "activo", label: "Activo", kind: "boolean" },
 ]
 
-export function ServicesAdminTabs({ servicios, procesoFases }: Props) {
+export function ServicesAdminTabs({ servicios, procesoFases, paginaConfig }: Props) {
   return (
     <AdminTabsLayout
       eyebrow="Contenido del sitio"
       title="Servicios"
-      description="Catálogo de servicios (se muestra en /servicios y /servicios/[slug]) y las 4 fases del Proceso Integral."
+      description="Página /servicios (textos, cifras, sectores, CTA), catálogo de servicios y las 4 fases del Proceso Integral."
       tabs={[
+        {
+          id: "pagina",
+          label: "Página",
+          content: (
+            <SingletonEditor
+              data={paginaConfig}
+              sections={paginaSections}
+              endpoint="/api/admin/services/pagina"
+              sectionTitle="Contenido de la página /servicios"
+              description="Hero, franja de cifras, intro del proceso, sección de sectores y CTA. El catálogo y las fases se editan en las otras pestañas."
+            />
+          ),
+        },
         {
           id: "catalogo",
           label: "Catálogo",
