@@ -7,7 +7,6 @@ import { motion } from 'framer-motion'
 interface Stats {
   totalProyectos: number
   totalToneladas: number
-  valorTotalFormateado: string
   departamentos: number
   añosExperiencia: number
 }
@@ -85,7 +84,7 @@ export function HeroTrayectoria({ stats }: Props) {
           className="border-t border-slate-200"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12 py-10 md:py-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:divide-x md:divide-slate-200">
+            <div className="grid grid-cols-3 gap-6 md:divide-x md:divide-slate-200">
               <div className="md:pl-0 md:pr-6">
                 <div className="font-bebas text-5xl md:text-6xl lg:text-7xl leading-none text-slate-950">
                   {stats.totalProyectos}
@@ -98,8 +97,8 @@ export function HeroTrayectoria({ stats }: Props) {
 
               <div className="md:px-6">
                 <div className="font-bebas text-5xl md:text-6xl lg:text-7xl leading-none text-slate-950">
-                  {stats.totalToneladas.toLocaleString()}
-                  <span className="text-slate-300">t</span>
+                  +{Math.floor(stats.totalToneladas / 1000)}
+                  <span className="text-slate-300">&nbsp;mil</span>
                 </div>
                 <p className="mt-2 text-slate-500 font-lato text-[10px] md:text-xs uppercase tracking-[0.2em]">
                   Toneladas de acero
@@ -112,15 +111,6 @@ export function HeroTrayectoria({ stats }: Props) {
                 </div>
                 <p className="mt-2 text-slate-500 font-lato text-[10px] md:text-xs uppercase tracking-[0.2em]">
                   Departamentos
-                </p>
-              </div>
-
-              <div className="md:px-6">
-                <div className="font-bebas text-5xl md:text-6xl lg:text-7xl leading-none text-slate-950">
-                  {stats.valorTotalFormateado}
-                </div>
-                <p className="mt-2 text-slate-500 font-lato text-[10px] md:text-xs uppercase tracking-[0.2em]">
-                  Valor construido
                 </p>
               </div>
             </div>

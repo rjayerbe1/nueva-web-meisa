@@ -15,10 +15,6 @@ export async function GET() {
       return sum + (p.pesoKg ? Number(p.pesoKg) / 1000 : 0)
     }, 0)
 
-    const valorTotal = proyectos.reduce((sum, p) => {
-      return sum + Number(p.valorContrato)
-    }, 0)
-
     const departamentosUnicos = Array.from(new Set(proyectos.map(p => p.departamento).filter(Boolean)))
 
     const ubicacionesUnicas = Array.from(new Set(proyectos.map(p => p.ubicacion)))
@@ -41,8 +37,6 @@ export async function GET() {
     const stats = {
       totalProyectos,
       totalToneladas: Math.round(totalToneladas),
-      valorTotal,
-      valorTotalFormateado: `$${(valorTotal / 1000000000).toFixed(1)}B`,
       departamentos: departamentosUnicos.length,
       ubicaciones: ubicacionesUnicas.length,
       proyectosPorAño,

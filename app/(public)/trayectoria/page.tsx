@@ -62,7 +62,6 @@ async function getStats() {
     proyectos.reduce((sum, p) => sum + (p.pesoKg ? Number(p.pesoKg) / 1000 : 0), 0)
   )
 
-  const valorTotal = proyectos.reduce((sum, p) => sum + Number(p.valorContrato), 0)
   const departamentosUnicos = new Set(proyectos.map((p) => p.departamento).filter(Boolean))
   const ubicacionesUnicas = new Set(proyectos.map((p) => p.ubicacion))
 
@@ -82,8 +81,6 @@ async function getStats() {
   return {
     totalProyectos,
     totalToneladas,
-    valorTotal,
-    valorTotalFormateado: `$${(valorTotal / 1000000000).toFixed(1)}B`,
     departamentos: departamentosUnicos.size,
     ubicaciones: ubicacionesUnicas.size,
     proyectosPorAño,

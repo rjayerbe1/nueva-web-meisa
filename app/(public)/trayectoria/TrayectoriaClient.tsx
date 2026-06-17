@@ -23,8 +23,6 @@ interface Proyecto {
 interface Stats {
   totalProyectos: number
   totalToneladas: number
-  valorTotal: number
-  valorTotalFormateado: string
   departamentos: number
   añosExperiencia: number
   proyectosPorAño: Record<number, number>
