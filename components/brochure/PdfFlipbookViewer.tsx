@@ -177,11 +177,11 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
 
   const onFlip = (e: any) => setCurrentPage((e?.data ?? 0) + 1)
   const flipApi = () => flipbookRef.current?.pageFlip?.()
-  // react-pageflip: flipNext()/flipPrev() NO avanzan desde la portada cuando
-  // showCover está activo (bug conocido). Navegamos con flip(índice 0-based
-  // explícito), que sí funciona en cualquier página, incluida la portada.
-  const goNext = () => flipApi()?.flip(Math.min(currentPage, numPages - 1))
-  const goPrev = () => flipApi()?.flip(Math.max(0, currentPage - 2))
+  // flipNext()/flipPrev() avanzan/retroceden UN spread sin aritmética de índices
+  // (con showCover={false} no hay tapa dura especial, así que funcionan desde la
+  // página 1). flip(n) se reserva para saltar a una página concreta (miniaturas).
+  const goNext = () => flipApi()?.flipNext()
+  const goPrev = () => flipApi()?.flipPrev()
   const goTo = (n: number) => {
     flipApi()?.flip(n - 1)
     setShowThumbs(false)
@@ -192,15 +192,15 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
         e.preventDefault()
-        flipApi()?.flip(Math.min(currentPage, numPages - 1))
+        flipbookRef.current?.pageFlip?.()?.flipNext()
       } else if (e.key === "ArrowLeft") {
         e.preventDefault()
-        flipApi()?.flip(Math.max(0, currentPage - 2))
+        flipbookRef.current?.pageFlip?.()?.flipPrev()
       }
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [currentPage, numPages])
+  }, [])
 
   const aspect = pageDims ? pageDims.height / pageDims.width : 1.414
   const isMobile = viewport.w > 0 && viewport.w < 768
