@@ -468,7 +468,7 @@ export function CalidadContent({
                     )}
                     {pol.documentoUrl && (
                       <a
-                        href={pol.documentoUrl}
+                        href={`/documento/politica/${pol.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group inline-flex items-center gap-2 mt-5 text-slate-700 font-lato text-sm transition-colors hover:text-slate-950"

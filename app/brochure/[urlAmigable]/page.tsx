@@ -44,5 +44,10 @@ export default async function BrochurePage({ params }: PageProps) {
     notFound()
   }
 
-  return <PdfFlipbookViewer pdfUrl={brochure.pdfUrl} titulo={brochure.titulo} />
+  return (
+    <PdfFlipbookViewer
+      pdfUrl={`/api/documento/brochure/${params.urlAmigable}`}
+      titulo={brochure.titulo}
+    />
+  )
 }

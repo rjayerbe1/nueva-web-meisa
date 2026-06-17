@@ -9,7 +9,10 @@ interface Props {
 }
 
 function ItemButton({ item }: { item: GobiernoItemPublic }) {
-  const url = item.documentoUrl || item.linkExterno
+  // Los PDFs propios se muestran en el visor de solo-lectura (sin descarga);
+  // la URL real del archivo nunca se expone.
+  const hasPdf = !!item.documentoUrl
+  const url = hasPdf ? `/documento/gobierno/${item.id}` : item.linkExterno
   if (!url) {
     return (
       <p className="mt-6 text-slate-400 font-lato text-xs uppercase tracking-[0.15em]">
@@ -18,6 +21,7 @@ function ItemButton({ item }: { item: GobiernoItemPublic }) {
     )
   }
   const isExternal = url.startsWith('http')
+  const newTab = hasPdf || isExternal
   const isForm = item.tipo === 'formulario'
   const label = item.textoBoton || (isForm ? 'Diligenciar formulario' : 'Abrir PDF')
   const Icon = isForm ? ArrowUpRight : FileText
@@ -25,8 +29,8 @@ function ItemButton({ item }: { item: GobiernoItemPublic }) {
   return (
     <a
       href={url}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
+      target={newTab ? '_blank' : undefined}
+      rel={newTab ? 'noopener noreferrer' : undefined}
       className="group mt-6 inline-flex items-center justify-center gap-2.5 px-6 py-3 border border-slate-950/30 text-slate-950 font-lato font-bold text-xs md:text-sm uppercase tracking-wider transition-colors duration-300 hover:border-slate-950 hover:bg-slate-950 hover:text-white self-start"
     >
       <Icon className="w-4 h-4" />

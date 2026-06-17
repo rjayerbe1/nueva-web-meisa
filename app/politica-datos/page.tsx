@@ -39,5 +39,10 @@ export default async function PoliticaDatosPage() {
     notFound()
   }
 
-  return <PdfFlipbookViewer pdfUrl={doc.pdfUrl} titulo={doc.titulo} />
+  return (
+    <PdfFlipbookViewer
+      pdfUrl={`/api/documento/brochure/${BROCHURE_SLUG}`}
+      titulo={doc.titulo}
+    />
+  )
 }

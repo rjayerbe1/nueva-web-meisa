@@ -5,7 +5,6 @@ import dynamic from "next/dynamic"
 import {
   ChevronLeft,
   ChevronRight,
-  Download,
   Maximize2,
   Minimize2,
   ZoomIn,
@@ -54,7 +53,13 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
       try {
         const pdfjs: any = await import("pdfjs-dist")
         pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs"
-        const task = pdfjs.getDocument({ url: pdfUrl })
+        // Descarga única y completa (sin rangos ni streaming): compatible con el
+        // proxy /api/documento que sirve el PDF bufferizado en una sola respuesta.
+        const task = pdfjs.getDocument({
+          url: pdfUrl,
+          disableRange: true,
+          disableStream: true,
+        })
         const pdf = await task.promise
         if (cancelled) return
         const first = await pdf.getPage(1)
@@ -148,6 +153,18 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
     return () => document.removeEventListener("fullscreenchange", onFs)
   }, [])
 
+  // Solo-lectura: bloquear guardar (Ctrl/Cmd+S) e imprimir (Ctrl/Cmd+P)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase()
+      if ((e.ctrlKey || e.metaKey) && (k === "s" || k === "p")) {
+        e.preventDefault()
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [])
+
   const toggleFullscreen = () => {
     const el = containerRef.current
     if (!el) return
@@ -195,8 +212,15 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen w-full bg-black overflow-hidden flex flex-col"
+      onContextMenu={(e) => e.preventDefault()}
+      className="relative min-h-screen w-full bg-black overflow-hidden flex flex-col select-none"
     >
+      {/* Solo-lectura: ocultar al imprimir */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: "@media print { body { display: none !important; } }",
+        }}
+      />
       {/* HEADER */}
       <div
         className="relative z-20 flex items-center justify-between px-4 md:px-6 border-b border-white/10"
@@ -230,15 +254,6 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
           >
             <ZoomIn className="w-4 h-4 md:w-5 md:h-5" />
           </button>
-          <a
-            href={pdfUrl}
-            download
-            className="p-2 text-white/80 hover:text-white hover:bg-white/10 transition"
-            title="Descargar PDF"
-            aria-label="Descargar PDF"
-          >
-            <Download className="w-4 h-4 md:w-5 md:h-5" />
-          </a>
           <button
             onClick={toggleFullscreen}
             className="p-2 text-white/80 hover:text-white hover:bg-white/10 transition"
