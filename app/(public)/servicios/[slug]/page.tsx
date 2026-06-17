@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ServicioDetailEnhanced from './ServicioDetailEnhanced'
-import { ServiceSchema } from '@/components/seo/JsonLdSchema'
+import { ServiceSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 
@@ -110,7 +110,9 @@ async function getServicio(slug: string) {
       : [],
     tablaComparativa: servicio.tablaComparativa || { headers: [], rows: [] },
     videoDemostrativo: servicio.videoDemostrativo,
-    preguntasFrecuentes: Array.isArray(servicio.preguntasFrecuentes) ? servicio.preguntasFrecuentes : [],
+    preguntasFrecuentes: (Array.isArray(servicio.preguntasFrecuentes)
+      ? servicio.preguntasFrecuentes
+      : []) as Array<{ pregunta: string; respuesta: string }>,
     recursosDescargables: Array.isArray(servicio.recursosDescargables) ? servicio.recursosDescargables : []
   }
 }
@@ -203,6 +205,9 @@ export default async function ServicioPage({ params }: ServicioPageProps) {
         url={`https://meisa.com.co/servicios/${params.slug}`}
         image={servicio.imagen || undefined}
       />
+      {servicio.preguntasFrecuentes.length > 0 && (
+        <FAQSchema items={servicio.preguntasFrecuentes as Array<{ pregunta: string; respuesta: string }>} />
+      )}
       <ServicioDetailEnhanced
         servicio={servicio}
         otrosServicios={otrosServicios}

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft, BookOpen, Shield, BarChart3, GitBranch, Wrench, Cpu } from 'lucide-react'
+import { ArrowRight, ArrowLeft, BookOpen, Shield, BarChart3, GitBranch, Wrench, Cpu, HelpCircle } from 'lucide-react'
 import * as Icons from 'lucide-react'
 
 interface TecnologiaItem {
@@ -38,6 +38,7 @@ interface ServicioData {
   imagenesGaleria?: string[]
   estadisticas?: Array<{ label: string; value: string; icon: string }>
   procesoPasos?: Array<{ title: string; description: string; icon: string }>
+  preguntasFrecuentes?: Array<{ pregunta: string; respuesta: string }>
 }
 
 interface OtroServicio {
@@ -86,6 +87,9 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
   }
   if (servicio.procesoPasos && servicio.procesoPasos.length > 0) {
     sections.push({ id: 'proceso', label: 'Proceso', icon: GitBranch })
+  }
+  if (servicio.preguntasFrecuentes && servicio.preguntasFrecuentes.length > 0) {
+    sections.push({ id: 'faq', label: 'Preguntas', icon: HelpCircle })
   }
 
   // Scroll spy + ocultar sticky cuando entra al área "related/CTA"
@@ -220,12 +224,14 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
           Se oculta con fade cuando el usuario llega a "Otros servicios" + CTA final. */}
       {sections.length > 1 && (
         <div
-          className={`sticky top-0 z-40 bg-slate-950/95 border-y border-white/10 transition-opacity duration-300 ${
+          className={`hidden lg:block sticky top-0 z-40 bg-slate-950/95 border-y border-white/10 transition-opacity duration-300 ${
             hideNav ? 'opacity-0 pointer-events-none' : 'opacity-100'
           }`}
         >
-          <div className="max-w-7xl mx-auto relative">
-            <nav className="flex overflow-x-auto lg:overflow-visible scrollbar-hide scroll-smooth px-4 lg:px-0 lg:justify-stretch">
+          {/* Solo desktop (lg+): en móvil/tablet se oculta para no chocar con el
+              botón MENU flotante (fixed esquina, z-50); ahí se navega scrolleando. */}
+          <div className="max-w-7xl mx-auto">
+            <nav className="flex justify-stretch">
               {sections.map((section) => {
                 const Icon = section.icon
                 const isActive = activeSection === section.id
@@ -233,12 +239,12 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className={`group relative flex items-center justify-center gap-2.5 px-4 py-3.5 whitespace-nowrap transition-colors duration-200 flex-shrink-0 lg:flex-1 lg:min-w-0 border-l first:border-l-0 border-white/10 ${
+                    className={`group relative flex items-center justify-center gap-2.5 px-4 py-3.5 whitespace-nowrap transition-colors duration-200 flex-1 min-w-0 border-l first:border-l-0 border-white/10 ${
                       isActive ? 'bg-white text-slate-950' : 'text-white/70 hover:text-white'
                     }`}
                   >
                     <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2} />
-                    <span className="font-lato font-bold text-[11px] lg:text-xs uppercase tracking-[0.1em]">
+                    <span className="font-lato font-bold text-xs uppercase tracking-[0.1em] truncate">
                       {section.label}
                     </span>
                     {isActive && (
@@ -610,6 +616,54 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 )
               })}
             </ul>
+          </div>
+        </section>
+      )}
+
+      {/* Preguntas frecuentes */}
+      {servicio.preguntasFrecuentes && servicio.preguntasFrecuentes.length > 0 && (
+        <section id="faq" className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.6 }}
+                className="lg:col-span-5"
+              >
+                <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                  Preguntas frecuentes
+                </p>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-white">
+                  Resolvemos
+                </h2>
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-white/40">
+                  tus dudas.
+                </h3>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="lg:col-span-7"
+              >
+                <ul className="divide-y divide-white/10 border-y border-white/10">
+                  {servicio.preguntasFrecuentes.map((faq, idx) => (
+                    <li key={idx} className="py-6">
+                      <h4 className="text-xl md:text-2xl font-bebas uppercase leading-tight text-white mb-3">
+                        {faq.pregunta}
+                      </h4>
+                      <p className="text-white/70 font-lato text-sm md:text-base leading-relaxed">
+                        {faq.respuesta}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </div>
           </div>
         </section>
       )}

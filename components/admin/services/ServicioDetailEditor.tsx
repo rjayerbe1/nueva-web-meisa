@@ -83,29 +83,43 @@ const especificacionesFields: FieldDef[] = [
   {
     name: "tecnologias",
     label: "Tecnologías",
-    kind: "stringArray",
-    multiline: true,
-    rows: 2,
+    kind: "objectArray",
     gridSpan: 2,
-    hint: "Software, herramientas y tecnologías que usa este servicio. Un ítem por línea.",
+    hint: "Software y herramientas. El detalle muestra cada una como tarjeta (nombre + descripción).",
+    itemTemplate: { nombre: "", descripcion: "" },
+    itemFields: [
+      { name: "nombre", label: "Nombre", kind: "text", required: true, gridSpan: 2, placeholder: "Tekla Structures" },
+      { name: "descripcion", label: "Descripción", kind: "textarea", rows: 2, gridSpan: 2 },
+    ],
+    itemLabel: (item, i) =>
+      typeof item.nombre === "string" && item.nombre
+        ? String(item.nombre)
+        : `Tecnología ${String(i + 1).padStart(2, "0")}`,
   },
   {
     name: "normativas",
     label: "Normativas aplicables",
-    kind: "stringArray",
-    multiline: true,
-    rows: 2,
+    kind: "json",
+    rows: 10,
     gridSpan: 2,
-    hint: "Códigos, estándares y normas cumplidas (ej. 'NSR-10 - Reglamento…').",
+    hint: 'Forma: { "titulo": "Normativas aplicables", "items": ["NSR-10 — …", "AWS D1.1 — …"] }. Se muestra en el listado y en el detalle.',
   },
   {
     name: "equipamiento",
     label: "Equipamiento",
-    kind: "stringArray",
-    multiline: true,
-    rows: 2,
+    kind: "objectArray",
     gridSpan: 2,
-    hint: "Equipos e instrumentos utilizados (uno por línea).",
+    hint: "Maquinaria y equipos. El detalle muestra nombre, capacidad y cantidad.",
+    itemTemplate: { nombre: "", capacidad: "", cantidad: undefined },
+    itemFields: [
+      { name: "nombre", label: "Nombre", kind: "text", required: true, gridSpan: 2, placeholder: "Puentes grúa" },
+      { name: "capacidad", label: "Capacidad", kind: "text", gridSpan: 2, placeholder: "De 5 a 20 toneladas" },
+      { name: "cantidad", label: "Cantidad", kind: "number" },
+    ],
+    itemLabel: (item, i) =>
+      typeof item.nombre === "string" && item.nombre
+        ? String(item.nombre)
+        : `Equipo ${String(i + 1).padStart(2, "0")}`,
   },
   {
     name: "equipos",
@@ -114,7 +128,7 @@ const especificacionesFields: FieldDef[] = [
     multiline: true,
     rows: 2,
     gridSpan: 2,
-    hint: "Roles o áreas que participan en el servicio.",
+    hint: "Roles o áreas que participan en el servicio (no se muestra en el detalle actual).",
   },
 ]
 

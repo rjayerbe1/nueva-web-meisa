@@ -23,6 +23,26 @@ async function getProcesoIntegral() {
 }
 
 
+// Cifras reales derivadas de la DB (mismo origen que /soluciones → nunca se contradicen)
+async function getStats() {
+  const agg = await prisma.proyecto.aggregate({
+    where: { visible: true },
+    _count: { _all: true },
+    _sum: { toneladas: true, areaTotal: true },
+  })
+  const floorTo = (n: number, step: number) => Math.floor(n / step) * step
+  const fmt = (n: number) => n.toLocaleString('es-CO')
+  const proyectos = agg._count._all
+  const toneladas = Math.round(Number(agg._sum.toneladas || 0))
+  const m2 = Math.round(Number(agg._sum.areaTotal || 0))
+  return [
+    { value: `${aniosExperiencia()}`, suffix: '+', label: 'Años de experiencia' },
+    { value: fmt(floorTo(proyectos, 10)), suffix: '+', label: 'Proyectos entregados' },
+    { value: fmt(floorTo(toneladas, 1000)), suffix: '+', label: 'Toneladas de acero' },
+    { value: fmt(floorTo(m2, 10000)), suffix: '+', label: 'm² construidos' },
+  ]
+}
+
 async function getServicios() {
   const servicios = await prisma.servicio.findMany({
     where: { activo: true },
@@ -55,9 +75,10 @@ async function getServicios() {
 }
 
 export default async function ServiciosPage() {
-  const [servicios, procesoIntegral] = await Promise.all([
+  const [servicios, procesoIntegral, stats] = await Promise.all([
     getServicios(),
     getProcesoIntegral(),
+    getStats(),
   ])
 
   return (
@@ -72,6 +93,7 @@ export default async function ServiciosPage() {
         <ServiciosContent
           servicios={servicios}
           procesoIntegral={procesoIntegral}
+          stats={stats}
         />
       </Suspense>
     </>

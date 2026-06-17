@@ -1,48 +1,54 @@
-// Imágenes placeholder para cada servicio - Imágenes locales
+// Fallbacks de imágenes por servicio — fotos reales de MEISA en GCS.
+// (El contenido real vive en la DB: Servicio.imagen / Servicio.imagenesGaleria.
+//  Estos mapas son solo respaldo. NO usar stock/Unsplash — design system.)
+const GCS = 'https://storage.googleapis.com/meisa-imagenes/site'
+
 export const serviceImages: Record<string, string[]> = {
   'consultoria-en-diseno-estructural': [
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/consultoria-1.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/consultoria-2.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/consultoria-3.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/consultoria-4.jpg'
+    `${GCS}/hero/estructura-perspectiva.jpg`,
+    `${GCS}/about/meisa-planta-aerea.jpg`,
+    `${GCS}/hero/edificios.jpg`,
+    `${GCS}/proyectos/obra-construccion.jpg`,
   ],
   'fabricacion-de-estructuras-metalicas': [
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/fabricacion-1.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/fabricacion-2.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/fabricacion-3.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/fabricacion-4.jpg'
+    `${GCS}/about/meisa-planta-aerea.jpg`,
+    `${GCS}/hero/hero-construccion-industrial.jpg`,
+    `${GCS}/projects/industria/tecnofar/TECNOFAR-1.jpg`,
+    `${GCS}/proyectos/obra-construccion.jpg`,
   ],
   'montaje-de-estructuras': [
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/montaje-1.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/montaje-2.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/montaje-3.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/montaje-4.jpg'
+    `${GCS}/hero/montaje-grua.jpg`,
+    `${GCS}/hero/ciclopuente-atardecer.jpg`,
+    `${GCS}/projects/edificios/tequendama/TEQUENDAMA-PARKING-CALI.jpg`,
+    `${GCS}/proyectos/puente-destacado.jpg`,
   ],
   'gestion-integral-de-proyectos': [
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/gestion-1.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/gestion-2.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/gestion-3.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/gestion-4.jpg'
-  ]
+    `${GCS}/hero/edificios.jpg`,
+    `${GCS}/hero/coliseo-estructuras-rojas.jpg`,
+    `${GCS}/proyectos/puente-destacado.jpg`,
+    `${GCS}/hero/techo-metalico.jpg`,
+  ],
 }
 
-// Imágenes de fondo únicas para cada servicio - usando imágenes de Unsplash relevantes
+// Imagen de fondo del hero en /servicios/[slug] (la usa getServiceBackgroundImage).
 export const serviceBackgroundImages: Record<string, string> = {
-  'consultoria-en-diseno-estructural': 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070', // Arquitecto con planos
-  'fabricacion-de-estructuras-metalicas': 'https://images.unsplash.com/photo-1565043666747-69f6646db940?q=80&w=2074', // Soldadura industrial
-  'montaje-de-estructuras': 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070', // Construcción con grúas
-  'gestion-integral-de-proyectos': 'https://images.unsplash.com/photo-1664906225771-ad3c3c585c4a?q=80&w=2070' // Gestión de proyectos
+  'consultoria-en-diseno-estructural': `${GCS}/hero/estructura-perspectiva.jpg`,
+  'fabricacion-de-estructuras-metalicas': `${GCS}/about/meisa-planta-aerea.jpg`,
+  'montaje-de-estructuras': `${GCS}/hero/montaje-grua.jpg`,
+  'gestion-integral-de-proyectos': `${GCS}/hero/coliseo-estructuras-rojas.jpg`,
 }
 
 export function getServiceImages(slug: string): string[] {
-  return serviceImages[slug] || [
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/default-1.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/default-2.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/default-3.jpg',
-    'https://storage.googleapis.com/meisa-imagenes/site/servicios/default-4.jpg'
-  ]
+  return (
+    serviceImages[slug] || [
+      `${GCS}/hero/estructura-perspectiva.jpg`,
+      `${GCS}/hero/hero-construccion-industrial.jpg`,
+      `${GCS}/hero/montaje-grua.jpg`,
+      `${GCS}/hero/edificios.jpg`,
+    ]
+  )
 }
 
 export function getServiceBackgroundImage(slug: string): string {
-  return serviceBackgroundImages[slug] || 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070'
+  return serviceBackgroundImages[slug] || `${GCS}/hero/estructura-perspectiva.jpg`
 }

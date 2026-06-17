@@ -4,9 +4,20 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { aniosExperiencia } from '@/lib/site-meta'
+import { StatsStrip, type StatItem } from '@/components/sections/StatsStrip'
+
+// Sectores → landings SEO /soluciones (interlinking)
+const SECTORES = [
+  { label: 'Edificaciones', desc: 'Edificios institucionales, oficinas y vivienda en altura.', slug: 'edificios-en-estructura-metalica' },
+  { label: 'Bodegas e industria', desc: 'Naves industriales, bodegas y plantas de proceso.', slug: 'estructura-metalica-para-bodegas' },
+  { label: 'Centros comerciales', desc: 'Construcción y ampliación de centros comerciales.', slug: 'estructura-metalica-centros-comerciales' },
+  { label: 'Puentes', desc: 'Puentes vehiculares y peatonales en acero.', slug: 'puentes-metalicos' },
+  { label: 'Escenarios deportivos', desc: 'Coliseos, estadios y complejos deportivos.', slug: 'estructura-metalica-escenarios-deportivos' },
+  { label: 'Cubiertas y fachadas', desc: 'Cubiertas de gran luz y fachadas metálicas.', slug: 'cubiertas-metalicas' },
+]
 
 interface ServicioData {
   id: string
@@ -37,15 +48,15 @@ interface ProcesoStep {
 interface ServiciosContentProps {
   servicios: ServicioData[]
   procesoIntegral: ProcesoStep[]
+  stats: StatItem[]
 }
 
 export default function ServiciosContent({
   servicios,
   procesoIntegral,
+  stats,
 }: ServiciosContentProps) {
   const [activeSection, setActiveSection] = useState('')
-  const [showLeftArrow, setShowLeftArrow] = useState(false)
-  const [showRightArrow, setShowRightArrow] = useState(false)
   const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({})
   const navRef = useRef<HTMLDivElement>(null)
 
@@ -91,34 +102,6 @@ export default function ServiciosContent({
     }
   }, [activeSection])
 
-  // Detectar si hay contenido scrolleable en la navegación
-  useEffect(() => {
-    const checkScrollIndicators = () => {
-      if (navRef.current) {
-        const navContainer = navRef.current.querySelector('nav')
-        if (navContainer) {
-          setShowLeftArrow(navContainer.scrollLeft > 0)
-          setShowRightArrow(navContainer.scrollLeft < navContainer.scrollWidth - navContainer.clientWidth - 1)
-        }
-      }
-    }
-
-    checkScrollIndicators()
-    window.addEventListener('resize', checkScrollIndicators)
-
-    const navContainer = navRef.current?.querySelector('nav')
-    if (navContainer) {
-      navContainer.addEventListener('scroll', checkScrollIndicators, { passive: true })
-    }
-
-    return () => {
-      window.removeEventListener('resize', checkScrollIndicators)
-      if (navContainer) {
-        navContainer.removeEventListener('scroll', checkScrollIndicators)
-      }
-    }
-  }, [servicios])
-
   const scrollToSection = (sectionId: string) => {
     const element = sectionsRef.current[sectionId]
     if (element) {
@@ -126,14 +109,6 @@ export default function ServiciosContent({
       const elementPosition = element.offsetTop - navHeight - 20
       window.scrollTo({ top: elementPosition, behavior: 'smooth' })
     }
-  }
-
-  const scrollNavLeft = () => {
-    navRef.current?.querySelector('nav')?.scrollBy({ left: -240, behavior: 'smooth' })
-  }
-
-  const scrollNavRight = () => {
-    navRef.current?.querySelector('nav')?.scrollBy({ left: 240, behavior: 'smooth' })
   }
 
   const getIcon = (iconName: string) => {
@@ -173,13 +148,17 @@ export default function ServiciosContent({
                 en acero.
               </h2>
               <p className="mt-8 text-base md:text-lg text-white/70 font-lato leading-relaxed max-w-2xl">
-                Desde diseño estructural hasta montaje en obra. Un proceso integrado que combina
-                expertise técnico, tecnología BIM y control de calidad certificado.
+                Diseñamos, fabricamos en plantas propias y montamos en obra. Un solo equipo controla
+                todo el flujo —del modelo BIM al acero instalado— bajo un mismo Sistema Integrado
+                de Gestión.
               </p>
             </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Cifras reales — derivadas de la DB */}
+      <StatsStrip stats={stats} />
 
       {/* Proceso Integral — Dark brutalist */}
       <section className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
@@ -250,25 +229,16 @@ export default function ServiciosContent({
       </section>
 
       {/* Sticky Nav brutalist — sin blur, sin rounded.
-          Desktop: reparte el ancho con flex-1 (todos los servicios caben).
-          Mobile: scroll horizontal con flechas si hay overflow. */}
+          Solo desktop (lg+): ahí los servicios se reparten con flex-1 y caben sin
+          solaparse. En móvil/tablet se oculta para no chocar con el botón MENU
+          flotante (fixed esquina, z-50); ahí se navega scrolleando la página
+          (mismo criterio que la barra de Procesos & Tecnologías). */}
       <div
         ref={navRef}
-        className="sticky top-0 z-40 bg-slate-950/95 border-y border-white/10"
+        className="hidden lg:block sticky top-0 z-40 bg-slate-950/95 border-y border-white/10"
       >
-        <div className="max-w-7xl mx-auto lg:px-0 relative">
-          {/* Flechas de scroll — solo aparecen en mobile si hay overflow */}
-          {showLeftArrow && (
-            <button
-              onClick={scrollNavLeft}
-              className="lg:hidden absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-slate-950 border border-white/20 hover:border-white p-2 transition-colors"
-              aria-label="Scroll izquierda"
-            >
-              <ChevronLeft className="w-5 h-5 text-white" strokeWidth={2} />
-            </button>
-          )}
-
-          <nav className="flex overflow-x-auto lg:overflow-visible scrollbar-hide scroll-smooth px-10 lg:px-0 lg:justify-stretch">
+        <div className="max-w-7xl mx-auto">
+          <nav className="flex justify-stretch">
             {servicios.map((servicio) => {
               const Icon = getIcon(servicio.icono)
               const isActive = activeSection === servicio.id
@@ -277,12 +247,12 @@ export default function ServiciosContent({
                   key={servicio.id}
                   data-service-id={servicio.id}
                   onClick={() => scrollToSection(servicio.id)}
-                  className={`group relative flex items-center justify-center gap-2.5 px-4 py-3.5 whitespace-nowrap transition-colors duration-200 flex-shrink-0 lg:flex-1 lg:min-w-0 border-l first:border-l-0 border-white/10 ${
+                  className={`group relative flex items-center justify-center gap-2.5 px-4 py-3.5 whitespace-nowrap transition-colors duration-200 flex-1 min-w-0 border-l first:border-l-0 border-white/10 ${
                     isActive ? 'bg-white text-slate-950' : 'text-white/70 hover:text-white'
                   }`}
                 >
                   <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2} />
-                  <span className="font-lato font-bold text-[11px] lg:text-xs uppercase tracking-[0.1em] lg:truncate">
+                  <span className="font-lato font-bold text-xs uppercase tracking-[0.1em] truncate">
                     {servicio.titulo}
                   </span>
                   {isActive && (
@@ -292,16 +262,6 @@ export default function ServiciosContent({
               )
             })}
           </nav>
-
-          {showRightArrow && (
-            <button
-              onClick={scrollNavRight}
-              className="lg:hidden absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-slate-950 border border-white/20 hover:border-white p-2 transition-colors"
-              aria-label="Scroll derecha"
-            >
-              <ChevronRight className="w-5 h-5 text-white" strokeWidth={2} />
-            </button>
-          )}
         </div>
       </div>
 
@@ -413,8 +373,68 @@ export default function ServiciosContent({
         )
       })}
 
+      {/* Sectores que atendemos — interlinking a landings /soluciones */}
+      <section className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6 }}
+            className="mb-12 md:mb-16 max-w-4xl"
+          >
+            <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+              Dónde trabajamos
+            </p>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
+              Sectores
+            </h2>
+            <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
+              que atendemos.
+            </h3>
+            <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
+              Seis frentes en los que hemos construido en acero a lo largo del país.
+              Cada uno con su propia ingeniería, normativa y logística.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10">
+            {SECTORES.map((sector, index) => (
+              <motion.div
+                key={sector.slug}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.5, delay: (index % 3) * 0.08 }}
+              >
+                <Link
+                  href={`/soluciones/${sector.slug}`}
+                  className="group relative flex h-full flex-col justify-between bg-slate-950 hover:bg-slate-900 transition-colors p-6 md:p-8"
+                >
+                  <div>
+                    <span className="font-bebas text-4xl md:text-5xl leading-none text-white/20">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h4 className="mt-4 text-2xl md:text-3xl font-bebas uppercase leading-[0.95] text-white">
+                      {sector.label}
+                    </h4>
+                    <p className="mt-3 text-white/60 font-lato text-sm leading-relaxed">
+                      {sector.desc}
+                    </p>
+                  </div>
+                  <span className="mt-6 inline-flex items-center gap-2 text-white/70 group-hover:text-white font-lato font-bold text-xs uppercase tracking-[0.15em] transition-colors">
+                    Ver soluciones
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Final — Dark brutalist, rojo único */}
-      <section className="relative bg-slate-950 py-20 md:py-28">
+      <section className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -433,8 +453,8 @@ export default function ServiciosContent({
               proyecto.
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-              Con {aniosExperiencia()}+ años de experiencia y más de 500 proyectos entregados,
-              estamos listos para ejecutar tu visión en acero.
+              Con {aniosExperiencia()}+ años de experiencia, más de 260 proyectos y 32.000 toneladas
+              entregadas, estamos listos para ejecutar tu visión en acero.
             </p>
           </motion.div>
 
