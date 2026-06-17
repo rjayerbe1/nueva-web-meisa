@@ -173,12 +173,31 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
   }
 
   const onFlip = (e: any) => setCurrentPage((e?.data ?? 0) + 1)
-  const goNext = () => flipbookRef.current?.pageFlip?.()?.flipNext()
-  const goPrev = () => flipbookRef.current?.pageFlip?.()?.flipPrev()
+  const flipApi = () => flipbookRef.current?.pageFlip?.()
+  // react-pageflip: flipNext()/flipPrev() NO avanzan desde la portada cuando
+  // showCover está activo (bug conocido). Navegamos con flip(índice 0-based
+  // explícito), que sí funciona en cualquier página, incluida la portada.
+  const goNext = () => flipApi()?.flip(Math.min(currentPage, numPages - 1))
+  const goPrev = () => flipApi()?.flip(Math.max(0, currentPage - 2))
   const goTo = (n: number) => {
-    flipbookRef.current?.pageFlip?.()?.flip(n - 1)
+    flipApi()?.flip(n - 1)
     setShowThumbs(false)
   }
+
+  // Navegación con teclado (← →) — alternativa fiable a las flechas del footer
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault()
+        flipApi()?.flip(Math.min(currentPage, numPages - 1))
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault()
+        flipApi()?.flip(Math.max(0, currentPage - 2))
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [currentPage, numPages])
 
   const aspect = pageDims ? pageDims.height / pageDims.width : 1.414
   const isMobile = viewport.w > 0 && viewport.w < 768
