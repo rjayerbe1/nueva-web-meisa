@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { PdfFlipbookViewer } from "@/components/brochure/PdfFlipbookViewer"
+import { PdfViewerClient } from "@/components/brochure/PdfViewerClient"
 
 const BROCHURE_SLUG = "sagrilaft"
 
@@ -40,7 +40,7 @@ export default async function SagrilaftPage() {
   }
 
   return (
-    <PdfFlipbookViewer
+    <PdfViewerClient
       pdfUrl={`/api/documento/brochure/${BROCHURE_SLUG}`}
       titulo={doc.titulo}
     />

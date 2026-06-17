@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { PdfFlipbookViewer } from "@/components/brochure/PdfFlipbookViewer"
+import { PdfViewerClient } from "@/components/brochure/PdfViewerClient"
 
 export const dynamic = "force-dynamic"
 
@@ -53,6 +53,6 @@ export default async function DocumentoPage({
   if (!doc || !doc.hasPdf) notFound()
 
   return (
-    <PdfFlipbookViewer pdfUrl={`/api/documento/${tipo}/${id}`} titulo={doc.titulo} />
+    <PdfViewerClient pdfUrl={`/api/documento/${tipo}/${id}`} titulo={doc.titulo} />
   )
 }

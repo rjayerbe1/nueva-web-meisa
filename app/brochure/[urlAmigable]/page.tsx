@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { PdfFlipbookViewer } from "@/components/brochure/PdfFlipbookViewer"
+import { PdfViewerClient } from "@/components/brochure/PdfViewerClient"
 
 interface PageProps {
   params: { urlAmigable: string }
@@ -45,7 +45,7 @@ export default async function BrochurePage({ params }: PageProps) {
   }
 
   return (
-    <PdfFlipbookViewer
+    <PdfViewerClient
       pdfUrl={`/api/documento/brochure/${params.urlAmigable}`}
       titulo={brochure.titulo}
     />

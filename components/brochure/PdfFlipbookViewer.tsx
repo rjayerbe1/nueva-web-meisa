@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useCallback } from "react"
-import dynamic from "next/dynamic"
+import HTMLFlipBookBase from "react-pageflip"
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,7 +13,10 @@ import {
   X,
 } from "lucide-react"
 
-const HTMLFlipBook = dynamic(() => import("react-pageflip"), { ssr: false }) as any
+// react-pageflip importado estático. Este componente solo se carga en cliente
+// (vía PdfViewerClient con dynamic ssr:false), así el ref a HTMLFlipBook es
+// directo y su API imperativa (pageFlip().flip/flipNext) funciona.
+const HTMLFlipBook = HTMLFlipBookBase as any
 
 interface PdfFlipbookViewerProps {
   pdfUrl: string
