@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, MessageCircle, ArrowLeft, Check } from 'lucide-react'
 
@@ -55,6 +55,59 @@ function getSessionId(): string {
 
 const LEAD_INICIAL = { nombre: '', email: '', telefono: '', empresa: '', mensaje: '', website: '' }
 
+/** Render inline de **negrillas** y [enlaces](url) dentro de una línea. */
+function renderInline(text: string): ReactNode[] {
+  const out: ReactNode[] = []
+  const re = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g
+  let last = 0
+  let i = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index))
+    if (m[1] !== undefined) {
+      out.push(<strong key={i}>{m[1]}</strong>)
+    } else {
+      out.push(
+        <a
+          key={i}
+          href={m[3]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-slate-950"
+        >
+          {m[2]}
+        </a>,
+      )
+    }
+    last = re.lastIndex
+    i++
+  }
+  if (last < text.length) out.push(text.slice(last))
+  return out
+}
+
+/** Renderiza el mensaje del asistente: negrillas, viñetas y saltos de línea. */
+function FormattedMessage({ text }: { text: string }) {
+  const lines = text.split('\n')
+  return (
+    <>
+      {lines.map((line, idx) => {
+        if (line.trim() === '') return <div key={idx} className="h-1.5" />
+        if (/^\s*[*-]\s+/.test(line)) {
+          const clean = line.replace(/^\s*[*-]\s+/, '')
+          return (
+            <div key={idx} className="flex gap-1.5">
+              <span className="select-none">•</span>
+              <span>{renderInline(clean)}</span>
+            </div>
+          )
+        }
+        return <div key={idx}>{renderInline(line)}</div>
+      })}
+    </>
+  )
+}
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [hint, setHint] = useState(false)
@@ -75,12 +128,19 @@ export function ChatWidget() {
   const turnstileToken = useRef<string>('')
   const turnstileWidgetId = useRef<string>('')
 
-  // Globo de invitación: aparece una vez por navegador a los ~3.5s
+  // Globo de invitación: aparece una vez por navegador, SOLO después de que el
+  // usuario hizo scroll (~0.8 de pantalla). Arriba del todo, solo el botón.
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.localStorage.getItem('meisa_chat_hint_seen')) return
-    const t = setTimeout(() => setHint(true), 3500)
-    return () => clearTimeout(t)
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.8) {
+        setHint(true)
+        window.removeEventListener('scroll', onScroll)
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const cerrarHint = useCallback(() => {
@@ -343,13 +403,17 @@ export function ChatWidget() {
                     className={`flex ${m.rol === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] px-3.5 py-2.5 font-lato text-sm leading-relaxed whitespace-pre-wrap ${
+                      className={`max-w-[85%] px-3.5 py-2.5 font-lato text-sm leading-relaxed ${
                         m.rol === 'user'
-                          ? 'bg-slate-950 text-white'
+                          ? 'bg-slate-950 text-white whitespace-pre-wrap'
                           : 'bg-white border border-slate-200 text-slate-800'
                       }`}
                     >
-                      {m.contenido}
+                      {m.rol === 'assistant' ? (
+                        <FormattedMessage text={m.contenido} />
+                      ) : (
+                        m.contenido
+                      )}
                     </div>
                   </div>
                 ))}
