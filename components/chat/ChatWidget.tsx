@@ -2,18 +2,15 @@
 
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, MessageCircle, ArrowLeft, Check } from 'lucide-react'
+import { X, Send, MessageCircle, ArrowLeft, Check, Mail } from 'lucide-react'
 
 /**
- * Asistente comercial IA — widget flotante con captura de leads.
+ * Asistente comercial IA — widget flotante con captura de leads y envío de la
+ * conversación por correo. Diseño brutalist editorial. FAB abajo-derecha, a la
+ * izquierda del botón de WhatsApp. Se muestra solo si NEXT_PUBLIC_CHAT_ENABLED.
  *
- * Diseño: brutalist editorial (font-bebas títulos, font-lato cuerpo, bordes
- * rectos, sin glassmorphism). FAB negro en la esquina INFERIOR DERECHA, a la
- * IZQUIERDA del botón verde de WhatsApp (misma fila). Ícono de globo de chat +
- * globo de invitación para que se entienda que es un asistente.
- *
- * Se muestra solo si NEXT_PUBLIC_CHAT_ENABLED === 'true'. El anti-bot Turnstile
- * se activa solo si NEXT_PUBLIC_TURNSTILE_SITE_KEY está definido.
+ * Datos personales (lead / correo): exigen autorización de tratamiento de datos
+ * (Ley 1581/2012) vía checkbox obligatorio enlazado a /politica-datos.
  */
 
 const ENABLED = process.env.NEXT_PUBLIC_CHAT_ENABLED === 'true'
@@ -108,10 +105,42 @@ function FormattedMessage({ text }: { text: string }) {
   )
 }
 
+/** Checkbox de autorización de tratamiento de datos (Habeas Data, Ley 1581). */
+function HabeasCheckbox({
+  checked,
+  onChange,
+}: {
+  checked: boolean
+  onChange: (v: boolean) => void
+}) {
+  return (
+    <label className="flex items-start gap-2 cursor-pointer">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="mt-0.5 w-3.5 h-3.5 accent-red-600 flex-shrink-0"
+      />
+      <span className="text-[10px] text-slate-500 font-lato leading-snug">
+        Autorizo a MEISA a tratar mis datos personales con fines comerciales según su{' '}
+        <a
+          href="/politica-datos"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-slate-700"
+        >
+          política de tratamiento de datos
+        </a>
+        .
+      </span>
+    </label>
+  )
+}
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [hint, setHint] = useState(false)
-  const [vista, setVista] = useState<'chat' | 'lead'>('chat')
+  const [vista, setVista] = useState<'chat' | 'lead' | 'correo'>('chat')
   const [mensajes, setMensajes] = useState<Mensaje[]>([SALUDO])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -119,17 +148,24 @@ export function ChatWidget() {
 
   // Lead
   const [lead, setLead] = useState(LEAD_INICIAL)
+  const [leadHabeas, setLeadHabeas] = useState(false)
   const [leadEnviando, setLeadEnviando] = useState(false)
   const [leadEnviado, setLeadEnviado] = useState(false)
   const [leadError, setLeadError] = useState('')
+
+  // Recibir conversación por correo (transcript)
+  const [correoEmail, setCorreoEmail] = useState('')
+  const [correoHabeas, setCorreoHabeas] = useState(false)
+  const [correoWebsite, setCorreoWebsite] = useState('') // honeypot
+  const [correoEnviando, setCorreoEnviando] = useState(false)
+  const [correoError, setCorreoError] = useState('')
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const turnstileRef = useRef<HTMLDivElement>(null)
   const turnstileToken = useRef<string>('')
   const turnstileWidgetId = useRef<string>('')
 
-  // Globo de invitación: aparece una vez por navegador, SOLO después de que el
-  // usuario hizo scroll (~0.8 de pantalla). Arriba del todo, solo el botón.
+  // Globo de invitación: una vez por navegador, SOLO después de hacer scroll.
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.localStorage.getItem('meisa_chat_hint_seen')) return
@@ -249,6 +285,10 @@ export function ChatWidget() {
         setLeadError('Por favor ingresa tu nombre y un correo válido.')
         return
       }
+      if (!leadHabeas) {
+        setLeadError('Debes autorizar el tratamiento de datos para continuar.')
+        return
+      }
       setLeadEnviando(true)
       try {
         const res = await fetch('/api/chat/lead', {
@@ -261,6 +301,7 @@ export function ChatWidget() {
             telefono: lead.telefono.trim() || undefined,
             empresa: lead.empresa.trim() || undefined,
             mensaje: lead.mensaje.trim() || undefined,
+            habeasData: true,
             website: lead.website,
             turnstileToken: turnstileToken.current || undefined,
           }),
@@ -272,6 +313,7 @@ export function ChatWidget() {
           setLeadEnviado(true)
           setVista('chat')
           setLead(LEAD_INICIAL)
+          setLeadHabeas(false)
           setMensajes((prev) => [
             ...prev,
             {
@@ -290,7 +332,60 @@ export function ChatWidget() {
         setLeadEnviando(false)
       }
     },
-    [lead, leadEnviando, renovarTurnstile],
+    [lead, leadHabeas, leadEnviando, renovarTurnstile],
+  )
+
+  const enviarCorreo = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault()
+      if (correoEnviando) return
+      setCorreoError('')
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correoEmail)) {
+        setCorreoError('Ingresa un correo válido.')
+        return
+      }
+      if (!correoHabeas) {
+        setCorreoError('Debes autorizar el tratamiento de datos para continuar.')
+        return
+      }
+      setCorreoEnviando(true)
+      try {
+        const res = await fetch('/api/chat/transcript', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: getSessionId(),
+            email: correoEmail.trim(),
+            habeasData: true,
+            website: correoWebsite,
+            turnstileToken: turnstileToken.current || undefined,
+          }),
+        })
+        const data = await res.json().catch(() => ({}))
+        renovarTurnstile()
+
+        if (res.ok && data.success) {
+          const dest = correoEmail.trim()
+          setVista('chat')
+          setCorreoEmail('')
+          setCorreoHabeas(false)
+          setMensajes((prev) => [
+            ...prev,
+            {
+              rol: 'assistant',
+              contenido: `📧 Te envié la conversación a **${dest}**. Revisa tu bandeja (y spam, por si acaso). ¿Algo más?`,
+            },
+          ])
+        } else {
+          setCorreoError(data.message || 'No se pudo enviar. Intenta de nuevo.')
+        }
+      } catch {
+        setCorreoError('No se pudo conectar. Intenta de nuevo.')
+      } finally {
+        setCorreoEnviando(false)
+      }
+    },
+    [correoEmail, correoHabeas, correoWebsite, correoEnviando, renovarTurnstile],
   )
 
   if (!ENABLED) return null
@@ -300,7 +395,7 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Globo de invitación (una vez por navegador) */}
+      {/* Globo de invitación (una vez por navegador, tras scroll) */}
       <AnimatePresence>
         {hint && !isOpen && (
           <motion.div
@@ -371,7 +466,7 @@ export function ChatWidget() {
         </motion.button>
       </motion.div>
 
-      {/* Panel del chat — abre arriba a la derecha */}
+      {/* Panel del chat */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -382,13 +477,17 @@ export function ChatWidget() {
             className="fixed bottom-24 right-6 z-40 w-[calc(100vw-3rem)] max-w-md"
           >
             <div className="bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden">
-              {/* Header oscuro brutalist */}
+              {/* Header */}
               <div className="bg-slate-950 text-white px-5 py-4">
                 <p className="text-white/50 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-1">
                   Asistente MEISA
                 </p>
                 <h3 className="font-bebas text-2xl uppercase leading-none">
-                  {vista === 'lead' ? 'Déjanos tus datos' : '¿En qué te ayudamos?'}
+                  {vista === 'lead'
+                    ? 'Déjanos tus datos'
+                    : vista === 'correo'
+                      ? 'Recibir por correo'
+                      : '¿En qué te ayudamos?'}
                 </h3>
               </div>
 
@@ -428,13 +527,12 @@ export function ChatWidget() {
                 )}
               </div>
 
-              {/* Turnstile (auto si hay site key) */}
+              {/* Turnstile (auto si hay site key) — disponible en todas las vistas */}
               {TURNSTILE_SITE_KEY && <div ref={turnstileRef} className="px-4" />}
 
-              {/* Sección inferior: formulario de lead o input de chat */}
-              {vista === 'lead' ? (
+              {/* ---- Vista: formulario de lead ---- */}
+              {vista === 'lead' && (
                 <form onSubmit={enviarLead} className="border-t border-slate-200 p-4 bg-white space-y-2.5">
-                  {/* Honeypot (oculto) */}
                   <input
                     type="text"
                     tabIndex={-1}
@@ -483,9 +581,8 @@ export function ChatWidget() {
                     onChange={(e) => setLead((l) => ({ ...l, mensaje: e.target.value }))}
                     maxLength={2000}
                   />
-                  {leadError && (
-                    <p className="text-[11px] text-red-600 font-lato">{leadError}</p>
-                  )}
+                  <HabeasCheckbox checked={leadHabeas} onChange={setLeadHabeas} />
+                  {leadError && <p className="text-[11px] text-red-600 font-lato">{leadError}</p>}
                   <div className="flex gap-2 pt-1">
                     <button
                       type="button"
@@ -507,20 +604,84 @@ export function ChatWidget() {
                     </button>
                   </div>
                 </form>
-              ) : (
-                <div className="border-t border-slate-200 bg-white">
-                  {/* CTA para dejar datos */}
-                  {!leadEnviado && !cerrado && (
+              )}
+
+              {/* ---- Vista: recibir conversación por correo ---- */}
+              {vista === 'correo' && (
+                <form onSubmit={enviarCorreo} className="border-t border-slate-200 p-4 bg-white space-y-2.5">
+                  <input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={correoWebsite}
+                    onChange={(e) => setCorreoWebsite(e.target.value)}
+                    className="hidden"
+                    aria-hidden="true"
+                  />
+                  <p className="font-lato text-xs text-slate-600">
+                    Te enviamos esta conversación a tu correo.
+                  </p>
+                  <input
+                    className={inputCls}
+                    type="email"
+                    placeholder="Tu correo *"
+                    value={correoEmail}
+                    onChange={(e) => setCorreoEmail(e.target.value)}
+                    maxLength={160}
+                  />
+                  <HabeasCheckbox checked={correoHabeas} onChange={setCorreoHabeas} />
+                  {correoError && <p className="text-[11px] text-red-600 font-lato">{correoError}</p>}
+                  <div className="flex gap-2 pt-1">
                     <button
-                      onClick={() => setVista('lead')}
-                      className="w-full flex items-center justify-between px-4 py-2.5 bg-stone-50 border-b border-slate-200 text-left group"
+                      type="button"
+                      onClick={() => {
+                        setVista('chat')
+                        setCorreoError('')
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-2.5 border border-slate-300 text-slate-700 font-lato font-bold text-xs uppercase tracking-wider hover:border-slate-950 hover:text-slate-950 transition-colors"
                     >
-                      <span className="font-lato text-xs text-slate-600">
-                        ¿Quieres que un asesor te contacte?{' '}
-                        <span className="font-bold text-slate-950">Dejar mis datos</span>
-                      </span>
-                      <Send className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowLeft className="w-4 h-4" /> Volver
                     </button>
+                    <button
+                      type="submit"
+                      disabled={correoEnviando}
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-950 hover:bg-slate-800 disabled:opacity-50 text-white font-lato font-bold text-xs uppercase tracking-wider transition-colors"
+                    >
+                      {correoEnviando ? 'Enviando…' : 'Enviarme la conversación'}
+                      {!correoEnviando && <Mail className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* ---- Vista: chat ---- */}
+              {vista === 'chat' && (
+                <div className="border-t border-slate-200 bg-white">
+                  {/* CTAs */}
+                  {!cerrado && (
+                    <div className="divide-y divide-slate-200 border-b border-slate-200">
+                      {!leadEnviado && (
+                        <button
+                          onClick={() => setVista('lead')}
+                          className="w-full flex items-center justify-between px-4 py-2.5 bg-stone-50 text-left group"
+                        >
+                          <span className="font-lato text-xs text-slate-600">
+                            ¿Quieres que un asesor te contacte?{' '}
+                            <span className="font-bold text-slate-950">Dejar mis datos</span>
+                          </span>
+                          <Send className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setVista('correo')}
+                        className="w-full flex items-center justify-between px-4 py-2.5 bg-stone-50 text-left group"
+                      >
+                        <span className="font-lato text-xs text-slate-600 flex items-center gap-1.5">
+                          <Mail className="w-3.5 h-3.5 text-slate-400" />
+                          Recibir esta conversación por correo
+                        </span>
+                      </button>
+                    </div>
                   )}
                   {leadEnviado && (
                     <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 border-b border-slate-200 text-xs text-slate-600 font-lato">

@@ -7,6 +7,8 @@ import { chatConfig } from './config'
  */
 export async function verificarRateLimit(
   clave: string,
+  maxPorMinuto: number = chatConfig.rateMaxPorMinuto,
+  maxPorDia: number = chatConfig.rateMaxPorDia,
 ): Promise<{ ok: boolean; motivo?: 'rate_minuto' | 'rate_dia' }> {
   const ahora = new Date()
   const row = await prisma.chatRateLimit.findUnique({ where: { clave } })
@@ -24,8 +26,8 @@ export async function verificarRateLimit(
   const minuteCount = resetMinuto ? 0 : row.minuteCount
   const dayCount = resetDia ? 0 : row.dayCount
 
-  if (minuteCount >= chatConfig.rateMaxPorMinuto) return { ok: false, motivo: 'rate_minuto' }
-  if (dayCount >= chatConfig.rateMaxPorDia) return { ok: false, motivo: 'rate_dia' }
+  if (minuteCount >= maxPorMinuto) return { ok: false, motivo: 'rate_minuto' }
+  if (dayCount >= maxPorDia) return { ok: false, motivo: 'rate_dia' }
 
   await prisma.chatRateLimit.update({
     where: { clave },

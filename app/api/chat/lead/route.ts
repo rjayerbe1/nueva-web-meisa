@@ -17,6 +17,8 @@ const schema = z.object({
   telefono: z.string().max(40).optional(),
   empresa: z.string().max(160).optional(),
   mensaje: z.string().max(2000).optional(),
+  // Habeas Data (Ley 1581/2012): autorización de tratamiento de datos, obligatoria.
+  habeasData: z.literal(true),
   turnstileToken: z.string().optional(),
   // Honeypot anti-spam: invisible para humanos; si llega con valor, es un bot.
   website: z.string().optional(),

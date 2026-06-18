@@ -387,3 +387,73 @@ ${companyName}
     text,
   })
 }
+
+export interface ChatTranscriptPayload {
+  to: string
+  transcript: string
+  referencia?: string
+}
+
+/** Envía al visitante la copia de su conversación con el asistente. */
+export async function sendChatTranscriptEmail(payload: ChatTranscriptPayload) {
+  const subject = `Tu conversación con el asistente de MEISA${payload.referencia ? ` · ${payload.referencia}` : ""}`
+  const transcriptHtml = escapeHtml(payload.transcript).replace(/\n/g, "<br/>")
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:32px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e2e8f0;">
+            <tr>
+              <td style="background:#0f172a;padding:32px 40px;">
+                <p style="margin:0 0 8px 0;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Asistente MEISA</p>
+                <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;">Tu conversación</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:32px 40px;color:#0f172a;font-size:15px;line-height:1.6;">
+                <p style="margin:0 0 20px 0;">Hola, aquí tienes la copia de la conversación que tuviste con nuestro asistente:</p>
+                <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:20px;font-size:14px;color:#334155;line-height:1.7;">${transcriptHtml}</div>
+                <p style="margin:24px 0 0 0;font-size:14px;color:#475569;">¿Quieres avanzar con tu proyecto? Responde este correo, escríbenos a <a href="mailto:contacto@meisa.com.co" style="color:#dc2626;text-decoration:none;font-weight:600;">contacto@meisa.com.co</a> o por WhatsApp desde <a href="${baseUrl}" style="color:#dc2626;text-decoration:none;font-weight:600;">meisa.com.co</a>.</p>
+                <p style="margin:16px 0 0 0;font-size:12px;color:#94a3b8;">Nota: el asistente usa IA y puede cometer errores; los precios mencionados son estimados de referencia, no una cotización formal.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#f8fafc;padding:20px 40px;border-top:1px solid #e2e8f0;text-align:center;">
+                <p style="margin:0 0 4px 0;font-size:12px;color:#64748b;font-weight:700;">${companyName}</p>
+                <p style="margin:0;font-size:11px;color:#94a3b8;">Colombia · meisa.com.co</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+
+  const text = `Hola, aquí tienes la copia de tu conversación con el asistente de MEISA:
+
+${payload.transcript}
+
+¿Quieres avanzar con tu proyecto? Escríbenos a contacto@meisa.com.co o por WhatsApp desde meisa.com.co.
+
+Nota: el asistente usa IA y puede cometer errores; los precios son estimados de referencia, no una cotización formal.
+
+${companyName}`
+
+  return sendViaGmailDWD({
+    from: contactFromHeader,
+    to: payload.to,
+    replyTo: contactReplyTo,
+    subject,
+    html,
+    text,
+  })
+}
