@@ -22,6 +22,7 @@ import {
   Inbox,
   Megaphone,
   MessageSquare,
+  Bot,
   ImageIcon,
   UserCog,
   Database,
@@ -87,6 +88,7 @@ const navigation: NavItem[] = [
     href: "/admin/contactos-whatsapp",
     icon: MessageSquare,
   },
+  { kind: "item", name: "Chatbot IA", href: "/admin/chat", icon: Bot },
 
   { kind: "section", label: "Sistema", color: "slate" },
   {
