@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppFloatingWidget } from '@/components/WhatsAppFloatingWidget'
+import { ChatWidget } from '@/components/chat/ChatWidget'
 import { getNavegacionData } from '@/lib/content/navegacion'
 import { getPlantasPublicas } from '@/lib/content/plantas'
 
@@ -63,6 +64,7 @@ export default async function PublicLayout({
       </main>
       <Footer links={footerLinks} social={social} plantas={plantas} />
       <WhatsAppFloatingWidget />
+      <ChatWidget />
     </>
   )
 }

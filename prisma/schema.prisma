@@ -300,6 +300,69 @@ model Cliente {
   @@map("clientes")
 }
 
+// ====== Asistente comercial IA (chatbot) ======
+
+model ChatConversacion {
+  id             String        @id @default(cuid())
+  sessionId      String        @unique
+  ipHash         String?
+  userAgent      String?
+  turnos         Int           @default(0)
+  tokensInput    Int           @default(0)
+  tokensOutput   Int           @default(0)
+  costoUsd       Float         @default(0)
+  leadCapturado  Boolean       @default(false)
+  referenciaLead String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  mensajes       ChatMensaje[]
+
+  @@index([ipHash])
+  @@index([createdAt])
+  @@map("chat_conversaciones")
+}
+
+model ChatMensaje {
+  id             String           @id @default(cuid())
+  conversacionId String
+  conversacion   ChatConversacion @relation(fields: [conversacionId], references: [id], onDelete: Cascade)
+  rol            String // 'user' | 'assistant'
+  contenido      String
+  tokens         Int?
+  createdAt      DateTime         @default(now())
+
+  @@index([conversacionId])
+  @@map("chat_mensajes")
+}
+
+// Contador de gasto diario (y mensual por agregación) — base del circuit breaker.
+model ChatUso {
+  id           String   @id @default(cuid())
+  fecha        String   @unique // 'YYYY-MM-DD' (America/Bogota)
+  mes          String // 'YYYY-MM'
+  tokensInput  Int      @default(0)
+  tokensOutput Int      @default(0)
+  costoUsd     Float    @default(0)
+  requests     Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([mes])
+  @@map("chat_uso_diario")
+}
+
+model ChatRateLimit {
+  id          String   @id @default(cuid())
+  clave       String   @unique // hash de IP
+  minuteStart DateTime
+  minuteCount Int      @default(0)
+  dayStart    DateTime
+  dayCount    Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  @@map("chat_rate_limits")
+}
+
 model ContactForm {
   id         String  @id @default(cuid())
   referencia String? @unique
