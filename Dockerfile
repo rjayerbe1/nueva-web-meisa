@@ -25,6 +25,12 @@ ARG DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
 ENV DATABASE_URL=$DATABASE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SKIP_ENV_VALIDATION=1
+# Vars NEXT_PUBLIC_* se "hornean" en build → deben llegar como build-arg.
+# Default apagado: el widget del chat no aparece hasta que se pase "true".
+ARG NEXT_PUBLIC_CHAT_ENABLED=false
+ENV NEXT_PUBLIC_CHAT_ENABLED=$NEXT_PUBLIC_CHAT_ENABLED
+ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY=
+ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY
 RUN npm run build
 
 # Production image
