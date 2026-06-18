@@ -171,14 +171,6 @@ const TECNOLOGIAS = [
   },
   // Otros
   {
-    slug: "strumis",
-    categoria: "otro",
-    nombre: "StruM.I.S",
-    especialidad: "Gestión integral de producción",
-    descripcion:
-      "Software líder mundial en gestión integral y control de producción para fabricantes de estructuras metálicas",
-  },
-  {
     slug: "fastcam",
     categoria: "otro",
     nombre: "FastCAM",

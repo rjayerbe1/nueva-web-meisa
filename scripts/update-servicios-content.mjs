@@ -8,7 +8,8 @@
  *
  * Coherencia de datos (espejo de /procesos-tecnologias, /calidad, /empresa):
  *   - Software real (tabla Tecnologia): Tekla, AutoCAD, ETABS, SAP2000, Midas,
- *     SAFE, IDEA StatiCa, StruM.I.S, FastCAM, DC-CAD  (NO RISA).
+ *     SAFE, IDEA StatiCa, FastCAM, DC-CAD  (NO RISA, NO StruM.I.S — la gestión de
+ *     producción/trazabilidad es un sistema propio MEISA, no software comercial).
  *   - 3 plantas propias: Jamundí (5.629 m²), Popayán (3.400 m²), Villa Rica
  *     (7.000 m²) → ~16.000 m², 12 naves, 8 puentes grúa (5–20 t), 3 mesas CNC.
  *   - ~260 proyectos · ~32.000 ton · ~450.000 m² · 6 sectores · 8 departamentos.
@@ -70,14 +71,14 @@ const SERVICIOS = [
         'NSR-10 — Reglamento Colombiano de Construcción Sismo Resistente',
         'AISC 360 — Specification for Structural Steel Buildings',
         'AWS D1.1 — Structural Welding Code (Steel)',
-        'NTC 2289 — Perfiles estructurales de acero',
-        'ISO 9001 — Sistema de Gestión de Calidad',
+        'NTC — Normas Técnicas Colombianas (materiales, soldadura y recubrimientos)',
+        'ASTM — Especificaciones de aceros estructurales (A36, A572, A325/A490)',
       ],
     },
     estadisticas: [
       { value: '30+', label: 'Años de experiencia', icon: 'Calendar' },
       { value: '260+', label: 'Proyectos construidos', icon: 'Building2' },
-      { value: '450K+', label: 'm² construidos', icon: 'Ruler' },
+      { value: '430K+', label: 'm² construidos', icon: 'Ruler' },
       { value: '6', label: 'Sectores atendidos', icon: 'LayoutGrid' },
     ],
     procesoPasos: [
@@ -109,7 +110,7 @@ const SERVICIOS = [
     slug: 'fabricacion-de-estructuras-metalicas',
     nombre: 'Fabricación de Estructuras Metálicas',
     titulo: 'Fabricación de Estructuras Metálicas',
-    subtitulo: 'Plantas propias · corte CNC y soldadura certificada AWS',
+    subtitulo: 'Plantas propias · corte CNC y soldadura calificada AWS',
     icono: 'Factory',
     color: 'gray',
     descripcion:
@@ -119,14 +120,13 @@ const SERVICIOS = [
       'Más de 32.000 toneladas fabricadas en 30 años, desde naves industriales y centros comerciales hasta puentes vehiculares y cubiertas de gran luz, en tres plantas propias con cerca de 16.000 m² instalados.',
     caracteristicas: [
       'Corte plasma y oxicorte CNC (FastCAM) hasta 150 mm',
-      'Soldadura certificada AWS D1.1 con personal calificado',
+      'Soldadura bajo código AWS D1.1 con personal calificado',
       'Granallado y pintura anticorrosiva',
       'Ensayos no destructivos y dossier digital de calidad',
       'Trazabilidad por pieza mediante código QR',
     ],
     tecnologias: [
       { nombre: 'FastCAM', descripcion: 'Nesting y programación del corte plasma y oxicorte CNC.' },
-      { nombre: 'StruM.I.S', descripcion: 'Gestión integral de producción y trazabilidad.' },
       { nombre: 'Tekla Structures', descripcion: 'Planos de taller y despiece para fabricación.' },
     ],
     equipamiento: [
@@ -143,9 +143,9 @@ const SERVICIOS = [
       items: [
         'AWS D1.1 — Código de Soldadura Estructural',
         'ASTM A36 / A572 — Aceros estructurales al carbono y de alta resistencia',
-        'NTC 2289 — Perfiles estructurales de acero',
+        'NTC — Normas Técnicas Colombianas (materiales, soldadura y recubrimientos)',
         'AISC 303 — Code of Standard Practice for Steel Buildings',
-        'ISO 9001 — Sistema de Gestión de Calidad',
+        'SSPC — Preparación de superficie y recubrimientos protectores',
       ],
     },
     estadisticas: [
@@ -163,7 +163,7 @@ const SERVICIOS = [
       { title: 'Liberación y despacho', description: 'Ensayos no destructivos, dossier digital y despacho con trazabilidad QR.', icon: 'Truck' },
     ],
     preguntasFrecuentes: [
-      { pregunta: '¿Sus soldadores están certificados?', respuesta: 'Sí. La soldadura se ejecuta con procedimientos y personal calificados bajo AWS D1.1, con inspección y ensayos no destructivos.' },
+      { pregunta: '¿Sus soldadores están calificados?', respuesta: 'Sí. La soldadura se ejecuta con procedimientos y personal calificados bajo AWS D1.1, con inspección y ensayos no destructivos.' },
       { pregunta: '¿Qué protección anticorrosiva aplican?', respuesta: 'Cada elemento pasa por granallado y un sistema de pintura anticorrosiva definido según la especificación del proyecto y el ambiente de la obra.' },
       { pregunta: '¿Manejan trazabilidad de materiales?', respuesta: 'Sí. Cada pieza se rastrea con código QR desde la recepción del acero certificado hasta el despacho, con dossier digital de calidad.' },
       { pregunta: '¿Cuál es su capacidad de fabricación?', respuesta: 'Contamos con tres plantas propias (cerca de 16.000 m²), tres mesas de corte CNC (hasta 150 mm) y ocho puentes grúa de 5 a 20 toneladas.' },
@@ -198,7 +198,7 @@ const SERVICIOS = [
       'Personal certificado para trabajo en alturas (Res. 1409)',
       'Control topográfico y de torque en obra',
       'Soldadura de campo bajo AWS D1.1',
-      'Supervisión bajo SIG / ISO 45001',
+      'Supervisión bajo el Sistema Integrado de Gestión (SIG)',
     ],
     tecnologias: [
       { nombre: 'Planeación de izaje 3D', descripcion: 'Secuencia de montaje y rigging definidos desde el modelo.' },
@@ -209,7 +209,7 @@ const SERVICIOS = [
       { nombre: 'Equipos de izaje', capacidad: 'Grúas y puentes grúa de 5 a 20 toneladas' },
       { nombre: 'Equipos de soldadura de campo', capacidad: 'Procesos calificados AWS D1.1' },
       { nombre: 'Equipos para trabajo en alturas', capacidad: 'Sistemas certificados (Res. 1409)' },
-      { nombre: 'Transporte de carga', capacidad: 'Elementos extradimensionados hasta 100 ton' },
+      { nombre: 'Transporte de carga', capacidad: 'Despacho de elementos extradimensionados por módulos' },
     ],
     equipos: null,
     normativas: {
@@ -218,13 +218,13 @@ const SERVICIOS = [
         'AISC 303 — Code of Standard Practice for Steel Buildings',
         'AWS D1.1 — Código de Soldadura Estructural',
         'Resolución 1409 de 2012 — Trabajo en alturas (Colombia)',
-        'ISO 45001 — Seguridad y Salud en el Trabajo',
+        'SG-SST — Decreto 1072 de 2015 y Resolución 0312 de 2019',
         'NSR-10 — Reglamento Colombiano de Construcción Sismo Resistente',
       ],
     },
     estadisticas: [
       { value: '8', label: 'Departamentos con obra', icon: 'MapPin' },
-      { value: '100', label: 'Ton de transporte máx.', icon: 'Truck' },
+      { value: '30+', label: 'Años de experiencia', icon: 'Calendar' },
       { value: '260+', label: 'Proyectos entregados', icon: 'Building2' },
       { value: 'SIG', label: 'Calidad y seguridad', icon: 'ShieldCheck' },
     ],
@@ -237,7 +237,7 @@ const SERVICIOS = [
     ],
     preguntasFrecuentes: [
       { pregunta: '¿Su personal está certificado para trabajo en alturas?', respuesta: 'Sí. El personal de montaje está certificado para trabajo en alturas conforme a la Resolución 1409 de 2012.' },
-      { pregunta: '¿Cómo controlan la seguridad y la calidad en obra?', respuesta: 'El montaje se ejecuta bajo nuestro Sistema Integrado de Gestión (ISO 45001), con supervisión permanente, control topográfico y de torque.' },
+      { pregunta: '¿Cómo controlan la seguridad y la calidad en obra?', respuesta: 'El montaje se ejecuta bajo nuestro Sistema Integrado de Gestión (SIG) y la certificación RUC del Consejo Colombiano de Seguridad, con supervisión permanente, control topográfico y de torque.' },
       { pregunta: '¿En qué regiones del país operan?', respuesta: 'Hemos montado estructuras en ocho departamentos; desde nuestras sedes en Valle del Cauca y Cauca atendemos obra a nivel nacional.' },
     ],
     metaTitle: 'Montaje de Estructuras Metálicas | MEISA',
@@ -274,7 +274,6 @@ const SERVICIOS = [
     ],
     tecnologias: [
       { nombre: 'Coordinación BIM (Tekla)', descripcion: 'Un solo modelo del diseño al montaje.' },
-      { nombre: 'StruM.I.S', descripcion: 'Control de producción y trazabilidad de cada pieza.' },
       { nombre: 'Sistema Integrado de Gestión', descripcion: 'Calidad, seguridad y ambiente a lo largo del proyecto.' },
     ],
     equipamiento: null,
@@ -282,10 +281,11 @@ const SERVICIOS = [
     normativas: {
       titulo: 'Normativas aplicables',
       items: [
-        'ISO 9001 — Sistema de Gestión de Calidad',
-        'ISO 45001 — Seguridad y Salud en el Trabajo',
         'NSR-10 — Reglamento Colombiano de Construcción Sismo Resistente',
-        'Certificación RUC — Registro Uniforme de Evaluación de contratistas',
+        'AISC 360 — Specification for Structural Steel Buildings',
+        'AWS D1.1 — Código de Soldadura Estructural',
+        'SG-SST — Decreto 1072 de 2015 (Seguridad y Salud en el Trabajo)',
+        'Certificación RUC — Registro Uniforme de Contratistas (Consejo Colombiano de Seguridad)',
       ],
     },
     estadisticas: [
@@ -319,8 +319,17 @@ const SERVICIOS = [
   },
 ]
 
+// Neon (serverless) puede estar "dormido" y rechazar las primeras conexiones;
+// reintentamos con backoff para no fallar por un cold-start.
+async function retry(fn, n = 6) {
+  for (let i = 0; i < n; i++) {
+    try { return await fn() }
+    catch (e) { if (i === n - 1) throw e; await new Promise((r) => setTimeout(r, 2500)) }
+  }
+}
+
 for (const { slug, ...data } of SERVICIOS) {
-  await prisma.servicio.update({ where: { slug }, data })
+  await retry(() => prisma.servicio.update({ where: { slug }, data }))
   console.log('✓', slug)
 }
 

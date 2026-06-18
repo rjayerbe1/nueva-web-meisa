@@ -67,7 +67,7 @@ const FASES = [
     titulo: "Gestión de producción",
     descripcion:
       "La fabricación se programa y controla pieza por pieza, con avance reportado en tiempo real desde la planta e integración con el ERP corporativo.",
-    herramientas: ["StruM.I.S", "Sistema propio MEISA"],
+    herramientas: ["Sistema propio MEISA"],
     orden: 4,
   },
   {
@@ -123,7 +123,6 @@ const TECNOLOGIAS_IMAGEN: Record<string, string | null> = {
   midas: null,
   "dc-cad": null,
   "idea-statica": "/images/software/idea-statica.svg",
-  strumis: "/images/software/strumis.png",
   fastcam: "/images/software/fastcam.png",
 }
 

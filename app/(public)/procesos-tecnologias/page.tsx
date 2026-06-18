@@ -16,7 +16,6 @@ export const metadata: Metadata = {
     'SAP2000',
     'CNC',
     'IDEA StatiCa',
-    'StruM.I.S',
     'tecnología estructural',
   ],
   openGraph: {

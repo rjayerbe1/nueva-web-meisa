@@ -177,7 +177,7 @@ const paginasContent = {
     titulo: 'Tecnología e Innovación',
     subtitulo: 'Herramientas de vanguardia para la excelencia estructural',
     metaTitle: 'Tecnología MEISA - BIM, Tekla, RISA-3D, CNC | Innovación Estructural',
-    metaDescription: 'Tecnología de punta en MEISA: modelado BIM con Tekla Structures, análisis RISA-3D, corte CNC, gestión StruM.I.S. 3 plantas con equipos modernos.',
+    metaDescription: 'Tecnología de punta en MEISA: modelado BIM con Tekla Structures, análisis estructural, corte CNC y gestión propia de producción. 3 plantas con equipos modernos.',
     activa: true,
     contenido: {
       heroTitle: 'Tecnología e Innovación',
