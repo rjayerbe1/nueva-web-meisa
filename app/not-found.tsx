@@ -7,8 +7,8 @@ import Image from 'next/image'
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Líneas de fondo sutiles */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Líneas de fondo sutiles (decorativo: no debe capturar clics, o tapa los botones) */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: `
             linear-gradient(rgba(30, 64, 175, 0.3) 1px, transparent 1px),
