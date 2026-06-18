@@ -41,7 +41,6 @@ const GROUPS = {
   legal: [
     ["Política de Datos", "/politica-datos"],
     ["Gobierno Corporativo", "/empresa#gobierno-corporativo"],
-    ["Sistema de Gestión", "/calidad"],
   ],
 }
 

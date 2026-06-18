@@ -52,7 +52,6 @@ const DEFAULT_LINKS: FooterLinkItem[] = [
   { grupo: 'empresa', label: 'Portfolio', href: '/proyectos' },
   { grupo: 'legal', label: 'Política de Datos', href: '/politica-datos' },
   { grupo: 'legal', label: 'Gobierno Corporativo', href: '/empresa#gobierno-corporativo' },
-  { grupo: 'legal', label: 'Sistema de Gestión', href: '/calidad' },
 ]
 
 const DEFAULT_SOCIAL: FooterSocialItem[] = [
