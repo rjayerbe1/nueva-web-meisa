@@ -229,7 +229,9 @@ export default function CategoryPageClient({
                   className="flex gap-2 mobile-landscape-brochure-buttons"
                 >
                   <Link
-                    href={`/brochure/${brochure.urlAmigable}`}
+                    href={`/brochure/${brochure.urlAmigable}?from=${encodeURIComponent(
+                      `/proyectos/categoria/${categoria.slug}`,
+                    )}`}
                     className="group inline-flex items-center gap-2 px-4 py-2 border border-white/30 text-white font-lato font-bold text-xs uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
                   >
                     <BookOpen className="w-4 h-4" />

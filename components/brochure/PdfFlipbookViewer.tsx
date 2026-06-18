@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useCallback } from "react"
+import { useRouter } from "next/navigation"
 import HTMLFlipBookBase from "react-pageflip"
 import {
   ChevronLeft,
@@ -26,6 +27,7 @@ interface PdfFlipbookViewerProps {
 const RENDER_RADIUS = 2
 
 export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
   const flipbookRef = useRef<any>(null)
   const pdfRef = useRef<any>(null)
@@ -175,6 +177,27 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
     else document.exitFullscreen?.()
   }
 
+  // Cerrar = volver a la página desde donde se abrió el brochure.
+  // 1) ?from=<ruta interna> (lo pasa el enlace "Brochure" de la categoría) → ruta
+  //    explícita; nunca abandona el sitio y aterriza en la categoría exacta.
+  // 2) Si hay histórico de navegación interna → router.back() (pop limpio).
+  // 3) Fallback (pestaña nueva del admin / enlace directo) → /proyectos.
+  const handleClose = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.()
+    }
+    const from = new URLSearchParams(window.location.search).get("from")
+    if (from && from.startsWith("/") && !from.startsWith("//")) {
+      router.push(from)
+      return
+    }
+    if (window.history.length > 1) {
+      router.back()
+      return
+    }
+    router.push("/proyectos")
+  }, [router])
+
   const onFlip = (e: any) => setCurrentPage((e?.data ?? 0) + 1)
   const flipApi = () => flipbookRef.current?.pageFlip?.()
   // flipNext()/flipPrev() avanzan/retroceden UN spread sin aritmética de índices
@@ -201,6 +224,19 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [])
+
+  // Esc cierra el visor. Si está en pantalla completa, dejamos que el navegador
+  // gestione el Esc (sale de fullscreen) y NO cerramos: hace falta un 2º Esc.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !document.fullscreenElement) {
+        e.preventDefault()
+        handleClose()
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [handleClose])
 
   const aspect = pageDims ? pageDims.height / pageDims.width : 1.414
   const isMobile = viewport.w > 0 && viewport.w < 768
@@ -287,6 +323,17 @@ export function PdfFlipbookViewer({ pdfUrl, titulo }: PdfFlipbookViewerProps) {
             ) : (
               <Maximize2 className="w-4 h-4 md:w-5 md:h-5" />
             )}
+          </button>
+
+          <div className="w-px h-5 bg-white/15 mx-1" aria-hidden />
+
+          <button
+            onClick={handleClose}
+            className="p-2 text-white/80 hover:text-white hover:bg-white/10 transition"
+            title="Cerrar (Esc)"
+            aria-label="Cerrar brochure"
+          >
+            <X className="w-4 h-4 md:w-5 md:h-5" />
           </button>
         </div>
       </div>
