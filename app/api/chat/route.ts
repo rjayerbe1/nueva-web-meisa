@@ -11,7 +11,7 @@ import {
   estimarCostoUsd,
 } from '@/lib/chat/budget'
 import { construirSystemPrompt } from '@/lib/chat/knowledge'
-import { generarRespuesta, type ChatTurn } from '@/lib/chat/gemini'
+import { streamRespuesta, type ChatTurn } from '@/lib/chat/gemini'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -108,47 +108,84 @@ export async function POST(req: NextRequest) {
     contenido: m.contenido,
   }))
 
-  // 6) Generar respuesta con el modelo
+  // 6) Generar respuesta en STREAMING. Las respuestas de texto se transmiten
+  // como text/plain; los errores/mantenimiento siguen siendo JSON (el cliente
+  // distingue por Content-Type).
   const system = await construirSystemPrompt()
-  let resultado
-  try {
-    resultado = await generarRespuesta({ system, historial, mensajeUsuario: mensaje })
-  } catch (e) {
-    console.error('[chat] error Vertex:', e)
-    return NextResponse.json({ reply: MENSAJE_MANTENIMIENTO, disponible: false })
-  }
+  const convId = conv.id
+  const FALLBACK_BLOQUEADO =
+    'Prefiero no responder eso. ¿Te ayudo con información sobre los servicios o proyectos de MEISA?'
+  const encoder = new TextEncoder()
 
-  const respuesta =
-    resultado.bloqueado || !resultado.texto
-      ? 'Prefiero no responder eso. ¿Te ayudo con información sobre los servicios o proyectos de MEISA?'
-      : resultado.texto
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      let acumulado = ''
+      let resultado: {
+        texto: string
+        tokensInput: number
+        tokensOutput: number
+        bloqueado: boolean
+      } | null = null
 
-  // 7) Registrar gasto + persistir mensajes + actualizar contadores
-  await registrarUso(resultado.tokensInput, resultado.tokensOutput)
-  await prisma.$transaction([
-    prisma.chatMensaje.create({
-      data: { conversacionId: conv.id, rol: 'user', contenido: mensaje },
-    }),
-    prisma.chatMensaje.create({
-      data: {
-        conversacionId: conv.id,
-        rol: 'assistant',
-        contenido: respuesta,
-        tokens: resultado.tokensOutput,
-      },
-    }),
-    prisma.chatConversacion.update({
-      where: { id: conv.id },
-      data: {
-        turnos: { increment: 1 },
-        tokensInput: { increment: resultado.tokensInput },
-        tokensOutput: { increment: resultado.tokensOutput },
-        costoUsd: {
-          increment: estimarCostoUsd(resultado.tokensInput, resultado.tokensOutput),
-        },
-      },
-    }),
-  ])
+      try {
+        resultado = await streamRespuesta(
+          { system, historial, mensajeUsuario: mensaje },
+          (delta) => {
+            acumulado += delta
+            controller.enqueue(encoder.encode(delta))
+          },
+        )
+      } catch (e) {
+        console.error('[chat] error Vertex (stream):', e)
+      }
 
-  return NextResponse.json({ reply: respuesta, disponible: true })
+      // Determinar el texto final a persistir; transmitir fallback solo si no
+      // se envió ningún fragmento.
+      let respuesta: string
+      if (resultado && !resultado.bloqueado && resultado.texto) {
+        respuesta = resultado.texto
+      } else if (acumulado.trim()) {
+        respuesta = acumulado.trim()
+      } else {
+        respuesta = resultado ? FALLBACK_BLOQUEADO : MENSAJE_MANTENIMIENTO
+        controller.enqueue(encoder.encode(respuesta))
+      }
+
+      // 7) Registrar gasto + persistir mensajes + actualizar contadores.
+      try {
+        const tIn = resultado?.tokensInput ?? 0
+        const tOut = resultado?.tokensOutput ?? 0
+        if (tIn || tOut) await registrarUso(tIn, tOut)
+        await prisma.$transaction([
+          prisma.chatMensaje.create({
+            data: { conversacionId: convId, rol: 'user', contenido: mensaje },
+          }),
+          prisma.chatMensaje.create({
+            data: { conversacionId: convId, rol: 'assistant', contenido: respuesta, tokens: tOut },
+          }),
+          prisma.chatConversacion.update({
+            where: { id: convId },
+            data: {
+              turnos: { increment: 1 },
+              tokensInput: { increment: tIn },
+              tokensOutput: { increment: tOut },
+              costoUsd: { increment: estimarCostoUsd(tIn, tOut) },
+            },
+          }),
+        ])
+      } catch (e) {
+        console.error('[chat] error persistencia (stream):', e)
+      }
+
+      controller.close()
+    },
+  })
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-store, no-transform',
+      'X-Accel-Buffering': 'no',
+    },
+  })
 }

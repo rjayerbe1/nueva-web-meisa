@@ -124,3 +124,108 @@ export async function generarRespuesta(opts: {
 
   return { texto, tokensInput, tokensOutput, bloqueado }
 }
+
+/**
+ * Versión en streaming: llama a Vertex `:streamGenerateContent?alt=sse`, va
+ * invocando `onDelta(texto)` con cada fragmento, y al terminar devuelve el
+ * texto completo + tokens (para el circuit breaker y la persistencia).
+ */
+export async function streamRespuesta(
+  opts: { system: string; historial: ChatTurn[]; mensajeUsuario: string },
+  onDelta: (delta: string) => void,
+): Promise<GeminiResult> {
+  const { gcpProject, vertexLocation, vertexModel, maxOutputTokens } = chatConfig
+  if (!gcpProject) throw new Error('GCP_PROJECT_ID no configurado')
+
+  const client = await getAuth().getClient()
+  const tokenResp = await client.getAccessToken()
+  const accessToken = typeof tokenResp === 'string' ? tokenResp : tokenResp?.token
+  if (!accessToken) throw new Error('No se pudo obtener access token de Vertex AI')
+
+  const host =
+    vertexLocation === 'global'
+      ? 'aiplatform.googleapis.com'
+      : `${vertexLocation}-aiplatform.googleapis.com`
+  const url = `https://${host}/v1/projects/${gcpProject}/locations/${vertexLocation}/publishers/google/models/${vertexModel}:streamGenerateContent?alt=sse`
+
+  const contents = [
+    ...opts.historial.map((t) => ({
+      role: t.rol === 'assistant' ? 'model' : 'user',
+      parts: [{ text: t.contenido }],
+    })),
+    { role: 'user', parts: [{ text: opts.mensajeUsuario }] },
+  ]
+
+  const body = {
+    systemInstruction: { parts: [{ text: opts.system }] },
+    contents,
+    generationConfig: { maxOutputTokens, temperature: 0.3, topP: 0.95 },
+  }
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+
+  if (!resp.ok || !resp.body) {
+    const errText = await resp.text().catch(() => '')
+    throw new Error(`Vertex AI ${resp.status}: ${errText.slice(0, 500)}`)
+  }
+
+  const reader = resp.body.getReader()
+  const decoder = new TextDecoder()
+  let buffer = ''
+  let fullText = ''
+  let tokensInput = 0
+  let tokensOutput = 0
+  let finish: string | undefined
+  let blockReason: string | undefined
+
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) break
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    buffer = lines.pop() || ''
+    for (const line of lines) {
+      const trimmed = line.trim()
+      if (!trimmed.startsWith('data:')) continue
+      const jsonStr = trimmed.slice(5).trim()
+      if (!jsonStr || jsonStr === '[DONE]') continue
+      let data: {
+        candidates?: Array<{ finishReason?: string; content?: { parts?: Array<{ text?: string }> } }>
+        usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number }
+        promptFeedback?: { blockReason?: string }
+      }
+      try {
+        data = JSON.parse(jsonStr)
+      } catch {
+        continue
+      }
+      const cand = data.candidates?.[0]
+      for (const p of cand?.content?.parts || []) {
+        if (p?.text) {
+          fullText += p.text
+          onDelta(p.text)
+        }
+      }
+      if (cand?.finishReason) finish = cand.finishReason
+      if (data.usageMetadata) {
+        tokensInput = data.usageMetadata.promptTokenCount ?? tokensInput
+        tokensOutput = data.usageMetadata.candidatesTokenCount ?? tokensOutput
+      }
+      if (data.promptFeedback?.blockReason) blockReason = data.promptFeedback.blockReason
+    }
+  }
+
+  const texto = fullText.trim()
+  const bloqueado =
+    !texto &&
+    (finish === 'SAFETY' ||
+      finish === 'BLOCKLIST' ||
+      finish === 'PROHIBITED_CONTENT' ||
+      !!blockReason)
+
+  return { texto, tokensInput, tokensOutput, bloqueado }
+}

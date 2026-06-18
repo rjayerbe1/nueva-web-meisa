@@ -494,7 +494,7 @@ export default function ContactoContent({
                         Autorizo a MEISA a tratar mis datos personales para
                         fines comerciales según su{" "}
                         <Link
-                          href="/calidad"
+                          href="/politica-datos"
                           className="underline underline-offset-2 hover:text-white"
                         >
                           política de tratamiento de datos

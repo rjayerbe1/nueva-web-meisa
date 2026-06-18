@@ -252,16 +252,48 @@ export function ChatWidget() {
           turnstileToken: turnstileToken.current || undefined,
         }),
       })
-      const data = await res.json().catch(() => ({}))
       renovarTurnstile()
 
-      const reply =
-        data.reply ||
-        data.error ||
-        'Disculpa, tuve un problema para responder. Intenta de nuevo o escríbenos por WhatsApp.'
-      setMensajes((prev) => [...prev, { rol: 'assistant', contenido: reply }])
+      // Errores / mantenimiento → JSON. Respuesta normal → texto en streaming.
+      const ct = res.headers.get('content-type') || ''
+      if (!res.ok || ct.includes('application/json') || !res.body) {
+        const data = await res.json().catch(() => ({}))
+        const reply =
+          data.reply ||
+          data.error ||
+          'Disculpa, tuve un problema para responder. Intenta de nuevo o escríbenos por WhatsApp.'
+        setMensajes((prev) => [...prev, { rol: 'assistant', contenido: reply }])
+        if (data.disponible === false || data.finConversacion) setCerrado(true)
+        return
+      }
 
-      if (data.disponible === false || data.finConversacion) setCerrado(true)
+      // Streaming: agrega una burbuja vacía y la va llenando con cada fragmento.
+      setLoading(false)
+      setMensajes((prev) => [...prev, { rol: 'assistant', contenido: '' }])
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let acc = ''
+      for (;;) {
+        const { done, value } = await reader.read()
+        if (done) break
+        acc += decoder.decode(value, { stream: true })
+        setMensajes((prev) => {
+          const copy = [...prev]
+          copy[copy.length - 1] = { rol: 'assistant', contenido: acc }
+          return copy
+        })
+      }
+      if (!acc.trim()) {
+        setMensajes((prev) => {
+          const copy = [...prev]
+          copy[copy.length - 1] = {
+            rol: 'assistant',
+            contenido:
+              'Disculpa, no pude responder. Intenta de nuevo o escríbenos por WhatsApp.',
+          }
+          return copy
+        })
+      }
     } catch {
       setMensajes((prev) => [
         ...prev,
