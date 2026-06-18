@@ -90,6 +90,15 @@ function FormattedMessage({ text }: { text: string }) {
     <>
       {lines.map((line, idx) => {
         if (line.trim() === '') return <div key={idx} className="h-1.5" />
+        // Encabezados markdown (#, ##, ###) → negrilla, sin los "#".
+        const heading = line.match(/^\s*#{1,6}\s+(.*)$/)
+        if (heading) {
+          return (
+            <div key={idx} className="font-bold text-slate-900 mt-1.5">
+              {renderInline(heading[1])}
+            </div>
+          )
+        }
         if (/^\s*[*-]\s+/.test(line)) {
           const clean = line.replace(/^\s*[*-]\s+/, '')
           return (
