@@ -1,0 +1,28 @@
+name: DB Push (manual)
+
+# Migración manual del schema a Neon. Se corre a mano (workflow_dispatch) porque
+# aplica cambios a la base de producción. El runner de GitHub sí alcanza Neon.
+on:
+  workflow_dispatch:
+
+jobs:
+  db-push:
+    name: prisma db push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prisma db push
+        run: npx prisma db push --skip-generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
