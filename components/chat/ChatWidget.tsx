@@ -2,21 +2,18 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Sparkles, ArrowRight, ArrowLeft, Check } from 'lucide-react'
+import { X, Send, MessageCircle, ArrowLeft, Check } from 'lucide-react'
 
 /**
  * Asistente comercial IA — widget flotante con captura de leads.
  *
  * Diseño: brutalist editorial (font-bebas títulos, font-lato cuerpo, bordes
- * rectos, sin glassmorphism). FAB negro en la esquina INFERIOR IZQUIERDA para
- * no chocar con el botón verde de WhatsApp (inferior derecha) ni el MENU
- * (superior derecha).
+ * rectos, sin glassmorphism). FAB negro en la esquina INFERIOR DERECHA, a la
+ * IZQUIERDA del botón verde de WhatsApp (misma fila). Ícono de globo de chat +
+ * globo de invitación para que se entienda que es un asistente.
  *
  * Se muestra solo si NEXT_PUBLIC_CHAT_ENABLED === 'true'. El anti-bot Turnstile
  * se activa solo si NEXT_PUBLIC_TURNSTILE_SITE_KEY está definido.
- *
- * Leads: el botón "Dejar mis datos" abre un formulario que crea un ContactForm
- * (origen='chatbot') y notifica al equipo comercial por correo (Fase 2).
  */
 
 const ENABLED = process.env.NEXT_PUBLIC_CHAT_ENABLED === 'true'
@@ -60,6 +57,7 @@ const LEAD_INICIAL = { nombre: '', email: '', telefono: '', empresa: '', mensaje
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
+  const [hint, setHint] = useState(false)
   const [vista, setVista] = useState<'chat' | 'lead'>('chat')
   const [mensajes, setMensajes] = useState<Mensaje[]>([SALUDO])
   const [input, setInput] = useState('')
@@ -76,6 +74,28 @@ export function ChatWidget() {
   const turnstileRef = useRef<HTMLDivElement>(null)
   const turnstileToken = useRef<string>('')
   const turnstileWidgetId = useRef<string>('')
+
+  // Globo de invitación: aparece una vez por navegador a los ~3.5s
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.localStorage.getItem('meisa_chat_hint_seen')) return
+    const t = setTimeout(() => setHint(true), 3500)
+    return () => clearTimeout(t)
+  }, [])
+
+  const cerrarHint = useCallback(() => {
+    setHint(false)
+    try {
+      window.localStorage.setItem('meisa_chat_hint_seen', '1')
+    } catch {
+      /* noop */
+    }
+  }, [])
+
+  const abrir = useCallback(() => {
+    setIsOpen(true)
+    cerrarHint()
+  }, [cerrarHint])
 
   // Auto-scroll al último mensaje
   useEffect(() => {
@@ -220,16 +240,47 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Botón flotante — inferior IZQUIERDA (no choca con WhatsApp ni MENU) */}
+      {/* Globo de invitación (una vez por navegador) */}
+      <AnimatePresence>
+        {hint && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-24 right-6 z-40 w-[15rem]"
+          >
+            <div className="relative bg-white border border-slate-200 shadow-xl p-3.5">
+              <button
+                onClick={cerrarHint}
+                aria-label="Cerrar"
+                className="absolute top-1.5 right-1.5 text-slate-400 hover:text-slate-700"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+              <button onClick={abrir} className="text-left">
+                <p className="font-bebas text-lg uppercase leading-none text-slate-950 mb-1">
+                  ¿Dudas sobre tu proyecto?
+                </p>
+                <p className="font-lato text-xs text-slate-600 leading-snug pr-3">
+                  Pregúntale al asistente de MEISA — servicios, proyectos y cotizaciones. 👋
+                </p>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Botón flotante — abajo-derecha, a la IZQUIERDA del de WhatsApp */}
       <motion.div
-        className="fixed bottom-6 left-6 z-50"
+        className="fixed bottom-6 right-24 z-50"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.6 }}
       >
         <motion.button
-          onClick={() => setIsOpen((v) => !v)}
-          className="bg-slate-950 hover:bg-slate-800 text-white rounded-full p-3.5 shadow-xl transition-colors duration-200 flex items-center justify-center"
+          onClick={() => (isOpen ? setIsOpen(false) : abrir())}
+          className="bg-slate-950 hover:bg-slate-800 text-white rounded-full p-3 shadow-xl transition-colors duration-200 flex items-center justify-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           aria-label={isOpen ? 'Cerrar asistente' : 'Abrir asistente MEISA'}
@@ -253,14 +304,14 @@ export function ChatWidget() {
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <Sparkles className="w-6 h-6" />
+                <MessageCircle className="w-6 h-6" />
               </motion.div>
             )}
           </AnimatePresence>
         </motion.button>
       </motion.div>
 
-      {/* Panel del chat */}
+      {/* Panel del chat — abre arriba a la derecha */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -268,7 +319,7 @@ export function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-24 left-6 z-40 w-[calc(100vw-3rem)] max-w-md"
+            className="fixed bottom-24 right-6 z-40 w-[calc(100vw-3rem)] max-w-md"
           >
             <div className="bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden">
               {/* Header oscuro brutalist */}
@@ -404,7 +455,7 @@ export function ChatWidget() {
                         ¿Quieres que un asesor te contacte?{' '}
                         <span className="font-bold text-slate-950">Dejar mis datos</span>
                       </span>
-                      <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                      <Send className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
                     </button>
                   )}
                   {leadEnviado && (
