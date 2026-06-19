@@ -56,9 +56,13 @@ interface OtroServicio {
 interface ServicioDetailEnhancedProps {
   servicio: ServicioData
   otrosServicios: OtroServicio[]
+  // Cifras reales de la empresa (años desde la fundación + proyectos visibles),
+  // calculadas en el servidor para no hardcodear valores que se contradigan.
+  anios: number
+  proyectos: number
 }
 
-export default function ServicioDetailEnhanced({ servicio, otrosServicios }: ServicioDetailEnhancedProps) {
+export default function ServicioDetailEnhanced({ servicio, otrosServicios, anios, proyectos }: ServicioDetailEnhancedProps) {
   const [activeSection, setActiveSection] = useState('overview')
   const [hideNav, setHideNav] = useState(false)
 
@@ -151,7 +155,9 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-slate-950/70" />
+        {/* Overlay aclarado: fuerte abajo (legibilidad del texto) y ligero arriba
+            para que la foto de fondo se perciba. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/45 to-slate-950/25" />
 
         <div className="relative z-10 h-full flex items-end pb-20 md:pb-28 px-4 sm:px-6 lg:px-12">
           <div className="mx-auto max-w-7xl w-full">
@@ -294,11 +300,11 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 </div>
               )}
 
-              {/* Stats simples inline */}
+              {/* Stats simples inline — reales, calculadas en el servidor */}
               <div className="grid grid-cols-2 border-t border-white/10 pt-8">
                 <div className="md:pr-6 md:border-r md:border-white/10">
                   <div className="font-bebas text-5xl md:text-6xl lg:text-7xl leading-none text-white">
-                    25
+                    {anios}
                     <span className="text-white/40">+</span>
                   </div>
                   <p className="mt-2 text-white/50 font-lato text-[10px] md:text-xs uppercase tracking-[0.2em]">
@@ -307,7 +313,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios }: Ser
                 </div>
                 <div className="md:pl-6">
                   <div className="font-bebas text-5xl md:text-6xl lg:text-7xl leading-none text-white">
-                    500
+                    {proyectos.toLocaleString('es-CO')}
                     <span className="text-white/40">+</span>
                   </div>
                   <p className="mt-2 text-white/50 font-lato text-[10px] md:text-xs uppercase tracking-[0.2em]">

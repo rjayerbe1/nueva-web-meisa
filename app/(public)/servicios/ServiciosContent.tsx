@@ -116,14 +116,15 @@ export default function ServiciosContent({
       {/* Hero — Full-bleed dark con imagen industrial */}
       <section className="relative h-screen md:h-[85vh] overflow-hidden bg-slate-950">
         <Image
-          src="https://storage.googleapis.com/meisa-imagenes/site/hero/estructura-perspectiva.jpg"
+          src="https://storage.googleapis.com/meisa-imagenes/drone-pool/DJI_0704.webp"
           alt="Estructura metálica — Servicios MEISA"
           fill
           priority
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/60" />
+        {/* Overlay aclarado: fuerte abajo (texto), ligero arriba (se ve la foto). */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/45 to-slate-950/25" />
 
         <div className="relative z-10 h-full flex items-end pb-20 md:pb-28 px-4 sm:px-6 lg:px-12">
           <div className="mx-auto max-w-7xl w-full">

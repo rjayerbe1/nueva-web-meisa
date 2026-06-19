@@ -4,6 +4,7 @@ import ServicioDetailEnhanced from './ServicioDetailEnhanced'
 import { ServiceSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
+import { aniosExperiencia } from '@/lib/site-meta'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -188,14 +189,18 @@ export async function generateMetadata({ params }: ServicioPageProps) {
 }
 
 export default async function ServicioPage({ params }: ServicioPageProps) {
-  const [servicio, otrosServicios] = await Promise.all([
+  const [servicio, otrosServicios, proyectosAgg] = await Promise.all([
     getServicio(params.slug),
-    getOtrosServicios(params.slug)
+    getOtrosServicios(params.slug),
+    prisma.proyecto.aggregate({ where: { visible: true }, _count: { _all: true } }),
   ])
 
   if (!servicio) {
     notFound()
   }
+
+  // Cifras reales (mismo criterio que el home: proyectos redondeados a la decena)
+  const proyectos = Math.floor(proyectosAgg._count._all / 10) * 10
 
   return (
     <>
@@ -211,6 +216,8 @@ export default async function ServicioPage({ params }: ServicioPageProps) {
       <ServicioDetailEnhanced
         servicio={servicio}
         otrosServicios={otrosServicios}
+        anios={aniosExperiencia()}
+        proyectos={proyectos}
       />
     </>
   )

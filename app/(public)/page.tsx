@@ -110,6 +110,9 @@ export default async function HomePage() {
     : null
 
   // Servicios destacados
+  // El link de cada tarjeta prioriza la página dedicada del servicio
+  // (servicioSlug → /servicios/<slug>): un solo click desde el home al detalle.
+  // hrefAncla queda como override manual y el ancla a /servicios como último fallback.
   const servicios = home.servicios.map((s) => ({
     id: s.slug,
     nombre: s.nombre,
@@ -120,7 +123,9 @@ export default async function HomePage() {
     color: s.color,
     overlayColor: s.overlayColor,
     overlayOpacity: s.overlayOpacity,
-    href: s.hrefAncla || `/servicios#${s.slug}`,
+    href: s.servicioSlug
+      ? `/servicios/${s.servicioSlug}`
+      : s.hrefAncla || `/servicios#${s.slug}`,
   }))
 
   // Copy

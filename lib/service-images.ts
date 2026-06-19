@@ -31,11 +31,15 @@ export const serviceImages: Record<string, string[]> = {
 }
 
 // Imagen de fondo del hero en /servicios/[slug] (la usa getServiceBackgroundImage).
+// Seleccionadas para que sean HORIZONTALES, de tema acorde y de la biblioteca propia.
+// Diseño usa una imagen de planos como provisional (no hay foto BIM en el pool);
+// se reemplaza luego con un render/captura Tekla desde el admin.
+const MEISA = 'https://storage.googleapis.com/meisa-imagenes'
 export const serviceBackgroundImages: Record<string, string> = {
-  'consultoria-en-diseno-estructural': `${GCS}/hero/estructura-perspectiva.jpg`,
-  'fabricacion-de-estructuras-metalicas': `${GCS}/about/meisa-planta-aerea.jpg`,
+  'consultoria-en-diseno-estructural': `${GCS}/servicios/consultoria-1.jpg`,
+  'fabricacion-de-estructuras-metalicas': `${MEISA}/stock-brochure/plantas/1777069732663-i5r4zi-20231020_163538.jpg`,
   'montaje-de-estructuras': `${GCS}/hero/montaje-grua.jpg`,
-  'gestion-integral-de-proyectos': `${GCS}/hero/coliseo-estructuras-rojas.jpg`,
+  'gestion-integral-de-proyectos': `${MEISA}/drone-pool/DJI_0706.webp`,
 }
 
 export function getServiceImages(slug: string): string[] {
