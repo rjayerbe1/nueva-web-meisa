@@ -1,7 +1,8 @@
 // Fallbacks de imágenes por servicio — fotos reales de MEISA en GCS.
 // (El contenido real vive en la DB: Servicio.imagen / Servicio.imagenesGaleria.
 //  Estos mapas son solo respaldo. NO usar stock/Unsplash — design system.)
-const GCS = 'https://storage.googleapis.com/meisa-imagenes/site'
+const MEISA = 'https://storage.googleapis.com/meisa-imagenes'
+const GCS = `${MEISA}/site`
 
 export const serviceImages: Record<string, string[]> = {
   'consultoria-en-diseno-estructural': [
@@ -13,7 +14,7 @@ export const serviceImages: Record<string, string[]> = {
   'fabricacion-de-estructuras-metalicas': [
     `${GCS}/about/meisa-planta-aerea.jpg`,
     `${GCS}/hero/hero-construccion-industrial.jpg`,
-    `${GCS}/projects/industria/tecnofar/TECNOFAR-1.jpg`,
+    `${MEISA}/stock-brochure/plantas/1777069688120-s0pi6w-20231020_163543.jpg`,
     `${GCS}/proyectos/obra-construccion.jpg`,
   ],
   'montaje-de-estructuras': [
@@ -34,7 +35,6 @@ export const serviceImages: Record<string, string[]> = {
 // Seleccionadas para que sean HORIZONTALES, de tema acorde y de la biblioteca propia.
 // Diseño usa una imagen de planos como provisional (no hay foto BIM en el pool);
 // se reemplaza luego con un render/captura Tekla desde el admin.
-const MEISA = 'https://storage.googleapis.com/meisa-imagenes'
 export const serviceBackgroundImages: Record<string, string> = {
   'consultoria-en-diseno-estructural': `${GCS}/servicios/consultoria-1.jpg`,
   'fabricacion-de-estructuras-metalicas': `${MEISA}/stock-brochure/plantas/1777069732663-i5r4zi-20231020_163538.jpg`,
