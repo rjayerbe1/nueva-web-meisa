@@ -70,8 +70,25 @@ async function getProjectsByCategory() {
   return projectsByCategory
 }
 
+// Obras de mayor tonelaje para la franja "obras en cifras" de la sección de clientes.
+// Decimal → number antes de cruzar al client component.
+async function getObrasEnCifras() {
+  const obras = await prisma.proyecto.findMany({
+    where: { visible: true, toneladas: { not: null } },
+    orderBy: { toneladas: 'desc' },
+    take: 4,
+    select: { titulo: true, cliente: true, toneladas: true, slug: true },
+  })
+  return obras.map((o) => ({
+    titulo: o.titulo,
+    cliente: o.cliente,
+    toneladas: Math.round(Number(o.toneladas)),
+    slug: o.slug,
+  }))
+}
+
 export default async function HomePage() {
-  const [projectsByCategory, categorias, heroImages, home, contactoConfig, empresaConfig] =
+  const [projectsByCategory, categorias, heroImages, home, contactoConfig, empresaConfig, obrasEnCifras] =
     await Promise.all([
       getProjectsByCategory(),
       getCategoriasPublicas(),
@@ -79,6 +96,7 @@ export default async function HomePage() {
       getHomeData(),
       getConfiguracionContacto(),
       getConfiguracionEmpresa(),
+      getObrasEnCifras(),
     ])
 
   const foundingYear = empresaConfig?.fundacion ?? 1996
@@ -169,6 +187,7 @@ export default async function HomePage() {
       featured={featured}
       servicios={servicios}
       clientesCopy={clientesCopy}
+      obrasEnCifras={obrasEnCifras}
       contactCopy={contactCopy}
       contactoConfig={contactoConfig}
       orden={orden}

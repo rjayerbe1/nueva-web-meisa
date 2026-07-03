@@ -11,6 +11,8 @@ interface Cliente {
   logo?: string | null
   logoBlanco?: string | null
   sector: string
+  proyectoDestacado?: string | null
+  capacidadProyecto?: string | null
   mostrarEnHome: boolean
   destacado: boolean
   orden: number
@@ -25,12 +27,20 @@ export interface ClientesCopy {
   ctaUrl?: string | null
 }
 
+export interface ObraEnCifras {
+  titulo: string
+  cliente: string
+  toneladas: number
+  slug: string
+}
+
 interface ClientesSectionProps {
   copy?: ClientesCopy | null
   foundingYear?: number
+  obrasEnCifras?: ObraEnCifras[]
 }
 
-export function ClientesSection({ copy, foundingYear = 1996 }: ClientesSectionProps = {}) {
+export function ClientesSection({ copy, foundingYear = 1996, obrasEnCifras }: ClientesSectionProps = {}) {
   const yearsExperience = new Date().getFullYear() - foundingYear
   const eyebrow = copy?.eyebrow || 'Nuestros clientes'
   const titulo =
@@ -102,7 +112,11 @@ export function ClientesSection({ copy, foundingYear = 1996 }: ClientesSectionPr
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.4, delay: (i % 7) * 0.04 }}
                   className="bg-white aspect-[2/1] flex items-center justify-center p-2.5 md:p-3.5 transition-transform duration-300 hover:-translate-y-0.5"
-                  title={cliente.nombre}
+                  title={
+                    cliente.proyectoDestacado
+                      ? `${cliente.nombre} — ${cliente.proyectoDestacado}${cliente.capacidadProyecto ? ` (${cliente.capacidadProyecto})` : ''}`
+                      : cliente.nombre
+                  }
                 >
                   <Image
                     src={logoSrc}
@@ -117,6 +131,37 @@ export function ClientesSection({ copy, foundingYear = 1996 }: ClientesSectionPr
             })}
           </div>
         ) : null}
+
+        {obrasEnCifras && obrasEnCifras.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-14 md:mt-20 border-t border-white/10 pt-10 md:pt-12"
+          >
+            <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-8">
+              Obras que hablan en toneladas
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 md:divide-x md:divide-white/10">
+              {obrasEnCifras.map((obra, i) => (
+                <Link
+                  key={obra.slug}
+                  href={`/proyectos/detalle/${obra.slug}`}
+                  className={`group/obra block ${i > 0 ? 'md:pl-6' : ''}`}
+                >
+                  <div className="font-bebas text-5xl md:text-6xl lg:text-7xl leading-none">
+                    {obra.toneladas.toLocaleString('es-CO')}
+                    <span className="text-white/40 text-3xl md:text-4xl lg:text-5xl"> t</span>
+                  </div>
+                  <p className="mt-2 text-white/50 group-hover/obra:text-white/80 transition-colors duration-300 font-lato text-[10px] md:text-xs uppercase tracking-[0.15em] leading-relaxed">
+                    {obra.titulo}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

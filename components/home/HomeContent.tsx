@@ -18,7 +18,7 @@ import {
   type ContactSectionCopy,
 } from '@/components/sections/ContactSection'
 import type { ServicioItem } from '@/components/sections/ServicesSectionNew'
-import type { ClientesCopy } from '@/components/sections/ClientesSection'
+import type { ClientesCopy, ObraEnCifras } from '@/components/sections/ClientesSection'
 import type { CategoriaPublica } from '@/lib/content/categorias'
 
 export interface HomeContentProps {
@@ -31,6 +31,7 @@ export interface HomeContentProps {
   featured: FeaturedProjectData | null
   servicios: ServicioItem[]
   clientesCopy: ClientesCopy | null
+  obrasEnCifras?: ObraEnCifras[]
   contactCopy: ContactSectionCopy | null
   contactoConfig: ContactoConfig | null
   orden: Array<{ clave: string; activo: boolean }>
@@ -66,6 +67,7 @@ export function HomeContent({
   featured,
   servicios,
   clientesCopy,
+  obrasEnCifras,
   contactCopy,
   contactoConfig,
   orden,
@@ -115,7 +117,7 @@ export function HomeContent({
       case 'clientes':
         return (
           <section id="clientes" className="relative z-40" key={clave}>
-            <ClientesSection copy={clientesCopy} foundingYear={foundingYear} />
+            <ClientesSection copy={clientesCopy} foundingYear={foundingYear} obrasEnCifras={obrasEnCifras} />
           </section>
         )
       case 'contacto':
