@@ -42,9 +42,10 @@ const contactSchema = z.object({
   empresa: z.string().optional(),
   email: z.string().email("Email inválido"),
   telefono: z.string().min(7, "Teléfono inválido"),
-  ciudad: z.string().min(2, "La ciudad es requerida"),
+  // Detalles opcionales (paso 2): se piden pero no bloquean el envío.
+  ciudad: z.string().optional(),
   tipoProyecto: z.string().min(1, "Selecciona un tipo de proyecto"),
-  etapa: z.string().min(1, "Selecciona la etapa del proyecto"),
+  etapa: z.string().optional(),
   escalaValor: z
     .number()
     .nullable()
@@ -54,7 +55,7 @@ const contactSchema = z.object({
   escalaUnidad: z.enum(["M2", "TON", "NA"]).nullable().optional(),
   descripcion: z
     .string()
-    .min(20, "Por favor describe tu proyecto (mínimo 20 caracteres)"),
+    .min(10, "Cuéntanos brevemente qué necesitas (mínimo 10 caracteres)"),
   habeasData: z.literal(true, {
     errorMap: () => ({ message: "Debes aceptar el tratamiento de datos" }),
   }),
@@ -86,6 +87,11 @@ export default function ContactoContent({
   const [selectedPlanta, setSelectedPlanta] = useState<PlantaPublica | null>(
     null,
   )
+  // Flujo en 2 pasos: paso 1 captura el lead esencial (se guarda aunque abandonen),
+  // paso 2 lo enriquece con detalles opcionales.
+  const [step, setStep] = useState<1 | 2>(1)
+  const [leadId, setLeadId] = useState<string | null>(null)
+  const [advancing, setAdvancing] = useState(false)
 
   const {
     register,
@@ -94,6 +100,8 @@ export default function ContactoContent({
     control,
     setValue,
     watch,
+    trigger,
+    getValues,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -107,28 +115,88 @@ export default function ContactoContent({
   const escalaValor = watch("escalaValor")
   const escalaUnidad = watch("escalaUnidad")
 
+  const buildDescripcion = (tipoProyecto: string, descripcion: string) => {
+    const otroDetalleClean = otroDetalle.trim()
+    return tipoProyecto === "OTRO" && otroDetalleClean
+      ? `Tipo de proyecto (otro): ${otroDetalleClean}\n\n${descripcion}`
+      : descripcion
+  }
+
+  // Paso 1 → 2: valida solo lo esencial y guarda el lead parcial (se conserva
+  // aunque el usuario no complete el paso 2). Si el guardado falla, igual
+  // avanzamos para no bloquear al usuario; el envío final reintenta completo.
+  const onContinue = async () => {
+    const ok = await trigger([
+      "nombre",
+      "email",
+      "telefono",
+      "tipoProyecto",
+      "descripcion",
+      "habeasData",
+    ])
+    if (!ok) return
+
+    setAdvancing(true)
+    setSubmitStatus("idle")
+    try {
+      const values = getValues()
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: values.nombre,
+          empresa: values.empresa || null,
+          email: values.email,
+          telefono: values.telefono,
+          tipoProyecto: values.tipoProyecto,
+          descripcion: buildDescripcion(values.tipoProyecto, values.descripcion),
+          parcial: true,
+          website: honeypot,
+        }),
+      })
+      const json = await response.json().catch(() => ({}))
+      if (response.ok && json.success && json.id) {
+        setLeadId(json.id)
+        // El lead ya quedó capturado → esta ES la conversión que medimos.
+        sendGAEvent("event", "generate_lead", {
+          metodo: "form",
+          paso: "1",
+          tipo_proyecto: values.tipoProyecto,
+        })
+      }
+    } catch (error) {
+      console.error("Error al guardar el paso 1:", error)
+    } finally {
+      setAdvancing(false)
+      setStep(2)
+    }
+  }
+
+  // Envío final (paso 2): enriquece el lead parcial (id) o, si no hubo captura
+  // parcial, hace el envío completo directo.
   const onSubmit = async (data: ContactFormData) => {
+    if (step === 1) {
+      await onContinue()
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus("idle")
+    const hadPartial = Boolean(leadId)
 
     try {
-      const otroDetalleClean = otroDetalle.trim()
-      const descripcionFinal =
-        data.tipoProyecto === "OTRO" && otroDetalleClean
-          ? `Tipo de proyecto (otro): ${otroDetalleClean}\n\n${data.descripcion}`
-          : data.descripcion
-
       const payload = {
+        id: leadId ?? undefined,
         nombre: data.nombre,
         empresa: data.empresa || null,
         email: data.email,
         telefono: data.telefono,
-        ciudad: data.ciudad,
+        ciudad: data.ciudad || null,
         tipoProyecto: data.tipoProyecto,
-        etapa: data.etapa,
+        etapa: data.etapa || null,
         escalaValor: data.escalaValor ?? null,
         escalaUnidad: data.escalaUnidad ?? null,
-        descripcion: descripcionFinal,
+        descripcion: buildDescripcion(data.tipoProyecto, data.descripcion),
         adjuntos,
         website: honeypot,
       }
@@ -146,10 +214,18 @@ export default function ContactoContent({
       setAdjuntos([])
       setOtroDetalle("")
       reset()
-      sendGAEvent("event", "generate_lead", {
-        tipo_proyecto: data.tipoProyecto,
-        ciudad: data.ciudad,
-      })
+      setLeadId(null)
+      setStep(1)
+      // Si no hubo captura parcial (guardado del paso 1 falló), el lead se
+      // concreta aquí → disparar el evento ahora para no perder la conversión.
+      if (!hadPartial) {
+        sendGAEvent("event", "generate_lead", {
+          metodo: "form",
+          paso: "directo",
+          tipo_proyecto: data.tipoProyecto,
+          ciudad: data.ciudad || undefined,
+        })
+      }
     } catch (error) {
       setSubmitStatus("error")
       console.error("Error:", error)
@@ -337,199 +413,271 @@ export default function ContactoContent({
                     />
                   </div>
 
-                  {/* Nombre + Empresa */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="nombre" className={labelClass}>
-                        Nombre completo *
-                      </label>
-                      <input
-                        {...register("nombre")}
-                        id="nombre"
-                        type="text"
-                        autoComplete="name"
-                        className={inputClass}
-                        placeholder="Tu nombre"
+                  {/* Indicador de progreso */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 flex gap-1.5">
+                      <span
+                        className={`h-1 flex-1 transition-colors duration-300 ${
+                          step >= 1 ? "bg-white" : "bg-white/15"
+                        }`}
                       />
-                      {errors.nombre && (
-                        <p className={errorClass}>{errors.nombre.message}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label htmlFor="empresa" className={labelClass}>
-                        Empresa <span className="text-white/30 normal-case tracking-normal font-normal">(opcional)</span>
-                      </label>
-                      <input
-                        {...register("empresa")}
-                        id="empresa"
-                        type="text"
-                        autoComplete="organization"
-                        className={inputClass}
-                        placeholder="Tu empresa"
+                      <span
+                        className={`h-1 flex-1 transition-colors duration-300 ${
+                          step >= 2 ? "bg-white" : "bg-white/15"
+                        }`}
                       />
                     </div>
+                    <p className="text-white/40 font-lato font-bold text-[10px] uppercase tracking-[0.2em] whitespace-nowrap">
+                      Paso {step} / 2
+                    </p>
                   </div>
 
-                  {/* Email + Teléfono */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="email" className={labelClass}>
-                        Email *
-                      </label>
-                      <input
-                        {...register("email")}
-                        id="email"
-                        type="email"
-                        autoComplete="email"
-                        className={inputClass}
-                        placeholder="tu@email.com"
-                      />
-                      {errors.email && (
-                        <p className={errorClass}>{errors.email.message}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label htmlFor="telefono" className={labelClass}>
-                        Teléfono *
-                      </label>
-                      <input
-                        {...register("telefono")}
-                        id="telefono"
-                        type="tel"
-                        autoComplete="tel"
-                        className={inputClass}
-                        placeholder="+57 300 123 4567"
-                      />
-                      {errors.telefono && (
-                        <p className={errorClass}>{errors.telefono.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Ciudad autocomplete */}
-                  <Controller
-                    control={control}
-                    name="ciudad"
-                    render={({ field }) => (
-                      <CityAutocomplete
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        error={errors.ciudad?.message}
-                      />
-                    )}
-                  />
-
-                  {/* Tipo de proyecto */}
-                  <Controller
-                    control={control}
-                    name="tipoProyecto"
-                    render={({ field }) => (
-                      <ProjectTypeSelector
-                        value={field.value || null}
-                        onChange={(v) => {
-                          field.onChange(v)
-                          if (v !== "OTRO") setOtroDetalle("")
-                        }}
-                        error={errors.tipoProyecto?.message}
-                        otroDetalle={otroDetalle}
-                        onChangeOtroDetalle={setOtroDetalle}
-                      />
-                    )}
-                  />
-
-                  {/* Etapa del proyecto */}
-                  <Controller
-                    control={control}
-                    name="etapa"
-                    render={({ field }) => (
-                      <ProjectStageSelector
-                        value={field.value || null}
-                        onChange={(v: ProjectStageValue) => field.onChange(v)}
-                        error={errors.etapa?.message}
-                      />
-                    )}
-                  />
-
-                  {/* Escala estimada */}
-                  <ScaleInput
-                    valor={escalaValor ?? null}
-                    unidad={(escalaUnidad ?? null) as ScaleUnit | null}
-                    onChangeValor={(v) =>
-                      setValue("escalaValor", v, { shouldValidate: false })
-                    }
-                    onChangeUnidad={(u) =>
-                      setValue("escalaUnidad", u, { shouldValidate: false })
-                    }
-                  />
-
-                  {/* Adjuntos */}
-                  <FileUploadZone files={adjuntos} onChange={setAdjuntos} />
-
-                  {/* Descripción */}
-                  <div>
-                    <label htmlFor="descripcion" className={labelClass}>
-                      Descripción del proyecto *
-                    </label>
-                    <textarea
-                      {...register("descripcion")}
-                      id="descripcion"
-                      rows={5}
-                      className={`${inputClass} resize-none`}
-                      placeholder="Cuéntanos los detalles: ubicación, alcance, plazos, restricciones técnicas o de obra…"
-                    />
-                    {errors.descripcion && (
-                      <p className={errorClass}>{errors.descripcion.message}</p>
-                    )}
-                  </div>
-
-                  {/* Habeas Data */}
-                  <div>
-                    <label className="flex items-start gap-3 cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        {...register("habeasData")}
-                        className="w-4 h-4 mt-0.5 border border-white/30 bg-slate-900 text-red-600 focus:ring-0 focus:ring-offset-0 accent-red-600"
-                      />
-                      <span className="text-white/70 font-lato text-xs md:text-sm leading-relaxed group-hover:text-white transition-colors">
-                        Autorizo a MEISA a tratar mis datos personales para
-                        fines comerciales según su{" "}
-                        <Link
-                          href="/politica-datos"
-                          className="underline underline-offset-2 hover:text-white"
-                        >
-                          política de tratamiento de datos
-                        </Link>
-                        .
-                      </span>
-                    </label>
-                    {errors.habeasData && (
-                      <p className={errorClass}>{errors.habeasData.message}</p>
-                    )}
-                  </div>
-
-                  {/* Submit */}
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting ? (
-                        "Enviando…"
-                      ) : (
-                        <>
-                          Enviar solicitud
-                          <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                        </>
-                      )}
-                    </button>
-                    {submitStatus === "error" && (
-                      <p className="mt-4 text-red-500 font-lato text-sm">
-                        Hubo un error al enviar. Por favor intenta de nuevo o
-                        escríbenos directo a contacto@meisa.com.co.
+                  {step === 1 ? (
+                    <div className="space-y-6 md:space-y-7">
+                      <p className="text-white/40 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">
+                        Tus datos — respondemos en menos de 24 h
                       </p>
-                    )}
-                  </div>
+
+                      {/* Nombre */}
+                      <div>
+                        <label htmlFor="nombre" className={labelClass}>
+                          Nombre completo *
+                        </label>
+                        <input
+                          {...register("nombre")}
+                          id="nombre"
+                          type="text"
+                          autoComplete="name"
+                          className={inputClass}
+                          placeholder="Tu nombre"
+                        />
+                        {errors.nombre && (
+                          <p className={errorClass}>{errors.nombre.message}</p>
+                        )}
+                      </div>
+
+                      {/* Email + Teléfono */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="email" className={labelClass}>
+                            Email *
+                          </label>
+                          <input
+                            {...register("email")}
+                            id="email"
+                            type="email"
+                            autoComplete="email"
+                            className={inputClass}
+                            placeholder="tu@email.com"
+                          />
+                          {errors.email && (
+                            <p className={errorClass}>{errors.email.message}</p>
+                          )}
+                        </div>
+                        <div>
+                          <label htmlFor="telefono" className={labelClass}>
+                            Teléfono / WhatsApp *
+                          </label>
+                          <input
+                            {...register("telefono")}
+                            id="telefono"
+                            type="tel"
+                            autoComplete="tel"
+                            className={inputClass}
+                            placeholder="+57 300 123 4567"
+                          />
+                          {errors.telefono && (
+                            <p className={errorClass}>{errors.telefono.message}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Tipo de proyecto */}
+                      <Controller
+                        control={control}
+                        name="tipoProyecto"
+                        render={({ field }) => (
+                          <ProjectTypeSelector
+                            value={field.value || null}
+                            onChange={(v) => {
+                              field.onChange(v)
+                              if (v !== "OTRO") setOtroDetalle("")
+                            }}
+                            error={errors.tipoProyecto?.message}
+                            otroDetalle={otroDetalle}
+                            onChangeOtroDetalle={setOtroDetalle}
+                          />
+                        )}
+                      />
+
+                      {/* ¿Qué necesitas? (mensaje corto) */}
+                      <div>
+                        <label htmlFor="descripcion" className={labelClass}>
+                          ¿Qué necesitas? *
+                        </label>
+                        <textarea
+                          {...register("descripcion")}
+                          id="descripcion"
+                          rows={4}
+                          className={`${inputClass} resize-none`}
+                          placeholder="Ej: cotizar una bodega de 800 m² en Cali, o una cubierta metálica para…"
+                        />
+                        {errors.descripcion && (
+                          <p className={errorClass}>{errors.descripcion.message}</p>
+                        )}
+                      </div>
+
+                      {/* Habeas Data */}
+                      <div>
+                        <label className="flex items-start gap-3 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            {...register("habeasData")}
+                            className="w-4 h-4 mt-0.5 border border-white/30 bg-slate-900 text-red-600 focus:ring-0 focus:ring-offset-0 accent-red-600"
+                          />
+                          <span className="text-white/70 font-lato text-xs md:text-sm leading-relaxed group-hover:text-white transition-colors">
+                            Autorizo a MEISA a tratar mis datos personales para
+                            fines comerciales según su{" "}
+                            <Link
+                              href="/politica-datos"
+                              className="underline underline-offset-2 hover:text-white"
+                            >
+                              política de tratamiento de datos
+                            </Link>
+                            .
+                          </span>
+                        </label>
+                        {errors.habeasData && (
+                          <p className={errorClass}>{errors.habeasData.message}</p>
+                        )}
+                      </div>
+
+                      {/* Continuar */}
+                      <div className="pt-2">
+                        <button
+                          type="button"
+                          onClick={onContinue}
+                          disabled={advancing}
+                          className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {advancing ? (
+                            "Guardando…"
+                          ) : (
+                            <>
+                              Continuar
+                              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                            </>
+                          )}
+                        </button>
+                        <p className="mt-3 text-white/40 font-lato text-xs">
+                          Un paso más con detalles opcionales para cotizar más
+                          rápido.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-6 md:space-y-7">
+                      <div className="flex items-start gap-2 border border-white/10 bg-white/[0.03] px-4 py-3">
+                        <CheckCircle2
+                          className="w-4 h-4 mt-0.5 text-red-500 flex-shrink-0"
+                          strokeWidth={2}
+                        />
+                        <p className="text-white/60 font-lato text-xs md:text-sm leading-relaxed">
+                          Ya guardamos tus datos. Estos detalles son{" "}
+                          <span className="text-white/80">opcionales</span> —
+                          nos ayudan a cotizar más rápido, pero podés enviar tu
+                          solicitud tal cual.
+                        </p>
+                      </div>
+
+                      {/* Empresa */}
+                      <div>
+                        <label htmlFor="empresa" className={labelClass}>
+                          Empresa <span className="text-white/30 normal-case tracking-normal font-normal">(opcional)</span>
+                        </label>
+                        <input
+                          {...register("empresa")}
+                          id="empresa"
+                          type="text"
+                          autoComplete="organization"
+                          className={inputClass}
+                          placeholder="Tu empresa"
+                        />
+                      </div>
+
+                      {/* Ciudad autocomplete */}
+                      <Controller
+                        control={control}
+                        name="ciudad"
+                        render={({ field }) => (
+                          <CityAutocomplete
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            error={errors.ciudad?.message}
+                          />
+                        )}
+                      />
+
+                      {/* Etapa del proyecto */}
+                      <Controller
+                        control={control}
+                        name="etapa"
+                        render={({ field }) => (
+                          <ProjectStageSelector
+                            value={field.value || null}
+                            onChange={(v: ProjectStageValue) => field.onChange(v)}
+                            error={errors.etapa?.message}
+                          />
+                        )}
+                      />
+
+                      {/* Escala estimada */}
+                      <ScaleInput
+                        valor={escalaValor ?? null}
+                        unidad={(escalaUnidad ?? null) as ScaleUnit | null}
+                        onChangeValor={(v) =>
+                          setValue("escalaValor", v, { shouldValidate: false })
+                        }
+                        onChangeUnidad={(u) =>
+                          setValue("escalaUnidad", u, { shouldValidate: false })
+                        }
+                      />
+
+                      {/* Adjuntos */}
+                      <FileUploadZone files={adjuntos} onChange={setAdjuntos} />
+
+                      {/* Volver + Enviar */}
+                      <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isSubmitting ? (
+                            "Enviando…"
+                          ) : (
+                            <>
+                              Enviar solicitud
+                              <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                            </>
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setStep(1)}
+                          className="inline-flex items-center gap-2 text-white/50 font-lato font-bold text-xs uppercase tracking-[0.15em] hover:text-white transition-colors"
+                        >
+                          Volver
+                        </button>
+                      </div>
+                      {submitStatus === "error" && (
+                        <p className="text-red-500 font-lato text-sm">
+                          Hubo un error al enviar. Por favor intenta de nuevo o
+                          escríbenos directo a contacto@meisa.com.co.
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </form>
               )}
             </motion.div>

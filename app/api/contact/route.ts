@@ -21,19 +21,57 @@ const contactSchema = z.object({
   email: z.string().email('Email inválido'),
   telefono: z.string().min(7, 'Teléfono inválido'),
   empresa: z.string().nullable().optional(),
-  ciudad: z.string().min(2, 'Ciudad requerida'),
+  // Campos de detalle: opcionales (los califica el comercial en la llamada).
+  ciudad: z.string().nullable().optional(),
   tipoProyecto: z.string().min(1, 'Tipo requerido'),
-  etapa: z.string().min(1, 'Etapa requerida'),
+  etapa: z.string().nullable().optional(),
   escalaValor: z.number().nullable().optional(),
   escalaUnidad: z.enum(['M2', 'TON', 'NA']).nullable().optional(),
   descripcion: z.string().min(10, 'Mensaje muy corto'),
   adjuntos: z.array(adjuntoSchema).max(10).optional(),
   // Honeypot anti-spam: campo invisible para humanos; si llega con valor, es un bot
   website: z.string().optional(),
+  // Flujo en 2 pasos:
+  //  - parcial=true  → paso 1: guarda el lead esencial (estado PARCIAL) y alerta al comercial.
+  //  - id=<cuid>     → paso 2: enriquece ese lead con los detalles y lo pasa a NUEVO.
+  parcial: z.boolean().optional(),
+  id: z.string().optional(),
 })
+
+type ContactData = z.infer<typeof contactSchema>
 
 function buildReferencia(id: string): string {
   return `MEISA-${id.slice(-6).toUpperCase()}`
+}
+
+// Notificación interna al comercial. `parcial` marca los leads del paso 1 (aún sin detalles).
+async function notifyInternal(
+  contactId: string,
+  referencia: string,
+  data: ContactData,
+  origen: string,
+  parcial: boolean,
+) {
+  await sendContactNotificationEmail({
+    contactId,
+    referencia,
+    nombre: data.nombre,
+    empresa: data.empresa,
+    email: data.email,
+    telefono: data.telefono,
+    ciudad: data.ciudad ?? null,
+    tipoProyecto: data.tipoProyecto,
+    etapa: data.etapa ?? null,
+    escalaValor: data.escalaValor ?? null,
+    escalaUnidad: data.escalaUnidad ?? null,
+    mensaje: parcial
+      ? `⚠️ SOLICITUD PARCIAL (el usuario aún no completó los detalles del paso 2, pero ya podés contactarlo):\n\n${data.descripcion}`
+      : data.descripcion,
+    adjuntos: data.adjuntos as
+      | Array<{ name: string; url: string; size?: number; mime?: string }>
+      | undefined,
+    origen: parcial ? `${origen} · parcial` : origen,
+  })
 }
 
 export async function POST(request: NextRequest) {
@@ -50,21 +88,84 @@ export async function POST(request: NextRequest) {
     }
 
     const origen = request.headers.get('referer') || 'contacto'
+    const adjuntos =
+      data.adjuntos && data.adjuntos.length > 0 ? data.adjuntos : undefined
 
+    // ── PASO 2: enriquecer un lead parcial existente ──────────────────────
+    if (data.id) {
+      const existing = await prisma.contactForm.findUnique({
+        where: { id: data.id },
+      })
+      // Solo enriquecemos leads que quedaron PARCIALes (evita pisar leads ya cerrados).
+      if (existing && existing.estado === 'PARCIAL') {
+        const referencia = existing.referencia ?? buildReferencia(existing.id)
+        await prisma.contactForm.update({
+          where: { id: existing.id },
+          data: {
+            nombre: data.nombre,
+            email: data.email,
+            telefono: data.telefono,
+            empresa: data.empresa || null,
+            ciudad: data.ciudad || null,
+            tipoProyecto: data.tipoProyecto,
+            etapa: data.etapa || null,
+            escalaValor: data.escalaValor ?? null,
+            escalaUnidad: data.escalaUnidad ?? null,
+            mensaje: data.descripcion,
+            adjuntos,
+            estado: 'NUEVO',
+            referencia,
+          },
+        })
+
+        // El comercial ya fue alertado en el paso 1; ahora enviamos el paquete
+        // completo (incluye adjuntos/planos) + la confirmación al cliente.
+        const enrichResults = await Promise.allSettled([
+          notifyInternal(existing.id, referencia, data, origen, false),
+          sendContactConfirmationEmail({
+            to: data.email,
+            nombre: data.nombre,
+            referencia,
+          }),
+        ])
+        enrichResults.forEach((res, i) => {
+          if (res.status === 'rejected') {
+            const tag = i === 0 ? 'admin' : 'cliente'
+            console.error(`[contact] email ${tag} (enrich) falló:`, res.reason)
+          }
+        })
+
+        return NextResponse.json(
+          {
+            success: true,
+            message: 'Solicitud completada correctamente',
+            id: existing.id,
+            referencia,
+          },
+          { status: 200 },
+        )
+      }
+      // Si el lead parcial no existe o ya no es parcial, caemos a crear uno nuevo
+      // (nunca perder la solicitud del usuario).
+    }
+
+    // ── CREAR: paso 1 (parcial) o envío directo (mini-form / fallback) ────
+    const parcial = data.parcial === true
     const contact = await prisma.contactForm.create({
       data: {
         nombre: data.nombre,
         email: data.email,
         telefono: data.telefono,
         empresa: data.empresa || null,
-        ciudad: data.ciudad,
+        ciudad: data.ciudad || null,
         tipoProyecto: data.tipoProyecto,
-        etapa: data.etapa,
+        etapa: data.etapa || null,
         escalaValor: data.escalaValor ?? null,
         escalaUnidad: data.escalaUnidad ?? null,
         mensaje: data.descripcion,
-        adjuntos: data.adjuntos && data.adjuntos.length > 0 ? data.adjuntos : undefined,
+        adjuntos,
         origen,
+        estado: parcial ? 'PARCIAL' : 'NUEVO',
       },
     })
 
@@ -74,33 +175,20 @@ export async function POST(request: NextRequest) {
       data: { referencia },
     })
 
-    // Notificaciones — no fallar el request si los emails fallan
-    const emailResults = await Promise.allSettled([
-      sendContactNotificationEmail({
-        contactId: contact.id,
-        referencia,
-        nombre: data.nombre,
-        empresa: data.empresa,
-        email: data.email,
-        telefono: data.telefono,
-        ciudad: data.ciudad,
-        tipoProyecto: data.tipoProyecto,
-        etapa: data.etapa,
-        escalaValor: data.escalaValor ?? null,
-        escalaUnidad: data.escalaUnidad ?? null,
-        mensaje: data.descripcion,
-        adjuntos: data.adjuntos as
-          | Array<{ name: string; url: string; size?: number; mime?: string }>
-          | undefined,
-        origen,
-      }),
-      sendContactConfirmationEmail({
-        to: data.email,
-        nombre: data.nombre,
-        referencia,
-      }),
-    ])
-
+    // Notificaciones — no fallar el request si los emails fallan.
+    //  - Parcial: solo alerta interna (el cliente completa el paso 2).
+    //  - Directo: alerta interna + confirmación al cliente (comportamiento clásico).
+    const emailTasks = parcial
+      ? [notifyInternal(contact.id, referencia, data, origen, true)]
+      : [
+          notifyInternal(contact.id, referencia, data, origen, false),
+          sendContactConfirmationEmail({
+            to: data.email,
+            nombre: data.nombre,
+            referencia,
+          }),
+        ]
+    const emailResults = await Promise.allSettled(emailTasks)
     emailResults.forEach((res, i) => {
       if (res.status === 'rejected') {
         const tag = i === 0 ? 'admin' : 'cliente'
@@ -111,7 +199,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: 'Mensaje recibido correctamente',
+        message: parcial
+          ? 'Datos recibidos correctamente'
+          : 'Mensaje recibido correctamente',
         id: contact.id,
         referencia,
       },

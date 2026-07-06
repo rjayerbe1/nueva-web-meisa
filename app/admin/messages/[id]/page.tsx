@@ -19,6 +19,7 @@ import {
 import Link from "next/link"
 
 const ESTADO_OPTIONS = [
+  { value: "PARCIAL", label: "Parcial", classes: "bg-amber-100 text-amber-800 border-amber-300" },
   { value: "NUEVO", label: "Nuevo", classes: "bg-orange-100 text-orange-800 border-orange-300" },
   { value: "LEIDO", label: "Leído", classes: "bg-blue-100 text-blue-800 border-blue-300" },
   { value: "RESPONDIDO", label: "Respondido", classes: "bg-green-100 text-green-800 border-green-300" },

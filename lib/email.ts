@@ -132,7 +132,7 @@ export interface ContactNotificationPayload {
   empresa?: string | null
   email: string
   telefono: string
-  ciudad: string
+  ciudad?: string | null
   tipoProyecto?: string | null
   etapa?: string | null
   escalaValor?: number | null
@@ -179,6 +179,7 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
 
   const tipoLabel = payload.tipoProyecto ? TIPO_PROYECTO_LABEL[payload.tipoProyecto] || payload.tipoProyecto : "—"
   const etapaLabel = payload.etapa ? ETAPA_LABEL[payload.etapa] || payload.etapa : "—"
+  const ciudadTxt = payload.ciudad || "—"
   const escalaTxt =
     payload.escalaValor && payload.escalaUnidad
       ? `${payload.escalaValor} ${ESCALA_UNIDAD_LABEL[payload.escalaUnidad] || payload.escalaUnidad}`
@@ -196,7 +197,7 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
     : '<span style="color:#94a3b8;font-size:13px;">Sin adjuntos</span>'
 
   const adminUrl = `${baseUrl}/admin/messages/${payload.contactId}`
-  const subject = `[MEISA] Nueva solicitud · ${payload.referencia} · ${tipoLabel} · ${payload.ciudad}`
+  const subject = `[MEISA] Nueva solicitud · ${payload.referencia} · ${tipoLabel} · ${ciudadTxt}`
 
   const html = `<!DOCTYPE html>
 <html lang="es">
@@ -226,7 +227,7 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;">
                   ${row("Email", `<a href="mailto:${escapeHtml(payload.email)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escapeHtml(payload.email)}</a>`)}
                   ${row("Teléfono", `<a href="tel:${escapeHtml(payload.telefono)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escapeHtml(payload.telefono)}</a>`)}
-                  ${row("Ciudad", escapeHtml(payload.ciudad))}
+                  ${row("Ciudad", escapeHtml(ciudadTxt))}
                 </table>
               </td>
             </tr>
@@ -285,7 +286,7 @@ ${payload.nombre}${payload.empresa ? " · " + payload.empresa : ""}
 
 Email: ${payload.email}
 Teléfono: ${payload.telefono}
-Ciudad: ${payload.ciudad}
+Ciudad: ${ciudadTxt}
 
 Tipo: ${tipoLabel}
 Etapa: ${etapaLabel}

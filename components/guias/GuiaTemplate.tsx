@@ -10,6 +10,8 @@ import type { CategoriaEnum } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 import { OtrasGuias } from '@/components/guias/OtrasGuias'
+import { QuickQuoteForm } from '@/components/contacto/QuickQuoteForm'
+import { WhatsAppCTA } from '@/components/contacto/WhatsAppCTA'
 
 export const SITE_URL = 'https://meisa.com.co'
 export const FALLBACK_HERO =
@@ -235,6 +237,12 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
           </div>
         </div>
       </section>
+
+      {/* Captura ligera — matchea la intención del que investiga (precios/pesos) */}
+      <QuickQuoteForm
+        tema={`la guía "${config.breadcrumbName}"`}
+        origen={`guia:${config.path}`}
+      />
 
       {/* Secciones de contenido */}
       {config.secciones.map((seccion, idx) => (
@@ -613,6 +621,10 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
               Solicitar cotización
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
+            <WhatsAppCTA
+              origen={`guia:${config.path}`}
+              mensaje={`Hola MEISA, vi la guía de ${config.breadcrumbName} y quisiera cotizar un proyecto.`}
+            />
             <Link
               href="/proyectos"
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"

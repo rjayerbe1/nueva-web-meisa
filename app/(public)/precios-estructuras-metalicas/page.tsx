@@ -7,6 +7,8 @@ import { getGuiaDb, getSolucionesDb } from '@/lib/content/landings'
 import { getGuiaFallback, type GuiaPreciosContenido } from '@/lib/guias'
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 import { OtrasGuias } from '@/components/guias/OtrasGuias'
+import { QuickQuoteForm } from '@/components/contacto/QuickQuoteForm'
+import { WhatsAppCTA } from '@/components/contacto/WhatsAppCTA'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -233,6 +235,14 @@ export default async function PreciosEstructurasMetalicasPage() {
         </div>
       </section>
 
+      {/* Captura ligera — el usuario acaba de ver los rangos, momento de máxima intención */}
+      <QuickQuoteForm
+        tema="la guía de precios de estructura metálica"
+        origen="guia:/precios-estructuras-metalicas"
+        titulo="¿Quieres un estimado real para tu proyecto?"
+        subtitulo="Los rangos de arriba son orientativos. Déjanos tus datos y te enviamos un estimado ajustado a tu obra en menos de 24 horas hábiles."
+      />
+
       {/* Image break */}
       <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
         <Image
@@ -409,6 +419,10 @@ export default async function PreciosEstructurasMetalicasPage() {
               Solicitar cotización
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
+            <WhatsAppCTA
+              origen="guia:/precios-estructuras-metalicas"
+              mensaje="Hola MEISA, vi la guía de precios y quisiera un estimado para mi proyecto."
+            />
             <Link
               href="/proyectos"
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"

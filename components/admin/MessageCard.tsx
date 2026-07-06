@@ -7,6 +7,7 @@ import { Mail, Phone, Calendar, MapPin, Trash2, Eye, Building2 } from "lucide-re
 import type { AdminMessage } from "./MessagesList"
 
 const ESTADO_LABEL: Record<string, { label: string; classes: string }> = {
+  PARCIAL: { label: "Parcial", classes: "bg-amber-100 text-amber-800" },
   NUEVO: { label: "Nuevo", classes: "bg-orange-100 text-orange-800" },
   LEIDO: { label: "Leído", classes: "bg-blue-100 text-blue-800" },
   RESPONDIDO: { label: "Respondido", classes: "bg-green-100 text-green-800" },

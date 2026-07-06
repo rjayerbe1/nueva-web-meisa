@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, MessageCircle, ArrowLeft, Check, Mail } from 'lucide-react'
+import { sendGAEvent } from '@next/third-parties/google'
 
 /**
  * Asistente comercial IA — widget flotante con captura de leads y envío de la
@@ -352,6 +353,8 @@ export function ChatWidget() {
 
         if (res.ok && data.success) {
           setLeadEnviado(true)
+          // Medición: lead capturado vía chatbot (dejar de medir a ciegas).
+          sendGAEvent('event', 'generate_lead', { metodo: 'chat', origen: 'chatbot' })
           setVista('chat')
           setLead(LEAD_INICIAL)
           setLeadHabeas(false)

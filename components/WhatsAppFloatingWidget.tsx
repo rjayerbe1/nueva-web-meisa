@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Clock, MessageSquare } from 'lucide-react'
+import { sendGAEvent } from '@next/third-parties/google'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface Contacto {
@@ -59,6 +60,11 @@ export function WhatsAppFloatingWidget() {
     const telefonoLimpio = contacto.telefono.replace(/\D/g, '')
     const mensaje = encodeURIComponent(contacto.mensajePredeterminado)
     const url = `https://wa.me/${telefonoLimpio}?text=${mensaje}`
+    // Medición: contar el contacto por WhatsApp como lead (dejar de medir a ciegas).
+    sendGAEvent('event', 'generate_lead', {
+      metodo: 'whatsapp',
+      origen: 'widget-flotante',
+    })
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 
