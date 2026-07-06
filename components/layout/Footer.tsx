@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Instagram, Linkedin, Globe } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Youtube, Globe } from 'lucide-react'
 
 type IconComponent = React.ComponentType<{ className?: string }>
 
@@ -59,6 +59,7 @@ const DEFAULT_SOCIAL: FooterSocialItem[] = [
   { red: 'instagram', url: 'https://www.instagram.com/meisa.sas', icono: 'Instagram' },
   { red: 'linkedin', url: 'https://www.linkedin.com/company/meisa-sas', icono: 'Linkedin' },
   { red: 'twitter', url: 'https://x.com/meisa_sas', icono: 'Twitter' },
+  { red: 'youtube', url: 'https://www.youtube.com/@MEISA_SAS', icono: 'Youtube' },
 ]
 
 const DEFAULT_PLANTAS: FooterPlantaItem[] = [
@@ -72,6 +73,7 @@ function resolveSocialIcon(s: FooterSocialItem): IconComponent {
   if (key.includes('facebook')) return Facebook
   if (key.includes('instagram')) return Instagram
   if (key.includes('linkedin')) return Linkedin
+  if (key.includes('youtube')) return Youtube
   if (key.includes('twitter') || key.includes('x.com')) return XIcon
   return Globe
 }
