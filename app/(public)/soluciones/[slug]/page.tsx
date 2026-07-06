@@ -9,7 +9,9 @@ import {
   ServiceSchema,
   BreadcrumbSchema,
   FAQSchema,
+  VideoObjectSchema,
 } from '@/components/seo/JsonLdSchema'
+import { VideoDestacado } from '@/components/sections/VideoDestacado'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -24,6 +26,33 @@ const CIUDADES_COBERTURA = [
   { slug: 'bogota', nombre: 'Bogotá' },
   { slug: 'popayan', nombre: 'Popayán y el Cauca' },
 ]
+
+// Video destacado por landing (facade + VideoObject). Extensible: agregar más slugs.
+const SOLUCION_VIDEOS: Record<
+  string,
+  {
+    videoId: string
+    obra: string
+    titulo: string
+    descripcion: string
+    poster: string
+    uploadDate: string
+    duration: string
+  }
+> = {
+  'puentes-metalicos': {
+    videoId: '5_b1ILDSaoU',
+    obra: 'Puente Cascada',
+    titulo:
+      'Montaje de puente metálico Puente Cascada | Corredor 4G Popayán – Santander de Quilichao',
+    descripcion:
+      'Montaje en obra del Puente Cascada, puente metálico del Corredor 4G Popayán – Santander de Quilichao ejecutado por MEISA: coordinación de equipos, instalación de elementos estructurales y montaje en campo.',
+    poster:
+      'https://storage.googleapis.com/meisa-imagenes/site/selected-hero/07-puente-cascada.jpg',
+    uploadDate: '2026-07-06',
+    duration: 'PT6M1S',
+  },
+}
 
 export async function generateStaticParams() {
   const slugs = await getSolucionSlugsDb()
@@ -114,6 +143,7 @@ export default async function SolucionPage({
 
   const heroImagen = solucion.heroImagen || categoria?.imagenCover || FALLBACK_HERO
   const categoriaSlug = categoria?.slug || solucion.categoriaSlug
+  const video = SOLUCION_VIDEOS[solucion.slug]
   const totalProyectos = agregados._count._all
   const totalToneladas = agregados._sum.toneladas
     ? Number(agregados._sum.toneladas)
@@ -152,6 +182,17 @@ export default async function SolucionPage({
         ]}
       />
       <FAQSchema items={solucion.faq} />
+      {video && (
+        <VideoObjectSchema
+          name={video.titulo}
+          description={video.descripcion}
+          thumbnailUrl={video.poster}
+          uploadDate={video.uploadDate}
+          embedUrl={`https://www.youtube.com/embed/${video.videoId}`}
+          contentUrl={`https://www.youtube.com/watch?v=${video.videoId}`}
+          duration={video.duration}
+        />
+      )}
 
       {/* 1. Hero full-bleed oscuro con imagen */}
       <section className="relative h-screen md:h-[85vh] overflow-hidden bg-slate-950">
@@ -230,6 +271,30 @@ export default async function SolucionPage({
           </div>
         </div>
       </section>
+
+      {/* Video destacado en obra (facade + VideoObject) */}
+      {video && (
+        <section className="pb-20 md:pb-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+            <div className="mb-10 md:mb-12 max-w-4xl">
+              <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                En video
+              </p>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-950">
+                Montaje en obra
+              </h2>
+              <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-300">
+                {video.obra}
+              </h3>
+            </div>
+            <VideoDestacado
+              videoId={video.videoId}
+              poster={video.poster}
+              title={video.titulo}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Secciones de contenido editorial */}
       {solucion.secciones.map((seccion, idx) => (

@@ -268,6 +268,48 @@ export function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
   )
 }
 
+interface VideoObjectSchemaProps {
+  name: string
+  description: string
+  thumbnailUrl: string
+  uploadDate: string
+  embedUrl: string
+  contentUrl?: string
+  duration?: string
+}
+
+// VideoObject para que Google muestre el video como resultado enriquecido
+// (con miniatura) en la búsqueda, además de en YouTube.
+export function VideoObjectSchema({
+  name,
+  description,
+  thumbnailUrl,
+  uploadDate,
+  embedUrl,
+  contentUrl,
+  duration,
+}: VideoObjectSchemaProps) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name,
+    description,
+    thumbnailUrl: [thumbnailUrl],
+    uploadDate,
+    embedUrl,
+    ...(contentUrl ? { contentUrl } : {}),
+    ...(duration ? { duration } : {}),
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
 interface ProjectSchemaProps {
   name: string
   description: string
