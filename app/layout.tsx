@@ -4,7 +4,6 @@ import './globals.css'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { GlobalSchemas } from '@/components/seo/JsonLdSchema'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import { aniosExperiencia } from '@/lib/site-meta'
 
 // Bebas Neue para títulos - alto impacto, condensada
 const bebasNeue = Bebas_Neue({
@@ -25,11 +24,11 @@ const lato = Lato({
 export const metadata: Metadata = {
   metadataBase: new URL('https://meisa.com.co'),
   title: {
-    default: 'MEISA | Estructuras Metálicas en Colombia | Diseño, Fabricación y Montaje',
+    default: 'MEISA | Estructuras Metálicas en Colombia',
     template: '%s | MEISA - Estructuras Metálicas Colombia',
   },
   description:
-    `MEISA es líder en diseño, fabricación y montaje de estructuras metálicas en Colombia. Más de ${aniosExperiencia()} años construyendo puentes, edificios, centros comerciales, naves industriales y estructuras de acero. Sedes en Popayán, Cali y Bogotá.`,
+    'Diseño, fabricación y montaje de estructuras metálicas en Colombia desde 1996: puentes, edificios, centros comerciales y naves industriales en acero.',
   keywords: [
     'estructuras metálicas Colombia',
     'fabricación estructuras metálicas',
@@ -67,9 +66,9 @@ export const metadata: Metadata = {
     locale: 'es_CO',
     url: 'https://meisa.com.co',
     siteName: 'MEISA - Estructuras Metálicas Colombia',
-    title: 'MEISA | Estructuras Metálicas en Colombia | Diseño, Fabricación y Montaje',
+    title: 'MEISA | Estructuras Metálicas en Colombia',
     description:
-      `Empresa líder en estructuras metálicas en Colombia. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales. +${aniosExperiencia()} años de experiencia.`,
+      'Empresa líder en estructuras metálicas en Colombia desde 1996. Diseñamos, fabricamos y montamos puentes, edificios, centros comerciales y naves industriales en acero.',
     images: [
       {
         url: 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg',

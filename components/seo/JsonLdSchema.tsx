@@ -16,14 +16,8 @@ const getSchemaData = cache(async () => {
   return { config, plants, social, contact }
 })
 
-function getAniosExperiencia(fundacion: number | undefined | null): number {
-  const year = fundacion ?? 1996
-  return new Date().getFullYear() - year
-}
-
 export async function OrganizationSchema() {
   const { config, social, contact } = await getSchemaData()
-  const anios = getAniosExperiencia(config?.fundacion)
 
   const contactPoints: Array<Record<string, unknown>> = []
   if (contact?.pbx) {
@@ -64,7 +58,7 @@ export async function OrganizationSchema() {
     description:
       (config?.descripcion ??
         "Empresa líder en diseño, fabricación y montaje de estructuras metálicas en Colombia.") +
-      ` Más de ${anios} años de experiencia.`,
+      ` Operando desde ${config?.fundacion ?? 1996}.`,
     foundingDate: String(config?.fundacion ?? 1996),
     slogan: "Construyendo el futuro con acero",
     knowsAbout: [
