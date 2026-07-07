@@ -164,13 +164,13 @@ export async function generateMetadata({ params }: ServicioPageProps) {
   
   if (!servicio) {
     return {
-      title: 'Servicio no encontrado | MEISA',
+      title: { absolute: 'Servicio no encontrado | MEISA' },
       description: 'El servicio solicitado no fue encontrado.'
     }
   }
 
   return {
-    title: servicio.metaTitle || `${servicio.titulo} | MEISA - Estructuras Metálicas`,
+    title: { absolute: `${servicio.metaTitle || servicio.titulo} | MEISA` },
     description: servicio.metaDescription || servicio.descripcion.slice(0, 160),
     alternates: { canonical: `/servicios/${params.slug}` },
     openGraph: {

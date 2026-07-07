@@ -106,9 +106,9 @@ export default async function ServiciosPage() {
 }
 
 export const metadata = {
-  title: 'Servicios de Estructuras Metálicas',
+  title: { absolute: 'Servicios de Estructuras Metálicas | MEISA' },
   description:
-    `Servicios completos de estructuras metálicas en Colombia: diseño estructural, fabricación con tecnología CNC, montaje especializado y consultoría BIM. Más de ${aniosExperiencia()} años de experiencia. Certificación RUC.`,
+    'Servicios de estructuras metálicas en Colombia: diseño estructural, fabricación CNC, montaje especializado y consultoría BIM. Certificación RUC, desde 1996.',
   keywords: [
     'servicios estructuras metálicas',
     'diseño estructural Colombia',

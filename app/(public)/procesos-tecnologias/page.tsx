@@ -6,7 +6,7 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   alternates: { canonical: '/procesos-tecnologias' },
-  title: 'Procesos & Tecnologías | MEISA — BIM, CNC, Trazabilidad Digital',
+  title: { absolute: 'Procesos y Tecnologías | MEISA: BIM, CNC y Tekla' },
   description:
     'Tecnología estructural de punta en MEISA: modelado BIM con Tekla, análisis con ETABS y SAP2000, corte CNC, puentes grúa y sistemas digitales de trazabilidad.',
   keywords: [

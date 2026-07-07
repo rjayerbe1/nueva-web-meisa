@@ -6,7 +6,7 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   alternates: { canonical: '/contacto' },
-  title: 'Contacto | MEISA - Estructuras Metálicas',
+  title: { absolute: 'Contacto | MEISA - Estructuras Metálicas Colombia' },
   description:
     'Contacta a MEISA para cotizaciones y consultas sobre estructuras metálicas. Sedes en Jamundí, Popayán y Villa Rica.',
   openGraph: {
