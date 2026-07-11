@@ -196,14 +196,14 @@ function ServiceCard({
             {servicio.subtitulo}
           </motion.p>
 
-          {/* Móvil: título corto en una sola línea ("MONTAJE DE ESTRUCTURAS").
-              El nombre completo cabría en una línea solo a 12-15px (medido:
-              Bebas ~0.66em/glifo) — ilegible como título. El nombre completo
-              queda para sm+ y en el DOM (semántica/SEO). */}
+          {/* Móvil: nombre COMPLETO en ~2 líneas (clamp 18-24px según ancho,
+              verificado con la métrica real de Bebas). Una sola línea exigía
+              ≤20px y rompía la jerarquía título/subtítulo ("se ve raro" —
+              dueño). El subtítulo baja a 12px para devolver el contraste. */}
           <div className="sm:hidden">
             <AnimatedTitle
-              text={nombreCorto(servicio.nombre).toUpperCase()}
-              className="text-[clamp(1rem,5vw,1.25rem)] font-bebas uppercase text-white mb-3 drop-shadow-2xl leading-tight"
+              text={servicio.nombre.toUpperCase()}
+              className="text-[clamp(1.125rem,5.6vw,1.5rem)] font-bebas uppercase text-white mb-2 drop-shadow-2xl leading-tight"
             />
           </div>
           <div className="hidden sm:block">
@@ -218,7 +218,7 @@ function ServiceCard({
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
             viewport={{ once: true }}
-            className="text-gray-200 font-lato text-sm lg:text-base mb-6 max-w-md"
+            className="text-gray-200 font-lato text-xs lg:text-base mb-6 max-w-md"
           >
             {servicio.descripcion}
           </motion.p>
