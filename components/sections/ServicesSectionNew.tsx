@@ -38,6 +38,15 @@ const AnimatedTitle = ({ text, className = '' }: { text: string; className?: str
   )
 }
 
+/**
+ * Nombre corto para el título móvil: la primera parte antes del primer
+ * conector ("de"/"y"). "Montaje de Estructuras Metálicas" → "Montaje".
+ * (Incluye el espacio irrompible   usado para controlar saltos.)
+ */
+function nombreCorto(nombre: string): string {
+  return nombre.split(/[\s ]+(?:de|y)[\s ]+/i)[0] ?? nombre
+}
+
 export interface ServicioItem {
   id: string
   nombre: string
@@ -181,10 +190,23 @@ function ServiceCard({
             {servicio.subtitulo}
           </motion.p>
 
-          <AnimatedTitle
-            text={servicio.nombre.toUpperCase()}
-            className="whitespace-nowrap sm:whitespace-normal text-[clamp(1.1rem,5.6vw,1.875rem)] sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
-          />
+          {/* Móvil: título CORTO en una sola línea, grande ("MONTAJE").
+              El nombre completo cabría en una línea solo a 12-15px (medido:
+              Bebas ~0.66em/glifo) — ilegible como título. El eyebrow y el
+              subtítulo dan el contexto; el nombre completo queda para sm+
+              (y en el DOM, oculto, para semántica/SEO). */}
+          <div className="sm:hidden">
+            <AnimatedTitle
+              text={nombreCorto(servicio.nombre).toUpperCase()}
+              className="text-3xl font-bebas uppercase text-white mb-3 drop-shadow-2xl leading-tight"
+            />
+          </div>
+          <div className="hidden sm:block">
+            <AnimatedTitle
+              text={servicio.nombre.toUpperCase()}
+              className="sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
+            />
+          </div>
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
