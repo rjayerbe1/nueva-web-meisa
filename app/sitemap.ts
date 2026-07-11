@@ -1,11 +1,17 @@
 import { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
-import { getSolucionSlugs } from '@/lib/soluciones'
-import { getCiudadSlugs } from '@/lib/ciudades'
+// DB-first: incluye landings agregadas desde /admin/landings (con fallback
+// interno a los configs en código si la DB no responde).
+import { getSolucionSlugsDb, getCiudadSlugsDb } from '@/lib/content/landings'
 
 const BASE_URL = 'https://meisa.com.co'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [solucionSlugs, ciudadSlugs] = await Promise.all([
+    getSolucionSlugsDb(),
+    getCiudadSlugsDb(),
+  ])
+
   // Páginas estáticas principales
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -64,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.95,
     },
     // Landings SEO de soluciones
-    ...getSolucionSlugs().map((slug) => ({
+    ...solucionSlugs.map((slug) => ({
       url: `${BASE_URL}/soluciones/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
@@ -101,8 +107,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
-    // Landings locales por ciudad (cali, bogota, popayan)
-    ...getCiudadSlugs().map((slug) => ({
+    // Landings locales por ciudad (DB-first: incluye las agregadas del admin)
+    ...ciudadSlugs.map((slug) => ({
       url: `${BASE_URL}/estructuras-metalicas/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
