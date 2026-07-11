@@ -23,9 +23,10 @@ interface FooterProps {
 
 // Orden y títulos de las columnas. Un grupo nuevo creado en el admin que no
 // esté aquí se muestra al final con su nombre capitalizado.
-const COLUMN_ORDER = ['soluciones', 'guias', 'ciudades', 'empresa']
+const COLUMN_ORDER = ['soluciones', 'servicios', 'guias', 'ciudades', 'empresa']
 const GROUP_TITLES: Record<string, string> = {
   soluciones: 'Soluciones',
+  servicios: 'Servicios',
   guias: 'Guías',
   ciudades: 'Ciudades',
   empresa: 'Empresa',
@@ -39,6 +40,10 @@ const DEFAULT_LINKS: FooterLinkItem[] = [
   { grupo: 'soluciones', label: 'Centros comerciales', href: '/soluciones/estructura-metalica-centros-comerciales' },
   { grupo: 'soluciones', label: 'Escenarios deportivos', href: '/soluciones/estructura-metalica-escenarios-deportivos' },
   { grupo: 'soluciones', label: 'Edificios', href: '/soluciones/edificios-en-estructura-metalica' },
+  { grupo: 'servicios', label: 'Fabricación de estructuras metálicas', href: '/servicios/fabricacion-de-estructuras-metalicas' },
+  { grupo: 'servicios', label: 'Montaje de estructuras metálicas', href: '/servicios/montaje-de-estructuras' },
+  { grupo: 'servicios', label: 'Diseño estructural', href: '/servicios/consultoria-en-diseno-estructural' },
+  { grupo: 'servicios', label: 'Proyectos llave en mano', href: '/servicios/gestion-integral-de-proyectos' },
   { grupo: 'guias', label: 'Precios y costos', href: '/precios-estructuras-metalicas' },
   { grupo: 'guias', label: 'Acero vs. concreto', href: '/estructura-metalica-vs-concreto' },
   { grupo: 'guias', label: 'Tipos de estructuras', href: '/tipos-de-estructuras-metalicas' },

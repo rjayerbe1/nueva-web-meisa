@@ -349,6 +349,64 @@ export default async function EstructurasMetalicasColombiaPage() {
         </div>
       </section>
 
+      {/* Servicios — fan-in con anchor de keyword de servicio */}
+      <section className="pb-20 md:pb-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="mb-10 md:mb-12 max-w-4xl">
+            <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+              Cómo trabajamos
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-slate-950">
+              Toda la cadena, una empresa
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 border border-slate-200">
+            {[
+              {
+                href: '/servicios/consultoria-en-diseno-estructural',
+                titulo: 'Diseño estructural',
+                descripcion:
+                  'Cálculo, ingeniería de detalle y modelado BIM bajo NSR-10.',
+              },
+              {
+                href: '/servicios/fabricacion-de-estructuras-metalicas',
+                titulo: 'Fabricación de estructuras metálicas',
+                descripcion:
+                  'Tres plantas con corte CNC y soldadura calificada AWS D1.1.',
+              },
+              {
+                href: '/servicios/montaje-de-estructuras',
+                titulo: 'Montaje de estructuras metálicas',
+                descripcion:
+                  'Equipo propio de izaje y montaje certificado en todo el país.',
+              },
+              {
+                href: '/servicios/gestion-integral-de-proyectos',
+                titulo: 'Proyectos llave en mano',
+                descripcion:
+                  'Un solo responsable del modelo 3D al acta de entrega.',
+              },
+            ].map((srv, i) => (
+              <Link key={srv.href} href={srv.href} className="group bg-white p-7 md:p-8 flex flex-col">
+                <span className="text-slate-300 font-bebas text-3xl md:text-4xl leading-none mb-3">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="text-lg md:text-xl font-bebas uppercase leading-[0.95] text-slate-950 mb-2">
+                  {srv.titulo}
+                </h3>
+                <p className="text-slate-600 font-lato text-sm leading-relaxed mb-5">
+                  {srv.descripcion}
+                </p>
+                <span className="mt-auto inline-flex items-center gap-2 text-slate-950 font-lato font-bold text-xs uppercase tracking-wider">
+                  Ver servicio
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Image break */}
       <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
         <Image

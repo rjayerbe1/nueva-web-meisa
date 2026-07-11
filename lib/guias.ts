@@ -1236,6 +1236,13 @@ const GUIA_CUBIERTA_PRECIO: GuiaLanding = {
         ],
       },
       {
+        titulo: 'Cerchas metálicas: el corazón de la cubierta',
+        parrafos: [
+          'La cercha es el sistema que hace posible la mayoría de cubiertas de luz media y grande: una armadura triangulada que trabaja a esfuerzos axiales y logra cubrir 20, 30 o 40 metros con una fracción del acero que necesitaría una viga de alma llena. Por eso "¿cuánto cuesta una cercha metálica?" se responde igual que toda esta guía: por peso — el diseño de la cercha (luz, carga, pendiente) define sus kilogramos, y su complejidad de fabricación define el precio por kilo, normalmente en el rango medio-alto por la cantidad de conexiones.',
+          'MEISA fabrica cerchas de cordones paralelos, triangulares y de arco, con conexiones soldadas en taller y empalmes pernados en obra — el equilibrio correcto entre calidad de fabricación y velocidad de montaje.',
+        ],
+      },
+      {
         titulo: 'Cubiertas reales de MEISA como referencia',
         parrafos: [
           'La obra entregada es la mejor calibración de la cuenta: la cubierta Caña Dulce de Comfacauca en Santander de Quilichao (110 toneladas), la cubierta metálica del peaje de la UF4 del corredor 4G Popayán–Quilichao (104 toneladas), los escenarios de los Juegos Nacionales 2012 en Popayán — cubiertas de competencia con luces mayores — y decenas de cubiertas de bodegas, coliseos barriales y equipamiento en todo el suroccidente.',
