@@ -27,11 +27,25 @@ async function getGuiaPrecios() {
     guia.contenido.variante === 'precios'
       ? guia.contenido
       : (fallback.contenido as GuiaPreciosContenido)
-  return { metaTitle: guia.metaTitle, metaDescription: guia.metaDescription, contenido }
+  return {
+    metaTitle: guia.metaTitle,
+    metaDescription: guia.metaDescription,
+    contenido,
+    updatedAt: guia.updatedAt ?? null,
+  }
+}
+
+/** "julio de 2026" — mes/año de la última revisión de precios (es-CO). */
+function formatMesRevision(fecha: Date): string {
+  return new Intl.DateTimeFormat('es-CO', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'America/Bogota',
+  }).format(fecha)
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { metaTitle, metaDescription, contenido } = await getGuiaPrecios()
+  const { metaTitle, metaDescription, contenido, updatedAt } = await getGuiaPrecios()
   const ogImage = contenido.heroImagen || FALLBACK_HERO
   return {
     title: { absolute: metaTitle },
@@ -48,7 +62,10 @@ export async function generateMetadata(): Promise<Metadata> {
           alt: 'Precios de estructuras metálicas en Colombia — MEISA',
         },
       ],
-      type: 'website',
+      // Señal de frescura: cada guardado en /admin/landings renueva
+      // modifiedTime (Google la lee para el "fecha —" del snippet).
+      type: 'article',
+      ...(updatedAt ? { modifiedTime: updatedAt.toISOString() } : {}),
     },
     twitter: {
       card: 'summary_large_image',
@@ -74,7 +91,7 @@ function renderConNegrita(texto: string) {
 }
 
 export default async function PreciosEstructurasMetalicasPage() {
-  const [{ contenido }, soluciones] = await Promise.all([
+  const [{ contenido, updatedAt }, soluciones] = await Promise.all([
     getGuiaPrecios(),
     getSolucionesDb(),
   ])
@@ -183,6 +200,12 @@ export default async function PreciosEstructurasMetalicasPage() {
             <p className="mt-6 text-slate-500 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.15em]">
               {contenido.rangosSubtitulo}
             </p>
+            {updatedAt && (
+              <p className="mt-3 inline-flex items-center gap-2 border border-slate-300 px-3 py-1.5 text-slate-700 font-lato font-bold text-[11px] md:text-xs uppercase tracking-[0.15em]">
+                <span className="w-1.5 h-1.5 bg-red-600" aria-hidden="true" />
+                Rangos revisados: {formatMesRevision(updatedAt)}
+              </p>
+            )}
           </div>
 
           <div className="overflow-x-auto border border-slate-200">

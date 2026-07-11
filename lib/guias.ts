@@ -83,6 +83,12 @@ export interface GuiaLanding {
   metaTitle: string
   metaDescription: string
   contenido: GuiaContenido
+  /**
+   * Última edición en /admin/landings (updatedAt de la fila). Señal de
+   * frescura: fecha visible en la página + article:modified_time.
+   * Undefined cuando la guía se sirve del fallback en código.
+   */
+  updatedAt?: Date
 }
 
 /* ─── Guía 1: precios ────────────────────────────────────────────────── */

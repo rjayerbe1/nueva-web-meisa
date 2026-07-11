@@ -28,6 +28,7 @@ type LandingRow = {
   contenido: unknown
   activa: boolean
   orden: number
+  updatedAt: Date
 }
 
 async function fetchRow(slug: string): Promise<LandingRow | null> {
@@ -140,6 +141,9 @@ export async function getGuiaDb(slug: string): Promise<GuiaLanding | undefined> 
     metaTitle: row.metaTitle,
     metaDescription: row.metaDescription,
     contenido: parsed.data as GuiaContenido,
+    // Cada guardado en /admin/landings actualiza updatedAt → señal de
+    // frescura (fecha visible + article:modified_time) sin trabajo manual.
+    updatedAt: row.updatedAt,
   }
 }
 
