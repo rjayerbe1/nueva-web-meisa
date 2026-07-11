@@ -73,7 +73,10 @@ function ServiceCard({
     offset: ['start end', 'end start'],
   })
 
-  const contentY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
+  // Parallax del bloque de texto: solo desktop. En móvil el card mide 50vh y
+  // el desplazamiento ±20% empujaba el texto del tercio inferior al centro,
+  // tapando el video (reporte del dueño 2026-07-11).
+  const contentYDesktop = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
 
   // Montar el video solo cuando la card se acerca al viewport — evita
   // descargar los mp4 de toda la sección al cargar la página
@@ -140,13 +143,10 @@ function ServiceCard({
           )}
         </div>
 
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundColor: '#000000',
-            opacity: servicio.overlayOpacity ?? 0.4,
-          }}
-        />
+        {/* Scrim en degradado inferior (patrón del hero de las landings):
+            el video queda claro arriba y el texto gana contraste abajo,
+            en vez del velo negro uniforme que apagaba toda la imagen. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/5" />
 
         {servicio.overlayColor && (
           <>
@@ -165,7 +165,7 @@ function ServiceCard({
         )}
 
         <motion.div
-          style={{ y: contentY }}
+          style={isMobile ? undefined : { y: contentYDesktop }}
           className="absolute inset-0 flex flex-col items-center justify-end px-6 lg:px-12 pb-8 lg:pb-12 text-center"
         >
           <motion.p
@@ -180,7 +180,7 @@ function ServiceCard({
 
           <AnimatedTitle
             text={servicio.nombre.toUpperCase()}
-            className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
+            className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
           />
 
           <motion.p
