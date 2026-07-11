@@ -56,6 +56,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Página pilar del clúster SEO (keyword nacional)
+    {
+      url: `${BASE_URL}/estructuras-metalicas-colombia`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
     // Landings SEO de soluciones
     ...getSolucionSlugs().map((slug) => ({
       url: `${BASE_URL}/soluciones/${slug}`,

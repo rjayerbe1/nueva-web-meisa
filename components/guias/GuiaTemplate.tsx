@@ -626,10 +626,10 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
               mensaje={`Hola MEISA, vi la guía de ${config.breadcrumbName} y quisiera cotizar un proyecto.`}
             />
             <Link
-              href="/proyectos"
+              href="/estructuras-metalicas-colombia"
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
             >
-              Ver proyectos
+              Estructuras metálicas en Colombia
             </Link>
           </div>
         </div>

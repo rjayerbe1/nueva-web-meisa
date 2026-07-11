@@ -335,6 +335,18 @@ export default async function EstructurasMetalicasCiudadPage({
                   {parrafo}
                 </p>
               ))}
+              <div className="pt-2">
+                <Link
+                  href="/estructuras-metalicas-colombia"
+                  className="group inline-flex items-center gap-3 text-slate-950 font-lato font-bold text-base md:text-lg"
+                >
+                  <span className="relative">
+                    Estructuras metálicas en Colombia
+                    <span className="absolute left-0 -bottom-0.5 h-px w-full bg-slate-300 transition-colors duration-300 group-hover:bg-slate-950" />
+                  </span>
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
