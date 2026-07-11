@@ -13,7 +13,7 @@ const AnimatedTitle = ({ text, className = '' }: { text: string; className?: str
   // `block` (una línea por palabra) y el título de 3-4 líneas tapaba el
   // video. Ahora fluye en una sola línea con tamaño fluido.
   return (
-    <h2 className={className}>
+    <h2 className={`max-w-full ${className}`}>
       {words.map((word, wordIndex) => (
         <span key={wordIndex} className="inline-block mr-2 sm:mr-3">
           {word.split('').map((char, charIndex) => (
