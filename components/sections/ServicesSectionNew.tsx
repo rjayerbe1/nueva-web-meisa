@@ -15,7 +15,9 @@ const AnimatedTitle = ({ text, className = '' }: { text: string; className?: str
   return (
     <h2 className={`max-w-full ${className}`}>
       {words.map((word, wordIndex) => (
-        <span key={wordIndex} className="inline-block mr-2 sm:mr-3">
+        <span key={wordIndex}>
+          {wordIndex > 0 && ' '}
+          <span className="inline-block">
           {word.split('').map((char, charIndex) => (
             <motion.span
               key={`${wordIndex}-${charIndex}`}
@@ -26,12 +28,13 @@ const AnimatedTitle = ({ text, className = '' }: { text: string; className?: str
                 delay: (wordIndex * word.length + charIndex) * 0.02,
                 ease: 'easeOut',
               }}
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: '-100px 0px' }}
               className="inline-block"
             >
               {char}
             </motion.span>
           ))}
+          </span>
         </span>
       ))}
     </h2>
