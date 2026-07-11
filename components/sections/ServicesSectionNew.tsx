@@ -200,13 +200,13 @@ function ServiceCard({
               verificado con la métrica real de Bebas). Una sola línea exigía
               ≤20px y rompía la jerarquía título/subtítulo ("se ve raro" —
               dueño). El subtítulo baja a 12px para devolver el contraste. */}
-          <div className="sm:hidden">
+          <div className="w-full sm:hidden">
             <AnimatedTitle
               text={servicio.nombre.toUpperCase()}
               className="text-[clamp(1.125rem,5.6vw,1.5rem)] font-bebas uppercase text-white mb-2 drop-shadow-2xl leading-tight"
             />
           </div>
-          <div className="hidden sm:block">
+          <div className="w-full hidden sm:block">
             <AnimatedTitle
               text={servicio.nombre.toUpperCase()}
               className="sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
