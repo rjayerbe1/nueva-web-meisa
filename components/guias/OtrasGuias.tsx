@@ -30,6 +30,16 @@ export const GUIAS_NAV = [
     titulo: 'Granallado y pintura',
     descripcion: 'Preparación de superficie, sistemas de pintura y control de calidad.',
   },
+  {
+    path: '/precio-cubierta-metalica-por-m2',
+    titulo: 'Precio de cubierta metálica por m²',
+    descripcion: 'Cómo pasar de kg a m² y los rangos reales de una cubierta instalada.',
+  },
+  {
+    path: '/como-se-construye-un-puente-metalico',
+    titulo: 'Cómo se construye un puente metálico',
+    descripcion: 'El proceso paso a paso, con el video real del montaje del Puente Cascada.',
+  },
 ]
 
 export function OtrasGuias({ currentPath }: { currentPath: string }) {

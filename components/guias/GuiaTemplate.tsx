@@ -8,7 +8,12 @@ import Link from 'next/link'
 import { ArrowRight, MapPin, Plus } from 'lucide-react'
 import type { CategoriaEnum } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
+import {
+  BreadcrumbSchema,
+  FAQSchema,
+  VideoObjectSchema,
+} from '@/components/seo/JsonLdSchema'
+import { VideoDestacado } from '@/components/sections/VideoDestacado'
 import { OtrasGuias } from '@/components/guias/OtrasGuias'
 import { QuickQuoteForm } from '@/components/contacto/QuickQuoteForm'
 import { WhatsAppCTA } from '@/components/contacto/WhatsAppCTA'
@@ -80,6 +85,16 @@ export interface GuiaConfig {
   proceso?: GuiaPasoProceso[]
   procesoTitulo1?: string
   procesoTitulo2?: string
+  /** Video destacado (facade YouTube + VideoObject) — opcional. */
+  video?: {
+    videoId: string
+    obra: string
+    titulo: string
+    descripcion: string
+    poster: string
+    uploadDate: string
+    duration: string
+  }
   /** Slugs de proyectos insignia (orden curado) — se resuelven contra la DB. */
   proyectosSlugs: string[]
   proyectosIntro: string
@@ -387,6 +402,38 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
           )}
         </div>
       ))}
+
+      {/* Video destacado (facade YouTube + VideoObject) */}
+      {config.video && (
+        <section className="pb-20 md:pb-28">
+          <VideoObjectSchema
+            name={config.video.titulo}
+            description={config.video.descripcion}
+            thumbnailUrl={config.video.poster}
+            uploadDate={config.video.uploadDate}
+            embedUrl={`https://www.youtube.com/embed/${config.video.videoId}`}
+            duration={config.video.duration}
+          />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+            <div className="mb-10 md:mb-12 max-w-4xl">
+              <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                En video
+              </p>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-950">
+                Montaje en obra
+              </h2>
+              <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-300">
+                {config.video.obra}
+              </h3>
+            </div>
+            <VideoDestacado
+              videoId={config.video.videoId}
+              poster={config.video.poster}
+              title={config.video.titulo}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Proceso — 4 pasos numerados */}
       {config.proceso && config.proceso.length > 0 && (

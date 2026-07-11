@@ -1172,12 +1172,323 @@ const GUIA_GRANALLADO: GuiaLanding = {
   },
 }
 
+/* ─── Guía 6: precio de cubierta metálica por m² ─────────────────────── */
+// Ataca el cluster "precio m2 cubierta metálica" (66+ imp/mes en 3 variantes,
+// pos ~6 con la guía general). Los valores por m² se DERIVAN de los rangos
+// aprobados ($/kg instalado × kg/m²) — no introduce precios nuevos.
+
+const GUIA_CUBIERTA_PRECIO: GuiaLanding = {
+  slug: 'precio-cubierta-metalica-por-m2',
+  titulo: 'Guía — Precio de cubierta metálica por m²',
+  metaTitle: 'Precio de Cubierta Metálica por m² en Colombia 2026 | MEISA',
+  metaDescription:
+    'Cuánto cuesta una cubierta metálica por metro cuadrado en Colombia: cómo pasar de kg a m², rangos orientativos derivados del precio por kg instalado, qué incluye y qué no.',
+  contenido: {
+    variante: 'template',
+    path: '/precio-cubierta-metalica-por-m2',
+    breadcrumbName: 'Precio de cubierta metálica por m²',
+    heroEyebrow: 'Guía de precios 2026',
+    heroTitulo1: '¿Cuánto cuesta una',
+    heroTitulo2: 'cubierta metálica?',
+    heroSub:
+      'El precio por m² de una cubierta sale de dos números: los kilogramos de acero por metro cuadrado y el precio por kilogramo instalado. Esta guía le muestra cómo hacer la cuenta con rangos reales del mercado colombiano.',
+    introEyebrow: '01 — La cuenta honesta',
+    introTitulo1: 'De kilos',
+    introTitulo2: 'a metros cuadrados',
+    intro:
+      'Cuando alguien cotiza una cubierta metálica "por m²" sin calcular el peso, está adivinando. El precio real se construye así: peso de acero por m² (según la luz libre y las cargas) × precio por kg instalado (según la complejidad). Una cubierta liviana de bodega no pesa lo mismo que la cubierta de un coliseo — y por eso no cuestan lo mismo por metro. Aquí está el método y los rangos para estimar de manera informada, con la obra de MEISA como referencia.',
+    categoriaHero: 'DEPORTES_EDUCACION',
+    stats: [
+      { valor: '25–45', sufijo: '', label: 'kg/m² típicos en cubiertas livianas' },
+      { valor: '10.900', sufijo: '+', label: 'COP por kg instalado, desde' },
+      { valor: '30', sufijo: '+', label: 'Años fabricando cubiertas' },
+    ],
+    secciones: [
+      {
+        titulo: 'El método: peso × precio por kilo',
+        parrafos: [
+          'Primero el peso. Una cubierta metálica liviana — la de una bodega o nave estándar, con cerchas o perfiles de alma llena y luces de 15 a 25 metros — pesa entre 25 y 45 kg de acero por m². A mayor luz libre, mayores cargas de viento o cubiertas con equipos colgados, el peso sube; las cubiertas de gran luz (coliseos, escenarios) pueden superar los 60 kg/m².',
+          'Luego el precio por kilo. La estructura estándar y repetitiva se instala en Colombia entre $10.900 y $13.000 COP por kg; las cubiertas de gran luz o geometría especial — cerchas de coliseo, arcos, voladizos — entran en el rango de estructura especial, de $17.000 a $25.000 por kg. El precio incluye fabricación, pintura y montaje.',
+          'La multiplicación da el rango orientativo: una cubierta liviana de bodega (30 kg/m² × $11.500) ronda los $350.000 COP por m² de estructura instalada; una cubierta exigente de gran luz (60 kg/m² × $18.000) puede superar el $1.000.000 por m². Por eso "el precio de la cubierta por m²" no existe como cifra única: existe la cuenta.',
+        ],
+      },
+      {
+        titulo: 'Qué incluye y qué no',
+        parrafos: [
+          'Los rangos anteriores cubren la ESTRUCTURA de la cubierta: ingeniería de detalle, fabricación con soldadura calificada, protección anticorrosiva (granallado y pintura) y montaje en obra con equipo propio.',
+        ],
+        items: [
+          {
+            nombre: 'Incluido',
+            descripcion:
+              'Ingeniería de detalle y planos de taller · fabricación con corte CNC · granallado y sistema de pintura · transporte coordinado · montaje con personal certificado · memorias y certificados de calidad.',
+          },
+          {
+            nombre: 'No incluido (se cotiza aparte)',
+            descripcion:
+              'La teja o panel de cubierta (termoacústica, standing seam, policarbonato), canales y bajantes, cielos rasos, y la estructura de soporte inferior si no existe (columnas, vigas). También la cimentación.',
+          },
+          {
+            nombre: 'La teja: el otro 30-50% del costo',
+            descripcion:
+              'El cerramiento (teja + accesorios + traslucidas) suele costar tanto como una fracción importante de la estructura. Pida siempre la cotización separada: estructura por kg, cubierta por m² de teja. Así compara manzanas con manzanas.',
+          },
+        ],
+      },
+      {
+        titulo: 'Cubiertas reales de MEISA como referencia',
+        parrafos: [
+          'La obra entregada es la mejor calibración de la cuenta: la cubierta Caña Dulce de Comfacauca en Santander de Quilichao (110 toneladas), la cubierta metálica del peaje de la UF4 del corredor 4G Popayán–Quilichao (104 toneladas), los escenarios de los Juegos Nacionales 2012 en Popayán — cubiertas de competencia con luces mayores — y decenas de cubiertas de bodegas, coliseos barriales y equipamiento en todo el suroccidente.',
+          'Cada una se cotizó igual que se cotizará la suya: peso calculado sobre planos × precio por kg según complejidad. Sin fórmulas mágicas por m².',
+        ],
+      },
+    ],
+    proyectosSlugs: [
+      'comfacauca-cubierta-cana-dulce',
+      'cubierta-metalica-peaje-popayan-uf4',
+    ],
+    proyectosIntro:
+      'Cubiertas metálicas entregadas por MEISA: estructura de gran luz para recreación, infraestructura vial 4G y equipamiento público.',
+    faq: [
+      {
+        pregunta: '¿Cuánto cuesta una cubierta metálica por m² en Colombia?',
+        respuesta:
+          'Depende del peso de acero por m² y de la complejidad. Como rango orientativo derivado del mercado: una cubierta liviana de bodega (25–45 kg/m² a $10.900–$13.000 por kg instalado) ronda entre $270.000 y $580.000 COP por m² de estructura; cubiertas de gran luz o geometría especial pueden superar el $1.000.000 por m². La teja y el cerramiento se cotizan aparte. La cifra real se calcula sobre planos.',
+      },
+      {
+        pregunta: '¿El precio incluye la teja?',
+        respuesta:
+          'No. Los rangos de estructura incluyen fabricación, pintura y montaje del acero. La teja (termoacústica, standing seam, policarbonato), canales, bajantes y traslúcidas se cotizan por separado como cerramiento — y pueden representar una fracción importante del costo total del techo.',
+      },
+      {
+        pregunta: '¿Qué luz libre puede tener una cubierta metálica?',
+        respuesta:
+          'Prácticamente cualquiera que el proyecto necesite: de los 15–25 metros típicos de bodegas hasta cubiertas de coliseos y escenarios deportivos de más de 40 metros sin columnas intermedias, con cerchas o arcos. A mayor luz, más kg/m² y mayor precio por kg — la cuenta de esta guía sigue aplicando.',
+      },
+      {
+        pregunta: '¿Conviene más cubierta metálica o de concreto?',
+        respuesta:
+          'Para luces medianas y grandes, la metálica gana casi siempre: pesa menos (ahorra cimentación), se monta más rápido y permite luces que el concreto no alcanza económicamente. Ver nuestra guía comparativa de estructura metálica vs concreto para el análisis completo.',
+      },
+      {
+        pregunta: '¿Cómo pido una cotización formal de mi cubierta?',
+        respuesta:
+          'Envíenos los planos arquitectónicos o un esquema con las dimensiones (área, luz libre, uso). Calculamos el peso real de acero, definimos el sistema estructural y le entregamos una cotización formal con alcance, plazo y precio — sin costo y sin compromiso.',
+      },
+    ],
+    faqTitulo1: 'Preguntas sobre',
+    faqTitulo2: 'cubiertas metálicas',
+    relacionados: [
+      {
+        href: '/precios-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Precios de estructuras metálicas',
+        descripcion: 'Los rangos completos por kg instalado y los factores que los mueven.',
+      },
+      {
+        href: '/peso-estructura-metalica-por-m2',
+        eyebrow: 'Guía',
+        titulo: 'Peso por m² de una estructura metálica',
+        descripcion: 'La otra mitad de la cuenta: kg/m² típicos según el tipo de obra.',
+      },
+      {
+        href: '/soluciones/cubiertas-metalicas',
+        eyebrow: 'Solución',
+        titulo: 'Cubiertas y fachadas metálicas',
+        descripcion: 'La solución completa: cerchas, arcos y sistemas de cerramiento.',
+      },
+      {
+        href: '/estructuras-metalicas-colombia',
+        eyebrow: 'Nacional',
+        titulo: 'Estructuras metálicas en Colombia',
+        descripcion: 'Capacidad nacional de MEISA: tres plantas y obra entregada en todo el país.',
+      },
+    ],
+    ctaEyebrow: 'Cotice su cubierta',
+    ctaTitulo1: 'Deje de adivinar',
+    ctaTitulo2: 'por m².',
+    ctaDescripcion:
+      'Envíenos los planos o las dimensiones de su cubierta y reciba el peso real de acero y una cotización formal — la cuenta completa, sin sorpresas.',
+  },
+}
+
+/* ─── Guía 7: cómo se construye un puente metálico ───────────────────── */
+// Cluster educativo de puentes (MIC lo explota con 12 páginas SIN puentes
+// insignia). MEISA lo responde con UNA guía + obra real + el video del
+// Puente Cascada embebido (facade + VideoObject).
+
+const GUIA_PUENTE_PROCESO: GuiaLanding = {
+  slug: 'como-se-construye-un-puente-metalico',
+  titulo: 'Guía — Cómo se construye un puente metálico',
+  metaTitle: 'Cómo se Construye un Puente Metálico — Paso a Paso | MEISA',
+  metaDescription:
+    'El proceso real de construcción de un puente metálico en Colombia, paso a paso: ingeniería, fabricación por dovelas, transporte, izaje y pruebas — contado por quien los construye, con video del montaje del Puente Cascada.',
+  contenido: {
+    variante: 'template',
+    path: '/como-se-construye-un-puente-metalico',
+    breadcrumbName: 'Cómo se construye un puente metálico',
+    heroEyebrow: 'Guía técnica — puentes',
+    heroTitulo1: 'Cómo se construye',
+    heroTitulo2: 'un puente metálico',
+    heroSub:
+      'De los planos al primer vehículo cruzando: el proceso completo de un puente en acero, contado por quien los fabrica y los monta — con el video real del montaje del Puente Cascada en el corredor 4G Popayán–Santander de Quilichao.',
+    introEyebrow: '01 — La guía',
+    introTitulo1: 'Del modelo',
+    introTitulo2: 'al cruce del río',
+    intro:
+      'Un puente metálico no se construye en el sitio: se fabrica en una planta, por partes, y se arma sobre el obstáculo con izajes de precisión. Esa es su gran ventaja — calidad de taller, velocidad en obra y luces que el concreto no alcanza económicamente. MEISA ha entregado puentes vehiculares y peatonales en todo el suroccidente colombiano, incluidos el Puente Cascada (58 m, corredor 4G) y el Puente Vehicular Ovejas (536 toneladas). Así es el proceso, paso a paso.',
+    categoriaHero: 'PUENTES',
+    stats: [
+      { valor: '58', sufijo: ' m', label: 'Luz del Puente Cascada (4G)' },
+      { valor: '536', sufijo: ' t', label: 'Acero del Puente Ovejas' },
+      { valor: '30', sufijo: '+', label: 'Años construyendo en acero' },
+    ],
+    video: {
+      videoId: '5_b1ILDSaoU',
+      obra: 'Puente Cascada',
+      titulo:
+        'Montaje de puente metálico Puente Cascada | Corredor 4G Popayán – Santander de Quilichao',
+      descripcion:
+        'Montaje en obra del Puente Cascada, puente metálico de 58 m del Corredor 4G Popayán – Santander de Quilichao ejecutado por MEISA: coordinación de equipos, instalación de elementos estructurales y montaje en campo.',
+      poster:
+        'https://storage.googleapis.com/meisa-imagenes/site/selected-hero/07-puente-cascada.jpg',
+      uploadDate: '2026-07-06',
+      duration: 'PT6M1S',
+    },
+    secciones: [
+      {
+        titulo: 'Por qué los puentes se hacen en acero',
+        parrafos: [
+          'Tres razones dominan la decisión: la luz, el plazo y el peso. El acero salva luces grandes con menos material y menos apoyos intermedios — crítico sobre ríos, cañadas y vías en operación. La estructura se fabrica en paralelo con la cimentación, comprimiendo el cronograma. Y el menor peso propio reduce las cargas sobre pilas y estribos, abaratando la cimentación.',
+          'Por eso la infraestructura vial concesionada — los corredores 4G y 5G — usa acero estructural de forma intensiva en sus puentes: el costo del cierre de una vía se mide en días, y el acero los reduce.',
+        ],
+      },
+      {
+        titulo: 'Lo que casi nadie cuenta: la logística manda',
+        parrafos: [
+          'El diseño de un puente metálico no termina en el cálculo estructural: cada dovela debe caber en una tractomula, pasar por las curvas de la ruta y poder izarse con las grúas disponibles en el sitio. La ingeniería de detalle divide el puente en tramos transportables y define la secuencia exacta de montaje — antes de cortar la primera lámina.',
+          'En el Puente Cascada, esa planificación permitió montar 58 metros de luz sobre un cauce activo del corredor 4G sin incidentes: cada izaje estaba definido en papel meses antes de que la grúa llegara al sitio. El video de esta página muestra ese montaje real.',
+        ],
+      },
+    ],
+    proceso: [
+      {
+        titulo: 'Ingeniería de detalle y despiece',
+        descripcion:
+          'Del diseño estructural al plano de taller: cada viga, dovela, rigidizador y conexión se modela en 3D, se verifica contra la NSR-10 y el CCP-14 (norma colombiana de puentes), y se despieza en tramos transportables. Aquí se define la secuencia de montaje completa.',
+      },
+      {
+        titulo: 'Fabricación por dovelas en planta',
+        descripcion:
+          'Corte CNC de láminas, armado de secciones, y soldadura calificada bajo AWS D1.5 (código de soldadura para puentes) con ensayos no destructivos. Cada dovela se pre-ensambla en taller para verificar geometría antes de despachar — el río no es lugar para descubrir errores.',
+      },
+      {
+        titulo: 'Protección anticorrosiva',
+        descripcion:
+          'Granallado a metal casi blanco y sistema de pintura de alto desempeño por capas, aplicado en planta con control de espesores. Un puente queda a la intemperie por décadas: su protección se decide en el taller, no en el sitio.',
+      },
+      {
+        titulo: 'Transporte al sitio',
+        descripcion:
+          'Las dovelas viajan en tractomulas con permisos de carga extradimensionada cuando aplica, en la secuencia exacta que exige el montaje. La ruta se estudió desde el despiece: alturas de puentes existentes, radios de curva y capacidad de las vías.',
+      },
+      {
+        titulo: 'Cimentación y apoyos (obra civil)',
+        descripcion:
+          'En paralelo con la fabricación, el contratista de obra civil construye pilas, estribos y apoyos. La interfaz crítica son los pernos de anclaje y las placas de apoyo: se verifican topográficamente contra los planos de taller antes de programar el izaje.',
+      },
+      {
+        titulo: 'Montaje e izaje',
+        descripcion:
+          'El momento crítico: grúas de capacidad calculada izan cada dovela a su posición, se alinea la geometría y se ejecutan las conexiones — pernadas de alta resistencia o soldadas en sitio con calificación. Sobre cauces o vías activas, los izajes se programan en ventanas específicas.',
+      },
+      {
+        titulo: 'Tablero y acabados',
+        descripcion:
+          'Con la estructura principal montada se instala el tablero (losa colaborante o placa), barandas, juntas de dilatación y drenajes. El puente toma su forma final.',
+      },
+      {
+        titulo: 'Pruebas y entrega',
+        descripcion:
+          'Verificación topográfica final, revisión de conexiones y soldaduras, prueba de carga cuando la interventoría la exige, y entrega con dossier completo: planos as-built, certificados de materiales, registros de soldadura y protocolos de calidad.',
+      },
+    ],
+    procesoTitulo1: 'El proceso',
+    procesoTitulo2: 'paso a paso',
+    proyectosSlugs: ['puente-vehicular-ovejas', 'casa-puente-cascada'],
+    proyectosIntro:
+      'Puentes metálicos entregados por MEISA: el Puente Vehicular Ovejas (536 toneladas) y el Puente Cascada del corredor 4G, entre otros puentes y pasarelas del suroccidente colombiano.',
+    faq: [
+      {
+        pregunta: '¿Cuánto cuesta un puente metálico?',
+        respuesta:
+          'Los puentes entran en el rango de estructura especial: entre $17.000 y $25.000 COP por kilogramo instalado como referencia de mercado (fabricación, pintura y montaje; excluye cimentación y tablero). El peso depende de la luz y las cargas — un puente vehicular de 50–60 m puede requerir entre 400 y 600 toneladas. La cifra real siempre se calcula sobre el diseño.',
+      },
+      {
+        pregunta: '¿Cuánto tarda la construcción de un puente metálico?',
+        respuesta:
+          'La fabricación en planta de un puente mediano toma típicamente de 3 a 6 meses, y corre en paralelo con la cimentación (obra civil). El montaje en sitio es lo más rápido: semanas, no meses — esa es la ventaja del acero. El cronograma total lo domina normalmente la obra civil y las licencias, no la estructura.',
+      },
+      {
+        pregunta: '¿Qué normas rigen los puentes metálicos en Colombia?',
+        respuesta:
+          'El diseño se rige por el CCP-14 (Código Colombiano de Puentes, basado en AASHTO LRFD) y la soldadura por AWS D1.5, el código específico de puentes — más exigente que el AWS D1.1 de edificaciones. MEISA entrega registros de soldadura, ensayos no destructivos y certificados de materiales con cada puente.',
+      },
+      {
+        pregunta: '¿MEISA hace también la cimentación?',
+        respuesta:
+          'Nuestro alcance es la superestructura metálica: ingeniería de detalle, fabricación, transporte y montaje. La cimentación y los apoyos son obra civil del contratista principal — y coordinamos con él la interfaz crítica (anclajes y placas de apoyo) desde los planos de taller.',
+      },
+      {
+        pregunta: '¿Construyen puentes en todo el país?',
+        respuesta:
+          'Sí. La fabricación es en nuestras plantas del suroccidente y el despacho por carretera llega a cualquier obra del país — los puentes viajan por partes. Trabajamos con concesionarios viales, contratistas de obra pública y constructores privados.',
+      },
+    ],
+    faqTitulo1: 'Preguntas sobre',
+    faqTitulo2: 'puentes metálicos',
+    relacionados: [
+      {
+        href: '/soluciones/puentes-metalicos',
+        eyebrow: 'Solución',
+        titulo: 'Puentes metálicos',
+        descripcion: 'La solución completa: vehiculares, peatonales y pasarelas en acero.',
+      },
+      {
+        href: '/precios-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Precios de estructuras metálicas',
+        descripcion: 'Rangos por kg instalado — incluido el rango especial de puentes.',
+      },
+      {
+        href: '/granallado-y-pintura-estructuras-metalicas',
+        eyebrow: 'Guía',
+        titulo: 'Granallado y pintura',
+        descripcion: 'La protección anticorrosiva que decide la vida útil de un puente.',
+      },
+      {
+        href: '/estructuras-metalicas-colombia',
+        eyebrow: 'Nacional',
+        titulo: 'Estructuras metálicas en Colombia',
+        descripcion: 'Capacidad nacional de MEISA: tres plantas y obra en todo el país.',
+      },
+    ],
+    ctaEyebrow: 'Su puente, en acero',
+    ctaTitulo1: 'Hablemos de',
+    ctaTitulo2: 'su próximo cruce.',
+    ctaDescripcion:
+      'Concesionarios, contratistas de obra pública y constructores: envíennos el diseño o el anteproyecto y reciban una propuesta formal de fabricación y montaje con peso, plazo y precio.',
+  },
+}
+
 export const GUIAS: GuiaLanding[] = [
   GUIA_PRECIOS,
   GUIA_VS_CONCRETO,
   GUIA_TIPOS,
   GUIA_PESO,
   GUIA_GRANALLADO,
+  GUIA_CUBIERTA_PRECIO,
+  GUIA_PUENTE_PROCESO,
 ]
 
 export function getGuiaFallback(slug: string): GuiaLanding | undefined {

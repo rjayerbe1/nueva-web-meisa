@@ -141,6 +141,18 @@ export const guiaTemplateContenidoSchema = z
     proceso: z.array(tituloDescripcion).optional(),
     procesoTitulo1: z.string().optional(),
     procesoTitulo2: z.string().optional(),
+    // Video destacado (facade YouTube + VideoObject) — opcional.
+    video: z
+      .object({
+        videoId: z.string().min(1),
+        obra: z.string(),
+        titulo: z.string(),
+        descripcion: z.string(),
+        poster: z.string(),
+        uploadDate: z.string(),
+        duration: z.string(),
+      })
+      .optional(),
     proyectosSlugs: z.array(z.string()),
     proyectosIntro: z.string(),
     faq: z.array(faqItem),
