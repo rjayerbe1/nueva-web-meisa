@@ -39,12 +39,18 @@ const AnimatedTitle = ({ text, className = '' }: { text: string; className?: str
 }
 
 /**
- * Nombre corto para el título móvil: la primera parte antes del primer
- * conector ("de"/"y"). "Montaje de Estructuras Metálicas" → "Montaje".
- * (Incluye el espacio irrompible   usado para controlar saltos.)
+ * Nombre corto para el título móvil: el nombre sin su última palabra —
+ * "Montaje de Estructuras Metálicas" → "Montaje de Estructuras".
+ * Punto medio validado con el dueño: cabe en UNA línea a ~19-20px
+ * (medido con Bebas real en 320-428px). Maneja el nbsp de los nombres.
  */
 function nombreCorto(nombre: string): string {
-  return nombre.split(/[\s ]+(?:de|y)[\s ]+/i)[0] ?? nombre
+  // Punto medio (pedido del dueño): el nombre sin su última palabra —
+  // "Montaje de Estructuras Metálicas" → "Montaje de Estructuras".
+  // Cabe en UNA línea a ~19-20px (medido con Bebas real en 320-428px).
+  const palabras = nombre.trim().split(/[\s\u00A0]+/)
+  if (palabras.length < 3) return nombre
+  return palabras.slice(0, -1).join(" ")
 }
 
 export interface ServicioItem {
@@ -190,15 +196,14 @@ function ServiceCard({
             {servicio.subtitulo}
           </motion.p>
 
-          {/* Móvil: título CORTO en una sola línea, grande ("MONTAJE").
+          {/* Móvil: título corto en una sola línea ("MONTAJE DE ESTRUCTURAS").
               El nombre completo cabría en una línea solo a 12-15px (medido:
-              Bebas ~0.66em/glifo) — ilegible como título. El eyebrow y el
-              subtítulo dan el contexto; el nombre completo queda para sm+
-              (y en el DOM, oculto, para semántica/SEO). */}
+              Bebas ~0.66em/glifo) — ilegible como título. El nombre completo
+              queda para sm+ y en el DOM (semántica/SEO). */}
           <div className="sm:hidden">
             <AnimatedTitle
               text={nombreCorto(servicio.nombre).toUpperCase()}
-              className="text-3xl font-bebas uppercase text-white mb-3 drop-shadow-2xl leading-tight"
+              className="text-[clamp(1rem,5vw,1.25rem)] font-bebas uppercase text-white mb-3 drop-shadow-2xl leading-tight"
             />
           </div>
           <div className="hidden sm:block">
