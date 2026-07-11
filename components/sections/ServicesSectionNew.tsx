@@ -12,7 +12,10 @@ const AnimatedTitle = ({ text, className = '' }: { text: string; className?: str
   return (
     <h2 className={className}>
       {words.map((word, wordIndex) => (
-        <span key={wordIndex} className="block sm:inline-block sm:mr-3">
+        {/* inline en TODOS los breakpoints: en móvil cada palabra iba en
+            `block` (una línea por palabra) y el título de 3-4 líneas tapaba
+            el video. Ahora fluye en una sola línea con tamaño fluido. */}
+        <span key={wordIndex} className="inline-block mr-2 sm:mr-3">
           {word.split('').map((char, charIndex) => (
             <motion.span
               key={`${wordIndex}-${charIndex}`}
@@ -180,7 +183,7 @@ function ServiceCard({
 
           <AnimatedTitle
             text={servicio.nombre.toUpperCase()}
-            className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
+            className="whitespace-nowrap sm:whitespace-normal text-[clamp(1.1rem,5.6vw,1.875rem)] sm:text-5xl lg:text-5xl xl:text-6xl font-bebas uppercase text-white mb-4 drop-shadow-2xl leading-tight"
           />
 
           <motion.p
