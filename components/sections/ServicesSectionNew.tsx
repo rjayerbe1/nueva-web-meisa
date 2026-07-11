@@ -9,12 +9,12 @@ import { videoPoster } from '@/lib/video-poster'
 const AnimatedTitle = ({ text, className = '' }: { text: string; className?: string }) => {
   const words = text.split(' ')
 
+  // Palabras inline en TODOS los breakpoints: en móvil cada palabra iba en
+  // `block` (una línea por palabra) y el título de 3-4 líneas tapaba el
+  // video. Ahora fluye en una sola línea con tamaño fluido.
   return (
     <h2 className={className}>
       {words.map((word, wordIndex) => (
-        {/* inline en TODOS los breakpoints: en móvil cada palabra iba en
-            `block` (una línea por palabra) y el título de 3-4 líneas tapaba
-            el video. Ahora fluye en una sola línea con tamaño fluido. */}
         <span key={wordIndex} className="inline-block mr-2 sm:mr-3">
           {word.split('').map((char, charIndex) => (
             <motion.span
