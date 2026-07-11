@@ -9,6 +9,12 @@ export const revalidate = 0
 
 const GRUPOS: { tipo: LandingTipoStr; titulo: string; descripcion: string }[] = [
   {
+    tipo: "PILAR",
+    titulo: "Pilar del clúster",
+    descripcion:
+      "Página nacional /estructuras-metalicas-colombia — concentra el fan-in de todas las landings.",
+  },
+  {
     tipo: "SOLUCION",
     titulo: "Soluciones",
     descripcion: "Landings /soluciones/[slug] — una por tipología de proyecto.",
@@ -29,12 +35,14 @@ const BADGE_CLS: Record<LandingTipoStr, string> = {
   SOLUCION: "bg-red-600 text-white",
   GUIA: "bg-blue-700 text-white",
   CIUDAD: "bg-slate-700 text-white",
+  PILAR: "bg-slate-950 text-white",
 }
 
 const BADGE_LABEL: Record<LandingTipoStr, string> = {
   SOLUCION: "Solución",
   GUIA: "Guía",
   CIUDAD: "Ciudad",
+  PILAR: "Pilar",
 }
 
 export default async function LandingsAdminPage() {

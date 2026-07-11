@@ -795,10 +795,197 @@ const GUIA_PRECIOS_SECTIONS: LandingSection[] = [
   },
 ]
 
+/* ─── PILAR (lib/pilar.ts → página /estructuras-metalicas-colombia) ───── */
+
+const PILAR_SECTIONS: LandingSection[] = [
+  {
+    id: "hero",
+    title: "Hero",
+    fields: [
+      heroImagenField("se usa la imagen de portada de la categoría Puentes."),
+      { name: "heroEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "heroTitulo1", label: "Título — línea 1", kind: "text" },
+      { name: "heroTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
+      {
+        name: "heroDescripcion",
+        label: "Descripción del hero",
+        kind: "textarea",
+        rows: 3,
+        gridSpan: 2,
+      },
+    ],
+  },
+  {
+    id: "intro",
+    title: "Intro editorial",
+    fields: [
+      { name: "introEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "introTitulo1", label: "Título — línea 1", kind: "text" },
+      { name: "introTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
+      {
+        name: "intro",
+        label: "Párrafos de la intro",
+        kind: "stringArray",
+        multiline: true,
+        rows: 6,
+        gridSpan: 2,
+      },
+    ],
+  },
+  {
+    id: "stats",
+    title: "Stats",
+    description:
+      "Las cifras de proyectos y toneladas se calculan desde la DB; aquí se editan los labels y las stats fijas.",
+    fields: [
+      { name: "statProyectosLabel", label: "Label — stat de proyectos", kind: "text" },
+      { name: "statToneladasLabel", label: "Label — stat de toneladas", kind: "text" },
+      {
+        name: "statsFijas",
+        label: "Stats fijas (completan el strip de 4)",
+        kind: "objectArray",
+        gridSpan: 2,
+        itemLabel: (item, i) =>
+          (item.label as string) || `Stat ${String(i + 1).padStart(2, "0")}`,
+        itemTemplate: { valor: "", sufijo: "", label: "" },
+        itemFields: [
+          { name: "valor", label: "Valor", kind: "text" },
+          { name: "sufijo", label: "Sufijo (ej. +)", kind: "text" },
+          { name: "label", label: "Label", kind: "text", gridSpan: 2 },
+        ],
+      },
+    ],
+  },
+  {
+    id: "soluciones",
+    title: "Soluciones (fan-out del clúster)",
+    description:
+      "Cards que enlazan a las landings de solución. El href debe ser una ruta interna existente.",
+    fields: [
+      { name: "solucionesEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "solucionesTitulo1", label: "Título — línea 1", kind: "text" },
+      { name: "solucionesTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
+      {
+        name: "soluciones",
+        label: "Cards de soluciones",
+        kind: "objectArray",
+        gridSpan: 2,
+        collapsible: true,
+        itemLabel: (item, i) =>
+          (item.titulo as string) || `Solución ${String(i + 1).padStart(2, "0")}`,
+        itemTemplate: { href: "/soluciones/", titulo: "", descripcion: "" },
+        itemFields: [
+          {
+            name: "href",
+            label: "Ruta interna",
+            kind: "text",
+            placeholder: "/soluciones/…",
+            gridSpan: 2,
+          },
+          { name: "titulo", label: "Título", kind: "text", gridSpan: 2 },
+          {
+            name: "descripcion",
+            label: "Descripción",
+            kind: "textarea",
+            rows: 3,
+            gridSpan: 2,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "ventaja",
+    title: "Por qué MEISA",
+    fields: [
+      { name: "ventajaEyebrow", label: "Eyebrow", kind: "text" },
+      { name: "ventajaTitulo", label: "Título", kind: "text" },
+      {
+        name: "ventaja",
+        label: "Párrafos",
+        kind: "stringArray",
+        multiline: true,
+        rows: 5,
+        gridSpan: 2,
+      },
+    ],
+  },
+  {
+    id: "ciudades",
+    title: "Cobertura por ciudad",
+    fields: [
+      { name: "ciudadesEyebrow", label: "Eyebrow", kind: "text" },
+      { name: "ciudadesTitulo", label: "Título", kind: "text" },
+      {
+        name: "ciudades",
+        label: "Cards de ciudades",
+        kind: "objectArray",
+        gridSpan: 2,
+        collapsible: true,
+        itemLabel: (item, i) =>
+          (item.nombre as string) || `Ciudad ${String(i + 1).padStart(2, "0")}`,
+        itemTemplate: { href: "/estructuras-metalicas/", nombre: "", descripcion: "" },
+        itemFields: [
+          {
+            name: "href",
+            label: "Ruta interna",
+            kind: "text",
+            placeholder: "/estructuras-metalicas/…",
+            gridSpan: 2,
+          },
+          { name: "nombre", label: "Nombre", kind: "text", gridSpan: 2 },
+          {
+            name: "descripcion",
+            label: "Descripción",
+            kind: "textarea",
+            rows: 3,
+            gridSpan: 2,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "guias",
+    title: "Guías técnicas",
+    description:
+      "Las cards de guías salen del código (GUIAS_NAV); aquí solo se edita el encabezado de la sección.",
+    fields: [
+      { name: "guiasEyebrow", label: "Eyebrow", kind: "text" },
+      { name: "guiasTitulo", label: "Título", kind: "text" },
+    ],
+  },
+  {
+    id: "faq",
+    title: "FAQ",
+    fields: [
+      { name: "faqTitulo1", label: "Título — línea 1", kind: "text" },
+      { name: "faqTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
+      faqField(),
+    ],
+  },
+  {
+    id: "cta",
+    title: "CTA final",
+    fields: [
+      { name: "ctaEyebrow", label: "Eyebrow", kind: "text", gridSpan: 2 },
+      { name: "ctaTitulo1", label: "Título — línea 1", kind: "text" },
+      { name: "ctaTitulo2", label: "Título — línea 2 (gris)", kind: "text" },
+      {
+        name: "ctaDescripcion",
+        label: "Descripción",
+        kind: "textarea",
+        rows: 3,
+        gridSpan: 2,
+      },
+    ],
+  },
+]
+
 /* ─── Builder ─────────────────────────────────────────────────────────── */
 
 export function buildLandingSections(
-  tipo: "SOLUCION" | "GUIA" | "CIUDAD",
+  tipo: "SOLUCION" | "GUIA" | "CIUDAD" | "PILAR",
   variante?: string,
 ): LandingSection[] {
   switch (tipo) {
@@ -808,5 +995,7 @@ export function buildLandingSections(
       return CIUDAD_SECTIONS
     case "GUIA":
       return variante === "precios" ? GUIA_PRECIOS_SECTIONS : GUIA_TEMPLATE_SECTIONS
+    case "PILAR":
+      return PILAR_SECTIONS
   }
 }

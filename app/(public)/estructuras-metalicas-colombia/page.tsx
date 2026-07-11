@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, MapPin, Plus } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+import { getPilarDb } from '@/lib/content/landings'
 import { GUIAS_NAV } from '@/components/guias/OtrasGuias'
 import { ServiceSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 
@@ -13,140 +14,51 @@ export const revalidate = 60
 // ("estructuras metálicas en Colombia") y concentra el fan-in de las 14
 // landings del clúster (soluciones, ciudades, guías), que enlazan hacia
 // aquí con anchor de keyword. A la vez enlaza hacia abajo a todo el clúster.
+//
+// Contenido DB-first: tabla landings_seo tipo PILAR (editable en
+// /admin/landings) con fallback a lib/pilar.ts. Las partes dinámicas
+// (stats agregados, top proyectos, covers, guías) se calculan aquí.
 
 const SITE_URL = 'https://meisa.com.co'
 const PAGE_PATH = '/estructuras-metalicas-colombia'
 const PAGE_URL = `${SITE_URL}${PAGE_PATH}`
-// El hero y el image break se resuelven en runtime desde los covers de
-// categoría de la DB (fotos REALES de obra MEISA — nada de stock). FALLBACK_IMG
-// solo aplica si la DB no responde; OG_IMG (cover real de Puentes) alimenta el
-// OpenGraph/Twitter, que son estáticos.
+
+// Solo si la DB no responde; el hero real sale de covers de categoría
+// (fotos reales de obra MEISA — nada de stock).
 const FALLBACK_IMG =
   'https://storage.googleapis.com/meisa-imagenes/site/hero/hero-construccion-industrial.jpg'
-const OG_IMG = 'https://storage.googleapis.com/meisa-imagenes/categories/1763570102114'
 
-const META_TITLE =
-  'Estructuras Metálicas en Colombia — Diseño, Fabricación y Montaje | MEISA'
-const META_DESCRIPTION =
-  'MEISA diseña, fabrica y monta estructuras metálicas en toda Colombia desde 1996: puentes, edificios, centros comerciales, naves industriales y escenarios deportivos en acero. Capacidad certificada y proyectos entregados en todo el país.'
-
-export const metadata: Metadata = {
-  title: { absolute: META_TITLE },
-  description: META_DESCRIPTION,
-  alternates: { canonical: PAGE_PATH },
-  openGraph: {
-    title: META_TITLE,
-    description: META_DESCRIPTION,
-    url: PAGE_URL,
-    images: [
-      {
-        url: OG_IMG,
-        width: 1200,
-        height: 630,
-        alt: 'Estructuras metálicas en Colombia — MEISA',
-      },
-    ],
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: META_TITLE,
-    description: META_DESCRIPTION,
-    images: [OG_IMG],
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const pilar = await getPilarDb()
+  const ogImage =
+    pilar.heroImagen ||
+    'https://storage.googleapis.com/meisa-imagenes/categories/1763570102114'
+  return {
+    title: { absolute: pilar.metaTitle },
+    description: pilar.metaDescription,
+    alternates: { canonical: PAGE_PATH },
+    openGraph: {
+      title: pilar.metaTitle,
+      description: pilar.metaDescription,
+      url: PAGE_URL,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: 'Estructuras metálicas en Colombia — MEISA',
+        },
+      ],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pilar.metaTitle,
+      description: pilar.metaDescription,
+      images: [ogImage],
+    },
+  }
 }
-
-// --- Fan-out: enlaces DESCENDENTES al clúster (con anchors de keyword) ---
-
-const SOLUCIONES = [
-  {
-    href: '/soluciones/edificios-en-estructura-metalica',
-    titulo: 'Edificios en estructura metálica',
-    descripcion:
-      'Pórticos y entrepisos en acero para edificios de vivienda, oficinas y uso mixto.',
-  },
-  {
-    href: '/soluciones/puentes-metalicos',
-    titulo: 'Puentes metálicos',
-    descripcion:
-      'Puentes vehiculares y peatonales en acero: vigas, cerchas y sistemas mixtos.',
-  },
-  {
-    href: '/soluciones/estructura-metalica-para-bodegas',
-    titulo: 'Bodegas y naves industriales',
-    descripcion:
-      'Naves logísticas e industriales de gran luz, con cubierta y fachada metálica.',
-  },
-  {
-    href: '/soluciones/estructura-metalica-centros-comerciales',
-    titulo: 'Centros comerciales',
-    descripcion:
-      'Estructura para centros comerciales y retail: grandes luces y plazos de obra cortos.',
-  },
-  {
-    href: '/soluciones/estructura-metalica-escenarios-deportivos',
-    titulo: 'Escenarios deportivos',
-    descripcion:
-      'Coliseos, estadios y complejos deportivos con cubiertas de gran luz en acero.',
-  },
-  {
-    href: '/soluciones/cubiertas-metalicas',
-    titulo: 'Cubiertas y fachadas metálicas',
-    descripcion:
-      'Cubiertas, fachadas y sistemas de cerramiento en lámina y estructura metálica.',
-  },
-]
-
-const CIUDADES = [
-  {
-    href: '/estructuras-metalicas/cali',
-    nombre: 'Cali',
-    descripcion: 'Cobertura del Valle del Cauca y el suroccidente desde Jamundí.',
-  },
-  {
-    href: '/estructuras-metalicas/bogota',
-    nombre: 'Bogotá',
-    descripcion: 'Proyectos de estructura metálica en la capital y la región central.',
-  },
-  {
-    href: '/estructuras-metalicas/popayan',
-    nombre: 'Popayán',
-    descripcion: 'Planta y sede histórica de MEISA, obra insignia en el Cauca.',
-  },
-]
-
-const INTRO = [
-  'MEISA es una empresa colombiana de estructuras metálicas fundada en 1996, con plantas en Jamundí, Villa Rica y Popayán y proyectos entregados en todo el país. Diseñamos, fabricamos y montamos acero estructural para puentes, edificios, centros comerciales, naves industriales y escenarios deportivos.',
-  'Trabajamos sobre planos: cada proyecto se cotiza según su tonelaje, complejidad y logística de montaje. Bajo un mismo techo cubrimos diseño estructural, fabricación con control de calidad y montaje en obra — el mismo equipo responde por toda la cadena.',
-]
-
-const VENTAJA = [
-  'Lo que nos separa no es una promesa, son toneladas montadas y proyectos verificables: MIO en Cali, escenarios de Juegos Nacionales, puentes y complejos deportivos entregados. El acero no miente.',
-  'Con tres plantas de fabricación y equipo propio de montaje llegamos a obra en todo el territorio nacional, con la trazabilidad y las certificaciones que exigen los grandes contratos.',
-]
-
-const FAQ = [
-  {
-    pregunta: '¿Cuánto cuesta una estructura metálica en Colombia?',
-    respuesta:
-      'El costo se cotiza por kilogramo instalado y depende del tipo de estructura. Como referencia de mercado, la estructura liviana ronda los rangos más bajos y la especial o de puentes los más altos; el valor incluye fabricación, pintura y montaje, y excluye cimentación y acabados. Siempre se cotiza sobre planos. Ver la guía de precios de estructuras metálicas para los rangos orientativos.',
-  },
-  {
-    pregunta: '¿MEISA trabaja en toda Colombia?',
-    respuesta:
-      'Sí. Con plantas en Jamundí, Villa Rica y Popayán y equipo propio de montaje, MEISA fabrica y monta estructuras metálicas en todo el país, con proyectos entregados en Cali, Bogotá, Popayán y otras regiones.',
-  },
-  {
-    pregunta: '¿Qué tipos de estructura metálica fabrica MEISA?',
-    respuesta:
-      'Puentes vehiculares y peatonales, edificios en acero, centros comerciales, bodegas y naves industriales, escenarios deportivos y cubiertas metálicas. Cada tipología se resuelve con el sistema estructural que mejor se ajusta a la luz, las cargas y el plazo de obra.',
-  },
-  {
-    pregunta: '¿MEISA hace el diseño, la fabricación y el montaje?',
-    respuesta:
-      'Sí. MEISA integra diseño estructural, fabricación en planta con control de calidad y montaje en obra con equipo propio. Un solo responsable por toda la cadena, desde el modelo hasta el acero montado.',
-  },
-]
 
 interface ProyectoRow {
   id: string
@@ -222,10 +134,12 @@ function formatToneladas(value: number): string {
 }
 
 export default async function EstructurasMetalicasColombiaPage() {
+  const pilar = await getPilarDb()
+
   let totalProyectos = 0
   let totalToneladas = 0
   let topCards: ProyectoCard[] = []
-  let heroImg = FALLBACK_IMG
+  let heroImg = pilar.heroImagen || FALLBACK_IMG
   let breakImg = FALLBACK_IMG
 
   try {
@@ -273,9 +187,11 @@ export default async function EstructurasMetalicasColombiaPage() {
 
     const cover = (key: string) =>
       covers.find((c) => c.key === key)?.imagenCover || null
-    // Hero: un puente (la obra más icónica de MEISA). Break: otra tipología
-    // distinta para no repetir foto. Ambas son fotos reales de obra.
-    heroImg = cover('PUENTES') || cover('EDIFICACIONES') || FALLBACK_IMG
+    // Hero: override del admin, si no un puente (la obra más icónica de
+    // MEISA). Break: otra tipología distinta para no repetir foto.
+    if (!pilar.heroImagen) {
+      heroImg = cover('PUENTES') || cover('EDIFICACIONES') || FALLBACK_IMG
+    }
     breakImg =
       cover('DEPORTES_EDUCACION') || cover('INDUSTRIAL') || cover('EDIFICACIONES') || heroImg
   } catch {
@@ -283,10 +199,17 @@ export default async function EstructurasMetalicasColombiaPage() {
   }
 
   const stats = [
-    { valor: String(totalProyectos || '400'), sufijo: '+', label: 'Proyectos entregados' },
-    { valor: formatToneladas(totalToneladas), sufijo: '+', label: 'Toneladas de acero' },
-    { valor: '30', sufijo: '+', label: 'Años desde 1996' },
-    { valor: '3', sufijo: '', label: 'Plantas de fabricación' },
+    {
+      valor: String(totalProyectos || '400'),
+      sufijo: '+',
+      label: pilar.statProyectosLabel,
+    },
+    {
+      valor: formatToneladas(totalToneladas),
+      sufijo: '+',
+      label: pilar.statToneladasLabel,
+    },
+    ...pilar.statsFijas.map((s) => ({ ...s, sufijo: s.sufijo ?? '' })),
   ]
 
   return (
@@ -294,7 +217,7 @@ export default async function EstructurasMetalicasColombiaPage() {
       {/* JSON-LD */}
       <ServiceSchema
         name="Estructuras metálicas en Colombia"
-        description={META_DESCRIPTION}
+        description={pilar.metaDescription}
         url={PAGE_URL}
         image={heroImg}
       />
@@ -304,7 +227,7 @@ export default async function EstructurasMetalicasColombiaPage() {
           { name: 'Estructuras metálicas en Colombia', url: PAGE_URL },
         ]}
       />
-      <FAQSchema items={FAQ} />
+      <FAQSchema items={pilar.faq} />
 
       {/* Hero full-bleed oscuro */}
       <section className="relative h-screen md:h-[85vh] overflow-hidden bg-slate-950">
@@ -321,43 +244,41 @@ export default async function EstructurasMetalicasColombiaPage() {
           <div className="mx-auto max-w-7xl w-full">
             <div className="max-w-5xl">
               <p className="text-white/60 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-                Diseño · Fabricación · Montaje — desde 1996
+                {pilar.heroEyebrow}
               </p>
               <h1 className="font-bebas uppercase leading-[0.95]">
                 <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white">
-                  Estructuras metálicas
+                  {pilar.heroTitulo1}
                 </span>
                 <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white/50">
-                  en Colombia
+                  {pilar.heroTitulo2}
                 </span>
               </h1>
               <p className="mt-8 text-white/80 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-                Puentes, edificios, centros comerciales, naves industriales y
-                escenarios deportivos en acero. Tres plantas, equipo propio de
-                montaje y proyectos entregados en todo el país.
+                {pilar.heroDescripcion}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Intro editorial — Patrón A + link contextual descendente */}
+      {/* Intro editorial — Patrón A */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
             <div className="lg:col-span-5">
               <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-                Quiénes somos
+                {pilar.introEyebrow}
               </p>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-950">
-                Acero que
+                {pilar.introTitulo1}
               </h2>
               <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-300">
-                no miente
+                {pilar.introTitulo2}
               </h3>
             </div>
             <div className="lg:col-span-7 lg:pt-6 space-y-5">
-              {INTRO.map((parrafo) => (
+              {pilar.intro.map((parrafo) => (
                 <p
                   key={parrafo.slice(0, 40)}
                   className="text-base md:text-lg text-slate-700 font-lato leading-relaxed text-pretty hyphens-auto"
@@ -390,22 +311,22 @@ export default async function EstructurasMetalicasColombiaPage() {
         </div>
       </section>
 
-      {/* Qué construimos — 6 soluciones (fan-out descendente con anchor keyword) */}
+      {/* Qué construimos — soluciones (fan-out descendente con anchor keyword) */}
       <section className="pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-12 md:mb-16 max-w-4xl">
             <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Qué construimos
+              {pilar.solucionesEyebrow}
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-950">
-              Soluciones en
+              {pilar.solucionesTitulo1}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-300">
-              estructura metálica
+              {pilar.solucionesTitulo2}
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
-            {SOLUCIONES.map((sol, i) => (
+            {pilar.soluciones.map((sol, i) => (
               <Link key={sol.href} href={sol.href} className="group bg-white p-8 md:p-10 flex flex-col">
                 <div className="flex items-baseline gap-4 mb-4">
                   <span className="text-slate-300 font-bebas text-4xl md:text-5xl leading-none">
@@ -446,14 +367,14 @@ export default async function EstructurasMetalicasColombiaPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
             <div className="lg:col-span-5">
               <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-                Por qué MEISA
+                {pilar.ventajaEyebrow}
               </p>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-slate-950">
-                Toneladas, no promesas
+                {pilar.ventajaTitulo}
               </h2>
             </div>
             <div className="lg:col-span-7 lg:pt-6 space-y-5">
-              {VENTAJA.map((parrafo) => (
+              {pilar.ventaja.map((parrafo) => (
                 <p
                   key={parrafo.slice(0, 40)}
                   className="text-base md:text-lg text-slate-700 font-lato leading-relaxed text-pretty hyphens-auto"
@@ -539,19 +460,19 @@ export default async function EstructurasMetalicasColombiaPage() {
         </section>
       )}
 
-      {/* Cobertura nacional — 3 ciudades (fan-out descendente) */}
+      {/* Cobertura nacional — ciudades (fan-out descendente) */}
       <section className="pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-10 md:mb-12 max-w-4xl">
             <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Cobertura nacional
+              {pilar.ciudadesEyebrow}
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-slate-950">
-              Dónde construimos
+              {pilar.ciudadesTitulo}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
-            {CIUDADES.map((ciudad) => (
+            {pilar.ciudades.map((ciudad) => (
               <Link key={ciudad.href} href={ciudad.href} className="group bg-white p-8 md:p-10 flex flex-col">
                 <p className="text-slate-400 font-lato font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-2">
                   Estructuras metálicas en
@@ -577,10 +498,10 @@ export default async function EstructurasMetalicasColombiaPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-10 md:mb-12 max-w-4xl">
             <p className="text-slate-400 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Antes de cotizar
+              {pilar.guiasEyebrow}
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bebas uppercase leading-[0.95] text-slate-950">
-              Guías técnicas
+              {pilar.guiasTitulo}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
@@ -613,14 +534,14 @@ export default async function EstructurasMetalicasColombiaPage() {
               Preguntas frecuentes
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-950">
-              Sobre el acero
+              {pilar.faqTitulo1}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-slate-300">
-              en Colombia
+              {pilar.faqTitulo2}
             </h3>
           </div>
           <div className="border-t border-slate-200">
-            {FAQ.map((item) => (
+            {pilar.faq.map((item) => (
               <details key={item.pregunta} className="group border-b border-slate-200">
                 <summary className="flex items-center justify-between gap-6 py-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                   <h3 className="font-lato font-bold text-slate-950 text-base md:text-lg leading-snug">
@@ -645,17 +566,16 @@ export default async function EstructurasMetalicasColombiaPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="max-w-4xl mb-12 md:mb-16">
             <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
-              Construyamos juntos
+              {pilar.ctaEyebrow}
             </p>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95]">
-              Su próxima obra
+              {pilar.ctaTitulo1}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
-              en acero
+              {pilar.ctaTitulo2}
             </h3>
             <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-2xl leading-relaxed">
-              Cuéntenos su proyecto y lo cotizamos sobre planos. Diseño,
-              fabricación y montaje de estructuras metálicas en toda Colombia.
+              {pilar.ctaDescripcion}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4">

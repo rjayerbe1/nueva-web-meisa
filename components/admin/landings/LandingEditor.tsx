@@ -30,6 +30,7 @@ export const TIPO_BADGE: Record<LandingTipoStr, { label: string; cls: string }> 
   SOLUCION: { label: "Solución", cls: "bg-red-600 text-white" },
   GUIA: { label: "Guía", cls: "bg-blue-700 text-white" },
   CIUDAD: { label: "Ciudad", cls: "bg-slate-700 text-white" },
+  PILAR: { label: "Pilar", cls: "bg-slate-950 text-white" },
 }
 
 interface LandingData {

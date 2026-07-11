@@ -6,6 +6,7 @@ import { LoadingProvider } from '@/contexts/LoadingContext'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { ServicesSection } from '@/components/sections/ServicesSectionNew'
 import { ProjectsByCategorySection } from '@/components/sections/ProjectsByCategorySection'
+import { SolucionesSeoSection } from '@/components/sections/SolucionesSeoSection'
 import { ClientesSection } from '@/components/sections/ClientesSection'
 import {
   FeaturedProjectSection,
@@ -44,6 +45,7 @@ type SeccionKey =
   | 'featured-project'
   | 'servicios'
   | 'proyectos'
+  | 'soluciones'
   | 'clientes'
   | 'contacto'
 
@@ -54,6 +56,7 @@ const DEFAULT_ORDEN: Array<{ clave: SeccionKey; activo: boolean }> = [
   { clave: 'servicios', activo: true },
   { clave: 'clientes', activo: true },
   { clave: 'proyectos', activo: true },
+  { clave: 'soluciones', activo: true },
   { clave: 'contacto', activo: true },
 ]
 
@@ -73,10 +76,21 @@ export function HomeContent({
   orden,
   foundingYear,
 }: HomeContentProps) {
-  const ordenResuelto = (orden && orden.length > 0 ? orden : DEFAULT_ORDEN) as Array<{
+  const ordenBase = (orden && orden.length > 0 ? orden : DEFAULT_ORDEN) as Array<{
     clave: SeccionKey
     activo: boolean
   }>
+  // Secciones nuevas del código que aún no están en el orden guardado en DB:
+  // se insertan en su posición por defecto (no desaparecen silenciosamente).
+  const ordenResuelto = [...ordenBase]
+  DEFAULT_ORDEN.forEach((def, defIdx) => {
+    if (ordenResuelto.some((s) => s.clave === def.clave)) return
+    const anterior = DEFAULT_ORDEN[defIdx - 1]?.clave
+    const idx = anterior
+      ? ordenResuelto.findIndex((s) => s.clave === anterior)
+      : -1
+    ordenResuelto.splice(idx >= 0 ? idx + 1 : ordenResuelto.length, 0, def)
+  })
 
   const renderSeccion = (clave: SeccionKey) => {
     switch (clave) {
@@ -112,6 +126,12 @@ export function HomeContent({
         return (
           <section id="proyectos" className="relative z-40 bg-white" key={clave}>
             <ProjectsByCategorySection projectsByCategory={projectsByCategory} categorias={categorias} />
+          </section>
+        )
+      case 'soluciones':
+        return (
+          <section id="soluciones" className="relative z-40" key={clave}>
+            <SolucionesSeoSection />
           </section>
         )
       case 'clientes':

@@ -203,9 +203,60 @@ export const guiaContenidoSchema = z.discriminatedUnion('variante', [
   guiaPreciosContenidoSchema,
 ])
 
+/* ─── PILAR (lib/pilar.ts → PilarConfig sin slug/meta) ───────────────── */
+
+export const pilarContenidoSchema = z
+  .object({
+    // Si está vacío, la página usa imagenCover de PUENTES como fallback.
+    heroImagen: z.string().optional(),
+    heroEyebrow: z.string(),
+    heroTitulo1: z.string().min(1),
+    heroTitulo2: z.string(),
+    heroDescripcion: z.string(),
+    introEyebrow: z.string(),
+    introTitulo1: z.string(),
+    introTitulo2: z.string(),
+    intro: z.array(z.string()),
+    statProyectosLabel: z.string(),
+    statToneladasLabel: z.string(),
+    statsFijas: z.array(statConSufijo),
+    solucionesEyebrow: z.string(),
+    solucionesTitulo1: z.string(),
+    solucionesTitulo2: z.string(),
+    soluciones: z.array(
+      z.object({
+        href: z.string().min(1),
+        titulo: z.string().min(1),
+        descripcion: z.string(),
+      }),
+    ),
+    ventajaEyebrow: z.string(),
+    ventajaTitulo: z.string(),
+    ventaja: z.array(z.string()),
+    ciudadesEyebrow: z.string(),
+    ciudadesTitulo: z.string(),
+    ciudades: z.array(
+      z.object({
+        href: z.string().min(1),
+        nombre: z.string().min(1),
+        descripcion: z.string(),
+      }),
+    ),
+    guiasEyebrow: z.string(),
+    guiasTitulo: z.string(),
+    faqTitulo1: z.string(),
+    faqTitulo2: z.string(),
+    faq: z.array(faqItem),
+    ctaEyebrow: z.string(),
+    ctaTitulo1: z.string(),
+    ctaTitulo2: z.string(),
+    ctaDescripcion: z.string(),
+  })
+  .passthrough()
+
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
 
-export type LandingTipoStr = 'SOLUCION' | 'GUIA' | 'CIUDAD'
+export type LandingTipoStr = 'SOLUCION' | 'GUIA' | 'CIUDAD' | 'PILAR'
 
 export function contenidoSchemaForTipo(tipo: LandingTipoStr) {
   switch (tipo) {
@@ -215,6 +266,8 @@ export function contenidoSchemaForTipo(tipo: LandingTipoStr) {
       return ciudadContenidoSchema
     case 'GUIA':
       return guiaContenidoSchema
+    case 'PILAR':
+      return pilarContenidoSchema
   }
 }
 
@@ -226,6 +279,8 @@ export function landingPublicPath(tipo: LandingTipoStr, slug: string): string {
     case 'CIUDAD':
       return `/estructuras-metalicas/${slug}`
     case 'GUIA':
+      return `/${slug}`
+    case 'PILAR':
       return `/${slug}`
   }
 }

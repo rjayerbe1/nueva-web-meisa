@@ -12,15 +12,17 @@ import { prisma } from '@/lib/prisma'
 import { SOLUCIONES, type Solucion } from '@/lib/soluciones'
 import { CIUDADES, type CiudadConfig } from '@/lib/ciudades'
 import { GUIAS, type GuiaLanding, type GuiaContenido } from '@/lib/guias'
+import { PILAR_CONFIG, type PilarConfig } from '@/lib/pilar'
 import {
   solucionContenidoSchema,
   ciudadContenidoSchema,
   guiaContenidoSchema,
+  pilarContenidoSchema,
 } from '@/lib/landings-schema'
 
 type LandingRow = {
   slug: string
-  tipo: 'SOLUCION' | 'GUIA' | 'CIUDAD'
+  tipo: 'SOLUCION' | 'GUIA' | 'CIUDAD' | 'PILAR'
   metaTitle: string
   metaDescription: string
   contenido: unknown
@@ -38,7 +40,9 @@ async function fetchRow(slug: string): Promise<LandingRow | null> {
   }
 }
 
-async function fetchRows(tipo: 'SOLUCION' | 'GUIA' | 'CIUDAD'): Promise<LandingRow[]> {
+async function fetchRows(
+  tipo: 'SOLUCION' | 'GUIA' | 'CIUDAD' | 'PILAR',
+): Promise<LandingRow[]> {
   try {
     return (await prisma.landingSeo.findMany({
       where: { tipo, activa: true },
@@ -137,4 +141,25 @@ export async function getGuiaDb(slug: string): Promise<GuiaLanding | undefined> 
     metaDescription: row.metaDescription,
     contenido: parsed.data as GuiaContenido,
   }
+}
+
+/* ─── Pilar ───────────────────────────────────────────────────────────── */
+
+/**
+ * Config de la página pilar (/estructuras-metalicas-colombia). DB-first
+ * (tabla landings_seo, tipo PILAR — editable en /admin/landings) con
+ * fallback total a PILAR_CONFIG en código: la página nunca se cae.
+ */
+export async function getPilarDb(): Promise<PilarConfig> {
+  const row = await fetchRow(PILAR_CONFIG.slug)
+  if (!row || row.tipo !== 'PILAR' || !row.activa) return PILAR_CONFIG
+  const parsed = pilarContenidoSchema.safeParse(row.contenido)
+  if (!parsed.success) return PILAR_CONFIG
+  return {
+    ...PILAR_CONFIG,
+    ...parsed.data,
+    slug: row.slug,
+    metaTitle: row.metaTitle,
+    metaDescription: row.metaDescription,
+  } as PilarConfig
 }
