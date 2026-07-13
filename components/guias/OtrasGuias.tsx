@@ -40,6 +40,11 @@ export const GUIAS_NAV = [
     titulo: 'Cómo se construye un puente metálico',
     descripcion: 'El proceso paso a paso, con el video real del montaje del Puente Cascada.',
   },
+  {
+    path: '/como-elegir-empresa-de-estructuras-metalicas',
+    titulo: 'Cómo elegir empresa de estructuras metálicas',
+    descripcion: 'Los 7 criterios, las señales de alarma y las preguntas antes de firmar.',
+  },
 ]
 
 export function OtrasGuias({ currentPath }: { currentPath: string }) {

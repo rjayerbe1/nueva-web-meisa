@@ -119,6 +119,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/como-elegir-empresa-de-estructuras-metalicas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     // Landings locales por ciudad (DB-first: incluye las agregadas del admin)
     ...ciudadSlugs.map((slug) => ({
       url: `${BASE_URL}/estructuras-metalicas/${slug}`,
