@@ -1514,7 +1514,7 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
     introTitulo1: 'El acero',
     introTitulo2: 'no perdona',
     intro:
-      'En Colombia hay desde fabricantes con décadas de trayectoria y plantas certificadas hasta talleres que cotizan por metro cuadrado sin haber calculado un solo kilo de acero. El problema: en la propuesta comercial todos se parecen. Esta guía — escrita por MEISA, con 30 años fabricando y montando estructura en el país — le da los criterios objetivos y verificables para separar a unos de otros, sea que nos contrate a nosotros o a cualquier otro. Un comprador informado es el mejor cliente que existe.',
+      'En Colombia hay desde fabricantes con décadas de trayectoria y plantas certificadas hasta talleres que cotizan por metro cuadrado sin haber calculado un solo kilo de acero. El problema: en la propuesta comercial todos se parecen. Esta guía, escrita por MEISA tras 30 años fabricando y montando estructura en el país, le da los criterios objetivos y verificables para separar a unos de otros, sea que nos contrate a nosotros o a cualquier otro. Un comprador informado es el mejor cliente que existe.',
     categoriaHero: 'INDUSTRIAL',
     stats: [
       { valor: '7', sufijo: '', label: 'Criterios objetivos de selección' },
@@ -1525,23 +1525,23 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
       {
         titulo: 'Los 7 criterios que debe exigir',
         parrafos: [
-          'Ninguno de estos criterios es subjetivo: todos se pueden verificar con documentos, visitas o llamadas antes de firmar. Exíjalos como paquete — un proveedor serio los cumple todos sin incomodarse.',
+          'Ninguno de estos criterios es subjetivo: todos se pueden verificar con documentos, visitas o llamadas antes de firmar. Exíjalos como paquete: un proveedor serio los cumple todos sin incomodarse.',
         ],
         items: [
           {
             nombre: '1. Capacidad instalada real',
             descripcion:
-              'Planta propia de fabricación — no un patio alquilado ni maquila ocasional. Pregunte cuántas toneladas por mes fabrica, con qué equipos (corte CNC, pórticos de soldadura) y pida visitarla. Quien fabrica de verdad muestra su planta con orgullo; quien maquila, la esquiva.',
+              'Planta propia de fabricación, no un patio alquilado ni maquila ocasional. Pregunte cuántas toneladas por mes fabrica, con qué equipos (corte CNC, pórticos de soldadura) y pida visitarla. Quien fabrica de verdad muestra su planta con orgullo; quien maquila, la esquiva.',
           },
           {
             nombre: '2. Soldadura calificada y trazable',
             descripcion:
-              'Soldadores calificados bajo AWS D1.1 (o D1.5 para puentes), con registros de calificación vigentes y ensayos no destructivos documentados. La soldadura es el punto donde una estructura falla — y donde más se recorta costo a escondidas.',
+              'Soldadores calificados bajo AWS D1.1 (o D1.5 para puentes), con registros de calificación vigentes y ensayos no destructivos documentados. La soldadura es el punto donde una estructura falla, y también donde más se recorta costo a escondidas.',
           },
           {
             nombre: '3. Ingeniería de detalle propia',
             descripcion:
-              'Que el fabricante modele la estructura en 3D (Tekla o equivalente), genere sus propios planos de taller y firme memorias de cálculo con ingenieros matriculados. Si la "ingeniería" es un PDF reenviado de terceros, los errores se descubren en obra — pagándolos usted.',
+              'Que el fabricante modele la estructura en 3D (Tekla o equivalente), genere sus propios planos de taller y firme memorias de cálculo con ingenieros matriculados. Si la "ingeniería" es un PDF reenviado de terceros, los errores se descubren en obra, y los paga usted.',
           },
           {
             nombre: '4. Obra entregada que pueda visitar',
@@ -1551,7 +1551,7 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
           {
             nombre: '5. Montaje con personal propio',
             descripcion:
-              'Cuadrillas de montaje de nómina propia, certificadas en trabajo en alturas, con supervisión SISO — no una cadena de subcontratos donde nadie responde. En el montaje se materializa (o se arruina) toda la calidad de fábrica.',
+              'Cuadrillas de montaje de nómina propia, certificadas en trabajo en alturas y con supervisión SISO. Nada de cadenas de subcontratos donde nadie responde. En el montaje se materializa (o se arruina) toda la calidad de fábrica.',
           },
           {
             nombre: '6. Cumplimiento normativo demostrable',
@@ -1561,7 +1561,7 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
           {
             nombre: '7. Solidez para terminar la obra',
             descripcion:
-              'Años de operación, respaldo financiero y capacidad de compra de acero — el proveedor que quiebra a mitad de fabricación le deja columnas a medias que ningún otro taller quiere terminar. La trayectoria no es vanidad: es garantía de continuidad.',
+              'Años de operación, respaldo financiero y capacidad de compra de acero. El proveedor que quiebra a mitad de fabricación le deja columnas a medias que ningún otro taller quiere terminar. La trayectoria no es vanidad: es garantía de continuidad.',
           },
         ],
       },
@@ -1574,7 +1574,7 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
           {
             nombre: '⚠ Cotiza "por m²" sin calcular el peso',
             descripcion:
-              'Está adivinando — y el ajuste llegará como "adicional" en plena obra, o como una estructura con menos acero del que su proyecto necesita.',
+              'Está adivinando, y el ajuste llegará como "adicional" en plena obra, o como una estructura con menos acero del que su proyecto necesita.',
           },
           {
             nombre: '⚠ Sin memorias de cálculo firmadas',
@@ -1601,19 +1601,19 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
       {
         titulo: 'Las preguntas que debe hacer antes de firmar',
         parrafos: [
-          '¿Cuántas toneladas fabrica al mes y en qué plantas? ¿Puedo visitarlas? ¿Quién firma las memorias de cálculo? ¿Sus soldadores están calificados bajo qué código y por quién? ¿Qué proyectos similares al mío ha entregado y puedo contactar al cliente? ¿El montaje lo hace personal propio o subcontratado? ¿Qué incluye exactamente el precio por kilogramo — y qué no? ¿Entrega dossier de calidad con certificados de materiales?',
-          'Un proveedor serio responde todo esto en la primera reunión, con documentos. En MEISA, de hecho, lo entregamos antes de que lo pregunten: 264 proyectos verificables, tres plantas propias (Jamundí, Villa Rica y Popayán), más de 32.000 toneladas montadas, soldadura AWS D1.1 con registros, e ingeniería de detalle propia en Tekla desde 1996. No porque seamos los únicos — sino porque ese es el estándar que usted debería exigirle a cualquiera.',
+          '¿Cuántas toneladas fabrica al mes y en qué plantas? ¿Puedo visitarlas? ¿Quién firma las memorias de cálculo? ¿Sus soldadores están calificados bajo qué código y por quién? ¿Qué proyectos similares al mío ha entregado y puedo contactar al cliente? ¿El montaje lo hace personal propio o subcontratado? ¿Qué incluye exactamente el precio por kilogramo y qué no? ¿Entrega dossier de calidad con certificados de materiales?',
+          'Un proveedor serio responde todo esto en la primera reunión, con documentos. En MEISA, de hecho, lo entregamos antes de que lo pregunten: 264 proyectos verificables, tres plantas propias (Jamundí, Villa Rica y Popayán), más de 32.000 toneladas montadas, soldadura AWS D1.1 con registros e ingeniería de detalle propia con modelado 3D en Tekla. Operamos desde 1996 y no somos los únicos serios del mercado: este es simplemente el estándar que usted debería exigirle a cualquiera.',
         ],
       },
     ],
     proyectosSlugs: ['puente-vehicular-ovejas', 'casa-puente-cascada'],
     proyectosIntro:
-      'Obra verificable — el criterio 4 aplicado a nosotros mismos: proyectos con nombre, lugar y tonelaje que usted puede visitar.',
+      'Obra verificable, el criterio 4 aplicado a nosotros mismos: proyectos con nombre, lugar y tonelaje que usted puede visitar.',
     faq: [
       {
         pregunta: '¿Cuál es el error más común al contratar estructura metálica?',
         respuesta:
-          'Comparar cotizaciones "por m²" como si fueran equivalentes. Dos propuestas por el mismo galpón pueden diferir 40% simplemente porque una calculó menos kilos de acero — y ese faltante aparece después como adicional o, peor, como una estructura subdimensionada. Compare siempre peso de acero, alcance detallado y precio por kilogramo instalado.',
+          'Comparar cotizaciones "por m²" como si fueran equivalentes. Dos propuestas por el mismo galpón pueden diferir 40% simplemente porque una calculó menos kilos de acero, y ese faltante aparece después como adicional o, peor, como una estructura subdimensionada. Compare siempre peso de acero, alcance detallado y precio por kilogramo instalado.',
       },
       {
         pregunta: '¿Qué certificaciones debe tener una empresa de estructuras metálicas en Colombia?',
@@ -1643,7 +1643,7 @@ const GUIA_COMO_ELEGIR: GuiaLanding = {
         href: '/precios-estructuras-metalicas',
         eyebrow: 'Guía',
         titulo: 'Precios de estructuras metálicas',
-        descripcion: 'Los rangos reales por kg instalado — para comparar cotizaciones con criterio.',
+        descripcion: 'Los rangos reales por kg instalado, para comparar cotizaciones con criterio.',
       },
       {
         href: '/calidad',
