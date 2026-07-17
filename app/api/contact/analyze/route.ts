@@ -4,19 +4,24 @@ import { prisma } from '@/lib/prisma'
 import { getClientIp, hashIp } from '@/lib/chat/security'
 import { verificarRateLimit } from '@/lib/chat/ratelimit'
 import { analizarPropuestaLead } from '@/lib/lead-analysis'
-import { fetchAdjuntosAsAttachments, sendLeadAnalysisEmail } from '@/lib/email'
+import { fetchAdjuntosAsAttachments, sendContactNotificationEmail } from '@/lib/email'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * Genera el análisis IA de los adjuntos de un lead y envía el correo interno con
- * el reporte. Se ejecuta en su PROPIO request (lo dispara el cliente sin bloquear
- * el formulario) porque el análisis multimodal tarda ~10-20s y Cloud Run estrangula
- * la CPU fuera del request → no sirve como trabajo en segundo plano del server.
+ * Para leads CON adjuntos, este endpoint envía la notificación interna COMPLETA
+ * (datos + adjuntos reales + análisis IA de la propuesta), todo en un solo correo.
+ *
+ * Corre en su PROPIO request (lo dispara el cliente sin bloquear el formulario)
+ * porque el análisis multimodal tarda ~10-20s y Cloud Run estrangula la CPU fuera
+ * del request → no sirve como trabajo en segundo plano del server. Por eso el
+ * POST /api/contact NO manda la notificación interna cuando hay adjuntos: la manda
+ * este endpoint. La confirmación al cliente sí la manda /api/contact al instante.
  *
  * Blindaje: rate limit por IP + el lead debe ser reciente y tener adjuntos + el
  * circuit breaker de gasto (dentro de analizarPropuestaLead) + dedup en memoria.
+ * Si la IA falla, igual se envía la notificación (sin la sección de análisis).
  */
 
 const bodySchema = z.object({ id: z.string().min(8).max(64) })
@@ -73,41 +78,51 @@ export async function POST(req: NextRequest) {
   analizados.add(id)
 
   try {
+    // Descargar una vez: sirve para el análisis IA Y para adjuntar al correo.
     const archivos = await fetchAdjuntosAsAttachments(adjuntos)
-    if (archivos.length === 0) {
-      return NextResponse.json({ ok: true, skip: 'sin_descarga' })
-    }
 
-    const report = await analizarPropuestaLead({
-      lead: {
+    // Análisis IA (puede ser null si falla o no hay analizables → el correo va igual).
+    const report = archivos.length
+      ? await analizarPropuestaLead({
+          lead: {
+            nombre: lead.nombre,
+            empresa: lead.empresa,
+            tipoProyecto: lead.tipoProyecto,
+            etapa: lead.etapa,
+            ciudad: lead.ciudad,
+            escala: buildEscala(lead.escalaValor, lead.escalaUnidad),
+            mensaje: lead.mensaje,
+          },
+          archivos: archivos.map((a) => ({
+            filename: a.filename,
+            mimeType: a.mimeType,
+            content: a.content,
+          })),
+        })
+      : null
+
+    // UN solo correo interno: datos + adjuntos reales + análisis IA.
+    await sendContactNotificationEmail(
+      {
+        contactId: lead.id,
+        referencia: lead.referencia ?? `MEISA-${lead.id.slice(-6).toUpperCase()}`,
         nombre: lead.nombre,
         empresa: lead.empresa,
+        email: lead.email,
+        telefono: lead.telefono,
+        ciudad: lead.ciudad,
         tipoProyecto: lead.tipoProyecto,
         etapa: lead.etapa,
-        ciudad: lead.ciudad,
-        escala: buildEscala(lead.escalaValor, lead.escalaUnidad),
+        escalaValor: lead.escalaValor != null ? Number(lead.escalaValor) : null,
+        escalaUnidad: lead.escalaUnidad,
         mensaje: lead.mensaje,
+        adjuntos,
+        origen: lead.origen,
       },
-      archivos: archivos.map((a) => ({
-        filename: a.filename,
-        mimeType: a.mimeType,
-        content: a.content,
-      })),
-    })
+      { attachments: archivos, analisis: report },
+    )
 
-    if (!report) return NextResponse.json({ ok: true, analizado: false })
-
-    await sendLeadAnalysisEmail({
-      contactId: lead.id,
-      referencia: lead.referencia ?? `MEISA-${lead.id.slice(-6).toUpperCase()}`,
-      nombre: lead.nombre,
-      empresa: lead.empresa,
-      email: lead.email,
-      tipoProyecto: lead.tipoProyecto,
-      report,
-    })
-
-    return NextResponse.json({ ok: true, analizado: true })
+    return NextResponse.json({ ok: true, analizado: Boolean(report) })
   } catch (err) {
     analizados.delete(id) // permitir reintento si algo falló
     console.error('[contact/analyze] error:', err)

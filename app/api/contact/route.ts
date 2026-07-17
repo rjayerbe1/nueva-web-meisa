@@ -118,20 +118,25 @@ export async function POST(request: NextRequest) {
           },
         })
 
-        // El comercial ya fue alertado en el paso 1; ahora enviamos el paquete
-        // completo (incluye adjuntos/planos) + la confirmación al cliente.
-        const enrichResults = await Promise.allSettled([
-          notifyInternal(existing.id, referencia, data, origen, false),
+        // Confirmación al cliente (rápida). La notificación interna:
+        //  - SIN adjuntos → se manda acá.
+        //  - CON adjuntos → la manda /api/contact/analyze (correo único con
+        //    adjuntos + análisis IA), disparado por el cliente. No la mandamos
+        //    acá para no duplicar y porque el análisis tarda demasiado.
+        const enrichTasks: Array<Promise<unknown>> = [
           sendContactConfirmationEmail({
             to: data.email,
             nombre: data.nombre,
             referencia,
           }),
-        ])
-        enrichResults.forEach((res, i) => {
+        ]
+        if (!adjuntos) {
+          enrichTasks.push(notifyInternal(existing.id, referencia, data, origen, false))
+        }
+        const enrichResults = await Promise.allSettled(enrichTasks)
+        enrichResults.forEach((res) => {
           if (res.status === 'rejected') {
-            const tag = i === 0 ? 'admin' : 'cliente'
-            console.error(`[contact] email ${tag} (enrich) falló:`, res.reason)
+            console.error('[contact] email (enrich) falló:', res.reason)
           }
         })
 
@@ -177,22 +182,28 @@ export async function POST(request: NextRequest) {
 
     // Notificaciones — no fallar el request si los emails fallan.
     //  - Parcial: solo alerta interna (el cliente completa el paso 2).
-    //  - Directo: alerta interna + confirmación al cliente (comportamiento clásico).
-    const emailTasks = parcial
-      ? [notifyInternal(contact.id, referencia, data, origen, true)]
-      : [
-          notifyInternal(contact.id, referencia, data, origen, false),
-          sendContactConfirmationEmail({
-            to: data.email,
-            nombre: data.nombre,
-            referencia,
-          }),
-        ]
+    //  - Directo: confirmación al cliente + alerta interna, salvo que haya
+    //    adjuntos (en ese caso la notificación completa con análisis IA la manda
+    //    /api/contact/analyze, disparado por el cliente).
+    const emailTasks: Array<Promise<unknown>> = []
+    if (parcial) {
+      emailTasks.push(notifyInternal(contact.id, referencia, data, origen, true))
+    } else {
+      emailTasks.push(
+        sendContactConfirmationEmail({
+          to: data.email,
+          nombre: data.nombre,
+          referencia,
+        }),
+      )
+      if (!adjuntos) {
+        emailTasks.push(notifyInternal(contact.id, referencia, data, origen, false))
+      }
+    }
     const emailResults = await Promise.allSettled(emailTasks)
-    emailResults.forEach((res, i) => {
+    emailResults.forEach((res) => {
       if (res.status === 'rejected') {
-        const tag = i === 0 ? 'admin' : 'cliente'
-        console.error(`[contact] email ${tag} falló:`, res.reason)
+        console.error('[contact] email falló:', res.reason)
       }
     })
 

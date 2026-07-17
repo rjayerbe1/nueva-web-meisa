@@ -302,7 +302,15 @@ function renderAnalisisText(report: LeadAnalysisReport): string {
   return lines.join("\n")
 }
 
-export async function sendContactNotificationEmail(payload: ContactNotificationPayload) {
+export async function sendContactNotificationEmail(
+  payload: ContactNotificationPayload,
+  opts: {
+    /** Adjuntos ya descargados (evita re-descargar cuando quien llama ya los tiene). */
+    attachments?: GmailAttachment[]
+    /** Reporte de análisis IA a incrustar en el correo (una sola pieza, todo junto). */
+    analisis?: LeadAnalysisReport | null
+  } = {},
+) {
   const recipients = getNotifyRecipients()
   if (recipients.length === 0) {
     throw new Error("No hay destinatarios configurados (MEISA_CONTACT_NOTIFY_TO o MEISA_ADMIN_EMAIL)")
@@ -330,10 +338,15 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
   const adminUrl = `${baseUrl}/admin/messages/${payload.contactId}`
   const subject = `[MEISA] Nueva solicitud · ${payload.referencia} · ${tipoLabel} · ${ciudadTxt}`
 
-  // Descargar los adjuntos para embeberlos como archivos reales en el correo
-  // (además de dejarlos como links). El análisis IA va por un correo aparte
-  // (endpoint /api/contact/analyze) para no demorar esta notificación ni el form.
-  const attachments = await fetchAdjuntosAsAttachments(payload.adjuntos)
+  // Adjuntos: usa los ya descargados si vienen; si no, los baja de GCS.
+  const attachments =
+    opts.attachments ?? (await fetchAdjuntosAsAttachments(payload.adjuntos))
+
+  // Análisis IA (opcional): cuando viene, se incrusta en ESTE mismo correo
+  // (todo en uno). Lo pasa /api/contact/analyze; el envío server-side directo
+  // no lo incluye (sería demasiado lento para el form).
+  const analisisHtml = opts.analisis ? renderAnalisisHtml(opts.analisis) : ""
+  const analisisText = opts.analisis ? renderAnalisisText(opts.analisis) : ""
 
   const html = `<!DOCTYPE html>
 <html lang="es">
@@ -387,6 +400,7 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
                 <div style="padding:16px;background:#f8fafc;border-left:3px solid #0f172a;font-size:14px;color:#0f172a;line-height:1.6;white-space:pre-wrap;">${escapeHtml(payload.mensaje)}</div>
               </td>
             </tr>
+            ${analisisHtml}
             <tr>
               <td style="padding:24px 32px 8px 32px;">
                 <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Adjuntos${payload.adjuntos && payload.adjuntos.length ? ` <span style="color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;">(también adjuntos a este correo)</span>` : ""}</p>
@@ -430,7 +444,7 @@ Escala: ${escalaTxt}
 
 Mensaje:
 ${payload.mensaje}
-
+${analisisText}
 ${payload.adjuntos && payload.adjuntos.length ? "Adjuntos:\n" + payload.adjuntos.map((a) => `- ${a.name}: ${a.url}`).join("\n") + "\n" : ""}
 Ver en panel: ${adminUrl}
 ${payload.origen ? "Origen: " + payload.origen : ""}
@@ -444,97 +458,6 @@ ${payload.origen ? "Origen: " + payload.origen : ""}
     html,
     text,
     attachments,
-  })
-}
-
-export interface LeadAnalysisEmailPayload {
-  contactId: string
-  referencia: string
-  nombre: string
-  empresa?: string | null
-  email: string
-  tipoProyecto?: string | null
-  report: LeadAnalysisReport
-}
-
-/**
- * Correo interno dedicado al análisis IA de la propuesta. Va aparte de la alerta
- * de "Nueva solicitud" porque el análisis multimodal tarda ~10-20s y lo dispara
- * el endpoint /api/contact/analyze (no debe demorar el formulario del cliente).
- */
-export async function sendLeadAnalysisEmail(payload: LeadAnalysisEmailPayload) {
-  const recipients = getNotifyRecipients()
-  if (recipients.length === 0) {
-    throw new Error("No hay destinatarios configurados para el análisis del lead")
-  }
-
-  const tipoLabel = payload.tipoProyecto
-    ? TIPO_PROYECTO_LABEL[payload.tipoProyecto] || payload.tipoProyecto
-    : "—"
-  const adminUrl = `${baseUrl}/admin/messages/${payload.contactId}`
-  const subject = `[MEISA] 🤖 Análisis IA · ${payload.referencia} · ${escapeHtml(payload.nombre)}`
-  const analisisHtml = renderAnalisisHtml(payload.report)
-
-  const html = `<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(subject)}</title>
-  </head>
-  <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:32px 0;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e2e8f0;">
-            <tr>
-              <td style="background:#1e3a8a;padding:24px 32px;">
-                <p style="margin:0 0 6px 0;color:#bfdbfe;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Análisis IA de la propuesta · ${escapeHtml(payload.referencia)}</p>
-                <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;">${escapeHtml(payload.nombre)}${payload.empresa ? ` · <span style="color:#bfdbfe;font-weight:400;">${escapeHtml(payload.empresa)}</span>` : ""}</h1>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:20px 32px 0 32px;">
-                <p style="margin:0;font-size:13px;color:#475569;line-height:1.6;">Reporte generado automáticamente sobre los archivos que adjuntó el cliente (${escapeHtml(tipoLabel)}). Complementa la alerta "Nueva solicitud", donde están los adjuntos originales.</p>
-              </td>
-            </tr>
-            ${analisisHtml}
-            <tr>
-              <td style="padding:8px 32px 32px 32px;">
-                <table role="presentation" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td style="background:#dc2626;">
-                      <a href="${adminUrl}" style="display:inline-block;padding:14px 28px;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">Ver el lead en el panel</a>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;">
-                <p style="margin:0;font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;">${escapeHtml(payload.referencia)} · Análisis IA</p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`
-
-  const text = `Análisis IA de la propuesta · ${payload.referencia}
-${payload.nombre}${payload.empresa ? " · " + payload.empresa : ""}
-${renderAnalisisText(payload.report)}
-Ver en panel: ${adminUrl}
-`
-
-  return sendViaGmailDWD({
-    from: contactFromHeader,
-    to: recipients,
-    replyTo: payload.email,
-    subject,
-    html,
-    text,
   })
 }
 
