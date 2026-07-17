@@ -209,6 +209,19 @@ export default function ContactoContent({
       if (!response.ok || !json.success) {
         throw new Error(json.message || "Error al enviar el mensaje")
       }
+
+      // Análisis IA de los adjuntos EN SEGUNDO PLANO: no bloquea la UI ni la
+      // confirmación. El comercial recibe un correo aparte con el reporte.
+      // keepalive → sobrevive aunque el usuario navegue tras el éxito.
+      if (json.id && adjuntos.length > 0) {
+        fetch("/api/contact/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: json.id }),
+          keepalive: true,
+        }).catch(() => {})
+      }
+
       setReferencia(json.referencia ?? null)
       setSubmitStatus("success")
       setAdjuntos([])

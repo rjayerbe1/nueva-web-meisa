@@ -1,5 +1,6 @@
 import { Resend } from "resend"
 import { sendViaGmailDWD, type GmailAttachment } from "./gmail-client"
+import type { LeadAnalysisReport } from "./lead-analysis"
 
 const resendApiKey = process.env.RESEND_API_KEY
 const fromEmail = process.env.RESEND_FROM_EMAIL || "no-reply@meisa.com.co"
@@ -153,7 +154,7 @@ const MAX_TOTAL_ATTACHMENT_BYTES = 20 * 1024 * 1024
  * el correo. Tolerante a fallos: si un archivo no se puede bajar o excede el
  * tope, se omite del correo (el link sigue en el cuerpo). Nunca lanza.
  */
-async function fetchAdjuntosAsAttachments(
+export async function fetchAdjuntosAsAttachments(
   adjuntos?: Array<{ name: string; url: string; size?: number; mime?: string }>,
 ): Promise<GmailAttachment[]> {
   if (!adjuntos || adjuntos.length === 0) return []
@@ -217,6 +218,90 @@ function row(label: string, value: string): string {
   </tr>`
 }
 
+function bulletList(items: string[]): string {
+  if (!items || items.length === 0) return ""
+  return `<ul style="margin:0;padding-left:20px;color:#0f172a;font-size:13px;line-height:1.6;">${items
+    .map((i) => `<li style="margin:0 0 5px 0;">${escapeHtml(i)}</li>`)
+    .join("")}</ul>`
+}
+
+function analisisSubBlock(title: string, inner: string): string {
+  if (!inner) return ""
+  return `<div style="margin:0 0 16px 0;">
+    <p style="margin:0 0 6px 0;font-size:11px;color:#1e40af;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">${escapeHtml(title)}</p>
+    ${inner}
+  </div>`
+}
+
+/** Bloque HTML "Análisis IA de la propuesta" para el correo interno. */
+function renderAnalisisHtml(report: LeadAnalysisReport): string {
+  const metaRows = [
+    report.tipoEstructura ? row("Tipo de estructura", escapeHtml(report.tipoEstructura)) : "",
+    report.alcanceAparente ? row("Alcance aparente", escapeHtml(report.alcanceAparente)) : "",
+    report.sistemaEstructural ? row("Sistema estructural", escapeHtml(report.sistemaEstructural)) : "",
+  ].join("")
+
+  const porArchivo =
+    report.analisisPorArchivo && report.analisisPorArchivo.length > 0
+      ? `<ul style="margin:0;padding-left:20px;color:#0f172a;font-size:13px;line-height:1.6;">${report.analisisPorArchivo
+          .map(
+            (a) =>
+              `<li style="margin:0 0 5px 0;"><strong>${escapeHtml(a.archivo)}:</strong> ${escapeHtml(a.observacion)}</li>`,
+          )
+          .join("")}</ul>`
+      : ""
+
+  const noAnalizados =
+    report.archivosNoAnalizados && report.archivosNoAnalizados.length > 0
+      ? `<p style="margin:12px 0 0 0;font-size:12px;color:#94a3b8;">No analizados por la IA (formato no legible, revisar manual): ${escapeHtml(report.archivosNoAnalizados.join(", "))}</p>`
+      : ""
+
+  return `<tr>
+    <td style="padding:24px 32px 8px 32px;">
+      <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Análisis IA de la propuesta <span style="display:inline-block;background:#1e40af;color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:1px;vertical-align:middle;">IA</span></p>
+      <div style="border:1px solid #dbeafe;border-left:3px solid #1e40af;background:#f8fafc;padding:20px;">
+        <div style="margin:0 0 16px 0;padding:14px;background:#eff6ff;border:1px solid #dbeafe;font-size:14px;color:#1e3a8a;line-height:1.6;">${escapeHtml(report.resumenEjecutivo)}</div>
+        ${metaRows ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;margin:0 0 16px 0;">${metaRows}</table>` : ""}
+        ${analisisSubBlock("Puntos relevantes", bulletList(report.puntosRelevantes))}
+        ${analisisSubBlock("Riesgos y dudas", bulletList(report.riesgosODudas))}
+        ${analisisSubBlock("Preguntas sugeridas para el cliente", bulletList(report.preguntasParaCliente))}
+        ${analisisSubBlock("Análisis por archivo", porArchivo)}
+        ${noAnalizados}
+        <p style="margin:16px 0 0 0;font-size:11px;color:#94a3b8;font-style:italic;">Generado automáticamente por IA a partir de los adjuntos. Puede contener errores; verifica con el cliente.</p>
+      </div>
+    </td>
+  </tr>`
+}
+
+/** Versión en texto plano del análisis IA. */
+function renderAnalisisText(report: LeadAnalysisReport): string {
+  const lines: string[] = ["", "── ANÁLISIS IA DE LA PROPUESTA ──", "", report.resumenEjecutivo, ""]
+  if (report.tipoEstructura) lines.push(`Tipo de estructura: ${report.tipoEstructura}`)
+  if (report.alcanceAparente) lines.push(`Alcance aparente: ${report.alcanceAparente}`)
+  if (report.sistemaEstructural) lines.push(`Sistema estructural: ${report.sistemaEstructural}`)
+  if (report.puntosRelevantes.length) {
+    lines.push("", "Puntos relevantes:")
+    report.puntosRelevantes.forEach((p) => lines.push(`- ${p}`))
+  }
+  if (report.riesgosODudas.length) {
+    lines.push("", "Riesgos y dudas:")
+    report.riesgosODudas.forEach((p) => lines.push(`- ${p}`))
+  }
+  if (report.preguntasParaCliente.length) {
+    lines.push("", "Preguntas sugeridas:")
+    report.preguntasParaCliente.forEach((p) => lines.push(`- ${p}`))
+  }
+  if (report.analisisPorArchivo.length) {
+    lines.push("", "Por archivo:")
+    report.analisisPorArchivo.forEach((a) => lines.push(`- ${a.archivo}: ${a.observacion}`))
+  }
+  if (report.archivosNoAnalizados.length) {
+    lines.push("", `No analizados por la IA: ${report.archivosNoAnalizados.join(", ")}`)
+  }
+  lines.push("", "(Generado por IA a partir de los adjuntos; puede contener errores.)", "")
+  return lines.join("\n")
+}
+
 export async function sendContactNotificationEmail(payload: ContactNotificationPayload) {
   const recipients = getNotifyRecipients()
   if (recipients.length === 0) {
@@ -244,6 +329,11 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
 
   const adminUrl = `${baseUrl}/admin/messages/${payload.contactId}`
   const subject = `[MEISA] Nueva solicitud · ${payload.referencia} · ${tipoLabel} · ${ciudadTxt}`
+
+  // Descargar los adjuntos para embeberlos como archivos reales en el correo
+  // (además de dejarlos como links). El análisis IA va por un correo aparte
+  // (endpoint /api/contact/analyze) para no demorar esta notificación ni el form.
+  const attachments = await fetchAdjuntosAsAttachments(payload.adjuntos)
 
   const html = `<!DOCTYPE html>
 <html lang="es">
@@ -346,10 +436,6 @@ Ver en panel: ${adminUrl}
 ${payload.origen ? "Origen: " + payload.origen : ""}
 `
 
-  // Adjuntar los archivos del lead al correo interno (planos/renders/etc.),
-  // además de dejarlos como links en el cuerpo.
-  const attachments = await fetchAdjuntosAsAttachments(payload.adjuntos)
-
   return sendViaGmailDWD({
     from: contactFromHeader,
     to: recipients,
@@ -358,6 +444,97 @@ ${payload.origen ? "Origen: " + payload.origen : ""}
     html,
     text,
     attachments,
+  })
+}
+
+export interface LeadAnalysisEmailPayload {
+  contactId: string
+  referencia: string
+  nombre: string
+  empresa?: string | null
+  email: string
+  tipoProyecto?: string | null
+  report: LeadAnalysisReport
+}
+
+/**
+ * Correo interno dedicado al análisis IA de la propuesta. Va aparte de la alerta
+ * de "Nueva solicitud" porque el análisis multimodal tarda ~10-20s y lo dispara
+ * el endpoint /api/contact/analyze (no debe demorar el formulario del cliente).
+ */
+export async function sendLeadAnalysisEmail(payload: LeadAnalysisEmailPayload) {
+  const recipients = getNotifyRecipients()
+  if (recipients.length === 0) {
+    throw new Error("No hay destinatarios configurados para el análisis del lead")
+  }
+
+  const tipoLabel = payload.tipoProyecto
+    ? TIPO_PROYECTO_LABEL[payload.tipoProyecto] || payload.tipoProyecto
+    : "—"
+  const adminUrl = `${baseUrl}/admin/messages/${payload.contactId}`
+  const subject = `[MEISA] 🤖 Análisis IA · ${payload.referencia} · ${escapeHtml(payload.nombre)}`
+  const analisisHtml = renderAnalisisHtml(payload.report)
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:32px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e2e8f0;">
+            <tr>
+              <td style="background:#1e3a8a;padding:24px 32px;">
+                <p style="margin:0 0 6px 0;color:#bfdbfe;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Análisis IA de la propuesta · ${escapeHtml(payload.referencia)}</p>
+                <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;">${escapeHtml(payload.nombre)}${payload.empresa ? ` · <span style="color:#bfdbfe;font-weight:400;">${escapeHtml(payload.empresa)}</span>` : ""}</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px 0 32px;">
+                <p style="margin:0;font-size:13px;color:#475569;line-height:1.6;">Reporte generado automáticamente sobre los archivos que adjuntó el cliente (${escapeHtml(tipoLabel)}). Complementa la alerta "Nueva solicitud", donde están los adjuntos originales.</p>
+              </td>
+            </tr>
+            ${analisisHtml}
+            <tr>
+              <td style="padding:8px 32px 32px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="background:#dc2626;">
+                      <a href="${adminUrl}" style="display:inline-block;padding:14px 28px;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">Ver el lead en el panel</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;">
+                <p style="margin:0;font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;">${escapeHtml(payload.referencia)} · Análisis IA</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+
+  const text = `Análisis IA de la propuesta · ${payload.referencia}
+${payload.nombre}${payload.empresa ? " · " + payload.empresa : ""}
+${renderAnalisisText(payload.report)}
+Ver en panel: ${adminUrl}
+`
+
+  return sendViaGmailDWD({
+    from: contactFromHeader,
+    to: recipients,
+    replyTo: payload.email,
+    subject,
+    html,
+    text,
   })
 }
 
