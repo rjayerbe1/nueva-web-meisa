@@ -1,5 +1,5 @@
 import { Resend } from "resend"
-import { sendViaGmailDWD } from "./gmail-client"
+import { sendViaGmailDWD, type GmailAttachment } from "./gmail-client"
 
 const resendApiKey = process.env.RESEND_API_KEY
 const fromEmail = process.env.RESEND_FROM_EMAIL || "no-reply@meisa.com.co"
@@ -143,6 +143,52 @@ export interface ContactNotificationPayload {
   contactId: string
 }
 
+// Tope total de adjuntos embebidos en el correo. Deja margen bajo el límite de
+// ~35 MB del endpoint de upload de Gmail (el base64 infla el tamaño ~33%).
+// Lo que exceda el tope queda solo como link en el cuerpo del correo.
+const MAX_TOTAL_ATTACHMENT_BYTES = 20 * 1024 * 1024
+
+/**
+ * Descarga los adjuntos del lead (GCS) para embeberlos como archivos reales en
+ * el correo. Tolerante a fallos: si un archivo no se puede bajar o excede el
+ * tope, se omite del correo (el link sigue en el cuerpo). Nunca lanza.
+ */
+async function fetchAdjuntosAsAttachments(
+  adjuntos?: Array<{ name: string; url: string; size?: number; mime?: string }>,
+): Promise<GmailAttachment[]> {
+  if (!adjuntos || adjuntos.length === 0) return []
+  const out: GmailAttachment[] = []
+  let total = 0
+  for (const a of adjuntos) {
+    // Descarte temprano por tamaño declarado (evita bajar archivos enormes en vano).
+    if (a.size && total + a.size > MAX_TOTAL_ATTACHMENT_BYTES) {
+      console.warn(`[email] adjunto "${a.name}" no se embebe (excede tope de tamaño); queda como link`)
+      continue
+    }
+    try {
+      const res = await fetch(a.url)
+      if (!res.ok) {
+        console.warn(`[email] adjunto "${a.name}" no descargado (HTTP ${res.status}); queda como link`)
+        continue
+      }
+      const buf = Buffer.from(await res.arrayBuffer())
+      if (total + buf.length > MAX_TOTAL_ATTACHMENT_BYTES) {
+        console.warn(`[email] adjunto "${a.name}" no se embebe (excede tope de tamaño); queda como link`)
+        continue
+      }
+      total += buf.length
+      out.push({
+        filename: a.name || "adjunto",
+        mimeType: a.mime || res.headers.get("content-type") || "application/octet-stream",
+        content: buf,
+      })
+    } catch (err) {
+      console.warn(`[email] error descargando adjunto "${a.name}":`, err)
+    }
+  }
+  return out
+}
+
 function getNotifyRecipients(): string[] {
   const list = process.env.MEISA_CONTACT_NOTIFY_TO
   if (list && list.trim()) {
@@ -253,7 +299,7 @@ export async function sendContactNotificationEmail(payload: ContactNotificationP
             </tr>
             <tr>
               <td style="padding:24px 32px 8px 32px;">
-                <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Adjuntos</p>
+                <p style="margin:0 0 12px 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Adjuntos${payload.adjuntos && payload.adjuntos.length ? ` <span style="color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;">(también adjuntos a este correo)</span>` : ""}</p>
                 ${adjuntosHtml}
               </td>
             </tr>
@@ -300,6 +346,10 @@ Ver en panel: ${adminUrl}
 ${payload.origen ? "Origen: " + payload.origen : ""}
 `
 
+  // Adjuntar los archivos del lead al correo interno (planos/renders/etc.),
+  // además de dejarlos como links en el cuerpo.
+  const attachments = await fetchAdjuntosAsAttachments(payload.adjuntos)
+
   return sendViaGmailDWD({
     from: contactFromHeader,
     to: recipients,
@@ -307,6 +357,7 @@ ${payload.origen ? "Origen: " + payload.origen : ""}
     subject,
     html,
     text,
+    attachments,
   })
 }
 
