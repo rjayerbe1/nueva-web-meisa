@@ -244,6 +244,21 @@ export function ChatWidget() {
     }
   }, [])
 
+  // Espera a que Turnstile entregue un token antes de enviar. En modo Managed el
+  // token se auto-resuelve en ~1-4s; sin esta espera, un envío inmediato salía
+  // con token vacío y el servidor devolvía 403 "Verificación de seguridad
+  // fallida" (rompía el primer mensaje). Máx. ~8s; si no llega, envía igual.
+  const esperarTurnstileToken = useCallback(async (): Promise<string | undefined> => {
+    if (!TURNSTILE_SITE_KEY) return undefined
+    if (turnstileToken.current) return turnstileToken.current
+    const limite = Date.now() + 8000
+    while (Date.now() < limite) {
+      await new Promise((r) => setTimeout(r, 150))
+      if (turnstileToken.current) return turnstileToken.current
+    }
+    return turnstileToken.current || undefined
+  }, [])
+
   const enviar = useCallback(async () => {
     const texto = input.trim()
     if (!texto || loading || cerrado) return
@@ -253,13 +268,14 @@ export function ChatWidget() {
     setLoading(true)
 
     try {
+      const tsToken = await esperarTurnstileToken()
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sessionId: getSessionId(),
           mensaje: texto,
-          turnstileToken: turnstileToken.current || undefined,
+          turnstileToken: tsToken,
         }),
       })
       renovarTurnstile()
@@ -316,7 +332,7 @@ export function ChatWidget() {
     } finally {
       setLoading(false)
     }
-  }, [input, loading, cerrado, renovarTurnstile])
+  }, [input, loading, cerrado, renovarTurnstile, esperarTurnstileToken])
 
   const enviarLead = useCallback(
     async (e: React.FormEvent) => {
@@ -333,6 +349,7 @@ export function ChatWidget() {
       }
       setLeadEnviando(true)
       try {
+        const tsToken = await esperarTurnstileToken()
         const res = await fetch('/api/chat/lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -345,7 +362,7 @@ export function ChatWidget() {
             mensaje: lead.mensaje.trim() || undefined,
             habeasData: true,
             website: lead.website,
-            turnstileToken: turnstileToken.current || undefined,
+            turnstileToken: tsToken,
           }),
         })
         const data = await res.json().catch(() => ({}))
@@ -376,7 +393,7 @@ export function ChatWidget() {
         setLeadEnviando(false)
       }
     },
-    [lead, leadHabeas, leadEnviando, renovarTurnstile],
+    [lead, leadHabeas, leadEnviando, renovarTurnstile, esperarTurnstileToken],
   )
 
   const enviarCorreo = useCallback(
@@ -394,6 +411,7 @@ export function ChatWidget() {
       }
       setCorreoEnviando(true)
       try {
+        const tsToken = await esperarTurnstileToken()
         const res = await fetch('/api/chat/transcript', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -402,7 +420,7 @@ export function ChatWidget() {
             email: correoEmail.trim(),
             habeasData: true,
             website: correoWebsite,
-            turnstileToken: turnstileToken.current || undefined,
+            turnstileToken: tsToken,
           }),
         })
         const data = await res.json().catch(() => ({}))
@@ -429,7 +447,7 @@ export function ChatWidget() {
         setCorreoEnviando(false)
       }
     },
-    [correoEmail, correoHabeas, correoWebsite, correoEnviando, renovarTurnstile],
+    [correoEmail, correoHabeas, correoWebsite, correoEnviando, renovarTurnstile, esperarTurnstileToken],
   )
 
   if (!ENABLED) return null
