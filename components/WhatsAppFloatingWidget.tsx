@@ -37,6 +37,28 @@ export function WhatsAppFloatingWidget() {
     fetchData()
   }, [])
 
+  // Exclusión mutua entre widgets flotantes: si otro (el chat) se abre, cerrar este.
+  useEffect(() => {
+    const onOtroWidget = (e: Event) => {
+      if ((e as CustomEvent).detail !== 'whatsapp') setIsOpen(false)
+    }
+    window.addEventListener('meisa:widget-open', onOtroWidget)
+    return () => window.removeEventListener('meisa:widget-open', onOtroWidget)
+  }, [])
+
+  const toggleOpen = () => {
+    const next = !isOpen
+    setIsOpen(next)
+    if (next) {
+      // Avisar al chat para que se cierre y no se solapen los paneles.
+      try {
+        window.dispatchEvent(new CustomEvent('meisa:widget-open', { detail: 'whatsapp' }))
+      } catch {
+        /* noop */
+      }
+    }
+  }
+
   const fetchData = async () => {
     try {
       const response = await fetch('/api/contactos-whatsapp')
@@ -78,7 +100,7 @@ export function WhatsAppFloatingWidget() {
         transition={{ duration: 0.3, delay: 0.5 }}
       >
         <motion.button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={toggleOpen}
           className="bg-green-500 hover:bg-green-600 text-white rounded-full p-3 shadow-xl transition-all duration-200 flex items-center justify-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

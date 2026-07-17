@@ -201,7 +201,22 @@ export function ChatWidget() {
   const abrir = useCallback(() => {
     setIsOpen(true)
     cerrarHint()
+    // Avisar a otros widgets flotantes (WhatsApp) para que se cierren.
+    try {
+      window.dispatchEvent(new CustomEvent('meisa:widget-open', { detail: 'chat' }))
+    } catch {
+      /* noop */
+    }
   }, [cerrarHint])
+
+  // Exclusión mutua entre widgets flotantes: si otro (WhatsApp) se abre, cerrar este.
+  useEffect(() => {
+    const onOtroWidget = (e: Event) => {
+      if ((e as CustomEvent).detail !== 'chat') setIsOpen(false)
+    }
+    window.addEventListener('meisa:widget-open', onOtroWidget)
+    return () => window.removeEventListener('meisa:widget-open', onOtroWidget)
+  }, [])
 
   // Auto-scroll al último mensaje
   useEffect(() => {
@@ -540,11 +555,18 @@ export function ChatWidget() {
           >
             <div className="bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden">
               {/* Header */}
-              <div className="bg-slate-950 text-white px-5 py-4">
+              <div className="relative bg-slate-950 text-white px-5 py-4">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Cerrar asistente"
+                  className="absolute top-3 right-3 text-white/60 hover:text-white transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
                 <p className="text-white/50 font-lato font-bold text-[10px] uppercase tracking-[0.2em] mb-1">
                   Asistente MEISA
                 </p>
-                <h3 className="font-bebas text-2xl uppercase leading-none">
+                <h3 className="font-bebas text-2xl uppercase leading-none pr-8">
                   {vista === 'lead'
                     ? 'Déjanos tus datos'
                     : vista === 'correo'
