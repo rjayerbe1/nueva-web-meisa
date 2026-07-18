@@ -1,13 +1,17 @@
 "use client"
 
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
+  AlertTriangle,
+  ChevronDown,
+  ChevronUp,
   FileText,
   Loader2,
   Pencil,
   Plus,
   Save,
   Search,
+  Sparkles,
   Trash2,
   Upload,
   X,
@@ -18,6 +22,16 @@ import { ETAPA_LABEL, ORIGENES_CANDIDATO } from "./constants"
 import type { CandidatoSer, VacanteSer } from "./types"
 
 const MAX_CV_MB = 10
+
+type DatosIA = {
+  oficios?: string[]
+  certificaciones?: string[]
+  anosExperiencia?: number
+  alertas?: string[]
+  resumen?: string
+}
+
+type ResultadoIA = { candidatoId: string; relevancia: number; razon: string }
 
 export function CandidatosTab({
   candidatos: initial,
@@ -33,9 +47,30 @@ export function CandidatosTab({
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState("")
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [iaBusyId, setIaBusyId] = useState<string | null>(null)
+  const [iaError, setIaError] = useState<string | null>(null)
+  // Búsqueda semántica
+  const [iaQuery, setIaQuery] = useState("")
+  const [iaResultados, setIaResultados] = useState<ResultadoIA[] | null>(null)
+  const [iaBuscando, setIaBuscando] = useState(false)
+  // Purga por retención
+  const [purga, setPurga] = useState<{ count: number; retencionMeses: number } | null>(null)
+  const [purgando, setPurgando] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const isNew = editingId === "__new__"
+
+  useEffect(() => {
+    fetch("/api/admin/talento/purga")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d && typeof d.count === "number") {
+          setPurga({ count: d.count, retencionMeses: d.retencionMeses })
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const fields: FieldDef[] = useMemo(
     () => [
@@ -88,14 +123,27 @@ export function CandidatosTab({
   )
 
   const filtered = useMemo(() => {
+    let list = items
+    // Resultados de la búsqueda IA: filtra y ordena por relevancia
+    if (iaResultados) {
+      const orden = new Map(iaResultados.map((r, i) => [r.candidatoId, i]))
+      list = list
+        .filter((c) => orden.has(c.id))
+        .sort((a, b) => (orden.get(a.id) ?? 99) - (orden.get(b.id) ?? 99))
+    }
     const q = query.trim().toLowerCase()
-    if (!q) return items
-    return items.filter((c) =>
+    if (!q) return list
+    return list.filter((c) =>
       [c.nombre, c.email, c.telefono, c.ciudad, c.origen]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q)),
     )
-  }, [items, query])
+  }, [items, query, iaResultados])
+
+  const razonIA = useMemo(() => {
+    if (!iaResultados) return new Map<string, ResultadoIA>()
+    return new Map(iaResultados.map((r) => [r.candidatoId, r]))
+  }, [iaResultados])
 
   const beginNew = () => {
     setEditingId("__new__")
@@ -149,7 +197,8 @@ export function CandidatosTab({
         }
       }
 
-      const { postulaciones, createdAt, id, cvPathGcs, cvFileName, ...body } = draft as any
+      const { postulaciones, createdAt, id, cvPathGcs, cvFileName, resumenIA, datosIA, ...body } =
+        draft as any
       const res = await fetch(
         isNew ? "/api/admin/talento/candidatos" : `/api/admin/talento/candidatos/${editingId}`,
         {
@@ -189,12 +238,107 @@ export function CandidatosTab({
     setItems((prev) => prev.filter((x) => x.id !== c.id))
   }
 
+  const analizarCv = async (c: CandidatoSer) => {
+    setIaBusyId(c.id)
+    setIaError(null)
+    try {
+      const res = await fetch("/api/admin/talento/ia/analizar-cv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ candidatoId: c.id }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Error analizando el CV")
+      setItems((prev) =>
+        prev.map((x) =>
+          x.id === c.id
+            ? { ...x, resumenIA: data.datos?.resumen ?? null, datosIA: data.datos }
+            : x,
+        ),
+      )
+      setExpandedId(c.id)
+    } catch (e: any) {
+      setIaError(e.message ?? "Error analizando el CV")
+    } finally {
+      setIaBusyId(null)
+    }
+  }
+
+  const buscarIA = async () => {
+    if (iaQuery.trim().length < 3) return
+    setIaBuscando(true)
+    setIaError(null)
+    try {
+      const res = await fetch("/api/admin/talento/ia/buscar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ consulta: iaQuery.trim() }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Error en la búsqueda")
+      setIaResultados(data.resultados ?? [])
+    } catch (e: any) {
+      setIaError(e.message ?? "Error en la búsqueda")
+      setIaResultados(null)
+    } finally {
+      setIaBuscando(false)
+    }
+  }
+
+  const ejecutarPurga = async () => {
+    if (!purga || purga.count === 0) return
+    if (
+      !confirm(
+        `Se van a SUPRIMIR definitivamente ${purga.count} candidato(s) con más de ${purga.retencionMeses} meses, sin autorización de banco y sin contratación (CV incluido). ¿Confirmas la purga habeas data?`,
+      )
+    )
+      return
+    setPurgando(true)
+    try {
+      const res = await fetch("/api/admin/talento/purga", { method: "POST" })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Error ejecutando la purga")
+      setPurga({ ...purga, count: 0 })
+      // Refresca la lista completa
+      const list = await fetch("/api/admin/talento/candidatos").then((r) => r.json())
+      if (Array.isArray(list)) setItems(list)
+      alert(`Purga completada: ${data.purgados} candidato(s) suprimidos.`)
+    } catch (e: any) {
+      alert(e.message ?? "Error ejecutando la purga")
+    } finally {
+      setPurgando(false)
+    }
+  }
+
   return (
     <div className="space-y-4">
+      {/* Banner de purga por retención */}
+      {purga !== null && purga.count > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-300 bg-amber-50 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-amber-600" />
+            <p className="font-lato text-sm text-amber-900">
+              <strong>{purga.count}</strong> candidato(s) superaron la retención de{" "}
+              {purga.retencionMeses} meses sin autorización de banco de talento — la Ley
+              1581/2012 exige suprimirlos.
+            </p>
+          </div>
+          <button
+            onClick={ejecutarPurga}
+            disabled={purgando}
+            className="inline-flex items-center gap-1.5 rounded-none bg-amber-600 px-3 py-1.5 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-amber-700 disabled:opacity-60"
+          >
+            {purgando ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+            Ejecutar purga
+          </button>
+        </div>
+      )}
+
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
           {filtered.length} {filtered.length === 1 ? "candidato" : "candidatos"}
+          {iaResultados ? " (resultado búsqueda IA)" : ""}
         </p>
         <div className="flex items-center gap-2">
           <div className="relative">
@@ -203,8 +347,8 @@ export function CandidatosTab({
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar candidato…"
-              className="w-56 rounded-none border border-slate-300 bg-white py-2 pl-9 pr-3 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+              placeholder="Filtrar…"
+              className="w-40 rounded-none border border-slate-300 bg-white py-2 pl-9 pr-3 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
             />
           </div>
           <button
@@ -217,6 +361,45 @@ export function CandidatosTab({
           </button>
         </div>
       </div>
+
+      {/* Búsqueda semántica IA */}
+      <div className="flex flex-wrap items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2.5">
+        <Sparkles className="h-4 w-4 flex-shrink-0 text-blue-700" />
+        <input
+          type="text"
+          value={iaQuery}
+          onChange={(e) => setIaQuery(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && buscarIA()}
+          placeholder='Búsqueda IA del banco — ej: "soldadores 3G en Cali con experiencia en puentes"'
+          className="min-w-[240px] flex-1 rounded-none border border-slate-300 bg-white px-3 py-1.5 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+        />
+        <button
+          onClick={buscarIA}
+          disabled={iaBuscando || iaQuery.trim().length < 3}
+          className="inline-flex items-center gap-1.5 rounded-none border border-blue-700 bg-white px-3 py-1.5 font-lato text-xs font-bold uppercase tracking-wider text-blue-700 transition-colors hover:bg-blue-700 hover:text-white disabled:opacity-50"
+        >
+          {iaBuscando ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          Buscar con IA
+        </button>
+        {iaResultados && (
+          <button
+            onClick={() => {
+              setIaResultados(null)
+              setIaQuery("")
+            }}
+            className="inline-flex items-center gap-1 rounded-none border border-slate-300 px-2.5 py-1.5 font-lato text-xs font-semibold uppercase tracking-wider text-slate-600 hover:border-slate-900"
+          >
+            <X className="h-3 w-3" />
+            Limpiar
+          </button>
+        )}
+      </div>
+
+      {iaError && (
+        <div className="rounded-none border border-red-300 bg-red-100 px-3 py-2 font-lato text-sm text-red-800">
+          {iaError}
+        </div>
+      )}
 
       {/* Form */}
       {editingId !== null && (
@@ -322,7 +505,7 @@ export function CandidatosTab({
         </div>
       ) : (
         <div className="overflow-x-auto rounded-md border border-slate-200 bg-white">
-          <table className="w-full min-w-[860px]">
+          <table className="w-full min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-200 bg-stone-50">
                 {["Candidato", "Contacto", "Origen", "CV", "Postulaciones", "Banco", ""].map(
@@ -338,85 +521,186 @@ export function CandidatosTab({
               </tr>
             </thead>
             <tbody>
-              {filtered.map((c) => (
-                <tr
-                  key={c.id}
-                  className="group border-b border-slate-100 transition-colors last:border-0 hover:bg-stone-50"
-                >
-                  <td className="px-3 py-2.5">
-                    <p className="font-lato text-sm font-semibold text-slate-900">{c.nombre}</p>
-                    <p className="font-lato text-xs text-slate-500">{c.ciudad ?? "—"}</p>
-                  </td>
-                  <td className="px-3 py-2.5 font-lato text-xs text-slate-600">
-                    <p>{c.email ?? "—"}</p>
-                    <p>{c.telefono ?? ""}</p>
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <span className="rounded-none border border-slate-200 bg-stone-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                      {ORIGENES_CANDIDATO.find((o) => o.value === c.origen)?.label ??
-                        c.origen ??
-                        "—"}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2.5">
-                    {c.cvPathGcs ? (
-                      <button
-                        type="button"
-                        onClick={() => window.open(`/api/admin/talento/cv/${c.id}`, "_blank")}
-                        className="inline-flex items-center gap-1 font-lato text-xs font-semibold text-blue-700 hover:underline"
-                      >
-                        <FileText className="h-3.5 w-3.5" />
-                        Ver CV
-                      </button>
-                    ) : (
-                      <span className="font-lato text-xs text-slate-400">Sin CV</span>
-                    )}
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <div className="flex flex-wrap gap-1">
-                      {c.postulaciones.length === 0 && (
-                        <span className="font-lato text-xs text-slate-400">—</span>
-                      )}
-                      {c.postulaciones.map((p) => (
-                        <span
-                          key={p.id}
-                          className="rounded-none bg-slate-100 px-1.5 py-0.5 font-lato text-[10px] font-semibold text-slate-700"
-                          title={ETAPA_LABEL[p.etapa] ?? p.etapa}
-                        >
-                          {(p.vacante?.titulo ?? "Espontánea") + " · " + (ETAPA_LABEL[p.etapa] ?? p.etapa)}
+              {filtered.map((c) => {
+                const datos = (c.datosIA ?? null) as DatosIA | null
+                const busquedaHit = razonIA.get(c.id)
+                const isExpanded = expandedId === c.id
+                return (
+                  <FragmentRow key={c.id}>
+                    <tr className="group border-b border-slate-100 transition-colors last:border-0 hover:bg-stone-50">
+                      <td className="px-3 py-2.5">
+                        <p className="font-lato text-sm font-semibold text-slate-900">
+                          {c.nombre}
+                        </p>
+                        <p className="font-lato text-xs text-slate-500">{c.ciudad ?? "—"}</p>
+                        {busquedaHit && (
+                          <p className="mt-0.5 font-lato text-[11px] text-blue-700">
+                            IA {busquedaHit.relevancia}: {busquedaHit.razon}
+                          </p>
+                        )}
+                      </td>
+                      <td className="px-3 py-2.5 font-lato text-xs text-slate-600">
+                        <p>{c.email ?? "—"}</p>
+                        <p>{c.telefono ?? ""}</p>
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <span className="rounded-none border border-slate-200 bg-stone-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                          {ORIGENES_CANDIDATO.find((o) => o.value === c.origen)?.label ??
+                            c.origen ??
+                            "—"}
                         </span>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="px-3 py-2.5 font-lato text-xs text-slate-600">
-                    {c.consentimientoBanco ? "Sí" : "No"}
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
-                      <button
-                        onClick={() => beginEdit(c)}
-                        disabled={editingId !== null}
-                        title="Editar"
-                        className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
-                      >
-                        <Pencil className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        onClick={() => del(c)}
-                        disabled={editingId !== null}
-                        title="Eliminar (supresión habeas data)"
-                        className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        {c.cvPathGcs ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              window.open(`/api/admin/talento/cv/${c.id}`, "_blank")
+                            }
+                            className="inline-flex items-center gap-1 font-lato text-xs font-semibold text-blue-700 hover:underline"
+                          >
+                            <FileText className="h-3.5 w-3.5" />
+                            Ver CV
+                          </button>
+                        ) : (
+                          <span className="font-lato text-xs text-slate-400">Sin CV</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <div className="flex flex-wrap gap-1">
+                          {c.postulaciones.length === 0 && (
+                            <span className="font-lato text-xs text-slate-400">—</span>
+                          )}
+                          {c.postulaciones.map((p) => (
+                            <span
+                              key={p.id}
+                              className="rounded-none bg-slate-100 px-1.5 py-0.5 font-lato text-[10px] font-semibold text-slate-700"
+                              title={ETAPA_LABEL[p.etapa] ?? p.etapa}
+                            >
+                              {(p.vacante?.titulo ?? "Espontánea") +
+                                " · " +
+                                (ETAPA_LABEL[p.etapa] ?? p.etapa)}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-3 py-2.5 font-lato text-xs text-slate-600">
+                        {c.consentimientoBanco ? "Sí" : "No"}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <div className="flex items-center justify-end gap-1">
+                          {c.cvPathGcs && (
+                            <button
+                              onClick={() => analizarCv(c)}
+                              disabled={iaBusyId !== null}
+                              title={
+                                c.resumenIA
+                                  ? "Re-analizar CV con IA"
+                                  : "Analizar CV con IA (extrae perfil y resumen)"
+                              }
+                              className={cn(
+                                "flex h-7 w-7 items-center justify-center rounded-none transition-colors disabled:opacity-50",
+                                c.resumenIA
+                                  ? "text-blue-700 hover:bg-blue-50"
+                                  : "text-slate-400 hover:bg-blue-50 hover:text-blue-700",
+                              )}
+                            >
+                              {iaBusyId === c.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Sparkles className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          )}
+                          {c.resumenIA && (
+                            <button
+                              onClick={() => setExpandedId(isExpanded ? null : c.id)}
+                              title="Ver perfil IA"
+                              className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900"
+                            >
+                              {isExpanded ? (
+                                <ChevronUp className="h-3.5 w-3.5" />
+                              ) : (
+                                <ChevronDown className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          )}
+                          <button
+                            onClick={() => beginEdit(c)}
+                            disabled={editingId !== null}
+                            title="Editar"
+                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50 md:opacity-0 md:transition-opacity md:group-hover:opacity-100"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            onClick={() => del(c)}
+                            disabled={editingId !== null}
+                            title="Eliminar (supresión habeas data)"
+                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50 md:opacity-0 md:transition-opacity md:group-hover:opacity-100"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    {isExpanded && c.resumenIA && (
+                      <tr className="border-b border-slate-100 bg-blue-50/40">
+                        <td colSpan={7} className="px-4 py-3">
+                          <div className="flex items-start gap-2">
+                            <Sparkles className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-blue-700" />
+                            <div className="min-w-0 space-y-2">
+                              <p className="font-lato text-sm text-slate-800">{c.resumenIA}</p>
+                              {datos && (
+                                <div className="flex flex-wrap gap-1.5">
+                                  {typeof datos.anosExperiencia === "number" && (
+                                    <span className="rounded-none bg-slate-950 px-2 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-white">
+                                      {datos.anosExperiencia} años exp.
+                                    </span>
+                                  )}
+                                  {(datos.oficios ?? []).map((o) => (
+                                    <span
+                                      key={o}
+                                      className="rounded-none border border-blue-200 bg-white px-2 py-0.5 font-lato text-[10px] font-semibold uppercase tracking-wider text-blue-800"
+                                    >
+                                      {o}
+                                    </span>
+                                  ))}
+                                  {(datos.certificaciones ?? []).map((cert) => (
+                                    <span
+                                      key={cert}
+                                      className="rounded-none border border-green-200 bg-white px-2 py-0.5 font-lato text-[10px] font-semibold uppercase tracking-wider text-green-700"
+                                    >
+                                      {cert}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              {datos && (datos.alertas ?? []).length > 0 && (
+                                <p className="font-lato text-xs text-amber-700">
+                                  ⚠ {(datos.alertas ?? []).join(" · ")}
+                                </p>
+                              )}
+                              <p className="font-lato text-[10px] uppercase tracking-wide text-slate-400">
+                                Sugerencia generada por IA — la decisión es del reclutador
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </FragmentRow>
+                )
+              })}
             </tbody>
           </table>
         </div>
       )}
     </div>
   )
+}
+
+// React.Fragment con key para agrupar la fila principal + la fila expandida.
+function FragmentRow({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { FileText, Loader2, StickyNote } from "lucide-react"
+import { FileText, Loader2, Sparkles, StickyNote } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ETAPAS, ETAPA_LABEL } from "./constants"
 import type { PostulacionSer, VacanteSer } from "./types"
@@ -35,6 +35,8 @@ export function PipelineTab({
   const [notasOpenId, setNotasOpenId] = useState<string | null>(null)
   const [notasDraft, setNotasDraft] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [matchBusyId, setMatchBusyId] = useState<string | null>(null)
+  const [matchOpenId, setMatchOpenId] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
     if (!filtroVacante) return items
@@ -68,6 +70,37 @@ export function PipelineTab({
     await update(id, { notasInternas: notasDraft })
     setNotasOpenId(null)
   }
+
+  const evaluarMatch = async (p: PostulacionSer) => {
+    setMatchBusyId(p.id)
+    setError(null)
+    try {
+      const res = await fetch("/api/admin/talento/ia/match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postulacionId: p.id }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Error evaluando el match")
+      setItems((prev) =>
+        prev.map((x) =>
+          x.id === p.id ? { ...x, scoreIA: data.match.score, matchIA: data.match } : x,
+        ),
+      )
+      setMatchOpenId(p.id)
+    } catch (e: any) {
+      setError(e.message ?? "Error evaluando el match")
+    } finally {
+      setMatchBusyId(null)
+    }
+  }
+
+  const scoreColor = (score: number) =>
+    score >= 70
+      ? "bg-green-600 text-white"
+      : score >= 45
+        ? "bg-amber-500 text-white"
+        : "bg-slate-300 text-slate-800"
 
   return (
     <div className="space-y-4">
@@ -137,19 +170,68 @@ export function PipelineTab({
                           {p.vacante?.titulo ?? "Espontánea"}
                         </p>
                       </div>
-                      {p.candidato.cvPathGcs && (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            window.open(`/api/admin/talento/cv/${p.candidato.id}`, "_blank")
-                          }
-                          title="Ver hoja de vida"
-                          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900"
-                        >
-                          <FileText className="h-3.5 w-3.5" />
-                        </button>
-                      )}
+                      <div className="flex flex-shrink-0 items-center gap-1">
+                        {typeof p.scoreIA === "number" && (
+                          <button
+                            type="button"
+                            onClick={() => setMatchOpenId(matchOpenId === p.id ? null : p.id)}
+                            title="Match IA (sugerencia — clic para detalle)"
+                            className={cn(
+                              "rounded-none px-1.5 py-0.5 font-lato text-[10px] font-bold",
+                              scoreColor(p.scoreIA),
+                            )}
+                          >
+                            {p.scoreIA}
+                          </button>
+                        )}
+                        {p.candidato.cvPathGcs && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              window.open(`/api/admin/talento/cv/${p.candidato.id}`, "_blank")
+                            }
+                            title="Ver hoja de vida"
+                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900"
+                          >
+                            <FileText className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
                     </div>
+
+                    {matchOpenId === p.id && p.matchIA != null && (
+                      <div className="mt-2 space-y-1 border border-blue-100 bg-blue-50/50 px-2 py-1.5">
+                        {(() => {
+                          const m = p.matchIA as {
+                            fortalezas?: string[]
+                            brechas?: string[]
+                            recomendacion?: string
+                          }
+                          return (
+                            <>
+                              {(m.fortalezas ?? []).length > 0 && (
+                                <p className="font-lato text-[11px] text-green-700">
+                                  ✓ {(m.fortalezas ?? []).join(" · ")}
+                                </p>
+                              )}
+                              {(m.brechas ?? []).length > 0 && (
+                                <p className="font-lato text-[11px] text-amber-700">
+                                  ✗ {(m.brechas ?? []).join(" · ")}
+                                </p>
+                              )}
+                              {m.recomendacion && (
+                                <p className="font-lato text-[11px] text-slate-700">
+                                  {m.recomendacion}
+                                </p>
+                              )}
+                              <p className="font-lato text-[9px] uppercase tracking-wide text-slate-400">
+                                Sugerencia IA — decide el reclutador
+                              </p>
+                            </>
+                          )
+                        })()}
+                      </div>
+                    )}
 
                     <div className="mt-2 flex items-center gap-1.5">
                       <select
@@ -165,6 +247,21 @@ export function PipelineTab({
                           </option>
                         ))}
                       </select>
+                      {p.vacanteId && (
+                        <button
+                          type="button"
+                          onClick={() => evaluarMatch(p)}
+                          disabled={matchBusyId !== null}
+                          title="Evaluar match con IA (requiere CV analizado)"
+                          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-none text-slate-300 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50"
+                        >
+                          {matchBusyId === p.id ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Sparkles className="h-3.5 w-3.5" />
+                          )}
+                        </button>
+                      )}
                       <button
                         type="button"
                         onClick={() => {

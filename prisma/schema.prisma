@@ -1343,6 +1343,8 @@ model Candidato {
   consentimientoBanco Boolean   @default(false) // autorizó conservar el CV para vacantes futuras
   consentimientoFecha DateTime?
   consentimientoVia   String? // formulario-web | bolsa-de-empleo | entregado-a-th
+  consentimientoIp    String? // hash de IP — prueba del consentimiento (formulario web)
+  consentimientoTexto String? // snapshot del texto aceptado — prueba del consentimiento
 
   resumenIA String? // Etapa 2: resumen ejecutivo generado (sugerencia, decisión humana)
   datosIA   Json? // Etapa 2: extracción estructurada del CV

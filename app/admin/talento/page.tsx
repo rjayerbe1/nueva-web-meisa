@@ -94,6 +94,8 @@ async function getData() {
     origenDetalle: c.origenDetalle,
     consentimientoBanco: c.consentimientoBanco,
     notas: c.notas,
+    resumenIA: c.resumenIA,
+    datosIA: c.datosIA,
     createdAt: c.createdAt.toISOString(),
     postulaciones: c.postulaciones,
   }))
@@ -105,6 +107,7 @@ async function getData() {
     etapa: p.etapa,
     notasInternas: p.notasInternas,
     scoreIA: p.scoreIA,
+    matchIA: p.matchIA,
     createdAt: p.createdAt.toISOString(),
     updatedAt: p.updatedAt.toISOString(),
     candidato: p.candidato,

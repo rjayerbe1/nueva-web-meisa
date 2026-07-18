@@ -1,0 +1,305 @@
+import { GoogleAuth } from "google-auth-library"
+import { chatConfig } from "@/lib/chat/config"
+import { presupuestoDisponible, registrarUso } from "@/lib/chat/budget"
+import { prisma } from "@/lib/prisma"
+import { downloadCv } from "./gcs-hv"
+
+/**
+ * IA del módulo de Talento Humano (Vertex AI / Gemini multimodal).
+ *
+ * - Reutiliza credenciales, modelo y región del chatbot (chatConfig) y el
+ *   MISMO circuit breaker de gasto (ChatUso) — un solo techo de gasto IA.
+ * - Todo output es SUGERENCIA con decisión humana obligatoria
+ *   (Circular Externa 002/2024 de la SIC: nada de decisiones de selección
+ *   plenamente automatizadas).
+ */
+
+let cachedAuth: GoogleAuth | null = null
+
+function getAuth(): GoogleAuth {
+  if (cachedAuth) return cachedAuth
+  const email = process.env.VERTEX_SA_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
+  const rawKey =
+    process.env.VERTEX_SA_PRIVATE_KEY || process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
+  if (!email || !rawKey) {
+    throw new Error("Faltan credenciales de service account para Vertex AI")
+  }
+  cachedAuth = new GoogleAuth({
+    credentials: { client_email: email, private_key: rawKey.replace(/\\n/g, "\n") },
+    scopes: ["https://www.googleapis.com/auth/cloud-platform"],
+  })
+  return cachedAuth
+}
+
+export class PresupuestoAgotadoError extends Error {
+  constructor() {
+    super("Tope de gasto de IA alcanzado (compartido con el chatbot). Intenta mañana.")
+    this.name = "PresupuestoAgotadoError"
+  }
+}
+
+async function llamarIA(opts: {
+  system: string
+  user: string
+  archivo?: { base64: string; mimeType: string }
+  maxOutputTokens?: number
+}): Promise<string> {
+  const budget = await presupuestoDisponible()
+  if (!budget.ok) throw new PresupuestoAgotadoError()
+
+  const { gcpProject, vertexLocation, vertexModel } = chatConfig
+  if (!gcpProject) throw new Error("GCP_PROJECT_ID no configurado")
+
+  const client = await getAuth().getClient()
+  const tokenResp = await client.getAccessToken()
+  const accessToken = typeof tokenResp === "string" ? tokenResp : tokenResp?.token
+  if (!accessToken) throw new Error("No se pudo obtener access token de Vertex AI")
+
+  const host =
+    vertexLocation === "global"
+      ? "aiplatform.googleapis.com"
+      : `${vertexLocation}-aiplatform.googleapis.com`
+  const url = `https://${host}/v1/projects/${gcpProject}/locations/${vertexLocation}/publishers/google/models/${vertexModel}:generateContent`
+
+  const parts: Array<Record<string, unknown>> = []
+  if (opts.archivo) {
+    parts.push({
+      inlineData: { mimeType: opts.archivo.mimeType, data: opts.archivo.base64 },
+    })
+  }
+  parts.push({ text: opts.user })
+
+  const body = {
+    systemInstruction: { parts: [{ text: opts.system }] },
+    contents: [{ role: "user", parts }],
+    generationConfig: {
+      maxOutputTokens: opts.maxOutputTokens ?? 2048,
+      temperature: 0.2,
+      topP: 0.95,
+      responseMimeType: "application/json",
+    },
+  }
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+  if (!resp.ok) {
+    const errText = await resp.text().catch(() => "")
+    throw new Error(`Vertex AI ${resp.status}: ${errText.slice(0, 400)}`)
+  }
+
+  const data = (await resp.json()) as {
+    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
+    usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number }
+  }
+  const usage = data.usageMetadata || {}
+  await registrarUso(usage.promptTokenCount ?? 0, usage.candidatesTokenCount ?? 0)
+
+  return (data.candidates?.[0]?.content?.parts || [])
+    .map((p) => p?.text || "")
+    .join("")
+    .trim()
+}
+
+function parseJson<T>(raw: string): T {
+  const cleaned = raw.replace(/^```(?:json)?/m, "").replace(/```\s*$/m, "").trim()
+  return JSON.parse(cleaned) as T
+}
+
+/* ── 1. Análisis de CV ─────────────────────────────────────────────────── */
+
+export interface DatosCv {
+  nombre?: string
+  email?: string
+  telefono?: string
+  ciudad?: string
+  anosExperiencia?: number
+  oficios?: string[]
+  certificaciones?: string[]
+  educacion?: string[]
+  experiencia?: Array<{ empresa?: string; cargo?: string; periodo?: string }>
+  resumen?: string
+  alertas?: string[]
+}
+
+export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv> {
+  const candidato = await prisma.candidato.findUnique({ where: { id: candidatoId } })
+  if (!candidato?.cvPathGcs) throw new Error("El candidato no tiene CV cargado")
+
+  const buffer = await downloadCv(candidato.cvPathGcs)
+  const raw = await llamarIA({
+    system: `Eres un analista de selección de una empresa metalmecánica colombiana (estructuras metálicas: soldadura, armado, pintura industrial, montaje, ingeniería). Extraes datos de hojas de vida. Respondes SOLO JSON válido. No inventes datos que no estén en el documento.`,
+    user: `Analiza esta hoja de vida y devuelve JSON con este shape exacto:
+{
+  "nombre": string|null, "email": string|null, "telefono": string|null, "ciudad": string|null,
+  "anosExperiencia": number|null,
+  "oficios": string[],            // ej: "soldador MIG", "armador", "ingeniero civil"
+  "certificaciones": string[],    // ej: "calificación 3G", "trabajo en alturas", "SENA"
+  "educacion": string[],
+  "experiencia": [{"empresa": string, "cargo": string, "periodo": string}],
+  "resumen": string,              // 2-3 frases, en español, perfil + experiencia clave
+  "alertas": string[]             // vacíos de información, inconsistencias de fechas (NO juicios sobre edad/género/estado civil)
+}`,
+    archivo: {
+      base64: buffer.toString("base64"),
+      mimeType: candidato.cvContentType ?? "application/pdf",
+    },
+    maxOutputTokens: 2048,
+  })
+
+  const datos = parseJson<DatosCv>(raw)
+  await prisma.candidato.update({
+    where: { id: candidatoId },
+    data: { datosIA: datos as object, resumenIA: datos.resumen ?? null },
+  })
+  return datos
+}
+
+/* ── 2. Match postulación × vacante ────────────────────────────────────── */
+
+export interface MatchResult {
+  score: number
+  fortalezas: string[]
+  brechas: string[]
+  recomendacion: string
+}
+
+export async function evaluarMatch(postulacionId: string): Promise<MatchResult> {
+  const p = await prisma.postulacion.findUnique({
+    where: { id: postulacionId },
+    include: { candidato: true, vacante: true },
+  })
+  if (!p) throw new Error("Postulación no encontrada")
+  if (!p.vacante) throw new Error("La postulación es espontánea (sin vacante para comparar)")
+  if (!p.candidato.datosIA && !p.candidato.resumenIA) {
+    throw new Error("Primero analiza el CV del candidato con IA (pestaña Candidatos)")
+  }
+
+  const raw = await llamarIA({
+    system: `Eres un asistente de selección de MEISA (estructuras metálicas, Colombia). Comparas el perfil de un candidato contra una vacante. Tu salida es una SUGERENCIA para el reclutador humano — sé honesto con las brechas. PROHIBIDO considerar edad, sexo, estado civil, origen, religión o cualquier criterio no meritocrático (Ley 931/2004). Respondes SOLO JSON.`,
+    user: `VACANTE:
+${JSON.stringify({
+      titulo: p.vacante.titulo,
+      area: p.vacante.area,
+      ciudad: p.vacante.ciudad,
+      descripcion: p.vacante.descripcion,
+      requisitos: p.vacante.requisitos,
+      responsabilidades: p.vacante.responsabilidades,
+    })}
+
+CANDIDATO (extraído de su CV):
+${JSON.stringify(p.candidato.datosIA ?? { resumen: p.candidato.resumenIA })}
+
+Devuelve JSON: {"score": number 0-100, "fortalezas": string[], "brechas": string[], "recomendacion": string (1-2 frases)}`,
+    maxOutputTokens: 1024,
+  })
+
+  const match = parseJson<MatchResult>(raw)
+  const score = Math.max(0, Math.min(100, Math.round(match.score)))
+  await prisma.postulacion.update({
+    where: { id: postulacionId },
+    data: { scoreIA: score, matchIA: match as object },
+  })
+  return { ...match, score }
+}
+
+/* ── 3. Herramientas de vacante: lint legal + textos por canal ─────────── */
+
+export interface HerramientasVacante {
+  lint: Array<{ gravedad: "error" | "aviso"; texto: string }>
+  textos: {
+    spe: string
+    magneto: string
+    computrabajo: string
+    linkedin: string
+    whatsapp: string
+  }
+}
+
+export async function herramientasVacante(vacanteId: string): Promise<HerramientasVacante> {
+  const v = await prisma.vacante.findUnique({ where: { id: vacanteId } })
+  if (!v) throw new Error("Vacante no encontrada")
+
+  const raw = await llamarIA({
+    system: `Eres el asistente de Talento Humano de MEISA (Metálicas e Ingeniería S.A.S., estructuras metálicas, planta en Jamundí, Valle del Cauca, Colombia). Haces dos cosas: (1) revisar ofertas de empleo contra la ley colombiana, (2) redactar el texto de la oferta para distintos canales. Respondes SOLO JSON.`,
+    user: `VACANTE:
+${JSON.stringify({
+      titulo: v.titulo,
+      area: v.area,
+      ciudad: v.ciudad,
+      modalidad: v.modalidad,
+      descripcion: v.descripcion,
+      requisitos: v.requisitos,
+      responsabilidades: v.responsabilidades,
+      beneficios: v.beneficios,
+      tipoContrato: v.tipoContrato,
+      salarioMin: v.salarioMin,
+      salarioMax: v.salarioMax,
+    })}
+
+TAREA 1 — LINT LEGAL: detecta en el texto de la vacante cualquier violación u olor a violación de:
+- Ley 931/2004 (límites/rangos de edad, sexo, raza, estado civil)
+- Ley 2114/2021 (embarazo/planes reproductivos)
+- Decreto 1543/1997 (VIH)
+- Ley 1861/2017 (libreta militar como requisito)
+- lenguaje discriminatorio o requisitos no meritocráticos
+Marca gravedad "error" (ilegal) o "aviso" (riesgoso/mejorable). Si está limpia, lint = [].
+
+TAREA 2 — TEXTOS: redacta la oferta para cada canal, en español colombiano profesional:
+- "spe": formato formal completo para el Servicio Público de Empleo (incluye salario si existe — es campo obligatorio del SPE)
+- "magneto" y "computrabajo": título + descripción atractiva con viñetas, sin salario si salarioVisible es falso
+- "linkedin": post breve para la página de empresa (2-3 párrafos, tono profesional cercano, con llamado a la acción)
+- "whatsapp": mensaje corto para difundir en grupos/estados (máx 500 caracteres, con emojis sobrios)
+
+Devuelve JSON: {"lint": [{"gravedad": "error"|"aviso", "texto": string}], "textos": {"spe": string, "magneto": string, "computrabajo": string, "linkedin": string, "whatsapp": string}}`,
+    maxOutputTokens: 4096,
+  })
+
+  return parseJson<HerramientasVacante>(raw)
+}
+
+/* ── 4. Búsqueda semántica del banco de candidatos ─────────────────────── */
+
+export interface ResultadoBusqueda {
+  candidatoId: string
+  relevancia: number
+  razon: string
+}
+
+export async function buscarCandidatos(consulta: string): Promise<ResultadoBusqueda[]> {
+  const candidatos = await prisma.candidato.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 300,
+    select: { id: true, nombre: true, ciudad: true, resumenIA: true, datosIA: true },
+  })
+  const conPerfil = candidatos.filter((c) => c.resumenIA || c.datosIA)
+  if (conPerfil.length === 0) {
+    throw new Error("Ningún candidato tiene CV analizado con IA todavía")
+  }
+
+  const raw = await llamarIA({
+    system: `Eres un buscador semántico del banco de hojas de vida de MEISA (estructuras metálicas). Recibes una consulta del reclutador y una lista de candidatos con su perfil extraído. Devuelves los que realmente encajan, ordenados por relevancia. Solo criterios meritocráticos. Respondes SOLO JSON.`,
+    user: `CONSULTA: ${consulta}
+
+CANDIDATOS:
+${JSON.stringify(
+      conPerfil.map((c) => ({
+        id: c.id,
+        nombre: c.nombre,
+        ciudad: c.ciudad,
+        perfil: c.datosIA ?? c.resumenIA,
+      })),
+    )}
+
+Devuelve JSON: {"resultados": [{"candidatoId": string, "relevancia": number 0-100, "razon": string corta}]} — máximo 10, solo los que de verdad encajan (relevancia >= 40).`,
+    maxOutputTokens: 2048,
+  })
+
+  const parsed = parseJson<{ resultados: ResultadoBusqueda[] }>(raw)
+  return parsed.resultados ?? []
+}

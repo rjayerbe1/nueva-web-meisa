@@ -33,6 +33,8 @@ export type CandidatoSer = {
   origenDetalle: string | null
   consentimientoBanco: boolean
   notas: string | null
+  resumenIA: string | null
+  datosIA: unknown
   createdAt: string
   postulaciones: {
     id: string
@@ -48,6 +50,7 @@ export type PostulacionSer = {
   etapa: string
   notasInternas: string | null
   scoreIA: number | null
+  matchIA: unknown
   createdAt: string
   updatedAt: string
   candidato: {

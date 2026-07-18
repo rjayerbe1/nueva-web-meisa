@@ -209,5 +209,44 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching obras for sitemap:', error)
   }
 
-  return [...staticPages, ...servicePages, ...categoryPages, ...projectPages, ...obraPages]
+  // Vacantes (/trabaja-con-nosotros) — SOLO si la página pública está encendida
+  // (ConfiguracionTalento.paginaPublicaActiva). Apagada = fuera del sitemap.
+  let talentoPages: MetadataRoute.Sitemap = []
+  try {
+    const configTalento = await prisma.configuracionTalento.findUnique({
+      where: { id: 'default' },
+      select: { paginaPublicaActiva: true },
+    })
+    if (configTalento?.paginaPublicaActiva) {
+      const vacantes = await prisma.vacante.findMany({
+        where: { estado: 'ABIERTA' },
+        select: { slug: true, updatedAt: true },
+      })
+      talentoPages = [
+        {
+          url: `${BASE_URL}/trabaja-con-nosotros`,
+          lastModified: new Date(),
+          changeFrequency: 'daily' as const,
+          priority: 0.7,
+        },
+        ...vacantes.map((v) => ({
+          url: `${BASE_URL}/trabaja-con-nosotros/${v.slug}`,
+          lastModified: v.updatedAt,
+          changeFrequency: 'daily' as const,
+          priority: 0.7,
+        })),
+      ]
+    }
+  } catch (error) {
+    console.error('Error fetching vacantes for sitemap:', error)
+  }
+
+  return [
+    ...staticPages,
+    ...servicePages,
+    ...categoryPages,
+    ...projectPages,
+    ...obraPages,
+    ...talentoPages,
+  ]
 }

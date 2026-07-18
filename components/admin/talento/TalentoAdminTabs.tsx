@@ -6,6 +6,7 @@ import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { CandidatosTab } from "./CandidatosTab"
 import { PipelineTab } from "./PipelineTab"
+import { VacanteIAPanel } from "./VacanteIAPanel"
 import { CANALES_PUBLICACION, ESTADOS_VACANTE } from "./constants"
 import type {
   CandidatoSer,
@@ -195,6 +196,7 @@ export function TalentoAdminTabs({
       count: publicaciones.length,
       content: (
         <div className="space-y-4">
+          <VacanteIAPanel vacantes={vacantes} />
           <ListCrudEditor
             items={publicaciones}
             fields={publicacionFields(vacantes)}
