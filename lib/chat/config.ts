@@ -18,10 +18,11 @@ export const chatConfig = {
   // --- Modelo (intercambiable) — Gemini vía Vertex AI ---
   gcpProject: process.env.GCP_PROJECT_ID || '',
   vertexLocation: process.env.VERTEX_LOCATION || 'global',
-  // Default = modelo GA estable (no preview). Los "preview" los retira Google sin
-  // aviso y devuelven 404 (le pasó a gemini-3.1-flash-lite-preview en jul-2026).
-  // gemini-2.5-flash-lite está disponible en la región `global`. Cambiar por env.
-  vertexModel: process.env.VERTEX_MODEL || 'gemini-2.5-flash-lite',
+  // Default = modelo GA estable (NO usar "preview": Google los retira sin aviso y
+  // devuelven 404 — le pasó a gemini-3.1-flash-lite-preview en jul-2026). El ID GA
+  // gemini-3.1-flash-lite (sin -preview) SÍ existe en la región `global` (verificado
+  // jul-2026). Fallback más conservador si algún día falla: gemini-2.5-flash-lite.
+  vertexModel: process.env.VERTEX_MODEL || 'gemini-3.1-flash-lite',
 
   // --- Precios por 1M tokens (USD). Default = Gemini 3.1 Flash-Lite ---
   precioInputPor1M: num(process.env.CHAT_PRICE_INPUT, 0.25),
