@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { EstadoVacante, EtapaPostulacion } from "@prisma/client"
 import { zNullableDate, zNullableInt, zNullableString } from "@/lib/admin/zod-helpers"
+import { normalizarNombre } from "./nombres"
 
 export const vacanteSchema = z.object({
   titulo: z.string().min(1),
@@ -23,7 +24,7 @@ export const vacanteSchema = z.object({
 })
 
 export const candidatoSchema = z.object({
-  nombre: z.string().min(1),
+  nombre: z.string().min(1).transform(normalizarNombre),
   email: zNullableString.optional(),
   telefono: zNullableString.optional(),
   ciudad: zNullableString.optional(),

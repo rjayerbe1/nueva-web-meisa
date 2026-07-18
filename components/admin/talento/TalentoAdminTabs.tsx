@@ -5,11 +5,13 @@ import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
 import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { CandidatosTab } from "./CandidatosTab"
+import { ComparativosTab } from "./ComparativosTab"
 import { PipelineTab } from "./PipelineTab"
 import { VacanteIAPanel } from "./VacanteIAPanel"
 import { CANALES_PUBLICACION, ESTADOS_VACANTE } from "./constants"
 import type {
   CandidatoSer,
+  ComparativoSer,
   ConfigTalentoSer,
   PostulacionSer,
   PublicacionSer,
@@ -130,12 +132,14 @@ export function TalentoAdminTabs({
   candidatos,
   postulaciones,
   publicaciones,
+  comparativos,
   config,
 }: {
   vacantes: VacanteSer[]
   candidatos: CandidatoSer[]
   postulaciones: PostulacionSer[]
   publicaciones: PublicacionSer[]
+  comparativos: ComparativoSer[]
   config: ConfigTalentoSer | null
 }) {
   const tabs: AdminTab[] = [
@@ -187,6 +191,18 @@ export function TalentoAdminTabs({
               options: ESTADOS_VACANTE,
             },
           ]}
+        />
+      ),
+    },
+    {
+      id: "comparativos",
+      label: "Comparativos",
+      count: comparativos.length,
+      content: (
+        <ComparativosTab
+          vacantes={vacantes}
+          candidatos={candidatos}
+          comparativos={comparativos}
         />
       ),
     },

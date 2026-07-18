@@ -79,6 +79,28 @@ export type PublicacionSer = {
   notas: string | null
 }
 
+export type EvaluacionComp = {
+  candidatoId: string
+  nombre: string
+  score: number
+  fortalezas: string[]
+  brechas: string[]
+  recomendacion: string
+}
+
+export type ComparativoSer = {
+  id: string
+  vacanteId: string
+  vacanteTitulo: string
+  resultados: {
+    evaluaciones: EvaluacionComp[]
+    conclusion: string
+    sinPerfil?: string[]
+  }
+  creadoPor: string | null
+  createdAt: string
+}
+
 export type ConfigTalentoSer = {
   id: string
   paginaPublicaActiva: boolean

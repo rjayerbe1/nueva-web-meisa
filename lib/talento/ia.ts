@@ -273,6 +273,99 @@ Devuelve JSON: {"lint": [{"gravedad": "error"|"aviso", "texto": string}], "texto
   return parseJson<HerramientasVacante>(raw)
 }
 
+/* ── 3b. Comparativo de candidatos contra un perfil de cargo ───────────── */
+
+export interface EvaluacionComparativo {
+  candidatoId: string
+  nombre: string
+  score: number
+  fortalezas: string[]
+  brechas: string[]
+  recomendacion: string
+}
+
+export interface ResultadoComparativo {
+  evaluaciones: EvaluacionComparativo[]
+  conclusion: string
+  sinPerfil: string[] // nombres de candidatos sin CV analizado (excluidos)
+}
+
+export async function compararCandidatos(
+  vacanteId: string,
+  candidatoIds: string[],
+  usuario?: string | null,
+): Promise<{ comparativoId: string; resultado: ResultadoComparativo }> {
+  const vacante = await prisma.vacante.findUnique({ where: { id: vacanteId } })
+  if (!vacante) throw new Error("Vacante no encontrada")
+
+  const candidatos = await prisma.candidato.findMany({
+    where: { id: { in: candidatoIds } },
+    select: { id: true, nombre: true, ciudad: true, datosIA: true, resumenIA: true },
+  })
+  const conPerfil = candidatos.filter((c) => c.datosIA || c.resumenIA)
+  const sinPerfil = candidatos.filter((c) => !c.datosIA && !c.resumenIA).map((c) => c.nombre)
+  if (conPerfil.length < 2) {
+    throw new Error("Se necesitan al menos 2 candidatos con CV analizado para comparar")
+  }
+
+  const raw = await llamarIA({
+    system: `Eres el comité técnico de selección de MEISA (estructuras metálicas: fabricación en planta con soldadura/trabajo en caliente/puentes grúa, y montaje en obra con trabajo en alturas). Comparas VARIOS candidatos contra UN perfil de cargo y produces una matriz de evaluación honesta. Tu salida es una SUGERENCIA para el reclutador humano. PROHIBIDO valorar edad, sexo, estado civil, origen o cualquier criterio no meritocrático (Ley 931/2004) — solo experiencia, formación, licencias y certificaciones. Respondes SOLO JSON.`,
+    user: `PERFIL DE CARGO:
+${JSON.stringify({
+      titulo: vacante.titulo,
+      area: vacante.area,
+      ciudad: vacante.ciudad,
+      descripcion: vacante.descripcion,
+      requisitos: vacante.requisitos,
+      responsabilidades: vacante.responsabilidades,
+    })}
+
+CANDIDATOS (perfiles extraídos de sus hojas de vida):
+${JSON.stringify(
+      conPerfil.map((c) => ({
+        candidatoId: c.id,
+        nombre: c.nombre,
+        ciudad: c.ciudad,
+        perfil: c.datosIA ?? c.resumenIA,
+      })),
+    )}
+
+Evalúa a CADA candidato contra el perfil. Sé comparativo: los scores deben diferenciar
+claramente (usa todo el rango 0-100). Considera cercanía geográfica a la sede como
+factor logístico menor (nunca eliminatorio).
+
+Devuelve JSON:
+{
+  "evaluaciones": [{
+    "candidatoId": string,
+    "nombre": string,
+    "score": number,           // 0-100
+    "fortalezas": string[],    // 2-4, concretas
+    "brechas": string[],       // 1-3, concretas
+    "recomendacion": string    // 1 frase
+  }],
+  "conclusion": string  // 2-3 frases: terna sugerida (los 2-3 mejores) y por qué
+}`,
+    maxOutputTokens: 6144,
+  })
+
+  const parsed = parseJson<{ evaluaciones: EvaluacionComparativo[]; conclusion: string }>(raw)
+  const evaluaciones = (parsed.evaluaciones ?? [])
+    .map((e) => ({ ...e, score: Math.max(0, Math.min(100, Math.round(e.score))) }))
+    .sort((a, b) => b.score - a.score)
+
+  const resultado: ResultadoComparativo = {
+    evaluaciones,
+    conclusion: parsed.conclusion ?? "",
+    sinPerfil,
+  }
+
+  const guardado = await prisma.comparativoVacante.create({
+    data: { vacanteId, resultados: resultado as unknown as object, creadoPor: usuario ?? null },
+  })
+  return { comparativoId: guardado.id, resultado }
+}
+
 /* ── 4. Búsqueda semántica del banco de candidatos ─────────────────────── */
 
 export interface ResultadoBusqueda {

@@ -1319,9 +1319,26 @@ model Vacante {
 
   postulaciones Postulacion[]
   publicaciones PublicacionVacante[]
+  comparativos  ComparativoVacante[]
 
   @@index([estado, orden])
   @@map("vacantes")
+}
+
+// Comparativo IA de candidatos contra un perfil de cargo (terna/matriz de
+// evaluación). Se guarda como historial; es SUGERENCIA con decisión humana
+// (Circular SIC 002/2024).
+model ComparativoVacante {
+  id        String  @id @default(cuid())
+  vacanteId String
+  vacante   Vacante @relation(fields: [vacanteId], references: [id], onDelete: Cascade)
+
+  resultados Json // { evaluaciones: [{candidatoId, nombre, score, fortalezas, brechas, recomendacion}], conclusion }
+  creadoPor  String?
+  createdAt  DateTime @default(now())
+
+  @@index([vacanteId, createdAt])
+  @@map("comparativos_vacante")
 }
 
 model Candidato {

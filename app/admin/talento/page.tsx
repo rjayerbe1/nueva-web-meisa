@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { TalentoAdminTabs } from "@/components/admin/talento/TalentoAdminTabs"
 import type {
   CandidatoSer,
+  ComparativoSer,
   PostulacionSer,
   PublicacionSer,
   VacanteSer,
@@ -13,7 +14,7 @@ export const revalidate = 0
 const dateOnly = (d: Date | null) => (d ? d.toISOString().slice(0, 10) : null)
 
 async function getData() {
-  const [vacantesRaw, candidatosRaw, postulacionesRaw, publicacionesRaw, config] =
+  const [vacantesRaw, candidatosRaw, postulacionesRaw, publicacionesRaw, comparativosRaw, config] =
     await Promise.all([
       prisma.vacante.findMany({
         orderBy: [{ orden: "asc" }, { createdAt: "desc" }],
@@ -49,6 +50,10 @@ async function getData() {
         },
       }),
       prisma.publicacionVacante.findMany({
+        orderBy: { createdAt: "desc" },
+        include: { vacante: { select: { id: true, titulo: true } } },
+      }),
+      prisma.comparativoVacante.findMany({
         orderBy: { createdAt: "desc" },
         include: { vacante: { select: { id: true, titulo: true } } },
       }),
@@ -127,17 +132,28 @@ async function getData() {
     notas: p.notas,
   }))
 
-  return { vacantes, candidatos, postulaciones, publicaciones, config }
+  const comparativos: ComparativoSer[] = comparativosRaw.map((c) => ({
+    id: c.id,
+    vacanteId: c.vacanteId,
+    vacanteTitulo: c.vacante?.titulo ?? "",
+    resultados: c.resultados as ComparativoSer["resultados"],
+    creadoPor: c.creadoPor,
+    createdAt: c.createdAt.toISOString(),
+  }))
+
+  return { vacantes, candidatos, postulaciones, publicaciones, comparativos, config }
 }
 
 export default async function TalentoAdminPage() {
-  const { vacantes, candidatos, postulaciones, publicaciones, config } = await getData()
+  const { vacantes, candidatos, postulaciones, publicaciones, comparativos, config } =
+    await getData()
   return (
     <TalentoAdminTabs
       vacantes={vacantes}
       candidatos={candidatos}
       postulaciones={postulaciones}
       publicaciones={publicaciones}
+      comparativos={comparativos}
       config={config}
     />
   )

@@ -4,13 +4,14 @@ import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { sendViaGmailDWD } from "@/lib/gmail-client"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
+import { normalizarNombre } from "@/lib/talento/nombres"
 
 // Postulación PÚBLICA (formulario /trabaja-con-nosotros).
 // Gated por el switch paginaPublicaActiva. Guarda la PRUEBA del
 // consentimiento (Ley 1581/2012): fecha, hash de IP y snapshot del texto.
 
 const schema = z.object({
-  nombre: z.string().min(2).max(120),
+  nombre: z.string().min(2).max(120).transform(normalizarNombre),
   email: z.string().email().max(160),
   telefono: z.string().min(7).max(30),
   ciudad: z.string().max(80).optional().nullable(),

@@ -61,6 +61,7 @@ async function main() {
   const { prisma } = await import("../lib/prisma")
   const { uploadCv } = await import("../lib/talento/gcs-hv")
   const { analizarCvCandidato } = await import("../lib/talento/ia")
+  const { normalizarNombre } = await import("../lib/talento/nombres")
   const { JWT } = await import("google-auth-library")
 
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
@@ -142,7 +143,7 @@ async function main() {
         await prisma.candidato.update({
           where: { id: candidato.id },
           data: {
-            ...(datos.nombre ? { nombre: datos.nombre } : {}),
+            ...(datos.nombre ? { nombre: normalizarNombre(datos.nombre) } : {}),
             ...(datos.email ? { email: datos.email } : {}),
             ...(datos.telefono ? { telefono: datos.telefono } : {}),
             ...(datos.ciudad ? { ciudad: datos.ciudad } : {}),
