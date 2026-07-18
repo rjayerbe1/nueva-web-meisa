@@ -393,6 +393,20 @@ model ContactForm {
   @@map("formularios_contacto")
 }
 
+// Clic en un botón de WhatsApp (widget flotante o CTAs de precios/guías).
+// Se registra desde el cliente (sendBeacon) porque abrir wa.me no toca el
+// backend; es la única forma de medir el canal WhatsApp de primera mano.
+model ClickWhatsapp {
+  id        String   @id @default(cuid())
+  origen    String? // 'widget-flotante' | 'cta-precios' | 'cta-guia' | ...
+  etiqueta  String? // p.ej. nombre del contacto o título de la guía
+  ipHash    String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("clics_whatsapp")
+}
+
 model ConfiguracionSitio {
   id          String     @id @default(cuid())
   clave       String     @unique

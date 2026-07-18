@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Clock, MessageSquare } from 'lucide-react'
 import { sendGAEvent } from '@next/third-parties/google'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { trackWhatsappClick } from '@/lib/track-whatsapp'
 
 interface Contacto {
   id: string
@@ -87,6 +88,7 @@ export function WhatsAppFloatingWidget() {
       metodo: 'whatsapp',
       origen: 'widget-flotante',
     })
+    trackWhatsappClick('widget-flotante', contacto.nombre)
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 

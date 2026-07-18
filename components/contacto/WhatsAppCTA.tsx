@@ -2,6 +2,7 @@
 
 import { MessageCircle } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
+import { trackWhatsappClick } from "@/lib/track-whatsapp"
 
 // WhatsApp comercial canónico del sitio (mismo número usado en /servicios, /proyectos, widget).
 const WHATSAPP_NUMBER = "573104327227"
@@ -33,6 +34,7 @@ export function WhatsAppCTA({
 
   const handleClick = () => {
     sendGAEvent("event", "generate_lead", { metodo: "whatsapp", origen })
+    trackWhatsappClick(origen)
   }
 
   return (

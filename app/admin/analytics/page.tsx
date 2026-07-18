@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { UserRole } from "@prisma/client"
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard"
+import LeadsInteraccionesSection from "@/components/admin/LeadsInteraccionesSection"
 
 export const metadata: Metadata = {
   title: "Analítica - Panel Administrativo MEISA",
@@ -31,6 +32,8 @@ export default async function AnalyticsPage() {
           Tráfico del sitio (Google Analytics 4) y rendimiento en búsqueda (Search Console)
         </p>
       </div>
+
+      <LeadsInteraccionesSection />
 
       <AnalyticsDashboard />
     </div>
