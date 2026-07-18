@@ -1340,6 +1340,7 @@ model Candidato {
   // cuándo quedó registrado; base para la purga por retención.
   origen        String? // computrabajo | magneto | elempleo | linkedin | spe | referido | email | whatsapp | fisico | web
   origenDetalle String?
+  areaInteres   String? // organización del pool: SST | Producción | Ingeniería | Administrativa...
   consentimientoBanco Boolean   @default(false) // autorizó conservar el CV para vacantes futuras
   consentimientoFecha DateTime?
   consentimientoVia   String? // formulario-web | bolsa-de-empleo | entregado-a-th

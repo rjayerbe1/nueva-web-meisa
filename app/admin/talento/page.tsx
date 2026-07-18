@@ -92,6 +92,7 @@ async function getData() {
     cvFileName: c.cvFileName,
     origen: c.origen,
     origenDetalle: c.origenDetalle,
+    areaInteres: c.areaInteres,
     consentimientoBanco: c.consentimientoBanco,
     notas: c.notas,
     resumenIA: c.resumenIA,

@@ -108,7 +108,17 @@ async function llamarIA(opts: {
 
 function parseJson<T>(raw: string): T {
   const cleaned = raw.replace(/^```(?:json)?/m, "").replace(/```\s*$/m, "").trim()
-  return JSON.parse(cleaned) as T
+  try {
+    return JSON.parse(cleaned) as T
+  } catch {
+    // El modelo a veces agrega texto tras el JSON — recorta al objeto exterior
+    const start = cleaned.indexOf("{")
+    const end = cleaned.lastIndexOf("}")
+    if (start >= 0 && end > start) {
+      return JSON.parse(cleaned.slice(start, end + 1)) as T
+    }
+    throw new Error("La IA no devolvió JSON válido")
+  }
 }
 
 /* ── 1. Análisis de CV ─────────────────────────────────────────────────── */

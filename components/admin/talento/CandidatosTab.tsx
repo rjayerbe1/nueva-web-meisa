@@ -92,6 +92,13 @@ export function CandidatosTab({
         kind: "text",
         placeholder: "Ej: convocatoria soldadores jul-2026, referido por…",
       },
+      {
+        name: "areaInteres",
+        label: "Área de interés",
+        kind: "text",
+        placeholder: "SST, Producción, Ingeniería, Administrativa…",
+        hint: "Organiza el banco por área aunque no haya vacante activa.",
+      },
       ...(isNew
         ? ([
             {
@@ -134,7 +141,7 @@ export function CandidatosTab({
     const q = query.trim().toLowerCase()
     if (!q) return list
     return list.filter((c) =>
-      [c.nombre, c.email, c.telefono, c.ciudad, c.origen]
+      [c.nombre, c.email, c.telefono, c.ciudad, c.origen, c.areaInteres]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q)),
     )
@@ -549,6 +556,11 @@ export function CandidatosTab({
                             c.origen ??
                             "—"}
                         </span>
+                        {c.areaInteres && (
+                          <span className="ml-1 rounded-none border border-blue-200 bg-blue-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-blue-800">
+                            {c.areaInteres}
+                          </span>
+                        )}
                       </td>
                       <td className="px-3 py-2.5">
                         {c.cvPathGcs ? (

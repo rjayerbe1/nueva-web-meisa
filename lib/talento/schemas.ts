@@ -33,6 +33,7 @@ export const candidatoSchema = z.object({
   cvSize: zNullableInt.optional(),
   origen: zNullableString.optional(),
   origenDetalle: zNullableString.optional(),
+  areaInteres: zNullableString.optional(),
   consentimientoBanco: z.boolean().optional(),
   consentimientoVia: zNullableString.optional(),
   notas: zNullableString.optional(),

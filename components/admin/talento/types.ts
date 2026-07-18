@@ -31,6 +31,7 @@ export type CandidatoSer = {
   cvFileName: string | null
   origen: string | null
   origenDetalle: string | null
+  areaInteres: string | null
   consentimientoBanco: boolean
   notas: string | null
   resumenIA: string | null
