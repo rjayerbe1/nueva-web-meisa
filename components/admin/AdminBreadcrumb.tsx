@@ -19,6 +19,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "hero-images": "Imágenes hero",
   projects: "Proyectos",
   trayectoria: "Trayectoria",
+  talento: "Talento Humano",
   clientes: "Clientes",
   historias: "Historias",
   brochures: "Brochures",

@@ -23,6 +23,7 @@ import {
   Megaphone,
   MessageSquare,
   Bot,
+  UserPlus,
   ImageIcon,
   UserCog,
   Database,
@@ -89,6 +90,7 @@ const navigation: NavItem[] = [
     icon: MessageSquare,
   },
   { kind: "item", name: "Chatbot IA", href: "/admin/chat", icon: Bot },
+  { kind: "item", name: "Talento Humano", href: "/admin/talento", icon: UserPlus },
 
   { kind: "section", label: "Sistema", color: "slate" },
   {

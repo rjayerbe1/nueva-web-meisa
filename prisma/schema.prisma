@@ -1265,3 +1265,153 @@ model LandingSeo {
   @@index([tipo, orden])
   @@map("landings_seo")
 }
+
+// ============================================
+// Talento Humano — vacantes + banco de hojas de vida (ATS interno)
+// Fase interna: TH carga CVs a mano; la página pública queda apagada
+// tras ConfiguracionTalento.paginaPublicaActiva (switch en DB, sin deploy).
+// Los CVs viven en el bucket PRIVADO gs://meisa-hojas-de-vida (nunca en
+// meisa-imagenes, que es público a nivel de bucket) y se sirven solo vía
+// proxy autenticado /api/admin/talento/cv/[candidatoId].
+// ============================================
+
+enum EstadoVacante {
+  BORRADOR
+  ABIERTA
+  PAUSADA
+  CERRADA
+}
+
+enum EtapaPostulacion {
+  RECIBIDA
+  PRESELECCION
+  ENTREVISTA
+  OFERTA
+  CONTRATADA
+  DESCARTADA
+}
+
+model Vacante {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  titulo      String
+  area        String? // Producción / Ingeniería / Montaje / Administrativo...
+  ciudad      String?
+  modalidad   String? // presencial | hibrido | remoto
+  descripcion String
+  // Requisitos por méritos (Ley 931/2004: nunca edad/sexo/estado civil)
+  requisitos        String[] @default([])
+  responsabilidades String[] @default([])
+  beneficios        String[] @default([])
+  tipoContrato      String? // indefinido | fijo | obra-labor | aprendizaje
+  jornada           String? // FULL_TIME | PART_TIME | CONTRACTOR... (mapea a JobPosting employmentType)
+  salarioMin        Int? // COP/mes — obligatorio al registrar en SPE
+  salarioMax        Int?
+  salarioVisible    Boolean  @default(false) // mostrarlo o no cuando la página sea pública
+
+  estado           EstadoVacante @default(BORRADOR)
+  fechaPublicacion DateTime?
+  fechaCierre      DateTime? // validThrough de JobPosting
+
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postulaciones Postulacion[]
+  publicaciones PublicacionVacante[]
+
+  @@index([estado, orden])
+  @@map("vacantes")
+}
+
+model Candidato {
+  id       String  @id @default(cuid())
+  nombre   String
+  email    String?
+  telefono String?
+  ciudad   String?
+
+  cvPathGcs     String? // path en gs://meisa-hojas-de-vida (privado)
+  cvFileName    String?
+  cvContentType String?
+  cvSize        Int?
+
+  // Trazabilidad habeas data (Ley 1581/2012): por dónde llegó el CV y
+  // cuándo quedó registrado; base para la purga por retención.
+  origen        String? // computrabajo | magneto | elempleo | linkedin | spe | referido | email | whatsapp | fisico | web
+  origenDetalle String?
+  consentimientoBanco Boolean   @default(false) // autorizó conservar el CV para vacantes futuras
+  consentimientoFecha DateTime?
+  consentimientoVia   String? // formulario-web | bolsa-de-empleo | entregado-a-th
+
+  resumenIA String? // Etapa 2: resumen ejecutivo generado (sugerencia, decisión humana)
+  datosIA   Json? // Etapa 2: extracción estructurada del CV
+
+  notas     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postulaciones Postulacion[]
+
+  @@index([createdAt])
+  @@map("candidatos")
+}
+
+model Postulacion {
+  id          String    @id @default(cuid())
+  candidatoId String
+  candidato   Candidato @relation(fields: [candidatoId], references: [id], onDelete: Cascade)
+  vacanteId   String? // null = aplicación espontánea / banco
+  vacante     Vacante?  @relation(fields: [vacanteId], references: [id], onDelete: SetNull)
+
+  etapa         EtapaPostulacion @default(RECIBIDA)
+  historial     Json? // [{ de, a, fecha, usuario }]
+  notasInternas String?
+  scoreIA       Int? // Etapa 2: match 0-100 (sugerencia IA, decisión humana)
+  matchIA       Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([vacanteId, etapa])
+  @@index([candidatoId])
+  @@map("postulaciones")
+}
+
+// Checklist de dónde se publicó cada vacante. La fila del canal SPE
+// (SENA / caja de compensación) documenta el cumplimiento del registro
+// obligatorio (Ley 1636/2013 art. 31 — plazo 10 días hábiles).
+model PublicacionVacante {
+  id        String  @id @default(cuid())
+  vacanteId String
+  vacante   Vacante @relation(fields: [vacanteId], references: [id], onDelete: Cascade)
+
+  canal            String // spe-sena | spe-comfandi | magneto | computrabajo | elempleo | linkedin | otro
+  url              String?
+  referencia       String? // número/código que asigne el prestador
+  fechaPublicacion DateTime?
+  fechaCierre      DateTime?
+  notas            String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([vacanteId])
+  @@map("publicaciones_vacante")
+}
+
+model ConfiguracionTalento {
+  id String @id @default("default")
+
+  // El switch: cuando sea true, /trabaja-con-nosotros se vuelve pública
+  // (ISR la levanta sin deploy). Mientras tanto todo es solo admin.
+  paginaPublicaActiva Boolean @default(false)
+
+  emailNotificaciones String? // a dónde avisar postulaciones nuevas (fase pública)
+  retencionMeses      Int     @default(12) // purga de CVs sin consentimiento de banco
+  textoConsentimiento String? // texto del checkbox habeas data (validar con jurídica)
+
+  updatedAt DateTime @updatedAt
+
+  @@map("configuracion_talento")
+}
