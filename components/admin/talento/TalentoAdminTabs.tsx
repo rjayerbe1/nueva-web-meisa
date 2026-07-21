@@ -81,6 +81,12 @@ const vacanteFields = (): FieldDef[] => [
     label: "Mostrar salario cuando la página sea pública",
     kind: "boolean",
   },
+  {
+    name: "elegibleReferidos",
+    label: "Elegible para el Programa de Referidos",
+    kind: "boolean",
+    hint: "El objetivo estratégico del programa es el personal operativo de planta (soldador, armador, ayudante y oficios similares) — actívalo solo en esas vacantes. El campo de código de referido en la web solo aparece y cuenta cuando aplica a una vacante marcada aquí.",
+  },
   { name: "fechaPublicacion", label: "Fecha de apertura", kind: "date" },
   {
     name: "fechaCierre",
@@ -176,6 +182,7 @@ export function TalentoAdminTabs({
             responsabilidades: [],
             beneficios: [],
             salarioVisible: false,
+            elegibleReferidos: false,
           }}
           addLabel="Nueva vacante"
           emptyMessage="Crea la primera vacante. Recuerda registrarla también en el SPE (pestaña Publicaciones)."
@@ -186,6 +193,7 @@ export function TalentoAdminTabs({
             { key: "area", label: "Área" },
             { key: "ciudad", label: "Ciudad" },
             { key: "estado", label: "Estado", className: "w-28" },
+            { key: "elegibleReferidos", label: "Referidos", className: "w-24 text-center" },
             { key: "postulacionesCount", label: "Postulaciones", className: "w-28 text-center" },
           ]}
           filters={[

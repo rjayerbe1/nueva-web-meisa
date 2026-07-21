@@ -20,6 +20,7 @@ export const vacanteSchema = z.object({
   estado: z.nativeEnum(EstadoVacante).optional(),
   fechaPublicacion: zNullableDate.optional(),
   fechaCierre: zNullableDate.optional(),
+  elegibleReferidos: z.boolean().optional(),
   orden: z.coerce.number().int().optional(),
 })
 

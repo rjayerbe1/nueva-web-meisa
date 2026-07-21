@@ -12,10 +12,16 @@ const LABEL_CLS =
 export function PostulacionForm({
   vacanteSlug,
   vacanteTitulo,
+  elegibleReferidos = false,
   textoConsentimiento,
 }: {
   vacanteSlug?: string
   vacanteTitulo?: string
+  // Programa de Referidos: el objetivo estratégico es el personal operativo
+  // de planta (soldador, armador, ayudante...) — el campo solo se muestra en
+  // vacantes marcadas como elegibles desde el admin, nunca en la aplicación
+  // espontánea (sin vacante) ni en vacantes profesionales/administrativas.
+  elegibleReferidos?: boolean
   textoConsentimiento: string
 }) {
   const [nombre, setNombre] = useState("")
@@ -172,21 +178,23 @@ export function PostulacionForm({
             autoComplete="address-level2"
           />
         </div>
-        <div className="md:col-span-2">
-          <label className={LABEL_CLS} htmlFor="pf-referido">
-            Código de referido (opcional)
-          </label>
-          <input
-            id="pf-referido"
-            value={codigoReferido}
-            onChange={(e) => setCodigoReferido(e.target.value.toUpperCase())}
-            placeholder="Ej: JUANP482"
-            className={INPUT_CLS}
-          />
-          <p className="mt-1.5 font-lato text-xs italic text-slate-500">
-            ¿Un colaborador de MEISA te compartió su código? Ingrésalo aquí.
-          </p>
-        </div>
+        {elegibleReferidos && (
+          <div className="md:col-span-2">
+            <label className={LABEL_CLS} htmlFor="pf-referido">
+              Código de referido (opcional)
+            </label>
+            <input
+              id="pf-referido"
+              value={codigoReferido}
+              onChange={(e) => setCodigoReferido(e.target.value.toUpperCase())}
+              placeholder="Ej: JUANP482"
+              className={INPUT_CLS}
+            />
+            <p className="mt-1.5 font-lato text-xs italic text-slate-500">
+              ¿Un colaborador de MEISA te compartió su código? Ingrésalo aquí.
+            </p>
+          </div>
+        )}
 
         {/* Honeypot — invisible para humanos */}
         <input

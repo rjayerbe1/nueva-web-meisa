@@ -68,9 +68,16 @@ export async function POST(request: NextRequest) {
     const textoConsentimiento = config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO
 
     // Solo TRACKING de la fuente para el incentivo — nunca afecta la
-    // evaluación por mérito del candidato (Ley 931/2004).
+    // evaluación por mérito del candidato (Ley 931/2004). El objetivo
+    // estratégico del programa es el personal operativo de planta: el código
+    // solo se vincula (y cuenta para el incentivo) si la vacante está
+    // marcada como elegible — se ignora en espontáneas o vacantes no
+    // elegibles aunque el candidato haya escrito uno.
     let codigoReferidoId: string | null = null
-    const codigoTexto = data.codigoReferido?.trim() || null
+    const codigoTexto =
+      vacante?.elegibleReferidos && data.codigoReferido?.trim()
+        ? data.codigoReferido.trim()
+        : null
     if (codigoTexto) {
       const match = await prisma.codigoReferido.findUnique({
         where: { codigo: codigoTexto.toUpperCase() },

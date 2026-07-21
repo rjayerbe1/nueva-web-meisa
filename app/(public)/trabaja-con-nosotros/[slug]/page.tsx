@@ -269,6 +269,7 @@ export default async function VacanteDetallePage({
                 <PostulacionForm
                   vacanteSlug={vacante.slug}
                   vacanteTitulo={vacante.titulo}
+                  elegibleReferidos={vacante.elegibleReferidos}
                   textoConsentimiento={
                     config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO
                   }

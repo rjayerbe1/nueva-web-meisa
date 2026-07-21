@@ -14,6 +14,7 @@ export type VacanteSer = {
   salarioMin: number | null
   salarioMax: number | null
   salarioVisible: boolean
+  elegibleReferidos: boolean
   estado: string
   fechaPublicacion: string | null
   fechaCierre: string | null

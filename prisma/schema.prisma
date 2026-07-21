@@ -1313,6 +1313,14 @@ model Vacante {
   fechaPublicacion DateTime?
   fechaCierre      DateTime? // validThrough de JobPosting
 
+  // Programa de Referidos: el objetivo estratégico es específicamente el
+  // personal operativo de planta (soldadores, armadores, ayudantes...), que
+  // es quien conoce a otros con el mismo oficio — no aplica a cualquier
+  // vacante. Cualquier colaborador puede compartir su código, pero el
+  // incentivo solo se activa cuando el referido aplica a una vacante marcada
+  // como elegible.
+  elegibleReferidos Boolean @default(false)
+
   orden     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
