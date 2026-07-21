@@ -6,7 +6,7 @@ import { normalizarNombre } from "./nombres"
 export const vacanteSchema = z.object({
   titulo: z.string().min(1),
   area: zNullableString.optional(),
-  ciudad: zNullableString.optional(),
+  ciudad: zNullableString.optional().transform((v) => (v ? normalizarNombre(v) : v)),
   modalidad: zNullableString.optional(),
   descripcion: z.string().default(""),
   requisitos: z.array(z.string()).optional(),
@@ -27,7 +27,7 @@ export const candidatoSchema = z.object({
   nombre: z.string().min(1).transform(normalizarNombre),
   email: zNullableString.optional(),
   telefono: zNullableString.optional(),
-  ciudad: zNullableString.optional(),
+  ciudad: zNullableString.optional().transform((v) => (v ? normalizarNombre(v) : v)),
   cvPathGcs: zNullableString.optional(),
   cvFileName: zNullableString.optional(),
   cvContentType: zNullableString.optional(),

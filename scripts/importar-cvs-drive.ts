@@ -87,8 +87,13 @@ async function main() {
   const { files } = (await listResp.json()) as {
     files: Array<{ id: string; name: string; mimeType: string; size?: string }>
   }
-  const pdfs = files.filter((f) => f.mimeType === "application/pdf")
-  console.log(`Carpeta ${folderId}: ${files.length} archivos, ${pdfs.length} PDFs\n`)
+  const ALLOWED_MIMES = new Set([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ])
+  const pdfs = files.filter((f) => ALLOWED_MIMES.has(f.mimeType))
+  console.log(`Carpeta ${folderId}: ${files.length} archivos, ${pdfs.length} CVs (pdf/doc)\n`)
 
   let creados = 0
   let saltados = 0
@@ -117,7 +122,7 @@ async function main() {
     const buffer = Buffer.from(await dl.arrayBuffer())
 
     // 3. Subir al bucket privado + crear candidato (pool: SIN postulación)
-    const up = await uploadCv(buffer, f.name.endsWith(".pdf") ? f.name : `${f.name}.pdf`, "application/pdf")
+    const up = await uploadCv(buffer, f.name, f.mimeType)
     const nivel = nivelDesdeNombre(f.name)
     const candidato = await prisma.candidato.create({
       data: {
@@ -146,7 +151,7 @@ async function main() {
             ...(datos.nombre ? { nombre: normalizarNombre(datos.nombre) } : {}),
             ...(datos.email ? { email: datos.email } : {}),
             ...(datos.telefono ? { telefono: datos.telefono } : {}),
-            ...(datos.ciudad ? { ciudad: datos.ciudad } : {}),
+            ...(datos.ciudad ? { ciudad: normalizarNombre(datos.ciudad) } : {}),
           },
         })
         analizados++

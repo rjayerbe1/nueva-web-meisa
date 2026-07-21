@@ -14,8 +14,16 @@ const schema = z.object({
   nombre: z.string().min(2).max(120).transform(normalizarNombre),
   email: z.string().email().max(160),
   telefono: z.string().min(7).max(30),
-  ciudad: z.string().max(80).optional().nullable(),
+  ciudad: z
+    .string()
+    .max(80)
+    .optional()
+    .nullable()
+    .transform((v) => (v ? normalizarNombre(v) : v)),
   vacanteSlug: z.string().max(120).optional().nullable(),
+  // Programa de referidos: lo diligencia el CANDIDATO (no un tercero), así que
+  // no hay problema de habeas data por entrega de datos de otra persona.
+  codigoReferido: z.string().max(40).optional().nullable(),
   consentimiento: z.literal(true),
   consentimientoBanco: z.boolean().optional(),
   cvPathGcs: z.string().min(1),
@@ -59,6 +67,17 @@ export async function POST(request: NextRequest) {
 
     const textoConsentimiento = config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO
 
+    // Solo TRACKING de la fuente para el incentivo — nunca afecta la
+    // evaluación por mérito del candidato (Ley 931/2004).
+    let codigoReferidoId: string | null = null
+    const codigoTexto = data.codigoReferido?.trim() || null
+    if (codigoTexto) {
+      const match = await prisma.codigoReferido.findUnique({
+        where: { codigo: codigoTexto.toUpperCase() },
+      })
+      if (match?.activo) codigoReferidoId = match.id
+    }
+
     const candidato = await prisma.candidato.create({
       data: {
         nombre: data.nombre,
@@ -76,6 +95,8 @@ export async function POST(request: NextRequest) {
         consentimientoVia: "formulario-web",
         consentimientoIp: hashIp(request),
         consentimientoTexto: textoConsentimiento,
+        codigoReferidoId,
+        codigoReferidoTexto: codigoTexto,
         postulaciones: { create: [{ vacanteId: vacante?.id ?? null }] },
       },
     })

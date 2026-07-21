@@ -32,6 +32,7 @@ export type CandidatoSer = {
   origen: string | null
   origenDetalle: string | null
   areaInteres: string | null
+  codigoReferido: { codigo: string; nombreEmpleado: string } | null
   consentimientoBanco: boolean
   notas: string | null
   resumenIA: string | null
@@ -99,6 +100,17 @@ export type ComparativoSer = {
   }
   creadoPor: string | null
   createdAt: string
+}
+
+export type CodigoReferidoSer = {
+  id: string
+  nombreEmpleado: string
+  codigo: string
+  activo: boolean
+  notas: string | null
+  createdAt: string
+  totalReferidos: number
+  totalContratados: number
 }
 
 export type ConfigTalentoSer = {

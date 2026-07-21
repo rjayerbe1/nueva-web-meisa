@@ -7,10 +7,12 @@ import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { CandidatosTab } from "./CandidatosTab"
 import { ComparativosTab } from "./ComparativosTab"
 import { PipelineTab } from "./PipelineTab"
+import { ReferidosTab } from "./ReferidosTab"
 import { VacanteIAPanel } from "./VacanteIAPanel"
 import { CANALES_PUBLICACION, ESTADOS_VACANTE } from "./constants"
 import type {
   CandidatoSer,
+  CodigoReferidoSer,
   ComparativoSer,
   ConfigTalentoSer,
   PostulacionSer,
@@ -133,6 +135,7 @@ export function TalentoAdminTabs({
   postulaciones,
   publicaciones,
   comparativos,
+  codigosReferido,
   config,
 }: {
   vacantes: VacanteSer[]
@@ -140,6 +143,7 @@ export function TalentoAdminTabs({
   postulaciones: PostulacionSer[]
   publicaciones: PublicacionSer[]
   comparativos: ComparativoSer[]
+  codigosReferido: CodigoReferidoSer[]
   config: ConfigTalentoSer | null
 }) {
   const tabs: AdminTab[] = [
@@ -205,6 +209,12 @@ export function TalentoAdminTabs({
           comparativos={comparativos}
         />
       ),
+    },
+    {
+      id: "referidos",
+      label: "Referidos",
+      count: codigosReferido.length,
+      content: <ReferidosTab codigos={codigosReferido} />,
     },
     {
       id: "publicaciones",

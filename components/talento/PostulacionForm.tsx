@@ -22,6 +22,7 @@ export function PostulacionForm({
   const [email, setEmail] = useState("")
   const [telefono, setTelefono] = useState("")
   const [ciudad, setCiudad] = useState("")
+  const [codigoReferido, setCodigoReferido] = useState("")
   const [cvFile, setCvFile] = useState<File | null>(null)
   const [consentimiento, setConsentimiento] = useState(false)
   const [banco, setBanco] = useState(false)
@@ -69,6 +70,7 @@ export function PostulacionForm({
           telefono: telefono.trim(),
           ciudad: ciudad.trim() || null,
           vacanteSlug: vacanteSlug ?? null,
+          codigoReferido: codigoReferido.trim() || null,
           consentimiento: true,
           consentimientoBanco: banco,
           cvPathGcs: upData.pathGcs,
@@ -169,6 +171,21 @@ export function PostulacionForm({
             className={INPUT_CLS}
             autoComplete="address-level2"
           />
+        </div>
+        <div className="md:col-span-2">
+          <label className={LABEL_CLS} htmlFor="pf-referido">
+            Código de referido (opcional)
+          </label>
+          <input
+            id="pf-referido"
+            value={codigoReferido}
+            onChange={(e) => setCodigoReferido(e.target.value.toUpperCase())}
+            placeholder="Ej: JUANP482"
+            className={INPUT_CLS}
+          />
+          <p className="mt-1.5 font-lato text-xs italic text-slate-500">
+            ¿Un colaborador de MEISA te compartió su código? Ingrésalo aquí.
+          </p>
         </div>
 
         {/* Honeypot — invisible para humanos */}

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { TalentoAdminTabs } from "@/components/admin/talento/TalentoAdminTabs"
 import type {
   CandidatoSer,
+  CodigoReferidoSer,
   ComparativoSer,
   PostulacionSer,
   PublicacionSer,
@@ -14,8 +15,15 @@ export const revalidate = 0
 const dateOnly = (d: Date | null) => (d ? d.toISOString().slice(0, 10) : null)
 
 async function getData() {
-  const [vacantesRaw, candidatosRaw, postulacionesRaw, publicacionesRaw, comparativosRaw, config] =
-    await Promise.all([
+  const [
+    vacantesRaw,
+    candidatosRaw,
+    postulacionesRaw,
+    publicacionesRaw,
+    comparativosRaw,
+    codigosReferidoRaw,
+    config,
+  ] = await Promise.all([
       prisma.vacante.findMany({
         orderBy: [{ orden: "asc" }, { createdAt: "desc" }],
         include: { _count: { select: { postulaciones: true } } },
@@ -30,6 +38,7 @@ async function getData() {
               vacante: { select: { id: true, titulo: true } },
             },
           },
+          codigoReferido: { select: { codigo: true, nombreEmpleado: true } },
         },
       }),
       prisma.postulacion.findMany({
@@ -56,6 +65,13 @@ async function getData() {
       prisma.comparativoVacante.findMany({
         orderBy: { createdAt: "desc" },
         include: { vacante: { select: { id: true, titulo: true } } },
+      }),
+      prisma.codigoReferido.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+          _count: { select: { candidatos: true } },
+          candidatos: { include: { postulaciones: { select: { etapa: true } } } },
+        },
       }),
       prisma.configuracionTalento.upsert({
         where: { id: "default" },
@@ -98,6 +114,7 @@ async function getData() {
     origen: c.origen,
     origenDetalle: c.origenDetalle,
     areaInteres: c.areaInteres,
+    codigoReferido: c.codigoReferido,
     consentimientoBanco: c.consentimientoBanco,
     notas: c.notas,
     resumenIA: c.resumenIA,
@@ -141,12 +158,40 @@ async function getData() {
     createdAt: c.createdAt.toISOString(),
   }))
 
-  return { vacantes, candidatos, postulaciones, publicaciones, comparativos, config }
+  const codigosReferido: CodigoReferidoSer[] = codigosReferidoRaw.map((c) => ({
+    id: c.id,
+    nombreEmpleado: c.nombreEmpleado,
+    codigo: c.codigo,
+    activo: c.activo,
+    notas: c.notas,
+    createdAt: c.createdAt.toISOString(),
+    totalReferidos: c._count.candidatos,
+    totalContratados: c.candidatos.filter((cand) =>
+      cand.postulaciones.some((p) => p.etapa === "CONTRATADA"),
+    ).length,
+  }))
+
+  return {
+    vacantes,
+    candidatos,
+    postulaciones,
+    publicaciones,
+    comparativos,
+    codigosReferido,
+    config,
+  }
 }
 
 export default async function TalentoAdminPage() {
-  const { vacantes, candidatos, postulaciones, publicaciones, comparativos, config } =
-    await getData()
+  const {
+    vacantes,
+    candidatos,
+    postulaciones,
+    publicaciones,
+    comparativos,
+    codigosReferido,
+    config,
+  } = await getData()
   return (
     <TalentoAdminTabs
       vacantes={vacantes}
@@ -154,6 +199,7 @@ export default async function TalentoAdminPage() {
       postulaciones={postulaciones}
       publicaciones={publicaciones}
       comparativos={comparativos}
+      codigosReferido={codigosReferido}
       config={config}
     />
   )

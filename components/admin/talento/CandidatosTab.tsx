@@ -561,6 +561,14 @@ export function CandidatosTab({
                             {c.areaInteres}
                           </span>
                         )}
+                        {c.codigoReferido && (
+                          <span
+                            title={`Código ${c.codigoReferido.codigo}`}
+                            className="ml-1 rounded-none border border-amber-200 bg-amber-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-amber-800"
+                          >
+                            Refirió: {c.codigoReferido.nombreEmpleado}
+                          </span>
+                        )}
                       </td>
                       <td className="px-3 py-2.5">
                         {c.cvPathGcs ? (

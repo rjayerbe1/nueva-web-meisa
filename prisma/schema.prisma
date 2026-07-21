@@ -1358,6 +1358,13 @@ model Candidato {
   origen        String? // computrabajo | magneto | elempleo | linkedin | spe | referido | email | whatsapp | fisico | web
   origenDetalle String?
   areaInteres   String? // organización del pool: SST | Producción | Ingeniería | Administrativa...
+
+  // Programa de referidos: el CANDIDATO ingresa el código al aplicar (nunca el
+  // empleado entregando datos de un tercero) — así el consentimiento de datos
+  // personales lo da la propia persona referida, no un colaborador por ella.
+  codigoReferidoId    String?
+  codigoReferido      CodigoReferido? @relation(fields: [codigoReferidoId], references: [id], onDelete: SetNull)
+  codigoReferidoTexto String? // lo que escribió el candidato, para reconciliar si no hizo match exacto
   consentimientoBanco Boolean   @default(false) // autorizó conservar el CV para vacantes futuras
   consentimientoFecha DateTime?
   consentimientoVia   String? // formulario-web | bolsa-de-empleo | entregado-a-th
@@ -1418,6 +1425,26 @@ model PublicacionVacante {
 
   @@index([vacanteId])
   @@map("publicaciones_vacante")
+}
+
+// Programa de Referidos ("Referidos que Construyen"): un código por empleado
+// para que lo comparta con quien quiera referir. El código solo sirve para
+// TRACKING de la fuente y el pago del incentivo (Art. 128 CST — bonificación
+// ocasional por mera liberalidad, no constitutiva de salario) — NUNCA para
+// saltarse la evaluación por mérito (Ley 931/2004): el candidato referido pasa
+// por el mismo proceso de selección que cualquier otro.
+model CodigoReferido {
+  id             String   @id @default(cuid())
+  nombreEmpleado String
+  codigo         String   @unique
+  activo         Boolean  @default(true)
+  notas          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  candidatos Candidato[]
+
+  @@map("codigos_referido")
 }
 
 model ConfiguracionTalento {
