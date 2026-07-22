@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { ChevronDown, ChevronUp, Loader2, Sparkles, Trash2 } from "lucide-react"
+import { ChevronDown, ChevronUp, Loader2, Search, Sparkles, Trash2, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { CandidatoSer, ComparativoSer, VacanteSer } from "./types"
 
@@ -109,12 +109,42 @@ export function ComparativosTab({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [abiertoId, setAbiertoId] = useState<string | null>(initial[0]?.id ?? null)
+  const [busqueda, setBusqueda] = useState("")
+  const [area, setArea] = useState("")
 
   const analizables = useMemo(
     () => candidatos.filter((c) => c.resumenIA || c.datosIA),
     [candidatos],
   )
   const sinAnalizar = candidatos.length - analizables.length
+  const areas = useMemo(
+    () =>
+      Array.from(new Set(analizables.map((c) => c.areaInteres).filter(Boolean) as string[])).sort(
+        (a, b) => a.localeCompare(b, "es", { sensitivity: "base" }),
+      ),
+    [analizables],
+  )
+  const visibles = useMemo(() => {
+    const term = busqueda.trim().toLocaleLowerCase("es")
+    return analizables.filter((c) => {
+      const coincideArea = !area || c.areaInteres === area
+      const coincideTexto =
+        !term ||
+        [c.nombre, c.email, c.ciudad, c.areaInteres, ...c.postulaciones.map((p) => p.vacante?.titulo)]
+          .filter(Boolean)
+          .some((value) => String(value).toLocaleLowerCase("es").includes(term))
+      return coincideArea && coincideTexto
+    })
+  }, [analizables, area, busqueda])
+
+  const seleccionarVisibles = () => {
+    setSeleccion((prev) => new Set([...Array.from(prev), ...visibles.map((c) => c.id)]))
+  }
+
+  const quitarVisibles = () => {
+    const ids = new Set(visibles.map((c) => c.id))
+    setSeleccion((prev) => new Set(Array.from(prev).filter((id) => !ids.has(id))))
+  }
 
   const toggle = (id: string) => {
     setSeleccion((prev) => {
@@ -204,23 +234,23 @@ export function ComparativosTab({
         </div>
 
         <div className="px-5 py-4">
-          <div className="mb-2 flex flex-wrap items-center gap-3">
+          <div className="mb-3 flex flex-wrap items-center gap-3">
             <p className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
-              Candidatos ({analizables.length} con perfil IA)
+              Candidatos ({visibles.length} visibles · {seleccion.size} seleccionados)
             </p>
             <button
               type="button"
-              onClick={() => setSeleccion(new Set(analizables.map((c) => c.id)))}
+              onClick={seleccionarVisibles}
               className="font-lato text-[11px] font-bold uppercase tracking-wider text-blue-700 hover:underline"
             >
-              Todos
+              Seleccionar visibles
             </button>
             <button
               type="button"
-              onClick={() => setSeleccion(new Set())}
+              onClick={quitarVisibles}
               className="font-lato text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:underline"
             >
-              Ninguno
+              Quitar visibles
             </button>
             {sinAnalizar > 0 && (
               <span className="font-lato text-xs italic text-slate-400">
@@ -228,8 +258,49 @@ export function ComparativosTab({
               </span>
             )}
           </div>
+          <div className="mb-3 grid gap-2 sm:grid-cols-[minmax(240px,1fr)_240px_auto]">
+            <label className="relative block">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                value={busqueda}
+                onChange={(event) => setBusqueda(event.target.value)}
+                placeholder="Buscar por nombre, vacante, ciudad o área"
+                className="h-10 w-full rounded-none border border-slate-300 bg-white pl-9 pr-9 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+              />
+              {busqueda && (
+                <button
+                  type="button"
+                  onClick={() => setBusqueda("")}
+                  title="Limpiar búsqueda"
+                  className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center text-slate-400 hover:text-slate-900"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </label>
+            <select
+              value={area}
+              onChange={(event) => setArea(event.target.value)}
+              aria-label="Filtrar por área"
+              className="h-10 rounded-none border border-slate-300 bg-white px-3 font-lato text-sm text-slate-900 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+            >
+              <option value="">Todas las áreas</option>
+              {areas.map((item) => (
+                <option key={item} value={item}>{item}</option>
+              ))}
+            </select>
+            {(busqueda || area) && (
+              <button
+                type="button"
+                onClick={() => { setBusqueda(""); setArea("") }}
+                className="h-10 px-3 font-lato text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900"
+              >
+                Limpiar filtros
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
-            {analizables.map((c) => (
+            {visibles.map((c) => (
               <label
                 key={c.id}
                 className={cn(
@@ -256,6 +327,11 @@ export function ComparativosTab({
               </label>
             ))}
           </div>
+          {visibles.length === 0 && (
+            <div className="border border-dashed border-slate-300 px-4 py-8 text-center font-lato text-sm text-slate-500">
+              No hay candidatos analizables que coincidan con estos filtros.
+            </div>
+          )}
           {error && (
             <div className="mt-4 rounded-none border border-red-300 bg-red-100 px-3 py-2 font-lato text-sm text-red-800">
               {error}

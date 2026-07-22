@@ -1444,7 +1444,14 @@ model PublicacionVacante {
 // por el mismo proceso de selección que cualquier otro.
 model CodigoReferido {
   id             String   @id @default(cuid())
+  // Identidad maestra en Firestore (`produccion-reportes/colaboradores`). El
+  // nombre/cargo se conservan como snapshot para que el historial siga siendo
+  // legible aunque el colaborador cambie de cargo o sea retirado.
+  colaboradorId  String?  @unique
+  cedulaEmpleado String?
   nombreEmpleado String
+  cargoEmpleado  String?
+  areaEmpleado   String?
   codigo         String   @unique
   activo         Boolean  @default(true)
   notas          String?

@@ -161,7 +161,11 @@ async function getData() {
 
   const codigosReferido: CodigoReferidoSer[] = codigosReferidoRaw.map((c) => ({
     id: c.id,
+    colaboradorId: c.colaboradorId,
+    cedulaEmpleado: c.cedulaEmpleado,
     nombreEmpleado: c.nombreEmpleado,
+    cargoEmpleado: c.cargoEmpleado,
+    areaEmpleado: c.areaEmpleado,
     codigo: c.codigo,
     activo: c.activo,
     notas: c.notas,

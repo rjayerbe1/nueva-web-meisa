@@ -105,7 +105,11 @@ export type ComparativoSer = {
 
 export type CodigoReferidoSer = {
   id: string
+  colaboradorId: string | null
+  cedulaEmpleado: string | null
   nombreEmpleado: string
+  cargoEmpleado: string | null
+  areaEmpleado: string | null
   codigo: string
   activo: boolean
   notas: string | null
