@@ -116,15 +116,20 @@ const SECTION_ACCENT: Record<"red" | "blue" | "slate", string> = {
 interface AdminSidebarProps {
   sidebarOpen: boolean
   setSidebarOpen: (open: boolean) => void
+  restrictedToTalento?: boolean
 }
 
-export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps) {
+export function AdminSidebar({ sidebarOpen, setSidebarOpen, restrictedToTalento }: AdminSidebarProps) {
   const pathname = usePathname()
   const [expandedItems, setExpandedItems] = useState<string[]>([])
 
   const toggleExpansion = (itemName: string) => {
     setExpandedItems((prev) => (prev.includes(itemName) ? [] : [itemName]))
   }
+
+  const visibleNavigation = restrictedToTalento
+    ? navigation.filter((entry) => entry.kind === "item" && entry.href === "/admin/talento")
+    : navigation
 
   return (
     <>
@@ -166,7 +171,7 @@ export function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps)
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-0.5">
-            {navigation.map((entry, idx) => {
+            {visibleNavigation.map((entry, idx) => {
               if (entry.kind === "section") {
                 return (
                   <li

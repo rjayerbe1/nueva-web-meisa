@@ -6,14 +6,19 @@ import { AdminHeader } from "./AdminHeader"
 
 interface AdminLayoutClientProps {
   children: React.ReactNode
+  restrictedToTalento?: boolean
 }
 
-export function AdminLayoutClient({ children }: AdminLayoutClientProps) {
+export function AdminLayoutClient({ children, restrictedToTalento }: AdminLayoutClientProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="flex h-screen bg-stone-50 font-lato">
-      <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <AdminSidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        restrictedToTalento={restrictedToTalento}
+      />
 
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
         <AdminHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />

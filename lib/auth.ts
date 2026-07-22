@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           role: user.role,
           avatar: user.avatar,
+          restrictedToTalento: user.restrictedToTalento,
         }
       }
     }),
@@ -78,15 +79,17 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = (user as any).role
         token.id = user.id
+        token.restrictedToTalento = (user as any).restrictedToTalento ?? false
       }
       if (account?.provider === "google" && token.email) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email as string },
-          select: { id: true, role: true, avatar: true },
+          select: { id: true, role: true, avatar: true, restrictedToTalento: true },
         })
         if (dbUser) {
           token.id = dbUser.id
           token.role = dbUser.role
+          token.restrictedToTalento = dbUser.restrictedToTalento
           ;(token as any).picture = dbUser.avatar ?? (token as any).picture
         }
       }
@@ -96,6 +99,7 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.id as string
         session.user.role = token.role as UserRole
+        session.user.restrictedToTalento = token.restrictedToTalento as boolean
       }
       return session
     },

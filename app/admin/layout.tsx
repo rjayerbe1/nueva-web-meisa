@@ -26,7 +26,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <AdminLayoutClient>
+    <AdminLayoutClient restrictedToTalento={session.user.restrictedToTalento}>
       {children}
     </AdminLayoutClient>
   )

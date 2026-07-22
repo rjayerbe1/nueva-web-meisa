@@ -13,6 +13,7 @@ model User {
   password            String?
   name                String?
   role                UserRole             @default(VIEWER)
+  restrictedToTalento Boolean              @default(false)
   avatar              String?
   emailVerified       DateTime?
   createdAt           DateTime             @default(now())
