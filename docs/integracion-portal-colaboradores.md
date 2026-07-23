@@ -48,13 +48,25 @@ incluso si la cédula es válida.
   "nombreEmpleado": "Juan Pérez",
   "codigo": "JUANP482",
   "activo": true,
-  "urlPostulacion": "https://meisa.com.co/trabaja-con-nosotros"
+  "urlPostulacion": "https://meisa.com.co/trabaja-con-nosotros",
+  "totalReferidos": 2,
+  "totalContratados": 1
 }
 ```
 
 - `codigo`: el código que el colaborador debe compartir con su referido.
 - `urlPostulacion`: el link donde el referido debe aplicar (útil para armar el
   mensaje que el colaborador comparte, ej. por WhatsApp).
+- `totalReferidos`: cuántas personas han aplicado en `trabaja-con-nosotros` usando
+  ese código (transparencia: "tu código ya fue usado X veces").
+- `totalContratados`: cuántas de esas personas llegaron a la etapa CONTRATADA
+  (relevante para el pago del incentivo por nómina).
+
+**Importante — privacidad**: estos dos campos son solo conteos. El endpoint
+**nunca** devuelve el nombre, CV, teléfono ni ningún otro dato del candidato
+referido — esa persona dio su consentimiento de habeas data para que MEISA use
+sus datos en el proceso de selección, no para que un tercero (el colaborador
+que lo refirió) los vea. No pidan ni esperen ese detalle de este endpoint.
 
 **El código se genera automáticamente la primera vez que se consulta esa cédula**
 (no hace falta que un admin lo cree manualmente de antemano en MEISA). Si el

@@ -89,11 +89,28 @@ export async function GET(req: NextRequest) {
       )
     }
 
+    // Solo conteos agregados — nunca nombre/CV/contacto del candidato referido
+    // (esos datos tienen su propio consentimiento de habeas data, distinto al
+    // del colaborador que refiere).
+    const conConteo = await prisma.codigoReferido.findUniqueOrThrow({
+      where: { id: registro.id },
+      include: {
+        _count: { select: { candidatos: true } },
+        candidatos: { select: { postulaciones: { select: { etapa: true } } } },
+      },
+    })
+    const totalReferidos = conConteo._count.candidatos
+    const totalContratados = conConteo.candidatos.filter((cand) =>
+      cand.postulaciones.some((p) => p.etapa === "CONTRATADA"),
+    ).length
+
     return NextResponse.json({
       nombreEmpleado: registro.nombreEmpleado,
       codigo: registro.codigo,
       activo: registro.activo,
       urlPostulacion: "https://meisa.com.co/trabaja-con-nosotros",
+      totalReferidos,
+      totalContratados,
     })
   } catch (error) {
     console.error("[api] integraciones/colaboradores/codigo-referido:", error)
