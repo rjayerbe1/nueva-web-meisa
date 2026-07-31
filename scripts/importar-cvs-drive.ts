@@ -1,4 +1,11 @@
 /**
+ * ⚠️ OBSOLETO — usar `scripts/sync-drive-talento.ts`.
+ *
+ * Este importador procesa UNA carpeta (sin recursión), exige el área a mano y
+ * deduplica solo por fileId de Drive, así que vuelve a crear a quien ya está
+ * en el banco por otra vía (pasó con 7 personas que habían entrado por la web
+ * y por correo). Se conserva solo como referencia histórica.
+ *
  * Importa hojas de vida desde una carpeta de Google Drive al banco de
  * candidatos de /admin/talento:
  *   1. Lista los PDFs de la carpeta (Drive API, DWD impersonando al usuario)
