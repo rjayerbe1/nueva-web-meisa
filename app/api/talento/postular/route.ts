@@ -6,6 +6,7 @@ import { sendViaGmailDWD } from "@/lib/gmail-client"
 import { talentoFromHeader } from "@/lib/email"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
 import { normalizarNombre } from "@/lib/talento/nombres"
+import { areaDesdeVacante } from "@/lib/talento/drive-sync"
 
 // Postulación PÚBLICA (formulario /trabaja-con-nosotros).
 // Gated por el switch paginaPublicaActiva. Guarda la PRUEBA del
@@ -98,6 +99,10 @@ export async function POST(request: NextRequest) {
         cvSize: data.cvSize,
         origen: "web",
         origenDetalle: vacante ? `vacante: ${vacante.titulo}` : "aplicación espontánea",
+        // Sin esto el candidato queda fuera de todos los pools del banco (pasó
+        // con las primeras 18 postulaciones). Espontáneas siguen en null: las
+        // clasifica Talento Humano.
+        areaInteres: areaDesdeVacante(vacante?.titulo, vacante?.area),
         consentimientoBanco: data.consentimientoBanco ?? false,
         consentimientoFecha: new Date(),
         consentimientoVia: "formulario-web",

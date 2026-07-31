@@ -1362,6 +1362,12 @@ model Candidato {
   cvContentType String?
   cvSize        Int?
 
+  // Espejo en la carpeta de Drive de Talento Humano. Se guarda el id para que
+  // la purga por retención pueda borrar TAMBIÉN esa copia: sin este registro
+  // la supresión quedaría a medias y el CV sobreviviría en Drive (Ley 1581).
+  driveFileId   String?
+  driveSyncedAt DateTime?
+
   // Trazabilidad habeas data (Ley 1581/2012): por dónde llegó el CV y
   // cuándo quedó registrado; base para la purga por retención.
   origen        String? // computrabajo | magneto | elempleo | linkedin | spe | referido | email | whatsapp | fisico | web
