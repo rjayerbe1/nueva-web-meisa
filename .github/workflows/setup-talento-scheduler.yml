@@ -8,19 +8,9 @@ name: Setup Cloud Scheduler (sync Talento ↔ Drive)
 # solo si hay que cambiar la frecuencia o el destino. El job resultante vive en
 # GCP y no depende de GitHub para ejecutarse.
 #
-# ⚠️ El SA de deploy (github-actions-deployer@) NO tiene permiso de Cloud
-# Scheduler, así que este workflow FALLA tal cual está. El job en producción se
-# creó a mano con la cuenta del dueño:
-#
-#   gcloud scheduler jobs create http talento-sync-drive \
-#     --project=meisa-web-prod-2025 --location=us-central1 \
-#     --schedule="0 7-19 * * 1-6" --time-zone="America/Bogota" \
-#     --uri="https://meisa.com.co/api/talento/sync-drive" --http-method=POST \
-#     --headers="x-sync-secret=<TALENTO_SYNC_SECRET>" --attempt-deadline=540s
-#
-# Para que este workflow sirva, darle al SA roles/cloudscheduler.admin en el
-# proyecto. Mientras tanto se conserva como documentación de la configuración
-# exacta del job.
+# Se hace desde acá y no con gcloud local porque las credenciales del proyecto
+# GCP viven en el secreto GCP_SA_KEY del repo. El SA de deploy tiene
+# roles/cloudscheduler.admin para esto.
 
 on:
   workflow_dispatch:
@@ -53,13 +43,6 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      # El SA de deploy no siempre puede habilitar APIs; si ya está activa el
-      # paso es innecesario. Se intenta y se sigue: el error real aparecería al
-      # crear el job.
-      - name: Habilitar la API de Cloud Scheduler (si se puede)
-        continue-on-error: true
-        run: gcloud services enable cloudscheduler.googleapis.com --project=${{ env.PROJECT_ID }}
-
       - name: Crear o actualizar el job
         run: |
           set -euo pipefail
@@ -78,18 +61,21 @@ jobs:
             --time-zone="America/Bogota"
             --uri="$URL"
             --http-method=POST
-            --headers="x-sync-secret=${{ secrets.TALENTO_SYNC_SECRET }}"
             --attempt-deadline=540s
             --description="Sincroniza la carpeta de hojas de vida de Drive con el banco de candidatos (las 2 direcciones)"
           )
 
+          # OJO: `create` usa --headers y `update` usa --update-headers. Pasarle
+          # --headers a update falla con "unrecognized arguments".
           if gcloud scheduler jobs describe "$JOB" \
                --project="${{ env.PROJECT_ID }}" --location="${{ env.REGION }}" >/dev/null 2>&1; then
             echo "El job ya existe → se actualiza"
-            gcloud scheduler jobs update http "$JOB" "${COMUN[@]}"
+            gcloud scheduler jobs update http "$JOB" "${COMUN[@]}" \
+              --update-headers="x-sync-secret=${{ secrets.TALENTO_SYNC_SECRET }}"
           else
             echo "El job no existe → se crea"
-            gcloud scheduler jobs create http "$JOB" "${COMUN[@]}"
+            gcloud scheduler jobs create http "$JOB" "${COMUN[@]}" \
+              --headers="x-sync-secret=${{ secrets.TALENTO_SYNC_SECRET }}"
           fi
 
           gcloud scheduler jobs describe "$JOB" \
