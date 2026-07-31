@@ -109,14 +109,22 @@ export async function POST(request: NextRequest) {
     })
 
     // Correos (await: Cloud Run estrangula CPU en background — nada de fire-and-forget)
-    const destinoInterno =
+    // Acepta VARIOS destinatarios separados por coma (ej. "th@…, coordinacion@…"):
+    // así el aviso de cada postulación le llega a todo el equipo de Talento
+    // Humano, no a una sola persona que puede estar de vacaciones.
+    const destinoInterno = (
       config.emailNotificaciones ||
       process.env.MEISA_CONTACT_NOTIFY_TO ||
-      process.env.MEISA_ADMIN_EMAIL
+      process.env.MEISA_ADMIN_EMAIL ||
+      ""
+    )
+      .split(",")
+      .map((x) => x.trim())
+      .filter((x) => x.includes("@"))
     const vacanteTxt = vacante ? vacante.titulo : "Aplicación espontánea"
 
     const emailTasks: Promise<unknown>[] = []
-    if (destinoInterno) {
+    if (destinoInterno.length > 0) {
       emailTasks.push(
         sendViaGmailDWD({
           to: destinoInterno,

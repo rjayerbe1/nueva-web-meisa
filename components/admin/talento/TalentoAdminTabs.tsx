@@ -282,9 +282,10 @@ export function TalentoAdminTabs({
                 },
                 {
                   name: "emailNotificaciones",
-                  label: "Correo para avisos de postulaciones",
+                  label: "Correos para avisos de postulaciones",
                   kind: "text",
-                  placeholder: "talentohumano@meisa.com.co",
+                  placeholder: "talento.humano@meisa.com.co, coordinacion.th@meisa.com.co",
+                  hint: "Puedes poner varios separados por coma: a todos les llega el aviso de cada postulación.",
                 },
               ],
             },
