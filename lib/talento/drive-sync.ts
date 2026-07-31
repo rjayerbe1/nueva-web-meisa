@@ -52,7 +52,8 @@ const MAPA_AREAS: Record<string, string> = {
   "OFICIOS VARIOS": "Oficios Varios",
   PROYECTISTAS: "Diseño",
   PROYECTISTA: "Diseño",
-  SISTEMAS: "Sistemas",
+  // Decisión del dueño (31-jul-2026): Sistemas no es un pool propio.
+  SISTEMAS: "Oficios Varios",
   SOLDADOR: "Soldador",
   SSTA: "SST",
   SST: "SST",
