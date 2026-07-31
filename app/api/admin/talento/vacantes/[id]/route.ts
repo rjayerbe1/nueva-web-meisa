@@ -17,6 +17,8 @@ export async function PUT(req: NextRequest, ctx: { params: { id: string } }) {
   const res = await h.PUT(req, ctx)
   if (res.status < 300) {
     revalidatePath("/trabaja-con-nosotros")
+    // /contacto lista las vacantes abiertas en la banda "03 — Talento".
+    revalidatePath("/contacto")
     try {
       const body = await res.clone().json()
       if (body?.slug) revalidatePath(`/trabaja-con-nosotros/${body.slug}`)

@@ -18,6 +18,7 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import type { PlantaPublica } from "@/lib/content/plantas"
+import type { TalentoPublico } from "@/lib/talento/publico"
 import { sendGAEvent } from "@next/third-parties/google"
 
 import { ProjectTypeSelector } from "@/components/contacto/ProjectTypeSelector"
@@ -65,6 +66,7 @@ type ContactFormData = z.infer<typeof contactSchema>
 
 interface ContactoContentProps {
   plantas: PlantaPublica[]
+  talento: TalentoPublico
 }
 
 const inputClass =
@@ -75,6 +77,7 @@ const errorClass = "mt-1 text-xs text-red-500 font-lato"
 
 export default function ContactoContent({
   plantas,
+  talento,
 }: ContactoContentProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">(
@@ -790,6 +793,96 @@ export default function ContactoContent({
           </div>
         </div>
       </section>
+
+      {/* TALENTO — solo si la página pública de empleo está encendida.
+          Desvía a los que buscan trabajo (llegaban al form de proyectos). */}
+      {talento.activa && (
+        <section className="relative bg-slate-950 border-t border-white/10 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6 }}
+                className="lg:col-span-5"
+              >
+                <p className="text-white/40 font-lato font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-4">
+                  03 — Talento
+                </p>
+                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white">
+                  Trabaja
+                </h2>
+                <h3 className="text-5xl md:text-6xl lg:text-7xl font-bebas uppercase leading-[0.95] text-white/40">
+                  con nosotros.
+                </h3>
+                <p className="mt-6 text-white/60 font-lato text-base md:text-lg max-w-xl leading-relaxed">
+                  ¿Buscas empleo en MEISA? El formulario de arriba es para
+                  proyectos y cotizaciones — las postulaciones van por acá.
+                  Revisa las vacantes abiertas o déjanos tu hoja de vida en el
+                  banco de talento.
+                </p>
+                <Link
+                  href="/trabaja-con-nosotros"
+                  className="group mt-8 inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
+                >
+                  Ver vacantes y postularme
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="lg:col-span-7"
+              >
+                {talento.vacantes.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {talento.vacantes.map((vacante, i) => (
+                      <Link
+                        key={vacante.id}
+                        href={`/trabaja-con-nosotros/${vacante.slug}`}
+                        className="group flex flex-col border border-white/10 p-6 transition-colors hover:border-white/40 hover:bg-slate-900"
+                      >
+                        <span className="font-bebas text-4xl leading-none text-white/20">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <h4 className="mt-3 text-2xl md:text-3xl font-bebas uppercase leading-[0.95] text-white">
+                          {vacante.titulo}
+                        </h4>
+                        {(vacante.ciudad || vacante.area) && (
+                          <p className="mt-2 flex items-center gap-2 font-lato text-sm text-white/50">
+                            <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-white/30" />
+                            <span>
+                              {[vacante.ciudad, vacante.area]
+                                .filter(Boolean)
+                                .join(" · ")}
+                            </span>
+                          </p>
+                        )}
+                        <span className="mt-auto pt-6 inline-flex items-center gap-2 font-lato font-bold text-xs uppercase tracking-[0.15em] text-white/60 transition-colors group-hover:text-white">
+                          Ver vacante
+                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="border border-white/10 p-8 md:p-10">
+                    <p className="font-lato text-base text-white/60 leading-relaxed">
+                      En este momento no tenemos vacantes abiertas publicadas.
+                      Puedes dejar tu hoja de vida en el banco de talento y te
+                      contactamos cuando abra un proceso de tu perfil.
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* MODAL planta */}
       <AnimatePresence>

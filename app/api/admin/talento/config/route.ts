@@ -17,6 +17,13 @@ export const GET = h.GET
 // por sí solo, lo cual a veces no ocurre de forma confiable.
 export async function PUT(req: NextRequest) {
   const res = await h.PUT(req)
-  if (res.status < 300) revalidatePath("/trabaja-con-nosotros")
+  if (res.status < 300) {
+    revalidatePath("/trabaja-con-nosotros")
+    // El enlace del footer y la banda "03 — Talento" de /contacto dependen del
+    // switch: se revalida el layout público entero para que prender/apagar la
+    // página no deje enlaces colgando hacia un notFound() en el resto del sitio.
+    revalidatePath("/contacto")
+    revalidatePath("/", "layout")
+  }
   return res
 }

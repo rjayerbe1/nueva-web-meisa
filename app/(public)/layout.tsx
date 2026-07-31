@@ -4,6 +4,7 @@ import { WhatsAppFloatingWidget } from '@/components/WhatsAppFloatingWidget'
 import { ChatWidget } from '@/components/chat/ChatWidget'
 import { getNavegacionData } from '@/lib/content/navegacion'
 import { getPlantasPublicas } from '@/lib/content/plantas'
+import { getTalentoPublico } from '@/lib/talento/publico'
 
 const DEFAULT_IMAGE = 'https://storage.googleapis.com/meisa-imagenes/site/hero/montaje-grua.jpg'
 
@@ -23,9 +24,10 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [nav, plantasDB] = await Promise.all([
+  const [nav, plantasDB, talento] = await Promise.all([
     getNavegacionData().catch(() => ({ menu: [], footer: [], social: [] })),
     getPlantasPublicas().catch(() => []),
+    getTalentoPublico().catch(() => ({ activa: false, vacantes: [] })),
   ])
 
   const menuItems = nav.menu.map((m) => ({
@@ -47,6 +49,17 @@ export default async function PublicLayout({
     label: f.label,
     href: f.href,
   }))
+
+  // El enlace de empleo NO vive en FooterLink: se inyecta según el switch de
+  // Talento para que apagar la página pública desde el admin lo retire solo.
+  // Va al final del grupo "empresa" (el Footer agrupa respetando este orden).
+  if (talento.activa) {
+    footerLinks.push({
+      grupo: 'empresa',
+      label: 'Trabaja con nosotros',
+      href: '/trabaja-con-nosotros',
+    })
+  }
 
   const plantas = plantasDB.map((p) => ({
     nombre: p.nombre,

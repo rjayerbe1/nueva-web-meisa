@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import ContactoContent from './ContactoContent'
 import { getPlantasPublicas } from '@/lib/content/plantas'
+import { getTalentoPublico } from '@/lib/talento/publico'
 
 export const revalidate = 60
 
@@ -22,6 +23,9 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactoPage() {
-  const plantas = await getPlantasPublicas()
-  return <ContactoContent plantas={plantas} />
+  const [plantas, talento] = await Promise.all([
+    getPlantasPublicas(),
+    getTalentoPublico().catch(() => ({ activa: false, vacantes: [] })),
+  ])
+  return <ContactoContent plantas={plantas} talento={talento} />
 }
