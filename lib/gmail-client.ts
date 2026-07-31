@@ -125,7 +125,7 @@ function buildRfc2822Message(opts: {
   subject: string
   html: string
   text?: string
-  replyTo?: string
+  replyTo?: string | string[]
   cc?: string | string[]
   bcc?: string | string[]
   attachments?: GmailAttachment[]
@@ -137,7 +137,7 @@ function buildRfc2822Message(opts: {
   headers.push(`To: ${formatAddressList(opts.to)}`)
   if (opts.cc) headers.push(`Cc: ${formatAddressList(opts.cc)}`)
   if (opts.bcc) headers.push(`Bcc: ${formatAddressList(opts.bcc)}`)
-  if (opts.replyTo) headers.push(`Reply-To: ${encodeAddress(opts.replyTo)}`)
+  if (opts.replyTo) headers.push(`Reply-To: ${formatAddressList(opts.replyTo)}`)
   headers.push(`Subject: ${encodeHeaderValue(opts.subject)}`)
   headers.push("MIME-Version: 1.0")
 
@@ -224,7 +224,8 @@ export interface GmailSendOptions {
   subject: string
   html: string
   text?: string
-  replyTo?: string
+  /** Uno o varios; se serializan como lista RFC 5322. */
+  replyTo?: string | string[]
   cc?: string | string[]
   bcc?: string | string[]
   /** Sender override — qué cuenta del dominio impersonar. Default: MEISA_GMAIL_SENDER */

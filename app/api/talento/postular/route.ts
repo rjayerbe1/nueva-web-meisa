@@ -3,6 +3,7 @@ import { createHash } from "crypto"
 import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { sendViaGmailDWD } from "@/lib/gmail-client"
+import { talentoFromHeader } from "@/lib/email"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
 import { normalizarNombre } from "@/lib/talento/nombres"
 
@@ -127,7 +128,10 @@ export async function POST(request: NextRequest) {
     if (destinoInterno.length > 0) {
       emailTasks.push(
         sendViaGmailDWD({
+          from: talentoFromHeader,
           to: destinoInterno,
+          // Responder el aviso escribe directo al candidato, no al buzón de archivo.
+          replyTo: data.email,
           subject: `[MEISA Talento] Nueva postulación · ${vacanteTxt} · ${data.nombre}`,
           html: `<div style="font-family:Arial,sans-serif;max-width:560px;">
             <h2 style="color:#0f172a;">Nueva postulación</h2>
@@ -147,7 +151,11 @@ export async function POST(request: NextRequest) {
     }
     emailTasks.push(
       sendViaGmailDWD({
+        from: talentoFromHeader,
         to: data.email,
+        // El From es no-reply@, pero el candidato igual responde: que su
+        // respuesta caiga en Talento Humano y no en el buzón de archivo.
+        replyTo: destinoInterno.length > 0 ? destinoInterno : undefined,
         subject: "Recibimos tu hoja de vida — MEISA",
         html: `<div style="font-family:Arial,sans-serif;max-width:560px;color:#334155;font-size:14px;line-height:1.6;">
           <h2 style="color:#0f172a;">Hola ${escapeHtml(data.nombre.split(" ")[0])},</h2>

@@ -24,6 +24,17 @@ const contactFromHeader = `${companyName} <${contactFromEmail}>`
 // Reply-To por defecto (para correos donde no se sobreescribe, ej. confirmación al cliente)
 const contactReplyTo = process.env.MEISA_CONTACT_REPLY_TO || "contacto@meisa.com.co"
 
+// Remitente de los correos del módulo de Talento (postulaciones). Usa el MISMO
+// alias no-reply@ del formulario de contacto — ya está configurado como "Send
+// mail as" en el mailbox impersonado, así que no requiere nada nuevo en
+// Workspace — pero con nombre visible propio del área. Antes estos correos
+// salían del buzón crudo archivo@meisa.com.co, sin nombre y sin Reply-To: el
+// candidato veía un remitente raro y, si respondía, su mensaje moría en el
+// buzón de archivo.
+// Nombre corto a propósito: `companyName` ("MEISA - Metálicas e Ingeniería
+// S.A.") + área se trunca en la bandeja del candidato.
+export const talentoFromHeader = `MEISA Talento Humano <${contactFromEmail}>`
+
 export async function sendPasswordResetEmail(
   to: string,
   resetUrl: string,
