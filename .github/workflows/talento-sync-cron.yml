@@ -1,0 +1,42 @@
+name: Sync Talento ↔ Drive (cron interino)
+
+# INTERINO — reemplazar por Cloud Scheduler.
+#
+# El disparador definitivo es el job de Cloud Scheduler que crea el workflow
+# "Setup Cloud Scheduler (sync Talento ↔ Drive)". Ese workflow hoy falla porque
+# la API cloudscheduler.googleapis.com NO está habilitada en el proyecto
+# meisa-web-prod-2025 y el SA de deploy no tiene permiso para habilitarla:
+#
+#   gcloud services enable cloudscheduler.googleapis.com --project meisa-web-prod-2025
+#
+# Una vez habilitada y creado el job, BORRAR este archivo — si no, quedan dos
+# disparadores. No rompe nada (el sync es idempotente) pero gasta ciclos.
+#
+# Mientras tanto esto mantiene la sincronización viva. Limitación conocida: el
+# cron de GitHub Actions no es puntual, puede correr con varios minutos de
+# retraso o saltarse ejecuciones si la cola está cargada.
+
+on:
+  schedule:
+    # Cada hora entre las 7am y las 6pm de Bogotá (UTC-5), lunes a sábado.
+    - cron: "0 12-23 * * 1-6"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Disparar la sincronización en producción
+    runs-on: ubuntu-latest
+    steps:
+      - name: POST /api/talento/sync-drive
+        run: |
+          set -euo pipefail
+          RESP=$(curl -sS -X POST https://meisa.com.co/api/talento/sync-drive \
+            -H "x-sync-secret: ${{ secrets.TALENTO_SYNC_SECRET }}" \
+            -w "\n%{http_code}")
+          CODE=$(echo "$RESP" | tail -1)
+          BODY=$(echo "$RESP" | sed '$d')
+          echo "$BODY"
+          if [ "$CODE" != "200" ]; then
+            echo "::error::El sync respondió HTTP $CODE"
+            exit 1
+          fi
