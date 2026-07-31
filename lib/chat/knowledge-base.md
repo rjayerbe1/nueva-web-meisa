@@ -168,7 +168,7 @@ Servicios sueltos (opciones del formulario de contacto): Diseño estructural · 
 
 - **Email:** contacto@meisa.com.co
 - **PBX (Cali):** +57 (2) 312 0050 — 51 / 52 / 53
-- **Móvil / WhatsApp:** +57 310 432 7227 (número WhatsApp: `573104327227`)
+- **Móvil / WhatsApp:** `[runtime/DB]` — sale de `ConfiguracionContacto.whatsappNumero` (editable en /admin/contacto) vía `lib/content/whatsapp.ts`. NO hardcodear el número aquí ni en el prompt: `knowledge.ts` lo inyecta en el FOOTER.
 - **Dirección (sede principal):** Vía Panamericana 6 Sur–195, Jamundí, Valle del Cauca.
 - **Horario:** Lun–Vie 7:00–17:00 · Sáb 8:00–12:00.
 - **Formulario:** página `/contacto` (captura nombre, correo, teléfono, tipo de proyecto, servicio; devuelve número de referencia; respuesta < 24 h hábiles).

@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { GUIAS } from '@/lib/guias'
 import { SOLUCIONES } from '@/lib/soluciones'
+import { getWhatsappComercial } from '@/lib/content/whatsapp'
 
 /**
  * Arma el "system prompt" del asistente: identidad + reglas estrictas
@@ -48,9 +49,15 @@ const RUTAS = `## ENLACES INTERNOS (usa SOLO estas rutas; formato [texto](ruta))
 - Contacto / solicitar cotización: /contacto · Política de tratamiento de datos: /politica-datos
 - Las soluciones por sector y las guías técnicas traen su propia ruta en las secciones de abajo.`
 
-const FOOTER = `
+/**
+ * El número de WhatsApp NO se hardcodea: sale de ConfiguracionContacto
+ * (/admin/contacto), igual que los CTA del sitio. Si no hay número configurado
+ * el asistente simplemente no lo menciona — mejor eso que dictarle a un cliente
+ * un número viejo que quedó pegado en el prompt.
+ */
+const FOOTER = (whatsapp: string | null) => `
 CÓMO ESCALAR A UNA PERSONA:
-- Botón de WhatsApp del sitio (esquina inferior derecha) — número +57 310 432 7227.
+- Botón de WhatsApp del sitio (esquina inferior derecha)${whatsapp ? ` — número ${whatsapp}` : ''}.
 - Correo: contacto@meisa.com.co · Formulario: /contacto.
 Sugiere una de estas vías cuando tenga sentido.`
 
@@ -145,6 +152,8 @@ export async function construirSystemPrompt(): Promise<string> {
     // idem
   }
 
+  const whatsapp = await getWhatsappComercial().catch(() => null)
+
   const texto = [
     BASE,
     RUTAS,
@@ -153,7 +162,7 @@ export async function construirSystemPrompt(): Promise<string> {
     `\n## GUÍAS TÉCNICAS\n${bloqueGuias()}`,
     servicios ? `\n## SERVICIOS DE MEISA\n${servicios}` : '',
     proyectos ? `\n## PROYECTOS REPRESENTATIVOS (ejemplos reales)\n${proyectos}` : '',
-    FOOTER,
+    FOOTER(whatsapp?.display ?? null),
   ]
     .filter(Boolean)
     .join('\n')

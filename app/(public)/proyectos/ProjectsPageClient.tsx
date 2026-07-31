@@ -24,9 +24,12 @@ interface Proyecto {
 interface ProjectsPageClientProps {
   proyectos: Proyecto[]
   categorias: CategoriaPublica[]
+  // WhatsApp comercial desde la DB (/admin/contacto). null = sin número
+  // configurado, el CTA no se muestra. Ver lib/content/whatsapp.ts.
+  whatsapp: string | null
 }
 
-export default function ProjectsPageClient({ proyectos, categorias }: ProjectsPageClientProps) {
+export default function ProjectsPageClient({ proyectos, categorias, whatsapp }: ProjectsPageClientProps) {
   const projectsByCategory = useMemo(() => {
     const groups: Record<string, Proyecto[]> = {}
     proyectos.forEach(proyecto => {
@@ -85,8 +88,9 @@ export default function ProjectsPageClient({ proyectos, categorias }: ProjectsPa
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
+            {whatsapp && (
             <a
-              href="https://wa.me/573104327227?text=Hola,%20me%20gustaría%20solicitar%20información%20sobre%20sus%20servicios."
+              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent('Hola, me gustaría solicitar información sobre sus servicios.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
@@ -96,6 +100,7 @@ export default function ProjectsPageClient({ proyectos, categorias }: ProjectsPa
               </svg>
               WhatsApp
             </a>
+            )}
           </motion.div>
         </div>
       </section>

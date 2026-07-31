@@ -5,6 +5,7 @@ import { ServiceSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 import { aniosExperiencia } from '@/lib/site-meta'
+import { getWhatsappComercial } from '@/lib/content/whatsapp'
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -189,10 +190,11 @@ export async function generateMetadata({ params }: ServicioPageProps) {
 }
 
 export default async function ServicioPage({ params }: ServicioPageProps) {
-  const [servicio, otrosServicios, proyectosAgg] = await Promise.all([
+  const [servicio, otrosServicios, proyectosAgg, whatsapp] = await Promise.all([
     getServicio(params.slug),
     getOtrosServicios(params.slug),
     prisma.proyecto.aggregate({ where: { visible: true }, _count: { _all: true } }),
+    getWhatsappComercial(),
   ])
 
   if (!servicio) {
@@ -218,6 +220,7 @@ export default async function ServicioPage({ params }: ServicioPageProps) {
         otrosServicios={otrosServicios}
         anios={aniosExperiencia()}
         proyectos={proyectos}
+        whatsapp={whatsapp?.digits ?? null}
       />
     </>
   )

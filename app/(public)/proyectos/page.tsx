@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import ProjectsPageClient from "./ProjectsPageClient"
 import { BreadcrumbSchema } from "@/components/seo/JsonLdSchema"
 import { getCategoriasPublicas } from "@/lib/content/categorias"
+import { getWhatsappComercial } from "@/lib/content/whatsapp"
 
 // ISR: sirve desde caché 60s, regenera en background
 export const revalidate = 60
@@ -61,9 +62,10 @@ async function getProyectos() {
 }
 
 export default async function ProyectosPage() {
-  const [proyectos, categorias] = await Promise.all([
+  const [proyectos, categorias, whatsapp] = await Promise.all([
     getProyectos(),
     getCategoriasPublicas(),
+    getWhatsappComercial(),
   ])
 
   return (
@@ -74,7 +76,7 @@ export default async function ProyectosPage() {
           { name: 'Proyectos', url: 'https://meisa.com.co/proyectos' },
         ]}
       />
-      <ProjectsPageClient proyectos={proyectos} categorias={categorias} />
+      <ProjectsPageClient proyectos={proyectos} categorias={categorias} whatsapp={whatsapp?.digits ?? null} />
     </>
   )
 }

@@ -33,11 +33,15 @@ export function ContactSection({
   foundingYear = 1996,
 }: ContactSectionProps = {}) {
   const yearsExperience = new Date().getFullYear() - foundingYear
-  const whatsappRaw = config?.whatsappNumero || '+573104327227'
-  const whatsappNumber = whatsappRaw.replace(/\D/g, '')
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    'Hola, me gustaría solicitar información sobre sus servicios.'
-  )}`
+  // Sin fallback hardcodeado: el número sale de ConfiguracionContacto
+  // (/admin/contacto). Si no hay, se ocultan los CTA de WhatsApp/llamada en vez
+  // de mandar a un número viejo pegado en el código.
+  const whatsappNumber = (config?.whatsappNumero ?? '').replace(/\D/g, '')
+  const whatsappUrl = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+        'Hola, me gustaría solicitar información sobre sus servicios.'
+      )}`
+    : null
 
   const eyebrow = copy?.eyebrow || 'Contacto'
   const titulo =
@@ -97,6 +101,7 @@ export function ContactSection({
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
 
+          {whatsappUrl && (
           <a
             href={whatsappUrl}
             target="_blank"
@@ -108,6 +113,7 @@ export function ContactSection({
             </svg>
             {cta2Text}
           </a>
+          )}
         </motion.div>
 
         <motion.div
@@ -131,13 +137,15 @@ export function ContactSection({
               <p className="font-lato text-white/70 text-sm md:text-base mb-4">
                 Móvil {movil}
               </p>
-              <a
-                href={`tel:${whatsappNumber}`}
-                className="group inline-flex items-center gap-2 text-white font-lato font-bold text-sm transition-colors hover:text-white"
-              >
-                Llamar ahora
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              {whatsappNumber && (
+                <a
+                  href={`tel:${whatsappNumber}`}
+                  className="group inline-flex items-center gap-2 text-white font-lato font-bold text-sm transition-colors hover:text-white"
+                >
+                  Llamar ahora
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              )}
             </div>
 
             <div className="md:px-10">

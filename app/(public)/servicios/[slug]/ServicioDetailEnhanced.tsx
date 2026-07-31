@@ -60,9 +60,12 @@ interface ServicioDetailEnhancedProps {
   // calculadas en el servidor para no hardcodear valores que se contradigan.
   anios: number
   proyectos: number
+  // WhatsApp comercial desde la DB (/admin/contacto). null = no hay número
+  // configurado y el CTA no se muestra. Ver lib/content/whatsapp.ts.
+  whatsapp: string | null
 }
 
-export default function ServicioDetailEnhanced({ servicio, otrosServicios, anios, proyectos }: ServicioDetailEnhancedProps) {
+export default function ServicioDetailEnhanced({ servicio, otrosServicios, anios, proyectos, whatsapp }: ServicioDetailEnhancedProps) {
   const [activeSection, setActiveSection] = useState('overview')
   const [hideNav, setHideNav] = useState(false)
 
@@ -209,8 +212,9 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios, anios
                   Iniciar proyecto
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
+                {whatsapp && (
                 <a
-                  href={`https://wa.me/573104327227?text=${encodeURIComponent(`Hola, necesito información sobre ${servicio.titulo}`)}`}
+                  href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hola, necesito información sobre ${servicio.titulo}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-lato font-bold text-sm md:text-base uppercase tracking-wider transition-colors duration-300 hover:border-white hover:bg-white hover:text-slate-950"
@@ -220,6 +224,7 @@ export default function ServicioDetailEnhanced({ servicio, otrosServicios, anios
                   </svg>
                   WhatsApp directo
                 </a>
+                )}
               </div>
             </motion.div>
           </div>
