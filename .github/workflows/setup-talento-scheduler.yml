@@ -1,0 +1,82 @@
+name: Setup Cloud Scheduler (sync Talento ↔ Drive)
+
+# Provisiona (o actualiza) el job de Cloud Scheduler que dispara la
+# sincronización entre la carpeta de hojas de vida de Talento Humano en Google
+# Drive y el banco de candidatos.
+#
+# Es manual a propósito: se corre una vez al montar la infraestructura y luego
+# solo si hay que cambiar la frecuencia o el destino. El job resultante vive en
+# GCP y no depende de GitHub para ejecutarse.
+#
+# Se hace desde acá y no con gcloud local porque las credenciales de GCP del
+# proyecto viven en el secreto GCP_SA_KEY del repo.
+
+on:
+  workflow_dispatch:
+    inputs:
+      entorno:
+        description: A qué servicio le pega el scheduler
+        required: true
+        default: prod
+        type: choice
+        options: [prod, dev]
+      frecuencia:
+        description: "Cron (zona America/Bogota). Default: cada hora en horario laboral"
+        required: false
+        default: "0 7-19 * * 1-6"
+
+env:
+  PROJECT_ID: meisa-web-prod-2025
+  REGION: us-central1
+
+jobs:
+  setup:
+    name: Crear o actualizar el job de Cloud Scheduler
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Habilitar la API de Cloud Scheduler
+        run: gcloud services enable cloudscheduler.googleapis.com --project=${{ env.PROJECT_ID }}
+
+      - name: Crear o actualizar el job
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event.inputs.entorno }}" = "prod" ]; then
+            URL="https://meisa.com.co/api/talento/sync-drive"
+            JOB="talento-sync-drive"
+          else
+            URL="https://dev.meisa.com.co/api/talento/sync-drive"
+            JOB="talento-sync-drive-dev"
+          fi
+
+          COMUN=(
+            --project="${{ env.PROJECT_ID }}"
+            --location="${{ env.REGION }}"
+            --schedule="${{ github.event.inputs.frecuencia }}"
+            --time-zone="America/Bogota"
+            --uri="$URL"
+            --http-method=POST
+            --headers="x-sync-secret=${{ secrets.TALENTO_SYNC_SECRET }}"
+            --attempt-deadline=540s
+            --description="Sincroniza la carpeta de hojas de vida de Drive con el banco de candidatos (las 2 direcciones)"
+          )
+
+          if gcloud scheduler jobs describe "$JOB" \
+               --project="${{ env.PROJECT_ID }}" --location="${{ env.REGION }}" >/dev/null 2>&1; then
+            echo "El job ya existe → se actualiza"
+            gcloud scheduler jobs update http "$JOB" "${COMUN[@]}"
+          else
+            echo "El job no existe → se crea"
+            gcloud scheduler jobs create http "$JOB" "${COMUN[@]}"
+          fi
+
+          gcloud scheduler jobs describe "$JOB" \
+            --project="${{ env.PROJECT_ID }}" --location="${{ env.REGION }}" \
+            --format="yaml(name,schedule,timeZone,httpTarget.uri,state)"

@@ -63,7 +63,7 @@ jobs:
             --cpu=1 \
             --min-instances=0 \
             --max-instances=10 \
-            --update-env-vars="DATABASE_URL=${{ secrets.DATABASE_URL }},NEXTAUTH_URL=https://meisa.com.co,REPLICATE_API_TOKEN=${{ secrets.REPLICATE_API_TOKEN }}"
+            --update-env-vars="DATABASE_URL=${{ secrets.DATABASE_URL }},NEXTAUTH_URL=https://meisa.com.co,REPLICATE_API_TOKEN=${{ secrets.REPLICATE_API_TOKEN }},TALENTO_SYNC_SECRET=${{ secrets.TALENTO_SYNC_SECRET }}"
 
       - name: Smoke test
         run: |
