@@ -42,7 +42,11 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Habilitar la API de Cloud Scheduler
+      # El SA de deploy no siempre puede habilitar APIs; si ya está activa el
+      # paso es innecesario. Se intenta y se sigue: el error real aparecería al
+      # crear el job.
+      - name: Habilitar la API de Cloud Scheduler (si se puede)
+        continue-on-error: true
         run: gcloud services enable cloudscheduler.googleapis.com --project=${{ env.PROJECT_ID }}
 
       - name: Crear o actualizar el job
