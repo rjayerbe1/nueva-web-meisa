@@ -1,4 +1,5 @@
 import { JWT } from "google-auth-library"
+import { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { normalizarNombre } from "@/lib/talento/nombres"
 
@@ -660,4 +661,39 @@ export async function fusionarSiDuplicado(candidatoNuevoId: string): Promise<{
     `[drive-sync] duplicado fusionado: "${nuevo.nombre}" (nuevo) → "${previo.nombre}" (${nuevo.email})`,
   )
   return { fusionado: true, conservadoId: previo.id, nombre: previo.nombre }
+}
+
+/**
+ * Analiza con IA los CV que todavía no tienen `datosIA`.
+ *
+ * Los que entran por Drive se analizan al importarlos, pero los que llegan por
+ * la web NO: la ruta de postulación no puede hacerlo (Cloud Run estrangula la
+ * CPU y le sumaría segundos al candidato que está enviando el formulario).
+ * Resultado: de 9 postulantes a Proyectista, 8 estaban sin analizar y por lo
+ * tanto no se les podía correr el match contra la vacante.
+ *
+ * Va en el mismo ciclo del sync, acotado, y es idempotente.
+ */
+export async function analizarPendientes(limite = 8): Promise<string[]> {
+  const { analizarCvCandidato } = await import("@/lib/talento/ia")
+
+  const pendientes = await prisma.candidato.findMany({
+    where: { datosIA: { equals: Prisma.DbNull }, cvPathGcs: { not: null } },
+    select: { id: true, nombre: true },
+    orderBy: { createdAt: "desc" },
+    take: limite,
+  })
+
+  const hechos: string[] = []
+  for (const c of pendientes) {
+    try {
+      await analizarCvCandidato(c.id)
+      await promoverDatosIA(c.id)
+      hechos.push(c.nombre)
+    } catch (e) {
+      // Un PDF ilegible o el tope de gasto de IA no deben tumbar el ciclo.
+      console.error(`[drive-sync] análisis falló para ${c.nombre}:`, (e as Error).message)
+    }
+  }
+  return hechos
 }

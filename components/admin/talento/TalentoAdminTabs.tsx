@@ -110,6 +110,40 @@ const vacanteFields = (): FieldDef[] => [
   },
   { name: "responsabilidades", label: "Responsabilidades", kind: "stringArray", gridSpan: 2 },
   { name: "beneficios", label: "Beneficios", kind: "stringArray", gridSpan: 2 },
+  {
+    name: "criteriosEvaluacion",
+    label: "Matriz de evaluación del cargo",
+    kind: "objectArray",
+    gridSpan: 2,
+    collapsible: true,
+    hint: "Lo define el jefe del área. Sin matriz, la IA improvisa qué pesa más en cada corrida y el criterio técnico del área no queda registrado. Los pesos son % y deberían sumar 100.",
+    itemLabel: (item, i) =>
+      item.nombre
+        ? `${item.nombre as string} — ${item.peso ?? 0}%`
+        : `Criterio ${String(i + 1).padStart(2, "0")}`,
+    itemTemplate: { nombre: "", peso: 20, guia: "" },
+    itemFields: [
+      {
+        name: "nombre",
+        label: "Criterio",
+        kind: "text",
+        gridSpan: 2,
+        required: true,
+        placeholder: "Dibujo técnico y desarrollo de planos",
+      },
+      { name: "peso", label: "Peso (%)", kind: "number", min: 1, max: 100, step: 5 },
+      {
+        name: "guia",
+        label: "Qué mirar (opcional)",
+        kind: "textarea",
+        gridSpan: 2,
+        rows: 2,
+        placeholder:
+          "Vistas, cortes, secciones, acotación, organización del archivo CAD, criterio de detallado…",
+        hint: "Le dice a la IA qué evidencia buscar en el CV para calificar este criterio.",
+      },
+    ],
+  },
 ]
 
 const publicacionFields = (vacantes: VacanteSer[]): FieldDef[] => [

@@ -11,6 +11,7 @@ import {
   promoverDatosIA,
   fusionarSiDuplicado,
   espejarPendientes,
+  analizarPendientes,
   limpiarNombreArchivo,
 } from "@/lib/talento/drive-sync"
 
@@ -65,6 +66,7 @@ export async function POST(req: NextRequest) {
     creados: [] as string[],
     vinculados: [] as string[],
     espejados: [] as string[],
+    analizados: [] as string[],
     // Los match solo por nombre NO se aplican automáticamente: fusionar dos
     // personas distintas es peor que dejar un duplicado. Se reportan para que
     // Talento Humano los resuelva desde el admin.
@@ -153,6 +155,11 @@ export async function POST(req: NextRequest) {
     // ---- 2. plataforma → Drive ----
     const espejados = await espejarPendientes(LOTE)
     resumen.espejados = espejados.map((e) => `${e.nombre} → /${e.carpeta}`)
+
+    // ---- 3. analizar los CV que llegaron por la web ----
+    // La ruta de postulación no puede hacerlo (le sumaría segundos al
+    // candidato); sin este paso el match contra la vacante no se puede correr.
+    resumen.analizados = await analizarPendientes(LOTE)
 
     const salida = {
       ok: true,

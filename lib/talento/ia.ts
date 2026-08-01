@@ -172,11 +172,55 @@ export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv>
 
 /* ── 2. Match postulación × vacante ────────────────────────────────────── */
 
+export interface CriterioEvaluado {
+  nombre: string
+  peso: number
+  /** 0-100 sobre ESE criterio. */
+  puntaje: number
+  /** Etiqueta legible derivada del puntaje (Excelente, Muy bueno…). */
+  valoracion: string
+  justificacion: string
+}
+
 export interface MatchResult {
   score: number
   fortalezas: string[]
   brechas: string[]
+  /** Lo que el CV no puede resolver y hay que confirmar en entrevista/prueba. */
+  porValidar?: string[]
   recomendacion: string
+  /** Desglose por criterio cuando la vacante tiene matriz definida. */
+  criterios?: CriterioEvaluado[]
+  /** true si el score salió de la matriz del área; false si la IA lo estimó libre. */
+  conMatriz?: boolean
+}
+
+export interface CriterioVacante {
+  nombre: string
+  peso: number
+  guia?: string
+}
+
+/** Lee y sanea la matriz del cargo. Descarta filas sin nombre o sin peso válido. */
+export function leerCriterios(raw: unknown): CriterioVacante[] {
+  if (!Array.isArray(raw)) return []
+  return raw
+    .map((c) => c as Record<string, unknown>)
+    .filter((c) => typeof c?.nombre === "string" && c.nombre.trim().length > 0)
+    .map((c) => ({
+      nombre: String(c.nombre).trim(),
+      peso: Math.max(0, Number(c.peso) || 0),
+      guia: typeof c.guia === "string" && c.guia.trim() ? String(c.guia).trim() : undefined,
+    }))
+    .filter((c) => c.peso > 0)
+}
+
+function etiquetaValoracion(p: number): string {
+  if (p >= 90) return "Excelente"
+  if (p >= 75) return "Muy bueno"
+  if (p >= 60) return "Bueno"
+  if (p >= 40) return "Regular"
+  return "Insuficiente"
 }
 
 export async function evaluarMatch(postulacionId: string): Promise<MatchResult> {
@@ -189,6 +233,33 @@ export async function evaluarMatch(postulacionId: string): Promise<MatchResult> 
   if (!p.candidato.datosIA && !p.candidato.resumenIA) {
     throw new Error("Primero analiza el CV del candidato con IA (pestaña Candidatos)")
   }
+
+  const criterios = leerCriterios(p.vacante.criteriosEvaluacion)
+  const conMatriz = criterios.length > 0
+
+  // Con matriz, la IA califica CADA criterio por separado y el total lo
+  // calculamos nosotros: pedirle el promedio ponderado al modelo es pedirle
+  // aritmética, que es justo lo que peor hace y lo que nadie podría auditar.
+  const instruccionSalida = conMatriz
+    ? `MATRIZ DE EVALUACIÓN DEL CARGO (la definió el jefe del área — es obligatoria):
+${criterios
+        .map((c) => `- ${c.nombre} (peso ${c.peso}%)${c.guia ? ` → qué mirar: ${c.guia}` : ""}`)
+        .join("\n")}
+
+Califica CADA criterio de 0 a 100 según la evidencia del CV, con una justificación
+de una frase que cite evidencia concreta (herramienta, obra, años, certificación).
+Si el CV no da evidencia de un criterio, punteo bajo y dilo en la justificación —
+no lo asumas por el cargo que tuvo.
+
+Devuelve JSON:
+{
+  "criterios": [{"nombre": string (EXACTO como arriba), "puntaje": number 0-100, "justificacion": string}],
+  "fortalezas": string[],
+  "brechas": string[],
+  "porValidar": string[] (lo que el CV NO puede demostrar y hay que confirmar en entrevista o prueba práctica),
+  "recomendacion": string (1-2 frases)
+}`
+    : `Devuelve JSON: {"score": number 0-100, "fortalezas": string[], "brechas": string[], "porValidar": string[], "recomendacion": string (1-2 frases)}`
 
   const raw = await llamarIA({
     system: `Eres un asistente de selección de MEISA (estructuras metálicas, Colombia). Comparas el perfil de un candidato contra una vacante. Tu salida es una SUGERENCIA para el reclutador humano — sé honesto con las brechas. PROHIBIDO considerar edad, sexo, estado civil, origen, religión o cualquier criterio no meritocrático (Ley 931/2004). Respondes SOLO JSON.`,
@@ -205,17 +276,57 @@ ${JSON.stringify({
 CANDIDATO (extraído de su CV):
 ${JSON.stringify(p.candidato.datosIA ?? { resumen: p.candidato.resumenIA })}
 
-Devuelve JSON: {"score": number 0-100, "fortalezas": string[], "brechas": string[], "recomendacion": string (1-2 frases)}`,
-    maxOutputTokens: 1024,
+${instruccionSalida}`,
+    maxOutputTokens: 2048,
   })
 
-  const match = parseJson<MatchResult>(raw)
-  const score = Math.max(0, Math.min(100, Math.round(match.score)))
+  const bruto = parseJson<
+    MatchResult & { criterios?: Array<{ nombre: string; puntaje: number; justificacion: string }> }
+  >(raw)
+
+  let score: number
+  let evaluados: CriterioEvaluado[] | undefined
+
+  if (conMatriz) {
+    const porNombre = new Map(
+      (bruto.criterios ?? []).map((c) => [c.nombre.trim().toLowerCase(), c]),
+    )
+    evaluados = criterios.map((c) => {
+      const hit = porNombre.get(c.nombre.trim().toLowerCase())
+      const puntaje = Math.max(0, Math.min(100, Math.round(Number(hit?.puntaje) || 0)))
+      return {
+        nombre: c.nombre,
+        peso: c.peso,
+        puntaje,
+        valoracion: etiquetaValoracion(puntaje),
+        justificacion: hit?.justificacion?.trim() || "Sin evidencia en la hoja de vida.",
+      }
+    })
+    // Ponderado sobre la suma REAL de pesos: si el área los dejó sumando 90 o
+    // 110, el score sigue siendo 0-100 y comparable entre candidatos.
+    const pesoTotal = evaluados.reduce((a, c) => a + c.peso, 0)
+    score = pesoTotal
+      ? Math.round(evaluados.reduce((a, c) => a + c.puntaje * c.peso, 0) / pesoTotal)
+      : 0
+  } else {
+    score = Math.max(0, Math.min(100, Math.round(Number(bruto.score) || 0)))
+  }
+
+  const match: MatchResult = {
+    score,
+    fortalezas: bruto.fortalezas ?? [],
+    brechas: bruto.brechas ?? [],
+    porValidar: bruto.porValidar ?? [],
+    recomendacion: bruto.recomendacion ?? "",
+    criterios: evaluados,
+    conMatriz,
+  }
+
   await prisma.postulacion.update({
     where: { id: postulacionId },
     data: { scoreIA: score, matchIA: match as object },
   })
-  return { ...match, score }
+  return match
 }
 
 /* ── 3. Herramientas de vacante: lint legal + textos por canal ─────────── */

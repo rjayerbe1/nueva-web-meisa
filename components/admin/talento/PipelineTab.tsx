@@ -205,10 +205,47 @@ export function PipelineTab({
                           const m = p.matchIA as {
                             fortalezas?: string[]
                             brechas?: string[]
+                            porValidar?: string[]
                             recomendacion?: string
+                            conMatriz?: boolean
+                            criterios?: Array<{
+                              nombre: string
+                              peso: number
+                              puntaje: number
+                              valoracion: string
+                              justificacion: string
+                            }>
                           }
                           return (
                             <>
+                              {/* Desglose por criterio: el score deja de ser un
+                                  número suelto y se puede discutir línea a línea
+                                  con el jefe del área. */}
+                              {(m.criterios ?? []).length > 0 && (
+                                <table className="w-full border-collapse font-lato text-[10px]">
+                                  <tbody>
+                                    {(m.criterios ?? []).map((c) => (
+                                      <tr key={c.nombre} className="align-top">
+                                        <td className="py-0.5 pr-2 text-slate-600">
+                                          {c.nombre}
+                                          <span className="text-slate-400"> · {c.peso}%</span>
+                                          {c.justificacion && (
+                                            <span className="block text-[9px] leading-snug text-slate-400">
+                                              {c.justificacion}
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="whitespace-nowrap py-0.5 text-right font-semibold text-slate-700">
+                                          {c.puntaje}
+                                          <span className="ml-1 font-normal text-slate-400">
+                                            {c.valoracion}
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              )}
                               {(m.fortalezas ?? []).length > 0 && (
                                 <p className="font-lato text-[11px] text-green-700">
                                   ✓ {(m.fortalezas ?? []).join(" · ")}
@@ -219,13 +256,20 @@ export function PipelineTab({
                                   ✗ {(m.brechas ?? []).join(" · ")}
                                 </p>
                               )}
+                              {(m.porValidar ?? []).length > 0 && (
+                                <p className="font-lato text-[11px] text-blue-700">
+                                  ? Validar en entrevista: {(m.porValidar ?? []).join(" · ")}
+                                </p>
+                              )}
                               {m.recomendacion && (
                                 <p className="font-lato text-[11px] text-slate-700">
                                   {m.recomendacion}
                                 </p>
                               )}
                               <p className="font-lato text-[9px] uppercase tracking-wide text-slate-400">
-                                Sugerencia IA — decide el reclutador
+                                {m.conMatriz
+                                  ? "Ponderado con la matriz del cargo — decide el reclutador"
+                                  : "Sin matriz definida: la IA estimó los pesos — decide el reclutador"}
                               </p>
                             </>
                           )

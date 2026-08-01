@@ -1310,6 +1310,12 @@ model Vacante {
   salarioMax        Int?
   salarioVisible    Boolean  @default(false) // mostrarlo o no cuando la página sea pública
 
+  // Matriz de evaluación del cargo: [{nombre, peso, guia}]. La define el JEFE
+  // DEL ÁREA, no la IA — sin esto el modelo improvisa qué pesa más en cada
+  // corrida y el criterio técnico del área no queda registrado en ninguna
+  // parte. Los pesos son porcentajes y deberían sumar 100.
+  criteriosEvaluacion Json?
+
   estado           EstadoVacante @default(BORRADOR)
   fechaPublicacion DateTime?
   fechaCierre      DateTime? // validThrough de JobPosting

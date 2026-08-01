@@ -22,6 +22,19 @@ export const vacanteSchema = z.object({
   fechaCierre: zNullableDate.optional(),
   elegibleReferidos: z.boolean().optional(),
   orden: z.coerce.number().int().optional(),
+  // Matriz de evaluación del cargo. Se saneen las filas vacías acá para que no
+  // lleguen criterios sin nombre o con peso 0 al prompt de la IA.
+  criteriosEvaluacion: z
+    .array(
+      z.object({
+        nombre: z.string().min(1),
+        peso: z.coerce.number().min(0).max(100),
+        guia: z.string().optional().nullable(),
+      }),
+    )
+    .optional()
+    .nullable()
+    .transform((v) => (v ? v.filter((c) => c.nombre.trim() && c.peso > 0) : v)),
 })
 
 export const candidatoSchema = z.object({
