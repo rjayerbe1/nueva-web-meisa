@@ -7,6 +7,7 @@ import { talentoFromHeader } from "@/lib/email"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
 import { normalizarNombre } from "@/lib/talento/nombres"
 import { areaDesdeVacante } from "@/lib/talento/drive-sync"
+import { resolverCodigoReferido } from "@/lib/talento/codigos-referido"
 
 // Postulación PÚBLICA (formulario /trabaja-con-nosotros).
 // Gated por el switch paginaPublicaActiva. Guarda la PRUEBA del
@@ -81,10 +82,15 @@ export async function POST(request: NextRequest) {
         ? data.codigoReferido.trim()
         : null
     if (codigoTexto) {
-      const match = await prisma.codigoReferido.findUnique({
-        where: { codigo: codigoTexto.toUpperCase() },
-      })
-      if (match?.activo) codigoReferidoId = match.id
+      // Acepta el código O el nombre del colaborador: la gente casi nunca
+      // escribe el código, escribe a quién la mandó. Ver resolverCodigoReferido.
+      const { match, ambiguo } = await resolverCodigoReferido(codigoTexto)
+      if (match) codigoReferidoId = match.id
+      else if (ambiguo) {
+        console.warn(
+          `[talento] referido ambiguo: "${codigoTexto}" coincide con varios colaboradores — resolver a mano`,
+        )
+      }
     }
 
     const candidato = await prisma.candidato.create({

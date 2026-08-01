@@ -181,17 +181,18 @@ export function PostulacionForm({
         {elegibleReferidos && (
           <div className="md:col-span-2">
             <label className={LABEL_CLS} htmlFor="pf-referido">
-              Código de referido (opcional)
+              ¿Quién te refirió? (opcional)
             </label>
             <input
               id="pf-referido"
               value={codigoReferido}
-              onChange={(e) => setCodigoReferido(e.target.value.toUpperCase())}
-              placeholder="Ej: JUANP482"
+              onChange={(e) => setCodigoReferido(e.target.value)}
+              placeholder="Código (ej: JUANP482) o nombre del colaborador"
               className={INPUT_CLS}
             />
             <p className="mt-1.5 font-lato text-xs italic text-slate-500">
-              ¿Un colaborador de MEISA te compartió su código? Ingrésalo aquí.
+              Si un colaborador de MEISA te recomendó la vacante, escribe su código o su
+              nombre completo. Así podemos reconocerle su referido.
             </p>
           </div>
         )}
