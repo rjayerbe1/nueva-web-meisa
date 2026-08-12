@@ -3,6 +3,7 @@ import { chatConfig } from "@/lib/chat/config"
 import { presupuestoDisponible, registrarUso } from "@/lib/chat/budget"
 import { prisma } from "@/lib/prisma"
 import { downloadCv } from "./gcs-hv"
+import { esWord, wordAPdf } from "./documentos"
 
 /**
  * IA del módulo de Talento Humano (Vertex AI / Gemini multimodal).
@@ -142,6 +143,23 @@ export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv>
   if (!candidato?.cvPathGcs) throw new Error("El candidato no tiene CV cargado")
 
   const buffer = await downloadCv(candidato.cvPathGcs)
+  // Vertex NO acepta .doc/.docx como inlineData (400). Se convierte a PDF en
+  // memoria para poder analizarlo; el archivo original queda intacto en el
+  // bucket. Sin esto, quien manda el CV en Word queda sin análisis y por lo
+  // tanto fuera de los comparativos, en silencio.
+  let paraIA = buffer
+  let mimeParaIA = candidato.cvContentType ?? "application/pdf"
+  if (esWord(candidato.cvContentType)) {
+    const convertido = await wordAPdf(buffer, candidato.cvFileName ?? "cv.docx")
+    if (!convertido) {
+      throw new Error(
+        "El CV está en Word y no se pudo convertir a PDF para analizarlo. Pedir el CV en PDF o convertirlo a mano.",
+      )
+    }
+    paraIA = convertido
+    mimeParaIA = "application/pdf"
+  }
+
   const raw = await llamarIA({
     system: `Eres un analista de selección de una empresa metalmecánica colombiana (estructuras metálicas: soldadura, armado, pintura industrial, montaje, ingeniería). Extraes datos de hojas de vida. Respondes SOLO JSON válido. No inventes datos que no estén en el documento.`,
     user: `Analiza esta hoja de vida y devuelve JSON con este shape exacto:
@@ -156,8 +174,8 @@ export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv>
   "alertas": string[]             // vacíos de información, inconsistencias de fechas (NO juicios sobre edad/género/estado civil)
 }`,
     archivo: {
-      base64: buffer.toString("base64"),
-      mimeType: candidato.cvContentType ?? "application/pdf",
+      base64: paraIA.toString("base64"),
+      mimeType: mimeParaIA,
     },
     maxOutputTokens: 2048,
   })
