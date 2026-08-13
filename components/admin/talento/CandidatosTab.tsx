@@ -129,6 +129,20 @@ export function CandidatosTab({
     [isNew, vacantes],
   )
 
+  /**
+   * Normaliza para buscar: quita tildes y trata "_", "-", "." como espacios,
+   * así "David Castillo" encuentra "David_Castillo.pdf" y "Jiménez" encuentra
+   * "Jimenez". El resto del admin ya lo hacía; esta pestaña se había quedado
+   * comparando con un toLowerCase() pelado.
+   */
+  const normalizarBusqueda = (v: string) =>
+    v
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim()
+
   const filtered = useMemo(() => {
     let list = items
     // Resultados de la búsqueda IA: filtra y ordena por relevancia
@@ -138,12 +152,26 @@ export function CandidatosTab({
         .filter((c) => orden.has(c.id))
         .sort((a, b) => (orden.get(a.id) ?? 99) - (orden.get(b.id) ?? 99))
     }
-    const q = query.trim().toLowerCase()
+    const q = normalizarBusqueda(query)
     if (!q) return list
     return list.filter((c) =>
-      [c.nombre, c.email, c.telefono, c.ciudad, c.origen, c.areaInteres]
+      [
+        c.nombre,
+        c.email,
+        c.telefono,
+        c.ciudad,
+        c.origen,
+        c.areaInteres,
+        // El NOMBRE DEL ARCHIVO importa: Talento Humano conoce a la persona por
+        // cómo se llama el CV en Drive ("David_Castillo.pdf"), pero el sistema
+        // muestra el nombre real que la IA extrajo del documento ("Henner David
+        // Torres Castillo"). Sin esto, buscar por el nombre del archivo no
+        // encuentra nada y parece que el candidato no está cargado.
+        c.cvFileName,
+        c.origenDetalle,
+      ]
         .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q)),
+        .some((v) => normalizarBusqueda(String(v)).includes(q)),
     )
   }, [items, query, iaResultados])
 
