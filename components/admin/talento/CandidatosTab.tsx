@@ -11,6 +11,7 @@ import {
   Plus,
   Save,
   Search,
+  Send,
   Sparkles,
   Trash2,
   Upload,
@@ -48,6 +49,8 @@ export function CandidatosTab({
   const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState("")
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [postulandoId, setPostulandoId] = useState<string | null>(null)
+  const [postulandoBusy, setPostulandoBusy] = useState<string | null>(null)
   const [iaBusyId, setIaBusyId] = useState<string | null>(null)
   const [iaError, setIaError] = useState<string | null>(null)
   // Búsqueda semántica
@@ -142,6 +145,45 @@ export function CandidatosTab({
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, " ")
       .trim()
+
+  // Solo vacantes ABIERTAS: mandar a alguien a un perfil en BORRADOR no sirve.
+  const vacantesAbiertas = useMemo(
+    () => vacantes.filter((v) => v.estado === "ABIERTA"),
+    [vacantes],
+  )
+
+  /** Crea la postulación (banco → pipeline) y la evalúa contra la matriz del cargo. */
+  const postularA = async (c: CandidatoSer, vacanteId: string) => {
+    setPostulandoBusy(c.id)
+    setError(null)
+    try {
+      const res = await fetch("/api/admin/talento/postulaciones", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ candidatoId: c.id, vacanteId, etapa: "RECIBIDA" }),
+      })
+      if (!res.ok) {
+        const msg = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
+        throw new Error(msg.error ?? "No se pudo enviar a la vacante")
+      }
+      const creada = await res.json()
+      // El puntaje se calcula acá y no en el pipeline: si falla (CV sin
+      // analizar, tope de gasto de IA) la postulación ya quedó creada igual.
+      await fetch("/api/admin/talento/ia/match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postulacionId: creada.id }),
+      }).catch(() => null)
+      const v = vacantes.find((x) => x.id === vacanteId)
+      setPostulandoId(null)
+      setError(null)
+      alert(`${c.nombre} quedó en el pipeline de ${v?.titulo ?? "la vacante"}.`)
+    } catch (e) {
+      setError((e as Error).message)
+    } finally {
+      setPostulandoBusy(null)
+    }
+  }
 
   const filtered = useMemo(() => {
     let list = items
@@ -673,6 +715,27 @@ export function CandidatosTab({
                               )}
                             </button>
                           )}
+                          {/* Del BANCO al PIPELINE. Los CV importados de Drive entran
+                              como pool y no crean postulación, así que no aparecen en el
+                              kanban aunque el candidato esté cargado — Talento Humano
+                              reportó dos veces "está en Drive pero no en el portal" por
+                              esto. Este botón cierra ese hueco sin salir de la lista. */}
+                          <button
+                            onClick={() => setPostulandoId(postulandoId === c.id ? null : c.id)}
+                            disabled={editingId !== null || vacantesAbiertas.length === 0}
+                            title={
+                              vacantesAbiertas.length === 0
+                                ? "No hay vacantes abiertas"
+                                : "Enviar a una vacante (pipeline)"
+                            }
+                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
+                          >
+                            {postulandoBusy === c.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Send className="h-3.5 w-3.5" />
+                            )}
+                          </button>
                           <button
                             onClick={() => beginEdit(c)}
                             disabled={editingId !== null}
@@ -692,6 +755,30 @@ export function CandidatosTab({
                         </div>
                       </td>
                     </tr>
+                    {postulandoId === c.id && (
+                      <tr className="border-b border-slate-100 bg-stone-50">
+                        <td colSpan={7} className="px-4 py-3">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-lato text-xs font-bold uppercase tracking-wide text-slate-500">
+                              Enviar a:
+                            </span>
+                            {vacantesAbiertas.map((v) => (
+                              <button
+                                key={v.id}
+                                onClick={() => postularA(c, v.id)}
+                                disabled={postulandoBusy !== null}
+                                className="rounded-none border border-slate-900 bg-white px-2.5 py-1 font-lato text-xs font-semibold text-slate-900 transition-colors hover:bg-slate-900 hover:text-white disabled:opacity-50"
+                              >
+                                {v.titulo}
+                              </button>
+                            ))}
+                            <span className="font-lato text-[11px] italic text-slate-500">
+                              Entra al pipeline en etapa Recibida y se evalúa contra la matriz del cargo.
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
                     {isExpanded && c.resumenIA && (
                       <tr className="border-b border-slate-100 bg-blue-50/40">
                         <td colSpan={7} className="px-4 py-3">

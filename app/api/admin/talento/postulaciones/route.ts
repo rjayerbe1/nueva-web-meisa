@@ -37,12 +37,32 @@ export async function POST(req: NextRequest) {
     await requireAdmin()
     const body = await req.json()
     const data = postulacionCreateSchema.parse(body)
+
+    // Evita duplicar: si ya está en el pipeline de esa vacante, se devuelve la
+    // que existe en vez de crear una segunda (pasa al hacer doble clic o al
+    // volver a mandar del banco a alguien que ya se mandó).
+    if (data.vacanteId) {
+      const ya = await prisma.postulacion.findFirst({
+        where: { candidatoId: data.candidatoId, vacanteId: data.vacanteId },
+        include: POSTULACION_INCLUDE,
+      })
+      if (ya) return NextResponse.json(ya, { status: 200 })
+    }
+
     const created = await prisma.postulacion.create({
       data: {
         candidatoId: data.candidatoId,
         vacanteId: data.vacanteId || null,
         etapa: data.etapa,
         notasInternas: data.notasInternas,
+        historial: [
+          {
+            de: null,
+            a: data.etapa,
+            fecha: new Date().toISOString(),
+            usuario: "alta manual desde el banco",
+          },
+        ] as never,
       },
       include: POSTULACION_INCLUDE,
     })
