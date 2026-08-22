@@ -697,3 +697,53 @@ export async function analizarPendientes(limite = 8): Promise<string[]> {
   }
   return hechos
 }
+
+/**
+ * Evalúa contra la matriz del cargo las postulaciones que aún no tienen puntaje.
+ *
+ * El ciclo ya analizaba los CV, pero el MATCH contra la vacante solo ocurría si
+ * alguien apretaba el botón en el admin o se corría el script. Resultado: los
+ * candidatos nuevos le aparecían a Talento Humano sin calificación y sin forma
+ * de saber si servían — pasó con 7 seguidos.
+ *
+ * Solo toma postulaciones con vacante (las espontáneas no tienen contra qué
+ * compararse), con el CV ya analizado y que no estén descartadas.
+ *
+ * Si se agota el presupuesto de IA (tope compartido con el chatbot) corta el
+ * lote en seco en vez de seguir intentando: cada intento fallido igual gasta
+ * una llamada, y el siguiente ciclo lo retoma cuando el tope se renueve.
+ */
+export async function evaluarPendientes(limite = 8): Promise<{
+  evaluadas: string[]
+  sinPresupuesto: boolean
+}> {
+  const { evaluarMatch, PresupuestoAgotadoError } = await import("@/lib/talento/ia")
+
+  const pendientes = await prisma.postulacion.findMany({
+    where: {
+      scoreIA: null,
+      vacanteId: { not: null },
+      etapa: { not: "DESCARTADA" },
+      candidato: { datosIA: { not: Prisma.DbNull } },
+    },
+    select: { id: true, candidato: { select: { nombre: true } }, vacante: { select: { titulo: true } } },
+    orderBy: { createdAt: "desc" },
+    take: limite,
+  })
+
+  const evaluadas: string[] = []
+  for (const p of pendientes) {
+    try {
+      const m = await evaluarMatch(p.id)
+      evaluadas.push(`${p.candidato.nombre} → ${p.vacante?.titulo} (${m.score})`)
+    } catch (e) {
+      if (e instanceof PresupuestoAgotadoError) {
+        console.warn("[drive-sync] tope de gasto de IA alcanzado — se corta el lote de evaluación")
+        return { evaluadas, sinPresupuesto: true }
+      }
+      // Vacante sin matriz, CV ilegible, etc.: no debe tumbar el ciclo.
+      console.error(`[drive-sync] match falló para ${p.candidato.nombre}:`, (e as Error).message.slice(0, 120))
+    }
+  }
+  return { evaluadas, sinPresupuesto: false }
+}

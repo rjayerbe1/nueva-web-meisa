@@ -12,6 +12,7 @@ import {
   fusionarSiDuplicado,
   espejarPendientes,
   analizarPendientes,
+  evaluarPendientes,
   limpiarNombreArchivo,
 } from "@/lib/talento/drive-sync"
 
@@ -67,6 +68,7 @@ export async function POST(req: NextRequest) {
     vinculados: [] as string[],
     espejados: [] as string[],
     analizados: [] as string[],
+    evaluados: [] as string[],
     // Los match solo por nombre NO se aplican automáticamente: fusionar dos
     // personas distintas es peor que dejar un duplicado. Se reportan para que
     // Talento Humano los resuelva desde el admin.
@@ -160,6 +162,14 @@ export async function POST(req: NextRequest) {
     // La ruta de postulación no puede hacerlo (le sumaría segundos al
     // candidato); sin este paso el match contra la vacante no se puede correr.
     resumen.analizados = await analizarPendientes(LOTE)
+
+    // ---- 4. evaluar contra la matriz del cargo ----
+    // Sin esto los candidatos nuevos le llegan a Talento Humano sin puntaje.
+    const ev = await evaluarPendientes(LOTE)
+    resumen.evaluados = ev.evaluadas
+    if (ev.sinPresupuesto) {
+      resumen.errores.push("Tope de gasto de IA alcanzado: quedaron evaluaciones para el próximo ciclo.")
+    }
 
     const salida = {
       ok: true,
