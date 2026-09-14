@@ -1,5 +1,7 @@
 import { cache } from "react"
 import { prisma } from "@/lib/prisma"
+import { cachedContent } from "@/lib/cache/content-cache"
+import { TAGS } from "@/lib/cache/tags"
 
 export type CategoriaPublica = {
   id: string
@@ -24,7 +26,8 @@ export type CategoriaPublica = {
   destacada: boolean
 }
 
-export const getCategoriasPublicas = cache(async (): Promise<CategoriaPublica[]> => {
+export const getCategoriasPublicas = cache(
+  cachedContent(["categorias-publicas"], [TAGS.categoriasProyecto], async (): Promise<CategoriaPublica[]> => {
   return await prisma.categoriaProyecto.findMany({
     where: { visible: true },
     orderBy: { orden: 'asc' },
@@ -51,4 +54,17 @@ export const getCategoriasPublicas = cache(async (): Promise<CategoriaPublica[]>
       destacada: true,
     },
   })
-})
+  }),
+)
+
+/**
+ * Total de proyectos visibles. Lo usan ~20 landings (servicios, soluciones,
+ * ciudades, pilar) para la cifra "N proyectos": una sola lectura por hora
+ * en vez de una por ruta.
+ */
+export const getTotalProyectosVisibles = cache(
+  cachedContent(["proyectos-visibles-count"], [TAGS.proyectos], async (): Promise<number> => {
+    const agg = await prisma.proyecto.aggregate({ where: { visible: true }, _count: { _all: true } })
+    return agg._count._all
+  }),
+)

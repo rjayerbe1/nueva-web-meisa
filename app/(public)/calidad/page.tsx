@@ -6,7 +6,7 @@ import {
 } from '@/lib/content/empresa'
 import { CalidadContent } from './CalidadContent'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   alternates: { canonical: '/calidad' },

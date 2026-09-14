@@ -8,7 +8,7 @@ import { GUIAS_NAV } from '@/components/guias/OtrasGuias'
 import { ServiceSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 
 // ISR: sirve desde caché 60s, regenera en background.
-export const revalidate = 60
+export const revalidate = 3600
 
 // Página PILAR del clúster SEO. Rankea la keyword nacional difícil
 // ("estructuras metálicas en Colombia") y concentra el fan-in de las 14

@@ -7,7 +7,7 @@ import { getGuiaDb } from '@/lib/content/landings'
 import { getGuiaFallback } from '@/lib/guias'
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
 
 const SLUG = 'estructura-metalica-vs-concreto'
 

@@ -1,5 +1,7 @@
 import { cache } from "react"
 import { prisma } from "@/lib/prisma"
+import { cachedContent } from "@/lib/cache/content-cache"
+import { TAGS } from "@/lib/cache/tags"
 
 export type VacanteResumen = {
   id: string
@@ -23,7 +25,8 @@ export type TalentoPublico = {
  * apagarla desde el admin retire los enlaces solo y nunca queden apuntando
  * a un notFound().
  */
-export const getTalentoPublico = cache(async (): Promise<TalentoPublico> => {
+export const getTalentoPublico = cache(
+  cachedContent(["talento-publico"], [TAGS.configuracionTalento, TAGS.vacantes], async (): Promise<TalentoPublico> => {
   const config = await prisma.configuracionTalento.findUnique({
     where: { id: "default" },
     select: { paginaPublicaActiva: true },
@@ -36,4 +39,5 @@ export const getTalentoPublico = cache(async (): Promise<TalentoPublico> => {
     select: { id: true, slug: true, titulo: true, area: true, ciudad: true },
   })
   return { activa: true, vacantes }
-})
+  }),
+)

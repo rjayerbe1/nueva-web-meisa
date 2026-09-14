@@ -3,7 +3,7 @@ import EmpresaContent from './EmpresaContent'
 import { getPlantasPublicas } from '@/lib/content/plantas'
 import { getEmpresaData } from '@/lib/content/empresa'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
   const description =

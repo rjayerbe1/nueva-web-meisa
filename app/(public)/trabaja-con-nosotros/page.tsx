@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
 import TrabajaContent from "./TrabajaContent"
 
-export const revalidate = 60
+export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
   const description =

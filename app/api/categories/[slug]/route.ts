@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
 
-export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
-) {
-  try {
-    const categoria = await prisma.categoriaProyecto.findFirst({
+export const revalidate = 3600
+
+const getCategoriaBySlug = cachedContent(
+  ['api-category-by-slug'],
+  [TAGS.categoriasProyecto],
+  async (slug: string) =>
+    prisma.categoriaProyecto.findFirst({
       where: {
-        slug: params.slug,
+        slug,
         visible: true
       },
       select: {
@@ -29,7 +32,15 @@ export async function GET(
         casosExitoIds: true,
         especialidades: true
       }
-    })
+    }),
+)
+
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
+  try {
+    const categoria = await getCategoriaBySlug(params.slug)
 
     if (!categoria) {
       return NextResponse.json(
@@ -41,7 +52,7 @@ export async function GET(
     return NextResponse.json({
       ...categoria,
       beneficios: null
-    })
+    }, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error('Error fetching category:', error)
     return NextResponse.json(

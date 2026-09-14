@@ -1,12 +1,20 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
+
+export const revalidate = 3600
+
+const getProyectosVisibles = cachedContent(
+  ['api-trayectoria-stats-proyectos'],
+  [TAGS.trayectoria],
+  async () => prisma.proyectoHojaVida.findMany({ where: { visible: true } }),
+)
 
 // GET - Obtener estadísticas generales
 export async function GET() {
   try {
-    const proyectos = await prisma.proyectoHojaVida.findMany({
-      where: { visible: true }
-    })
+    const proyectos = await getProyectosVisibles()
 
     // Calcular estadísticas
     const totalProyectos = proyectos.length
@@ -45,7 +53,7 @@ export async function GET() {
       añosExperiencia: new Date().getFullYear() - 1996
     }
 
-    return NextResponse.json(stats)
+    return NextResponse.json(stats, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error('Error calculating stats:', error)
     return NextResponse.json(

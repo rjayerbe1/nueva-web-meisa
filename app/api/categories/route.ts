@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
-export async function GET() {
-  try {
-    const categorias = await prisma.categoriaProyecto.findMany({
+const getCategoriasApi = cachedContent(
+  ['api-categories'],
+  [TAGS.categoriasProyecto],
+  async () =>
+    prisma.categoriaProyecto.findMany({
       where: {
         visible: true
       },
@@ -33,9 +37,13 @@ export async function GET() {
         destacada: true,
         especialidades: true
       }
-    })
+    }),
+)
 
-    return NextResponse.json(categorias)
+export async function GET() {
+  try {
+    const categorias = await getCategoriasApi()
+    return NextResponse.json(categorias, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error('Error fetching public categories:', error)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })

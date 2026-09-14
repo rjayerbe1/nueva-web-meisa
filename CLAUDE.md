@@ -80,6 +80,12 @@ Required in `.env.local`:
 3. UI components: Use existing Shadcn/ui components or create new ones
 4. Admin features: Add to `/app/admin/` with proper auth checks
 
+### Caché público y costo de Neon (2026-09-14)
+- Neon cobra por horas de cómputo despierto; el sitio público NO debe consultar la base por visita. Todas las páginas públicas son ISR `revalidate = 3600` y las lecturas compartidas pasan por `cachedContent()` (`lib/cache/content-cache.ts`, tags por tabla en `lib/cache/tags.ts`).
+- Las escrituras del admin invalidan solas (hook `$extends` en `lib/prisma.ts` → `MODEL_TAGS`). Un modelo nuevo que alimente el sitio público necesita una entrada en `MODEL_TAGS`.
+- Toda ruta pública con `[slug]` necesita `generateStaticParams` (aunque devuelva `[]`); sin él Next 14 la vuelve 100 % dinámica.
+- Verificar: `PRISMA_LOG_QUERIES=1 npm start` (no debe imprimir SQL al navegar con caché caliente) y `node scripts/neon-pgstat.mjs`. Detalles en el skill `meisa-web-optimization` §0.
+
 ### Git Best Practices
 - Commits directos a `main` están permitidos — este repo despliega vía Cloud Run, no bloquear por política de branch
 - Solo crear feature branch si el usuario lo pide explícitamente, o si el cambio es grande/riesgoso y conviene revisarlo vía PR antes de ir a producción

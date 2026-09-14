@@ -6,6 +6,10 @@ import { getSolucionSlugsDb, getCiudadSlugsDb } from '@/lib/content/landings'
 
 const BASE_URL = 'https://meisa.com.co'
 
+// Los rastreadores piden /sitemap.xml a diario; sin esto cada petición
+// disparaba ~7 consultas a Neon. Se regenera como mucho una vez por hora.
+export const revalidate = 3600
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [solucionSlugs, ciudadSlugs] = await Promise.all([
     getSolucionSlugsDb(),

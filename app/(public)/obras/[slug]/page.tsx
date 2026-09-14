@@ -3,7 +3,16 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ObraPageClient from './ObraPageClient'
 
-export const revalidate = 60
+export const revalidate = 3600
+
+// Sin generateStaticParams, Next 14 trata una ruta con segmento dinámico como
+// 100 % dinámica y `revalidate` no aplica (cada visita renderiza y consulta
+// Neon). Con la función presente —aunque no pre-renderice nada en el build—
+// cada slug se genera bajo demanda en la primera visita y queda en caché
+// (ISR) durante `revalidate`.
+export async function generateStaticParams() {
+  return []
+}
 
 export async function generateMetadata({
   params,

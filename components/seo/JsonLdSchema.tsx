@@ -1,17 +1,22 @@
 // Componentes JSON-LD Schema para SEO
 // Server components async que leen de DB (Plant, ConfiguracionEmpresa,
-// SocialLink, ConfiguracionContacto) en lugar de hardcoded.
+// SocialLink, ConfiguracionContacto) en lugar de hardcoded — a través de la
+// capa cacheada de lib/content (1 h, invalidada por el admin), porque este
+// bloque va en el layout raíz y se renderiza en TODAS las páginas.
 import { cache } from "react"
-import { prisma } from "@/lib/prisma"
+import { getConfiguracionEmpresa } from "@/lib/content/empresa"
+import { getPlantasPublicas } from "@/lib/content/plantas"
+import { getSocialLinks } from "@/lib/content/navegacion"
+import { getConfiguracionContacto } from "@/lib/content/servicios-contacto"
 
 const SITE_URL = "https://meisa.com.co"
 
 const getSchemaData = cache(async () => {
   const [config, plants, social, contact] = await Promise.all([
-    prisma.configuracionEmpresa.findUnique({ where: { id: "default" } }),
-    prisma.plant.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }),
-    prisma.socialLink.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }),
-    prisma.configuracionContacto.findUnique({ where: { id: "default" } }),
+    getConfiguracionEmpresa().catch(() => null),
+    getPlantasPublicas().catch(() => []),
+    getSocialLinks().catch(() => []),
+    getConfiguracionContacto().catch(() => null),
   ])
   return { config, plants, social, contact }
 })

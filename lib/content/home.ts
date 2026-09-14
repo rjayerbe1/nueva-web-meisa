@@ -1,5 +1,7 @@
 import { cache } from "react"
 import { prisma } from "@/lib/prisma"
+import { cachedContent } from "@/lib/cache/content-cache"
+import { TAGS } from "@/lib/cache/tags"
 import type {
   HomeHeroEspecialidad,
   HomeStat,
@@ -26,7 +28,8 @@ export type HomeData = {
 }
 
 /** Datos del home para consumidores públicos. */
-export const getHomeData = cache(async (): Promise<HomeData> => {
+export const getHomeData = cache(
+  cachedContent(["home-data"], [TAGS.home], async (): Promise<HomeData> => {
   const [
     especialidades,
     stats,
@@ -52,7 +55,8 @@ export const getHomeData = cache(async (): Promise<HomeData> => {
     prisma.ordenSeccionesHome.findUnique({ where: { id: "default" } }),
   ])
   return { especialidades, stats, featured, servicios, seccionConfig, orden }
-})
+  }),
+)
 
 /** Evalúa un stat con valor "AUTO" como cálculo dinámico. */
 export function resolveStatValue(stat: StatItem, foundingYear = 1996): string {

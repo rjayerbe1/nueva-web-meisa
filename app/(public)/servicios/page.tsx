@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '@/components/seo/JsonLdSchema'
 import { getProcesoFases, getServiciosPagina, type ServiciosStatConfig } from '@/lib/content/servicios-contacto'
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
 
 // Proceso integral — leído de la tabla ProcesoFase (Fase 4)
 async function getProcesoIntegral() {

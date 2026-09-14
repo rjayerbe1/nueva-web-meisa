@@ -1,5 +1,7 @@
 import { cache } from "react"
 import { prisma } from "@/lib/prisma"
+import { cachedContent } from "@/lib/cache/content-cache"
+import { TAGS } from "@/lib/cache/tags"
 import type {
   GrupoSeccion,
   Tecnologia,
@@ -33,7 +35,7 @@ export type ProcesosTecnologiasData = {
 }
 
 export const getProcesosTecnologiasData = cache(
-  async (): Promise<ProcesosTecnologiasData> => {
+  cachedContent(["procesos-tecnologias"], [TAGS.tecnologia], async (): Promise<ProcesosTecnologiasData> => {
     const [grupos, tecnologias, equipos, procesos, fasesFlujo] = await Promise.all([
       prisma.grupoSeccion.findMany({
         where: { pagina: "tecnologia", activo: true },
@@ -57,7 +59,7 @@ export const getProcesosTecnologiasData = cache(
       }),
     ])
     return { grupos, tecnologias, equipos, procesos, fasesFlujo }
-  }
+  }),
 )
 
 export async function getAllProcesosTecnologiasData() {
@@ -90,7 +92,8 @@ export type PoliticasData = {
   procesos: ProcesoDigital[]
 }
 
-export const getPoliticasData = cache(async (): Promise<PoliticasData> => {
+export const getPoliticasData = cache(
+  cachedContent(["politicas-calidad"], [TAGS.calidad], async (): Promise<PoliticasData> => {
   const [grupos, pilares, politicas, etapasControl, procesos] = await Promise.all([
     prisma.grupoSeccion.findMany({
       where: { pagina: "calidad", activo: true },
@@ -114,7 +117,8 @@ export const getPoliticasData = cache(async (): Promise<PoliticasData> => {
     }),
   ])
   return { grupos, pilares, politicas, etapasControl, procesos }
-})
+  }),
+)
 
 export async function getAllPoliticasData() {
   const [grupos, pilares, politicas, etapasControl, procesos] = await Promise.all([

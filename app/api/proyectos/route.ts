@@ -4,24 +4,16 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { UserRole } from "@prisma/client"
 import { slugify } from "@/lib/utils"
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from "@/lib/cache/content-cache"
+import { TAGS } from "@/lib/cache/tags"
 
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const categoria = searchParams.get("categoria")
-    const estado = searchParams.get("estado")
-    const destacados = searchParams.get("destacados") === "true"
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = parseInt(searchParams.get("limit") || "10")
-    const skip = (page - 1) * limit
+export const revalidate = 3600
 
-    const where: any = { visible: true }
-    
-    if (categoria) where.categoria = categoria
-    if (estado) where.estado = estado
-    if (destacados) where.destacado = true
-
-    const [proyectos, total] = await Promise.all([
+const getProyectosPagina = cachedContent(
+  ["api-proyectos"],
+  [TAGS.proyectos],
+  async (where: Record<string, unknown>, skip: number, take: number) =>
+    Promise.all([
       prisma.proyecto.findMany({
         where,
         include: {
@@ -44,10 +36,29 @@ export async function GET(request: NextRequest) {
           { createdAt: "desc" }
         ],
         skip,
-        take: limit
+        take
       }),
       prisma.proyecto.count({ where })
-    ])
+    ]),
+)
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const categoria = searchParams.get("categoria")
+    const estado = searchParams.get("estado")
+    const destacados = searchParams.get("destacados") === "true"
+    const page = parseInt(searchParams.get("page") || "1")
+    const limit = parseInt(searchParams.get("limit") || "10")
+    const skip = (page - 1) * limit
+
+    const where: any = { visible: true }
+    
+    if (categoria) where.categoria = categoria
+    if (estado) where.estado = estado
+    if (destacados) where.destacado = true
+
+    const [proyectos, total] = await getProyectosPagina(where, skip, limit)
 
     return NextResponse.json({
       proyectos,
@@ -57,7 +68,7 @@ export async function GET(request: NextRequest) {
         total,
         pages: Math.ceil(total / limit)
       }
-    })
+    }, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error("Error fetching proyectos:", error)
     return NextResponse.json(

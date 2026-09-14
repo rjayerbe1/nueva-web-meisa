@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { aniosExperiencia } from '@/lib/site-meta'
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   alternates: { canonical: '/trayectoria' },

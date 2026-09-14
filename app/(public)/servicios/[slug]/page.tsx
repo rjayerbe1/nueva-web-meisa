@@ -6,9 +6,19 @@ import { getServiceColors } from '@/lib/service-colors'
 import { getServiceImages, getServiceBackgroundImage } from '@/lib/service-images'
 import { aniosExperiencia } from '@/lib/site-meta'
 import { getWhatsappComercial } from '@/lib/content/whatsapp'
+import { getTotalProyectosVisibles } from '@/lib/content/categorias'
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
+
+// Sin generateStaticParams, Next 14 trata una ruta con segmento dinámico como
+// 100 % dinámica y `revalidate` no aplica (cada visita renderiza y consulta
+// Neon). Con la función presente —aunque no pre-renderice nada en el build—
+// cada slug se genera bajo demanda en la primera visita y queda en caché
+// (ISR) durante `revalidate`.
+export async function generateStaticParams() {
+  return []
+}
 
 interface ServicioPageProps {
   params: {
@@ -190,10 +200,10 @@ export async function generateMetadata({ params }: ServicioPageProps) {
 }
 
 export default async function ServicioPage({ params }: ServicioPageProps) {
-  const [servicio, otrosServicios, proyectosAgg, whatsapp] = await Promise.all([
+  const [servicio, otrosServicios, totalProyectos, whatsapp] = await Promise.all([
     getServicio(params.slug),
     getOtrosServicios(params.slug),
-    prisma.proyecto.aggregate({ where: { visible: true }, _count: { _all: true } }),
+    getTotalProyectosVisibles(),
     getWhatsappComercial(),
   ])
 
@@ -202,7 +212,7 @@ export default async function ServicioPage({ params }: ServicioPageProps) {
   }
 
   // Cifras reales (mismo criterio que el home: proyectos redondeados a la decena)
-  const proyectos = Math.floor(proyectosAgg._count._all / 10) * 10
+  const proyectos = Math.floor(totalProyectos / 10) * 10
 
   return (
     <>

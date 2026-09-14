@@ -12,7 +12,7 @@ import {
 } from '@/components/seo/JsonLdSchema'
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
 // Slugs válidos: tabla landings_seo (tipo CIUDAD) con fallback a
 // lib/ciudades.ts — cualquier otro slug responde 404 vía notFound().
 

@@ -1,5 +1,7 @@
 import { cache } from "react"
 import { prisma } from "@/lib/prisma"
+import { cachedContent } from "@/lib/cache/content-cache"
+import { TAGS } from "@/lib/cache/tags"
 import type {
   ProcesoFase,
   FormOption,
@@ -10,12 +12,14 @@ export type ProcesoFaseItem = ProcesoFase
 export type FormOptionItem = FormOption
 export type ContactoConfig = ConfiguracionContacto
 
-export const getProcesoFases = cache(async () => {
-  return prisma.procesoFase.findMany({
-    where: { activo: true },
-    orderBy: { numero: "asc" },
-  })
-})
+export const getProcesoFases = cache(
+  cachedContent(["proceso-fases"], [TAGS.servicios], async (): Promise<ProcesoFase[]> => {
+    return prisma.procesoFase.findMany({
+      where: { activo: true },
+      orderBy: { numero: "asc" },
+    })
+  }),
+)
 
 export async function getAllProcesoFases() {
   return prisma.procesoFase.findMany({ orderBy: { numero: "asc" } })
@@ -102,7 +106,8 @@ export const SERVICIOS_PAGINA_DEFAULTS: ServiciosPaginaData = {
   ctaSecundarioHref: "/proyectos",
 }
 
-export const getServiciosPagina = cache(async (): Promise<ServiciosPaginaData> => {
+export const getServiciosPagina = cache(
+  cachedContent(["servicios-pagina"], [TAGS.servicios], async (): Promise<ServiciosPaginaData> => {
   const D = SERVICIOS_PAGINA_DEFAULTS
   try {
     const row = await prisma.serviciosPagina.findUnique({ where: { id: "default" } })
@@ -140,21 +145,26 @@ export const getServiciosPagina = cache(async (): Promise<ServiciosPaginaData> =
   } catch {
     return D
   }
-})
+  }),
+)
 
-export const getTiposProyecto = cache(async () => {
-  return prisma.formOption.findMany({
-    where: { grupo: "TIPO_PROYECTO", activo: true },
-    orderBy: { orden: "asc" },
-  })
-})
+export const getTiposProyecto = cache(
+  cachedContent(["form-options-tipo-proyecto"], [TAGS.formOptions], async (): Promise<FormOption[]> => {
+    return prisma.formOption.findMany({
+      where: { grupo: "TIPO_PROYECTO", activo: true },
+      orderBy: { orden: "asc" },
+    })
+  }),
+)
 
-export const getServiciosContacto = cache(async () => {
-  return prisma.formOption.findMany({
-    where: { grupo: "SERVICIO_CONTACTO", activo: true },
-    orderBy: { orden: "asc" },
-  })
-})
+export const getServiciosContacto = cache(
+  cachedContent(["form-options-servicio-contacto"], [TAGS.formOptions], async (): Promise<FormOption[]> => {
+    return prisma.formOption.findMany({
+      where: { grupo: "SERVICIO_CONTACTO", activo: true },
+      orderBy: { orden: "asc" },
+    })
+  }),
+)
 
 export async function getAllFormOptions() {
   return prisma.formOption.findMany({
@@ -162,9 +172,11 @@ export async function getAllFormOptions() {
   })
 }
 
-export const getConfiguracionContacto = cache(async () => {
-  return prisma.configuracionContacto.findUnique({ where: { id: "default" } })
-})
+export const getConfiguracionContacto = cache(
+  cachedContent(["configuracion-contacto"], [TAGS.configuracionContacto], async (): Promise<ConfiguracionContacto | null> => {
+    return prisma.configuracionContacto.findUnique({ where: { id: "default" } })
+  }),
+)
 
 export type ContactoData = {
   config: ContactoConfig | null

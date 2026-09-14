@@ -2,6 +2,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
+
+// El GET es público (lo llama la sección de clientes del home desde el
+// navegador): se sirve del caché 1 h, keyed por filtros.
+export const revalidate = 3600
+
+const getClientesCached = cachedContent(
+  ['api-clientes'],
+  [TAGS.clientes],
+  async (where: Record<string, unknown>) =>
+    prisma.cliente.findMany({
+      where,
+      orderBy: [
+        { orden: 'asc' },
+        { nombre: 'asc' }
+      ]
+    }),
+)
 
 // GET - Obtener todos los clientes
 export async function GET(request: NextRequest) {
@@ -27,15 +46,9 @@ export async function GET(request: NextRequest) {
       where.activo = true // Por defecto solo activos
     }
 
-    const clientes = await prisma.cliente.findMany({
-      where,
-      orderBy: [
-        { orden: 'asc' },
-        { nombre: 'asc' }
-      ]
-    })
+    const clientes = await getClientesCached(where)
 
-    return NextResponse.json(clientes)
+    return NextResponse.json(clientes, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error('Error fetching clientes:', error)
     return NextResponse.json(

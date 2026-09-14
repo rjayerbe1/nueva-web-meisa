@@ -3,7 +3,7 @@ import ContactoContent from './ContactoContent'
 import { getPlantasPublicas } from '@/lib/content/plantas'
 import { getTalentoPublico } from '@/lib/talento/publico'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   alternates: { canonical: '/contacto' },

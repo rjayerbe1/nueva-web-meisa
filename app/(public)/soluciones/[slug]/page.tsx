@@ -14,7 +14,7 @@ import {
 import { VideoDestacado } from '@/components/sections/VideoDestacado'
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
 
 const SITE_URL = 'https://meisa.com.co'
 const FALLBACK_HERO =

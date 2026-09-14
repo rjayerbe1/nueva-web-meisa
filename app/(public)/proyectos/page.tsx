@@ -6,7 +6,7 @@ import { getCategoriasPublicas } from "@/lib/content/categorias"
 import { getWhatsappComercial } from "@/lib/content/whatsapp"
 
 // ISR: sirve desde caché 60s, regenera en background
-export const revalidate = 60
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: { absolute: 'Proyectos de Estructuras Metálicas | MEISA' },

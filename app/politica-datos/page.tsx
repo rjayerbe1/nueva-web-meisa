@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export const revalidate = 60
+export const revalidate = 3600
 
 export default async function PoliticaDatosPage() {
   const doc = await getDocumento()

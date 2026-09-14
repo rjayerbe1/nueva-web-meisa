@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
+
+export const revalidate = 3600
+
+const getProyectosHojaVida = cachedContent(
+  ['api-trayectoria-proyectos'],
+  [TAGS.trayectoria],
+  async (where: Record<string, unknown>) =>
+    prisma.proyectoHojaVida.findMany({
+      where,
+      orderBy: [
+        { destacado: 'desc' },
+        { fechaInicio: 'desc' },
+        { orden: 'asc' }
+      ]
+    }),
+)
 
 // GET - Obtener proyectos con filtros
 export async function GET(request: NextRequest) {
@@ -48,16 +66,9 @@ export async function GET(request: NextRequest) {
       ]
     }
 
-    const proyectos = await prisma.proyectoHojaVida.findMany({
-      where,
-      orderBy: [
-        { destacado: 'desc' },
-        { fechaInicio: 'desc' },
-        { orden: 'asc' }
-      ]
-    })
+    const proyectos = await getProyectosHojaVida(where)
 
-    return NextResponse.json(proyectos)
+    return NextResponse.json(proyectos, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error('Error fetching proyectos:', error)
     return NextResponse.json(

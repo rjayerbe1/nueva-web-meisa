@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { getProcesosTecnologiasData } from '@/lib/content/tecnologia-politicas'
 import { ProcesosTecnologiasContent } from './ProcesosTecnologiasContent'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   alternates: { canonical: '/procesos-tecnologias' },

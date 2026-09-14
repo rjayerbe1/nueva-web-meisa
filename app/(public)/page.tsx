@@ -4,11 +4,13 @@ import { getHomeData, resolveStatValue } from '@/lib/content/home'
 import { getConfiguracionContacto } from '@/lib/content/servicios-contacto'
 import { getConfiguracionEmpresa } from '@/lib/content/empresa'
 import { getCategoriasPublicas } from '@/lib/content/categorias'
+import { cachedContent } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
 
 import { HomeContent } from '@/components/home/HomeContent'
 import type { Metadata } from 'next'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 // El title/description/OG vienen del layout raíz (ya optimizados con keywords).
 // Aquí solo fijamos el canonical explícito del home.
@@ -16,18 +18,22 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-async function getHeroImages(): Promise<HeroImageConfig> {
-  try {
-    const config = await prisma.configuracionSitio.findUnique({
-      where: { clave: 'hero_images' },
-    })
-    if (!config) return defaultHeroImages
-    return JSON.parse(config.valor) as HeroImageConfig
-  } catch (error) {
-    console.error('Error cargando imágenes del hero:', error)
-    return defaultHeroImages
-  }
-}
+const getHeroImages = cachedContent(
+  ['home-hero-images'],
+  [TAGS.configuracionSitio],
+  async (): Promise<HeroImageConfig> => {
+    try {
+      const config = await prisma.configuracionSitio.findUnique({
+        where: { clave: 'hero_images' },
+      })
+      if (!config) return defaultHeroImages
+      return JSON.parse(config.valor) as HeroImageConfig
+    } catch (error) {
+      console.error('Error cargando imágenes del hero:', error)
+      return defaultHeroImages
+    }
+  },
+)
 
 async function getProjectsByCategory() {
   const projects = await prisma.proyecto.findMany({

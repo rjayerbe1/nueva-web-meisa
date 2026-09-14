@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { TAGS } from '@/lib/cache/tags'
 
-export async function GET(
-  request: Request,
-  { params }: { params: { categoryKey: string } }
-) {
-  try {
-    const proyectos = await prisma.proyecto.findMany({
+export const revalidate = 3600
+
+const getProyectosByCategoria = cachedContent(
+  ['api-projects-by-category'],
+  [TAGS.proyectos],
+  async (categoryKey: string) =>
+    prisma.proyecto.findMany({
       where: {
-        categoria: params.categoryKey as any, // Assuming CategoriaEnum
+        categoria: categoryKey as any, // Assuming CategoriaEnum
         visible: true
       },
       include: {
@@ -21,9 +24,17 @@ export async function GET(
         { destacado: 'desc' }, // Destacados primero
         { fechaInicio: 'desc' } // Luego por fecha más reciente
       ]
-    })
+    }),
+)
 
-    return NextResponse.json(proyectos)
+export async function GET(
+  request: Request,
+  { params }: { params: { categoryKey: string } }
+) {
+  try {
+    const proyectos = await getProyectosByCategoria(params.categoryKey)
+
+    return NextResponse.json(proyectos, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {
     console.error('Error fetching projects by category:', error)
     return NextResponse.json(
