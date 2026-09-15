@@ -279,6 +279,7 @@ export default async function VacanteDetallePage({
                   vacanteSlug={vacante.slug}
                   vacanteTitulo={vacante.titulo}
                   elegibleReferidos={vacante.elegibleReferidos}
+                  requiereResidencia={vacante.modalidad !== "remoto"}
                   textoConsentimiento={
                     config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO
                   }

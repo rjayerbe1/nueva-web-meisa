@@ -27,6 +27,8 @@ const schema = z.object({
   // Programa de referidos: lo diligencia el CANDIDATO (no un tercero), así que
   // no hay problema de habeas data por entrega de datos de otra persona.
   codigoReferido: z.string().max(40).optional().nullable(),
+  // Residencia actual (NO nacionalidad). Obligatoria salvo en vacantes remotas.
+  resideEnColombia: z.boolean().optional().nullable(),
   consentimiento: z.literal(true),
   consentimientoBanco: z.boolean().optional(),
   cvPathGcs: z.string().min(1),
@@ -66,6 +68,20 @@ export async function POST(request: NextRequest) {
       if (!vacante || vacante.estado !== "ABIERTA") {
         return NextResponse.json({ error: "La vacante ya no está disponible" }, { status: 400 })
       }
+    }
+
+    // El formulario ya lo frena antes de subir el CV; esto cubre a quien llame
+    // la API directo. Con "No" no se guarda nada (minimización de datos).
+    if (vacante?.modalidad !== "remoto" && data.resideEnColombia !== true) {
+      return NextResponse.json(
+        {
+          error:
+            data.resideEnColombia === false
+              ? "Por ahora solo recibimos hojas de vida de personas que viven en Colombia: los cargos son presenciales en Jamundí."
+              : "Indica si vives actualmente en Colombia.",
+        },
+        { status: 400 },
+      )
     }
 
     const textoConsentimiento = config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO

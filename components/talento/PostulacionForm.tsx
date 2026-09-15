@@ -13,6 +13,7 @@ export function PostulacionForm({
   vacanteSlug,
   vacanteTitulo,
   elegibleReferidos = false,
+  requiereResidencia = true,
   textoConsentimiento,
 }: {
   vacanteSlug?: string
@@ -22,6 +23,10 @@ export function PostulacionForm({
   // vacantes marcadas como elegibles desde el admin, nunca en la aplicación
   // espontánea (sin vacante) ni en vacantes profesionales/administrativas.
   elegibleReferidos?: boolean
+  // Los cargos presenciales en Jamundí no pueden cubrirse desde otro país y
+  // llegaban hojas de vida de Argentina/Venezuela. Se pregunta por RESIDENCIA,
+  // nunca por nacionalidad (Ley 1482/2011). Solo las vacantes remotas lo omiten.
+  requiereResidencia?: boolean
   textoConsentimiento: string
 }) {
   const [nombre, setNombre] = useState("")
@@ -29,6 +34,7 @@ export function PostulacionForm({
   const [telefono, setTelefono] = useState("")
   const [ciudad, setCiudad] = useState("")
   const [codigoReferido, setCodigoReferido] = useState("")
+  const [resideEnColombia, setResideEnColombia] = useState<boolean | null>(null)
   const [cvFile, setCvFile] = useState<File | null>(null)
   const [consentimiento, setConsentimiento] = useState(false)
   const [banco, setBanco] = useState(false)
@@ -52,6 +58,7 @@ export function PostulacionForm({
     email.includes("@") &&
     telefono.trim().length >= 7 &&
     cvFile !== null &&
+    (!requiereResidencia || resideEnColombia === true) &&
     consentimiento &&
     !enviando
 
@@ -77,6 +84,7 @@ export function PostulacionForm({
           ciudad: ciudad.trim() || null,
           vacanteSlug: vacanteSlug ?? null,
           codigoReferido: codigoReferido.trim() || null,
+          resideEnColombia: requiereResidencia ? resideEnColombia : undefined,
           consentimiento: true,
           consentimientoBanco: banco,
           cvPathGcs: upData.pathGcs,
@@ -178,6 +186,42 @@ export function PostulacionForm({
             autoComplete="address-level2"
           />
         </div>
+        {requiereResidencia && (
+          <fieldset className="md:col-span-2">
+            <legend className={LABEL_CLS}>¿Vives actualmente en Colombia? *</legend>
+            <div className="flex gap-3">
+              {[
+                { valor: true, etiqueta: "Sí" },
+                { valor: false, etiqueta: "No" },
+              ].map((op) => (
+                <label
+                  key={op.etiqueta}
+                  className={`flex cursor-pointer items-center gap-2 border px-5 py-2.5 font-lato text-sm transition-colors ${
+                    resideEnColombia === op.valor
+                      ? "border-slate-950 bg-slate-950 text-white"
+                      : "border-slate-300 text-slate-700 hover:border-slate-950"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="pf-residencia"
+                    checked={resideEnColombia === op.valor}
+                    onChange={() => setResideEnColombia(op.valor)}
+                    className="sr-only"
+                  />
+                  {op.etiqueta}
+                </label>
+              ))}
+            </div>
+            {resideEnColombia === false && (
+              <p className="mt-3 border-l-2 border-slate-950 bg-stone-50 px-4 py-3 font-lato text-sm leading-relaxed text-slate-700">
+                Nuestros cargos son presenciales en la planta de Jamundí (Valle del Cauca), por
+                eso por ahora solo podemos recibir hojas de vida de personas que vivan en
+                Colombia. Gracias por tu interés en MEISA.
+              </p>
+            )}
+          </fieldset>
+        )}
         {elegibleReferidos && (
           <div className="md:col-span-2">
             <label className={LABEL_CLS} htmlFor="pf-referido">
