@@ -1,9 +1,10 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { FileDown, FileText, Loader2, Sparkles, StickyNote } from "lucide-react"
+import { FileText, Loader2, Sparkles, StickyNote } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ETAPAS, ETAPA_LABEL } from "./constants"
+import { InformeVacanteBoton } from "./InformesTalento"
 import type { PostulacionSer, VacanteSer } from "./types"
 
 const ETAPA_ACCENT: Record<string, string> = {
@@ -131,21 +132,9 @@ export function PipelineTab({
           ))}
         </select>
 
-        {/* Informe de la vacante seleccionada. Abre en pestaña nueva y lanza el
-            diálogo de impresión del navegador → "Guardar como PDF". No se genera
-            en el servidor porque la imagen de Cloud Run no trae Chrome. */}
-        {vacanteSeleccionada && (
-          <a
-            href={`/api/admin/talento/informe/${vacanteSeleccionada.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-3 py-2 font-lato text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-slate-700"
-            title={`Informe de evaluación de ${vacanteSeleccionada.titulo} para guardar como PDF`}
-          >
-            <FileDown className="h-3.5 w-3.5" />
-            Informe PDF
-          </a>
-        )}
+        {/* Informe de la vacante filtrada. Los informes también están en la
+            cabecera de la página y en cada fila de la pestaña Vacantes. */}
+        {vacanteSeleccionada && <InformeVacanteBoton vacante={vacanteSeleccionada} />}
       </div>
 
       {error && (

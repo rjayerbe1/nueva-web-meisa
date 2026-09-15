@@ -15,6 +15,8 @@ export type VacanteSer = {
   salarioMax: number | null
   salarioVisible: boolean
   elegibleReferidos: boolean
+  /** [{nombre, peso, guia}] — hay que mandarla: sin ella el editor la muestra vacía. */
+  criteriosEvaluacion: unknown
   estado: string
   fechaPublicacion: string | null
   fechaCierre: string | null

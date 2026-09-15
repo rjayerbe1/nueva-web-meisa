@@ -97,6 +97,7 @@ async function getData() {
     salarioMax: v.salarioMax,
     salarioVisible: v.salarioVisible,
     elegibleReferidos: v.elegibleReferidos,
+    criteriosEvaluacion: v.criteriosEvaluacion,
     estado: v.estado,
     fechaPublicacion: dateOnly(v.fechaPublicacion),
     fechaCierre: dateOnly(v.fechaCierre),

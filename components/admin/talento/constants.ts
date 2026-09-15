@@ -43,3 +43,24 @@ export const CANALES_PUBLICACION = [
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Otro", label: "Otro" },
 ]
+
+// Periodos del informe general. Deben coincidir con PERIODOS de
+// lib/talento/informe-general.ts (ese módulo no se puede importar desde el
+// cliente porque arrastra Prisma). 0 = todo el histórico.
+export const PERIODOS_INFORME = [
+  { value: 7, label: "Últimos 7 días" },
+  { value: 30, label: "Últimos 30 días" },
+  { value: 90, label: "Últimos 90 días" },
+  { value: 0, label: "Todo el histórico" },
+]
+
+/** ¿La vacante tiene al menos un criterio válido? Misma regla que `leerCriterios`. */
+export function tieneMatriz(raw: unknown): boolean {
+  return (
+    Array.isArray(raw) &&
+    raw.some(
+      (c) =>
+        typeof c?.nombre === "string" && c.nombre.trim().length > 0 && Number(c?.peso) > 0,
+    )
+  )
+}

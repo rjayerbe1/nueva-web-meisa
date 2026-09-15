@@ -2,7 +2,15 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { requireAdmin, apiErrorResponse } from "@/lib/auth-helpers"
 import { leerCriterios } from "@/lib/talento/ia"
-import { armarHtml, LOGO_URL, type Cand } from "@/lib/talento/informe"
+import { armarHtml, LOGO_URL, paginaAviso, type Cand } from "@/lib/talento/informe"
+
+/** Se abre en pestaña nueva: los errores van como página legible, no como JSON. */
+function aviso(status: number, titulo: string, mensaje: string) {
+  return new NextResponse(paginaAviso(titulo, mensaje), {
+    status,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" },
+  })
+}
 
 /**
  * Informe de evaluación de una vacante, listo para guardar como PDF.
@@ -23,16 +31,16 @@ export async function GET(_req: NextRequest, { params }: { params: { vacanteId: 
     await requireAdmin()
 
     const vacante = await prisma.vacante.findUnique({ where: { id: params.vacanteId } })
-    if (!vacante) return NextResponse.json({ error: "Vacante no encontrada" }, { status: 404 })
+    if (!vacante) {
+      return aviso(404, "Vacante no encontrada", "La vacante ya no existe. Recarga el admin y vuelve a intentar.")
+    }
 
     const criterios = leerCriterios(vacante.criteriosEvaluacion)
     if (!criterios.length) {
-      return NextResponse.json(
-        {
-          error:
-            "Esta vacante no tiene matriz de evaluación. Defínela en la pestaña Vacantes (campo “Matriz de evaluación del cargo”) y vuelve a intentar.",
-        },
-        { status: 409 },
+      return aviso(
+        409,
+        `${vacante.titulo}: falta la matriz`,
+        "Esta vacante no tiene matriz de evaluación, y sin ella no hay contra qué puntuar a los candidatos. Defínela en la pestaña Vacantes (lápiz de la vacante → «Matriz de evaluación del cargo») y vuelve a generar el informe.",
       )
     }
 
@@ -44,6 +52,14 @@ export async function GET(_req: NextRequest, { params }: { params: { vacanteId: 
       // NULLS LAST: sin esto los sin-puntaje salen de primeros y parecen los mejores.
       orderBy: { scoreIA: { sort: "desc", nulls: "last" } },
     })
+
+    if (!ps.length) {
+      return aviso(
+        200,
+        `${vacante.titulo}: sin candidatos`,
+        "Esta vacante todavía no tiene postulaciones activas (las descartadas no entran al informe). Cuando lleguen hojas de vida, el informe se arma solo.",
+      )
+    }
 
     const cands: Cand[] = ps.map((p) => ({
       nombre: p.candidato.nombre,

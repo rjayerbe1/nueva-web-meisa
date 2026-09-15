@@ -6,6 +6,7 @@ import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
 import { CandidatosTab } from "./CandidatosTab"
 import { ComparativosTab } from "./ComparativosTab"
+import { InformesTalento, InformeVacanteBoton } from "./InformesTalento"
 import { PipelineTab } from "./PipelineTab"
 import { ReferidosTab } from "./ReferidosTab"
 import { VacanteIAPanel } from "./VacanteIAPanel"
@@ -230,6 +231,7 @@ export function TalentoAdminTabs({
             { key: "elegibleReferidos", label: "Referidos", className: "w-24 text-center" },
             { key: "postulacionesCount", label: "Postulaciones", className: "w-28 text-center" },
           ]}
+          rowActions={(v: VacanteSer) => <InformeVacanteBoton vacante={v} compacto />}
           filters={[
             {
               key: "estado",
@@ -357,7 +359,8 @@ export function TalentoAdminTabs({
     <AdminTabsLayout
       eyebrow="Operaciones"
       title="Talento Humano"
-      description="Vacantes, banco de hojas de vida y pipeline de selección. Fase interna: los CVs se cargan aquí manualmente y las vacantes se publican por fuera (SPE, bolsas de empleo)."
+      description="Vacantes, banco de hojas de vida y pipeline de selección. Las hojas de vida llegan por la página web y por la carpeta de Drive de Talento Humano, que se sincroniza cada hora en horario laboral."
+      actions={<InformesTalento vacantes={vacantes} />}
       tabs={tabs}
     />
   )

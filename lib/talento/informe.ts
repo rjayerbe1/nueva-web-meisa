@@ -8,7 +8,7 @@
  * toca, se toca acá y cambia en los dos lados.
  */
 
-const esc = (s: unknown) =>
+export const esc = (s: unknown) =>
   String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 export const CORTE = 75 // mismo umbral que la etiqueta "Recomendado"
@@ -100,7 +100,7 @@ export type Cand = {
   } | null
 }
 
-function concepto(s: number | null) {
+export function concepto(s: number | null) {
   if (s == null) return '<span class="pill pill-c">Sin evaluar</span>'
   if (s >= 75) return '<span class="pill pill-a">Recomendado</span>'
   if (s >= 55) return '<span class="pill pill-b">Considerar</span>'
@@ -214,24 +214,7 @@ export function armarHtml(
        matriz por si está mal calibrada para este cargo, o abrir canales de reclutamiento adicionales
        (SENA APE, cajas de compensación, Computrabajo) — la web sola puede no traer el perfil requerido.</div>`
 
-  const extra = opciones.autoImprimir
-    ? `<style>@media screen{body{background:#f1f5f9;padding:1.5rem}
-         table.page-wrap{background:#fff;max-width:8.5in;margin:0 auto;padding:1.3cm 1.5cm;box-shadow:0 1px 4px rgba(0,0,0,.15)}
-         .aviso{max-width:8.5in;margin:0 auto 1rem;background:#16294d;color:#fff;padding:.7rem 1rem;font:600 13px/1.4 Helvetica,Arial,sans-serif;border-radius:2px}
-         .aviso b{color:#fff}}
-       @media print{.aviso{display:none}}</style>
-       <div class="aviso">Se abrirá el diálogo de impresión. Elige <b>Guardar como PDF</b> · destino <b>Carta</b>, márgenes <b>predeterminados</b> y activa <b>Gráficos de fondo</b> para que se vea el membrete.</div>
-       <script>window.addEventListener("load", () => setTimeout(() => window.print(), 700))</script>`
-    : ""
-
-  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Evaluación — ${esc(vacante)}</title><style>${CSS}</style>${extra}</head><body>
-<table class="page-wrap">
-  <thead><tr><td><div class="rhead"><img src="${logo}" alt="MEISA">
-    <div class="meta"><b>METÁLICAS E INGENIERÍA S.A.S.</b><br>NIT 817.000.639-1<br>Jamundí &amp; Popayán</div></div>
-    <div class="rhead-rule"></div></td></tr></thead>
-  <tfoot><tr><td><div class="rfoot"><span>METÁLICAS E INGENIERÍA S.A.S. · Documento interno de selección</span>
-    <span>Uso restringido — datos personales Ley 1581/2012</span></div></td></tr></tfoot>
-  <tbody><tr><td>
+  return envolver(`Evaluación — ${vacante}`, `
   <div class="kicker">Talento Humano · Evaluación preliminar</div>
   <div class="title">${esc(vacante)}</div>
   <div class="sub">Comparativo de ${cands.length} candidatos · Corte ${esc(fecha)}${ciudad ? ` · Planta ${esc(ciudad)}` : ""}</div>
@@ -258,7 +241,63 @@ export function armarHtml(
   se traslada a "por validar". Por eso un puntaje medio no descarta a nadie — indica qué falta comprobar.
   No se consideran edad, sexo, estado civil ni origen (Ley 931 de 2004).</div>
   ${bloqueTop}
-  ${bloqueResto}
+  ${bloqueResto}`, { logo, autoImprimir: opciones.autoImprimir })
+}
+
+/**
+ * Documento con membrete MEISA (encabezado y pie repetidos en cada hoja).
+ * Lo comparten el informe por vacante y el informe general.
+ */
+export function envolver(
+  titulo: string,
+  cuerpo: string,
+  opciones: { logo?: string; autoImprimir?: boolean; cssExtra?: string } = {},
+) {
+  const logo = opciones.logo ?? "logo-meisa.webp"
+  // En el admin el informe se abre en una pestaña y lo guarda el navegador. El
+  // diálogo se lanza solo, pero si la persona lo cierra o el navegador lo
+  // bloquea, el botón del aviso lo vuelve a abrir: sin él parecía que no pasaba nada.
+  const extra = opciones.autoImprimir
+    ? `<style>@media screen{body{background:#f1f5f9;padding:1.5rem}
+         table.page-wrap{background:#fff;max-width:8.5in;margin:0 auto;padding:1.3cm 1.5cm;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+         .aviso{max-width:8.5in;margin:0 auto 1rem;background:#16294d;color:#fff;padding:.8rem 1rem;font:500 13px/1.5 Helvetica,Arial,sans-serif;border-radius:2px;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+         .aviso b{color:#fff}
+         .aviso button{background:#be1622;color:#fff;border:0;padding:.55rem 1rem;font:700 12px Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border-radius:2px;white-space:nowrap}
+         .aviso button:hover{background:#9f111b}}
+       @media print{.aviso{display:none}}</style>`
+    : ""
+  const aviso = opciones.autoImprimir
+    ? `<div class="aviso"><span>Para guardarlo, en <b>Destino</b> elige <b>Guardar como PDF</b>. Tamaño <b>Carta</b> y activa <b>Gráficos de fondo</b> para que salga el membrete.</span>
+       <button type="button" onclick="window.print()">Imprimir o guardar PDF</button></div>
+       <script>window.addEventListener("load", () => setTimeout(() => window.print(), 700))</script>`
+    : ""
+
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(titulo)}</title><style>${CSS}${opciones.cssExtra ?? ""}</style>${extra}</head><body>
+${aviso}
+<table class="page-wrap">
+  <thead><tr><td><div class="rhead"><img src="${logo}" alt="MEISA">
+    <div class="meta"><b>METÁLICAS E INGENIERÍA S.A.S.</b><br>NIT 817.000.639-1<br>Jamundí &amp; Popayán</div></div>
+    <div class="rhead-rule"></div></td></tr></thead>
+  <tfoot><tr><td><div class="rfoot"><span>METÁLICAS E INGENIERÍA S.A.S. · Documento interno de selección</span>
+    <span>Uso restringido — datos personales Ley 1581/2012</span></div></td></tr></tfoot>
+  <tbody><tr><td>
+  ${cuerpo}
   </td></tr></tbody></table></body></html>`
+}
+
+/**
+ * Página simple para cuando el informe no se puede armar (vacante sin matriz,
+ * sin postulaciones…). El informe se abre en una pestaña nueva: devolver un JSON
+ * de error ahí dejaba a Talento Humano frente a texto técnico sin saber qué hacer.
+ */
+export function paginaAviso(titulo: string, mensaje: string) {
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(titulo)}</title>
+<style>body{margin:0;background:#f1f5f9;font:15px/1.55 Helvetica,Arial,sans-serif;color:#1f2933;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:1.5rem;box-sizing:border-box}
+.c{background:#fff;max-width:34rem;padding:2rem;border-top:4px solid #16294d;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#be1622;font-weight:700}
+h1{font-size:22px;color:#16294d;margin:.3rem 0 .8rem}p{margin:0 0 1.2rem}
+button{background:#16294d;color:#fff;border:0;padding:.6rem 1.1rem;font:700 12px Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer}</style></head>
+<body><div class="c"><div class="k">Talento Humano · Informe</div><h1>${esc(titulo)}</h1><p>${esc(mensaje)}</p>
+<button type="button" onclick="window.close()">Cerrar pestaña</button></div></body></html>`
 }
 

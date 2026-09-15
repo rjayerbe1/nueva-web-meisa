@@ -91,6 +91,12 @@ interface ListCrudEditorProps<T extends BaseItem> {
   detailHref?: (item: any) => string
   /** Texto del link de detalle. Default "Editar fotos y detalle". */
   detailLabel?: string
+  /**
+   * Acciones propias del módulo por item (ej. "Informe PDF" en vacantes). Se
+   * muestran SIEMPRE, no solo en hover: si es una acción que la gente tiene que
+   * encontrar, esconderla detrás del hover es lo mismo que no tenerla.
+   */
+  rowActions?: (item: T) => React.ReactNode
 }
 
 export function ListCrudEditor<T extends BaseItem>({
@@ -111,6 +117,7 @@ export function ListCrudEditor<T extends BaseItem>({
   pageSize = 48,
   detailHref,
   detailLabel = "Editar fotos y detalle",
+  rowActions,
 }: ListCrudEditorProps<T>) {
   const [items, setItems] = useState<T[]>(initialItems)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -589,6 +596,7 @@ export function ListCrudEditor<T extends BaseItem>({
                       onDelete={() => del(item.id)}
                       onToggleActivo={() => toggleActivo(item)}
                       detailHref={detailHref ? detailHref(item) : undefined}
+                      extraActions={rowActions?.(item)}
                     />
                   ),
                 )}
@@ -612,6 +620,7 @@ export function ListCrudEditor<T extends BaseItem>({
                 onSave={save}
                 detailHref={detailHref}
                 detailLabel={detailLabel}
+                rowActions={rowActions}
                 sort={sort}
                 onSortColumn={cycleSort}
               />
@@ -652,11 +661,13 @@ function CardGrid<T extends BaseItem>({
   onDelete,
   onToggleActivo,
   detailHref,
+  extraActions,
 }: {
   item: T
   fields: FieldDef[]
   thumbnailField?: string
   renderPreview?: (item: T) => React.ReactNode
+  extraActions?: React.ReactNode
   canReorder: boolean
   disabled: boolean
   onEdit: () => void
@@ -774,6 +785,7 @@ function CardGrid<T extends BaseItem>({
       {/* Content (abajo) */}
       <div className="flex flex-1 flex-col px-4 py-3">
         {renderPreview ? renderPreview(item) : <DefaultPreview item={item} fields={fields} />}
+        {extraActions && <div className="mt-3 flex flex-wrap gap-1.5">{extraActions}</div>}
       </div>
     </div>
   )
@@ -975,6 +987,7 @@ function TableView<T extends BaseItem>({
   onSave,
   detailHref,
   detailLabel,
+  rowActions,
   sort,
   onSortColumn,
 }: {
@@ -995,6 +1008,7 @@ function TableView<T extends BaseItem>({
   onSave: () => void
   detailHref?: (item: any) => string
   detailLabel?: string
+  rowActions?: (item: T) => React.ReactNode
   sort: SortState
   onSortColumn: (key: string) => void
 }) {
@@ -1044,7 +1058,12 @@ function TableView<T extends BaseItem>({
                 </th>
               )
             })}
-            <th className="w-28 px-3 py-2.5 text-right font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">
+            <th
+              className={cn(
+                rowActions ? "w-56" : "w-28",
+                "px-3 py-2.5 text-right font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500",
+              )}
+            >
               Acciones
             </th>
           </tr>
@@ -1082,6 +1101,7 @@ function TableView<T extends BaseItem>({
                 onToggleActivo={() => onToggleActivo(item)}
                 detailHref={detailHref ? detailHref(item) : undefined}
                 detailLabel={detailLabel}
+                extraActions={rowActions?.(item)}
               />
             ),
           )}
@@ -1103,6 +1123,7 @@ function TableRow<T extends BaseItem>({
   onToggleActivo,
   detailHref,
   detailLabel,
+  extraActions,
 }: {
   item: T
   fields: FieldDef[]
@@ -1115,6 +1136,7 @@ function TableRow<T extends BaseItem>({
   onToggleActivo: () => void
   detailHref?: string
   detailLabel?: string
+  extraActions?: React.ReactNode
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id, disabled: disabled || !canReorder })
@@ -1207,50 +1229,53 @@ function TableRow<T extends BaseItem>({
         )
       })}
       <td className="px-3 py-2.5">
-        <div
-          className={cn(
-            "flex items-center justify-end gap-1",
-            detailHref
-              ? "opacity-100"
-              : "opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100",
-          )}
-        >
-          {detailHref && (
-            <Link
-              href={detailHref}
-              title={detailLabel ?? "Editar fotos y detalle"}
-              className="flex h-7 items-center gap-1 rounded-none border border-slate-200 px-2 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-700 transition-colors hover:border-red-600 hover:bg-red-600 hover:text-white"
-            >
-              <ExternalLink className="h-3 w-3" />
-              Detalle
-            </Link>
-          )}
-          {"activo" in item && (
+        <div className="flex items-center justify-end gap-1">
+          {extraActions}
+          <div
+            className={cn(
+              "flex items-center justify-end gap-1",
+              detailHref
+                ? "opacity-100"
+                : "opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100",
+            )}
+          >
+            {detailHref && (
+              <Link
+                href={detailHref}
+                title={detailLabel ?? "Editar fotos y detalle"}
+                className="flex h-7 items-center gap-1 rounded-none border border-slate-200 px-2 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-700 transition-colors hover:border-red-600 hover:bg-red-600 hover:text-white"
+              >
+                <ExternalLink className="h-3 w-3" />
+                Detalle
+              </Link>
+            )}
+            {"activo" in item && (
+              <button
+                onClick={onToggleActivo}
+                disabled={disabled}
+                title={isActive ? "Ocultar" : "Mostrar"}
+                className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
+              >
+                {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
+              </button>
+            )}
             <button
-              onClick={onToggleActivo}
+              onClick={onEdit}
               disabled={disabled}
-              title={isActive ? "Ocultar" : "Mostrar"}
+              title="Edición rápida (sin fotos)"
               className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
             >
-              {isActive ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
+              <Pencil className="h-3.5 w-3.5" />
             </button>
-          )}
-          <button
-            onClick={onEdit}
-            disabled={disabled}
-            title="Edición rápida (sin fotos)"
-            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
-          >
-            <Pencil className="h-3.5 w-3.5" />
-          </button>
-          <button
-            onClick={onDelete}
-            disabled={disabled}
-            title="Eliminar"
-            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
+            <button
+              onClick={onDelete}
+              disabled={disabled}
+              title="Eliminar"
+              className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
         </div>
       </td>
     </tr>
