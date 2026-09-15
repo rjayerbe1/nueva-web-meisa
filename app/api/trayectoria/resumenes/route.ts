@@ -2,20 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { getCatalogo } from '@/lib/content/snapshot'
 
 export const revalidate = 3600
 
-const getResumenes = cachedContent(
-  ['api-trayectoria-resumenes'],
-  [TAGS.trayectoria],
-  async (soloVisibles: boolean) =>
-    prisma.resumenAnio.findMany({
-      where: soloVisibles ? { visible: true } : {},
-      orderBy: { anio: 'desc' }
-    }),
-)
+async function getResumenes(soloVisibles: boolean) {
+  // Snapshot ya ordenado por anio desc.
+  const { resumenes } = await getCatalogo()
+  return soloVisibles ? resumenes.filter((r) => r.visible) : resumenes
+}
 
 // GET - Listar todos los resúmenes de años
 export async function GET(request: NextRequest) {

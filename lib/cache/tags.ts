@@ -4,8 +4,8 @@
  * Por qué existe: Neon cobra por horas de cómputo despierto y se suspende
  * solo tras 5 min sin consultas. Con ~2.300 páginas/día (casi todo
  * rastreadores) cada render tocaba Postgres y la base nunca dormía. Todo lo
- * que lee el sitio público pasa por `cachedContent()` (lib/cache/content-cache.ts)
- * etiquetado con estas tags, y cualquier escritura del admin las invalida
+ * que lee el sitio público sale del snapshot (lib/content/snapshot.ts), cuyas
+ * entradas llevan estas tags, y cualquier escritura del admin las invalida
  * (lib/prisma.ts → lib/cache/revalidate.ts) para que un cambio se vea al
  * instante sin esperar el TTL.
  */

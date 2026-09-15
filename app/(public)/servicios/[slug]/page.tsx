@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo } from '@/lib/content/snapshot'
 import ServicioDetailEnhanced from './ServicioDetailEnhanced'
 import { ServiceSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
 import { getServiceColors } from '@/lib/service-colors'
@@ -27,12 +27,7 @@ interface ServicioPageProps {
 }
 
 async function getServicio(slug: string) {
-  const servicio = await prisma.servicio.findUnique({
-    where: { 
-      slug,
-      activo: true
-    }
-  })
+  const servicio = (await getCatalogo()).servicios.find((s) => s.slug === slug && s.activo) ?? null
 
   if (!servicio) {
     return null
@@ -130,16 +125,9 @@ async function getServicio(slug: string) {
 }
 
 async function getOtrosServicios(currentSlug: string) {
-  const servicios = await prisma.servicio.findMany({
-    where: { 
-      activo: true,
-      slug: {
-        not: currentSlug
-      }
-    },
-    orderBy: { orden: 'asc' },
-    take: 3
-  })
+  const servicios = (await getCatalogo()).servicios
+    .filter((s) => s.activo && s.slug !== currentSlug)
+    .slice(0, 3)
   
   return servicios.map(servicio => {
     const colors = getServiceColors(servicio.color || 'blue')
@@ -157,18 +145,6 @@ async function getOtrosServicios(currentSlug: string) {
     }
   })
 }
-
-// Disabled static generation - pages are generated dynamically
-// export async function generateStaticParams() {
-//   const servicios = await prisma.servicio.findMany({
-//     where: { activo: true },
-//     select: { slug: true }
-//   })
-
-//   return servicios.map((servicio) => ({
-//     slug: servicio.slug,
-//   }))
-// }
 
 export async function generateMetadata({ params }: ServicioPageProps) {
   const servicio = await getServicio(params.slug)

@@ -1,7 +1,5 @@
 import { cache } from "react"
-import { prisma } from "@/lib/prisma"
-import { cachedContent } from "@/lib/cache/content-cache"
-import { TAGS } from "@/lib/cache/tags"
+import { getCatalogo } from "@/lib/content/snapshot"
 
 export type CategoriaPublica = {
   id: string
@@ -26,45 +24,38 @@ export type CategoriaPublica = {
   destacada: boolean
 }
 
-export const getCategoriasPublicas = cache(
-  cachedContent(["categorias-publicas"], [TAGS.categoriasProyecto], async (): Promise<CategoriaPublica[]> => {
-  return await prisma.categoriaProyecto.findMany({
-    where: { visible: true },
-    orderBy: { orden: 'asc' },
-    select: {
-      id: true,
-      key: true,
-      nombre: true,
-      descripcion: true,
-      slug: true,
-      imagenCover: true,
-      videoCover: true,
-      usarVideoCover: true,
-      videoCoverScale: true,
-      videoCoverPosition: true,
-      icono: true,
-      color: true,
-      colorSecundario: true,
-      overlayColor: true,
-      overlayOpacity: true,
-      hoverOverlayColor: true,
-      hoverOverlayOpacity: true,
-      enableHoverOverlay: true,
-      visible: true,
-      destacada: true,
-    },
-  })
-  }),
-)
+export const getCategoriasPublicas = cache(async (): Promise<CategoriaPublica[]> => {
+  const { categorias } = await getCatalogo()
+  return categorias
+    .filter((c) => c.visible)
+    .map((c) => ({
+      id: c.id,
+      key: c.key,
+      nombre: c.nombre,
+      descripcion: c.descripcion,
+      slug: c.slug,
+      imagenCover: c.imagenCover,
+      videoCover: c.videoCover,
+      usarVideoCover: c.usarVideoCover,
+      videoCoverScale: c.videoCoverScale,
+      videoCoverPosition: c.videoCoverPosition,
+      icono: c.icono,
+      color: c.color,
+      colorSecundario: c.colorSecundario,
+      overlayColor: c.overlayColor,
+      overlayOpacity: c.overlayOpacity,
+      hoverOverlayColor: c.hoverOverlayColor,
+      hoverOverlayOpacity: c.hoverOverlayOpacity,
+      enableHoverOverlay: c.enableHoverOverlay,
+      visible: c.visible,
+      destacada: c.destacada,
+    }))
+})
 
 /**
  * Total de proyectos visibles. Lo usan ~20 landings (servicios, soluciones,
- * ciudades, pilar) para la cifra "N proyectos": una sola lectura por hora
- * en vez de una por ruta.
+ * ciudades, pilar) para la cifra "N proyectos".
  */
-export const getTotalProyectosVisibles = cache(
-  cachedContent(["proyectos-visibles-count"], [TAGS.proyectos], async (): Promise<number> => {
-    const agg = await prisma.proyecto.aggregate({ where: { visible: true }, _count: { _all: true } })
-    return agg._count._all
-  }),
-)
+export const getTotalProyectosVisibles = cache(async (): Promise<number> => {
+  return (await getCatalogo()).proyectos.length
+})

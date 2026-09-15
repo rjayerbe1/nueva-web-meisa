@@ -1,7 +1,6 @@
 import { cache } from "react"
 import { prisma } from "@/lib/prisma"
-import { cachedContent } from "@/lib/cache/content-cache"
-import { TAGS } from "@/lib/cache/tags"
+import { getSitio } from "@/lib/content/snapshot"
 import type {
   ConfiguracionEmpresa,
   CompanyValue,
@@ -18,56 +17,29 @@ export type CertificacionItem = Certificacion
 export type NormaItem = Norma
 export type GobiernoItemPublic = GobiernoItem
 
-export const getConfiguracionEmpresa = cache(
-  cachedContent(["configuracion-empresa"], [TAGS.configuracionEmpresa], async (): Promise<EmpresaConfig | null> => {
-    return prisma.configuracionEmpresa.findUnique({ where: { id: "default" } })
-  }),
-)
+export const getConfiguracionEmpresa = cache(async (): Promise<EmpresaConfig | null> => {
+  return (await getSitio()).configuracionEmpresa
+})
 
-export const getValoresActivos = cache(
-  cachedContent(["empresa-valores"], [TAGS.empresa], async (): Promise<Valor[]> => {
-    return prisma.companyValue.findMany({
-      where: { activo: true },
-      orderBy: { orden: "asc" },
-    })
-  }),
-)
+export const getValoresActivos = cache(async (): Promise<Valor[]> => {
+  return (await getSitio()).empresa.valores
+})
 
-export const getHitosActivos = cache(
-  cachedContent(["empresa-hitos"], [TAGS.empresa], async (): Promise<Hito[]> => {
-    return prisma.timelineHito.findMany({
-      where: { activo: true },
-      orderBy: { orden: "asc" },
-    })
-  }),
-)
+export const getHitosActivos = cache(async (): Promise<Hito[]> => {
+  return (await getSitio()).empresa.hitos
+})
 
-export const getCertificacionesActivas = cache(
-  cachedContent(["empresa-certificaciones"], [TAGS.empresa], async (): Promise<CertificacionItem[]> => {
-    return prisma.certificacion.findMany({
-      where: { activo: true },
-      orderBy: { orden: "asc" },
-    })
-  }),
-)
+export const getCertificacionesActivas = cache(async (): Promise<CertificacionItem[]> => {
+  return (await getSitio()).empresa.certificaciones
+})
 
-export const getNormasActivas = cache(
-  cachedContent(["empresa-normas"], [TAGS.empresa], async (): Promise<NormaItem[]> => {
-    return prisma.norma.findMany({
-      where: { activo: true },
-      orderBy: { orden: "asc" },
-    })
-  }),
-)
+export const getNormasActivas = cache(async (): Promise<NormaItem[]> => {
+  return (await getSitio()).empresa.normas
+})
 
-export const getGobiernoItemsActivos = cache(
-  cachedContent(["empresa-gobierno"], [TAGS.empresa], async (): Promise<GobiernoItemPublic[]> => {
-    return prisma.gobiernoItem.findMany({
-      where: { activo: true },
-      orderBy: { orden: "asc" },
-    })
-  }),
-)
+export const getGobiernoItemsActivos = cache(async (): Promise<GobiernoItemPublic[]> => {
+  return (await getSitio()).empresa.gobierno
+})
 
 export type EmpresaData = {
   config: EmpresaConfig | null

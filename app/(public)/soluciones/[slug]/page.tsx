@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, MapPin, Plus } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo, imagenesTop, num, ordenar, sumar } from '@/lib/content/snapshot'
 import { getSolucionDb, getSolucionSlugsDb } from '@/lib/content/landings'
 import {
   ServiceSchema,
@@ -69,10 +69,7 @@ export async function generateMetadata({
     return { title: 'Solución no encontrada | MEISA' }
   }
 
-  const categoria = await prisma.categoriaProyecto.findUnique({
-    where: { key: solucion.categoriaEnum },
-    select: { imagenCover: true },
-  })
+  const categoria = (await getCatalogo()).categorias.find((c) => c.key === solucion.categoriaEnum)
   const image = solucion.heroImagen || categoria?.imagenCover || FALLBACK_HERO
 
   return {
@@ -108,38 +105,26 @@ export default async function SolucionPage({
   const solucion = await getSolucionDb(params.slug)
   if (!solucion) notFound()
 
-  const [categoria, agregados, topProyectos] = await Promise.all([
-    prisma.categoriaProyecto.findUnique({
-      where: { key: solucion.categoriaEnum },
-      select: { imagenCover: true, slug: true, nombre: true },
-    }),
-    prisma.proyecto.aggregate({
-      where: { categoria: solucion.categoriaEnum, visible: true },
-      _count: { _all: true },
-      _sum: { toneladas: true },
-    }),
-    prisma.proyecto.findMany({
-      where: {
-        categoria: solucion.categoriaEnum,
-        visible: true,
-        toneladas: { not: null },
-      },
-      orderBy: { toneladas: 'desc' },
-      take: 4,
-      select: {
-        id: true,
-        titulo: true,
-        slug: true,
-        ubicacion: true,
-        toneladas: true,
-        imagenes: {
-          orderBy: { orden: 'asc' },
-          take: 1,
-          select: { url: true, urlOptimized: true, alt: true },
-        },
-      },
-    }),
-  ])
+  const catalogo = await getCatalogo()
+  const categoria = catalogo.categorias.find((c) => c.key === solucion.categoriaEnum)
+  const deLaCategoria = catalogo.proyectos.filter((p) => p.categoria === solucion.categoriaEnum)
+  const agregados = {
+    _count: { _all: deLaCategoria.length },
+    _sum: { toneladas: sumar(deLaCategoria, (p) => p.toneladas) },
+  }
+  const topProyectos = ordenar(
+    deLaCategoria.filter((p) => p.toneladas !== null),
+    [(p) => num(p.toneladas), 'desc'],
+  )
+    .slice(0, 4)
+    .map((p) => ({
+      id: p.id,
+      titulo: p.titulo,
+      slug: p.slug,
+      ubicacion: p.ubicacion,
+      toneladas: p.toneladas,
+      imagenes: imagenesTop(p),
+    }))
 
   const heroImagen = solucion.heroImagen || categoria?.imagenCover || FALLBACK_HERO
   const categoriaSlug = categoria?.slug || solucion.categoriaSlug

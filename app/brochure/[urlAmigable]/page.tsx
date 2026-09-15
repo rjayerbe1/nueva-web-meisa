@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { prisma } from "@/lib/prisma"
+import { getCatalogo } from "@/lib/content/snapshot"
 import { PdfViewerClient } from "@/components/brochure/PdfViewerClient"
 
 interface PageProps {
@@ -8,16 +8,10 @@ interface PageProps {
 }
 
 async function getBrochure(urlAmigable: string) {
-  return prisma.brochure.findUnique({
-    where: { urlAmigable },
-    select: {
-      titulo: true,
-      descripcion: true,
-      pdfUrl: true,
-      publicado: true,
-      activo: true,
-    },
-  })
+  const b = (await getCatalogo()).brochures.find((x) => x.urlAmigable === urlAmigable)
+  return b
+    ? { titulo: b.titulo, descripcion: b.descripcion, pdfUrl: b.pdfUrl, publicado: b.publicado, activo: b.activo }
+    : null
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

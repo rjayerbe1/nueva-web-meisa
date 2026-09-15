@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo, ordenar } from '@/lib/content/snapshot'
 import CategoryPageClient from './CategoryPageClient'
 
 // ISR: sirve desde caché 1 h, regenera en background
@@ -20,16 +20,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const categoria = await prisma.categoriaProyecto.findFirst({
-    where: { slug: params.slug, visible: true },
-    select: {
-      nombre: true,
-      descripcion: true,
-      metaTitle: true,
-      metaDescription: true,
-      imagenCover: true,
-    },
-  })
+  const categoria = (await getCatalogo()).categorias.find((c) => c.slug === params.slug && c.visible)
 
   if (!categoria) {
     return { title: 'Categoría no encontrada | MEISA' }
@@ -73,61 +64,48 @@ export async function generateMetadata({
 }
 
 async function getCategoria(slug: string) {
-  return await prisma.categoriaProyecto.findFirst({
-    where: { slug, visible: true },
-    select: {
-      id: true,
-      key: true,
-      nombre: true,
-      descripcion: true,
-      slug: true,
-      imagenCover: true,
-      icono: true,
-      color: true,
-      metaTitle: true,
-      metaDescription: true,
-      estadisticas: true,
-      casosExitoIds: true,
-      especialidades: true,
-      textosUi: true,
-    },
-  })
+  const c = (await getCatalogo()).categorias.find((cat) => cat.slug === slug && cat.visible)
+  if (!c) return null
+  return {
+    id: c.id,
+    key: c.key,
+    nombre: c.nombre,
+    descripcion: c.descripcion,
+    slug: c.slug,
+    imagenCover: c.imagenCover,
+    icono: c.icono,
+    color: c.color,
+    metaTitle: c.metaTitle,
+    metaDescription: c.metaDescription,
+    estadisticas: c.estadisticas,
+    casosExitoIds: c.casosExitoIds,
+    especialidades: c.especialidades,
+    textosUi: c.textosUi,
+  }
 }
 
 async function getProyectosByCategoria(key: string) {
-  return await prisma.proyecto.findMany({
-    where: {
-      categoria: key as any,
-      visible: true,
-    },
-    include: {
-      imagenes: {
-        orderBy: { orden: 'asc' },
-        take: 1,
-      },
-    },
-    orderBy: [{ destacado: 'desc' }, { fechaInicio: 'desc' }],
-  })
+  return ordenar(
+    (await getCatalogo()).proyectos.filter((p) => p.categoria === key),
+    [(p) => p.destacado, 'desc'],
+    [(p) => p.fechaInicio, 'desc'],
+  ).map((p) => ({ ...p, imagenes: p.imagenes.slice(0, 1) }))
 }
 
 async function getBrochureByCategoria(categoriaId: string) {
-  return prisma.brochure.findFirst({
-    where: {
-      categoriaId,
-      publicado: true,
-      activo: true,
-      pdfUrl: { not: null },
-    },
-    select: {
-      id: true,
-      titulo: true,
-      descripcion: true,
-      urlAmigable: true,
-      pdfUrl: true,
-      publicado: true,
-      activo: true,
-    },
-  })
+  const b = (await getCatalogo()).brochures.find(
+    (x) => x.categoriaId === categoriaId && x.publicado && x.activo && x.pdfUrl !== null,
+  )
+  if (!b) return null
+  return {
+    id: b.id,
+    titulo: b.titulo,
+    descripcion: b.descripcion,
+    urlAmigable: b.urlAmigable,
+    pdfUrl: b.pdfUrl,
+    publicado: b.publicado,
+    activo: b.activo,
+  }
 }
 
 export default async function CategoriaPage({

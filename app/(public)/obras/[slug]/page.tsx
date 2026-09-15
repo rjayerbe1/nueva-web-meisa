@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo, imagenesTop, ordenar } from '@/lib/content/snapshot'
 import ObraPageClient from './ObraPageClient'
 
 export const revalidate = 3600
@@ -19,16 +19,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const obra = await prisma.obra.findFirst({
-    where: { slug: params.slug, activa: true },
-    select: {
-      titulo: true,
-      resumenCorto: true,
-      metaTitle: true,
-      metaDescription: true,
-      imagenDestacada: true,
-    },
-  })
+  const obra = (await getCatalogo()).obras.find((o) => o.slug === params.slug && o.activa)
   if (!obra) return { title: 'Obra no encontrada | MEISA' }
 
   const customTitle = obra.metaTitle?.trim()
@@ -70,39 +61,33 @@ export default async function ObraDetallePage({
 }: {
   params: { slug: string }
 }) {
-  const obra = await prisma.obra.findFirst({
-    where: { slug: params.slug, activa: true },
-    include: {
-      proyectos: {
-        where: { visible: true },
-        select: {
-          id: true,
-          slug: true,
-          titulo: true,
-          descripcion: true,
-          fechaInicio: true,
-          fechaFin: true,
-          toneladas: true,
-          areaTotal: true,
-          cliente: true,
-          ubicacion: true,
-          imagenes: {
-            orderBy: { orden: 'asc' },
-            take: 1,
-            select: { url: true, urlOptimized: true, alt: true },
-          },
-        },
-        orderBy: { fechaFin: 'asc' },
-      },
-    },
-  })
+  const catalogo = await getCatalogo()
+  const obraRow = catalogo.obras.find((o) => o.slug === params.slug && o.activa)
 
-  if (!obra) notFound()
+  if (!obraRow) notFound()
 
-  const categoria = await prisma.categoriaProyecto.findFirst({
-    where: { key: obra.categoria as any },
-    select: { slug: true, nombre: true, imagenCover: true },
-  })
+  const obra = {
+    ...obraRow,
+    proyectos: ordenar(
+      catalogo.proyectos.filter((p) => p.obraId === obraRow.id),
+      [(p) => p.fechaFin, 'asc'],
+    ).map((p) => ({
+      id: p.id,
+      slug: p.slug,
+      titulo: p.titulo,
+      descripcion: p.descripcion,
+      fechaInicio: p.fechaInicio,
+      fechaFin: p.fechaFin,
+      toneladas: p.toneladas,
+      areaTotal: p.areaTotal,
+      cliente: p.cliente,
+      ubicacion: p.ubicacion,
+      imagenes: imagenesTop(p),
+    })),
+  }
+
+  const cat = catalogo.categorias.find((c) => c.key === obraRow.categoria)
+  const categoria = cat ? { slug: cat.slug, nombre: cat.nombre, imagenCover: cat.imagenCover } : null
 
   // Serializar Date/Decimal
   const obraSerialized = JSON.parse(JSON.stringify(obra))

@@ -13,7 +13,18 @@ import { MODEL_TAGS, type PublicTag } from '@/lib/cache/tags'
  * Nunca lanza: si no hay contexto de request de Next (scripts, seeds,
  * jobs), el fallo se ignora y la escritura sigue su curso.
  */
+let generacion = 0
+
+/**
+ * Contador de invalidaciones en este proceso. lib/content/snapshot.ts lo usa
+ * para no reutilizar una carga del snapshot que empezó ANTES de una escritura.
+ */
+export function generacionContenido(): number {
+  return generacion
+}
+
 export function revalidatePublicContent(tags: readonly PublicTag[] = []): void {
+  generacion++
   if (process.env.CACHE_REVALIDATE_DEBUG) {
     console.log(`[cache] invalidando tags=${tags.join(',') || '(ninguna)'} + todas las páginas`)
   }

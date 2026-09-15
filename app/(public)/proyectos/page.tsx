@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { prisma } from "@/lib/prisma"
+import { getCatalogo } from "@/lib/content/snapshot"
 import ProjectsPageClient from "./ProjectsPageClient"
 import { BreadcrumbSchema } from "@/components/seo/JsonLdSchema"
 import { getCategoriasPublicas } from "@/lib/content/categorias"
@@ -42,23 +42,21 @@ export const metadata: Metadata = {
 }
 
 async function getProyectos() {
-  return await prisma.proyecto.findMany({
-    where: { visible: true },
-    orderBy: { createdAt: 'desc' },
-    select: {
-      id: true,
-      titulo: true,
-      descripcion: true,
-      categoria: true,
-      estado: true,
-      cliente: true,
-      ubicacion: true,
-      fechaInicio: true,
-      presupuesto: true,
-      slug: true,
-      destacado: true,
-    }
-  })
+  // Catálogo: visibles, orden createdAt desc. Misma proyección que antes
+  // (no pasar al cliente campos internos del proyecto).
+  return (await getCatalogo()).proyectos.map((p) => ({
+    id: p.id,
+    titulo: p.titulo,
+    descripcion: p.descripcion,
+    categoria: p.categoria,
+    estado: p.estado,
+    cliente: p.cliente,
+    ubicacion: p.ubicacion,
+    fechaInicio: p.fechaInicio,
+    presupuesto: p.presupuesto,
+    slug: p.slug,
+    destacado: p.destacado,
+  }))
 }
 
 export default async function ProyectosPage() {

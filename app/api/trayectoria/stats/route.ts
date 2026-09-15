@@ -1,15 +1,12 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { getCatalogo } from '@/lib/content/snapshot'
 
 export const revalidate = 3600
 
-const getProyectosVisibles = cachedContent(
-  ['api-trayectoria-stats-proyectos'],
-  [TAGS.trayectoria],
-  async () => prisma.proyectoHojaVida.findMany({ where: { visible: true } }),
-)
+async function getProyectosVisibles() {
+  return (await getCatalogo()).hojaVida.filter((p) => p.visible)
+}
 
 // GET - Obtener estadísticas generales
 export async function GET() {

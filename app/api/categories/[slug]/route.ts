@@ -1,39 +1,31 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { getCatalogo } from '@/lib/content/snapshot'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
 
 export const revalidate = 3600
 
-const getCategoriaBySlug = cachedContent(
-  ['api-category-by-slug'],
-  [TAGS.categoriasProyecto],
-  async (slug: string) =>
-    prisma.categoriaProyecto.findFirst({
-      where: {
-        slug,
-        visible: true
-      },
-      select: {
-        id: true,
-        key: true,
-        nombre: true,
-        descripcion: true,
-        slug: true,
-        imagenCover: true,
-        icono: true,
-        color: true,
-        colorSecundario: true,
-        overlayColor: true,
-        overlayOpacity: true,
-        metaTitle: true,
-        metaDescription: true,
-        estadisticas: true,
-        casosExitoIds: true,
-        especialidades: true
-      }
-    }),
-)
+async function getCategoriaBySlug(slug: string) {
+  const c = (await getCatalogo()).categorias.find((cat) => cat.slug === slug && cat.visible)
+  if (!c) return null
+  return {
+    id: c.id,
+    key: c.key,
+    nombre: c.nombre,
+    descripcion: c.descripcion,
+    slug: c.slug,
+    imagenCover: c.imagenCover,
+    icono: c.icono,
+    color: c.color,
+    colorSecundario: c.colorSecundario,
+    overlayColor: c.overlayColor,
+    overlayOpacity: c.overlayOpacity,
+    metaTitle: c.metaTitle,
+    metaDescription: c.metaDescription,
+    estadisticas: c.estadisticas,
+    casosExitoIds: c.casosExitoIds,
+    especialidades: c.especialidades,
+  }
+}
 
 export async function GET(
   request: Request,

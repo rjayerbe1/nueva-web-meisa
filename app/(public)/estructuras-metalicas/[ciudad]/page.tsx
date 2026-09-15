@@ -3,7 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin, Plus } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
+import type { Obra } from '@prisma/client'
+import {
+  contieneSinMayusculas,
+  getCatalogo,
+  imagenesTop,
+  num,
+  ordenar,
+  sumar,
+  type ProyectoConImagenes,
+} from '@/lib/content/snapshot'
 import { getCiudadDb, getCiudadSlugsDb } from '@/lib/content/landings'
 import {
   ServiceSchema,
@@ -99,6 +108,25 @@ interface ProyectoCard {
   etiquetaGrupo: string | null
 }
 
+function filaProyecto(
+  p: ProyectoConImagenes,
+  obras: Map<string, Obra>,
+) {
+  const obra = p.obraId ? obras.get(p.obraId) : undefined
+  return {
+    id: p.id,
+    titulo: p.titulo,
+    slug: p.slug,
+    ubicacion: p.ubicacion,
+    toneladas: p.toneladas,
+    obraId: p.obraId,
+    obra: obra
+      ? { slug: obra.slug, titulo: obra.titulo, esCadena: obra.esCadena, activa: obra.activa, imagenDestacada: obra.imagenDestacada }
+      : null,
+    imagenes: imagenesTop(p),
+  }
+}
+
 // Agrupa los proyectos por obra: si varios proyectos del listado pertenecen a
 // la misma Obra (fases del mismo edificio o cadena), se muestran como UNA
 // sola card con las toneladas sumadas y link a /obras/[slug]. Los proyectos
@@ -182,12 +210,9 @@ export default async function EstructurasMetalicasCiudadPage({
   const ciudad = await getCiudadDb(params.ciudad)
   if (!ciudad) notFound()
 
-  const whereCiudad = {
-    visible: true,
-    OR: ciudad.terminosUbicacion.map((termino) => ({
-      ubicacion: { contains: termino, mode: 'insensitive' as const },
-    })),
-  }
+  // Equivale al `OR` de `ubicacion contains (insensitive)` por cada término.
+  const enCiudad = (p: ProyectoConImagenes) =>
+    ciudad.terminosUbicacion.some((termino) => contieneSinMayusculas(p.ubicacion, termino))
 
   let heroImagen = ciudad.heroImagen || FALLBACK_HERO
   let totalProyectos = 0
@@ -195,45 +220,20 @@ export default async function EstructurasMetalicasCiudadPage({
   let topCards: ProyectoCard[] = []
 
   try {
-    const [categoria, agregados, proyectos] = await Promise.all([
-      prisma.categoriaProyecto.findUnique({
-        where: { key: ciudad.heroCategoriaKey },
-        select: { imagenCover: true },
-      }),
-      prisma.proyecto.aggregate({
-        where: whereCiudad,
-        _count: { _all: true },
-        _sum: { toneladas: true },
-      }),
-      // Se traen todos los proyectos con tonelaje de la ciudad (no solo 6)
-      // para que la suma por obra sea completa antes de recortar el top.
-      prisma.proyecto.findMany({
-        where: { ...whereCiudad, toneladas: { not: null } },
-        orderBy: { toneladas: 'desc' },
-        select: {
-          id: true,
-          titulo: true,
-          slug: true,
-          ubicacion: true,
-          toneladas: true,
-          obraId: true,
-          obra: {
-            select: {
-              slug: true,
-              titulo: true,
-              esCadena: true,
-              activa: true,
-              imagenDestacada: true,
-            },
-          },
-          imagenes: {
-            orderBy: { orden: 'asc' },
-            take: 1,
-            select: { url: true, urlOptimized: true, alt: true },
-          },
-        },
-      }),
-    ])
+    const catalogo = await getCatalogo()
+    const obrasPorId = new Map(catalogo.obras.map((o) => [o.id, o]))
+    const categoria = catalogo.categorias.find((c) => c.key === ciudad.heroCategoriaKey)
+    const deLaCiudad = catalogo.proyectos.filter(enCiudad)
+    const agregados = {
+      _count: { _all: deLaCiudad.length },
+      _sum: { toneladas: sumar(deLaCiudad, (p) => p.toneladas) },
+    }
+    // Todos los proyectos con tonelaje de la ciudad (no solo 6) para que la
+    // suma por obra sea completa antes de recortar el top.
+    const proyectos = ordenar(
+      deLaCiudad.filter((p) => p.toneladas !== null),
+      [(p) => num(p.toneladas), 'desc'],
+    ).map((p) => filaProyecto(p, obrasPorId))
     if (!ciudad.heroImagen && categoria?.imagenCover) heroImagen = categoria.imagenCover
     totalProyectos = agregados._count._all
     totalToneladas = agregados._sum.toneladas

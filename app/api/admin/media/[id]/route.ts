@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { revalidatePublicContent } from '@/lib/cache/revalidate'
+import { TAGS } from '@/lib/cache/tags'
 import { TipoImagen, UserRole } from '@prisma/client'
 
 const TIPOS_VALIDOS: TipoImagen[] = [
@@ -78,6 +80,10 @@ export async function PATCH(
         }
         return tx.imagenProyecto.update({ where: { id }, data: patch })
       })
+      // El hook de lib/prisma.ts invalida dentro de la transacción (antes del
+      // commit); se repite al confirmar para que un visitante que recargó el
+      // snapshot en esa ventana no deje datos viejos cacheados 1 h.
+      revalidatePublicContent([TAGS.proyectos])
       return NextResponse.json(updatedImage)
     }
 

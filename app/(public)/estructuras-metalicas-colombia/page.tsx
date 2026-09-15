@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, MapPin, Plus } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
+import type { Obra } from '@prisma/client'
+import { getCatalogo, imagenesTop, num, ordenar, sumar, type ProyectoConImagenes } from '@/lib/content/snapshot'
 import { getPilarDb } from '@/lib/content/landings'
 import { GUIAS_NAV } from '@/components/guias/OtrasGuias'
 import { ServiceSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
@@ -86,6 +87,25 @@ interface ProyectoCard {
   imagenAlt: string
 }
 
+function filaProyecto(
+  p: ProyectoConImagenes,
+  obras: Map<string, Obra>,
+) {
+  const obra = p.obraId ? obras.get(p.obraId) : undefined
+  return {
+    id: p.id,
+    titulo: p.titulo,
+    slug: p.slug,
+    ubicacion: p.ubicacion,
+    toneladas: p.toneladas,
+    obraId: p.obraId,
+    obra: obra
+      ? { slug: obra.slug, titulo: obra.titulo, esCadena: obra.esCadena, activa: obra.activa, imagenDestacada: obra.imagenDestacada }
+      : null,
+    imagenes: imagenesTop(p),
+  }
+}
+
 // Top proyectos a nivel nacional, deduplicando por obra (varias fases del
 // mismo edificio suman toneladas y salen como una card hacia /obras/[slug]).
 function topProyectosNacionales(rows: ProyectoRow[], top: number): ProyectoCard[] {
@@ -143,44 +163,22 @@ export default async function EstructurasMetalicasColombiaPage() {
   let breakImg = FALLBACK_IMG
 
   try {
-    const [agregados, covers, proyectos] = await Promise.all([
-      prisma.proyecto.aggregate({
-        where: { visible: true },
-        _count: { _all: true },
-        _sum: { toneladas: true },
-      }),
-      // Covers reales de obra por categoría (mismas fotos que el resto del sitio)
-      prisma.categoriaProyecto.findMany({
-        where: { key: { in: ['PUENTES', 'EDIFICACIONES', 'INDUSTRIAL', 'DEPORTES_EDUCACION'] } },
-        select: { key: true, imagenCover: true },
-      }),
-      prisma.proyecto.findMany({
-        where: { visible: true, toneladas: { not: null } },
-        orderBy: { toneladas: 'desc' },
-        take: 40,
-        select: {
-          id: true,
-          titulo: true,
-          slug: true,
-          ubicacion: true,
-          toneladas: true,
-          obraId: true,
-          obra: {
-            select: {
-              slug: true,
-              titulo: true,
-              activa: true,
-              imagenDestacada: true,
-            },
-          },
-          imagenes: {
-            orderBy: { orden: 'asc' },
-            take: 1,
-            select: { url: true, urlOptimized: true, alt: true },
-          },
-        },
-      }),
-    ])
+    const catalogo = await getCatalogo()
+    const obrasPorId = new Map(catalogo.obras.map((o) => [o.id, o]))
+    const agregados = {
+      _count: { _all: catalogo.proyectos.length },
+      _sum: { toneladas: sumar(catalogo.proyectos, (p) => p.toneladas) },
+    }
+    // Covers reales de obra por categoría (mismas fotos que el resto del sitio)
+    const covers = catalogo.categorias.filter((c) =>
+      ['PUENTES', 'EDIFICACIONES', 'INDUSTRIAL', 'DEPORTES_EDUCACION'].includes(c.key),
+    )
+    const proyectos = ordenar(
+      catalogo.proyectos.filter((p) => p.toneladas !== null),
+      [(p) => num(p.toneladas), 'desc'],
+    )
+      .slice(0, 40)
+      .map((p) => filaProyecto(p, obrasPorId))
     totalProyectos = agregados._count._all
     totalToneladas = agregados._sum.toneladas ? Number(agregados._sum.toneladas) : 0
     topCards = topProyectosNacionales(proyectos, 6)

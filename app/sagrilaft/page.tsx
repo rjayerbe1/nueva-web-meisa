@@ -1,21 +1,15 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { prisma } from "@/lib/prisma"
+import { getCatalogo } from "@/lib/content/snapshot"
 import { PdfViewerClient } from "@/components/brochure/PdfViewerClient"
 
 const BROCHURE_SLUG = "sagrilaft"
 
 async function getDocumento() {
-  return prisma.brochure.findUnique({
-    where: { urlAmigable: BROCHURE_SLUG },
-    select: {
-      titulo: true,
-      descripcion: true,
-      pdfUrl: true,
-      publicado: true,
-      activo: true,
-    },
-  })
+  const b = (await getCatalogo()).brochures.find((x) => x.urlAmigable === BROCHURE_SLUG)
+  return b
+    ? { titulo: b.titulo, descripcion: b.descripcion, pdfUrl: b.pdfUrl, publicado: b.publicado, activo: b.activo }
+    : null
 }
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { prisma } from "@/lib/prisma"
+import { getSitio } from "@/lib/content/snapshot"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
 import TrabajaContent from "./TrabajaContent"
 
@@ -23,24 +23,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TrabajaConNosotrosPage() {
-  const config = await prisma.configuracionTalento.findUnique({ where: { id: "default" } })
+  const { talento: config, vacantesAbiertas } = await getSitio()
   // El switch: mientras esté apagado, la página no existe para el público.
   if (!config?.paginaPublicaActiva) notFound()
 
-  const vacantes = await prisma.vacante.findMany({
-    where: { estado: "ABIERTA" },
-    orderBy: [{ orden: "asc" }, { createdAt: "desc" }],
-    select: {
-      id: true,
-      slug: true,
-      titulo: true,
-      area: true,
-      ciudad: true,
-      modalidad: true,
-      tipoContrato: true,
-      descripcion: true,
-    },
-  })
+  // Misma proyección que antes: no mandar al cliente criterios internos.
+  const vacantes = vacantesAbiertas.map((v) => ({
+    id: v.id,
+    slug: v.slug,
+    titulo: v.titulo,
+    area: v.area,
+    ciudad: v.ciudad,
+    modalidad: v.modalidad,
+    tipoContrato: v.tipoContrato,
+    descripcion: v.descripcion,
+  }))
 
   return (
     <TrabajaContent

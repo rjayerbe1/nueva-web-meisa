@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, MapPin, Plus } from 'lucide-react'
 import type { CategoriaEnum } from '@prisma/client'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo, imagenesTop } from '@/lib/content/snapshot'
 import {
   BreadcrumbSchema,
   FAQSchema,
@@ -122,30 +122,19 @@ export default async function GuiaTemplate({ config }: { config: GuiaConfig }) {
   }> = []
 
   try {
-    const [categoria, proyectosDb, categoriasCovers] = await Promise.all([
-      prisma.categoriaProyecto.findUnique({
-        where: { key: config.categoriaHero },
-        select: { imagenCover: true },
-      }),
-      prisma.proyecto.findMany({
-        where: { slug: { in: config.proyectosSlugs }, visible: true },
-        select: {
-          id: true,
-          titulo: true,
-          slug: true,
-          ubicacion: true,
-          toneladas: true,
-          imagenes: {
-            orderBy: { orden: 'asc' },
-            take: 1,
-            select: { url: true, urlOptimized: true, alt: true },
-          },
-        },
-      }),
-      prisma.categoriaProyecto.findMany({
-        select: { key: true, imagenCover: true },
-      }),
-    ])
+    const catalogo = await getCatalogo()
+    const categoria = catalogo.categorias.find((c) => c.key === config.categoriaHero)
+    const proyectosDb = catalogo.proyectos
+      .filter((p) => config.proyectosSlugs.includes(p.slug))
+      .map((p) => ({
+        id: p.id,
+        titulo: p.titulo,
+        slug: p.slug,
+        ubicacion: p.ubicacion,
+        toneladas: p.toneladas,
+        imagenes: imagenesTop(p),
+      }))
+    const categoriasCovers = catalogo.categorias
     if (!config.heroImagen && categoria?.imagenCover) heroImagen = categoria.imagenCover
     for (const c of categoriasCovers) {
       if (c.imagenCover) coverPorCategoria.set(c.key, c.imagenCover)

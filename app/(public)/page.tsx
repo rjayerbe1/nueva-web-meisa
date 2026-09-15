@@ -1,11 +1,9 @@
-import { prisma } from '@/lib/prisma'
 import { HeroImageConfig, defaultHeroImages } from '@/lib/hero-config'
 import { getHomeData, resolveStatValue } from '@/lib/content/home'
 import { getConfiguracionContacto } from '@/lib/content/servicios-contacto'
 import { getConfiguracionEmpresa } from '@/lib/content/empresa'
 import { getCategoriasPublicas } from '@/lib/content/categorias'
-import { cachedContent } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { getCatalogo, getSitio, num, ordenar } from '@/lib/content/snapshot'
 
 import { HomeContent } from '@/components/home/HomeContent'
 import type { Metadata } from 'next'
@@ -18,34 +16,20 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-const getHeroImages = cachedContent(
-  ['home-hero-images'],
-  [TAGS.configuracionSitio],
-  async (): Promise<HeroImageConfig> => {
-    try {
-      const config = await prisma.configuracionSitio.findUnique({
-        where: { clave: 'hero_images' },
-      })
-      if (!config) return defaultHeroImages
-      return JSON.parse(config.valor) as HeroImageConfig
-    } catch (error) {
-      console.error('Error cargando imágenes del hero:', error)
-      return defaultHeroImages
-    }
-  },
-)
+async function getHeroImages(): Promise<HeroImageConfig> {
+  try {
+    const valor = (await getSitio()).heroImagesValor
+    if (!valor) return defaultHeroImages
+    return JSON.parse(valor) as HeroImageConfig
+  } catch (error) {
+    console.error('Error cargando imágenes del hero:', error)
+    return defaultHeroImages
+  }
+}
 
 async function getProjectsByCategory() {
-  const projects = await prisma.proyecto.findMany({
-    where: {
-      visible: true,
-      destacadoEnCategoria: true,
-    },
-    orderBy: { createdAt: 'desc' },
-    include: {
-      imagenes: { orderBy: { orden: 'asc' } },
-    },
-  })
+  // El catálogo ya viene ordenado por createdAt desc, con imágenes en orden asc.
+  const projects = (await getCatalogo()).proyectos.filter((p) => p.destacadoEnCategoria)
 
   const mappedProjects = projects.map((project) => {
     const imagenPortada =
@@ -79,12 +63,10 @@ async function getProjectsByCategory() {
 // Obras de mayor tonelaje para la franja "obras en cifras" de la sección de clientes.
 // Decimal → number antes de cruzar al client component.
 async function getObrasEnCifras() {
-  const obras = await prisma.proyecto.findMany({
-    where: { visible: true, toneladas: { not: null } },
-    orderBy: { toneladas: 'desc' },
-    take: 4,
-    select: { titulo: true, cliente: true, toneladas: true, slug: true },
-  })
+  const obras = ordenar(
+    (await getCatalogo()).proyectos.filter((p) => p.toneladas !== null),
+    [(p) => num(p.toneladas), 'desc'],
+  ).slice(0, 4)
   return obras.map((o) => ({
     titulo: o.titulo,
     cliente: o.cliente,

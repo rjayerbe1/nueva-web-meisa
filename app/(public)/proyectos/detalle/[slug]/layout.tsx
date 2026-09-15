@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo } from '@/lib/content/snapshot'
 import { BreadcrumbSchema, ProjectSchema } from '@/components/seo/JsonLdSchema'
 
 interface LayoutProps {
@@ -12,24 +12,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
 
   try {
-    const proyecto = await prisma.proyecto.findUnique({
-      where: { slug },
-      select: {
-        titulo: true,
-        descripcion: true,
-        categoria: true,
-        cliente: true,
-        ubicacion: true,
-        slug: true,
-        metaTitle: true,
-        metaDescription: true,
-        imagenes: {
-          where: { tipo: 'PORTADA' },
-          take: 1,
-          select: { url: true, urlOptimized: true, alt: true },
-        },
-      },
-    })
+    const catalogo = await getCatalogo()
+    const row = catalogo.proyectos.find((p) => p.slug === slug)
+    const proyecto = row
+      ? { ...row, imagenes: row.imagenes.filter((i) => i.tipo === 'PORTADA').slice(0, 1) }
+      : null
 
     if (!proyecto) {
       return {
@@ -38,10 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       }
     }
 
-    const categoria = await prisma.categoriaProyecto.findUnique({
-      where: { key: proyecto.categoria },
-      select: { nombre: true },
-    })
+    const categoria = catalogo.categorias.find((c) => c.key === proyecto.categoria)
     const categoriaLabel = categoria?.nombre ?? proyecto.categoria
     const imagen = proyecto.imagenes[0]
     const imageUrl = imagen?.urlOptimized || imagen?.url || 'https://storage.googleapis.com/meisa-imagenes/site/og-image.jpg'
@@ -103,22 +87,10 @@ export default async function ProjectDetailLayout({ children, params }: LayoutPr
   // Obtener datos del proyecto para el schema
   let proyecto = null
   try {
-    proyecto = await prisma.proyecto.findUnique({
-      where: { slug },
-      select: {
-        titulo: true,
-        descripcion: true,
-        cliente: true,
-        ubicacion: true,
-        slug: true,
-        fechaInicio: true,
-        imagenes: {
-          where: { tipo: 'PORTADA' },
-          take: 1,
-          select: { url: true, urlOptimized: true },
-        },
-      },
-    })
+    const row = (await getCatalogo()).proyectos.find((p) => p.slug === slug)
+    proyecto = row
+      ? { ...row, imagenes: row.imagenes.filter((i) => i.tipo === 'PORTADA').slice(0, 1) }
+      : null
   } catch (error) {
     console.error('Error fetching project for schema:', error)
   }

@@ -1,31 +1,16 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { getCatalogo, ordenar } from '@/lib/content/snapshot'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
 
 export const revalidate = 3600
 
-const getProyectosByCategoria = cachedContent(
-  ['api-projects-by-category'],
-  [TAGS.proyectos],
-  async (categoryKey: string) =>
-    prisma.proyecto.findMany({
-      where: {
-        categoria: categoryKey as any, // Assuming CategoriaEnum
-        visible: true
-      },
-      include: {
-        imagenes: {
-          orderBy: { orden: 'asc' },
-          take: 1 // Solo necesitamos la primera imagen para la lista
-        }
-      },
-      orderBy: [
-        { destacado: 'desc' }, // Destacados primero
-        { fechaInicio: 'desc' } // Luego por fecha más reciente
-      ]
-    }),
-)
+async function getProyectosByCategoria(categoryKey: string) {
+  return ordenar(
+    (await getCatalogo()).proyectos.filter((p) => p.categoria === categoryKey),
+    [(p) => p.destacado, 'desc'], // Destacados primero
+    [(p) => p.fechaInicio, 'desc'], // Luego por fecha más reciente
+  ).map((p) => ({ ...p, imagenes: p.imagenes.slice(0, 1) })) // Solo la primera imagen para la lista
+}
 
 export async function GET(
   request: Request,

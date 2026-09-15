@@ -39,6 +39,10 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+# /_next/image usa sharp (libvips). Con glibc, las arenas de malloc por hilo
+# fragmentan la memoria y el contenedor crecía hasta el OOM de Cloud Run
+# (10-30 reinicios/día con 512 MiB, sep-2026). Limitar arenas lo contiene.
+ENV MALLOC_ARENA_MAX=2
 
 RUN apt-get update && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system --gid 1001 nodejs

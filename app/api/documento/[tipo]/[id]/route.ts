@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server"
-import { prisma } from "@/lib/prisma"
+import { getContenidoPublico } from "@/lib/content/snapshot"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -13,26 +13,19 @@ const ALLOWED_HOST = "storage.googleapis.com"
  * /api/documento/<tipo>/<id> en nuestro dominio.
  */
 async function resolvePdfUrl(tipo: string, id: string): Promise<string | null> {
+  // Lookup en el snapshot público (solo trae políticas/gobierno activos).
+  const { catalogo, sitio } = await getContenidoPublico()
   if (tipo === "politica") {
-    const p = await prisma.politica.findFirst({
-      where: { id, activo: true },
-      select: { documentoUrl: true },
-    })
+    const p = sitio.calidad.politicas.find((x) => x.id === id)
     return p?.documentoUrl ?? null
   }
   if (tipo === "gobierno") {
-    const g = await prisma.gobiernoItem.findFirst({
-      where: { id, activo: true },
-      select: { documentoUrl: true },
-    })
+    const g = sitio.empresa.gobierno.find((x) => x.id === id)
     return g?.documentoUrl ?? null
   }
   if (tipo === "brochure") {
     // Para brochures el id es el urlAmigable (slug)
-    const b = await prisma.brochure.findUnique({
-      where: { urlAmigable: id },
-      select: { pdfUrl: true, publicado: true, activo: true },
-    })
+    const b = catalogo.brochures.find((x) => x.urlAmigable === id)
     if (!b || !b.publicado || !b.activo) return null
     return b.pdfUrl ?? null
   }

@@ -80,11 +80,13 @@ Required in `.env.local`:
 3. UI components: Use existing Shadcn/ui components or create new ones
 4. Admin features: Add to `/app/admin/` with proper auth checks
 
-### Caché público y costo de Neon (2026-09-14)
-- Neon cobra por horas de cómputo despierto; el sitio público NO debe consultar la base por visita. Todas las páginas públicas son ISR `revalidate = 3600` y las lecturas compartidas pasan por `cachedContent()` (`lib/cache/content-cache.ts`, tags por tabla en `lib/cache/tags.ts`).
-- Las escrituras del admin invalidan solas (hook `$extends` en `lib/prisma.ts` → `MODEL_TAGS`). Un modelo nuevo que alimente el sitio público necesita una entrada en `MODEL_TAGS`.
+### Caché público y costo de Neon (actualizado 2026-09-15)
+- Neon cobra por horas de cómputo despierto; el sitio público NO debe consultar la base por visita. Todas las páginas públicas son ISR `revalidate = 3600`.
+- **Toda lectura pública sale del snapshot** `lib/content/snapshot.ts` (`getCatalogo()` / `getSitio()`): dos entradas del Data Cache (~1 MB) cargadas juntas, como mucho una vez por hora. Las páginas filtran/ordenan en memoria (`ordenar`, `sumar`, `imagenesTop`). **No importar `@/lib/prisma` en páginas, layouts o GET públicos**: una lectura directa vuelve a encender Neon y agota el pool (Cloud Run con 1 CPU = 3 conexiones).
+- Tabla nueva visible en la web: agregarla al snapshot y a `MODEL_TAGS` (`lib/cache/tags.ts`). Las escrituras invalidan solas (hook `$extends` en `lib/prisma.ts`); dentro de `prisma.$transaction(async tx => …)` llamar además `revalidatePublicContent()` al terminar.
 - Toda ruta pública con `[slug]` necesita `generateStaticParams` (aunque devuelva `[]`); sin él Next 14 la vuelve 100 % dinámica.
-- Verificar: `PRISMA_LOG_QUERIES=1 npm start` (no debe imprimir SQL al navegar con caché caliente) y `node scripts/neon-pgstat.mjs`. Detalles en el skill `meisa-web-optimization` §0.
+- Cloud Run va con 1 GiB: con 512 MiB `/_next/image` (sharp) mataba la instancia 10–30 veces/día y cada reinicio vaciaba el caché.
+- Verificar: `PRISMA_LOG_QUERIES=1 npm start` (con caché caliente no debe imprimir SQL) y `node scripts/neon-pgstat.mjs`. Detalles en el skill `meisa-web-optimization` §0.
 
 ### Git Best Practices
 - Commits directos a `main` están permitidos — este repo despliega vía Cloud Run, no bloquear por política de branch

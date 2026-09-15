@@ -1,29 +1,16 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { getCatalogo } from '@/lib/content/snapshot'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
 
 export const revalidate = 3600
 
-const getProyectoBySlug = cachedContent(
-  ['api-project-by-slug'],
-  [TAGS.proyectos, TAGS.obras],
-  async (slug: string) =>
-    prisma.proyecto.findFirst({
-      where: {
-        slug,
-        visible: true
-      },
-      include: {
-        imagenes: {
-          orderBy: { orden: 'asc' }
-        },
-        obra: {
-          where: { activa: true }
-        }
-      }
-    }),
-)
+async function getProyectoBySlug(slug: string) {
+  const catalogo = await getCatalogo()
+  const p = catalogo.proyectos.find((x) => x.slug === slug)
+  if (!p) return null
+  const obra = p.obraId ? catalogo.obras.find((o) => o.id === p.obraId && o.activa) ?? null : null
+  return { ...p, obra }
+}
 
 export async function GET(
   request: Request,

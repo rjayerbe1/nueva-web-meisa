@@ -1,7 +1,5 @@
 import { cache } from "react"
-import { prisma } from "@/lib/prisma"
-import { cachedContent } from "@/lib/cache/content-cache"
-import { TAGS } from "@/lib/cache/tags"
+import { getSitio } from "@/lib/content/snapshot"
 
 export type VacanteResumen = {
   id: string
@@ -25,19 +23,17 @@ export type TalentoPublico = {
  * apagarla desde el admin retire los enlaces solo y nunca queden apuntando
  * a un notFound().
  */
-export const getTalentoPublico = cache(
-  cachedContent(["talento-publico"], [TAGS.configuracionTalento, TAGS.vacantes], async (): Promise<TalentoPublico> => {
-  const config = await prisma.configuracionTalento.findUnique({
-    where: { id: "default" },
-    select: { paginaPublicaActiva: true },
-  })
-  if (!config?.paginaPublicaActiva) return { activa: false, vacantes: [] }
-
-  const vacantes = await prisma.vacante.findMany({
-    where: { estado: "ABIERTA" },
-    orderBy: [{ orden: "asc" }, { createdAt: "desc" }],
-    select: { id: true, slug: true, titulo: true, area: true, ciudad: true },
-  })
-  return { activa: true, vacantes }
-  }),
-)
+export const getTalentoPublico = cache(async (): Promise<TalentoPublico> => {
+  const { talento, vacantesAbiertas } = await getSitio()
+  if (!talento?.paginaPublicaActiva) return { activa: false, vacantes: [] }
+  return {
+    activa: true,
+    vacantes: vacantesAbiertas.map((v) => ({
+      id: v.id,
+      slug: v.slug,
+      titulo: v.titulo,
+      area: v.area,
+      ciudad: v.ciudad,
+    })),
+  }
+})

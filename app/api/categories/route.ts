@@ -1,44 +1,36 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { getCatalogo } from '@/lib/content/snapshot'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
 
 export const revalidate = 3600
 
-const getCategoriasApi = cachedContent(
-  ['api-categories'],
-  [TAGS.categoriasProyecto],
-  async () =>
-    prisma.categoriaProyecto.findMany({
-      where: {
-        visible: true
-      },
-      orderBy: { orden: 'asc' },
-      select: {
-        id: true,
-        key: true,
-        nombre: true,
-        descripcion: true,
-        slug: true,
-        imagenCover: true,
-        videoCover: true,
-        usarVideoCover: true,
-        videoCoverScale: true,
-        videoCoverPosition: true,
-        icono: true,
-        color: true,
-        colorSecundario: true,
-        overlayColor: true,
-        overlayOpacity: true,
-        hoverOverlayColor: true,
-        hoverOverlayOpacity: true,
-        enableHoverOverlay: true,
-        visible: true,
-        destacada: true,
-        especialidades: true
-      }
-    }),
-)
+async function getCategoriasApi() {
+  return (await getCatalogo()).categorias
+    .filter((c) => c.visible)
+    .map((c) => ({
+      id: c.id,
+      key: c.key,
+      nombre: c.nombre,
+      descripcion: c.descripcion,
+      slug: c.slug,
+      imagenCover: c.imagenCover,
+      videoCover: c.videoCover,
+      usarVideoCover: c.usarVideoCover,
+      videoCoverScale: c.videoCoverScale,
+      videoCoverPosition: c.videoCoverPosition,
+      icono: c.icono,
+      color: c.color,
+      colorSecundario: c.colorSecundario,
+      overlayColor: c.overlayColor,
+      overlayOpacity: c.overlayOpacity,
+      hoverOverlayColor: c.hoverOverlayColor,
+      hoverOverlayOpacity: c.hoverOverlayOpacity,
+      enableHoverOverlay: c.enableHoverOverlay,
+      visible: c.visible,
+      destacada: c.destacada,
+      especialidades: c.especialidades,
+    }))
+}
 
 export async function GET() {
   try {

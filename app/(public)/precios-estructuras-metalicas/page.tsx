@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Plus } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo } from '@/lib/content/snapshot'
 import { getGuiaDb, getSolucionesDb } from '@/lib/content/landings'
 import { getGuiaFallback, type GuiaPreciosContenido } from '@/lib/guias'
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/JsonLdSchema'
@@ -98,10 +98,7 @@ export default async function PreciosEstructurasMetalicasPage() {
 
   let heroImagen = contenido.heroImagen || FALLBACK_HERO
   try {
-    const categoria = await prisma.categoriaProyecto.findUnique({
-      where: { key: 'INDUSTRIAL' },
-      select: { imagenCover: true },
-    })
+    const categoria = (await getCatalogo()).categorias.find((c) => c.key === 'INDUSTRIAL')
     if (!contenido.heroImagen && categoria?.imagenCover) heroImagen = categoria.imagenCover
   } catch {
     // fallback estático

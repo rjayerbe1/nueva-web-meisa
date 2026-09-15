@@ -3,10 +3,13 @@ import { PUBLIC_CACHE_TTL, type PublicTag } from '@/lib/cache/tags'
 
 /**
  * Envuelve una lectura de Prisma en el Data Cache de Next (`unstable_cache`)
- * con TTL de 1 hora y tags por tabla. Es la ÚNICA forma en que el sitio
- * público debe leer contenido editorial: así la base se consulta como mucho
- * una vez por hora por lectura (y no una vez por visita), y Neon puede
- * suspenderse el resto del tiempo.
+ * con TTL de 1 hora y tags por tabla.
+ *
+ * OJO: para contenido del sitio público usar el snapshot
+ * (lib/content/snapshot.ts), NO esto. Una entrada por consulta vence cada una
+ * a su hora y mantiene a Neon despierto (medido sep-2026). Queda solo para
+ * lecturas con argumentos arbitrarios que no caben en el snapshot (hoy
+ * `/api/proyectos`, con paginación, progreso y conteos).
  *
  * Detalle importante: el Data Cache serializa a JSON. En un MISS `unstable_cache`
  * devuelve el objeto vivo (con `Date`) y en un HIT el JSON parseado (con

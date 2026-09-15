@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { prisma } from "@/lib/prisma"
+import { getSitio } from "@/lib/content/snapshot"
 import { PdfViewerClient } from "@/components/brochure/PdfViewerClient"
 
 export const dynamic = "force-dynamic"
@@ -12,18 +12,14 @@ async function getDoc(
   tipo: string,
   id: string,
 ): Promise<{ titulo: string; hasPdf: boolean } | null> {
+  // Lookup en el snapshot público (solo trae políticas/gobierno activos).
+  const sitio = await getSitio()
   if (tipo === "politica") {
-    const p = await prisma.politica.findFirst({
-      where: { id, activo: true },
-      select: { titulo: true, documentoUrl: true },
-    })
+    const p = sitio.calidad.politicas.find((x) => x.id === id)
     return p ? { titulo: p.titulo, hasPdf: !!p.documentoUrl } : null
   }
   if (tipo === "gobierno") {
-    const g = await prisma.gobiernoItem.findFirst({
-      where: { id, activo: true },
-      select: { titulo: true, documentoUrl: true },
-    })
+    const g = sitio.empresa.gobierno.find((x) => x.id === id)
     return g ? { titulo: g.titulo, hasPdf: !!g.documentoUrl } : null
   }
   return null

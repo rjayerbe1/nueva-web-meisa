@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo, getSitio, ordenar } from '@/lib/content/snapshot'
 // DB-first: incluye landings agregadas desde /admin/landings (con fallback
 // interno a los configs en código si la DB no responde).
 import { getSolucionSlugsDb, getCiudadSlugsDb } from '@/lib/content/landings'
@@ -141,11 +141,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Obtener proyectos de la base de datos
   let projectPages: MetadataRoute.Sitemap = []
   try {
-    const proyectos = await prisma.proyecto.findMany({
-      where: { visible: true },
-      select: { slug: true, updatedAt: true },
-      orderBy: { updatedAt: 'desc' },
-    })
+    const proyectos = ordenar((await getCatalogo()).proyectos, [(p) => p.updatedAt, 'desc'])
 
     projectPages = proyectos.map((proyecto) => ({
       url: `${BASE_URL}/proyectos/detalle/${proyecto.slug}`,
@@ -160,11 +156,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Obtener servicios de la base de datos
   let servicePages: MetadataRoute.Sitemap = []
   try {
-    const servicios = await prisma.servicio.findMany({
-      where: { activo: true },
-      select: { slug: true, updatedAt: true },
-      orderBy: { orden: 'asc' },
-    })
+    const servicios = (await getCatalogo()).servicios.filter((s) => s.activo)
 
     servicePages = servicios.map((servicio) => ({
       url: `${BASE_URL}/servicios/${servicio.slug}`,
@@ -179,11 +171,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Obtener categorías de proyectos
   let categoryPages: MetadataRoute.Sitemap = []
   try {
-    const categorias = await prisma.categoriaProyecto.findMany({
-      where: { visible: true },
-      select: { slug: true, updatedAt: true },
-      orderBy: { orden: 'asc' },
-    })
+    const categorias = (await getCatalogo()).categorias.filter((c) => c.visible)
 
     categoryPages = categorias.map((categoria) => ({
       url: `${BASE_URL}/proyectos/categoria/${categoria.slug}`,
@@ -198,10 +186,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Obras (landings editoriales /obras/[slug])
   let obraPages: MetadataRoute.Sitemap = []
   try {
-    const obras = await prisma.obra.findMany({
-      where: { activa: true },
-      select: { slug: true, updatedAt: true },
-    })
+    const obras = (await getCatalogo()).obras.filter((o) => o.activa)
 
     obraPages = obras.map((obra) => ({
       url: `${BASE_URL}/obras/${obra.slug}`,
@@ -217,15 +202,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // (ConfiguracionTalento.paginaPublicaActiva). Apagada = fuera del sitemap.
   let talentoPages: MetadataRoute.Sitemap = []
   try {
-    const configTalento = await prisma.configuracionTalento.findUnique({
-      where: { id: 'default' },
-      select: { paginaPublicaActiva: true },
-    })
+    const { talento: configTalento, vacantesAbiertas: vacantes } = await getSitio()
     if (configTalento?.paginaPublicaActiva) {
-      const vacantes = await prisma.vacante.findMany({
-        where: { estado: 'ABIERTA' },
-        select: { slug: true, updatedAt: true },
-      })
       talentoPages = [
         {
           url: `${BASE_URL}/trabaja-con-nosotros`,

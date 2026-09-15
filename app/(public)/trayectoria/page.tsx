@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { TrayectoriaClient } from './TrayectoriaClient'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo } from '@/lib/content/snapshot'
 import { aniosExperiencia } from '@/lib/site-meta'
 
 // ISR: sirve desde caché 60s, regenera en background
@@ -23,14 +23,8 @@ export const metadata: Metadata = {
 }
 
 async function getProyectos() {
-  const proyectos = await prisma.proyectoHojaVida.findMany({
-    where: { visible: true },
-    orderBy: [
-      { destacado: 'desc' },
-      { fechaInicio: 'desc' },
-      { orden: 'asc' }
-    ]
-  })
+  // Ya viene ordenada [destacado desc, fechaInicio desc, orden asc].
+  const proyectos = (await getCatalogo()).hojaVida.filter((p) => p.visible)
 
   return proyectos.map((proyecto) => ({
     id: proyecto.id,
@@ -52,9 +46,7 @@ async function getProyectos() {
 }
 
 async function getStats() {
-  const proyectos = await prisma.proyectoHojaVida.findMany({
-    where: { visible: true }
-  })
+  const proyectos = (await getCatalogo()).hojaVida.filter((p) => p.visible)
 
   const totalProyectos = proyectos.length
 

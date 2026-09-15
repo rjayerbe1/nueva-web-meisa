@@ -2,24 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { contieneSinMayusculas, getCatalogo } from '@/lib/content/snapshot'
 
 export const revalidate = 3600
-
-const getProyectosHojaVida = cachedContent(
-  ['api-trayectoria-proyectos'],
-  [TAGS.trayectoria],
-  async (where: Record<string, unknown>) =>
-    prisma.proyectoHojaVida.findMany({
-      where,
-      orderBy: [
-        { destacado: 'desc' },
-        { fechaInicio: 'desc' },
-        { orden: 'asc' }
-      ]
-    }),
-)
 
 // GET - Obtener proyectos con filtros
 export async function GET(request: NextRequest) {
@@ -30,43 +16,33 @@ export async function GET(request: NextRequest) {
     const busqueda = searchParams.get('busqueda')
     const soloVisibles = searchParams.get('soloVisibles') === 'true'
 
-    const where: any = {}
+    // Filtros en memoria sobre el snapshot público (ya ordenado
+    // [destacado desc, fechaInicio desc, orden asc]): sin consultar Neon.
+    const yearInt = año ? parseInt(año) : null
+    const desde = yearInt !== null ? new Date(`${yearInt}-01-01`) : null
+    const hasta = yearInt !== null ? new Date(`${yearInt}-12-31`) : null
 
-    if (soloVisibles) {
-      where.visible = true
-    }
-
-    if (departamento) {
-      where.departamento = departamento
-    }
-
-    if (año) {
-      const yearInt = parseInt(año)
+    const proyectos = (await getCatalogo()).hojaVida.filter((p) => {
+      if (soloVisibles && !p.visible) return false
+      if (departamento && p.departamento !== departamento) return false
       // Incluir proyectos que estén activos durante este año
       // (empiezan antes/durante Y terminan durante/después)
-      where.AND = [
-        {
-          fechaInicio: {
-            lte: new Date(`${yearInt}-12-31`)
-          }
-        },
-        {
-          fechaFin: {
-            gte: new Date(`${yearInt}-01-01`)
-          }
-        }
-      ]
-    }
-
-    if (busqueda) {
-      where.OR = [
-        { entidadContratante: { contains: busqueda, mode: 'insensitive' } },
-        { objetoContrato: { contains: busqueda, mode: 'insensitive' } },
-        { ubicacion: { contains: busqueda, mode: 'insensitive' } }
-      ]
-    }
-
-    const proyectos = await getProyectosHojaVida(where)
+      if (hasta && desde) {
+        if (!(p.fechaInicio <= hasta)) return false
+        if (!p.fechaFin || !(p.fechaFin >= desde)) return false
+      }
+      if (
+        busqueda &&
+        !(
+          contieneSinMayusculas(p.entidadContratante, busqueda) ||
+          contieneSinMayusculas(p.objetoContrato, busqueda) ||
+          contieneSinMayusculas(p.ubicacion, busqueda)
+        )
+      ) {
+        return false
+      }
+      return true
+    })
 
     return NextResponse.json(proyectos, { headers: PUBLIC_API_CACHE_HEADERS })
   } catch (error) {

@@ -8,9 +8,7 @@
 //     sirve el config en código. Las 13 rutas públicas nunca se caen.
 //   - metaTitle/metaDescription viven en columnas propias; el resto del
 //     contenido en el Json `contenido`.
-import { prisma } from '@/lib/prisma'
-import { cachedContent } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { getSitio } from '@/lib/content/snapshot'
 import { SOLUCIONES, type Solucion } from '@/lib/soluciones'
 import { CIUDADES, type CiudadConfig } from '@/lib/ciudades'
 import { GUIAS, type GuiaLanding, type GuiaContenido } from '@/lib/guias'
@@ -33,40 +31,12 @@ type LandingRow = {
   updatedAt: Date
 }
 
-// Cacheadas 1 h (tag landings_seo): el Data Cache serializa a JSON, por eso
-// `updatedAt` llega como string y se reconstruye a Date al leer.
-type LandingRowJson = Omit<LandingRow, 'updatedAt'> & { updatedAt: string }
-
-const fetchRowCached = cachedContent(
-  ['landing-row'],
-  [TAGS.landingsSeo],
-  async (slug: string): Promise<LandingRowJson | null> => {
-    // cachedContent serializa a JSON: updatedAt sale como string.
-    return (await prisma.landingSeo.findUnique({ where: { slug } })) as unknown as
-      | LandingRowJson
-      | null
-  },
-)
-
-const fetchRowsCached = cachedContent(
-  ['landing-rows'],
-  [TAGS.landingsSeo],
-  async (tipo: 'SOLUCION' | 'GUIA' | 'CIUDAD' | 'PILAR'): Promise<LandingRowJson[]> => {
-    return (await prisma.landingSeo.findMany({
-      where: { tipo, activa: true },
-      orderBy: { orden: 'asc' },
-    })) as unknown as LandingRowJson[]
-  },
-)
-
-function hydrate(row: LandingRowJson): LandingRow {
-  return { ...row, updatedAt: new Date(row.updatedAt) }
-}
-
+// Las filas salen del snapshot público (lib/content/snapshot.ts): ninguna
+// landing consulta la base al regenerarse.
 async function fetchRow(slug: string): Promise<LandingRow | null> {
   try {
-    const row = await fetchRowCached(slug)
-    return row ? hydrate(row) : null
+    const row = (await getSitio()).landings.find((r) => r.slug === slug)
+    return (row as LandingRow | undefined) ?? null
   } catch {
     return null
   }
@@ -76,7 +46,8 @@ async function fetchRows(
   tipo: 'SOLUCION' | 'GUIA' | 'CIUDAD' | 'PILAR',
 ): Promise<LandingRow[]> {
   try {
-    return (await fetchRowsCached(tipo)).map(hydrate)
+    // Ya vienen ordenadas por `orden` asc.
+    return (await getSitio()).landings.filter((r) => r.tipo === tipo && r.activa) as LandingRow[]
   } catch {
     return []
   }

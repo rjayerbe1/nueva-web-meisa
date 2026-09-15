@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { requireAdmin, apiErrorResponse } from "@/lib/auth-helpers"
+import { revalidatePublicContent } from "@/lib/cache/revalidate"
+import { TAGS } from "@/lib/cache/tags"
 
 // Lista los proyectos actualmente asignados a la obra + los disponibles
 // (sin obra o en otra obra) para permitir asignar desde el admin.
@@ -99,6 +101,10 @@ export async function PATCH(
         })
       }
     })
+    // El hook de lib/prisma.ts invalida dentro de la transacción (antes del
+    // commit); se repite al confirmar para que un visitante que recargó el
+    // snapshot en esa ventana no deje datos viejos cacheados 1 h.
+    revalidatePublicContent([TAGS.proyectos, TAGS.obras])
 
     return NextResponse.json({ ok: true, added: add.length, removed: remove.length })
   } catch (e) {

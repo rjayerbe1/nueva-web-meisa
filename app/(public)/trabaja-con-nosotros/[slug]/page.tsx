@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Briefcase, Clock, MapPin } from "lucide-react"
-import { prisma } from "@/lib/prisma"
+import { getSitio } from "@/lib/content/snapshot"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
 import { PostulacionForm } from "@/components/talento/PostulacionForm"
 
@@ -36,10 +36,10 @@ const JORNADA_LABEL: Record<string, string> = {
 }
 
 async function getVacante(slug: string) {
-  const config = await prisma.configuracionTalento.findUnique({ where: { id: "default" } })
+  const { talento: config, vacantesAbiertas } = await getSitio()
   if (!config?.paginaPublicaActiva) return null
-  const vacante = await prisma.vacante.findUnique({ where: { slug } })
-  if (!vacante || vacante.estado !== "ABIERTA") return null
+  const vacante = vacantesAbiertas.find((v) => v.slug === slug)
+  if (!vacante) return null
   return { vacante, config }
 }
 

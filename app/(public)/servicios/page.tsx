@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { prisma } from '@/lib/prisma'
+import { getCatalogo, sumar } from '@/lib/content/snapshot'
 import ServiciosContent from './ServiciosContent'
 import { getServiceColors } from '@/lib/service-colors'
 import { aniosExperiencia } from '@/lib/site-meta'
@@ -26,11 +26,11 @@ async function getProcesoIntegral() {
 // Resuelve la franja de cifras: valores "AUTO" se calculan en vivo desde la DB
 // (mismo origen que /soluciones → nunca se contradicen); literales se usan tal cual.
 async function getStats(config: ServiciosStatConfig[]) {
-  const agg = await prisma.proyecto.aggregate({
-    where: { visible: true },
-    _count: { _all: true },
-    _sum: { toneladas: true, areaTotal: true },
-  })
+  const { proyectos } = await getCatalogo()
+  const agg = {
+    _count: { _all: proyectos.length },
+    _sum: { toneladas: sumar(proyectos, (p) => p.toneladas), areaTotal: sumar(proyectos, (p) => p.areaTotal) },
+  }
   const floorTo = (n: number, step: number) => Math.floor(n / step) * step
   const fmt = (n: number) => n.toLocaleString('es-CO')
   const auto: Record<string, string> = {
@@ -47,10 +47,7 @@ async function getStats(config: ServiciosStatConfig[]) {
 }
 
 async function getServicios() {
-  const servicios = await prisma.servicio.findMany({
-    where: { activo: true },
-    orderBy: { orden: 'asc' }
-  })
+  const servicios = (await getCatalogo()).servicios.filter((s) => s.activo)
   
   return servicios.map(servicio => {
     const colors = getServiceColors(servicio.color || 'blue')

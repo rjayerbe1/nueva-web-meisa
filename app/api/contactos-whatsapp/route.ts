@@ -1,40 +1,27 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from "@/lib/cache/content-cache"
-import { TAGS } from "@/lib/cache/tags"
+import { getSitio } from "@/lib/content/snapshot"
+import { PUBLIC_API_CACHE_HEADERS } from "@/lib/cache/content-cache"
 
-// El widget flotante llama esta API desde el navegador en CADA página. Se
-// sirve del caché (1 h) y cualquier cambio desde /admin/contactos-whatsapp
+// El widget flotante llama esta API desde el navegador en CADA página. Sale
+// del snapshot público (1 h) y cualquier cambio desde /admin/contactos-whatsapp
 // lo invalida al instante (hook de escritura en lib/prisma.ts).
 export const revalidate = 3600
 
-const getContactosWhatsApp = cachedContent(
-  ["api-contactos-whatsapp"],
-  [TAGS.contactosWhatsApp, TAGS.configuracionWhatsApp],
-  async () => {
-    const [contactos, configuracion] = await Promise.all([
-      prisma.contactoWhatsApp.findMany({
-      where: {
-        activo: true
-      },
-      orderBy: {
-        orden: 'asc'
-      },
-      select: {
-        id: true,
-        nombre: true,
-        cargo: true,
-        telefono: true,
-        mensajePredeterminado: true,
-        avatar: true,
-        orden: true
-      }
-      }),
-      prisma.configuracionWhatsApp.findFirst(),
-    ])
-    return { contactos, configuracion }
-  },
-)
+async function getContactosWhatsApp() {
+  const { contactosWhatsApp, configuracionWhatsApp } = await getSitio()
+  return {
+    contactos: contactosWhatsApp.map((c) => ({
+      id: c.id,
+      nombre: c.nombre,
+      cargo: c.cargo,
+      telefono: c.telefono,
+      mensajePredeterminado: c.mensajePredeterminado,
+      avatar: c.avatar,
+      orden: c.orden,
+    })),
+    configuracion: configuracionWhatsApp,
+  }
+}
 
 // GET - Obtener contactos activos y configuración (API PÚBLICA)
 export async function GET() {

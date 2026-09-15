@@ -2,16 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { cachedContent, PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
-import { TAGS } from '@/lib/cache/tags'
+import { PUBLIC_API_CACHE_HEADERS } from '@/lib/cache/content-cache'
+import { getCatalogo } from '@/lib/content/snapshot'
 
 export const revalidate = 3600
 
-const getConfigTrayectoria = cachedContent(
-  ['api-trayectoria-config'],
-  [TAGS.configuracionTrayectoria],
-  async () => prisma.configuracionTrayectoria.findFirst(),
-)
+async function getConfigTrayectoria() {
+  return (await getCatalogo()).configuracionTrayectoria
+}
 
 // GET - Obtener configuración
 export async function GET() {
