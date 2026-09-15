@@ -5,7 +5,8 @@ import { resideFueraDeColombia } from "./pais"
  * Descarte automático de postulaciones de personas que VIVEN fuera de Colombia.
  *
  * Por qué: desde que la página quedó indexada (ago-2026) llegan hojas de vida
- * desde Argentina, Venezuela o Chile para cargos presenciales en Jamundí.
+ * desde Argentina, Venezuela o Chile para cargos presenciales en las sedes
+ * (Jamundí, Popayán, Villa Rica).
  * Talento Humano las descartaba a mano y entorpecían el pipeline.
  *
  * El criterio es la RESIDENCIA ACTUAL, nunca la nacionalidad: descartar a

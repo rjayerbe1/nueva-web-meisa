@@ -14,6 +14,7 @@ export function PostulacionForm({
   vacanteTitulo,
   elegibleReferidos = false,
   requiereResidencia = true,
+  lugarTrabajo = "nuestras sedes en Colombia",
   textoConsentimiento,
 }: {
   vacanteSlug?: string
@@ -23,10 +24,12 @@ export function PostulacionForm({
   // vacantes marcadas como elegibles desde el admin, nunca en la aplicación
   // espontánea (sin vacante) ni en vacantes profesionales/administrativas.
   elegibleReferidos?: boolean
-  // Los cargos presenciales en Jamundí no pueden cubrirse desde otro país y
-  // llegaban hojas de vida de Argentina/Venezuela. Se pregunta por RESIDENCIA,
-  // nunca por nacionalidad (Ley 1482/2011). Solo las vacantes remotas lo omiten.
+  // Los cargos presenciales no pueden cubrirse desde otro país y llegaban hojas
+  // de vida de Argentina/Venezuela. Se pregunta por RESIDENCIA, nunca por
+  // nacionalidad (Ley 1482/2011). Solo las vacantes remotas lo omiten.
   requiereResidencia?: boolean
+  /** Dónde se trabaja: la ciudad de la vacante o "nuestras sedes de …" (tabla plantas). */
+  lugarTrabajo?: string
   textoConsentimiento: string
 }) {
   const [nombre, setNombre] = useState("")
@@ -215,9 +218,9 @@ export function PostulacionForm({
             </div>
             {resideEnColombia === false && (
               <p className="mt-3 border-l-2 border-slate-950 bg-stone-50 px-4 py-3 font-lato text-sm leading-relaxed text-slate-700">
-                Nuestros cargos son presenciales en la planta de Jamundí (Valle del Cauca), por
-                eso por ahora solo podemos recibir hojas de vida de personas que vivan en
-                Colombia. Gracias por tu interés en MEISA.
+                {vacanteTitulo ? "Este cargo es presencial" : "Nuestros cargos son presenciales"}{" "}
+                en {lugarTrabajo}, por eso por ahora solo podemos recibir hojas de vida de
+                personas que vivan en Colombia. Gracias por tu interés en MEISA.
               </p>
             )}
           </fieldset>

@@ -29,9 +29,12 @@ const CONTRATO_LABEL: Record<string, string> = {
 
 export default function TrabajaContent({
   vacantes,
+  sedes,
   textoConsentimiento,
 }: {
   vacantes: VacantePublica[]
+  /** "Jamundí, Popayán y Villa Rica", desde la tabla de plantas. */
+  sedes: string
   textoConsentimiento: string
 }) {
   return (
@@ -100,7 +103,7 @@ export default function TrabajaContent({
                 lugar para empezar.
               </p>
               <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-y border-slate-200 py-4">
-                {["Planta en Jamundí", "Proyectos en todo el país", "Formación y certificación", "Seguridad ante todo"].map(
+                {[`Plantas en ${sedes}`, "Proyectos en todo el país", "Formación y certificación", "Seguridad ante todo"].map(
                   (t) => (
                     <span
                       key={t}
@@ -231,7 +234,10 @@ export default function TrabajaContent({
           </motion.div>
 
           <div className="max-w-3xl">
-            <PostulacionForm textoConsentimiento={textoConsentimiento} />
+            <PostulacionForm
+              lugarTrabajo={`nuestras sedes de ${sedes}`}
+              textoConsentimiento={textoConsentimiento}
+            />
           </div>
         </div>
       </section>

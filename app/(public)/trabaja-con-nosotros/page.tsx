@@ -2,13 +2,14 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getSitio } from "@/lib/content/snapshot"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
+import { listaSedes } from "@/lib/talento/sedes"
 import TrabajaContent from "./TrabajaContent"
 
 export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
-  const description =
-    "Trabaja en MEISA: vacantes en fabricación y montaje de estructuras metálicas en Jamundí y el suroccidente colombiano. Envía tu hoja de vida."
+  const { plantas } = await getSitio()
+  const description = `Trabaja en MEISA: vacantes en fabricación y montaje de estructuras metálicas en ${listaSedes(plantas)} y el suroccidente colombiano. Envía tu hoja de vida.`
   return {
     title: { absolute: "Trabaja con Nosotros | MEISA" },
     description,
@@ -23,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TrabajaConNosotrosPage() {
-  const { talento: config, vacantesAbiertas } = await getSitio()
+  const { talento: config, vacantesAbiertas, plantas } = await getSitio()
   // El switch: mientras esté apagado, la página no existe para el público.
   if (!config?.paginaPublicaActiva) notFound()
 
@@ -42,6 +43,7 @@ export default async function TrabajaConNosotrosPage() {
   return (
     <TrabajaContent
       vacantes={vacantes}
+      sedes={listaSedes(plantas)}
       textoConsentimiento={config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO}
     />
   )

@@ -402,7 +402,7 @@ export async function herramientasVacante(vacanteId: string): Promise<Herramient
   if (!v) throw new Error("Vacante no encontrada")
 
   const raw = await llamarIA({
-    system: `Eres el asistente de Talento Humano de MEISA (Metálicas e Ingeniería S.A.S., estructuras metálicas, planta en Jamundí, Valle del Cauca, Colombia). Haces dos cosas: (1) revisar ofertas de empleo contra la ley colombiana, (2) redactar el texto de la oferta para distintos canales. Respondes SOLO JSON.`,
+    system: `Eres el asistente de Talento Humano de MEISA (Metálicas e Ingeniería S.A.S., estructuras metálicas, plantas en Jamundí (Valle del Cauca), Popayán y Villa Rica (Cauca), Colombia; el lugar de trabajo de cada oferta es el que diga la vacante). Haces dos cosas: (1) revisar ofertas de empleo contra la ley colombiana, (2) redactar el texto de la oferta para distintos canales. Respondes SOLO JSON.`,
     user: `VACANTE:
 ${JSON.stringify({
       titulo: v.titulo,

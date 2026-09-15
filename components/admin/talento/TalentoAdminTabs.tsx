@@ -30,7 +30,7 @@ const vacanteFields = (): FieldDef[] => [
     kind: "text",
     placeholder: "Producción, Montaje, Ingeniería…",
   },
-  { name: "ciudad", label: "Ciudad", kind: "text", placeholder: "Jamundí, Cali…" },
+  { name: "ciudad", label: "Ciudad", kind: "text", placeholder: "Jamundí, Popayán, Villa Rica…" },
   {
     name: "modalidad",
     label: "Modalidad",

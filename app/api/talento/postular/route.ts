@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
         {
           error:
             data.resideEnColombia === false
-              ? "Por ahora solo recibimos hojas de vida de personas que viven en Colombia: los cargos son presenciales en Jamundí."
+              ? `Por ahora solo recibimos hojas de vida de personas que viven en Colombia: ${vacante?.ciudad ? `este cargo es presencial en ${vacante.ciudad}` : "nuestros cargos son presenciales"}.`
               : "Indica si vives actualmente en Colombia.",
         },
         { status: 400 },

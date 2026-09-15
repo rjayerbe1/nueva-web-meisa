@@ -276,7 +276,7 @@ export function envolver(
 ${aviso}
 <table class="page-wrap">
   <thead><tr><td><div class="rhead"><img src="${logo}" alt="MEISA">
-    <div class="meta"><b>METÁLICAS E INGENIERÍA S.A.S.</b><br>NIT 817.000.639-1<br>Jamundí &amp; Popayán</div></div>
+    <div class="meta"><b>METÁLICAS E INGENIERÍA S.A.S.</b><br>NIT 817.000.639-1<br>Jamundí · Popayán · Villa Rica</div></div>
     <div class="rhead-rule"></div></td></tr></thead>
   <tfoot><tr><td><div class="rfoot"><span>METÁLICAS E INGENIERÍA S.A.S. · Documento interno de selección</span>
     <span>Uso restringido — datos personales Ley 1581/2012</span></div></td></tr></tfoot>

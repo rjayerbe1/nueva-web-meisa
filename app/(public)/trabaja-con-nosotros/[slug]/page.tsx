@@ -4,7 +4,9 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Briefcase, Clock, MapPin } from "lucide-react"
 import { getSitio } from "@/lib/content/snapshot"
+import type { Plant } from "@prisma/client"
 import { DEFAULT_CONSENTIMIENTO } from "@/lib/talento/consentimiento"
+import { departamentoDeCiudad, listaSedes } from "@/lib/talento/sedes"
 import { PostulacionForm } from "@/components/talento/PostulacionForm"
 
 export const revalidate = 3600
@@ -36,11 +38,11 @@ const JORNADA_LABEL: Record<string, string> = {
 }
 
 async function getVacante(slug: string) {
-  const { talento: config, vacantesAbiertas } = await getSitio()
+  const { talento: config, vacantesAbiertas, plantas } = await getSitio()
   if (!config?.paginaPublicaActiva) return null
   const vacante = vacantesAbiertas.find((v) => v.slug === slug)
   if (!vacante) return null
-  return { vacante, config }
+  return { vacante, config, plantas }
 }
 
 export async function generateMetadata({
@@ -79,7 +81,10 @@ function buildJobPostingJsonLd(v: {
   fechaCierre: Date | null
   createdAt: Date
   id: string
-}) {
+}, plantas: Plant[]) {
+  const sedePrincipal = plantas.find((p) => p.esSedePrincipal) ?? plantas[0]
+  const ciudad = v.ciudad ?? sedePrincipal?.ciudad ?? null
+  const departamento = departamentoDeCiudad(plantas, ciudad)
   const descriptionHtml = [
     `<p>${v.descripcion}</p>`,
     v.responsabilidades.length
@@ -111,8 +116,10 @@ function buildJobPostingJsonLd(v: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        addressLocality: v.ciudad ?? "Jamundí",
-        addressRegion: "Valle del Cauca",
+        ...(ciudad ? { addressLocality: ciudad } : {}),
+        // Solo si la ciudad es de una sede conocida: un departamento equivocado
+        // ubica mal la vacante en Google for Jobs.
+        ...(departamento ? { addressRegion: departamento } : {}),
         addressCountry: "CO",
       },
     },
@@ -143,8 +150,8 @@ export default async function VacanteDetallePage({
 }) {
   const data = await getVacante(params.slug)
   if (!data) notFound()
-  const { vacante, config } = data
-  const jsonLd = buildJobPostingJsonLd(vacante)
+  const { vacante, config, plantas } = data
+  const jsonLd = buildJobPostingJsonLd(vacante, plantas)
   const salarioTxt =
     vacante.salarioVisible && vacante.salarioMin
       ? `$${vacante.salarioMin.toLocaleString("es-CO")}${vacante.salarioMax ? ` – $${vacante.salarioMax.toLocaleString("es-CO")}` : ""} COP/mes`
@@ -280,6 +287,7 @@ export default async function VacanteDetallePage({
                   vacanteTitulo={vacante.titulo}
                   elegibleReferidos={vacante.elegibleReferidos}
                   requiereResidencia={vacante.modalidad !== "remoto"}
+                  lugarTrabajo={vacante.ciudad ?? `nuestras sedes de ${listaSedes(plantas)}`}
                   textoConsentimiento={
                     config.textoConsentimiento?.trim() || DEFAULT_CONSENTIMIENTO
                   }
