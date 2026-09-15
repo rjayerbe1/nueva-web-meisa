@@ -90,8 +90,10 @@ export async function POST(req: NextRequest) {
         continue
       }
       if (a.tipo === "sin-area") {
+        // Se importa igual, sin clasificar (como las espontáneas de la web):
+        // saltarlo dejaba el CV invisible para TH, que lo veía en Drive y no
+        // en el banco. Se reporta para que alguien le asigne el pool.
         resumen.sinArea.push(`${a.archivo.name} (${a.archivo.ruta || "raíz"})`)
-        continue
       }
       if (a.tipo === "vincular") {
         await vincularArchivo(a.match.candidatoId, a.archivo.id, a.archivo.ruta)

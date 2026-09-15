@@ -46,6 +46,8 @@ const MAPA_AREAS: Record<string, string> = {
   ARMADOR: "Armador",
   ARQUITECTO: "Arquitecto",
   AYUDANTE: "Ayudante",
+  CONDUCTOR: "Conductor",
+  CONDUCTORES: "Conductor",
   DIBUJANTE: "Dibujante",
   INGENIEROS: "Ingeniería",
   INGENIERIA: "Ingeniería",
@@ -395,7 +397,9 @@ export async function planificarImport(
   let yaImportados = 0
 
   for (const archivo of cvs) {
-    const area = areaDesdeRuta(archivo.ruta)
+    // La carpeta manda; si no mapea (p. ej. un CV suelto en POSTULACIONES WEB),
+    // TH suele poner el oficio en el nombre: "Fulano - Conductor Mula.pdf".
+    const area = areaDesdeRuta(archivo.ruta) ?? oficioEnTexto(archivo.name)
     const nombreProbable = limpiarNombreArchivo(archivo.name)
     const match = await resolverCandidato({
       fileId: archivo.id,
@@ -489,15 +493,18 @@ export function areaDesdeVacante(
   titulo: string | null | undefined,
   areaVacante?: string | null,
 ): string | null {
-  if (titulo) {
-    const t = sinTildes(titulo).toUpperCase()
-    // Claves más largas primero: "OFICIOS VARIOS" antes que sus palabras sueltas.
-    const claves = Object.keys(MAPA_AREAS).sort((a, b) => b.length - a.length)
-    for (const clave of claves) {
-      if (t.includes(clave)) return MAPA_AREAS[clave]
-    }
+  return (titulo ? oficioEnTexto(titulo) : null) ?? areaVacante ?? null
+}
+
+/** Primer oficio del mapa que aparezca en un texto libre (título, nombre de archivo). */
+export function oficioEnTexto(texto: string): string | null {
+  const t = sinTildes(texto).toUpperCase()
+  // Claves más largas primero: "OFICIOS VARIOS" antes que sus palabras sueltas.
+  const claves = Object.keys(MAPA_AREAS).sort((a, b) => b.length - a.length)
+  for (const clave of claves) {
+    if (t.includes(clave)) return MAPA_AREAS[clave]
   }
-  return areaVacante ?? null
+  return null
 }
 
 // --------------------------------------------------------------------------
