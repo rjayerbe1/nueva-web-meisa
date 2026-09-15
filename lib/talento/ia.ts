@@ -4,6 +4,8 @@ import { presupuestoDisponible, registrarUso } from "@/lib/chat/budget"
 import { prisma } from "@/lib/prisma"
 import { downloadCv } from "./gcs-hv"
 import { esWord, wordAPdf } from "./documentos"
+import { esColombia, resideFueraDeColombia } from "./pais"
+import { aplicarFiltroResidencia } from "./residencia"
 
 /**
  * IA del módulo de Talento Humano (Vertex AI / Gemini multimodal).
@@ -129,6 +131,9 @@ export interface DatosCv {
   email?: string
   telefono?: string
   ciudad?: string
+  /** País donde VIVE hoy (no nacionalidad). Ver lib/talento/residencia.ts. */
+  paisResidencia?: string | null
+  evidenciaResidencia?: string | null
   anosExperiencia?: number
   oficios?: string[]
   certificaciones?: string[]
@@ -165,6 +170,8 @@ export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv>
     user: `Analiza esta hoja de vida y devuelve JSON con este shape exacto:
 {
   "nombre": string|null, "email": string|null, "telefono": string|null, "ciudad": string|null,
+  "paisResidencia": string|null,       // país donde VIVE ACTUALMENTE, en español ("Colombia", "Argentina"...)
+  "evidenciaResidencia": string|null,  // en qué te basaste, corto: "dirección en Punto Fijo, Falcón; celular +58"
   "anosExperiencia": number|null,
   "oficios": string[],            // ej: "soldador MIG", "armador", "ingeniero civil"
   "certificaciones": string[],    // ej: "calificación 3G", "trabajo en alturas", "SENA"
@@ -172,7 +179,13 @@ export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv>
   "experiencia": [{"empresa": string, "cargo": string, "periodo": string}],
   "resumen": string,              // 2-3 frases, en español, perfil + experiencia clave
   "alertas": string[]             // vacíos de información, inconsistencias de fechas (NO juicios sobre edad/género/estado civil)
-}`,
+}
+
+Reglas para "paisResidencia":
+- Es el país donde la persona VIVE HOY según su ciudad o dirección de contacto, el indicativo de su teléfono y dónde trabaja actualmente.
+- NO es la nacionalidad, ni el lugar de nacimiento, ni dónde estudió o trabajó antes: un extranjero que vive en Colombia reside en Colombia.
+- Datos que la persona declaró al registrarse (más recientes que el CV): ciudad=${JSON.stringify(candidato.ciudad ?? null)}, teléfono=${JSON.stringify(candidato.telefono ?? null)}.
+- Si no hay evidencia clara, devuelve null. Solo pon un país distinto de Colombia si la evidencia de residencia actual lo indica.`,
     archivo: {
       base64: paraIA.toString("base64"),
       mimeType: mimeParaIA,
@@ -181,11 +194,35 @@ export async function analizarCvCandidato(candidatoId: string): Promise<DatosCv>
   })
 
   const datos = parseJson<DatosCv>(raw)
+  // Lo declarado al registrarse es más reciente que el CV y manda si ubica a la
+  // persona en Colombia. Se resuelve en una consulta APARTE, sin el documento:
+  // con el CV delante el modelo ubicaba "Jamundí" en Venezuela porque el CV
+  // traía dirección de Punto Fijo. Solo se paga cuando el CV apunta afuera.
+  if (candidato.ciudad && resideFueraDeColombia(datos.paisResidencia)) {
+    const pais = await paisDeCiudad(candidato.ciudad)
+    if (esColombia(pais)) {
+      datos.evidenciaResidencia = `declaró vivir en ${candidato.ciudad}; el CV indicaba ${datos.paisResidencia}`
+      datos.paisResidencia = "Colombia"
+    }
+  }
   await prisma.candidato.update({
     where: { id: candidatoId },
     data: { datosIA: datos as object, resumenIA: datos.resumen ?? null },
   })
+  // Aquí y no en cada llamador: el análisis corre desde el sync, el importador
+  // de Drive y el botón del admin, y los tres deben aplicar el mismo filtro.
+  await aplicarFiltroResidencia(candidatoId, datos)
   return datos
+}
+
+/** País de un nombre de ciudad escrito a mano; null si es ambiguo ("San Juan"). */
+async function paisDeCiudad(ciudad: string): Promise<string | null> {
+  const raw = await llamarIA({
+    system: "Respondes SOLO JSON válido.",
+    user: `¿En qué país queda el lugar ${JSON.stringify(ciudad)}? Devuelve {"pais": string|null} con el país en español. Si el nombre existe en varios países y el texto no permite distinguirlo, devuelve null.`,
+    maxOutputTokens: 64,
+  })
+  return parseJson<{ pais: string | null }>(raw).pais ?? null
 }
 
 /* ── 2. Match postulación × vacante ────────────────────────────────────── */

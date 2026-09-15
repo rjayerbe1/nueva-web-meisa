@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import { FormField, type FieldDef } from "@/components/admin/shared/FormFields"
 import { cn } from "@/lib/utils"
+import { resideFueraDeColombia } from "@/lib/talento/pais"
 import { ETAPA_LABEL, ORIGENES_CANDIDATO } from "./constants"
 import type { CandidatoSer, VacanteSer } from "./types"
 
@@ -30,6 +31,8 @@ type DatosIA = {
   anosExperiencia?: number
   alertas?: string[]
   resumen?: string
+  paisResidencia?: string | null
+  evidenciaResidencia?: string | null
 }
 
 type ResultadoIA = { candidatoId: string; relevancia: number; razon: string }
@@ -610,6 +613,14 @@ export function CandidatosTab({
                           {c.nombre}
                         </p>
                         <p className="font-lato text-xs text-slate-500">{c.ciudad ?? "—"}</p>
+                        {resideFueraDeColombia(datos?.paisResidencia) && (
+                          <span
+                            title={datos?.evidenciaResidencia ?? undefined}
+                            className="mt-0.5 inline-block rounded-none border border-red-200 bg-red-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-red-700"
+                          >
+                            Vive fuera de Colombia · {datos?.paisResidencia}
+                          </span>
+                        )}
                         {busquedaHit && (
                           <p className="mt-0.5 font-lato text-[11px] text-blue-700">
                             IA {busquedaHit.relevancia}: {busquedaHit.razon}
