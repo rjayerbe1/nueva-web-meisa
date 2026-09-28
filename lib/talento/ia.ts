@@ -72,8 +72,19 @@ async function llamarIA(opts: {
   }
   parts.push({ text: opts.user })
 
+  // La fecha de hoy va SIEMPRE en el system prompt. Sin ella el modelo razona con
+  // la de su entrenamiento y marca como "fechas futuras" o "inconsistentes" las
+  // experiencias de este año: el 28-sep-2026 le bajó el puntaje a un candidato
+  // que había trabajado hasta sept. de 2026, y la misma alerta aparecía en otros.
+  const hoy = new Date().toLocaleDateString("es-CO", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "America/Bogota",
+  })
+  const system =
+    `${opts.system}\n\nFECHA DE HOY: ${hoy}. Toda fecha hasta hoy es pasada o actual, no futura; ` +
+    `"actualidad" o "presente" en un cargo significa que sigue vigente a esta fecha.`
+
   const body = {
-    systemInstruction: { parts: [{ text: opts.system }] },
+    systemInstruction: { parts: [{ text: system }] },
     contents: [{ role: "user", parts }],
     generationConfig: {
       maxOutputTokens: opts.maxOutputTokens ?? 2048,
