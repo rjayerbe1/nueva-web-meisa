@@ -24,8 +24,15 @@ const CANAL_LABEL: Record<string, string> = {
  * de publicación); el lint avisa si el texto viola Ley 931/2004, 2114/2021,
  * 1861/2017 o Decreto 1543/1997 ANTES de publicar.
  */
-export function VacanteIAPanel({ vacantes }: { vacantes: VacanteSer[] }) {
-  const [vacanteId, setVacanteId] = useState("")
+export function VacanteIAPanel({
+  vacantes,
+  vacanteFija,
+}: {
+  vacantes: VacanteSer[]
+  /** Dentro de la ficha de una vacante: sin selector. */
+  vacanteFija?: string
+}) {
+  const [vacanteId, setVacanteId] = useState(vacanteFija ?? "")
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<Herramientas | null>(null)
@@ -71,6 +78,7 @@ export function VacanteIAPanel({ vacantes }: { vacantes: VacanteSer[] }) {
             género, libreta militar, embarazo…) antes de publicar.
           </p>
         </div>
+        {!vacanteFija && (
         <select
           value={vacanteId}
           onChange={(e) => setVacanteId(e.target.value)}
@@ -84,6 +92,7 @@ export function VacanteIAPanel({ vacantes }: { vacantes: VacanteSer[] }) {
             </option>
           ))}
         </select>
+        )}
         <button
           onClick={generar}
           disabled={busy || !vacanteId}
@@ -176,7 +185,7 @@ export function VacanteIAPanel({ vacantes }: { vacantes: VacanteSer[] }) {
 
           <p className="font-lato text-[10px] uppercase tracking-wide text-slate-400">
             Textos generados por IA — revisa antes de publicar. Registra cada publicación
-            abajo (la fila del canal SPE es tu constancia legal).
+            en la lista de canales (la fila del canal SPE es tu constancia legal).
           </p>
         </div>
       )}

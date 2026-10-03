@@ -1,16 +1,19 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { ChevronRight } from "lucide-react"
 import { AdminTabsLayout, type AdminTab } from "@/components/admin/AdminTabsLayout"
 import { ListCrudEditor } from "@/components/admin/shared/ListCrudEditor"
 import { SingletonEditor } from "@/components/admin/shared/SingletonEditor"
 import type { FieldDef } from "@/components/admin/shared/FormFields"
+import { CandidatoPanel } from "./CandidatoPanel"
 import { CandidatosTab } from "./CandidatosTab"
-import { ComparativosTab } from "./ComparativosTab"
 import { InformesTalento, InformeVacanteBoton } from "./InformesTalento"
 import { PipelineTab } from "./PipelineTab"
 import { ReferidosTab } from "./ReferidosTab"
-import { VacanteIAPanel } from "./VacanteIAPanel"
-import { CANALES_PUBLICACION, ESTADOS_VACANTE } from "./constants"
+import { AvisoFlotante, TalentoProvider, useTalento } from "./TalentoStore"
+import { VacantesTab } from "./VacantesTab"
+import { ESTADOS_VACANTE, ETAPAS_ACTIVAS } from "./constants"
 import type {
   CandidatoSer,
   CodigoReferidoSer,
@@ -147,29 +150,14 @@ const vacanteFields = (): FieldDef[] => [
   },
 ]
 
-const publicacionFields = (vacantes: VacanteSer[]): FieldDef[] => [
-  {
-    name: "vacanteId",
-    label: "Vacante",
-    kind: "select",
-    required: true,
-    options: vacantes.map((v) => ({ value: v.id, label: v.titulo })),
-  },
-  {
-    name: "canal",
-    label: "Canal",
-    kind: "select",
-    required: true,
-    options: CANALES_PUBLICACION,
-    hint: "El registro en un prestador del SPE (SENA o caja de compensación) es obligatorio dentro de los 10 días hábiles — esta fila es tu constancia.",
-  },
-  { name: "url", label: "URL de la publicación", kind: "url" },
-  { name: "referencia", label: "Referencia / código del prestador", kind: "text" },
-  { name: "fechaPublicacion", label: "Fecha de publicación", kind: "date" },
-  { name: "fechaCierre", label: "Fecha de cierre", kind: "date" },
-  { name: "notas", label: "Notas", kind: "textarea", gridSpan: 2, rows: 2 },
-]
-
+/*
+ * Organización (oct-2026): el módulo gira alrededor de la VACANTE, que es como
+ * trabaja Talento Humano («¿cómo va Proyectista y a quién llamo?»). Antes eran
+ * 7 pestañas del mismo nivel calcadas de las tablas de la base de datos y para
+ * responder eso había que saltar entre 3 o 4. Comparativos y Publicaciones
+ * viven ahora dentro de la ficha de cada vacante; Perfiles, Referidos y
+ * Configuración quedan como pestañas secundarias a la derecha.
+ */
 export function TalentoAdminTabs({
   vacantes,
   candidatos,
@@ -187,171 +175,70 @@ export function TalentoAdminTabs({
   codigosReferido: CodigoReferidoSer[]
   config: ConfigTalentoSer | null
 }) {
+  return (
+    <TalentoProvider
+      vacantes={vacantes}
+      candidatos={candidatos}
+      postulaciones={postulaciones}
+      publicaciones={publicaciones}
+      comparativos={comparativos}
+    >
+      <Contenido codigosReferido={codigosReferido} config={config} />
+      <CandidatoPanel />
+      <AvisoFlotante />
+    </TalentoProvider>
+  )
+}
+
+function Contenido({
+  codigosReferido,
+  config,
+}: {
+  codigosReferido: CodigoReferidoSer[]
+  config: ConfigTalentoSer | null
+}) {
+  const { vacantes, candidatos, postulaciones } = useTalento()
+  const vigentes = vacantes.filter((v) => v.estado === "ABIERTA" || v.estado === "PAUSADA")
+  const idsVigentes = new Set(vigentes.map((v) => v.id))
+
   const tabs: AdminTab[] = [
-    {
-      id: "pipeline",
-      label: "Pipeline",
-      count: postulaciones.filter((p) => !["CONTRATADA", "DESCARTADA"].includes(p.etapa)).length,
-      content: <PipelineTab postulaciones={postulaciones} vacantes={vacantes} />,
-    },
-    {
-      id: "candidatos",
-      label: "Candidatos",
-      count: candidatos.length,
-      content: <CandidatosTab candidatos={candidatos} vacantes={vacantes} />,
-    },
     {
       id: "vacantes",
       label: "Vacantes",
-      count: vacantes.length,
-      content: (
-        <ListCrudEditor
-          items={vacantes}
-          fields={vacanteFields()}
-          endpoint="/api/admin/talento/vacantes"
-          emptyTemplate={{
-            titulo: "",
-            estado: "BORRADOR",
-            descripcion: "",
-            requisitos: [],
-            responsabilidades: [],
-            beneficios: [],
-            salarioVisible: false,
-            elegibleReferidos: false,
-          }}
-          addLabel="Nueva vacante"
-          emptyMessage="Crea la primera vacante. Recuerda registrarla también en el SPE (pestaña Publicaciones)."
-          defaultView="table"
-          canReorder
-          tableColumns={[
-            { key: "titulo", label: "Cargo" },
-            { key: "area", label: "Área" },
-            { key: "ciudad", label: "Ciudad" },
-            { key: "estado", label: "Estado", className: "w-28" },
-            { key: "elegibleReferidos", label: "Referidos", className: "w-24 text-center" },
-            { key: "postulacionesCount", label: "Postulaciones", className: "w-28 text-center" },
-          ]}
-          rowActions={(v: VacanteSer) => <InformeVacanteBoton vacante={v} compacto />}
-          filters={[
-            {
-              key: "estado",
-              label: "Estado",
-              options: ESTADOS_VACANTE,
-            },
-          ]}
-        />
-      ),
+      count: vigentes.length,
+      content: <VacantesTab />,
     },
     {
-      id: "comparativos",
-      label: "Comparativos",
-      count: comparativos.length,
-      content: (
-        <ComparativosTab
-          vacantes={vacantes}
-          candidatos={candidatos}
-          comparativos={comparativos}
-        />
-      ),
+      id: "candidatos",
+      label: "Hojas de vida",
+      count: candidatos.length,
+      content: <CandidatosTab />,
+    },
+    {
+      id: "pipeline",
+      label: "Pipeline",
+      count: postulaciones.filter(
+        (p) => ETAPAS_ACTIVAS.includes(p.etapa) && (!p.vacanteId || idsVigentes.has(p.vacanteId)),
+      ).length,
+      content: <PipelineTab />,
+    },
+    {
+      id: "perfiles",
+      label: "Crear y editar vacantes",
+      secondary: true,
+      content: <PerfilesTab />,
     },
     {
       id: "referidos",
       label: "Referidos",
-      count: codigosReferido.length,
+      secondary: true,
       content: <ReferidosTab codigos={codigosReferido} />,
-    },
-    {
-      id: "publicaciones",
-      label: "Publicaciones",
-      count: publicaciones.length,
-      content: (
-        <div className="space-y-4">
-          <VacanteIAPanel vacantes={vacantes} />
-          <ListCrudEditor
-            items={publicaciones}
-            fields={publicacionFields(vacantes)}
-            endpoint="/api/admin/talento/publicaciones"
-            emptyTemplate={{ canal: "", url: "", referencia: "", notas: "" }}
-            addLabel="Registrar publicación"
-            emptyMessage="Registra aquí en qué canales se publicó cada vacante (SPE, Magneto, Computrabajo…). La fila del canal SPE documenta el cumplimiento legal."
-            defaultView="table"
-            canReorder={false}
-            tableColumns={[
-              { key: "vacanteTitulo", label: "Vacante" },
-              { key: "canal", label: "Canal" },
-              { key: "referencia", label: "Referencia" },
-              { key: "fechaPublicacion", label: "Publicada", className: "w-28" },
-            ]}
-            renderPreview={(item: any) => (
-              <div className="min-w-0">
-                <span className="truncate font-bebas text-base uppercase tracking-wide text-slate-950">
-                  {item.canal || "(canal)"}
-                </span>
-                <p className="mt-0.5 line-clamp-1 font-lato text-xs text-slate-500">
-                  {item.vacanteTitulo ?? item.vacante?.titulo ?? ""}
-                </p>
-              </div>
-            )}
-          />
-        </div>
-      ),
     },
     {
       id: "config",
       label: "Configuración",
-      content: (
-        <SingletonEditor
-          data={config}
-          endpoint="/api/admin/talento/config"
-          sections={[
-            {
-              id: "publica",
-              title: "Página pública",
-              description:
-                "El switch de lanzamiento. Mientras esté apagado, todo el módulo es interno: nada se ve fuera del admin.",
-              fields: [
-                {
-                  name: "paginaPublicaActiva",
-                  label: "Activar /trabaja-con-nosotros (página pública)",
-                  kind: "boolean",
-                  hint: "La página pública se construirá en la siguiente etapa; este switch la encenderá sin necesidad de deploy. Déjalo apagado hasta validar la política de datos con jurídica.",
-                },
-                {
-                  name: "emailNotificaciones",
-                  label: "Correos para avisos de postulaciones",
-                  kind: "text",
-                  placeholder: "talento.humano@meisa.com.co, coordinacion.th@meisa.com.co",
-                  hint: "Puedes poner varios separados por coma: a todos les llega el aviso de cada postulación.",
-                },
-              ],
-            },
-            {
-              id: "habeasdata",
-              title: "Habeas data",
-              description:
-                "Retención y consentimiento según Ley 1581 de 2012. El plazo aplica a candidatos sin autorización de banco de talento.",
-              fields: [
-                {
-                  name: "retencionMeses",
-                  label: "Retención de CVs (meses)",
-                  kind: "number",
-                  min: 1,
-                  max: 60,
-                  hint: "Cumplido el plazo, los CVs de candidatos no contratados y sin autorización de banco deben suprimirse (la purga automática llega en la Etapa 2).",
-                },
-                {
-                  name: "textoConsentimiento",
-                  label: "Texto del consentimiento (checkbox del formulario público)",
-                  kind: "textarea",
-                  rows: 5,
-                  gridSpan: 2,
-                  hint: "Validar con el abogado laboral antes de encender la página pública.",
-                },
-              ],
-            },
-          ]}
-        />
-      ),
+      secondary: true,
+      content: <ConfigTab config={config} />,
     },
   ]
 
@@ -359,9 +246,136 @@ export function TalentoAdminTabs({
     <AdminTabsLayout
       eyebrow="Operaciones"
       title="Talento Humano"
-      description="Vacantes, banco de hojas de vida y pipeline de selección. Las hojas de vida llegan por la página web y por la carpeta de Drive de Talento Humano, que se sincroniza cada hora en horario laboral."
+      description="Hojas de vida que llegan por la página web y por la carpeta de Drive de Talento Humano (se sincroniza cada hora en horario laboral)."
       actions={<InformesTalento vacantes={vacantes} />}
       tabs={tabs}
+      defaultTab="vacantes"
+      shallow
+      keepParams={["vacante"]}
+    />
+  )
+}
+
+function PerfilesTab() {
+  const { vacantes, setVacantes, param, navegar } = useTalento()
+  // Se lee una sola vez: si quedara en la URL, volver a esta pestaña reabriría
+  // el formulario aunque ya se hubiera guardado.
+  const [editar] = useState(() => param("editar"))
+  useEffect(() => {
+    if (editar) navegar({ editar: null })
+  }, [editar, navegar])
+
+  return (
+    <ListCrudEditor
+      items={vacantes}
+      fields={vacanteFields()}
+      endpoint="/api/admin/talento/vacantes"
+      initialEditId={editar || null}
+      onItemsChange={(items) =>
+        setVacantes((prev) => {
+          const previas = new Map(prev.map((v) => [v.id, v]))
+          return (items as VacanteSer[]).map((v) => ({
+            ...previas.get(v.id),
+            ...v,
+            // El PUT no trae el conteo y devuelve fechas con hora.
+            postulacionesCount: previas.get(v.id)?.postulacionesCount ?? v.postulacionesCount ?? 0,
+            fechaPublicacion: v.fechaPublicacion ? String(v.fechaPublicacion).slice(0, 10) : null,
+            fechaCierre: v.fechaCierre ? String(v.fechaCierre).slice(0, 10) : null,
+          }))
+        })
+      }
+      emptyTemplate={{
+        titulo: "",
+        estado: "BORRADOR",
+        descripcion: "",
+        requisitos: [],
+        responsabilidades: [],
+        beneficios: [],
+        salarioVisible: false,
+        elegibleReferidos: false,
+      }}
+      addLabel="Nueva vacante"
+      emptyMessage="Crea la primera vacante. Recuerda registrarla también en el SPE desde su ficha (Publicación y SPE)."
+      defaultView="table"
+      canReorder
+      tableColumns={[
+        { key: "titulo", label: "Cargo" },
+        { key: "area", label: "Área" },
+        { key: "ciudad", label: "Ciudad" },
+        { key: "estado", label: "Estado", className: "w-28" },
+        { key: "elegibleReferidos", label: "Referidos", className: "w-24 text-center" },
+        { key: "postulacionesCount", label: "Postulaciones", className: "w-28 text-center" },
+      ]}
+      rowActions={(v: VacanteSer) => (
+        <span className="inline-flex items-center gap-1.5">
+          <InformeVacanteBoton vacante={v} compacto />
+          <button
+            type="button"
+            onClick={() => navegar({ tab: "vacantes", ver: v.id, sec: null }, { historial: true })}
+            className="inline-flex items-center gap-0.5 border border-slate-300 bg-white px-2 py-1 font-lato text-[10px] font-bold uppercase tracking-wide text-slate-700 hover:border-slate-900"
+          >
+            Abrir
+            <ChevronRight className="h-3 w-3" />
+          </button>
+        </span>
+      )}
+      filters={[{ key: "estado", label: "Estado", options: ESTADOS_VACANTE }]}
+    />
+  )
+}
+
+function ConfigTab({ config }: { config: ConfigTalentoSer | null }) {
+  return (
+    <SingletonEditor
+      data={config}
+      endpoint="/api/admin/talento/config"
+      sections={[
+        {
+          id: "publica",
+          title: "Página pública",
+          description:
+            "El switch de lanzamiento. Mientras esté apagado, todo el módulo es interno: nada se ve fuera del admin.",
+          fields: [
+            {
+              name: "paginaPublicaActiva",
+              label: "Activar /trabaja-con-nosotros (página pública)",
+              kind: "boolean",
+              hint: "Enciende o apaga la página sin necesidad de deploy. También retira el enlace del pie de página y la banda de /contacto.",
+            },
+            {
+              name: "emailNotificaciones",
+              label: "Correos para avisos de postulaciones",
+              kind: "text",
+              placeholder: "talento.humano@meisa.com.co, coordinacion.th@meisa.com.co",
+              hint: "Puedes poner varios separados por coma: a todos les llega el aviso de cada postulación.",
+            },
+          ],
+        },
+        {
+          id: "habeasdata",
+          title: "Habeas data",
+          description:
+            "Retención y consentimiento según Ley 1581 de 2012. El plazo aplica a candidatos sin autorización de banco de talento.",
+          fields: [
+            {
+              name: "retencionMeses",
+              label: "Retención de hojas de vida (meses)",
+              kind: "number",
+              min: 1,
+              max: 60,
+              hint: "Cumplido el plazo, las hojas de vida de candidatos no contratados y sin autorización de banco deben suprimirse (aviso en la pestaña Hojas de vida).",
+            },
+            {
+              name: "textoConsentimiento",
+              label: "Texto del consentimiento (checkbox del formulario público)",
+              kind: "textarea",
+              rows: 5,
+              gridSpan: 2,
+              hint: "Validar con el abogado laboral.",
+            },
+          ],
+        },
+      ]}
     />
   )
 }

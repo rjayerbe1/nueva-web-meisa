@@ -56,6 +56,8 @@ export type PostulacionSer = {
   notasInternas: string | null
   scoreIA: number | null
   matchIA: unknown
+  /** [{de, a, fecha, usuario}] — cada cambio de etapa. */
+  historial?: unknown
   createdAt: string
   updatedAt: string
   candidato: {

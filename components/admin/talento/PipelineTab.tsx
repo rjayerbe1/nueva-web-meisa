@@ -1,384 +1,142 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { FileText, Loader2, Sparkles, StickyNote } from "lucide-react"
+import { ArrowRight, ChevronDown, Clock, Loader2, StickyNote, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { ETAPAS, ETAPA_LABEL } from "./constants"
+import { ETAPAS, ETAPAS_ACTIVAS, ETAPA_ESTILO, ETAPA_LABEL, etapaSiguiente } from "./constants"
 import { InformeVacanteBoton } from "./InformesTalento"
-import type { PostulacionSer, VacanteSer } from "./types"
+import { useTalento } from "./TalentoStore"
+import { diasDesde, haceDias, scoreColor, type CambioEtapa } from "./utils"
+import type { PostulacionSer } from "./types"
 
-const ETAPA_ACCENT: Record<string, string> = {
-  RECIBIDA: "border-t-slate-400",
-  PRESELECCION: "border-t-blue-500",
-  ENTREVISTA: "border-t-amber-500",
-  OFERTA: "border-t-blue-700",
-  CONTRATADA: "border-t-green-600",
-  DESCARTADA: "border-t-slate-300",
+const TODAS = "__todas__"
+const ESPONTANEAS = "__espontanea__"
+
+/** Días desde que entró a la etapa actual (último cambio del historial). */
+function diasEnEtapa(p: PostulacionSer): number {
+  const h = (Array.isArray(p.historial) ? p.historial : []) as CambioEtapa[]
+  const ultimo = [...h].reverse().find((x) => x.a === p.etapa)
+  return diasDesde(ultimo?.fecha ?? p.createdAt)
 }
 
-function diasDesde(iso: string): string {
-  const dias = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000)
-  if (dias <= 0) return "hoy"
-  if (dias === 1) return "hace 1 día"
-  return `hace ${dias} días`
-}
+/**
+ * Tablero de selección. Siempre arranca con UNA vacante: con todas mezcladas
+ * eran 76 tarjetas en Recibida de cargos distintos y no se podía trabajar.
+ * Contratadas y descartadas van plegadas abajo, porque ya no piden trabajo.
+ */
+export function PipelineTab({ vacanteFija }: { vacanteFija?: string }) {
+  const { postulaciones, vacantes, param, navegar } = useTalento()
 
-export function PipelineTab({
-  postulaciones: initial,
-  vacantes,
-}: {
-  postulaciones: PostulacionSer[]
-  vacantes: VacanteSer[]
-}) {
-  const [items, setItems] = useState<PostulacionSer[]>(initial)
-  const [filtroVacante, setFiltroVacante] = useState<string>("")
-  const [savingId, setSavingId] = useState<string | null>(null)
-  const [notasOpenId, setNotasOpenId] = useState<string | null>(null)
-  const [notasDraft, setNotasDraft] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [matchBusyId, setMatchBusyId] = useState<string | null>(null)
-  const [matchOpenId, setMatchOpenId] = useState<string | null>(null)
-
-  // Solo tiene sentido con UNA vacante elegida: el informe es por cargo.
-  const vacanteSeleccionada = useMemo(
-    () => (filtroVacante && filtroVacante !== "__espontanea__"
-      ? vacantes.find((v) => v.id === filtroVacante) ?? null
-      : null),
-    [filtroVacante, vacantes],
+  const vigentes = useMemo(
+    () =>
+      vacantes
+        .filter((v) => v.estado === "ABIERTA" || v.estado === "PAUSADA")
+        .map((v) => ({
+          v,
+          activas: postulaciones.filter((p) => p.vacanteId === v.id && ETAPAS_ACTIVAS.includes(p.etapa)).length,
+        }))
+        .sort((a, b) => b.activas - a.activas),
+    [vacantes, postulaciones],
   )
+  const espontaneasActivas = postulaciones.filter(
+    (p) => !p.vacanteId && ETAPAS_ACTIVAS.includes(p.etapa),
+  ).length
 
-  const filtered = useMemo(() => {
-    if (!filtroVacante) return items
-    if (filtroVacante === "__espontanea__") return items.filter((p) => !p.vacanteId)
-    return items.filter((p) => p.vacanteId === filtroVacante)
-  }, [items, filtroVacante])
+  // ?vacante= se comparte con el filtro de Hojas de vida (así el contexto se
+  // mantiene al cambiar de pestaña); un valor que acá no aplica cae al default.
+  const pedido = param("vacante")
+  const valido = pedido === TODAS || pedido === ESPONTANEAS || vacantes.some((v) => v.id === pedido)
+  const elegido = vacanteFija ?? (valido ? pedido : vigentes[0]?.v.id || TODAS)
+  const vacante = vacantes.find((v) => v.id === elegido) ?? null
 
-  const update = async (id: string, data: Record<string, unknown>) => {
-    setSavingId(id)
-    setError(null)
-    try {
-      const res = await fetch(`/api/admin/talento/postulaciones/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-      if (!res.ok) {
-        const msg = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
-        throw new Error(msg.error ?? "Error")
-      }
-      const updated: PostulacionSer = await res.json()
-      setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
-    } catch (e: any) {
-      setError(e.message ?? "Error guardando")
-    } finally {
-      setSavingId(null)
-    }
-  }
+  const filtradas = useMemo(() => {
+    if (elegido === TODAS) return postulaciones
+    if (elegido === ESPONTANEAS) return postulaciones.filter((p) => !p.vacanteId)
+    return postulaciones.filter((p) => p.vacanteId === elegido)
+  }, [postulaciones, elegido])
 
-  const guardarNotas = async (id: string) => {
-    await update(id, { notasInternas: notasDraft })
-    setNotasOpenId(null)
-  }
+  const ordenar = (l: PostulacionSer[]) =>
+    [...l].sort((a, b) => (b.scoreIA ?? -1) - (a.scoreIA ?? -1) || b.createdAt.localeCompare(a.createdAt))
 
-  const evaluarMatch = async (p: PostulacionSer) => {
-    setMatchBusyId(p.id)
-    setError(null)
-    try {
-      const res = await fetch("/api/admin/talento/ia/match", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postulacionId: p.id }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? "Error evaluando el match")
-      setItems((prev) =>
-        prev.map((x) =>
-          x.id === p.id ? { ...x, scoreIA: data.match.score, matchIA: data.match } : x,
-        ),
-      )
-      setMatchOpenId(p.id)
-    } catch (e: any) {
-      setError(e.message ?? "Error evaluando el match")
-    } finally {
-      setMatchBusyId(null)
-    }
-  }
-
-  const scoreColor = (score: number) =>
-    score >= 70
-      ? "bg-green-600 text-white"
-      : score >= 45
-        ? "bg-amber-500 text-white"
-        : "bg-slate-300 text-slate-800"
+  const listaPanel = useMemo(
+    () => ETAPAS.flatMap((e) => ordenar(filtradas.filter((p) => p.etapa === e.value))).map((p) => p.candidatoId),
+    [filtradas],
+  )
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
-          {filtered.length} {filtered.length === 1 ? "postulación" : "postulaciones"}
-        </p>
-        <select
-          value={filtroVacante}
-          onChange={(e) => setFiltroVacante(e.target.value)}
-          className="rounded-none border border-slate-300 bg-white px-3 py-2 font-lato text-xs font-semibold uppercase tracking-wide text-slate-700 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
-          aria-label="Filtrar por vacante"
-        >
-          <option value="">Todas las vacantes</option>
-          <option value="__espontanea__">Espontáneas / banco</option>
-          {vacantes.map((v) => (
-            <option key={v.id} value={v.id}>
-              {v.titulo}
-            </option>
-          ))}
-        </select>
-
-        {/* Informe de la vacante filtrada. Los informes también están en la
-            cabecera de la página y en cada fila de la pestaña Vacantes. */}
-        {vacanteSeleccionada && <InformeVacanteBoton vacante={vacanteSeleccionada} />}
-      </div>
-
-      {error && (
-        <div className="rounded-none border border-red-300 bg-red-100 px-3 py-2 font-lato text-sm text-red-800">
-          {error}
+      {!vacanteFija && (
+        <div className="space-y-2">
+          <p className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500">
+            Elige la vacante
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {vigentes.map(({ v, activas }) => (
+              <BotonVacante
+                key={v.id}
+                activo={elegido === v.id}
+                onClick={() => navegar({ vacante: v.id })}
+                titulo={v.titulo}
+                n={activas}
+                pausada={v.estado === "PAUSADA"}
+              />
+            ))}
+            {espontaneasActivas > 0 && (
+              <BotonVacante
+                activo={elegido === ESPONTANEAS}
+                onClick={() => navegar({ vacante: ESPONTANEAS })}
+                titulo="Espontáneas"
+                n={espontaneasActivas}
+              />
+            )}
+            <BotonVacante
+              activo={elegido === TODAS}
+              onClick={() => navegar({ vacante: TODAS })}
+              titulo="Todas juntas"
+            />
+          </div>
         </div>
       )}
 
-      <div className="flex gap-3 overflow-x-auto pb-3">
-        {ETAPAS.map((etapa) => {
-          const columna = filtered.filter((p) => p.etapa === etapa.value)
+      {vacante && !vacanteFija && (
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <p className="font-lato text-sm text-slate-600">
+            <strong className="text-slate-950">{filtradas.length}</strong> postulaciones a{" "}
+            <button
+              type="button"
+              onClick={() => navegar({ tab: "vacantes", ver: vacante.id }, { historial: true })}
+              className="font-semibold text-slate-950 underline decoration-slate-300 hover:decoration-slate-900"
+            >
+              {vacante.titulo}
+            </button>
+          </p>
+          <InformeVacanteBoton vacante={{ ...vacante, postulacionesCount: filtradas.length }} />
+        </div>
+      )}
+
+      <div className="flex gap-3 overflow-x-auto pb-2 xl:grid xl:grid-cols-4 xl:overflow-visible">
+        {ETAPAS.filter((e) => ETAPAS_ACTIVAS.includes(e.value)).map((etapa) => {
+          const columna = ordenar(filtradas.filter((p) => p.etapa === etapa.value))
           return (
             <div
               key={etapa.value}
               className={cn(
-                "flex w-72 flex-shrink-0 flex-col rounded-md border border-t-4 border-slate-200 bg-stone-50",
-                ETAPA_ACCENT[etapa.value],
-                etapa.value === "DESCARTADA" && "opacity-75",
+                "flex w-72 flex-shrink-0 flex-col border border-t-4 border-slate-200 bg-stone-100/70 xl:w-auto",
+                ETAPA_ESTILO[etapa.value]?.borde,
               )}
             >
               <div className="flex items-center justify-between border-b border-slate-200 bg-white px-3 py-2.5">
-                <span className="font-bebas text-base uppercase tracking-wide text-slate-950">
-                  {etapa.label}
-                </span>
+                <span className="font-bebas text-lg uppercase tracking-wide text-slate-950">{etapa.label}</span>
                 <span className="rounded-full bg-slate-100 px-2 py-0.5 font-lato text-[11px] font-semibold text-slate-600">
                   {columna.length}
                 </span>
               </div>
-              <div className="flex flex-col gap-2 p-2">
+              <div className="flex max-h-[70vh] flex-col gap-2 overflow-y-auto p-2">
                 {columna.length === 0 && (
-                  <p className="px-2 py-6 text-center font-lato text-xs text-slate-400">
-                    Sin candidatos
-                  </p>
+                  <p className="px-2 py-6 text-center font-lato text-xs text-slate-400">Nadie en esta etapa</p>
                 )}
                 {columna.map((p) => (
-                  <div
-                    key={p.id}
-                    className="rounded-md border border-slate-200 bg-white px-3 py-2.5 shadow-sm"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="truncate font-lato text-sm font-semibold text-slate-900">
-                          {p.candidato.nombre}
-                        </p>
-                        <p className="mt-0.5 truncate font-lato text-xs text-slate-500">
-                          {p.vacante?.titulo ?? "Espontánea"}
-                        </p>
-                      </div>
-                      <div className="flex flex-shrink-0 items-center gap-1">
-                        {typeof p.scoreIA === "number" && (
-                          <button
-                            type="button"
-                            onClick={() => setMatchOpenId(matchOpenId === p.id ? null : p.id)}
-                            title="Match IA (sugerencia — clic para detalle)"
-                            className={cn(
-                              "rounded-none px-1.5 py-0.5 font-lato text-[10px] font-bold",
-                              scoreColor(p.scoreIA),
-                            )}
-                          >
-                            {p.scoreIA}
-                          </button>
-                        )}
-                        {p.candidato.cvPathGcs && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              window.open(`/api/admin/talento/cv/${p.candidato.id}`, "_blank")
-                            }
-                            title="Ver hoja de vida"
-                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900"
-                          >
-                            <FileText className="h-3.5 w-3.5" />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    {matchOpenId === p.id && p.matchIA != null && (
-                      <div className="mt-2 space-y-1 border border-blue-100 bg-blue-50/50 px-2 py-1.5">
-                        {(() => {
-                          const m = p.matchIA as {
-                            fortalezas?: string[]
-                            brechas?: string[]
-                            porValidar?: string[]
-                            recomendacion?: string
-                            conMatriz?: boolean
-                            criterios?: Array<{
-                              nombre: string
-                              peso: number
-                              puntaje: number
-                              valoracion: string
-                              justificacion: string
-                            }>
-                          }
-                          return (
-                            <>
-                              {/* Desglose por criterio: el score deja de ser un
-                                  número suelto y se puede discutir línea a línea
-                                  con el jefe del área. */}
-                              {(m.criterios ?? []).length > 0 && (
-                                <table className="w-full border-collapse font-lato text-[10px]">
-                                  <tbody>
-                                    {(m.criterios ?? []).map((c) => (
-                                      <tr key={c.nombre} className="align-top">
-                                        <td className="py-0.5 pr-2 text-slate-600">
-                                          {c.nombre}
-                                          <span className="text-slate-400"> · {c.peso}%</span>
-                                          {c.justificacion && (
-                                            <span className="block text-[9px] leading-snug text-slate-400">
-                                              {c.justificacion}
-                                            </span>
-                                          )}
-                                        </td>
-                                        <td className="whitespace-nowrap py-0.5 text-right font-semibold text-slate-700">
-                                          {c.puntaje}
-                                          <span className="ml-1 font-normal text-slate-400">
-                                            {c.valoracion}
-                                          </span>
-                                        </td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
-                              )}
-                              {(m.fortalezas ?? []).length > 0 && (
-                                <p className="font-lato text-[11px] text-green-700">
-                                  ✓ {(m.fortalezas ?? []).join(" · ")}
-                                </p>
-                              )}
-                              {(m.brechas ?? []).length > 0 && (
-                                <p className="font-lato text-[11px] text-amber-700">
-                                  ✗ {(m.brechas ?? []).join(" · ")}
-                                </p>
-                              )}
-                              {(m.porValidar ?? []).length > 0 && (
-                                <p className="font-lato text-[11px] text-blue-700">
-                                  ? Validar en entrevista: {(m.porValidar ?? []).join(" · ")}
-                                </p>
-                              )}
-                              {m.recomendacion && (
-                                <p className="font-lato text-[11px] text-slate-700">
-                                  {m.recomendacion}
-                                </p>
-                              )}
-                              <p className="font-lato text-[9px] uppercase tracking-wide text-slate-400">
-                                {m.conMatriz
-                                  ? "Ponderado con la matriz del cargo — decide el reclutador"
-                                  : "Sin matriz definida: la IA estimó los pesos — decide el reclutador"}
-                              </p>
-                            </>
-                          )
-                        })()}
-                      </div>
-                    )}
-
-                    <div className="mt-2 flex items-center gap-1.5">
-                      <select
-                        value={p.etapa}
-                        disabled={savingId === p.id}
-                        onChange={(e) => update(p.id, { etapa: e.target.value })}
-                        className="min-w-0 flex-1 rounded-none border border-slate-200 bg-white px-1.5 py-1 font-lato text-[11px] font-semibold uppercase tracking-wide text-slate-700 focus:border-red-600 focus:outline-none"
-                        aria-label="Cambiar etapa"
-                      >
-                        {ETAPAS.map((e) => (
-                          <option key={e.value} value={e.value}>
-                            {ETAPA_LABEL[e.value]}
-                          </option>
-                        ))}
-                      </select>
-                      {p.vacanteId && (
-                        <button
-                          type="button"
-                          onClick={() => evaluarMatch(p)}
-                          disabled={matchBusyId !== null}
-                          title="Evaluar match con IA (requiere CV analizado)"
-                          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-none text-slate-300 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50"
-                        >
-                          {matchBusyId === p.id ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          ) : (
-                            <Sparkles className="h-3.5 w-3.5" />
-                          )}
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (notasOpenId === p.id) {
-                            setNotasOpenId(null)
-                          } else {
-                            setNotasOpenId(p.id)
-                            setNotasDraft(p.notasInternas ?? "")
-                          }
-                        }}
-                        title="Notas internas"
-                        className={cn(
-                          "flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-none transition-colors",
-                          p.notasInternas
-                            ? "text-amber-600 hover:bg-amber-50"
-                            : "text-slate-300 hover:bg-stone-100 hover:text-slate-600",
-                        )}
-                      >
-                        {savingId === p.id ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        ) : (
-                          <StickyNote className="h-3.5 w-3.5" />
-                        )}
-                      </button>
-                    </div>
-
-                    {notasOpenId === p.id && (
-                      <div className="mt-2 space-y-1.5">
-                        <textarea
-                          value={notasDraft}
-                          onChange={(e) => setNotasDraft(e.target.value)}
-                          rows={3}
-                          placeholder="Notas internas del proceso…"
-                          className="w-full rounded-none border border-slate-300 bg-white px-2 py-1.5 font-lato text-xs text-slate-900 focus:border-red-600 focus:outline-none"
-                        />
-                        <div className="flex justify-end gap-1.5">
-                          <button
-                            type="button"
-                            onClick={() => setNotasOpenId(null)}
-                            className="rounded-none border border-slate-200 px-2 py-1 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-600 hover:border-slate-900"
-                          >
-                            Cancelar
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => guardarNotas(p.id)}
-                            disabled={savingId === p.id}
-                            className="rounded-none bg-red-600 px-2 py-1 font-lato text-[10px] font-bold uppercase tracking-wider text-white hover:bg-red-700 disabled:opacity-60"
-                          >
-                            Guardar
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    <p className="mt-1.5 font-lato text-[10px] uppercase tracking-wide text-slate-400">
-                      {diasDesde(p.updatedAt)}
-                      {p.candidato.origen ? ` · ${p.candidato.origen}` : ""}
-                    </p>
-                  </div>
+                  <Tarjeta key={p.id} p={p} mostrarVacante={elegido === TODAS} lista={listaPanel} />
                 ))}
               </div>
             </div>
@@ -386,10 +144,195 @@ export function PipelineTab({
         })}
       </div>
 
-      <p className="font-lato text-xs italic text-slate-500">
-        Los candidatos se agregan desde la pestaña «Candidatos». Cada cambio de etapa queda
-        registrado con fecha y usuario en el historial de la postulación.
+      {/* Cerradas: plegadas */}
+      <div className="grid gap-3 md:grid-cols-2">
+        {["CONTRATADA", "DESCARTADA"].map((et) => (
+          <Plegada
+            key={et}
+            etapa={et}
+            items={ordenar(filtradas.filter((p) => p.etapa === et))}
+            mostrarVacante={elegido === TODAS}
+            lista={listaPanel}
+          />
+        ))}
+      </div>
+
+      <p className="font-lato text-xs text-slate-500">
+        Clic en una persona para ver su hoja de vida y la evaluación. Cada cambio de etapa queda en el historial con
+        fecha y usuario.
       </p>
+    </div>
+  )
+}
+
+function BotonVacante({
+  activo,
+  onClick,
+  titulo,
+  n,
+  pausada,
+}: {
+  activo: boolean
+  onClick: () => void
+  titulo: string
+  n?: number
+  pausada?: boolean
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "inline-flex items-center gap-2 border px-3 py-1.5 font-lato text-sm transition-colors",
+        activo
+          ? "border-slate-950 bg-slate-950 text-white"
+          : "border-slate-200 bg-white text-slate-700 hover:border-slate-500",
+      )}
+    >
+      <span className="font-semibold">{titulo}</span>
+      {pausada && <span className={activo ? "text-white/60" : "text-slate-400"}>(pausada)</span>}
+      {typeof n === "number" && (
+        <span
+          className={cn(
+            "rounded-full px-1.5 text-[11px] font-bold",
+            activo ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600",
+          )}
+        >
+          {n}
+        </span>
+      )}
+    </button>
+  )
+}
+
+function Tarjeta({
+  p,
+  mostrarVacante,
+  lista,
+}: {
+  p: PostulacionSer
+  mostrarVacante: boolean
+  lista: string[]
+}) {
+  const { abrirCandidato, actualizarPostulacion, ocupado } = useTalento()
+  const sig = etapaSiguiente(p.etapa)
+  const dias = diasEnEtapa(p)
+  const quieta = p.etapa === "RECIBIDA" ? dias > 15 : dias > 21
+  const guardando = ocupado(`post:${p.id}`)
+
+  return (
+    <div className="border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow">
+      <button
+        type="button"
+        onClick={() => abrirCandidato(p.candidatoId, lista)}
+        className="block w-full px-3 pb-2 pt-2.5 text-left"
+      >
+        <div className="flex items-start justify-between gap-2">
+          <p className="min-w-0 font-lato text-sm font-semibold leading-snug text-slate-900 hover:text-red-600">
+            {p.candidato.nombre}
+          </p>
+          {typeof p.scoreIA === "number" ? (
+            <span
+              className={cn("flex-shrink-0 px-1.5 py-0.5 font-lato text-xs font-bold", scoreColor(p.scoreIA))}
+              title="Puntaje contra la matriz del cargo"
+            >
+              {p.scoreIA}
+            </span>
+          ) : (
+            <span className="flex-shrink-0 font-lato text-[10px] text-slate-400" title="Aún sin evaluar">
+              —
+            </span>
+          )}
+        </div>
+        <p className="mt-0.5 truncate font-lato text-xs text-slate-500">
+          {mostrarVacante ? (p.vacante?.titulo ?? "Espontánea") : (p.candidato.ciudad ?? "Ciudad sin dato")}
+        </p>
+        <p
+          className={cn(
+            "mt-1 inline-flex items-center gap-1 font-lato text-[10px] uppercase tracking-wide",
+            quieta ? "font-bold text-amber-700" : "text-slate-400",
+          )}
+          title={quieta ? "Lleva mucho tiempo sin moverse" : undefined}
+        >
+          <Clock className="h-3 w-3" />
+          {dias === 0 ? "hoy" : `${dias} ${dias === 1 ? "día" : "días"}`} en {ETAPA_LABEL[p.etapa]?.toLowerCase()}
+          {p.notasInternas && <StickyNote className="ml-1 h-3 w-3 text-amber-600" />}
+        </p>
+      </button>
+      <div className="flex border-t border-slate-100">
+        {sig && (
+          <button
+            type="button"
+            disabled={guardando}
+            onClick={() => actualizarPostulacion(p.id, { etapa: sig })}
+            className="flex flex-1 items-center justify-center gap-1 px-2 py-1.5 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-600 transition-colors hover:bg-slate-900 hover:text-white disabled:opacity-50"
+          >
+            {guardando ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowRight className="h-3 w-3" />}
+            {ETAPA_LABEL[sig]}
+          </button>
+        )}
+        <button
+          type="button"
+          disabled={guardando}
+          onClick={() => actualizarPostulacion(p.id, { etapa: "DESCARTADA" })}
+          title="Descartar"
+          className="flex items-center justify-center border-l border-slate-100 px-2.5 py-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function Plegada({
+  etapa,
+  items,
+  mostrarVacante,
+  lista,
+}: {
+  etapa: string
+  items: PostulacionSer[]
+  mostrarVacante: boolean
+  lista: string[]
+}) {
+  const { abrirCandidato } = useTalento()
+  const [abierta, setAbierta] = useState(false)
+  return (
+    <div className={cn("border border-t-4 border-slate-200 bg-white", ETAPA_ESTILO[etapa]?.borde)}>
+      <button
+        type="button"
+        onClick={() => setAbierta((x) => !x)}
+        className="flex w-full items-center justify-between px-3 py-2.5 text-left"
+      >
+        <span className="font-bebas text-lg uppercase tracking-wide text-slate-950">
+          {etapa === "CONTRATADA" ? "Contratadas" : "Descartadas"}{" "}
+          <span className="font-lato text-sm text-slate-400">({items.length})</span>
+        </span>
+        <ChevronDown className={cn("h-4 w-4 text-slate-400 transition-transform", abierta && "rotate-180")} />
+      </button>
+      {abierta && (
+        <ul className="max-h-80 divide-y divide-slate-100 overflow-y-auto border-t border-slate-100">
+          {items.length === 0 && <li className="px-3 py-3 font-lato text-xs text-slate-400">Ninguna</li>}
+          {items.map((p) => (
+            <li key={p.id}>
+              <button
+                type="button"
+                onClick={() => abrirCandidato(p.candidatoId, lista)}
+                className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left hover:bg-stone-50"
+              >
+                <span className="min-w-0 truncate font-lato text-sm text-slate-800">
+                  {p.candidato.nombre}
+                  {mostrarVacante && (
+                    <span className="text-slate-400"> · {p.vacante?.titulo ?? "Espontánea"}</span>
+                  )}
+                </span>
+                <span className="flex-shrink-0 font-lato text-[11px] text-slate-400">{haceDias(p.updatedAt)}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

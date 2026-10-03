@@ -11,6 +11,8 @@ export interface AdminTab {
   content: React.ReactNode
   count?: number
   disabled?: boolean
+  /** Pestaña de uso ocasional (ajustes, catálogos): va a la derecha y más discreta. */
+  secondary?: boolean
 }
 
 interface AdminTabsLayoutProps {
@@ -21,6 +23,14 @@ interface AdminTabsLayoutProps {
   defaultTab?: string
   actions?: React.ReactNode
   paramName?: string
+  /**
+   * Cambia de pestaña con history.replaceState en vez de router.replace: no
+   * vuelve a pedir la página al servidor. Solo para módulos que guardan sus
+   * datos en estado de cliente (si no, la pestaña mostraría datos viejos).
+   */
+  shallow?: boolean
+  /** Con shallow: parámetros de la URL que sobreviven al cambio de pestaña (el resto se limpia). */
+  keepParams?: string[]
 }
 
 export function AdminTabsLayout({
@@ -31,6 +41,8 @@ export function AdminTabsLayout({
   defaultTab,
   actions,
   paramName = "tab",
+  shallow = false,
+  keepParams,
 }: AdminTabsLayoutProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -41,10 +53,16 @@ export function AdminTabsLayout({
   const handleChange = useCallback(
     (value: string) => {
       const params = new URLSearchParams(searchParams.toString())
+      if (keepParams) {
+        Array.from(params.keys()).forEach((k) => {
+          if (k !== paramName && !keepParams.includes(k)) params.delete(k)
+        })
+      }
       params.set(paramName, value)
-      router.replace(`?${params.toString()}`, { scroll: false })
+      if (shallow) window.history.replaceState(null, "", `?${params.toString()}`)
+      else router.replace(`?${params.toString()}`, { scroll: false })
     },
-    [router, searchParams, paramName],
+    [router, searchParams, paramName, shallow, keepParams],
   )
 
   return (
@@ -72,7 +90,7 @@ export function AdminTabsLayout({
       <Tabs value={activeTab} onValueChange={handleChange} className="w-full">
         {/* Tabs as underline navigation */}
         <TabsList className="h-auto w-full flex-wrap justify-start gap-0 rounded-none border-b border-slate-200 bg-transparent p-0">
-          {tabs.map((tab) => (
+          {tabs.map((tab, i) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
@@ -82,6 +100,8 @@ export function AdminTabsLayout({
                 "hover:text-slate-900",
                 "data-[state=active]:border-red-600 data-[state=active]:bg-transparent data-[state=active]:text-red-600 data-[state=active]:font-semibold data-[state=active]:shadow-none",
                 "focus-visible:outline-none focus-visible:ring-0",
+                tab.secondary && "px-3 text-xs text-slate-400",
+                tab.secondary && !tabs[i - 1]?.secondary && "md:ml-auto",
               )}
             >
               <span>{tab.label}</span>

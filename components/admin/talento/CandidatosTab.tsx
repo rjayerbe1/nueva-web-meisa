@@ -1,353 +1,199 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
   AlertTriangle,
-  ChevronDown,
-  ChevronUp,
+  ChevronRight,
   FileText,
   Loader2,
-  Pencil,
   Plus,
-  Save,
   Search,
-  Send,
   Sparkles,
-  Trash2,
-  Upload,
   X,
 } from "lucide-react"
-import { FormField, type FieldDef } from "@/components/admin/shared/FormFields"
 import { cn } from "@/lib/utils"
 import { resideFueraDeColombia } from "@/lib/talento/pais"
-import { ETAPA_LABEL, ORIGENES_CANDIDATO } from "./constants"
-import type { CandidatoSer, VacanteSer } from "./types"
-
-const MAX_CV_MB = 10
-
-type DatosIA = {
-  oficios?: string[]
-  certificaciones?: string[]
-  anosExperiencia?: number
-  alertas?: string[]
-  resumen?: string
-  paisResidencia?: string | null
-  evidenciaResidencia?: string | null
-}
+import { CandidatoForm } from "./CandidatoForm"
+import { ETAPAS, ETAPA_ESTILO, ETAPA_LABEL, ORIGENES_CANDIDATO } from "./constants"
+import { useTalento } from "./TalentoStore"
+import { diasDesde, haceDias, normalizarBusqueda, scoreColor, type DatosIA } from "./utils"
+import type { CandidatoSer, PostulacionSer } from "./types"
 
 type ResultadoIA = { candidatoId: string; relevancia: number; razon: string }
 
-export function CandidatosTab({
-  candidatos: initial,
-  vacantes,
-}: {
-  candidatos: CandidatoSer[]
-  vacantes: VacanteSer[]
-}) {
-  const [items, setItems] = useState<CandidatoSer[]>(initial)
-  const [editingId, setEditingId] = useState<string | null>(null) // "__new__" | id
-  const [draft, setDraft] = useState<Record<string, unknown>>({})
-  const [cvFile, setCvFile] = useState<File | null>(null)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [query, setQuery] = useState("")
-  const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [postulandoId, setPostulandoId] = useState<string | null>(null)
-  const [postulandoBusy, setPostulandoBusy] = useState<string | null>(null)
-  const [iaBusyId, setIaBusyId] = useState<string | null>(null)
-  const [iaError, setIaError] = useState<string | null>(null)
-  // Búsqueda semántica
+const POR_PAGINA = 50
+
+const SELECT =
+  "h-9 min-w-0 border border-slate-300 bg-white px-2 font-lato text-sm text-slate-900 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+
+const etiquetaOrigen = (o: string | null) =>
+  ORIGENES_CANDIDATO.find((x) => x.value === o)?.label ??
+  (o === "web" ? "Página web" : o === "drive" ? "Drive de TH" : (o ?? "Sin dato"))
+
+/**
+ * Banco de hojas de vida. Los filtros viven en la URL (?vacante=…&etapa=…),
+ * así un enlace como «los de Proyectista que siguen en Recibida» se puede
+ * mandar por WhatsApp y el botón Atrás del navegador funciona.
+ */
+export function CandidatosTab() {
+  const { candidatos, vacantes, postulacionesDe, duplicados, param, navegar, abrirCandidato, setCandidatos, avisar } =
+    useTalento()
+
+  const q = param("q")
+  // ?vacante= se comparte con el Pipeline, que usa sus propios valores especiales.
+  const rawVacante = param("vacante")
+  const fVacante =
+    rawVacante === "__espontanea__"
+      ? "__ninguna__"
+      : rawVacante === "__ninguna__" || vacantes.some((v) => v.id === rawVacante)
+        ? rawVacante
+        : ""
+  const fEtapa = param("etapa")
+  const fArea = param("area")
+  const fOrigen = param("origen")
+  const fDias = param("dias")
+  const fRevisar = param("revisar")
+  const orden = param("orden") || (fVacante && fVacante !== "__ninguna__" ? "puntaje" : "recientes")
+
+  const [qLocal, setQLocal] = useState(q)
+  const [nuevo, setNuevo] = useState(false)
+  const [pagina, setPagina] = useState(1)
+  const [iaAbierta, setIaAbierta] = useState(false)
   const [iaQuery, setIaQuery] = useState("")
   const [iaResultados, setIaResultados] = useState<ResultadoIA[] | null>(null)
   const [iaBuscando, setIaBuscando] = useState(false)
-  // Purga por retención
   const [purga, setPurga] = useState<{ count: number; retencionMeses: number } | null>(null)
   const [purgando, setPurgando] = useState(false)
-  const fileRef = useRef<HTMLInputElement>(null)
 
-  const isNew = editingId === "__new__"
+  useEffect(() => setQLocal(q), [q])
+  useEffect(() => setPagina(1), [q, fVacante, fEtapa, fArea, fOrigen, fDias, fRevisar, orden, iaResultados])
 
   useEffect(() => {
     fetch("/api/admin/talento/purga")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (d && typeof d.count === "number") {
-          setPurga({ count: d.count, retencionMeses: d.retencionMeses })
-        }
+        if (d && typeof d.count === "number") setPurga({ count: d.count, retencionMeses: d.retencionMeses })
       })
       .catch(() => {})
   }, [])
 
-  const fields: FieldDef[] = useMemo(
-    () => [
-      { name: "nombre", label: "Nombre completo", kind: "text", required: true },
-      {
-        name: "origen",
-        label: "Origen del CV",
-        kind: "select",
-        required: true,
-        options: ORIGENES_CANDIDATO,
-        hint: "Por dónde llegó la hoja de vida — trazabilidad de habeas data.",
-      },
-      { name: "email", label: "Email", kind: "text" },
-      { name: "telefono", label: "Teléfono", kind: "text" },
-      { name: "ciudad", label: "Ciudad", kind: "text" },
-      {
-        name: "origenDetalle",
-        label: "Detalle del origen",
-        kind: "text",
-        placeholder: "Ej: convocatoria soldadores jul-2026, referido por…",
-      },
-      {
-        name: "areaInteres",
-        label: "Área de interés",
-        kind: "text",
-        placeholder: "SST, Producción, Ingeniería, Administrativa…",
-        hint: "Organiza el banco por área aunque no haya vacante activa.",
-      },
-      ...(isNew
-        ? ([
-            {
-              name: "vacanteId",
-              label: "Postular a vacante",
-              kind: "select",
-              options: [
-                { value: "", label: "Espontánea / banco de talento" },
-                ...vacantes.map((v) => ({ value: v.id, label: v.titulo })),
-              ],
-            },
-          ] as FieldDef[])
-        : []),
-      {
-        name: "consentimientoBanco",
-        label: "Autorizó conservar el CV para vacantes futuras",
-        kind: "boolean",
-        hint: "Sin esta autorización, el CV se purga al cumplir el plazo de retención.",
-      },
-      {
-        name: "notas",
-        label: "Notas",
-        kind: "textarea",
-        gridSpan: 2,
-        rows: 2,
-      },
-    ],
-    [isNew, vacantes],
+  const set = (k: string, v: string) => navegar({ [k]: v || null })
+
+  /* ── Opciones de filtro sacadas de los datos ── */
+  const areas = useMemo(
+    () =>
+      Array.from(new Set(candidatos.map((c) => c.areaInteres).filter(Boolean) as string[])).sort((a, b) =>
+        a.localeCompare(b, "es", { sensitivity: "base" }),
+      ),
+    [candidatos],
   )
-
-  /**
-   * Normaliza para buscar: quita tildes y trata "_", "-", "." como espacios,
-   * así "David Castillo" encuentra "David_Castillo.pdf" y "Jiménez" encuentra
-   * "Jimenez". El resto del admin ya lo hacía; esta pestaña se había quedado
-   * comparando con un toLowerCase() pelado.
-   */
-  const normalizarBusqueda = (v: string) =>
-    v
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim()
-
-  // Solo vacantes ABIERTAS: mandar a alguien a un perfil en BORRADOR no sirve.
-  const vacantesAbiertas = useMemo(
-    () => vacantes.filter((v) => v.estado === "ABIERTA"),
-    [vacantes],
+  const origenes = useMemo(
+    () => Array.from(new Set(candidatos.map((c) => c.origen ?? ""))).filter(Boolean),
+    [candidatos],
   )
-
-  /** Crea la postulación (banco → pipeline) y la evalúa contra la matriz del cargo. */
-  const postularA = async (c: CandidatoSer, vacanteId: string) => {
-    setPostulandoBusy(c.id)
-    setError(null)
-    try {
-      const res = await fetch("/api/admin/talento/postulaciones", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ candidatoId: c.id, vacanteId, etapa: "RECIBIDA" }),
-      })
-      if (!res.ok) {
-        const msg = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
-        throw new Error(msg.error ?? "No se pudo enviar a la vacante")
-      }
-      const creada = await res.json()
-      // El puntaje se calcula acá y no en el pipeline: si falla (CV sin
-      // analizar, tope de gasto de IA) la postulación ya quedó creada igual.
-      await fetch("/api/admin/talento/ia/match", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postulacionId: creada.id }),
-      }).catch(() => null)
-      const v = vacantes.find((x) => x.id === vacanteId)
-      setPostulandoId(null)
-      setError(null)
-      alert(`${c.nombre} quedó en el pipeline de ${v?.titulo ?? "la vacante"}.`)
-    } catch (e) {
-      setError((e as Error).message)
-    } finally {
-      setPostulandoBusy(null)
+  const grupoVacantes = useMemo(() => {
+    const con = new Set(candidatos.flatMap((c) => c.postulaciones.map((p) => p.vacante?.id)))
+    return {
+      abiertas: vacantes.filter((v) => v.estado === "ABIERTA"),
+      pausadas: vacantes.filter((v) => v.estado === "PAUSADA"),
+      otras: vacantes.filter((v) => v.estado !== "ABIERTA" && v.estado !== "PAUSADA" && con.has(v.id)),
     }
+  }, [vacantes, candidatos])
+
+  /** Postulación de la persona que aplica al filtro de vacante (si hay uno). */
+  const postulacionEnFoco = (c: CandidatoSer): PostulacionSer | undefined => {
+    const posts = postulacionesDe(c.id)
+    if (fVacante && fVacante !== "__ninguna__") return posts.find((p) => p.vacanteId === fVacante)
+    return undefined
   }
 
-  const filtered = useMemo(() => {
-    let list = items
-    // Resultados de la búsqueda IA: filtra y ordena por relevancia
+  const filtrados = useMemo(() => {
+    let list = candidatos
     if (iaResultados) {
-      const orden = new Map(iaResultados.map((r, i) => [r.candidatoId, i]))
-      list = list
-        .filter((c) => orden.has(c.id))
-        .sort((a, b) => (orden.get(a.id) ?? 99) - (orden.get(b.id) ?? 99))
+      const ordenIA = new Map(iaResultados.map((r, i) => [r.candidatoId, i]))
+      list = list.filter((c) => ordenIA.has(c.id))
     }
-    const q = normalizarBusqueda(query)
-    if (!q) return list
-    return list.filter((c) =>
-      [
-        c.nombre,
-        c.email,
-        c.telefono,
-        c.ciudad,
-        c.origen,
-        c.areaInteres,
-        // El NOMBRE DEL ARCHIVO importa: Talento Humano conoce a la persona por
-        // cómo se llama el CV en Drive ("David_Castillo.pdf"), pero el sistema
-        // muestra el nombre real que la IA extrajo del documento ("Henner David
-        // Torres Castillo"). Sin esto, buscar por el nombre del archivo no
-        // encuentra nada y parece que el candidato no está cargado.
-        c.cvFileName,
-        c.origenDetalle,
-      ]
-        .filter(Boolean)
-        .some((v) => normalizarBusqueda(String(v)).includes(q)),
-    )
-  }, [items, query, iaResultados])
+    const qn = normalizarBusqueda(q)
+    const corte = fDias ? Number(fDias) : 0
 
-  const razonIA = useMemo(() => {
-    if (!iaResultados) return new Map<string, ResultadoIA>()
-    return new Map(iaResultados.map((r) => [r.candidatoId, r]))
-  }, [iaResultados])
-
-  const beginNew = () => {
-    setEditingId("__new__")
-    setDraft({ consentimientoBanco: false, origen: null, vacanteId: "" })
-    setCvFile(null)
-    setError(null)
-  }
-
-  const beginEdit = (c: CandidatoSer) => {
-    setEditingId(c.id)
-    setDraft({ ...c })
-    setCvFile(null)
-    setError(null)
-  }
-
-  const cancel = () => {
-    setEditingId(null)
-    setDraft({})
-    setCvFile(null)
-    setError(null)
-  }
-
-  const onPickFile = (f: File | null) => {
-    if (f && f.size > MAX_CV_MB * 1024 * 1024) {
-      setError(`El archivo supera ${MAX_CV_MB} MB`)
-      return
-    }
-    setError(null)
-    setCvFile(f)
-  }
-
-  const save = async () => {
-    setSaving(true)
-    setError(null)
-    try {
-      let cvData: Record<string, unknown> = {}
-      if (cvFile) {
-        const fd = new FormData()
-        fd.append("file", cvFile)
-        const up = await fetch("/api/admin/talento/cv-upload", { method: "POST", body: fd })
-        if (!up.ok) {
-          const msg = await up.json().catch(() => ({ error: `HTTP ${up.status}` }))
-          throw new Error(msg.error ?? "Error subiendo el CV")
-        }
-        const r = await up.json()
-        cvData = {
-          cvPathGcs: r.pathGcs,
-          cvFileName: r.fileName,
-          cvContentType: r.contentType,
-          cvSize: r.size,
-        }
+    list = list.filter((c) => {
+      const posts = postulacionesDe(c.id)
+      if (fVacante === "__ninguna__") {
+        if (posts.some((p) => p.vacanteId)) return false
+      } else if (fVacante) {
+        const p = posts.find((x) => x.vacanteId === fVacante)
+        if (!p) return false
+        if (fEtapa && p.etapa !== fEtapa) return false
       }
-
-      const { postulaciones, createdAt, id, cvPathGcs, cvFileName, resumenIA, datosIA, ...body } =
-        draft as any
-      const res = await fetch(
-        isNew ? "/api/admin/talento/candidatos" : `/api/admin/talento/candidatos/${editingId}`,
-        {
-          method: isNew ? "POST" : "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...body, ...cvData }),
-        },
-      )
-      if (!res.ok) {
-        const msg = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
-        throw new Error(msg.error ?? "Error guardando")
+      if (fEtapa && !fVacante && !posts.some((p) => p.etapa === fEtapa)) return false
+      if (fEtapa && fVacante === "__ninguna__" && !posts.some((p) => p.etapa === fEtapa)) return false
+      if (fArea === "__sin__" ? !!c.areaInteres : fArea && c.areaInteres !== fArea) return false
+      if (fOrigen && c.origen !== fOrigen) return false
+      if (corte && diasDesde(c.createdAt) > corte) return false
+      if (fRevisar) {
+        const datos = c.datosIA as DatosIA | null
+        if (fRevisar === "duplicados" && !duplicados.has(c.id)) return false
+        if (fRevisar === "sin-analizar" && (!c.cvPathGcs || c.resumenIA)) return false
+        if (fRevisar === "sin-cv" && c.cvPathGcs) return false
+        if (fRevisar === "fuera" && !resideFueraDeColombia(datos?.paisResidencia)) return false
       }
-      const saved: CandidatoSer = await res.json()
-      setItems((prev) =>
-        isNew ? [saved, ...prev] : prev.map((c) => (c.id === saved.id ? saved : c)),
-      )
-      cancel()
-    } catch (e: any) {
-      setError(e.message ?? "Error guardando")
-    } finally {
-      setSaving(false)
-    }
-  }
+      if (qn) {
+        const hay = [
+          c.nombre,
+          c.email,
+          c.telefono,
+          c.ciudad,
+          c.areaInteres,
+          // El nombre del ARCHIVO importa: TH conoce a la persona por cómo se
+          // llama el CV en Drive ("David_Castillo.pdf") y el sistema muestra el
+          // nombre real que la IA sacó del documento.
+          c.cvFileName,
+          c.origenDetalle,
+          ...posts.map((p) => p.vacante?.titulo),
+        ]
+          .filter(Boolean)
+          .some((v) => normalizarBusqueda(String(v)).includes(qn))
+        if (!hay) return false
+      }
+      return true
+    })
 
-  const del = async (c: CandidatoSer) => {
-    if (
-      !confirm(
-        `¿Eliminar a ${c.nombre}? Se borra el CV del almacenamiento y sus postulaciones. Esta acción no se puede deshacer (supresión habeas data).`,
-      )
-    )
-      return
-    const res = await fetch(`/api/admin/talento/candidatos/${c.id}`, { method: "DELETE" })
-    if (!res.ok) {
-      alert("Error eliminando")
-      return
+    const scoreDe = (c: CandidatoSer) => {
+      const posts = postulacionesDe(c.id)
+      const enFoco = fVacante && fVacante !== "__ninguna__" ? posts.filter((p) => p.vacanteId === fVacante) : posts
+      return Math.max(-1, ...enFoco.map((p) => p.scoreIA ?? -1))
     }
-    setItems((prev) => prev.filter((x) => x.id !== c.id))
-  }
 
-  const analizarCv = async (c: CandidatoSer) => {
-    setIaBusyId(c.id)
-    setIaError(null)
-    try {
-      const res = await fetch("/api/admin/talento/ia/analizar-cv", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ candidatoId: c.id }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? "Error analizando el CV")
-      setItems((prev) =>
-        prev.map((x) =>
-          x.id === c.id
-            ? { ...x, resumenIA: data.datos?.resumen ?? null, datosIA: data.datos }
-            : x,
-        ),
-      )
-      setExpandedId(c.id)
-    } catch (e: any) {
-      setIaError(e.message ?? "Error analizando el CV")
-    } finally {
-      setIaBusyId(null)
+    if (iaResultados) {
+      const ordenIA = new Map(iaResultados.map((r, i) => [r.candidatoId, i]))
+      return [...list].sort((a, b) => (ordenIA.get(a.id) ?? 999) - (ordenIA.get(b.id) ?? 999))
     }
+    if (orden === "puntaje") {
+      return [...list].sort((a, b) => scoreDe(b) - scoreDe(a) || b.createdAt.localeCompare(a.createdAt))
+    }
+    if (orden === "nombre") {
+      return [...list].sort((a, b) => a.nombre.localeCompare(b.nombre, "es", { sensitivity: "base" }))
+    }
+    return [...list].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  }, [candidatos, postulacionesDe, duplicados, iaResultados, q, fVacante, fEtapa, fArea, fOrigen, fDias, fRevisar, orden])
+
+  const razonIA = useMemo(
+    () => new Map((iaResultados ?? []).map((r) => [r.candidatoId, r])),
+    [iaResultados],
+  )
+
+  const visibles = filtrados.slice(0, pagina * POR_PAGINA)
+  const hayFiltros = !!(q || fVacante || fEtapa || fArea || fOrigen || fDias || fRevisar || iaResultados)
+
+  const limpiar = () => {
+    navegar({ q: null, vacante: null, etapa: null, area: null, origen: null, dias: null, revisar: null, orden: null })
+    setIaResultados(null)
+    setIaQuery("")
   }
 
   const buscarIA = async () => {
     if (iaQuery.trim().length < 3) return
     setIaBuscando(true)
-    setIaError(null)
     try {
       const res = await fetch("/api/admin/talento/ia/buscar", {
         method: "POST",
@@ -358,7 +204,7 @@ export function CandidatosTab({
       if (!res.ok) throw new Error(data.error ?? "Error en la búsqueda")
       setIaResultados(data.resultados ?? [])
     } catch (e: any) {
-      setIaError(e.message ?? "Error en la búsqueda")
+      avisar("error", e.message ?? "Error en la búsqueda")
       setIaResultados(null)
     } finally {
       setIaBuscando(false)
@@ -369,7 +215,7 @@ export function CandidatosTab({
     if (!purga || purga.count === 0) return
     if (
       !confirm(
-        `Se van a SUPRIMIR definitivamente ${purga.count} candidato(s) con más de ${purga.retencionMeses} meses, sin autorización de banco y sin contratación (CV incluido). ¿Confirmas la purga habeas data?`,
+        `Se van a SUPRIMIR definitivamente ${purga.count} candidato(s) con más de ${purga.retencionMeses} meses, sin autorización de banco y sin contratación (hoja de vida incluida). ¿Confirmas la purga habeas data?`,
       )
     )
       return
@@ -379,34 +225,37 @@ export function CandidatosTab({
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? "Error ejecutando la purga")
       setPurga({ ...purga, count: 0 })
-      // Refresca la lista completa
       const list = await fetch("/api/admin/talento/candidatos").then((r) => r.json())
-      if (Array.isArray(list)) setItems(list)
-      alert(`Purga completada: ${data.purgados} candidato(s) suprimidos.`)
+      if (Array.isArray(list)) {
+        const vivos = new Set(list.map((c: CandidatoSer) => c.id))
+        setCandidatos((prev) => prev.filter((c) => vivos.has(c.id)))
+      }
+      avisar("ok", `Purga completada: ${data.purgados} candidato(s) suprimidos.`)
     } catch (e: any) {
-      alert(e.message ?? "Error ejecutando la purga")
+      avisar("error", e.message ?? "Error ejecutando la purga")
     } finally {
       setPurgando(false)
     }
   }
 
+  const vacanteFiltro = fVacante && fVacante !== "__ninguna__" ? vacantes.find((v) => v.id === fVacante) : null
+  const nDuplicados = duplicados.size
+
   return (
     <div className="space-y-4">
-      {/* Banner de purga por retención */}
       {purga !== null && purga.count > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-300 bg-amber-50 px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border border-amber-300 bg-amber-50 px-4 py-3">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 flex-shrink-0 text-amber-600" />
             <p className="font-lato text-sm text-amber-900">
-              <strong>{purga.count}</strong> candidato(s) superaron la retención de{" "}
-              {purga.retencionMeses} meses sin autorización de banco de talento — la Ley
-              1581/2012 exige suprimirlos.
+              <strong>{purga.count}</strong> candidato(s) superaron la retención de {purga.retencionMeses} meses
+              sin autorización de banco de talento — la Ley 1581/2012 exige suprimirlos.
             </p>
           </div>
           <button
             onClick={ejecutarPurga}
             disabled={purgando}
-            className="inline-flex items-center gap-1.5 rounded-none bg-amber-600 px-3 py-1.5 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-amber-700 disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 bg-amber-600 px-3 py-1.5 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-amber-700 disabled:opacity-60"
           >
             {purgando ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
             Ejecutar purga
@@ -414,439 +263,414 @@ export function CandidatosTab({
         </div>
       )}
 
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-slate-400">
-          {filtered.length} {filtered.length === 1 ? "candidato" : "candidatos"}
-          {iaResultados ? " (resultado búsqueda IA)" : ""}
-        </p>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+      {/* Filtros */}
+      <div className="border border-slate-200 bg-white">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-3 py-3">
+          <label className="relative min-w-[220px] flex-1">
             <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Filtrar…"
-              className="w-40 rounded-none border border-slate-300 bg-white py-2 pl-9 pr-3 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
+              value={qLocal}
+              onChange={(e) => {
+                setQLocal(e.target.value)
+                set("q", e.target.value)
+              }}
+              placeholder="Buscar por nombre, correo, teléfono, ciudad o archivo"
+              className="h-9 w-full border border-slate-300 bg-white pl-9 pr-3 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
             />
-          </div>
+          </label>
           <button
-            onClick={beginNew}
-            disabled={editingId !== null}
-            className="inline-flex items-center gap-1.5 rounded-none bg-red-600 px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+            type="button"
+            onClick={() => setIaAbierta((x) => !x)}
+            className={cn(
+              "inline-flex h-9 items-center gap-1.5 border px-3 font-lato text-xs font-bold uppercase tracking-wider transition-colors",
+              iaAbierta || iaResultados
+                ? "border-blue-700 bg-blue-700 text-white"
+                : "border-blue-700 bg-white text-blue-700 hover:bg-blue-50",
+            )}
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            Buscar con IA
+          </button>
+          <button
+            onClick={() => setNuevo(true)}
+            disabled={nuevo}
+            className="inline-flex h-9 items-center gap-1.5 bg-red-600 px-4 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:opacity-50"
           >
             <Plus className="h-3.5 w-3.5" />
-            Agregar candidato
+            Agregar hoja de vida
           </button>
+        </div>
+
+        {iaAbierta && (
+          <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 bg-blue-50/40 px-3 py-2.5">
+            <input
+              type="text"
+              value={iaQuery}
+              onChange={(e) => setIaQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && buscarIA()}
+              autoFocus
+              placeholder='Describe a quién buscas — ej: "soldadores 3G en Cali con experiencia en puentes"'
+              className="h-9 min-w-[240px] flex-1 border border-slate-300 bg-white px-3 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-700 focus:outline-none"
+            />
+            <button
+              onClick={buscarIA}
+              disabled={iaBuscando || iaQuery.trim().length < 3}
+              className="inline-flex h-9 items-center gap-1.5 bg-blue-700 px-3 font-lato text-xs font-bold uppercase tracking-wider text-white hover:bg-blue-800 disabled:opacity-50"
+            >
+              {iaBuscando ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+              Buscar
+            </button>
+            {iaResultados && (
+              <span className="font-lato text-xs text-blue-800">
+                {iaResultados.length} resultados ordenados por relevancia
+              </span>
+            )}
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-2 px-3 py-3 md:grid-cols-4 xl:grid-cols-7">
+          <Filtro label="Vacante" className="col-span-2">
+            <select value={fVacante} onChange={(e) => set("vacante", e.target.value)} className={SELECT}>
+              <option value="">Todas</option>
+              <option value="__ninguna__">Sin vacante (solo banco)</option>
+              {grupoVacantes.abiertas.length > 0 && (
+                <optgroup label="Abiertas">
+                  {grupoVacantes.abiertas.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.titulo}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              {grupoVacantes.pausadas.length > 0 && (
+                <optgroup label="Pausadas">
+                  {grupoVacantes.pausadas.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.titulo}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              {grupoVacantes.otras.length > 0 && (
+                <optgroup label="Cerradas y borradores">
+                  {grupoVacantes.otras.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.titulo}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+            </select>
+          </Filtro>
+          <Filtro label="Etapa">
+            <select value={fEtapa} onChange={(e) => set("etapa", e.target.value)} className={SELECT}>
+              <option value="">Todas</option>
+              {ETAPAS.map((e) => (
+                <option key={e.value} value={e.value}>
+                  {e.label}
+                </option>
+              ))}
+            </select>
+          </Filtro>
+          <Filtro label="Área / oficio">
+            <select value={fArea} onChange={(e) => set("area", e.target.value)} className={SELECT}>
+              <option value="">Todas</option>
+              <option value="__sin__">Sin clasificar</option>
+              {areas.map((a) => (
+                <option key={a} value={a}>
+                  {a}
+                </option>
+              ))}
+            </select>
+          </Filtro>
+          <Filtro label="Llegó por">
+            <select value={fOrigen} onChange={(e) => set("origen", e.target.value)} className={SELECT}>
+              <option value="">Todos</option>
+              {origenes.map((o) => (
+                <option key={o} value={o}>
+                  {etiquetaOrigen(o)}
+                </option>
+              ))}
+            </select>
+          </Filtro>
+          <Filtro label="Llegó">
+            <select value={fDias} onChange={(e) => set("dias", e.target.value)} className={SELECT}>
+              <option value="">Cuando sea</option>
+              <option value="1">Hoy o ayer</option>
+              <option value="7">Última semana</option>
+              <option value="30">Último mes</option>
+              <option value="90">Últimos 3 meses</option>
+            </select>
+          </Filtro>
+          <Filtro label="Ordenar">
+            <select value={orden} onChange={(e) => set("orden", e.target.value)} className={SELECT}>
+              <option value="recientes">Más recientes</option>
+              <option value="puntaje">Mejor puntaje</option>
+              <option value="nombre">Nombre</option>
+            </select>
+          </Filtro>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-slate-100 px-3 py-2">
+          <span className="font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">
+            Por revisar:
+          </span>
+          {[
+            { v: "duplicados", l: `Posibles duplicados (${nDuplicados})` },
+            { v: "sin-analizar", l: "Sin analizar con IA" },
+            { v: "sin-cv", l: "Sin hoja de vida" },
+            { v: "fuera", l: "Viven fuera de Colombia" },
+          ].map((o) => (
+            <button
+              key={o.v}
+              type="button"
+              onClick={() => set("revisar", fRevisar === o.v ? "" : o.v)}
+              className={cn(
+                "font-lato text-xs font-semibold transition-colors",
+                fRevisar === o.v ? "text-red-600 underline" : "text-slate-500 hover:text-slate-900",
+              )}
+            >
+              {o.l}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Búsqueda semántica IA */}
-      <div className="flex flex-wrap items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2.5">
-        <Sparkles className="h-4 w-4 flex-shrink-0 text-blue-700" />
-        <input
-          type="text"
-          value={iaQuery}
-          onChange={(e) => setIaQuery(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && buscarIA()}
-          placeholder='Búsqueda IA del banco — ej: "soldadores 3G en Cali con experiencia en puentes"'
-          className="min-w-[240px] flex-1 rounded-none border border-slate-300 bg-white px-3 py-1.5 font-lato text-sm text-slate-900 placeholder:text-slate-400 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20"
-        />
-        <button
-          onClick={buscarIA}
-          disabled={iaBuscando || iaQuery.trim().length < 3}
-          className="inline-flex items-center gap-1.5 rounded-none border border-blue-700 bg-white px-3 py-1.5 font-lato text-xs font-bold uppercase tracking-wider text-blue-700 transition-colors hover:bg-blue-700 hover:text-white disabled:opacity-50"
-        >
-          {iaBuscando ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-          Buscar con IA
-        </button>
-        {iaResultados && (
-          <button
-            onClick={() => {
-              setIaResultados(null)
-              setIaQuery("")
+      {nuevo && (
+        <div>
+          <h3 className="mb-2 font-bebas text-2xl uppercase text-slate-950">Nueva hoja de vida</h3>
+          <CandidatoForm
+            candidato={null}
+            vacanteInicial={vacanteFiltro?.id ?? ""}
+            onListo={(c) => {
+              setNuevo(false)
+              abrirCandidato(c.id, [c.id])
             }}
-            className="inline-flex items-center gap-1 rounded-none border border-slate-300 px-2.5 py-1.5 font-lato text-xs font-semibold uppercase tracking-wider text-slate-600 hover:border-slate-900"
+            onCancelar={() => setNuevo(false)}
+          />
+        </div>
+      )}
+
+      {/* Resumen */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="font-lato text-sm text-slate-600">
+          <strong className="text-slate-950">{filtrados.length}</strong>{" "}
+          {filtrados.length === 1 ? "persona" : "personas"}
+          {hayFiltros ? ` de ${candidatos.length}` : " en el banco"}
+          {vacanteFiltro && (
+            <>
+              {" "}
+              postuladas a <strong className="text-slate-950">{vacanteFiltro.titulo}</strong>
+            </>
+          )}
+          {fEtapa && <> · etapa {ETAPA_LABEL[fEtapa]}</>}
+        </p>
+        {hayFiltros && (
+          <button
+            type="button"
+            onClick={limpiar}
+            className="inline-flex items-center gap-1 font-lato text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900"
           >
-            <X className="h-3 w-3" />
-            Limpiar
+            <X className="h-3.5 w-3.5" />
+            Quitar filtros
           </button>
         )}
       </div>
 
-      {iaError && (
-        <div className="rounded-none border border-red-300 bg-red-100 px-3 py-2 font-lato text-sm text-red-800">
-          {iaError}
-        </div>
-      )}
-
-      {/* Form */}
-      {editingId !== null && (
-        <div className="rounded-md border border-red-200 bg-red-50/30 px-5 py-5">
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            {fields.map((f) => (
-              <FormField
-                key={f.name}
-                field={f}
-                value={draft[f.name]}
-                onChange={(v) => setDraft((d) => ({ ...d, [f.name]: v }))}
-                disabled={saving}
-              />
-            ))}
-
-            {/* CV file input */}
-            <div className="md:col-span-2">
-              <label className="mb-1.5 block font-lato text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
-                Hoja de vida (PDF, Word o imagen — máx. {MAX_CV_MB} MB)
-              </label>
-              <input
-                ref={fileRef}
-                type="file"
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
-                className="hidden"
-                onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
-              />
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => fileRef.current?.click()}
-                  disabled={saving}
-                  className="inline-flex items-center gap-1.5 rounded-none border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:text-slate-900 disabled:opacity-50"
-                >
-                  <Upload className="h-3.5 w-3.5" />
-                  {cvFile ? "Cambiar archivo" : "Seleccionar archivo"}
-                </button>
-                {cvFile ? (
-                  <span className="font-lato text-sm text-slate-700">
-                    {cvFile.name}{" "}
-                    <span className="text-slate-400">
-                      ({(cvFile.size / 1024 / 1024).toFixed(1)} MB)
-                    </span>
-                  </span>
-                ) : !isNew && (draft as any).cvFileName ? (
-                  <span className="font-lato text-sm text-slate-500">
-                    Actual: {(draft as any).cvFileName} (se conserva si no eliges otro)
-                  </span>
-                ) : (
-                  <span className="font-lato text-sm italic text-slate-400">
-                    Sin archivo seleccionado
-                  </span>
+      {/* Etapas de la vacante filtrada: atajo para ver cada grupo */}
+      {vacanteFiltro && (
+        <div className="flex flex-wrap gap-1.5">
+          {ETAPAS.map((e) => {
+            const n = candidatos.filter((c) =>
+              postulacionesDe(c.id).some((p) => p.vacanteId === vacanteFiltro.id && p.etapa === e.value),
+            ).length
+            const activa = fEtapa === e.value
+            return (
+              <button
+                key={e.value}
+                type="button"
+                onClick={() => set("etapa", activa ? "" : e.value)}
+                className={cn(
+                  "inline-flex items-center gap-1.5 border px-2.5 py-1 font-lato text-xs font-semibold transition-colors",
+                  activa ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-slate-400",
                 )}
-              </div>
-              <p className="mt-1.5 font-lato text-xs italic text-slate-500">
-                El archivo se guarda en un bucket privado; solo es visible desde este admin.
-              </p>
-            </div>
-          </div>
-
-          {error && (
-            <div className="mt-4 rounded-none border border-red-300 bg-red-100 px-3 py-2 font-lato text-sm text-red-800">
-              {error}
-            </div>
-          )}
-          <div className="mt-5 flex justify-end gap-2 border-t border-red-200 pt-4">
-            <button
-              onClick={cancel}
-              disabled={saving}
-              className="inline-flex items-center gap-1.5 rounded-none border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-semibold uppercase tracking-wider text-slate-700 transition-colors hover:border-slate-900 hover:text-slate-900 disabled:opacity-50"
-            >
-              <X className="h-3.5 w-3.5" />
-              Cancelar
-            </button>
-            <button
-              onClick={save}
-              disabled={saving || !String(draft.nombre ?? "").trim()}
-              className="inline-flex items-center gap-1.5 rounded-none bg-red-600 px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700 disabled:opacity-60"
-            >
-              {saving ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <Save className="h-3.5 w-3.5" />
-              )}
-              Guardar
-            </button>
-          </div>
+              >
+                <span className={cn("h-2 w-2 rounded-full", ETAPA_ESTILO[e.value]?.punto)} />
+                {e.label} <span className={activa ? "text-white/70" : "text-slate-400"}>{n}</span>
+              </button>
+            )
+          })}
         </div>
       )}
 
-      {/* Table */}
-      {filtered.length === 0 && editingId === null ? (
-        <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+      {/* Lista */}
+      {filtrados.length === 0 ? (
+        <div className="flex flex-col items-center justify-center border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
           <FileText className="mb-3 h-10 w-10 text-slate-300" />
           <p className="mb-1 font-bebas text-lg uppercase tracking-wide text-slate-700">
-            {items.length === 0 ? "Sin candidatos" : "Sin resultados"}
+            {candidatos.length === 0 ? "Sin hojas de vida" : "Nadie coincide"}
           </p>
           <p className="max-w-sm font-lato text-sm text-slate-500">
-            {items.length === 0
-              ? "Carga aquí las hojas de vida que lleguen por Computrabajo, correo, WhatsApp o referidos."
-              : "Ningún candidato coincide con la búsqueda."}
+            {candidatos.length === 0
+              ? "Llegan solas por la página web y por la carpeta de Drive de Talento Humano."
+              : "Prueba quitando algún filtro."}
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-md border border-slate-200 bg-white">
-          <table className="w-full min-w-[900px]">
+        <div className="overflow-x-auto border border-slate-200 bg-white">
+          <table className="w-full min-w-[860px]">
             <thead>
               <tr className="border-b border-slate-200 bg-stone-50">
-                {["Candidato", "Contacto", "Origen", "CV", "Postulaciones", "Banco", ""].map(
-                  (h, i) => (
-                    <th
-                      key={i}
-                      className="px-3 py-2.5 text-left font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500"
-                    >
-                      {h}
-                    </th>
-                  ),
-                )}
+                {["Persona", "Contacto", vacanteFiltro ? "En esta vacante" : "Postulaciones", "Llegó", ""].map((h, i) => (
+                  <th
+                    key={i}
+                    className="px-3 py-2.5 text-left font-lato text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500"
+                  >
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {filtered.map((c) => {
+              {visibles.map((c) => {
                 const datos = (c.datosIA ?? null) as DatosIA | null
-                const busquedaHit = razonIA.get(c.id)
-                const isExpanded = expandedId === c.id
+                const hit = razonIA.get(c.id)
+                const foco = postulacionEnFoco(c)
+                const posts = postulacionesDe(c.id)
                 return (
-                  <FragmentRow key={c.id}>
-                    <tr className="group border-b border-slate-100 transition-colors last:border-0 hover:bg-stone-50">
-                      <td className="px-3 py-2.5">
-                        <p className="font-lato text-sm font-semibold text-slate-900">
-                          {c.nombre}
-                        </p>
-                        <p className="font-lato text-xs text-slate-500">{c.ciudad ?? "—"}</p>
+                  <tr
+                    key={c.id}
+                    onClick={() => abrirCandidato(c.id, filtrados.map((x) => x.id))}
+                    className="group cursor-pointer border-b border-slate-100 align-top transition-colors last:border-0 hover:bg-stone-50"
+                  >
+                    <td className="px-3 py-3">
+                      <p className="font-lato text-sm font-semibold text-slate-900 group-hover:text-red-600">
+                        {c.nombre}
+                      </p>
+                      <p className="font-lato text-xs text-slate-500">
+                        {c.ciudad ?? "—"}
+                        {c.areaInteres ? ` · ${c.areaInteres}` : ""}
+                      </p>
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {duplicados.has(c.id) && (
+                          <Etiqueta className="border-amber-300 bg-amber-50 text-amber-800">Posible duplicado</Etiqueta>
+                        )}
                         {resideFueraDeColombia(datos?.paisResidencia) && (
-                          <span
-                            title={datos?.evidenciaResidencia ?? undefined}
-                            className="mt-0.5 inline-block rounded-none border border-red-200 bg-red-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-red-700"
-                          >
-                            Vive fuera de Colombia · {datos?.paisResidencia}
-                          </span>
-                        )}
-                        {busquedaHit && (
-                          <p className="mt-0.5 font-lato text-[11px] text-blue-700">
-                            IA {busquedaHit.relevancia}: {busquedaHit.razon}
-                          </p>
-                        )}
-                      </td>
-                      <td className="px-3 py-2.5 font-lato text-xs text-slate-600">
-                        <p>{c.email ?? "—"}</p>
-                        <p>{c.telefono ?? ""}</p>
-                      </td>
-                      <td className="px-3 py-2.5">
-                        <span className="rounded-none border border-slate-200 bg-stone-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                          {ORIGENES_CANDIDATO.find((o) => o.value === c.origen)?.label ??
-                            c.origen ??
-                            "—"}
-                        </span>
-                        {c.areaInteres && (
-                          <span className="ml-1 rounded-none border border-blue-200 bg-blue-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-blue-800">
-                            {c.areaInteres}
-                          </span>
+                          <Etiqueta className="border-red-200 bg-red-50 text-red-700">
+                            Fuera de Colombia · {datos?.paisResidencia}
+                          </Etiqueta>
                         )}
                         {c.codigoReferido && (
-                          <span
-                            title={`Código ${c.codigoReferido.codigo}`}
-                            className="ml-1 rounded-none border border-amber-200 bg-amber-50 px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-amber-800"
-                          >
-                            Refirió: {c.codigoReferido.nombreEmpleado}
-                          </span>
+                          <Etiqueta className="border-amber-200 bg-amber-50 text-amber-800">
+                            Referido por {c.codigoReferido.nombreEmpleado}
+                          </Etiqueta>
                         )}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        {c.cvPathGcs ? (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              window.open(`/api/admin/talento/cv/${c.id}`, "_blank")
-                            }
-                            className="inline-flex items-center gap-1 font-lato text-xs font-semibold text-blue-700 hover:underline"
-                          >
-                            <FileText className="h-3.5 w-3.5" />
-                            Ver CV
-                          </button>
-                        ) : (
-                          <span className="font-lato text-xs text-slate-400">Sin CV</span>
+                        {!c.cvPathGcs && <Etiqueta className="border-slate-200 bg-white text-slate-400">Sin hoja de vida</Etiqueta>}
+                        {c.cvPathGcs && !c.resumenIA && (
+                          <Etiqueta className="border-slate-200 bg-white text-slate-400">Sin analizar</Etiqueta>
                         )}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        <div className="flex flex-wrap gap-1">
-                          {c.postulaciones.length === 0 && (
-                            <span className="font-lato text-xs text-slate-400">—</span>
+                      </div>
+                      {hit && (
+                        <p className="mt-1 max-w-md font-lato text-[11px] text-blue-700">
+                          IA {hit.relevancia}: {hit.razon}
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-3 py-3 font-lato text-xs text-slate-600">
+                      <p className="max-w-[220px] truncate">{c.email ?? "—"}</p>
+                      <p>{c.telefono ?? ""}</p>
+                    </td>
+                    <td className="px-3 py-3">
+                      {vacanteFiltro && foco ? (
+                        <div className="flex items-center gap-2">
+                          <EtapaChip etapa={foco.etapa} />
+                          {typeof foco.scoreIA === "number" ? (
+                            <span className={cn("px-1.5 py-0.5 font-lato text-xs font-bold", scoreColor(foco.scoreIA))}>
+                              {foco.scoreIA}
+                            </span>
+                          ) : (
+                            <span className="font-lato text-[11px] text-slate-400">sin puntaje</span>
                           )}
-                          {c.postulaciones.map((p) => (
+                        </div>
+                      ) : posts.length === 0 ? (
+                        <span className="font-lato text-xs text-slate-400">Solo en el banco</span>
+                      ) : (
+                        <div className="flex max-w-[360px] flex-wrap gap-1">
+                          {posts.map((p) => (
                             <span
                               key={p.id}
-                              className="rounded-none bg-slate-100 px-1.5 py-0.5 font-lato text-[10px] font-semibold text-slate-700"
-                              title={ETAPA_LABEL[p.etapa] ?? p.etapa}
+                              className={cn(
+                                "inline-flex items-center gap-1 border px-1.5 py-0.5 font-lato text-[10px] font-semibold",
+                                ETAPA_ESTILO[p.etapa]?.chip,
+                              )}
+                              title={ETAPA_LABEL[p.etapa]}
                             >
-                              {(p.vacante?.titulo ?? "Espontánea") +
-                                " · " +
-                                (ETAPA_LABEL[p.etapa] ?? p.etapa)}
+                              {p.vacante?.titulo ?? "Espontánea"} · {ETAPA_LABEL[p.etapa] ?? p.etapa}
+                              {typeof p.scoreIA === "number" && <strong className="ml-0.5">{p.scoreIA}</strong>}
                             </span>
                           ))}
                         </div>
-                      </td>
-                      <td className="px-3 py-2.5 font-lato text-xs text-slate-600">
-                        {c.consentimientoBanco ? "Sí" : "No"}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        <div className="flex items-center justify-end gap-1">
-                          {c.cvPathGcs && (
-                            <button
-                              onClick={() => analizarCv(c)}
-                              disabled={iaBusyId !== null}
-                              title={
-                                c.resumenIA
-                                  ? "Re-analizar CV con IA"
-                                  : "Analizar CV con IA (extrae perfil y resumen)"
-                              }
-                              className={cn(
-                                "flex h-7 w-7 items-center justify-center rounded-none transition-colors disabled:opacity-50",
-                                c.resumenIA
-                                  ? "text-blue-700 hover:bg-blue-50"
-                                  : "text-slate-400 hover:bg-blue-50 hover:text-blue-700",
-                              )}
-                            >
-                              {iaBusyId === c.id ? (
-                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                              ) : (
-                                <Sparkles className="h-3.5 w-3.5" />
-                              )}
-                            </button>
-                          )}
-                          {c.resumenIA && (
-                            <button
-                              onClick={() => setExpandedId(isExpanded ? null : c.id)}
-                              title="Ver perfil IA"
-                              className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900"
-                            >
-                              {isExpanded ? (
-                                <ChevronUp className="h-3.5 w-3.5" />
-                              ) : (
-                                <ChevronDown className="h-3.5 w-3.5" />
-                              )}
-                            </button>
-                          )}
-                          {/* Del BANCO al PIPELINE. Los CV importados de Drive entran
-                              como pool y no crean postulación, así que no aparecen en el
-                              kanban aunque el candidato esté cargado — Talento Humano
-                              reportó dos veces "está en Drive pero no en el portal" por
-                              esto. Este botón cierra ese hueco sin salir de la lista. */}
-                          <button
-                            onClick={() => setPostulandoId(postulandoId === c.id ? null : c.id)}
-                            disabled={editingId !== null || vacantesAbiertas.length === 0}
-                            title={
-                              vacantesAbiertas.length === 0
-                                ? "No hay vacantes abiertas"
-                                : "Enviar a una vacante (pipeline)"
-                            }
-                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50"
-                          >
-                            {postulandoBusy === c.id ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            ) : (
-                              <Send className="h-3.5 w-3.5" />
-                            )}
-                          </button>
-                          <button
-                            onClick={() => beginEdit(c)}
-                            disabled={editingId !== null}
-                            title="Editar"
-                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-stone-100 hover:text-slate-900 disabled:opacity-50 md:opacity-0 md:transition-opacity md:group-hover:opacity-100"
-                          >
-                            <Pencil className="h-3.5 w-3.5" />
-                          </button>
-                          <button
-                            onClick={() => del(c)}
-                            disabled={editingId !== null}
-                            title="Eliminar (supresión habeas data)"
-                            className="flex h-7 w-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50 md:opacity-0 md:transition-opacity md:group-hover:opacity-100"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    {postulandoId === c.id && (
-                      <tr className="border-b border-slate-100 bg-stone-50">
-                        <td colSpan={7} className="px-4 py-3">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-lato text-xs font-bold uppercase tracking-wide text-slate-500">
-                              Enviar a:
-                            </span>
-                            {vacantesAbiertas.map((v) => (
-                              <button
-                                key={v.id}
-                                onClick={() => postularA(c, v.id)}
-                                disabled={postulandoBusy !== null}
-                                className="rounded-none border border-slate-900 bg-white px-2.5 py-1 font-lato text-xs font-semibold text-slate-900 transition-colors hover:bg-slate-900 hover:text-white disabled:opacity-50"
-                              >
-                                {v.titulo}
-                              </button>
-                            ))}
-                            <span className="font-lato text-[11px] italic text-slate-500">
-                              Entra al pipeline en etapa Recibida y se evalúa contra la matriz del cargo.
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                    {isExpanded && c.resumenIA && (
-                      <tr className="border-b border-slate-100 bg-blue-50/40">
-                        <td colSpan={7} className="px-4 py-3">
-                          <div className="flex items-start gap-2">
-                            <Sparkles className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-blue-700" />
-                            <div className="min-w-0 space-y-2">
-                              <p className="font-lato text-sm text-slate-800">{c.resumenIA}</p>
-                              {datos && (
-                                <div className="flex flex-wrap gap-1.5">
-                                  {typeof datos.anosExperiencia === "number" && (
-                                    <span className="rounded-none bg-slate-950 px-2 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider text-white">
-                                      {datos.anosExperiencia} años exp.
-                                    </span>
-                                  )}
-                                  {(datos.oficios ?? []).map((o) => (
-                                    <span
-                                      key={o}
-                                      className="rounded-none border border-blue-200 bg-white px-2 py-0.5 font-lato text-[10px] font-semibold uppercase tracking-wider text-blue-800"
-                                    >
-                                      {o}
-                                    </span>
-                                  ))}
-                                  {(datos.certificaciones ?? []).map((cert) => (
-                                    <span
-                                      key={cert}
-                                      className="rounded-none border border-green-200 bg-white px-2 py-0.5 font-lato text-[10px] font-semibold uppercase tracking-wider text-green-700"
-                                    >
-                                      {cert}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                              {datos && (datos.alertas ?? []).length > 0 && (
-                                <p className="font-lato text-xs text-amber-700">
-                                  ⚠ {(datos.alertas ?? []).join(" · ")}
-                                </p>
-                              )}
-                              <p className="font-lato text-[10px] uppercase tracking-wide text-slate-400">
-                                Sugerencia generada por IA — la decisión es del reclutador
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </FragmentRow>
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-3 font-lato text-xs text-slate-500">
+                      {haceDias(c.createdAt)}
+                    </td>
+                    <td className="px-3 py-3 text-right">
+                      <span className="inline-flex items-center gap-0.5 font-lato text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-red-600">
+                        Abrir
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      </span>
+                    </td>
+                  </tr>
                 )
               })}
             </tbody>
           </table>
+          {filtrados.length > visibles.length && (
+            <div className="border-t border-slate-100 px-3 py-3 text-center">
+              <button
+                type="button"
+                onClick={() => setPagina((p) => p + 1)}
+                className="border border-slate-300 bg-white px-4 py-2 font-lato text-xs font-bold uppercase tracking-wider text-slate-700 hover:border-slate-900"
+              >
+                Mostrar {Math.min(POR_PAGINA, filtrados.length - visibles.length)} más (van {visibles.length} de{" "}
+                {filtrados.length})
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
   )
 }
 
-// React.Fragment con key para agrupar la fila principal + la fila expandida.
-function FragmentRow({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+function Filtro({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
+  return (
+    <label className={cn("flex min-w-0 flex-col gap-1", className)}>
+      <span className="font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">{label}</span>
+      {children}
+    </label>
+  )
+}
+
+function Etiqueta({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={cn("inline-block border px-1.5 py-px font-lato text-[10px] font-bold uppercase tracking-wider", className)}>
+      {children}
+    </span>
+  )
+}
+
+export function EtapaChip({ etapa }: { etapa: string }) {
+  return (
+    <span
+      className={cn(
+        "inline-block border px-1.5 py-0.5 font-lato text-[10px] font-bold uppercase tracking-wider",
+        ETAPA_ESTILO[etapa]?.chip,
+      )}
+    >
+      {ETAPA_LABEL[etapa] ?? etapa}
+    </span>
+  )
 }

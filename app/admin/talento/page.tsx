@@ -133,6 +133,7 @@ async function getData() {
     notasInternas: p.notasInternas,
     scoreIA: p.scoreIA,
     matchIA: p.matchIA,
+    historial: p.historial,
     createdAt: p.createdAt.toISOString(),
     updatedAt: p.updatedAt.toISOString(),
     candidato: p.candidato,

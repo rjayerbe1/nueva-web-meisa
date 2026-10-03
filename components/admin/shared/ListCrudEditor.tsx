@@ -97,6 +97,10 @@ interface ListCrudEditorProps<T extends BaseItem> {
    * encontrar, esconderla detrás del hover es lo mismo que no tenerla.
    */
   rowActions?: (item: T) => React.ReactNode
+  /** Abre este item en edición al montar (ej. el enlace «Editar perfil» de otra vista). */
+  initialEditId?: string | null
+  /** Avisa cada cambio de la lista, para que otra vista que muestra los mismos datos no quede vieja. */
+  onItemsChange?: (items: T[]) => void
 }
 
 export function ListCrudEditor<T extends BaseItem>({
@@ -118,8 +122,20 @@ export function ListCrudEditor<T extends BaseItem>({
   detailHref,
   detailLabel = "Editar fotos y detalle",
   rowActions,
+  initialEditId,
+  onItemsChange,
 }: ListCrudEditorProps<T>) {
   const [items, setItems] = useState<T[]>(initialItems)
+  const onItemsChangeRef = useRef(onItemsChange)
+  onItemsChangeRef.current = onItemsChange
+  const primerRender = useRef(true)
+  useEffect(() => {
+    if (primerRender.current) {
+      primerRender.current = false
+      return
+    }
+    onItemsChangeRef.current?.(items)
+  }, [items])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [draft, setDraft] = useState<Record<string, unknown>>({})
   const [saving, setSaving] = useState(false)
@@ -327,6 +343,21 @@ export function ListCrudEditor<T extends BaseItem>({
     setDraft({})
     setError(null)
   }
+
+  useEffect(() => {
+    if (!initialEditId) return
+    const item = initialItems.find((it) => it.id === initialEditId)
+    if (!item) return
+    beginEdit(item)
+    // El formulario se pinta en el lugar de la fila: llevar la vista hasta él.
+    setTimeout(() => {
+      document
+        .querySelector(`[data-edit-form="${initialEditId}"]`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 100)
+    // Solo al montar o si cambia el id pedido.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialEditId])
 
   const save = async () => {
     setSaving(true)
@@ -572,7 +603,7 @@ export function ListCrudEditor<T extends BaseItem>({
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {visibleItems.map((item) =>
                   editingId === item.id ? (
-                    <div key={item.id} className="sm:col-span-2 lg:col-span-3 xl:col-span-4">
+                    <div key={item.id} data-edit-form={item.id} className="scroll-mt-6 sm:col-span-2 lg:col-span-3 xl:col-span-4">
                       <EditForm
                         fields={fields}
                         draft={draft}
@@ -1071,7 +1102,7 @@ function TableView<T extends BaseItem>({
         <tbody>
           {items.map((item) =>
             editingId === item.id ? (
-              <tr key={item.id}>
+              <tr key={item.id} data-edit-form={item.id} className="scroll-mt-6">
                 <td
                   colSpan={columns.length + 2 + (canReorder ? 1 : 0)}
                   className="p-0"
