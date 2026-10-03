@@ -196,7 +196,7 @@ function VisorCv({ c }: { c: CandidatoSer }) {
           Abrir aparte
         </a>
       </div>
-      <iframe key={c.id} src={url} title={`Hoja de vida de ${c.nombre}`} className="min-h-0 w-full flex-1 bg-white" />
+      <iframe key={c.id} src={`${url}#view=FitH&navpanes=0`} title={`Hoja de vida de ${c.nombre}`} className="min-h-0 w-full flex-1 bg-white" />
     </div>
   )
 }

@@ -38,7 +38,7 @@ export function motivoSinInforme(v: Pick<VacanteSer, "criteriosEvaluacion" | "po
 }
 
 const BTN =
-  "inline-flex items-center gap-2 rounded-none border px-3 py-2 font-lato text-xs font-bold uppercase tracking-wide transition-colors"
+  "inline-flex items-center gap-2 whitespace-nowrap rounded-none border px-3 py-2 font-lato text-xs font-bold uppercase tracking-wide transition-colors"
 
 /** Botón de informe de UNA vacante. Deshabilitado con el motivo cuando no aplica. */
 export function InformeVacanteBoton({
