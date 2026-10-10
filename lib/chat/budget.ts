@@ -9,12 +9,31 @@ function fechaBogota(d = new Date()): { fecha: string; mes: string } {
   return { fecha, mes }
 }
 
-/** Costo estimado en USD de una llamada según tokens y precios configurados. */
-export function estimarCostoUsd(tokensInput: number, tokensOutput: number): number {
-  return (
-    (tokensInput / 1_000_000) * chatConfig.precioInputPor1M +
-    (tokensOutput / 1_000_000) * chatConfig.precioOutputPor1M
-  )
+/**
+ * Precios de los modelos de GEMINI (USD por 1M tokens). Los de Claude no van
+ * aquí: su costo sale exacto de `usoDeMensaje()` (lib/ia/claude.ts, con caché)
+ * y se pasa ya calculado a `registrarUso`.
+ */
+const PRECIOS_GEMINI: Record<string, { entrada: number; salida: number }> = {
+  'gemini-3.1-flash-lite': { entrada: 0.25, salida: 1.5 },
+  'gemini-2.5-flash': { entrada: 0.3, salida: 2.5 },
+  'gemini-2.5-flash-lite': { entrada: 0.1, salida: 0.4 },
+}
+
+/**
+ * Costo estimado en USD de una llamada a Gemini. Sin `modelo` (o con el modelo
+ * del chat) usa los precios configurables por env (CHAT_PRICE_*).
+ */
+export function estimarCostoUsd(
+  tokensInput: number,
+  tokensOutput: number,
+  modelo?: string,
+): number {
+  const p =
+    modelo && modelo !== chatConfig.vertexModel && PRECIOS_GEMINI[modelo]
+      ? PRECIOS_GEMINI[modelo]
+      : { entrada: chatConfig.precioInputPor1M, salida: chatConfig.precioOutputPor1M }
+  return (tokensInput / 1_000_000) * p.entrada + (tokensOutput / 1_000_000) * p.salida
 }
 
 /**
@@ -38,13 +57,18 @@ export async function presupuestoDisponible(): Promise<{
   return { ok: true }
 }
 
-/** Acumula el gasto del día (y por ende del mes) tras cada llamada al modelo. */
+/**
+ * Acumula el gasto del día (y por ende del mes) tras cada llamada al modelo.
+ * Un solo tope para Gemini y Claude: con Claude se pasa `costoUsd` ya calculado
+ * (incluye caché); con Gemini se estima por el `modelo` de la llamada.
+ */
 export async function registrarUso(
   tokensInput: number,
   tokensOutput: number,
+  opts: { modelo?: string; costoUsd?: number } = {},
 ): Promise<void> {
   const { fecha, mes } = fechaBogota()
-  const costo = estimarCostoUsd(tokensInput, tokensOutput)
+  const costo = opts.costoUsd ?? estimarCostoUsd(tokensInput, tokensOutput, opts.modelo)
   await prisma.chatUso.upsert({
     where: { fecha },
     create: { fecha, mes, tokensInput, tokensOutput, costoUsd: costo, requests: 1 },

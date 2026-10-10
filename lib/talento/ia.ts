@@ -1,6 +1,8 @@
+import type Anthropic from "@anthropic-ai/sdk"
 import { GoogleAuth } from "google-auth-library"
 import { chatConfig } from "@/lib/chat/config"
 import { presupuestoDisponible, registrarUso } from "@/lib/chat/budget"
+import { bloqueArchivo, ErrorClaude, llamarClaude, usarClaude } from "@/lib/ia/claude"
 import { prisma } from "@/lib/prisma"
 import { downloadCv } from "./gcs-hv"
 import { esWord, wordAPdf } from "./documentos"
@@ -16,6 +18,15 @@ import { aplicarFiltroResidencia } from "./residencia"
  *   (Circular Externa 002/2024 de la SIC: nada de decisiones de selección
  *   plenamente automatizadas).
  */
+
+/**
+ * Modelo de Claude para Talento: Haiku 5.5. A/B del 10-oct-2026 (match contra la
+ * matriz del cargo, 5 postulaciones reales): Haiku y Sonnet aplican la regla "sin
+ * evidencia en el CV, punteo bajo" que Gemini 3.1 Flash-Lite relajaba (Proyectista:
+ * Gemini 68, Sonnet 38, Haiku 29). Haiku cuesta lo mismo que Gemini; Sonnet ~12x
+ * más y se comería el tope compartido con el chat. TALENTO_IA_CLAUDE_MODEL lo cambia.
+ */
+const TALENTO_CLAUDE_MODEL = process.env.TALENTO_IA_CLAUDE_MODEL || "claude-haiku-5-5"
 
 let cachedAuth: GoogleAuth | null = null
 
@@ -50,6 +61,50 @@ async function llamarIA(opts: {
   const budget = await presupuestoDisponible()
   if (!budget.ok) throw new PresupuestoAgotadoError()
 
+  // La fecha de hoy va SIEMPRE en el system prompt. Sin ella el modelo razona con
+  // la de su entrenamiento y marca como "fechas futuras" o "inconsistentes" las
+  // experiencias de este año: el 28-sep-2026 le bajó el puntaje a un candidato
+  // que había trabajado hasta sept. de 2026, y la misma alerta aparecía en otros.
+  const hoy = new Date().toLocaleDateString("es-CO", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "America/Bogota",
+  })
+  const system =
+    `${opts.system}\n\nFECHA DE HOY: ${hoy}. Toda fecha hasta hoy es pasada o actual, no futura; ` +
+    `"actualidad" o "presente" en un cargo significa que sigue vigente a esta fecha.`
+
+  // 1) Claude (Haiku 5.5 por defecto). Cualquier falla → Gemini, intacto.
+  if (usarClaude("TALENTO_IA_PROVEEDOR")) {
+    try {
+      const contenido: Anthropic.ContentBlockParam[] = []
+      if (opts.archivo) {
+        const bloque = bloqueArchivo(opts.archivo.base64, opts.archivo.mimeType)
+        if (!bloque) throw new ErrorClaude("tipo_no_soportado", `Claude no lee ${opts.archivo.mimeType}`)
+        contenido.push(bloque)
+      }
+      contenido.push({ type: "text", text: opts.user })
+      const r = await llamarClaude({
+        modelo: TALENTO_CLAUDE_MODEL,
+        system,
+        contenido,
+        effort: "low",
+        // El tokenizador de Claude cuenta ~1,6x más que Gemini en español; holgura
+        // para no cortar el JSON (cortar = caer a Gemini y pagar dos veces).
+        maxTokens: Math.max(8000, (opts.maxOutputTokens ?? 2048) * 2),
+        timeoutMs: 150_000,
+        etiqueta: "[talento-ia]",
+      })
+      await registrarUso(r.uso.tokensInput, r.uso.tokensOutput, { costoUsd: r.uso.costoUsd })
+      // Los llamadores parsean el JSON; si no es JSON aquí, mejor que lo intente Gemini.
+      if (esJson(r.texto)) return r.texto
+      console.warn("[talento-ia] Claude no devolvió JSON; se intenta con Gemini")
+    } catch (err) {
+      const e = err as ErrorClaude
+      if (e.uso) await registrarUso(e.uso.tokensInput, e.uso.tokensOutput, { costoUsd: e.uso.costoUsd })
+      console.warn(`[talento-ia] Claude falló (${e.motivo ?? e}); se intenta con Gemini`)
+    }
+  }
+
+  // 2) Gemini (Vertex), la llamada de siempre.
   const { gcpProject, vertexLocation, vertexModel } = chatConfig
   if (!gcpProject) throw new Error("GCP_PROJECT_ID no configurado")
 
@@ -71,17 +126,6 @@ async function llamarIA(opts: {
     })
   }
   parts.push({ text: opts.user })
-
-  // La fecha de hoy va SIEMPRE en el system prompt. Sin ella el modelo razona con
-  // la de su entrenamiento y marca como "fechas futuras" o "inconsistentes" las
-  // experiencias de este año: el 28-sep-2026 le bajó el puntaje a un candidato
-  // que había trabajado hasta sept. de 2026, y la misma alerta aparecía en otros.
-  const hoy = new Date().toLocaleDateString("es-CO", {
-    day: "numeric", month: "long", year: "numeric", timeZone: "America/Bogota",
-  })
-  const system =
-    `${opts.system}\n\nFECHA DE HOY: ${hoy}. Toda fecha hasta hoy es pasada o actual, no futura; ` +
-    `"actualidad" o "presente" en un cargo significa que sigue vigente a esta fecha.`
 
   const body = {
     systemInstruction: { parts: [{ text: system }] },
@@ -112,12 +156,23 @@ async function llamarIA(opts: {
     usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number }
   }
   const usage = data.usageMetadata || {}
-  await registrarUso(usage.promptTokenCount ?? 0, usage.candidatesTokenCount ?? 0)
+  await registrarUso(usage.promptTokenCount ?? 0, usage.candidatesTokenCount ?? 0, {
+    modelo: vertexModel,
+  })
 
   return (data.candidates?.[0]?.content?.parts || [])
     .map((p) => p?.text || "")
     .join("")
     .trim()
+}
+
+function esJson(raw: string): boolean {
+  try {
+    parseJson<unknown>(raw)
+    return true
+  } catch {
+    return false
+  }
 }
 
 function parseJson<T>(raw: string): T {

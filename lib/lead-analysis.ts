@@ -13,12 +13,22 @@
  *  - Tolerante a fallos: cualquier error → devuelve null y el correo se envía igual.
  */
 
+import type Anthropic from '@anthropic-ai/sdk'
 import { GoogleAuth } from 'google-auth-library'
 import { chatConfig } from './chat/config'
 import {
   presupuestoDisponible,
   registrarUso,
 } from './chat/budget'
+import { bloqueArchivo, llamarClaude, usarClaude, type ErrorClaude } from './ia/claude'
+
+/**
+ * Modelo principal: Claude Sonnet 5.5 (A/B 10-oct-2026 con 5 leads reales con
+ * planos/renders: leyó niveles, perfiles, cargas y alcance que Gemini 2.5 Flash
+ * no vio; ~US$0,06 por lead). Caída a Gemini (LEAD_ANALYSIS_MODEL) ante cualquier
+ * falla. LEAD_ANALYSIS_PROVEEDOR=gemini lo apaga.
+ */
+const LEAD_CLAUDE_MODEL = process.env.LEAD_ANALYSIS_CLAUDE_MODEL || 'claude-sonnet-5-5'
 
 // Tipos MIME que el modelo puede leer directamente.
 const ANALYZABLE_MIME = /^(image\/(png|jpe?g|webp|gif)|application\/pdf)$/i
@@ -95,6 +105,40 @@ const RESPONSE_SCHEMA = {
     'tipoEstructura',
     'alcanceAparente',
     'puntosRelevantes',
+    'analisisPorArchivo',
+  ],
+}
+
+/** El mismo esquema en JSON Schema para la salida estructurada de Claude. */
+const CLAUDE_SCHEMA: Record<string, unknown> = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    resumenEjecutivo: { type: 'string' },
+    tipoEstructura: { type: 'string' },
+    alcanceAparente: { type: 'string' },
+    sistemaEstructural: { type: 'string' },
+    puntosRelevantes: { type: 'array', items: { type: 'string' } },
+    riesgosODudas: { type: 'array', items: { type: 'string' } },
+    preguntasParaCliente: { type: 'array', items: { type: 'string' } },
+    analisisPorArchivo: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: { archivo: { type: 'string' }, observacion: { type: 'string' } },
+        required: ['archivo', 'observacion'],
+      },
+    },
+  },
+  required: [
+    'resumenEjecutivo',
+    'tipoEstructura',
+    'alcanceAparente',
+    'sistemaEstructural',
+    'puntosRelevantes',
+    'riesgosODudas',
+    'preguntasParaCliente',
     'analisisPorArchivo',
   ],
 }
@@ -188,6 +232,50 @@ export async function analizarPropuestaLead(opts: {
     return null
   }
 
+  // 1) Claude Sonnet 5.5. Cualquier falla → la llamada a Gemini de siempre.
+  if (usarClaude('LEAD_ANALYSIS_PROVEEDOR')) {
+    try {
+      const contenido: Anthropic.ContentBlockParam[] = [
+        { type: 'text', text: buildContextText(opts.lead) },
+      ]
+      for (const f of analizables) {
+        const bloque = bloqueArchivo(f.content.toString('base64'), f.mimeType)
+        if (!bloque) continue
+        contenido.push({ type: 'text', text: `--- Archivo adjunto: "${f.filename}" (${f.mimeType}) ---` })
+        contenido.push(bloque)
+      }
+      const r = await llamarClaude({
+        modelo: LEAD_CLAUDE_MODEL,
+        system: SYSTEM_PROMPT,
+        contenido,
+        effort: 'low',
+        maxTokens: 8000,
+        timeoutMs: 150_000,
+        esquema: CLAUDE_SCHEMA,
+        etiqueta: '[lead-analysis]',
+      })
+      registrarUso(r.uso.tokensInput, r.uso.tokensOutput, { costoUsd: r.uso.costoUsd }).catch((e) =>
+        console.warn('[lead-analysis] registrarUso falló:', e),
+      )
+      let parsed: Partial<LeadAnalysisReport> | null = null
+      try {
+        parsed = JSON.parse(r.texto) as Partial<LeadAnalysisReport>
+      } catch {
+        parsed = null
+      }
+      const reporte = parsed ? normalizar(parsed, noAnalizados) : null
+      if (reporte) return reporte
+      console.warn('[lead-analysis] Claude devolvió JSON inválido; se intenta con Gemini')
+    } catch (err) {
+      const e = err as ErrorClaude
+      if (e.uso) {
+        registrarUso(e.uso.tokensInput, e.uso.tokensOutput, { costoUsd: e.uso.costoUsd }).catch(() => {})
+      }
+      console.warn(`[lead-analysis] Claude falló (${e.motivo ?? e}); se intenta con Gemini`)
+    }
+  }
+
+  // 2) Gemini (Vertex), intacto. OJO: gemini-2.5-flash se apaga el 31-mar-2027.
   const model = process.env.LEAD_ANALYSIS_MODEL || 'gemini-2.5-flash'
 
   try {
@@ -257,10 +345,9 @@ export async function analizarPropuestaLead(opts: {
 
     // Registrar gasto (no bloquear el flujo si falla).
     const usage = data.usageMetadata || {}
-    registrarUso(
-      usage.promptTokenCount ?? 0,
-      usage.candidatesTokenCount ?? 0,
-    ).catch((e) => console.warn('[lead-analysis] registrarUso falló:', e))
+    registrarUso(usage.promptTokenCount ?? 0, usage.candidatesTokenCount ?? 0, {
+      modelo: model,
+    }).catch((e) => console.warn('[lead-analysis] registrarUso falló:', e))
 
     const rawText = (data.candidates?.[0]?.content?.parts || [])
       .map((p) => p?.text || '')
@@ -268,10 +355,20 @@ export async function analizarPropuestaLead(opts: {
       .trim()
     if (!rawText) return null
 
-    const parsed = JSON.parse(rawText) as Partial<LeadAnalysisReport>
-    if (!parsed || typeof parsed.resumenEjecutivo !== 'string') return null
+    return normalizar(JSON.parse(rawText) as Partial<LeadAnalysisReport>, noAnalizados)
+  } catch (err) {
+    console.warn('[lead-analysis] error analizando adjuntos:', err)
+    return null
+  }
+}
 
-    return {
+/** Valida el JSON del modelo y lo lleva a la forma del reporte; null si no sirve. */
+function normalizar(
+  parsed: Partial<LeadAnalysisReport> | null,
+  noAnalizados: string[],
+): LeadAnalysisReport | null {
+  if (!parsed || typeof parsed.resumenEjecutivo !== 'string') return null
+  return {
       resumenEjecutivo: parsed.resumenEjecutivo,
       tipoEstructura: parsed.tipoEstructura || '—',
       alcanceAparente: parsed.alcanceAparente || '—',
@@ -292,8 +389,4 @@ export async function analizarPropuestaLead(opts: {
         : [],
       archivosNoAnalizados: noAnalizados,
     }
-  } catch (err) {
-    console.warn('[lead-analysis] error analizando adjuntos:', err)
-    return null
-  }
 }

@@ -5,13 +5,10 @@ import { chatConfig, MENSAJE_MANTENIMIENTO } from '@/lib/chat/config'
 import { getClientIp, hashIp } from '@/lib/chat/security'
 import { verificarTurnstile } from '@/lib/chat/turnstile'
 import { verificarRateLimit } from '@/lib/chat/ratelimit'
-import {
-  presupuestoDisponible,
-  registrarUso,
-  estimarCostoUsd,
-} from '@/lib/chat/budget'
+import { presupuestoDisponible, registrarUso } from '@/lib/chat/budget'
 import { construirSystemPrompt } from '@/lib/chat/knowledge'
-import { streamRespuesta, type ChatTurn } from '@/lib/chat/gemini'
+import type { ChatTurn } from '@/lib/chat/gemini'
+import { streamRespuestaConCaida, type ResultadoChat } from '@/lib/chat/proveedor'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -79,7 +76,9 @@ export async function POST(req: NextRequest) {
   let conv = await prisma.chatConversacion.findUnique({
     where: { sessionId: parsed.sessionId },
     include: {
-      mensajes: { orderBy: { createdAt: 'asc' }, take: chatConfig.historialMaxMensajes },
+      // Los ÚLTIMOS N mensajes (desc + reverse abajo). Con 'asc' + take el modelo
+      // veía los 16 primeros y, pasado el turno 8, perdía lo más reciente.
+      mensajes: { orderBy: { createdAt: 'desc' }, take: chatConfig.historialMaxMensajes },
     },
   })
 
@@ -103,7 +102,7 @@ export async function POST(req: NextRequest) {
     })
   }
 
-  const historial: ChatTurn[] = conv.mensajes.map((m) => ({
+  const historial: ChatTurn[] = [...conv.mensajes].reverse().map((m) => ({
     rol: m.rol === 'assistant' ? 'assistant' : 'user',
     contenido: m.contenido,
   }))
@@ -120,15 +119,11 @@ export async function POST(req: NextRequest) {
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let acumulado = ''
-      let resultado: {
-        texto: string
-        tokensInput: number
-        tokensOutput: number
-        bloqueado: boolean
-      } | null = null
+      let resultado: ResultadoChat | null = null
 
       try {
-        resultado = await streamRespuesta(
+        // Claude Haiku primero; si falla antes del primer texto responde Gemini.
+        resultado = await streamRespuestaConCaida(
           { system, historial, mensajeUsuario: mensaje },
           (delta) => {
             acumulado += delta
@@ -136,7 +131,7 @@ export async function POST(req: NextRequest) {
           },
         )
       } catch (e) {
-        console.error('[chat] error Vertex (stream):', e)
+        console.error('[chat] error del modelo (stream):', e)
       }
 
       // Determinar el texto final a persistir; transmitir fallback solo si no
@@ -155,7 +150,13 @@ export async function POST(req: NextRequest) {
       try {
         const tIn = resultado?.tokensInput ?? 0
         const tOut = resultado?.tokensOutput ?? 0
-        if (tIn || tOut) await registrarUso(tIn, tOut)
+        const costo = resultado?.costoUsd ?? 0
+        if (tIn || tOut || costo) await registrarUso(tIn, tOut, { costoUsd: costo })
+        if (resultado) {
+          console.log(
+            `[chat] ${resultado.proveedor}/${resultado.modelo} in=${tIn} out=${tOut} ~US$${costo.toFixed(5)}`,
+          )
+        }
         await prisma.$transaction([
           prisma.chatMensaje.create({
             data: { conversacionId: convId, rol: 'user', contenido: mensaje },
@@ -169,7 +170,7 @@ export async function POST(req: NextRequest) {
               turnos: { increment: 1 },
               tokensInput: { increment: tIn },
               tokensOutput: { increment: tOut },
-              costoUsd: { increment: estimarCostoUsd(tIn, tOut) },
+              costoUsd: { increment: costo },
             },
           }),
         ])

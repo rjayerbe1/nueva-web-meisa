@@ -684,8 +684,13 @@ export async function fusionarSiDuplicado(candidatoNuevoId: string): Promise<{
 export async function analizarPendientes(limite = 8): Promise<string[]> {
   const { analizarCvCandidato } = await import("@/lib/talento/ia")
 
+  // Solo los CV de los últimos 7 días. Un CV que la IA rechaza (PDF dañado,
+  // Word que no se pudo convertir) quedaba sin datosIA y se reintentaba en CADA
+  // ciclo para siempre: un PDF de ago-2026 producía un 400 de Vertex cada hora
+  // (13 diarios, 7:00–19:00, oct-2026). Los más viejos se reanalizan con el botón.
+  const desde = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   const pendientes = await prisma.candidato.findMany({
-    where: { datosIA: { equals: Prisma.DbNull }, cvPathGcs: { not: null } },
+    where: { datosIA: { equals: Prisma.DbNull }, cvPathGcs: { not: null }, createdAt: { gte: desde } },
     select: { id: true, nombre: true },
     orderBy: { createdAt: "desc" },
     take: limite,
