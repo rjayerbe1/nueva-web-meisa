@@ -86,7 +86,7 @@ export function clasificarError(err: unknown): ErrorClaude {
   if (err instanceof Anthropic.APIUserAbortError) motivo = 'timeout'
   else if (err instanceof Anthropic.APIConnectionTimeoutError) motivo = 'timeout'
   else if (err instanceof Anthropic.APIConnectionError) motivo = 'conexion'
-  else if ((status === 400 && /credit balance/i.test(msg)) || status === 402) motivo = 'saldo'
+  else if ((status === 400 && /credit balance|usage limit/i.test(msg)) || status === 402) motivo = 'saldo'
   else if (status === 401) motivo = 'clave_401'
   else if (status === 403) motivo = 'clave_403'
   else if (status === 429) motivo = 'limite_429'
