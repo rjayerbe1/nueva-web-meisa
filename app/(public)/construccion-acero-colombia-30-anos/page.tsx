@@ -16,7 +16,7 @@ export const revalidate = 3600
 const SITE_URL = 'https://meisa.com.co'
 const PATH = '/construccion-acero-colombia-30-anos'
 const IMG = 'https://storage.googleapis.com/meisa-imagenes/site/30-anos'
-const OG_IMAGE = `${IMG}/og-construccion-acero-colombia-30-anos-meisa.jpg`
+const OG_IMAGE = `${IMG}/og-construccion-acero-colombia-30-anos-meisa-v2.jpg`
 const FECHA = '2026-10-16'
 const TITULO = 'Construcción en acero en Colombia: lo que aprendimos en 30 años'
 const DESCRIPCION =
@@ -137,7 +137,7 @@ const HITOS: Array<{ periodo: string; titulo: string; texto: React.ReactNode; le
     periodo: '2026 – presente',
     titulo: 'Consolidación: tres plantas y tecnología BIM',
     texto:
-      'Hoy, con la apertura de la Planta Villa Rica, MEISA opera tres plantas propias. En esta etapa incorpora tecnología BIM en proyectos como el Puente Ovejas, en la vía Cali–Popayán, donde se lanzaron 536 toneladas de estructura sobre torres de soporte.',
+      'Hoy MEISA opera tres plantas propias que trabajan bajo los mismos estándares de fabricación y control. A esa capacidad se suma la ingeniería en BIM, que hace posible obras de mayor exigencia como el Puente Cascada, en la vía Cali–Popayán.',
     leccion:
       'crecer en capacidad exige crecer en método. Cada planta trabaja con los mismos estándares de fabricación y control.',
   },
@@ -177,7 +177,7 @@ export default function Construccion30AnosPage() {
           {/* Banner del aniversario: completo, sin recorte (el logo va a la izquierda) */}
           <div className="bg-white">
             <Image
-              src={`${IMG}/banner-30-anos-meisa-sede-jamundi.jpg`}
+              src={`${IMG}/banner-30-anos-meisa-sede-jamundi-v2.jpg`}
               alt="Logo 30 aniversario de MEISA junto a la vista aérea de la Sede Principal Jamundí, planta de fabricación de estructuras metálicas"
               width={1920}
               height={1080}
@@ -258,7 +258,7 @@ export default function Construccion30AnosPage() {
 
             <figure className="mt-14 md:mt-20">
               <Image
-                src={`${IMG}/linea-de-tiempo-meisa-30-anos.jpg`}
+                src={`${IMG}/linea-de-tiempo-meisa-30-anos-v2.jpg`}
                 alt="Línea de tiempo 30 años de estructura de MEISA: fundación en Popayán en 1996, primeras obras entre 1998 y 2012, planta de Jamundí en 2011, un equipo propio en 2021 y la consolidación con tres plantas hasta hoy"
                 width={2400}
                 height={1200}
