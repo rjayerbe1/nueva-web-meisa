@@ -16,6 +16,7 @@ interface Props {
 const FALLBACK: SeccionItem[] = [
   { clave: "hero", activo: true, label: "Hero" },
   { clave: "stats", activo: true, label: "Estadísticas" },
+  { clave: "aniversario-30", activo: true, label: "Aniversario 30 años" },
   { clave: "featured-project", activo: true, label: "Proyecto destacado" },
   { clave: "servicios", activo: true, label: "Servicios destacados" },
   { clave: "proyectos", activo: true, label: "Proyectos" },
@@ -23,12 +24,26 @@ const FALLBACK: SeccionItem[] = [
   { clave: "contacto", activo: true, label: "Contacto" },
 ]
 
+// Secciones nuevas del código que aún no están en el orden guardado: se
+// insertan tras su anterior en FALLBACK (mismo criterio que HomeContent), así
+// aparecen en el editor y se pueden apagar.
+function completarOrden(guardado: SeccionItem[]): SeccionItem[] {
+  const out = [...guardado]
+  FALLBACK.forEach((def, i) => {
+    if (out.some((s) => s.clave === def.clave)) return
+    const anterior = FALLBACK[i - 1]?.clave
+    const idx = anterior ? out.findIndex((s) => s.clave === anterior) : -1
+    out.splice(idx >= 0 ? idx + 1 : out.length, 0, def)
+  })
+  return out
+}
+
 export function OrdenSeccionesEditor({
   initial,
   endpoint = "/api/admin/home/orden",
 }: Props) {
   const [items, setItems] = useState<SeccionItem[]>(
-    initial && initial.length > 0 ? initial : FALLBACK,
+    initial && initial.length > 0 ? completarOrden(initial) : FALLBACK,
   )
   const [saving, setSaving] = useState(false)
   const [savedAt, setSavedAt] = useState<number | null>(null)

@@ -56,6 +56,7 @@ export const config = {
     '/estructura-metalica-vs-concreto',
     '/tipos-de-estructuras-metalicas',
     '/peso-estructura-metalica-por-m2',
+    '/construccion-acero-colombia-30-anos',
     '/admin/:path*',
     '/api/admin/:path*',
   ],

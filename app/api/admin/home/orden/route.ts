@@ -11,6 +11,7 @@ const ordenSeccionSchema = z.object({
 const DEFAULT_ORDEN = [
   { clave: "hero", activo: true, label: "Hero" },
   { clave: "stats", activo: true, label: "Estadísticas" },
+  { clave: "aniversario-30", activo: true, label: "Aniversario 30 años" },
   { clave: "featured-project", activo: true, label: "Proyecto destacado" },
   { clave: "servicios", activo: true, label: "Servicios destacados" },
   { clave: "proyectos", activo: true, label: "Proyectos" },

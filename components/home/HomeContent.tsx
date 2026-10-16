@@ -13,6 +13,7 @@ import {
   type FeaturedProjectData,
 } from '@/components/sections/FeaturedProjectSection'
 import { StatsStrip, type StatItem } from '@/components/sections/StatsStrip'
+import { Aniversario30Section } from '@/components/sections/Aniversario30Section'
 import {
   ContactSection,
   type ContactoConfig,
@@ -42,6 +43,7 @@ export interface HomeContentProps {
 type SeccionKey =
   | 'hero'
   | 'stats'
+  | 'aniversario-30'
   | 'featured-project'
   | 'servicios'
   | 'proyectos'
@@ -52,6 +54,7 @@ type SeccionKey =
 const DEFAULT_ORDEN: Array<{ clave: SeccionKey; activo: boolean }> = [
   { clave: 'hero', activo: true },
   { clave: 'stats', activo: true },
+  { clave: 'aniversario-30', activo: true },
   { clave: 'featured-project', activo: true },
   { clave: 'servicios', activo: true },
   { clave: 'clientes', activo: true },
@@ -108,6 +111,12 @@ export function HomeContent({
         return (
           <section id="cifras" className="relative z-40" key={clave}>
             <StatsStrip stats={stats} />
+          </section>
+        )
+      case 'aniversario-30':
+        return (
+          <section id="aniversario-30" className="relative z-40" key={clave}>
+            <Aniversario30Section />
           </section>
         )
       case 'featured-project':

@@ -88,6 +88,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/construccion-acero-colombia-30-anos`,
+      lastModified: new Date('2026-10-16'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/estructura-metalica-vs-concreto`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
